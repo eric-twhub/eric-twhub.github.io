@@ -254,10 +254,11 @@ def load():
     return out
 
 CSS='''*{box-sizing:border-box}
-:root{--bg:#f7f7f5;--card:#fff;--fg:#1a1a1a;--dim:#6b6b6b;--line:#e5e3de;--acc:#c2410c;
---hot:#dc2626;--lcc:#0d9488;--fsc:#4f46e5;--soft:#faf9f7}
-@media(prefers-color-scheme:dark){:root{--bg:#131313;--card:#1d1d1d;--fg:#ededed;--dim:#9a9a9a;
---line:#2d2d2d;--acc:#fb923c;--hot:#f87171;--lcc:#2dd4bf;--fsc:#a5b4fc;--soft:#191919}}
+/* 固定淺色主題：color-scheme 讓下拉選單與日期選擇器等原生元件也維持淺色，
+   否則使用者系統為深色模式時表單控制項會變黑，與頁面不一致 */
+:root{color-scheme:light;
+--bg:#f7f7f5;--card:#fff;--fg:#1a1a1a;--dim:#63605c;--line:#e5e3de;--acc:#c2410c;
+--hot:#dc2626;--lcc:#0f766e;--fsc:#4f46e5;--soft:#faf9f7}
 body{margin:0;background:var(--bg);color:var(--fg);
 font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif}
 .wrap{max-width:1080px;margin:0 auto;padding:0 16px 72px}
