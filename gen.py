@@ -3,6 +3,7 @@
 import json, datetime, html, collections, os, urllib.parse, shutil, re
 
 CFG=json.load(open('partners.json',encoding='utf-8'))
+W=CFG.get('widgets',{})
 MARKER=CFG['marker']; P=CFG['partners']
 SITE=CFG['site']['url'].rstrip('/'); SITENAME=CFG['site']['name']
 BASE=CFG['site'].get('base','').rstrip('/')
@@ -165,6 +166,13 @@ GATE_FILTER = ('<div class="bar gatebar"><b>訂票通路</b>'
   'document.querySelectorAll(".card[data-tier]").forEach(function(e){'
   'e.style.display=(on&&e.dataset.tier==="C")?"none":"";});}</script>')
 
+def widget_block(kind,title,note,**kw):
+    code=(W.get(kind) or '').strip()
+    if not code: return ''          # 未設定嵌入碼時整區不顯示，不留空殼
+    for k,v in kw.items(): code=code.replace('{'+k+'}',str(v))
+    return (f'<h2>{title}</h2><p class="lede">{note}</p>'
+            f'<div class="widget">{code}</div>')
+
 def plabel(kind,city_name=''):
     p=P[kind]
     return f"{p['icon']} 到 {p['brand']} {p['label'].replace('{q}',city_name)}"
@@ -251,6 +259,8 @@ table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--dim);font-weight:600;font-size:.79rem}
 td b{color:var(--acc)}
+.widget{margin:12px 0 0;min-height:60px}
+.widget iframe{max-width:100%;border:0}
 .gatebar{margin:16px 0 0;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
 .disc{font-size:.76rem;color:var(--dim);margin:8px 0 0;line-height:1.6}
 .note{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:.79rem;color:var(--dim);line-height:1.85}
@@ -433,12 +443,16 @@ for slug,name,codes,reg,hotelcity in CITIES:
     if fs:
         rts=sorted([x for x in fs if x['rt']],key=lambda x:x['price'])[:12]
         ows=sorted([x for x in fs if not x['rt']],key=lambda x:x['price'])[:8]
+        body+=widget_block('search_form', f'查台灣飛{name}的即時票價',
+              f'輸入你的日期，直接比較各家航空與訂票平台目前實際可訂的價格。',
+              o='TPE', d=codes[0], oname='台北', dname=name)
+        body+=f'<h2 id="ref">近期行情參考</h2><p class="lede">以下為 {NOWS} 查詢到的價格，供了解行情用；實際票價請以上方即時查詢或訂票平台為準。</p>'
         body+=GATE_FILTER
         if rts:
-            body+=(f'<h2>台灣飛{name} 來回機票</h2><div class="grid">'
+            body+=(f'<h3>來回機票</h3><div class="grid">'
                    +''.join(fare_card(x) for x in rts)+'</div>'+compare_line(name))
         if ows:
-            body+=f'<h2>台灣飛{name} 單程機票</h2><div class="grid">'+''.join(fare_card(x) for x in ows)+'</div>'
+            body+=f'<h3>單程機票</h3><div class="grid">'+''.join(fare_card(x) for x in ows)+'</div>'
         if len(airs)>1:
             rows=''
             for a,n in airs.most_common():
@@ -536,12 +550,16 @@ for (oslug,cslug),fs in by_route.items():
     else:
         intro+='目前皆為轉機航班。'
     intro+=f'共 {len(airs)} 家航空公司經營此航線。</p>'
-    body=GATE_FILTER
+    body=widget_block('search_form', f'查{oname}飛{cname}的即時票價',
+          '輸入你的日期，直接比較各家航空與訂票平台目前實際可訂的價格。',
+          o=city[2][0] if False else 'TPE', d=cslug.upper(), oname=oname, dname=cname)
+    body+=f'<h2 id="ref">近期行情參考</h2><p class="lede">以下為 {NOWS} 查詢到的價格，供了解行情用；實際票價請以上方即時查詢或訂票平台為準。</p>'
+    body+=GATE_FILTER
     rts=sorted([x for x in fs if x['rt']],key=lambda x:x['price'])[:12]
     ows=sorted([x for x in fs if not x['rt']],key=lambda x:x['price'])[:8]
-    if rts: body+=(f'<h2>{oname}飛{cname} 來回機票</h2><div class="grid">'
+    if rts: body+=(f'<h3>來回機票</h3><div class="grid">'
                    +''.join(fare_card(x) for x in rts)+'</div>'+compare_line(cname))
-    if ows: body+=f'<h2>{oname}飛{cname} 單程機票</h2><div class="grid">'+''.join(fare_card(x) for x in ows)+'</div>'
+    if ows: body+=f'<h3>單程機票</h3><div class="grid">'+''.join(fare_card(x) for x in ows)+'</div>'
     if len(airs)>1:
         rows=''
         for a,n in airs.most_common():

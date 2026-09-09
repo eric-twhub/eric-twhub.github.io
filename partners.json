@@ -100,5 +100,11 @@
     "Omio": "6%，歐洲交通平台，不是台灣人買 JR Pass 的管道",
     "Vio.com": "40-64%，台灣無知名度",
     "Booking.com": "訂房可考慮，但機票分潤是 €1.5 固定且 cookie 只有 One session"
+  },
+  "widgets": {
+    "_說明": "Dashboard → Tools catalog → Widgets → Explore widgets 產生嵌入碼後貼在這裡。留空則該區塊不顯示。",
+    "_可用變數": "{o}=出發地IATA {d}=目的地IATA {oname}=出發地中文 {dname}=目的地中文",
+    "search_form": "",
+    "calendar": ""
   }
 }
