@@ -744,7 +744,9 @@ for cslug in CITY:
             + topnav(reg) + f'<h1>{title}</h1>'
             + f'<p class="upd">發布於 {NOWS}</p>' + body + foot())
         pages.append((f'/{DEALDIR}/{slug}/',0.9))
-        deals_out.append(dict(slug=slug,title=title,o=aname,c=cname,price=total_v,air='轉乘方案',
+        # o 用「台灣」而非中轉城市，避免被誤讀成「福岡→熊本要價 8,913」
+        deals_out.append(dict(slug=slug,title=title,o='台灣',c=cname,via=aname,
+            price=total_v,air=f'飛{aname}再轉乘',
             dep=ab['dep'],ret='',stops=mode,cls='transfer',
             reasons=[f'比直飛省 {money(own-total_v)}'],med=own,url=ab['url'],
             hotelcity=CITY[cslug][4],cslug=cslug))
@@ -793,6 +795,8 @@ pages.append((f'/{DEALDIR}/',0.95))
 
 # FB / IG 文案（本地檔，不上傳網站）
 os.makedirs('posts',exist_ok=True)
+json.dump(deals_out, open('posts/deals.json','w',encoding='utf-8'),
+          ensure_ascii=False, indent=1)     # 供 make_cards.py 產生 IG 圖卡
 lines=[f'台日機票速報 {TODAY} — 共 {len(deals_out)} 則\n'+'='*46+'\n']
 for d in deals_out:
     tag={'lcc':'廉航','fsc':'一般航空','transfer':'轉乘方案'}.get(d['cls'],'')
