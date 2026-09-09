@@ -119,10 +119,30 @@ CITY_OF={code:c for c in CITIES for code in c[2]}
 LCC_CAP,FSC_CAP=6000,8000
 NOW=datetime.datetime.now(); NOWS=NOW.strftime('%Y-%m-%d %H:%M'); TODAY=NOW.strftime('%Y-%m-%d')
 
-def plink(kind,city):
+def plink(kind,city='',**kw):
     p=P[kind]; t=p.get('template','')
-    u=t if t and not t.startswith('TODO') and t!='AUTO' else p['fallback']
-    return u.replace('{q}',urllib.parse.quote(city))
+    u=t if t and not t.startswith('TODO') else p['fallback']
+    u=u.replace('{q}',urllib.parse.quote(city))
+    for k,v in kw.items(): u=u.replace('{'+k+'}',str(v))
+    return u
+
+def flight_url(x):
+    """以航班資料組出 Trip.com 搜尋連結（繁中 / TWD）"""
+    return plink('flight', o=x['o'].lower(), d=x['d'].lower(),
+                 dep=x['dep'], ret=x['ret'] or x['dep'],
+                 tt='rt' if x['rt'] else 'ow')
+
+def compare_line(city_name=''):
+    alt=[k for k in ('flight2',) if k in P]
+    if not alt: return ''
+    ls='、'.join(
+      f'<a href="{html.escape(plink(k,city_name))}" target="_blank" rel="nofollow noopener sponsored">'
+      f'{P[k]["brand"]}</a>' for k in alt)
+    return f'<p class="disc">票價僅供參考，建議到 {ls} 再比一次價——台灣 OTA 常有旅行社切位票，是國際比價站看不到的貨源。</p>'
+
+def plabel(kind,city_name=''):
+    p=P[kind]
+    return f"{p['icon']} 到 {p['brand']} {p['label'].replace('{q}',city_name)}"
 
 def load():
     rows=[]
@@ -199,6 +219,7 @@ table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--dim);font-weight:600;font-size:.79rem}
 td b{color:var(--acc)}
+.disc{font-size:.76rem;color:var(--dim);margin:8px 0 0;line-height:1.6}
 .note{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:.79rem;color:var(--dim);line-height:1.85}
 .note a{color:var(--dim)}
 @media(max-width:520px){h1{font-size:1.5rem}.grid{grid-template-columns:1fr}}'''
@@ -233,7 +254,8 @@ def topnav(cur=''):
 
 def foot():
     return f'''<p class="note">
-資料來源 Travelpayouts / Aviasales，價格為單人含稅及手續費，隨時可能變動，請以訂購頁面為準。<br>
+票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
+實際訂購由合作平台完成：機票 Trip.com、住宿 Agoda、行程與交通票 KKday、網卡與租車 Klook。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
 最後更新 {NOWS}　·　<a href="{U("/")}">回首頁</a>
 </p></div></body></html>'''
@@ -244,7 +266,8 @@ def fare_card(x,hot=False):
     stops='直飛' if x['tr']==0 else f"轉機{x['tr']}"
     trip='來回' if x['rt'] else '單程'
     dates=x['dep']+(f" – {x['ret']}" if x['ret'] else '')
-    btn=f'<a class="btn" href="{html.escape(x["url"])}" target="_blank" rel="nofollow noopener sponsored">✈️ 查看即時票價</a>' if x['url'] else ''
+    btn=(f'<a class="btn" href="{html.escape(flight_url(x))}" target="_blank" '
+         f'rel="nofollow noopener sponsored">✈️ 到 {P["flight"]["brand"]} 查票價</a>')
     return f'''<article class="card{' hot' if hot else ''}">
 <div class="rt"><b>{ORI.get(x['o'],x['o'])}</b><i>→</i><b>{cn}</b>{'<em>超值</em>' if hot else ''}</div>
 <div class="pr">NT${x['price']:,}<span class="{'rtx' if x['rt'] else 'owx'}">{trip}含稅</span></div>
@@ -256,10 +279,11 @@ def partner_links(city_name,hotel_city,slug=None):
     keys=['hotel','esim']
     if slug and slug in URBAN: keys+=['activity','transfer']
     else: keys+=['car','activity']
-    return '<div class="plinks">'+''.join(
+    ls=''.join(
       f'<a class="plink" href="{html.escape(plink(k,hotel_city))}" target="_blank" '
-      f'rel="nofollow noopener sponsored">{P[k]["icon"]} {P[k]["name"].replace("{q}",city_name)}</a>'
-      for k in keys)+'</div>'
+      f'rel="nofollow noopener sponsored">{plabel(k,city_name)}</a>' for k in keys)
+    return (f'<div class="plinks">{ls}</div>'
+            '<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>')
 
 def alt_calc(slug):
     """回傳 [(替代城市slug, 機票最低, 交通TWD單程 or None, 總計 or None, route, mode, tm, fare)]"""
@@ -286,7 +310,7 @@ def alt_block(slug,name,hotelcity,own_min=None):
         total=(f'<b>約 {money(total_v)}</b>'+(f'<br><small style="color:var(--hot);font-weight:700">省 {money(save)}</small>' if save else '')
                if total_v else '<span style="color:var(--dim)">機票＋交通另計</span>')
         farecell=(f'{fare}<br><small style="color:var(--dim)">約 NT${twd:,} 單程</small>'
-                  if twd else '<a href="'+html.escape(plink("transport",ac[4]))+'" target="_blank" rel="nofollow noopener sponsored">查詢票價</a>')
+                  if twd else '<a href="'+html.escape(plink("transport",ac[4]))+'" target="_blank" rel="nofollow noopener sponsored">到 '+P["transport"]["brand"]+' 查詢</a>')
         rows+=(f'<tr><td><a href="{U(f"/{aslug}/")}">{ac[1]}</a><br>'
                f'<small style="color:var(--dim)">機票 {money(b["price"])} 起</small></td>'
                f'<td>{route}<br><small style="color:var(--dim)">{mode}</small></td>'
@@ -309,10 +333,11 @@ def alt_block(slug,name,hotelcity,own_min=None):
             f'<th>單程交通費</th><th>估算總計</th></tr></thead><tbody>{rows}</tbody></table>{note}'
             + '<div class="plinks">'
             + f'<a class="plink" href="{html.escape(plink("transport",hotelcity))}" target="_blank" '
-              f'rel="nofollow noopener sponsored">🚄 查詢日本國內交通票</a>'
+              f'rel="nofollow noopener sponsored">{plabel("transport",name)}</a>'
             + f'<a class="plink" href="{html.escape(plink("car",hotelcity))}" target="_blank" '
-              f'rel="nofollow noopener sponsored">🚗 {name}租車比價</a>'
-            + '</div>')
+              f'rel="nofollow noopener sponsored">{plabel("car",name)}</a>'
+            + '</div>'
+            + '<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>')
 
 def write(path,content):
     d=os.path.dirname(path)
@@ -371,7 +396,8 @@ for slug,name,codes,reg,hotelcity in CITIES:
         rts=sorted([x for x in fs if x['rt']],key=lambda x:x['price'])[:12]
         ows=sorted([x for x in fs if not x['rt']],key=lambda x:x['price'])[:8]
         if rts:
-            body+=f'<h2>台灣飛{name} 來回機票</h2><div class="grid">'+''.join(fare_card(x) for x in rts)+'</div>'
+            body+=(f'<h2>台灣飛{name} 來回機票</h2><div class="grid">'
+                   +''.join(fare_card(x) for x in rts)+'</div>'+compare_line(name))
         if ows:
             body+=f'<h2>台灣飛{name} 單程機票</h2><div class="grid">'+''.join(fare_card(x) for x in ows)+'</div>'
         if len(airs)>1:
@@ -400,8 +426,8 @@ for slug,name,codes,reg,hotelcity in CITIES:
     else:
         body+=(f'<h2>查詢台灣飛{name}即時票價</h2>'
                f'<p><a class="plink" style="display:inline-block;flex:none" '
-               f'href="https://www.aviasales.com/?marker={MARKER}" target="_blank" '
-               f'rel="nofollow noopener sponsored">✈️ 查詢{name}機票</a></p>')
+               f'href="{html.escape(plink("flight",o="tpe",d=codes[0].lower(),dep="",ret="",tt="rt"))}" target="_blank" '
+               f'rel="nofollow noopener sponsored">✈️ 到 {P["flight"]["brand"]} 查詢{name}機票</a></p>')
 
     own_min = anchor['price'] if anchor else None
     _alts = alt_calc(slug)
@@ -474,7 +500,8 @@ for (oslug,cslug),fs in by_route.items():
     body=''
     rts=sorted([x for x in fs if x['rt']],key=lambda x:x['price'])[:12]
     ows=sorted([x for x in fs if not x['rt']],key=lambda x:x['price'])[:8]
-    if rts: body+=f'<h2>{oname}飛{cname} 來回機票</h2><div class="grid">'+''.join(fare_card(x) for x in rts)+'</div>'
+    if rts: body+=(f'<h2>{oname}飛{cname} 來回機票</h2><div class="grid">'
+                   +''.join(fare_card(x) for x in rts)+'</div>'+compare_line(cname))
     if ows: body+=f'<h2>{oname}飛{cname} 單程機票</h2><div class="grid">'+''.join(fare_card(x) for x in ows)+'</div>'
     if len(airs)>1:
         rows=''
@@ -596,7 +623,7 @@ for (oslug,cslug),(b,reasons,med,rts) in sorted(pick_deals().items(),key=lambda 
         "description":desc,"author":{"@type":"Organization","name":SITENAME}},ensure_ascii=False)
     body=(f'<p class="lede">{oname}飛{cname}，<b>{money(b["price"])}</b> 來回含稅，'
           f'由{b["airname"]}執飛，{stops}。去程 {b["dep"]}，回程 {b["ret"]}。</p>'
-          f'<div class="grid" style="max-width:340px">{fare_card(b,True)}</div>'
+          f'<div class="grid" style="max-width:340px">{fare_card(b,True)}</div>'+compare_line(cname)+
           f'<h2>這個價格為什麼值得買</h2><ul>{why}</ul>'
           f'<p class="lede" style="font-size:.86rem">此航線目前共 {len(rts)} 筆來回票價，'
           f'中位價 {money(int(med))}。</p>')
@@ -686,7 +713,7 @@ for d in deals_out:
 　📅 {_dates}
 　💡 {d['reasons'][0]}
 
-　🔗 查看即時票價：{_url}
+　🔗 到 Trip.com 查即時票價：{_url}
 
 #日本機票 #{d['c']}機票 #{d['o']}出發 #便宜機票 #日本自由行
 #機票特價 #{tag} #省錢旅遊 #小資旅行 #日本旅遊

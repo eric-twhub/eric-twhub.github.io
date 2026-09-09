@@ -1,95 +1,104 @@
 {
-  "_說明": "分潤率與 cookie 天數取自 Travelpayouts Programs Catalog（2026-09-09 實際畫面）。{q} 會替換成目的地城市。",
-  "_如何啟用分潤": [
-    "1. Programs 頁面對每個品牌按『Connect』申請連接",
-    "2. Dashboard 右上『Create link』→ 選品牌 → 貼範例網址 → 產生分潤連結",
-    "3. 把連結貼到下方 template，城市名的位置換成 {q}",
-    "4. 未填 template 時自動使用 fallback（可正常瀏覽但不計分潤）"
-  ],
+  "_說明": "選擇標準：① 有繁體中文 ② 台灣使用者熟悉 ③ 才看分潤率。信任度優先於分潤率——導流到陌生平台的轉換率損失，遠大於分潤率差距。",
+  "_連結標示原則": "每個連結都標明會前往哪個平台（參考 Skyscanner 做法），讓使用者點擊前就知道目的地。",
   "marker": "775639",
   "site": {
     "url": "https://eric-twhub.github.io",
     "base": "/japan-flights",
-    "name": "台日機票速報",
-    "_說明": "url 只填網域（不含路徑）；base 填 /repo名稱，自訂網域則填空字串"
+    "name": "台日機票速報"
   },
   "partners": {
     "flight": {
-      "name": "查看即時票價",
+      "brand": "Trip.com",
       "icon": "✈️",
-      "brand": "Aviasales",
-      "rate": "1.1-1.5%",
-      "cookie": "30 天",
-      "template": "AUTO",
-      "fallback": "https://www.aviasales.com/"
+      "label": "查看票價",
+      "rate": "1-5.5%",
+      "cookie": "7-30 天",
+      "why": "繁中介面、TWD 計價、台灣有電視廣告與客服。分潤上限也高於 Aviasales",
+      "template": "TODO_貼上_TRIPCOM_分潤連結",
+      "fallback": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD"
     },
     "hotel": {
-      "name": "找{q}住宿",
-      "icon": "🏨",
       "brand": "Agoda",
+      "icon": "🏨",
+      "label": "找{q}住宿",
       "rate": "6%",
       "cookie": "1 天",
+      "why": "台灣人訂日本住宿最常用，繁中介面",
       "note": "cookie 僅 1 天，文案要引導立即訂房",
       "template": "TODO_貼上_AGODA_分潤連結",
       "fallback": "https://www.agoda.com/zh-tw/search?city={q}"
     },
-    "esim": {
-      "name": "日本 eSIM 上網卡",
-      "icon": "📱",
-      "brand": "Yesim",
-      "rate": "18%",
-      "cookie": "90 天",
-      "note": "全站分潤率最高的類別之一，每頁都放",
-      "template": "TODO_貼上_YESIM_分潤連結",
-      "fallback": "https://yesim.app/"
-    },
     "activity": {
-      "name": "{q}行程與門票",
+      "brand": "KKday",
       "icon": "🎫",
-      "brand": "GetYourGuide",
-      "rate": "8%",
-      "cookie": "31 天",
-      "note": "8% 高於 Klook 2-5% 與 KKday 1-5%",
-      "template": "TODO_貼上_GETYOURGUIDE_分潤連結",
-      "fallback": "https://www.getyourguide.com/s/?q={q}"
+      "label": "訂{q}行程與門票",
+      "rate": "1-5%",
+      "cookie": "30 天",
+      "why": "台灣品牌，日本行程與門票深耕",
+      "template": "TODO_貼上_KKDAY_分潤連結",
+      "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword={q}"
+    },
+    "esim": {
+      "brand": "Klook",
+      "icon": "📱",
+      "label": "買日本網卡 / eSIM",
+      "rate": "2-5%",
+      "cookie": "7-30 天",
+      "why": "台灣人買日本網卡的首選平台，商品選擇最多",
+      "template": "TODO_貼上_KLOOK_分潤連結",
+      "fallback": "https://www.klook.com/zh-TW/search/?query=日本%20eSIM%20網卡"
     },
     "transport": {
-      "name": "查詢日本國內交通票",
+      "brand": "KKday",
       "icon": "🚄",
-      "brand": "Omio",
-      "rate": "6%",
-      "cookie": "—",
-      "note": "賣新幹線與高速巴士票，用於轉乘方案區塊",
-      "template": "TODO_貼上_OMIO_分潤連結",
-      "fallback": "https://www.omio.com/"
+      "label": "買 JR Pass 與日本交通票",
+      "rate": "1-5%",
+      "cookie": "30 天",
+      "why": "JR Pass 與新幹線票在台灣主要透過 KKday 購買",
+      "template": "TODO_貼上_KKDAY_交通_分潤連結",
+      "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword=JR%20PASS%20{q}"
     },
     "car": {
-      "name": "{q}租車比價",
+      "brand": "Klook",
       "icon": "🚗",
-      "brand": "DiscoverCars",
-      "rate": "23-54%",
-      "cookie": "365 天",
-      "note": "分潤最高。僅在自駕熱門地區顯示（沖繩、北海道、離島）",
-      "template": "TODO_貼上_DISCOVERCARS_分潤連結",
-      "fallback": "https://www.discovercars.com/"
+      "label": "租{q}的車",
+      "rate": "2-5%",
+      "cookie": "7 天",
+      "why": "台灣人租日本車主要透過 Klook / KKday，不用歐美平台",
+      "template": "TODO_貼上_KLOOK_租車_分潤連結",
+      "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20租車"
     },
     "transfer": {
-      "name": "{q}機場接送",
+      "brand": "Klook",
       "icon": "🚕",
-      "brand": "Kiwitaxi",
-      "rate": "9-11%",
-      "cookie": "30 天",
-      "template": "TODO_貼上_KIWITAXI_分潤連結",
-      "fallback": "https://kiwitaxi.com/"
+      "label": "訂{q}機場接送",
+      "rate": "2-5%",
+      "cookie": "7-30 天",
+      "why": "台灣人訂日本機場接送主要透過 Klook / KKday",
+      "template": "TODO_貼上_KLOOK_接送_分潤連結",
+      "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20機場接送"
+    },
+    "flight2": {
+      "brand": "易遊網",
+      "icon": "🔍",
+      "label": "比價",
+      "rate": "待確認",
+      "cookie": "待確認",
+      "why": "台灣最大 OTA，含旅行社切位票（Trip.com 與 Aviasales 都看不到的貨源）",
+      "network": "聯盟網 Affiliates.One（與 Travelpayouts 不同，需另外申請）",
+      "template": "TODO_加入聯盟網後貼上_易遊網_分潤連結",
+      "fallback": "https://flight.eztravel.com.tw/activity/cheap-flights-to-japan/"
     }
   },
-  "_未採用但可考慮": {
-    "Vio.com": "訂房 40-64% revenue share / 30 天 cookie，比 Agoda 的 1 天 cookie 好",
-    "Rakuten Travel": "0.8-5%，日本在地旅館覆蓋最完整",
-    "Klook": "2-5%，台灣人熟悉度高，轉換率可能勝過 GetYourGuide",
-    "KKday": "1-5%，台灣品牌",
-    "Booking.com": "3-5%，但 cookie 只有 One session",
-    "Welcome Pickups": "8-9% 機場接送",
-    "12Go": "4-5.5% 東南亞交通為主"
+  "_已排除及原因": {
+    "Aviasales": "1.1-1.5%。俄系比價站，台灣使用者不認識，有被誤認為詐騙的風險",
+    "Yesim": "18% 分潤很高，但台灣沒有知名度、無繁中，實際轉換率會極低",
+    "Saily": "15%，同上",
+    "GetYourGuide": "8%，歐美平台，台灣人訂日本行程不會用",
+    "DiscoverCars": "23-54% 分潤最高，但台灣人租日本車不會用這個平台",
+    "Omio": "6%，歐洲交通平台，不是台灣人買 JR Pass 的管道",
+    "Vio.com": "40-64%，台灣無知名度",
+    "Booking.com": "訂房可考慮，但機票分潤是 €1.5 固定且 cookie 只有 One session"
   }
 }
