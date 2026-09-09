@@ -4,8 +4,9 @@
   "marker": "775639",
   "site": {
     "url": "https://eric-twhub.github.io",
-    "base": "/japan-flights",
-    "name": "台日機票速報"
+    "base": "",
+    "name": "台日機票速報",
+    "_base說明": "根目錄站（<帳號>.github.io）填空字串；專案站填 /repo名稱"
   },
   "partners": {
     "flight": {
