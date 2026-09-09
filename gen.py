@@ -20,6 +20,20 @@ ORIGINS=[('taipei','台北',['TPE','TSA']),('taichung','台中',['RMQ']),
 ORI_OF={c:o for o in ORIGINS for c in o[2]}
 ONAME=dict((o[0],o[1]) for o in ORIGINS)
 # 真正大眾運輸完善的都會區才不推租車；北海道、九州、離島、東北自駕比例高
+# 訂票通路 → (顯示名稱, 信任分級)  A=台灣可用 B=國際知名 C=台灣陌生
+GATES={
+ 'Trip.com':('Trip.com','A'),'All Nippon Airways':('全日空官網','A'),
+ 'Japan Airlines':('日本航空官網','A'),'China Airlines':('中華航空官網','A'),
+ 'EVA Air':('長榮航空官網','A'),'STARLUX':('星宇航空官網','A'),
+ 'Kiwi.com':('Kiwi.com','B'),'Gotogate':('Gotogate','B'),'Mytrip.com':('Mytrip','B'),
+ 'Flightnetwork':('Flightnetwork','B'),'Vayama':('Vayama','B'),'Wowtickets':('Wowtickets','B'),
+ 'Expedia':('Expedia','B'),'Booking.com':('Booking.com','B'),
+}
+def gate_info(g):
+    if g in GATES: return GATES[g]
+    if g and any(x in g for x in ('Airlines','Airways','Air ')): return (g,'A')
+    return (g or '其他平台','C')
+
 URBAN={'tokyo','osaka','nagoya','fukuoka','kobe','kitakyushu'}
 JPY=0.213  # 1 日圓 ≈ 0.213 台幣（概估，實際依匯率）
 # 替代方案：目的地 → [(替代城市slug, 路線, 交通方式, 時間, 已查證票價 或 None)]
@@ -140,6 +154,17 @@ def compare_line(city_name=''):
       f'{P[k]["brand"]}</a>' for k in alt)
     return f'<p class="disc">票價僅供參考，建議到 {ls} 再比一次價——台灣 OTA 常有旅行社切位票，是國際比價站看不到的貨源。</p>'
 
+GATE_FILTER = ('<div class="bar gatebar"><b>訂票通路</b>'
+  '<button class="chip" id="gfAll" onclick="gf(0)">全部平台</button>'
+  '<button class="chip" id="gfTw" onclick="gf(1)">只看台灣可訂 / 國際平台</button>'
+  '<p class="disc" style="width:100%;margin-top:6px">'
+  '票價由不同訂票通路提供。標示「台灣較陌生」的平台多為東歐或俄語系網站，'
+  '價格可能較低但介面與客服未必支援中文，建議斟酌。</p></div>'
+  '<script>function gf(on){document.getElementById("gfAll").classList.toggle("on",!on);'
+  'document.getElementById("gfTw").classList.toggle("on",!!on);'
+  'document.querySelectorAll(".card[data-tier]").forEach(function(e){'
+  'e.style.display=(on&&e.dataset.tier==="C")?"none":"";});}</script>')
+
 def plabel(kind,city_name=''):
     p=P[kind]
     return f"{p['icon']} 到 {p['brand']} {p['label'].replace('{q}',city_name)}"
@@ -160,7 +185,7 @@ def load():
             cls='lcc' if a in LCC else 'fsc' if a in FSC else 'other',
             price=r.get('price',0),dep=r.get('departure_at','')[:10],ret=r.get('return_at','')[:10],
             rt=bool(r.get('return_at')),tr=(r.get('transfers',0) or 0)+(r.get('return_transfers',0) or 0),
-            dur=r.get('duration',0) or 0,
+            dur=r.get('duration',0) or 0, gate=r.get('gate','') or '',
             url=f"https://www.aviasales.com{r['link']}&marker={MARKER}" if r.get('link') else ''))
     return out
 
@@ -200,6 +225,13 @@ display:flex;flex-direction:column;gap:6px}
 .tg.lcc{background:color-mix(in srgb,var(--lcc) 15%,transparent);color:var(--lcc)}
 .tg.fsc{background:color-mix(in srgb,var(--fsc) 15%,transparent);color:var(--fsc)}
 .tg.other{background:var(--line);color:var(--dim)}
+.gate{font-size:.73rem;color:var(--dim);display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+padding-top:6px;border-top:1px dashed var(--line)}
+.gate b{color:var(--fg);font-weight:600}
+.gate span{padding:1px 6px;border-radius:4px;font-size:.66rem;font-weight:600}
+.gate.ga span{background:color-mix(in srgb,var(--lcc) 18%,transparent);color:var(--lcc)}
+.gate.gb span{background:var(--line);color:var(--dim)}
+.gate.gc span{background:color-mix(in srgb,var(--hot) 14%,transparent);color:var(--hot)}
 .dt{font-size:.81rem;color:var(--dim);font-variant-numeric:tabular-nums}
 .btn{margin-top:auto;display:block;text-align:center;background:var(--acc);color:#fff;
 text-decoration:none;padding:7px;border-radius:7px;font-size:.83rem;font-weight:600}
@@ -219,6 +251,7 @@ table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--dim);font-weight:600;font-size:.79rem}
 td b{color:var(--acc)}
+.gatebar{margin:16px 0 0;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
 .disc{font-size:.76rem;color:var(--dim);margin:8px 0 0;line-height:1.6}
 .note{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:.79rem;color:var(--dim);line-height:1.85}
 .note a{color:var(--dim)}
@@ -268,11 +301,16 @@ def fare_card(x,hot=False):
     dates=x['dep']+(f" – {x['ret']}" if x['ret'] else '')
     btn=(f'<a class="btn" href="{html.escape(flight_url(x))}" target="_blank" '
          f'rel="nofollow noopener sponsored">✈️ 到 {P["flight"]["brand"]} 查票價</a>')
-    return f'''<article class="card{' hot' if hot else ''}">
+    gname,tier=gate_info(x.get('gate',''))
+    gcls={'A':'ga','B':'gb','C':'gc'}[tier]
+    gtxt={'A':'台灣可訂','B':'國際平台','C':'台灣較陌生'}[tier]
+    gate_html=(f'<div class="gate {gcls}" title="此票價由 {html.escape(gname)} 提供">'
+               f'此價由 <b>{html.escape(gname)}</b> 提供<span>{gtxt}</span></div>')
+    return f'''<article class="card{' hot' if hot else ''}" data-tier="{tier}">
 <div class="rt"><b>{ORI.get(x['o'],x['o'])}</b><i>→</i><b>{cn}</b>{'<em>超值</em>' if hot else ''}</div>
 <div class="pr">NT${x['price']:,}<span class="{'rtx' if x['rt'] else 'owx'}">{trip}含稅</span></div>
 <div class="mt"><span class="tg {x['cls']}">{tag}</span><span>{html.escape(x['airname'])}</span><span>{stops}</span></div>
-<div class="dt">{dates}</div>{btn}</article>'''
+<div class="dt">{dates}</div>{gate_html}{btn}</article>'''
 
 def partner_links(city_name,hotel_city,slug=None):
     # 依目的地性質挑選夥伴：都會區推行程與接送，郊區離島推租車
@@ -395,6 +433,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
     if fs:
         rts=sorted([x for x in fs if x['rt']],key=lambda x:x['price'])[:12]
         ows=sorted([x for x in fs if not x['rt']],key=lambda x:x['price'])[:8]
+        body+=GATE_FILTER
         if rts:
             body+=(f'<h2>台灣飛{name} 來回機票</h2><div class="grid">'
                    +''.join(fare_card(x) for x in rts)+'</div>'+compare_line(name))
@@ -497,7 +536,7 @@ for (oslug,cslug),fs in by_route.items():
     else:
         intro+='目前皆為轉機航班。'
     intro+=f'共 {len(airs)} 家航空公司經營此航線。</p>'
-    body=''
+    body=GATE_FILTER
     rts=sorted([x for x in fs if x['rt']],key=lambda x:x['price'])[:12]
     ows=sorted([x for x in fs if not x['rt']],key=lambda x:x['price'])[:8]
     if rts: body+=(f'<h2>{oname}飛{cname} 來回機票</h2><div class="grid">'
@@ -573,7 +612,7 @@ write('index.html', head(title,desc,'')
     f'目前最低 <b>{money(allbest)}</b> 來回含稅。</p>'
   + f'<p class="upd">更新於 {NOWS}　·　共 {len(deals)} 筆票價</p>'
   + (f'<h2>🔥 超值票</h2><p class="lede" style="font-size:.85rem">廉航低於 {money(LCC_CAP)}／一般航空低於 {money(FSC_CAP)}</p>'
-     f'<div class="grid">{"".join(fare_card(x,True) for x in hot[:12])}</div>' if hot else '')
+     + GATE_FILTER + f'<div class="grid">{"".join(fare_card(x,True) for x in hot[:12])}</div>' if hot else '')
   + '<h2>依出發地查詢</h2><div class="cities">'
   + ''.join(f'<a class="ct" href="{U("/"+o+"/")}"><b>{n}飛日本機票</b>'
             f'<s>{len({CITY_OF[x["d"]][0] for x in by_origin[o]})} 個航點</s>'
