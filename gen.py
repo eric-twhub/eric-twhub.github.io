@@ -171,6 +171,33 @@ GATE_FILTER = ('<div class="bar gatebar"><b>訂票通路</b>'
   'document.querySelectorAll(".card[data-tier]").forEach(function(e){'
   'e.style.display=(on&&e.dataset.tier==="C")?"none":"";});}</script>')
 
+def search_form(title, note, def_o='TPE', def_d='TYO'):
+    """自製繁中搜尋表單，送往 Trip.com 繁中／TWD 搜尋頁。
+    不用第三方 widget：避免英文介面、美金計價與 iframe 拖慢頁面。"""
+    oo=''.join(f'<option value="{c}"{" selected" if c==def_o else ""}>{n}</option>'
+               for c,n in ORI.items())
+    seen=set(); dd=''
+    for slug,name,codes,_,_ in CITIES:
+        c=codes[0]
+        if c in seen: continue
+        seen.add(c)
+        dd+=f'<option value="{c}"{" selected" if c==def_d else ""}>{name}</option>'
+    return f'''<h2>{title}</h2><p class="lede">{note}</p>
+<form class="sf" onsubmit="return sfGo(this)">
+ <label>出發地<select name="o">{oo}</select></label>
+ <label>目的地<select name="d">{dd}</select></label>
+ <label>去程<input type="date" name="dep" required></label>
+ <label>回程<input type="date" name="ret"></label>
+ <button type="submit">搜尋票價</button>
+</form>
+<p class="disc">將前往 Trip.com 繁體中文頁面查詢即時票價（TWD 計價）。本站可能獲得分潤，不影響你的價格。</p>'''
+
+SF_JS = ('<script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toLowerCase(),'
+         'a=f.dep.value,b=f.ret.value,t=b?"rt":"ow",'
+         'u="https://tw.trip.com/flights/showfarefirst?dcity="+o+"&acity="+d+"&ddate="+a'
+         '+(b?"&rdate="+b:"")+"&triptype="+t+"&class=y&quantity=1&locale=zh-TW&curr=TWD";'
+         'window.open(u,"_blank","noopener");return false;}</script>')
+
 def widget_block(kind,title,note,**kw):
     code=(W.get(kind) or '').strip()
     if not code: return ''          # 未設定嵌入碼時整區不顯示，不留空殼
@@ -264,6 +291,15 @@ table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--dim);font-weight:600;font-size:.79rem}
 td b{color:var(--acc)}
+.sf{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:12px;
+padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.sf label{display:flex;flex-direction:column;gap:5px;font-size:.78rem;color:var(--dim);flex:1 1 150px}
+.sf select,.sf input{font:inherit;font-size:.92rem;padding:9px 10px;border-radius:8px;
+border:1px solid var(--line);background:var(--card);color:var(--fg);width:100%}
+.sf button{font:inherit;font-weight:700;font-size:.92rem;padding:10px 22px;border:0;
+border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
+.sf button:hover{opacity:.9}
+@media(max-width:520px){.sf label{flex:1 1 100%}.sf button{width:100%}}
 .widget{margin:12px 0 0;min-height:60px}
 .widget iframe{max-width:100%;border:0}
 .gatebar{margin:16px 0 0;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
@@ -314,7 +350,7 @@ def foot():
 實際訂購由合作平台完成：機票 Trip.com、住宿 Agoda、行程與交通票 KKday、網卡與租車 Klook。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
 最後更新 {NOWS}　·　<a href="{U("/")}">回首頁</a>
-</p></div></body></html>'''
+</p></div>{SF_JS}</body></html>'''
 
 def fare_card(x,hot=False):
     tag={'lcc':'廉航','fsc':'一般航空'}.get(x['cls'],'其他')
@@ -456,9 +492,8 @@ for slug,name,codes,reg,hotelcity in CITIES:
     if fs:
         rts=sorted([x for x in fs if x['rt']],key=lambda x:x['price'])[:12]
         ows=sorted([x for x in fs if not x['rt']],key=lambda x:x['price'])[:8]
-        body+=widget_block('search_form', f'查台灣飛{name}的即時票價',
-              f'輸入你的日期，直接比較各家航空與訂票平台目前實際可訂的價格。',
-              o='TPE', d=codes[0], oname='台北', dname=name)
+        body+=search_form(f'查台灣飛{name}的即時票價',
+              '選好日期即可查詢目前實際可訂的價格。', 'TPE', codes[0])
         body+=f'<h2 id="ref">近期行情參考</h2><p class="lede">以下為 {NOWS} 查詢到的價格，供了解行情用；實際票價請以上方即時查詢或訂票平台為準。</p>'
         body+=GATE_FILTER
         if rts:
@@ -563,9 +598,9 @@ for (oslug,cslug),fs in by_route.items():
     else:
         intro+='目前皆為轉機航班。'
     intro+=f'共 {len(airs)} 家航空公司經營此航線。</p>'
-    body=widget_block('search_form', f'查{oname}飛{cname}的即時票價',
-          '輸入你的日期，直接比較各家航空與訂票平台目前實際可訂的價格。',
-          o=city[2][0] if False else 'TPE', d=cslug.upper(), oname=oname, dname=cname)
+    _o={'taipei':'TPE','taichung':'RMQ','kaohsiung':'KHH','tainan':'TNN'}.get(oslug,'TPE')
+    body=search_form(f'查{oname}飛{cname}的即時票價',
+          '選好日期即可查詢目前實際可訂的價格。', _o, city[2][0])
     body+=f'<h2 id="ref">近期行情參考</h2><p class="lede">以下為 {NOWS} 查詢到的價格，供了解行情用；實際票價請以上方即時查詢或訂票平台為準。</p>'
     body+=GATE_FILTER
     rts=sorted([x for x in fs if x['rt']],key=lambda x:x['price'])[:12]
