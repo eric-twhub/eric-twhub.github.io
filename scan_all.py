@@ -1,7 +1,19 @@
 # -*- coding: utf-8 -*-
-import json, urllib.request, urllib.parse, urllib.error, time, sys
+import json, os, urllib.request, urllib.parse, urllib.error, time, sys
 
-TOK=next(l.split('=',1)[1].strip() for l in open('.env',encoding='utf-8') if l.startswith('TRAVELPAYOUTS_TOKEN='))
+def _token():
+    """優先讀環境變數（GitHub Actions），本機則回退到 .env"""
+    t = os.environ.get('TRAVELPAYOUTS_TOKEN')
+    if t: return t.strip()
+    try:
+        for l in open('.env', encoding='utf-8'):
+            if l.startswith('TRAVELPAYOUTS_TOKEN='):
+                return l.split('=', 1)[1].strip()
+    except FileNotFoundError:
+        pass
+    raise SystemExit('找不到 TRAVELPAYOUTS_TOKEN（環境變數或 .env 皆無）')
+
+TOK=_token()
 B='https://api.travelpayouts.com'
 
 # 日本航點：地區 → [(IATA, 中文名, 所屬縣/註記)]

@@ -1,0 +1,61 @@
+name: 每日更新票價
+
+on:
+  schedule:
+    # 對齊 ATPCO 公布票價的三個時段（台灣時間 09:30 / 23:30 / 02:00）
+    - cron: '30 1 * * *'    # 台灣 09:30
+    - cron: '30 15 * * *'   # 台灣 23:30
+    - cron: '0 18 * * *'    # 台灣 02:00（隔日）
+  workflow_dispatch:        # 也可以在 Actions 頁面手動觸發
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-fares
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 抓取票價
+        env:
+          TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
+        run: python3 scan_all.py
+
+      - name: 檢查資料完整性
+        run: |
+          if [ ! -f /tmp/scan_all.json ]; then
+            echo "::error::scan_all.json 不存在，抓取失敗"; exit 1
+          fi
+          N=$(python3 -c "import json;print(len(json.load(open('/tmp/scan_all.json'))))")
+          echo "取得 $N 筆票價"
+          if [ "$N" -lt 100 ]; then
+            echo "::error::只取得 $N 筆（低於 100 筆門檻），可能是 API 異常，中止以免用壞資料覆蓋網站"
+            exit 1
+          fi
+
+      - name: 重新產生網站
+        run: python3 gen.py
+
+      - name: 提交變更
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "票價無變動，不建立 commit"
+            exit 0
+          fi
+          N=$(python3 -c "import json;print(len(json.load(open('/tmp/scan_all.json'))))")
+          git commit -m "自動更新票價（$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M') 台北時間，${N} 筆）"
+          git push

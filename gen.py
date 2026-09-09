@@ -754,14 +754,36 @@ for d in deals_out:
     _it.append(f'<a class="ct" href="{_u}" style="display:block">'
                f'<b>{d["o"]} → {d["c"]}</b><s>{_sub}</s>'
                f'<u>{money(d["price"])}<small> {_lbl}</small></u></a>')
-items=''.join(_it)
+items_today=''.join(_it)
+
+# 往期貼文：掃描 deals/ 既有目錄，讓貼文累積而非每天覆蓋
+import glob as _glob
+_today_slugs={d['slug'] for d in deals_out}
+_past=[]
+for p in _glob.glob(f'{DEALDIR}/*/index.html'):
+    slug=os.path.basename(os.path.dirname(p))
+    if slug in _today_slugs or not re.match(r'^\d{4}-\d{2}-\d{2}-', slug): continue
+    try: t=re.search(r'<title>([^<|]+)', open(p,encoding='utf-8').read()).group(1).strip()
+    except Exception: continue
+    _past.append((slug[:10], slug, t))
+_past.sort(reverse=True)
+_past=_past[:120]                       # 只保留最近 120 則，避免索引頁無限膨脹
+for _d,_s,_ in _past: pages.append((f'/{DEALDIR}/{_s}/',0.6))
+
+_pit=''.join(
+  f'<a class="ct" href="{U("/"+DEALDIR+"/"+s+"/")}" style="display:block">'
+  f'<b>{html.escape(t[:34])}</b><s>{d}</s></a>' for d,s,t in _past)
+past_html=(f'<h2>往期特價</h2><p class="lede">過去的特價紀錄，可用來判斷目前價格是否划算。</p>'
+           f'<div class="cities">{_pit}</div>') if _past else ''
+
 write(f'{DEALDIR}/index.html',
   head(f'機票特價｜台灣飛日本便宜機票每日更新（{TODAY}）',
        f'台灣飛日本的機票特價整理，{TODAY} 共 {len(deals_out)} 則，含稅價格、航空公司與出發日期。',
        f'{DEALDIR}/')
   + crumbs([('首頁','/'),('機票特價',None)]) + topnav()
-  + f'<h1>機票特價</h1><p class="lede">符合門檻或明顯低於同航線中位價的票，共 <b>{len(deals_out)}</b> 則。</p>'
-  + f'<p class="upd">更新於 {NOWS}</p><div class="cities">{items}</div>' + foot())
+  + f'<h1>機票特價</h1><p class="lede">符合門檻或明顯低於同航線中位價的票，今日共 <b>{len(deals_out)}</b> 則。</p>'
+  + f'<p class="upd">更新於 {NOWS}</p><h2>{TODAY} 特價</h2><div class="cities">{items_today}</div>'
+  + past_html + foot())
 pages.append((f'/{DEALDIR}/',0.95))
 
 # FB / IG 文案（本地檔，不上傳網站）
