@@ -132,7 +132,12 @@ REGIONS=[('okinawa-islands','沖繩・離島'),('kyushu','九州'),('kansai','�
 REGNAME=dict(REGIONS)
 CITY_OF={code:c for c in CITIES for code in c[2]}
 LCC_CAP,FSC_CAP=6000,8000
-NOW=datetime.datetime.now(); NOWS=NOW.strftime('%Y-%m-%d %H:%M'); TODAY=NOW.strftime('%Y-%m-%d')
+try:                                   # 一律以台北時間為準（CI 執行環境是 UTC）
+    from zoneinfo import ZoneInfo
+    NOW=datetime.datetime.now(ZoneInfo('Asia/Taipei'))
+except Exception:
+    NOW=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8)))
+NOWS=NOW.strftime('%Y-%m-%d %H:%M'); TODAY=NOW.strftime('%Y-%m-%d')
 
 def plink(kind,city='',**kw):
     p=P[kind]; t=p.get('template','')
