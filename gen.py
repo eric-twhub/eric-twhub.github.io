@@ -171,6 +171,30 @@ GATE_FILTER = ('<div class="bar gatebar"><b>訂票通路</b>'
   'document.querySelectorAll(".card[data-tier]").forEach(function(e){'
   'e.style.display=(on&&e.dataset.tier==="C")?"none":"";});}</script>')
 
+# 城市 slug → Klook city_id（取自 Klook search suggest API，2026-09-10）
+# 沒有對應城市的頁面不顯示 widget，避免在福島頁顯示東京的行程
+KLOOK_CITY = {
+ 'tokyo':28, 'osaka':29, 'okinawa':6484, 'fukuoka':5209, 'nagoya':71,
+ 'sapporo':133938, 'sendai':17384, 'hakodate':119753, 'kobe':135,
+ 'kanazawa':445, 'toyama':21926, 'niigata':22144, 'shizuoka':6409,
+ 'hiroshima':5122, 'okayama':13088, 'yonago':11455, 'takamatsu':15969,
+ 'kochi':10000056, 'kitakyushu':22379, 'saga':14045, 'kumamoto':4351,
+ 'oita':8601, 'miyazaki':28941, 'kagoshima':21043, 'nagasaki':7057,
+ 'ishigaki':25166, 'miyakojima':24144, 'akita':11753, 'aomori':14493,
+ 'wakkanai':32,
+}
+
+def klook_tours(slug, name):
+    """依頁面城市顯示 Klook 行程 widget（繁中／TWD）"""
+    cid = KLOOK_CITY.get(slug)
+    tpl = (CFG.get('widgets') or {}).get('klook_tours', '')
+    if not cid or not tpl: return ''
+    return (f'<h2>{name}熱門行程與體驗</h2>'
+            f'<p class="lede">由 Klook 提供，繁體中文介面、台幣計價，可直接預訂。</p>'
+            f'<div class="widget">{tpl.replace("{city_id}", str(cid))}</div>'
+            '<p class="disc">透過此區塊完成預訂時本站可獲得分潤，不影響你的價格。</p>')
+
+
 def search_form(title, note, def_o='TPE', def_d='TYO'):
     """自製繁中搜尋表單，送往 Trip.com 繁中／TWD 搜尋頁。
     不用第三方 widget：避免英文介面、美金計價與 iframe 拖慢頁面。"""
@@ -535,6 +559,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
     _cheaper = any(a[3] and own_min and a[3] < own_min for a in _alts)
     if len(fs) < ROUTE_MIN or _cheaper:
         body += alt_block(slug,name,hotelcity,own_min)
+    body+=klook_tours(slug,name)
     body+=f'<h2>{name}住宿・上網・行程</h2>'+partner_links(name,hotelcity,slug)
     sib=[c for c in CITIES if c[3]==reg and c[0]!=slug]
     if sib:
@@ -619,6 +644,7 @@ for (oslug,cslug),fs in by_route.items():
                    f'<td>{money(min(w)) if w else "—"}</td><td>{n} 筆</td></tr>')
         body+=(f'<h2>{oname}飛{cname}的航空公司</h2><table><thead><tr><th>航空公司</th><th>類型</th>'
                f'<th>來回最低</th><th>單程最低</th><th>票價數</th></tr></thead><tbody>{rows}</tbody></table>')
+    body+=klook_tours(cslug,cname)
     body+=f'<h2>{cname}住宿・上網・行程</h2>'+partner_links(cname,hotelcity,cslug)
     body+=(f'<h2>其他選擇</h2><div class="cities">'
            f'<a class="ct" href="{U(f"/{cslug}/")}"><b>{cname}機票總覽</b><s>比較所有出發地</s></a>'
@@ -734,6 +760,7 @@ for (oslug,cslug),(b,reasons,med,rts) in sorted(pick_deals().items(),key=lambda 
           f'中位價 {money(int(med))}。</p>')
     if others:
         body+=f'<h2>同航線其他選擇</h2><div class="grid">'+''.join(fare_card(x) for x in others)+'</div>'
+    body+=klook_tours(cslug,cname)
     body+=f'<h2>{cname}住宿・上網・行程</h2>'+partner_links(cname,hotelcity,cslug)
     rl=f'<a class="ct" href="{U(f"/{cslug}/")}"><b>{cname}機票總覽</b><s>比較所有出發地</s></a>'
     if (oslug,cslug) in route_pages:

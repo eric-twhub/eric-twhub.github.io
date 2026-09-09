@@ -103,9 +103,8 @@
     "Booking.com": "訂房可考慮，但機票分潤是 €1.5 固定且 cookie 只有 One session"
   },
   "widgets": {
-    "_說明": "Dashboard → Tools catalog → Widgets → Explore widgets 產生嵌入碼後貼在這裡。留空則該區塊不顯示。",
-    "_可用變數": "{o}=出發地IATA {d}=目的地IATA {oname}=出發地中文 {dname}=目的地中文",
-    "search_form": "",
-    "calendar": ""
+    "_說明": "Klook 行程 widget（Travelpayouts 產生）。{city_id} 由 gen.py 依頁面自動帶入。",
+    "_sub_id": "若要分頁面追蹤成效，請在 Travelpayouts widget 設定頁填 SUB ID 後重新產生，把新網址貼回這裡（勿自行猜測參數格式，猜錯會導致完全無法追蹤）",
+    "klook_tours": "<script async src=\"https://tpembd.com/content?currency=TWD&trs=572168&shmarker=775639&locale=zh-TW&city_id={city_id}&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497\" charset=\"utf-8\"></script>"
   }
 }
