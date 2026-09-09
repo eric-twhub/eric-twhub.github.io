@@ -271,6 +271,7 @@ def head(title,desc,path,extra=''):
     can=f'{SITE}{BASE}/{path}' if path else f'{SITE}{BASE}/'
     return f'''<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="google-site-verification" content="lL18Diq98hRIL65-BKEiZ-mhQ2DNyf0WYwRpRBiT-Rk">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <link rel="canonical" href="{can}">
