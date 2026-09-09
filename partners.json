@@ -1,0 +1,95 @@
+{
+  "_說明": "分潤率與 cookie 天數取自 Travelpayouts Programs Catalog（2026-09-09 實際畫面）。{q} 會替換成目的地城市。",
+  "_如何啟用分潤": [
+    "1. Programs 頁面對每個品牌按『Connect』申請連接",
+    "2. Dashboard 右上『Create link』→ 選品牌 → 貼範例網址 → 產生分潤連結",
+    "3. 把連結貼到下方 template，城市名的位置換成 {q}",
+    "4. 未填 template 時自動使用 fallback（可正常瀏覽但不計分潤）"
+  ],
+  "marker": "775639",
+  "site": {
+    "url": "https://eric-twhub.github.io",
+    "base": "/japan-flights",
+    "name": "台日機票速報",
+    "_說明": "url 只填網域（不含路徑）；base 填 /repo名稱，自訂網域則填空字串"
+  },
+  "partners": {
+    "flight": {
+      "name": "查看即時票價",
+      "icon": "✈️",
+      "brand": "Aviasales",
+      "rate": "1.1-1.5%",
+      "cookie": "30 天",
+      "template": "AUTO",
+      "fallback": "https://www.aviasales.com/"
+    },
+    "hotel": {
+      "name": "找{q}住宿",
+      "icon": "🏨",
+      "brand": "Agoda",
+      "rate": "6%",
+      "cookie": "1 天",
+      "note": "cookie 僅 1 天，文案要引導立即訂房",
+      "template": "TODO_貼上_AGODA_分潤連結",
+      "fallback": "https://www.agoda.com/zh-tw/search?city={q}"
+    },
+    "esim": {
+      "name": "日本 eSIM 上網卡",
+      "icon": "📱",
+      "brand": "Yesim",
+      "rate": "18%",
+      "cookie": "90 天",
+      "note": "全站分潤率最高的類別之一，每頁都放",
+      "template": "TODO_貼上_YESIM_分潤連結",
+      "fallback": "https://yesim.app/"
+    },
+    "activity": {
+      "name": "{q}行程與門票",
+      "icon": "🎫",
+      "brand": "GetYourGuide",
+      "rate": "8%",
+      "cookie": "31 天",
+      "note": "8% 高於 Klook 2-5% 與 KKday 1-5%",
+      "template": "TODO_貼上_GETYOURGUIDE_分潤連結",
+      "fallback": "https://www.getyourguide.com/s/?q={q}"
+    },
+    "transport": {
+      "name": "查詢日本國內交通票",
+      "icon": "🚄",
+      "brand": "Omio",
+      "rate": "6%",
+      "cookie": "—",
+      "note": "賣新幹線與高速巴士票，用於轉乘方案區塊",
+      "template": "TODO_貼上_OMIO_分潤連結",
+      "fallback": "https://www.omio.com/"
+    },
+    "car": {
+      "name": "{q}租車比價",
+      "icon": "🚗",
+      "brand": "DiscoverCars",
+      "rate": "23-54%",
+      "cookie": "365 天",
+      "note": "分潤最高。僅在自駕熱門地區顯示（沖繩、北海道、離島）",
+      "template": "TODO_貼上_DISCOVERCARS_分潤連結",
+      "fallback": "https://www.discovercars.com/"
+    },
+    "transfer": {
+      "name": "{q}機場接送",
+      "icon": "🚕",
+      "brand": "Kiwitaxi",
+      "rate": "9-11%",
+      "cookie": "30 天",
+      "template": "TODO_貼上_KIWITAXI_分潤連結",
+      "fallback": "https://kiwitaxi.com/"
+    }
+  },
+  "_未採用但可考慮": {
+    "Vio.com": "訂房 40-64% revenue share / 30 天 cookie，比 Agoda 的 1 天 cookie 好",
+    "Rakuten Travel": "0.8-5%，日本在地旅館覆蓋最完整",
+    "Klook": "2-5%，台灣人熟悉度高，轉換率可能勝過 GetYourGuide",
+    "KKday": "1-5%，台灣品牌",
+    "Booking.com": "3-5%，但 cookie 只有 One session",
+    "Welcome Pickups": "8-9% 機場接送",
+    "12Go": "4-5.5% 東南亞交通為主"
+  }
+}

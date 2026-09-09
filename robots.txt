@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eric-twhub.github.io/japan-flights/sitemap.xml
