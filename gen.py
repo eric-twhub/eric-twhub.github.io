@@ -813,7 +813,9 @@ for d in deals_out:
 open('posts/%s.txt'%TODAY,'w',encoding='utf-8').write('\n'.join(lines))
 
 # ---------- sitemap / robots ----------
-urls='\n'.join(f'  <url><loc>{SITE}{U(u)}</loc><lastmod>{TODAY}</lastmod>'
+LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
+LASTMOD=LASTMOD[:-2]+':'+LASTMOD[-2:]            # +0800 → +08:00（W3C Datetime 格式）
+urls='\n'.join(f'  <url><loc>{SITE}{U(u)}</loc><lastmod>{LASTMOD}</lastmod>'
              f'<changefreq>daily</changefreq><priority>{p}</priority></url>' for u,p in pages)
 write('sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n'
       f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n')
