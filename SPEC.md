@@ -122,7 +122,33 @@ baseline[航線][類別][月份] = 過去 30 天，該組「每日最低來回�
 **未分類航空代碼（需補進 AIRLINES.md）**：
 NQ Air Japan（ANA 集團廉航，26 筆）、AE 華信、HX 香港航空、MF 廈門航空、HB 大灣區航空
 
-**結論：必須取得即時搜尋 API 授權，否則核心功能不成立。**
+### 即時搜尋 API 申請結果：不可行（2026-09-10 查證）
+
+官方文件明載取用門檻：
+> **We only provide access to Projects with MAU starting from 50000.**
+> If you don't match this requirement, please use Aviasales Data API
+
+且技術上不適用於背景批次掃描：
+> `x-user-ip` — the user's **actual IP address, not the IP address of your server or proxy**
+> If a server, proxy, CDN, or HTTP library sends its own User-Agent, the request may be
+> **identified as bot traffic**
+
+即時搜尋 API 是設計給「真實訪客在網站上按搜尋」的即時流程，
+**每次呼叫需綁定真實使用者 IP 與 User-Agent**，本專案原訂的每日三次批次掃描架構不符其使用方式。
+
+新端點：`POST https://tickets-api.travelpayouts.com/search/affiliate/start`
+Headers：`x-user-ip` / `x-signature` / `x-affiliate-user-id`
+速率限制：每個使用者 IP 每小時 100 次
+
+**結論：改採兩層架構**
+
+| 層 | 負責 | 資料來源 |
+|---|---|---|
+| 靜態頁（1,072 筆） | SEO、行情參考、特價貼文 | Data API 快取，每日更新 |
+| 嵌入 Widget | 訪客觸發的即時多平台查詢 | Travelpayouts Widgets（無 MAU 門檻） |
+
+定位隨之修正：本站為「**日本機票行情與特價情報站**」，非即時比價引擎。
+靜態價格為行情參考，即時查詢交由 widget 處理。
 
 - 亞航官網為「廉航專用」聚合器，無一般航空、不支援台南 → 不可當主力，
   但可當**廉航促銷的輔助交叉驗證**。
