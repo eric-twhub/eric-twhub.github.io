@@ -1,9 +1,11 @@
 [
  {
-  "slug": "2026-09-10-taipei-okinawa-5070",
+  "slug": "2026-09-10-taipei-okinawa",
   "title": "台北飛沖繩 NT$5,070 來回含稅｜台灣虎航 09/13 出發",
   "o": "台北",
   "c": "沖繩",
+  "_oiata": "TPE",
+  "_diata": "OKA",
   "price": 5070,
   "air": "台灣虎航",
   "dep": "2026-09-13",
@@ -20,10 +22,12 @@
   "cslug": "okinawa"
  },
  {
-  "slug": "2026-09-10-taipei-tokyo-6392",
+  "slug": "2026-09-10-taipei-tokyo",
   "title": "台北飛東京 NT$6,392 來回含稅｜樂桃航空 10/31 出發",
   "o": "台北",
   "c": "東京",
+  "_oiata": "TPE",
+  "_diata": "TYO",
   "price": 6392,
   "air": "樂桃航空",
   "dep": "2026-10-31",
@@ -39,10 +43,12 @@
   "cslug": "tokyo"
  },
  {
-  "slug": "2026-09-10-taipei-fukuoka-6651",
+  "slug": "2026-09-10-taipei-fukuoka",
   "title": "台北飛福岡 NT$6,651 來回含稅｜台灣虎航 09/21 出發",
   "o": "台北",
   "c": "福岡",
+  "_oiata": "TPE",
+  "_diata": "FUK",
   "price": 6651,
   "air": "台灣虎航",
   "dep": "2026-09-21",
@@ -58,10 +64,12 @@
   "cslug": "fukuoka"
  },
  {
-  "slug": "2026-09-10-taipei-osaka-6746",
+  "slug": "2026-09-10-taipei-osaka",
   "title": "台北飛大阪 NT$6,746 來回含稅｜捷星日本 10/14 出發",
   "o": "台北",
   "c": "大阪",
+  "_oiata": "TPE",
+  "_diata": "OSA",
   "price": 6746,
   "air": "捷星日本",
   "dep": "2026-10-14",
@@ -77,10 +85,12 @@
   "cslug": "osaka"
  },
  {
-  "slug": "2026-09-10-taipei-nagoya-7022",
+  "slug": "2026-09-10-taipei-nagoya",
   "title": "台北飛名古屋 NT$7,022 來回含稅｜台灣虎航 09/17 出發",
   "o": "台北",
   "c": "名古屋",
+  "_oiata": "TPE",
+  "_diata": "NGO",
   "price": 7022,
   "air": "台灣虎航",
   "dep": "2026-09-17",
@@ -96,10 +106,12 @@
   "cslug": "nagoya"
  },
  {
-  "slug": "2026-09-10-kaohsiung-osaka-7580",
+  "slug": "2026-09-10-kaohsiung-osaka",
   "title": "高雄飛大阪 NT$7,580 來回含稅｜馬來西亞亞航 09/22 出發",
   "o": "高雄",
   "c": "大阪",
+  "_oiata": "KHH",
+  "_diata": "OSA",
   "price": 7580,
   "air": "馬來西亞亞航",
   "dep": "2026-09-22",
@@ -115,10 +127,12 @@
   "cslug": "osaka"
  },
  {
-  "slug": "2026-09-10-kaohsiung-tokyo-7872",
+  "slug": "2026-09-10-kaohsiung-tokyo",
   "title": "高雄飛東京 NT$7,872 來回含稅｜捷星日本 09/20 出發",
   "o": "高雄",
   "c": "東京",
+  "_oiata": "KHH",
+  "_diata": "TYO",
   "price": 7872,
   "air": "捷星日本",
   "dep": "2026-09-20",
@@ -134,10 +148,12 @@
   "cslug": "tokyo"
  },
  {
-  "slug": "2026-09-10-taichung-okinawa-8130",
+  "slug": "2026-09-10-taichung-okinawa",
   "title": "台中飛沖繩 NT$8,130 來回含稅｜真航空 09/14 出發",
   "o": "台中",
   "c": "沖繩",
+  "_oiata": "RMQ",
+  "_diata": "OKA",
   "price": 8130,
   "air": "真航空",
   "dep": "2026-09-14",
@@ -153,10 +169,12 @@
   "cslug": "okinawa"
  },
  {
-  "slug": "2026-09-10-taipei-sapporo-9651",
+  "slug": "2026-09-10-taipei-sapporo",
   "title": "台北飛札幌 NT$9,651 來回含稅｜台灣虎航 10/06 出發",
   "o": "台北",
   "c": "札幌",
+  "_oiata": "TPE",
+  "_diata": "SPK",
   "price": 9651,
   "air": "台灣虎航",
   "dep": "2026-10-06",
