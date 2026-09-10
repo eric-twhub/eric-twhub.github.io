@@ -731,7 +731,10 @@ def pick_deals():
         if cap and b['price']<cap:
             reasons.append(('threshold',f'{"廉航" if b["cls"]=="lcc" else "一般航空"}低於 {money(cap)}'))
         if len(rts)>=4 and b['price']<med*0.8:
-            reasons.append(('discount',f'比同航線中位價 {money(int(med))} 低 {round((1-b["price"]/med)*100)}%'))
+            # 措辭需精確：med 是本站快取樣本的中位數，非市場均價
+            # （樣本含大量冷門日期與轉機票，會偏高），不可寫成「市價」
+            reasons.append(('discount',
+                f'低於本站近期紀錄中位價 {round((1-b["price"]/med)*100)}%'))
         if reasons:
             k=(oslug,cslug)
             if k not in picked or b['price']<picked[k][0]['price']:
