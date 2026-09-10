@@ -164,8 +164,9 @@ GATE_FILTER = ('<div class="bar gatebar"><b>訂票通路</b>'
   '<button class="chip" id="gfAll" onclick="gf(0)">全部平台</button>'
   '<button class="chip" id="gfTw" onclick="gf(1)">只看台灣可訂 / 國際平台</button>'
   '<p class="disc" style="width:100%;margin-top:6px">'
-  '票價由不同訂票通路提供。標示「台灣較陌生」的平台多為東歐或俄語系網站，'
-  '價格可能較低但介面與客服未必支援中文，建議斟酌。</p></div>'
+  '這些紀錄來自不同訂票通路。標示「台灣較陌生」的多為東歐或俄語系網站，'
+  '報價常低於台灣常用平台，但介面與客服未必支援中文。'
+  '若想看與 Trip.com 同平台、比較容易對得上的紀錄，可切換下方選項。</p></div>'
   '<script>function gf(on){document.getElementById("gfAll").classList.toggle("on",!on);'
   'document.getElementById("gfTw").classList.toggle("on",!!on);'
   'document.querySelectorAll(".card[data-tier]").forEach(function(e){'
@@ -383,13 +384,19 @@ def fare_card(x,hot=False):
     stops='直飛' if x['tr']==0 else f"轉機{x['tr']}"
     trip='來回' if x['rt'] else '單程'
     dates=x['dep']+(f" – {x['ret']}" if x['ret'] else '')
+    # 措辭需與上方「近期最低紀錄」區隔：紀錄是過去的，按鈕是去查現在的價
     btn=(f'<a class="btn" href="{html.escape(flight_url(x))}" target="_blank" '
-         f'rel="nofollow noopener sponsored">✈️ 到 {P["flight"]["brand"]} 查票價</a>')
+         f'rel="nofollow noopener sponsored">✈️ 到 {P["flight"]["brand"]} 查這天目前票價</a>')
     gname,tier=gate_info(x.get('gate',''))
     gcls={'A':'ga','B':'gb','C':'gc'}[tier]
     gtxt={'A':'台灣可訂','B':'國際平台','C':'台灣較陌生'}[tier]
-    gate_html=(f'<div class="gate {gcls}" title="此票價由 {html.escape(gname)} 提供">'
-               f'此價由 <b>{html.escape(gname)}</b> 提供<span>{gtxt}</span></div>')
+    is_trip = (x.get('gate') == 'Trip.com')
+    if is_trip:
+        gate_html=('<div class="gate ga">📊 近期最低紀錄　來源 <b>Trip.com</b>'
+                   '<span>同平台可查</span></div>')
+    else:
+        gate_html=(f'<div class="gate {gcls}">📊 近期最低紀錄　來源 '
+                   f'<b>{html.escape(gname)}</b><span>{gtxt}</span></div>')
     return f'''<article class="card{' hot' if hot else ''}" data-tier="{tier}">
 <div class="rt"><b>{ORI.get(x['o'],x['o'])}</b><i>→</i><b>{cn}</b>{'<em>超值</em>' if hot else ''}</div>
 <div class="pr">NT${x['price']:,}<span class="{'rtx' if x['rt'] else 'owx'}">{trip}含稅</span></div>
@@ -519,7 +526,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
         ows=sorted([x for x in fs if not x['rt']],key=lambda x:x['price'])[:8]
         body+=search_form(f'查台灣飛{name}的即時票價',
               '選好日期即可查詢目前實際可訂的價格。', 'TPE', codes[0])
-        body+=f'<h2 id="ref">近期行情參考</h2><p class="lede">以下為 {NOWS} 查詢到的價格，供了解行情用；實際票價請以上方即時查詢或訂票平台為準。</p>'
+        body+=(f'<h2 id="ref">近期行情參考</h2><p class="lede">'
+               f'以下是 {NOWS} 從各訂票通路蒐集到的<b>近期最低紀錄</b>，用來判斷目前價格算不算便宜。'
+               f'紀錄來源平台已標示於每張卡片上；<b>這些價格不代表現在仍可訂購</b>，'
+               f'點卡片下方按鈕可到 Trip.com 查該日期目前的實際票價。</p>')
         body+=GATE_FILTER
         if rts:
             body+=(f'<h3>來回機票</h3><div class="grid">'
