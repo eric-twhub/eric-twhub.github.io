@@ -738,7 +738,10 @@ def pick_deals():
                 picked[k]=(b,reasons,med,rts)
     return picked
 
-def deal_slug(o,c,d,p): return f'{d}-{o}-{c}-{p}'
+def deal_slug(o,c,d,p):
+    """一天一航線一則。slug 不含價格——否則每次執行價格一變就會多出一個
+    近乎重複的頁面（一天跑三次就有三份），會被判定為重複內容。"""
+    return f'{d}-{o}-{c}'
 
 deals_out=[]
 for (oslug,cslug),(b,reasons,med,rts) in sorted(pick_deals().items(),key=lambda kv:kv[1][0]['price']):
@@ -774,7 +777,8 @@ for (oslug,cslug),(b,reasons,med,rts) in sorted(pick_deals().items(),key=lambda 
         + topnav(reg) + f'<h1>{title}</h1>'
         + f'<p class="upd">發布於 {NOWS}　·　票價隨時變動，請以訂購頁面為準</p>' + body + foot())
     pages.append((f'/{DEALDIR}/{slug}/',0.9))
-    deals_out.append(dict(slug=slug,title=title,o=oname,c=cname,price=b['price'],air=b['airname'],
+    deals_out.append(dict(slug=slug,title=title,o=oname,c=cname,
+        _oiata=b['o'],_diata=b['d'],price=b['price'],air=b['airname'],
         dep=b['dep'],ret=b['ret'],stops=stops,cls=b['cls'],reasons=[r[1] for r in reasons],
         med=int(med),url=b['url'],hotelcity=hotelcity,cslug=cslug))
 
@@ -860,23 +864,33 @@ pages.append((f'/{DEALDIR}/',0.95))
 os.makedirs('posts',exist_ok=True)
 json.dump(deals_out, open('posts/deals.json','w',encoding='utf-8'),
           ensure_ascii=False, indent=1)     # 供 make_cards.py 產生 IG 圖卡
-lines=[f'台日機票速報 {TODAY} — 共 {len(deals_out)} 則\n'+'='*46+'\n']
+lines=[f'台日機票速報 {TODAY} — 共 {len(deals_out)} 則\n'+'='*52,
+       '⚠️ 發文前務必點「查證連結」確認價格仍在，並截圖存證。',
+       '   票價變動快，昨日的好票今天常已失效；對不上就不要發。\n'+'='*52+'\n']
 for d in deals_out:
     tag={'lcc':'廉航','fsc':'一般航空','transfer':'轉乘方案'}.get(d['cls'],'')
     _lbl='總計' if d['cls']=='transfer' else '來回含稅'
     _url=SITE+U('/'+DEALDIR+'/'+d['slug']+'/')
     _dates=d['dep']+(' – '+d['ret'] if d['ret'] else '')
+    # 查證用：直接開該航線該日期的 Trip.com 搜尋頁
+    _oc=(d.get('_oiata') or 'TPE').lower()
+    _dc=(d.get('_diata') or '').lower()
+    _verify=(f"https://tw.trip.com/flights/showfarefirst?dcity={_oc}&acity={_dc}"
+             f"&ddate={d['dep']}&rdate={d['ret'] or d['dep']}"
+             f"&triptype={'rt' if d['ret'] else 'ow'}&class=y&quantity=1&locale=zh-TW&curr=TWD"
+             ) if _dc else '（轉乘方案，請分段查證）'
     lines.append(f"""✈️【{d['o']} → {d['c']}】NT${d['price']:,} {_lbl}
 
 　🛫 {d['air']}｜{d['stops']}
 　📅 {_dates}
 　💡 {d['reasons'][0]}
 
-　🔗 到 Trip.com 查即時票價：{_url}
+　🔗 貼文用連結：{_url}
+　🔍 查證連結（開啟後截圖）：{_verify}
 
 #日本機票 #{d['c']}機票 #{d['o']}出發 #便宜機票 #日本自由行
 #機票特價 #{tag} #省錢旅遊 #小資旅行 #日本旅遊
-{'-'*46}""")
+{'-'*52}""")
 open('posts/%s.txt'%TODAY,'w',encoding='utf-8').write('\n'.join(lines))
 
 # ---------- sitemap / robots ----------
