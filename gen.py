@@ -1116,6 +1116,26 @@ if os.path.exists('apple.json'):
     _tk=by_city.get('tokyo') or []
     _b=(best(_tk,True) or best(_tk,False)) if _tk else None
 
+    # 主要購物城市的即時最低票價（東京、大阪有 Apple Store 與大型量販店）
+    SHOP=[('tokyo','東京','銀座、表參道 Apple Store；新宿、池袋 Bic Camera'),
+          ('osaka','大阪','心齋橋 Apple Store；梅田 Yodobashi'),
+          ('fukuoka','福岡','福岡 Apple Store；博多 Bic Camera'),
+          ('nagoya','名古屋','名古屋榮 Apple Store；Bic Camera')]
+    _srows=''
+    for sl,nm,note in SHOP:
+        fsx=by_city.get(sl) or []
+        if not fsx: continue
+        bb=best(fsx,True) or best(fsx,False)
+        _srows+=(f'<tr><td><a href="{U("/"+sl+"/")}"><b>{nm}</b></a>{SMALL}{note}</small></td>'
+                 f'<td><b>{money(bb["price"])}</b>{SMALL}{bb["airname"]}・{bb["dep"]}</small></td></tr>')
+    shoptable=''
+    if _srows:
+        shoptable=('<h2>哪個城市買得到？順便看機票</h2>'
+                   '<p class="lede">Apple 直營店與大型家電量販店集中在這幾個城市，'
+                   '以下是台灣飛過去的近期最低來回含稅價。</p>'
+                   '<div class="tw"><table><thead><tr><th>城市</th>'
+                   '<th>近期最低機票</th></tr></thead><tbody>'+_srows+'</tbody></table></div>')
+
     title=f'日本買 iPhone 比較便宜嗎？{AP["updated"][:4]} 台日 Apple 價格全表（含退稅試算）'
     desc=(f'iPhone Duo、18 Pro、Air、Apple Watch、AirPods 台日售價全比較，'
           f'依臺灣銀行匯率 {RATE} 換算並試算退稅後價格。'
@@ -1149,6 +1169,8 @@ if os.path.exists('apple.json'):
       + '<li><b>但 Apple 直營店已不能退稅</b>（2024/6 起），要免稅得去 Bic Camera、Yodobashi 等量販店。</li>'
       + f'<li><b>Apple Watch 與 AirPods 不值得在日本買</b>，{len(acc)} 項中有 {acc_tw} 項連退稅後都是台灣便宜。</li>'
       + '</ul></div>'
+      + search_form('順便查一下機票多少錢',
+                    '既然在考慮飛一趟，先看看你的日期要多少。', 'TPE', 'TYO')
       + '<h2>台日價格全表</h2>'
       + '<p class="lede">「退稅後」為日本含稅價扣除 10% 消費稅後換算之約當金額，'
         '實際免稅價與手續費依店家而異。</p>' + tables
@@ -1157,12 +1179,17 @@ if os.path.exists('apple.json'):
       + '<p class="lede">Apple 日本直營店自 2024 年 6 月起取消對外國旅客的免稅服務。'
         '要拿到免稅價，必須到有 Tax-Free 標示的家電量販店（Bic Camera、Yodobashi Camera 等），'
         '結帳時出示護照。量販店定價未必與 Apple 官網相同，且部分店家收取手續費，請現場確認。</p>'
+      + cta('hotel','東京','東京','要去量販店掃貨？先看住宿',
+            'Bic Camera 與 Yodobashi 都在新宿、梅田一帶，住附近最方便')
       + '<h3>2. 保固是區域性的</h3>'
       + '<p class="lede">日本購買的 iPhone 在台灣的 Apple 授權維修中心可能不受理，需寄回日本處理。'
         '省下的幾千元，遇到一次維修就可能不划算。至於快門聲，自 iOS 15 起僅在日本境內強制，'
         '離開日本即可關閉，這點不必擔心。</p>'
+      + shoptable
       + flights
       + '<h2>常見問題</h2>' + faq_html
+      + cta('esim','日本','東京','出發前先把上網搞定',
+            '到 Klook 買 eSIM 或網卡，落地就能開導航找店')
       + f'<p class="disc">補充：台灣入境旅客行李物品免稅額為 {money(ALLOW)}，'
         f'多數 iPhone 單機已超過，依規定應主動向海關申報，超出部分課徵進口稅捐。'
         f'手機關稅為 0%，主要為 5% 營業稅，實際以海關核定為準。<br>'
