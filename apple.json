@@ -2,8 +2,10 @@
   "updated": "2026-09-10",
   "rate": {
     "jpy_twd": 0.2083,
-    "source": "臺灣銀行 現金賣出",
-    "quoted_at": "2026-09-10 21:42"
+    "jpy_twd_mid": 0.204995,
+    "spread": 0.016,
+    "source": "open.er-api.com 中間匯率，加計約 1.6% 換匯成本",
+    "quoted_at": "Thu, 10 Sep 2026 00:02:31 +0000"
   },
   "tax": {
     "jp_consumption": 0.1,

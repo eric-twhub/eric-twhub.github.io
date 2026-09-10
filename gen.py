@@ -480,7 +480,8 @@ def crumbs(items,root='/'):
 def topnav(cur=''):
     ls=''.join(f'<a href="{U("/"+s+"/")}"{" class=cur" if s==cur else ""}>{n}</a>' for s,n in REGIONS)
     return (f'<nav class="top"><a href="{U("/")}"{" class=cur" if not cur else ""}>首頁</a>'
-            f'<a href="{U("/deals/")}">🔥 機票特價</a>{ls}</nav>')
+            f'<a href="{U("/deals/")}">🔥 機票特價</a>'
+            f'<a href="{U("/apple-japan-price/")}">🍎 台日 Apple 價差</a>{ls}</nav>')
 
 def foot():
     return f'''<p class="note">
@@ -848,6 +849,10 @@ write('index.html', head(title,desc,'')
   + f'<p class="upd">更新於 {NOWS}　·　共 {len(deals)} 筆票價</p>'
   + (f'<h2>🔥 超值票</h2><p class="lede" style="font-size:.85rem">廉航低於 {money(LCC_CAP)}／一般航空低於 {money(FSC_CAP)}</p>'
      + GATE_FILTER + f'<div class="grid">{"".join(fare_card(x,True) for x in hot[:12])}</div>' if hot else '')
+  + '<h2>其他實用資訊</h2><div class="cities">'
+  + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 日本買 iPhone 划算嗎</b>'
+    f'<s>台日 Apple 價格全表・含退稅試算</s></a>'
+  + '</div>'
   + '<h2>依出發地查詢</h2><div class="cities">'
   + ''.join(f'<a class="ct" href="{U("/"+o+"/")}"><b>{n}飛日本機票</b>'
             f'<s>{len({CITY_OF[x["d"]][0] for x in by_origin[o]})} 個航點</s>'
@@ -1159,8 +1164,11 @@ if os.path.exists('apple.json'):
       + '<h1>日本買 iPhone 比較便宜嗎？</h1>'
       + '<p class="lede">把 iPhone Duo、iPhone 18 Pro、iPhone Air、Apple Watch 與 AirPods 的'
         '台日官方定價全部換算比較，並試算<b>退稅後</b>的實際價格。</p>'
-      + f'<p class="upd">匯率 {AP["rate"]["source"]} <b>{RATE}</b>（{AP["rate"]["quoted_at"]}）'
-        f'　·　售價取自 Apple 日本／台灣官網　·　更新於 {AP["updated"]}</p>'
+      + f'<p class="upd">換算匯率 <b>{RATE}</b>'
+        + (f'（中間匯率 {AP["rate"]["jpy_twd_mid"]} 加計約 {round(AP["rate"]["spread"]*100,1)}% 換匯成本）'
+           if AP['rate'].get('jpy_twd_mid') else '')
+        + f'　·　匯率更新 {AP["rate"]["quoted_at"]}'
+        + f'　·　售價取自 Apple 日本／台灣官網　·　資料更新於 {AP["updated"]}</p>'
       + '<h2>先講結論</h2><div class="tldr"><ul>'
       + f'<li><b>在 Apple 直營店買，台灣比較便宜。</b>{len(iph)} 個 iPhone 組合中有 {cheap_tw} 個台灣較低，'
         f'差距多在 NT$1,000 上下。</li>'

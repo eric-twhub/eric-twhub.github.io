@@ -44,6 +44,9 @@ jobs:
             exit 1
           fi
 
+      - name: 更新日圓匯率
+        run: python3 update_rate.py
+
       - name: 重新產生網站
         run: python3 gen.py
 
