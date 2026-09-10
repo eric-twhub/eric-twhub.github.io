@@ -401,6 +401,16 @@ table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--dim);font-weight:600;font-size:.79rem}
 td b{color:var(--acc)}
+.tldr{background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--acc);
+border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
+.tldr ul{margin:0;padding-left:2px}
+.tldr li{margin-bottom:9px;font-size:.94rem;line-height:1.75}
+.tldr li:last-child{margin-bottom:0}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
+.tw table{min-width:640px;font-size:.84rem}
+.tw th,.tw td{white-space:nowrap;padding:9px 11px}
+.tw td.win{color:var(--lcc);font-weight:700}
+.tw td.lose{color:var(--acc);font-weight:700}
 .cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
 background:var(--card);border:1px solid var(--line);border-radius:12px;
 text-decoration:none;color:var(--fg)}
@@ -1028,6 +1038,141 @@ for d in deals_out:
 {'-'*52}""")
 open('posts/%s.txt'%TODAY,'w',encoding='utf-8').write('\n'.join(lines))
 
+print(f'✅ 產生 {len(pages)} 個頁面')
+print(f'   Deal 貼文 {len(deals_out)} 則　→ posts/{TODAY}.txt（FB/IG 文案）')
+print(f'   城市頁 {len(CITIES)}（{sum(1 for c in CITIES if by_city.get(c[0]))} 個有票價）')
+print(f'   地區頁 {len(REGIONS)}　首頁 1　sitemap.xml / robots.txt')
+print(f'   票價 {len(deals)} 筆 · 超值票 {len(hot)} 筆 · 全站最低 {money(allbest)}')
+
+
+# ---------- 台日 Apple 價差比較頁 ----------
+if os.path.exists('apple.json'):
+    AP=json.load(open('apple.json',encoding='utf-8'))
+    RATE=AP['rate']['jpy_twd']; TAXR=1+AP['tax']['jp_consumption']
+    ALLOW=AP['tax']['tw_duty_free_allowance']
+    SMALL='<br><small style="color:var(--dim)">'
+
+    def _cell(v):
+        if v>0: return f'<td class="win">日本省 {money(v)}</td>'
+        if v<0: return f'<td class="lose">台灣省 {money(-v)}</td>'
+        return '<td>持平</td>'
+
+    def _row(p):
+        inc=round(p['jpy']*RATE); ex=round(p['jpy']/TAXR*RATE)
+        spec=(SMALL+html.escape(p['spec'])+'</small>') if p['spec'] else ''
+        return ('<tr><td><b>'+html.escape(p['name'])+'</b>'+spec+'</td>'
+                f'<td>¥{p["jpy"]:,}</td><td>{money(inc)}</td><td><b>{money(ex)}</b></td>'
+                f'<td>{money(p["twd"])}</td>'+_cell(p['twd']-inc)+_cell(p['twd']-ex)+'</tr>')
+
+    tables=''
+    for cat in ('iPhone','Apple Watch','AirPods'):
+        ps=[p for p in AP['products'] if p['cat']==cat]
+        if not ps: continue
+        tables+=('<h3>'+cat+'</h3><div class="tw"><table><thead><tr>'
+                 '<th>型號</th><th>日本售價'+SMALL+'含稅</small></th>'
+                 '<th>換算台幣'+SMALL+'含稅</small></th>'
+                 '<th>退稅後'+SMALL+'約當台幣</small></th><th>台灣售價</th>'
+                 '<th>含稅比較</th><th>退稅後比較</th></tr></thead><tbody>'
+                 +''.join(_row(p) for p in ps)+'</tbody></table></div>')
+
+    iph=[p for p in AP['products'] if p['cat']=='iPhone']
+    acc=[p for p in AP['products'] if p['cat']!='iPhone']
+    cheap_tw=sum(1 for p in iph if p['twd']-round(p['jpy']*RATE)<0)
+    cheap_jp=sum(1 for p in iph if p['twd']-round(p['jpy']/TAXR*RATE)>0)
+    acc_tw=sum(1 for p in acc if p['twd']-round(p['jpy']/TAXR*RATE)<0)
+    top=max(iph,key=lambda p:p['twd']-round(p['jpy']/TAXR*RATE))
+    top_save=top['twd']-round(top['jpy']/TAXR*RATE)
+
+    faq=[
+     ('日本買 iPhone 真的比較便宜嗎？',
+      f'要看能不能退稅。以 Apple 直營店的含稅價換算，{len(iph)} 個 iPhone 組合中有 {cheap_tw} 個是台灣比較便宜；'
+      f'若能在家電量販店以免稅價購買，則有 {cheap_jp} 個組合日本較划算，差距約數千元。'),
+     ('在 Apple Store 日本直營店可以退稅嗎？',
+      '不行。Apple 日本直營店自 2024 年 6 月起已取消對外國旅客的免稅服務，必須支付含消費稅的全額。'
+      '想以免稅價購買，需前往 Bic Camera、Yodobashi Camera 等有 Tax-Free 標示的家電量販店，結帳時出示護照。'
+      '惟量販店定價未必與 Apple 官網相同，部分店家另收手續費，需現場確認。'),
+     ('Apple Watch 和 AirPods 值得在日本買嗎？',
+      f'不太值得。本頁比較的 {len(acc)} 項配件中，有 {acc_tw} 項即使退稅後仍是台灣便宜。'
+      f'其中 AirPods Pro 3 台灣售價明顯低於日本換算價。'),
+     ('日本買的 iPhone 快門聲可以關嗎？',
+      '可以。自 iOS 15 起，日版 iPhone 的相機快門聲僅在日本境內強制發出，離開日本後即可透過靜音開關關閉。'),
+     ('日版 iPhone 在台灣可以保固嗎？',
+      'Apple 的 iPhone 保固採區域性政策，日本購買的機器在台灣的 Apple 授權維修中心可能不受理，需寄回日本處理。'
+      '若重視售後服務，建議將此風險一併計入價差考量。'),
+     ('帶回台灣需要向海關申報嗎？',
+      f'台灣入境旅客行李物品免稅額為 {money(ALLOW)}（2024/6/26 起由 NT$20,000 調高）。'
+      f'多數 iPhone 單機已超過此金額，應主動申報，超出部分課徵進口稅捐；手機關稅為 0%，主要為 5% 營業稅，'
+      f'實際以海關核定為準。'),
+     ('匯率會影響結果嗎？',
+      f'會，而且影響很大。本頁使用 {AP["rate"]["source"]} {RATE}（{AP["rate"]["quoted_at"]}）換算。'
+      f'日圓每變動 1%，一支 iPhone 的價差就會變動數百元；刷卡另有約 1.5% 國外交易手續費，實際成本會更高。'),
+    ]
+    faq_html=''.join('<details class="faq"><summary>'+html.escape(q)+'</summary><div>'
+                     +html.escape(a)+'</div></details>' for q,a in faq)
+    faq_ld=json.dumps({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faq]},
+        ensure_ascii=False)
+
+    _tk=by_city.get('tokyo') or []
+    _b=(best(_tk,True) or best(_tk,False)) if _tk else None
+
+    title=f'日本買 iPhone 比較便宜嗎？{AP["updated"][:4]} 台日 Apple 價格全表（含退稅試算）'
+    desc=(f'iPhone Duo、18 Pro、Air、Apple Watch、AirPods 台日售價全比較，'
+          f'依臺灣銀行匯率 {RATE} 換算並試算退稅後價格。'
+          f'結論：Apple 直營店含稅價多數台灣較便宜，量販店免稅價才有明顯價差。')
+
+    flights=''
+    if _b:
+        flights=('<h2>要專程去日本買？先看機票</h2>'
+                 f'<p class="lede">台北飛東京目前最低 <b>{money(_b["price"])}</b>'
+                 f'（{_b["airname"]}，{_b["dep"]} 出發）。單看機身價差，通常還不夠一張機票——'
+                 f'但如果本來就要去日本，那就順便。</p>'
+                 + cta('hotel','東京','東京','順便看看東京的住宿','到 Agoda 查房價，繁體中文、台幣計價')
+                 + '<div class="cities">'
+                 + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>各出發地比價</s></a>'
+                 + f'<a class="ct" href="{U("/osaka/")}"><b>大阪機票</b><s>心齋橋、道頓堀</s></a>'
+                 + f'<a class="ct" href="{U("/deals/")}"><b>機票特價</b><s>每日更新</s></a></div>')
+
+    write('apple-japan-price/index.html',
+      head(title,desc,'apple-japan-price/','<script type="application/ld+json">'+faq_ld+'</script>')
+      + crumbs([('首頁','/'),('日本買 iPhone 價差比較',None)]) + topnav()
+      + '<h1>日本買 iPhone 比較便宜嗎？</h1>'
+      + '<p class="lede">把 iPhone Duo、iPhone 18 Pro、iPhone Air、Apple Watch 與 AirPods 的'
+        '台日官方定價全部換算比較，並試算<b>退稅後</b>的實際價格。</p>'
+      + f'<p class="upd">匯率 {AP["rate"]["source"]} <b>{RATE}</b>（{AP["rate"]["quoted_at"]}）'
+        f'　·　售價取自 Apple 日本／台灣官網　·　更新於 {AP["updated"]}</p>'
+      + '<h2>先講結論</h2><div class="tldr"><ul>'
+      + f'<li><b>在 Apple 直營店買，台灣比較便宜。</b>{len(iph)} 個 iPhone 組合中有 {cheap_tw} 個台灣較低，'
+        f'差距多在 NT$1,000 上下。</li>'
+      + f'<li><b>能退稅才有價差。</b>在家電量販店以免稅價購買時，{cheap_jp} 個組合日本較划算，'
+        f'最多可省 {money(top_save)}（{top["name"]} {top["spec"]}）。</li>'
+      + '<li><b>但 Apple 直營店已不能退稅</b>（2024/6 起），要免稅得去 Bic Camera、Yodobashi 等量販店。</li>'
+      + f'<li><b>Apple Watch 與 AirPods 不值得在日本買</b>，{len(acc)} 項中有 {acc_tw} 項連退稅後都是台灣便宜。</li>'
+      + '</ul></div>'
+      + '<h2>台日價格全表</h2>'
+      + '<p class="lede">「退稅後」為日本含稅價扣除 10% 消費稅後換算之約當金額，'
+        '實際免稅價與手續費依店家而異。</p>' + tables
+      + '<h2>買之前要知道的兩件事</h2>'
+      + '<h3>1. Apple 直營店已經不能退稅</h3>'
+      + '<p class="lede">Apple 日本直營店自 2024 年 6 月起取消對外國旅客的免稅服務。'
+        '要拿到免稅價，必須到有 Tax-Free 標示的家電量販店（Bic Camera、Yodobashi Camera 等），'
+        '結帳時出示護照。量販店定價未必與 Apple 官網相同，且部分店家收取手續費，請現場確認。</p>'
+      + '<h3>2. 保固是區域性的</h3>'
+      + '<p class="lede">日本購買的 iPhone 在台灣的 Apple 授權維修中心可能不受理，需寄回日本處理。'
+        '省下的幾千元，遇到一次維修就可能不划算。至於快門聲，自 iOS 15 起僅在日本境內強制，'
+        '離開日本即可關閉，這點不必擔心。</p>'
+      + flights
+      + '<h2>常見問題</h2>' + faq_html
+      + f'<p class="disc">補充：台灣入境旅客行李物品免稅額為 {money(ALLOW)}，'
+        f'多數 iPhone 單機已超過，依規定應主動向海關申報，超出部分課徵進口稅捐。'
+        f'手機關稅為 0%，主要為 5% 營業稅，實際以海關核定為準。<br>'
+        f'本頁售價取自 Apple 日本與台灣官網，匯率取自臺灣銀行牌告，僅供參考，'
+        f'實際價格與稅務規定請以官方公告為準。頁內部分連結為聯盟行銷連結，'
+        f'本站可能獲得分潤，不影響你的價格。</p>'
+      + foot())
+    pages.append(('/apple-japan-price/',0.9))
+    print(f'   台日 Apple 價差頁：{len(AP["products"])} 項商品')
+
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
 LASTMOD=LASTMOD[:-2]+':'+LASTMOD[-2:]            # +0800 → +08:00（W3C Datetime 格式）
@@ -1038,8 +1183,3 @@ write('sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n'
 write('robots.txt', f'User-agent: *\nAllow: /\n\nSitemap: {SITE}{BASE}/sitemap.xml\n')
 write('.nojekyll','')
 
-print(f'✅ 產生 {len(pages)} 個頁面')
-print(f'   Deal 貼文 {len(deals_out)} 則　→ posts/{TODAY}.txt（FB/IG 文案）')
-print(f'   城市頁 {len(CITIES)}（{sum(1 for c in CITIES if by_city.get(c[0]))} 個有票價）')
-print(f'   地區頁 {len(REGIONS)}　首頁 1　sitemap.xml / robots.txt')
-print(f'   票價 {len(deals)} 筆 · 超值票 {len(hot)} 筆 · 全站最低 {money(allbest)}')

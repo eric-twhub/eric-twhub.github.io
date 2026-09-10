@@ -1,0 +1,163 @@
+{
+  "updated": "2026-09-10",
+  "rate": {
+    "jpy_twd": 0.2083,
+    "source": "臺灣銀行 現金賣出",
+    "quoted_at": "2026-09-10 21:42"
+  },
+  "tax": {
+    "jp_consumption": 0.1,
+    "tw_duty_free_allowance": 35000,
+    "allowance_note": "2024/6/26 起由 NT$20,000 調高"
+  },
+  "products": [
+    {
+      "cat": "iPhone",
+      "name": "iPhone Duo",
+      "spec": "256GB",
+      "jpy": 364800,
+      "twd": 74900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone Duo",
+      "spec": "512GB",
+      "jpy": 399800,
+      "twd": 81900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone Duo",
+      "spec": "1TB",
+      "jpy": 469800,
+      "twd": 96900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone Duo",
+      "spec": "2TB",
+      "jpy": 574800,
+      "twd": 118900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone 18 Pro Max",
+      "spec": "256GB",
+      "jpy": 239800,
+      "twd": 49900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone 18 Pro Max",
+      "spec": "512GB",
+      "jpy": 274800,
+      "twd": 56900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone 18 Pro Max",
+      "spec": "1TB",
+      "jpy": 344800,
+      "twd": 71900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone 18 Pro Max",
+      "spec": "2TB",
+      "jpy": 449800,
+      "twd": 93900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone 18 Pro",
+      "spec": "256GB",
+      "jpy": 219800,
+      "twd": 44900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone 18 Pro",
+      "spec": "512GB",
+      "jpy": 254800,
+      "twd": 51900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone 18 Pro",
+      "spec": "1TB",
+      "jpy": 324800,
+      "twd": 66900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone 18 Pro",
+      "spec": "2TB",
+      "jpy": 429800,
+      "twd": 88900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone Air",
+      "spec": "256GB",
+      "jpy": 189800,
+      "twd": 39900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone Air",
+      "spec": "512GB",
+      "jpy": 224800,
+      "twd": 46900
+    },
+    {
+      "cat": "iPhone",
+      "name": "iPhone Air",
+      "spec": "1TB",
+      "jpy": 294800,
+      "twd": 61900
+    },
+    {
+      "cat": "Apple Watch",
+      "name": "Apple Watch Series 12",
+      "spec": "42mm 起",
+      "jpy": 71800,
+      "twd": 13900
+    },
+    {
+      "cat": "Apple Watch",
+      "name": "Apple Watch Ultra 4",
+      "spec": "49mm",
+      "jpy": 142800,
+      "twd": 27900
+    },
+    {
+      "cat": "Apple Watch",
+      "name": "Apple Watch SE 3",
+      "spec": "40mm 起",
+      "jpy": 41800,
+      "twd": 7900
+    },
+    {
+      "cat": "AirPods",
+      "name": "AirPods 5",
+      "spec": "USB-C 充電盒",
+      "jpy": 23800,
+      "twd": 4490
+    },
+    {
+      "cat": "AirPods",
+      "name": "AirPods 5",
+      "spec": "無線充電盒",
+      "jpy": 27800,
+      "twd": 5190
+    },
+    {
+      "cat": "AirPods",
+      "name": "AirPods Pro 3",
+      "spec": "",
+      "jpy": 42800,
+      "twd": 7490
+    }
+  ],
+  "_note": "台日 Apple 定價比較。價格取自 Apple 日本／台灣官網，匯率取自臺灣銀行牌告。改版或調價時更新此檔後重跑 gen.py。"
+}
