@@ -1,16 +1,131 @@
 # -*- coding: utf-8 -*-
 """台日 Apple 價差 IG 輪播（1080×1350）。
 
-機身以自繪 SVG 輪廓呈現——不使用 Apple 官方產品照，避免版權問題。
+裝置外觀全以幾何 SVG 自繪——不使用 Apple 官方產品照或商標，避免版權問題。
 用法：python3 make_apple_cards.py
-輸出：cards/apple/01_cover.png … 07_end.png
+輸出：cards/apple/01_cover.png … 08_end.png
 """
-import os, json, html, subprocess, sys
+import os, json, html, subprocess
 
 W, H = 1080, 1350
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 OUT = "cards/apple"
 
+# ── 裝置外觀 ──────────────────────────────────────────────
+_uid = [0]
+
+
+def _u():
+    _uid[0] += 1
+    return f"g{_uid[0]}"
+
+
+def _defs(body, frame, uid):
+    """機身漸層＋外框金屬漸層。"""
+    return f'''<defs>
+<linearGradient id="{uid}b" x1="0" y1="0" x2="1" y2="1">
+ <stop offset="0" stop-color="#ffffff" stop-opacity=".16"/>
+ <stop offset=".38" stop-color="{body}" stop-opacity="0"/>
+ <stop offset="1" stop-color="#000000" stop-opacity=".22"/></linearGradient>
+<linearGradient id="{uid}f" x1="0" y1="0" x2="1" y2="0">
+ <stop offset="0" stop-color="{frame}"/>
+ <stop offset=".14" stop-color="#ffffff" stop-opacity=".55"/>
+ <stop offset=".45" stop-color="{frame}"/>
+ <stop offset=".9" stop-color="#ffffff" stop-opacity=".35"/>
+ <stop offset="1" stop-color="{frame}"/></linearGradient>
+<radialGradient id="{uid}l" cx=".35" cy=".3" r=".8">
+ <stop offset="0" stop-color="#5b6b82"/><stop offset=".55" stop-color="#141a22"/>
+ <stop offset="1" stop-color="#05070a"/></radialGradient>
+</defs>'''
+
+
+def _lens(cx, cy, r, uid):
+    """鏡頭：外環→鏡片→反光點。"""
+    return (f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="#2f2c29" stroke="#565049" stroke-width="2"/>'
+            f'<circle cx="{cx}" cy="{cy}" r="{r-5}" fill="url(#{uid}l)"/>'
+            f'<circle cx="{cx-r*.28:.1f}" cy="{cy-r*.3:.1f}" r="{r*.22:.1f}" fill="#8fa6c4" opacity=".55"/>')
+
+
+def iphone_pro(body, frame="#8d8880", h=430):
+    """Pro 背面：方形相機平台＋三鏡頭三角排列。"""
+    u = _u()
+    w = int(h * 200 / 400)
+    return f'''<svg width="{w}" height="{h}" viewBox="0 0 200 400" fill="none">{_defs(body, frame, u)}
+<rect x="3" y="122" width="5" height="34" rx="2.5" fill="{frame}"/>
+<rect x="3" y="170" width="5" height="52" rx="2.5" fill="{frame}"/>
+<rect x="192" y="152" width="5" height="62" rx="2.5" fill="{frame}"/>
+<rect x="6" y="4" width="188" height="392" rx="44" fill="url(#{u}f)"/>
+<rect x="10" y="8" width="180" height="384" rx="40" fill="{body}"/>
+<rect x="10" y="8" width="180" height="384" rx="40" fill="url(#{u}b)"/>
+<rect x="24" y="24" width="104" height="104" rx="30" fill="{body}" stroke="#ffffff" stroke-opacity=".14" stroke-width="2"/>
+{_lens(56, 56, 21, u)}{_lens(100, 56, 21, u)}{_lens(56, 100, 21, u)}
+<circle cx="100" cy="98" r="9" fill="#f4e6c4" opacity=".85"/>
+<circle cx="100" cy="119" r="5" fill="#1b1815"/>
+</svg>'''
+
+
+def iphone_bar(body, frame="#8d8880", h=430):
+    """Air：橫向相機條，單鏡頭。"""
+    u = _u()
+    w = int(h * 200 / 400)
+    return f'''<svg width="{w}" height="{h}" viewBox="0 0 200 400" fill="none">{_defs(body, frame, u)}
+<rect x="3" y="122" width="5" height="34" rx="2.5" fill="{frame}"/>
+<rect x="3" y="170" width="5" height="52" rx="2.5" fill="{frame}"/>
+<rect x="192" y="152" width="5" height="62" rx="2.5" fill="{frame}"/>
+<rect x="6" y="4" width="188" height="392" rx="44" fill="url(#{u}f)"/>
+<rect x="10" y="8" width="180" height="384" rx="40" fill="{body}"/>
+<rect x="10" y="8" width="180" height="384" rx="40" fill="url(#{u}b)"/>
+<rect x="22" y="28" width="156" height="54" rx="25" fill="{body}" stroke="#ffffff" stroke-opacity=".14" stroke-width="2"/>
+{_lens(56, 55, 20, u)}
+<circle cx="116" cy="55" r="8" fill="#f4e6c4" opacity=".8"/>
+<circle cx="144" cy="55" r="5" fill="#1b1815"/>
+</svg>'''
+
+
+def watch(body, band="#2f2b28", h=430):
+    """Apple Watch：錶帶＋數位錶冠＋側邊按鈕。"""
+    u = _u()
+    w = int(h * 200 / 400)
+    return f'''<svg width="{w}" height="{h}" viewBox="0 0 200 400" fill="none">{_defs(body, body, u)}
+<path d="M66 2h68v118H66z" fill="{band}"/>
+<path d="M66 282h68v116H66z" fill="{band}"/>
+<rect x="58" y="96" width="84" height="30" rx="12" fill="{band}"/>
+<rect x="58" y="276" width="84" height="30" rx="12" fill="{band}"/>
+<rect x="30" y="104" width="140" height="194" rx="52" fill="url(#{u}f)"/>
+<rect x="38" y="112" width="124" height="178" rx="45" fill="#0a0c0f"/>
+<rect x="48" y="122" width="104" height="158" rx="38" fill="#12151a"/>
+<circle cx="100" cy="176" r="26" fill="none" stroke="#fb923c" stroke-width="7" stroke-linecap="round"
+ stroke-dasharray="130 34" transform="rotate(-90 100 176)"/>
+<rect x="72" y="222" width="56" height="9" rx="4" fill="#3d444e"/>
+<rect x="72" y="242" width="38" height="9" rx="4" fill="#2c323a"/>
+<rect x="168" y="150" width="15" height="38" rx="7" fill="{body}" stroke="#ffffff" stroke-opacity=".22" stroke-width="2"/>
+<rect x="169" y="204" width="12" height="46" rx="6" fill="{body}" opacity=".85"/>
+</svg>'''
+
+
+def airpods(body="#f4f2ee", h=430):
+    """AirPods Pro：矽膠耳塞＋耳機柄，左右各一。"""
+    u = _u()
+    w = int(h * 200 / 400)
+    edge, tip, dark = "#cfc9bf", "#e3ded4", "#8f8981"
+
+    def bud(x, y, rot, s):
+        return (f'<g transform="translate({x} {y}) rotate({rot}) scale({s})">'
+                f'<rect x="-14" y="18" width="28" height="112" rx="14" fill="{body}" '
+                f'stroke="{edge}" stroke-width="2"/>'
+                f'<rect x="-8" y="104" width="16" height="5" rx="2.5" fill="{dark}" opacity=".5"/>'
+                f'<circle cx="0" cy="0" r="40" fill="{body}" stroke="{edge}" stroke-width="2"/>'
+                f'<ellipse cx="8" cy="6" rx="13" ry="19" fill="{dark}" opacity=".22"/>'
+                f'<g transform="rotate(-32)">'
+                f'<ellipse cx="0" cy="-38" rx="25" ry="21" fill="{tip}" stroke="{edge}" stroke-width="2"/>'
+                f'<ellipse cx="0" cy="-44" rx="14" ry="10" fill="{dark}"/>'
+                f'<ellipse cx="0" cy="-45" rx="9" ry="6" fill="#4a4540"/></g>'
+                f'</g>')
+    return (f'<svg width="{w}" height="{h}" viewBox="0 0 200 400" fill="none">'
+            f'{bud(128, 128, 14, .78)}{bud(70, 244, -8, .96)}</svg>')
+
+
+# ── 版面 ──────────────────────────────────────────────────
 BASE = """
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:%dpx;height:%dpx}
@@ -34,15 +149,21 @@ COVER = """
 """
 
 PROD = """
-.pname{font-size:60px;font-weight:800;letter-spacing:-.02em}
-.pspec{margin-top:10px;font-size:30px;color:#a8a29c}
-.dev{display:flex;gap:26px;align-items:flex-end;margin:44px 0 40px}
-.rows{display:flex;flex-direction:column;gap:14px}
-.r{display:flex;align-items:baseline;gap:16px;font-size:34px}
-.r s{text-decoration:none;color:#6b6560;width:150px;flex:0 0 auto;font-size:29px}
-.r b{font-weight:700}
-.r .hi{color:#fb923c;font-weight:800;font-size:42px}
-.verdict{margin-top:34px;padding:20px 24px;border-radius:14px;font-size:33px;font-weight:700;line-height:1.5}
+.pname{font-size:58px;font-weight:800;letter-spacing:-.02em}
+.pspec{margin-top:12px;font-size:30px;color:#a8a29c;display:flex;align-items:center;gap:16px}
+.dots{display:flex;gap:10px}
+.dots i{width:22px;height:22px;border-radius:50%;display:block;box-shadow:0 0 0 2px rgba(255,255,255,.16)}
+.cols{display:flex;gap:52px;align-items:center;margin:44px 0 40px}
+.dev{flex:0 0 auto;padding:18px 26px;border-radius:34px;
+ background:radial-gradient(ellipse at 50% 45%,rgba(255,255,255,.075),transparent 68%);
+ filter:drop-shadow(0 26px 34px rgba(0,0,0,.55))}
+.rows{flex:1;display:flex;flex-direction:column;gap:24px}
+.r{display:flex;flex-direction:column;gap:6px}
+.r s{text-decoration:none;color:#7a736c;font-size:27px;letter-spacing:.04em}
+.r b{font-size:44px;font-weight:700;white-space:nowrap}
+.r em{font-style:normal;color:#8a837c;font-size:30px;font-weight:400}
+.r .hi{color:#fb923c;font-weight:800;font-size:52px}
+.verdict{padding:26px 30px;border-radius:16px;font-size:36px;font-weight:800;line-height:1.45}
 .v-tw{background:rgba(251,146,60,.16);color:#fb923c}
 .v-jp{background:rgba(45,212,191,.14);color:#2dd4bf}
 """
@@ -57,32 +178,7 @@ END = """
 """
 
 
-def phone_svg(fill, w=132, h=250, notch=True):
-    """自繪機身輪廓，非 Apple 官方素材"""
-    return f'''<svg width="{w}" height="{h}" viewBox="0 0 132 250">
-<rect x="3" y="3" width="126" height="244" rx="26" fill="{fill}" stroke="#3a3532" stroke-width="4"/>
-{'<rect x="46" y="14" width="40" height="11" rx="6" fill="#141210" opacity=".55"/>' if notch else ''}
-<rect x="16" y="22" width="42" height="46" rx="13" fill="#141210" opacity=".22"/>
-</svg>'''
-
-
-def watch_svg(fill):
-    return '''<svg width="118" height="250" viewBox="0 0 118 250">
-<rect x="38" y="6" width="42" height="52" rx="14" fill="#2a2624"/>
-<rect x="38" y="192" width="42" height="52" rx="14" fill="#2a2624"/>
-<rect x="10" y="52" width="98" height="146" rx="30" fill="%s" stroke="#3a3532" stroke-width="4"/>
-<rect x="24" y="66" width="70" height="118" rx="22" fill="#141210" opacity=".35"/>
-</svg>''' % fill
-
-
-def pods_svg(fill):
-    return '''<svg width="150" height="250" viewBox="0 0 150 250">
-<rect x="24" y="86" width="102" height="86" rx="22" fill="%s" stroke="#3a3532" stroke-width="4"/>
-<circle cx="75" cy="129" r="5" fill="#141210" opacity=".45"/>
-</svg>''' % fill
-
-
-def head(css, page=None):
+def head_html(css, page=None):
     p = f'<div class="pg">{page}</div>' if page else ''
     return (f'<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'
             f'<style>{BASE}{css}</style></head><body><div class="glow"></div>'
@@ -99,14 +195,19 @@ def main():
     def inc(p): return round(p["jpy"] * R)
     def ex(p): return round(p["jpy"] / T * R)
 
-    # (檔名, 產品名, 取價用 spec, 圖形, 說明)
+    # (檔名, 產品名, 取價 spec, 裝置圖, 機身色, 色名)
     items = [
-        ("02_duo", "iPhone Duo", "256GB", phone_svg("#e8e4dd") + phone_svg("#26303c"), "星光白色・夜空色"),
-        ("03_18pro", "iPhone 18 Pro", "256GB", phone_svg("#c9a227") + phone_svg("#3a3a3c"), "6.3 吋"),
-        ("04_18promax", "iPhone 18 Pro Max", "256GB", phone_svg("#c9a227") + phone_svg("#3a3a3c"), "6.9 吋"),
-        ("05_air", "iPhone Air", "256GB", phone_svg("#dcd6c8") + phone_svg("#8fb4cc"), "淺金・天藍・雲白・太空黑"),
-        ("06_watch", "Apple Watch Series 12", "42mm 起", watch_svg("#3a3a3c") + watch_svg("#c9a227"), "42mm／46mm"),
-        ("07_pods", "AirPods Pro 3", "", pods_svg("#e8e4dd"), "主動式降噪"),
+        ("02_duo", "iPhone Duo", "256GB", iphone_pro("#ece7dd"),
+         ["#ece7dd", "#26303c"], "星光白色・夜空色"),
+        ("03_18pro", "iPhone 18 Pro", "256GB", iphone_pro("#c9a227"),
+         ["#c9a227", "#3a3a3c", "#d8d4cd"], "6.3 吋"),
+        ("04_18promax", "iPhone 18 Pro Max", "256GB", iphone_pro("#3a3a3c"),
+         ["#c9a227", "#3a3a3c", "#d8d4cd"], "6.9 吋"),
+        ("05_air", "iPhone Air", "256GB", iphone_bar("#dcd6c8"),
+         ["#dcd6c8", "#8fb4cc", "#eeece7", "#2b2b2d"], "淺金・天藍・雲白・太空黑"),
+        ("06_watch", "Apple Watch Series 12", "42mm 起", watch("#3a3a3c"),
+         ["#3a3a3c", "#c9a227", "#d8d4cd"], "42mm／46mm"),
+        ("07_pods", "AirPods Pro 3", "", airpods(), [], "主動式降噪"),
     ]
 
     os.makedirs(OUT, exist_ok=True)
@@ -125,9 +226,19 @@ def main():
     iph = [p for p in ap["products"] if p["cat"] == "iPhone"]
     cheap_tw = sum(1 for p in iph if p["twd"] - inc(p) < 0)
     top = max(iph, key=lambda p: p["twd"] - ex(p))
+    pods = [p for p in ap["products"] if p["cat"] == "AirPods"]
+    wat = [p for p in ap["products"] if p["cat"] == "Apple Watch"]
+    w_best = max(wat, key=lambda p: p["twd"] - ex(p))
+    w_gap = w_best["twd"] - ex(w_best)
+    if all(p["twd"] - ex(p) < 0 for p in pods) and w_gap <= 1500:
+        pt3 = (f"<b>配件不值得為它退稅</b><br>AirPods 連退稅後都是台灣便宜；"
+               f"Apple Watch 最多也只差 {money(w_gap)}")
+    else:
+        pt3 = (f"<b>配件價差很小</b><br>AirPods 最多差 "
+               f"{money(abs(max(pods, key=lambda p: p['twd'] - ex(p))['twd'] - ex(max(pods, key=lambda p: p['twd'] - ex(p)))))}"
+               f"，Apple Watch 最多差 {money(abs(w_gap))}")
 
-    # 封面
-    shot("01_cover", head(COVER) + f'''<div class="mid">
+    shot("01_cover", head_html(COVER) + f'''<div class="mid">
 <div class="q">日本買 iPhone<br>真的比較便宜嗎？</div>
 <div class="a">在 Apple 直營店買<br>台灣反而便宜</div>
 <div class="sub">15 個 iPhone 組合中，<b>{cheap_tw} 個台灣售價較低</b></div>
@@ -135,30 +246,31 @@ def main():
 <div class="site">{site}</div></body></html>''')
 
     total = len(items) + 2
-    for i, (fn, name, spec, svg, note) in enumerate(items, start=2):
+    for i, (fn, name, spec, svg, colors, note) in enumerate(items, start=2):
         p = P.get((name, spec))
         if not p: continue
-        d_inc = p["twd"] - inc(p); d_ex = p["twd"] - ex(p)
+        d_ex = p["twd"] - ex(p)
         v = (f'<div class="verdict v-jp">退稅後日本省 {money(d_ex)}</div>' if d_ex > 0
              else f'<div class="verdict v-tw">台灣便宜 {money(-d_ex)}，不必特地在日本買</div>')
-        shot(fn, head(PROD, f"{i}／{total}") + f'''<div class="mid">
+        dots = ("".join(f'<i style="background:{c}"></i>' for c in colors))
+        dots = f'<span class="dots">{dots}</span>' if dots else ""
+        shot(fn, head_html(PROD, f"{i}／{total}") + f'''<div class="mid">
 <div class="pname">{html.escape(name)}</div>
-<div class="pspec">{html.escape(spec or note)}</div>
-<div class="dev">{svg}</div>
+<div class="pspec"><span>{html.escape(spec or note)}</span>{dots}</div>
+<div class="cols"><div class="dev">{svg}</div>
 <div class="rows">
- <div class="r"><s>日本含稅</s><b>¥{p["jpy"]:,}</b><s>≈ {money(inc(p))}</s></div>
- <div class="r"><s>日本退稅後</s><span class="hi">{money(ex(p))}</span></div>
+ <div class="r"><s>日本含稅</s><b>¥{p["jpy"]:,} <em>≈ {money(inc(p))}</em></b></div>
+ <div class="r"><s>日本退稅後</s><b class="hi">{money(ex(p))}</b></div>
  <div class="r"><s>台灣售價</s><b>{money(p["twd"])}</b></div>
-</div>{v}</div>
+</div></div>{v}</div>
 <div class="site">{site}</div></body></html>''')
 
-    # 結論
-    shot(f"{total:02d}_end", head(END, f"{total}／{total}") + f'''<div class="mid">
+    shot(f"{total:02d}_end", head_html(END, f"{total}／{total}") + f'''<div class="mid">
 <div class="h">所以到底<br>該在哪裡買？</div>
 <div class="pts">
  <div class="pt"><i>1</i><div><b>Apple 直營店已不能退稅</b><br>2024/6 起取消旅客免稅，要免稅得去 Bic Camera、Yodobashi</div></div>
  <div class="pt"><i>2</i><div><b>能退稅才有價差</b><br>最多可省 {money(top["twd"]-ex(top))}（{top["name"]} {top["spec"]}）</div></div>
- <div class="pt"><i>3</i><div><b>Watch 與 AirPods 別買</b><br>連退稅後都是台灣便宜</div></div>
+ <div class="pt"><i>3</i><div>{pt3}</div></div>
  <div class="pt"><i>4</i><div><b>保固是區域性的</b><br>日版在台灣可能不受理，需寄回日本</div></div>
 </div>
 <div class="cta">完整價格表與退稅試算<br>都在個人檔案的連結</div></div>
