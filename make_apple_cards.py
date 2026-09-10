@@ -72,11 +72,10 @@ td.gap s{text-decoration:none;color:#6b6560;margin-right:10px;font-weight:500}
 
 END = """
 .h{font-size:62px;font-weight:800;line-height:1.24;letter-spacing:-.02em}
-.pts{margin-top:44px;display:flex;flex-direction:column;gap:26px}
-.pt{display:flex;gap:18px;align-items:flex-start;font-size:33px;line-height:1.55}
+.pts{margin-top:38px;display:flex;flex-direction:column;gap:22px}
+.pt{display:flex;gap:18px;align-items:flex-start;font-size:30px;line-height:1.5}
 .pt i{color:#fb923c;font-style:normal;font-weight:800;flex:0 0 auto}
 .pt b{font-weight:700}
-.cta{margin-top:44px;font-size:34px;color:#fb923c;font-weight:700;line-height:1.5}
 """
 
 
@@ -211,12 +210,13 @@ def main():
 <div class="h">所以到底<br>該在哪裡買？</div>
 <div class="pts">
  <div class="pt"><i>1</i><div><b>Apple 直營店已不能退稅</b><br>2024/6 起取消旅客免稅，要免稅得去 Bic Camera、Yodobashi</div></div>
- <div class="pt"><i>2</i><div><b>能退稅才有價差</b><br>最多可省 {money(top["twd"]-ex(top))}（{top["name"]} {top["spec"]}）</div></div>
- <div class="pt"><i>3</i><div>{pt3}</div></div>
- <div class="pt"><i>4</i><div><b>保固是區域性的</b><br>日版在台灣可能不受理，需寄回日本</div></div>
-</div>
-<div class="cta">完整價格表與退稅試算<br>都在個人檔案的連結</div></div>
-<div class="site">{site}</div></body></html>''')
+ <div class="pt"><i>2</i><div><b>直營店也不能臨櫃買了</b><br>2026/2 起新機須線上下單再取貨，旅客實務上只剩量販店</div></div>
+ <div class="pt"><i>3</i><div><b>能退稅才有價差</b><br>最多可省 {money(top["twd"]-ex(top))}（{top["name"]} {top["spec"]}）</div></div>
+ <div class="pt"><i>4</i><div>{pt3}</div></div>
+ <div class="pt"><i>5</i><div><b>11/1 起免稅要出境才退</b><br>當場先付含稅全額，海關確認後才退還消費稅</div></div>
+ <div class="pt"><i>6</i><div><b>保固是區域性的</b><br>日版在台灣可能不受理，需寄回日本</div></div>
+</div></div>
+<div class="site">{site}/apple-japan-price</div></body></html>''')
 
     os.path.exists(tmp) and os.remove(tmp)
     print(f"✅ 產生 {len(made)} 張輪播圖 → {OUT}/  ({W}×{H})")
