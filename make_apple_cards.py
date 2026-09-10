@@ -89,7 +89,9 @@ def head_html(css, page=None):
 def main():
     ap = json.load(open("apple.json", encoding="utf-8"))
     R = ap["rate"]["jpy_twd"]; T = 1 + ap["tax"]["jp_consumption"]
-    site = json.load(open("partners.json", encoding="utf-8"))["site"]["url"].replace("https://", "")
+    # 圖片常被單獨轉發，頁尾印完整網址，脫離貼文也找得回來
+    site = json.load(open("partners.json", encoding="utf-8"))["site"]["url"].rstrip("/") \
+           + "/apple-japan-price/"
     P = {(p["name"], p["spec"]): p for p in ap["products"]}
 
     def money(n): return f"NT${n:,}"
@@ -216,7 +218,7 @@ def main():
  <div class="pt"><i>5</i><div><b>11/1 起免稅要出境才退</b><br>當場先付含稅全額，海關確認後才退還消費稅</div></div>
  <div class="pt"><i>6</i><div><b>保固是區域性的</b><br>日版在台灣可能不受理，需寄回日本</div></div>
 </div></div>
-<div class="site">{site}/apple-japan-price</div></body></html>''')
+<div class="site">{site}</div></body></html>''')
 
     os.path.exists(tmp) and os.remove(tmp)
     print(f"✅ 產生 {len(made)} 張輪播圖 → {OUT}/  ({W}×{H})")
