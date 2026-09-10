@@ -14,7 +14,7 @@ LCC={'IT':'台灣虎航','MM':'樂桃航空','GK':'捷星日本','TR':'酷航','
  'SL':'泰國獅子航空','VZ':'泰越捷航空','BX':'釜山航空','7C':'濟州航空','LJ':'真航空',
  'TW':'德威航空','UO':'香港快運','Y8':'金鵬航空','HB':'大灣區航空','ZE':'易斯達航空','VJ':'越捷航空','5J':'宿霧太平洋航空'}
 FSC={'BR':'長榮航空','CI':'中華航空','JX':'星宇航空','JL':'日本航空','NH':'全日空','NU':'日本越洋航空',
- 'CX':'國泰航空','KE':'大韓航空','UA':'聯合航空','AE':'華信航空','HX':'香港航空','MF':'廈門航空','OZ':'韓亞航空','FM':'上海航空','B7':'立榮航空'}
+ 'CX':'國泰航空','KE':'大韓航空','UA':'聯合航空','AE':'華信航空','HX':'香港航空','MF':'廈門航空','OZ':'韓亞航空','FM':'上海航空','B7':'立榮航空','PR':'菲律賓航空'}
 ORI={'TPE':'台北桃園','TSA':'台北松山','RMQ':'台中','KHH':'高雄','TNN':'台南'}
 ORIGINS=[('taipei','台北',['TPE','TSA']),('taichung','台中',['RMQ']),
          ('kaohsiung','高雄',['KHH']),('tainan','台南',['TNN'])]
@@ -185,6 +185,89 @@ KLOOK_CITY = {
  'wakkanai':32,
 }
 
+def faq_block(name, fs, codes):
+    """由現有票價資料自動生成常見問題，並輸出 FAQPage 結構化資料。
+    每個答案都必須是資料能支撐的事實，且標明樣本來源，不作無根據推論。"""
+    if not fs: return ''
+    qa = []
+    direct = [x for x in fs if x['tr'] == 0]
+    lcc = sorted({x['airname'] for x in direct if x['cls'] == 'lcc'})
+    fsc = sorted({x['airname'] for x in direct if x['cls'] == 'fsc'})
+
+    # 1 有沒有直飛
+    if direct:
+        who = '、'.join(lcc + fsc) or '多家航空'
+        qa.append((f'台灣有直飛{name}的班機嗎？',
+                   f'有。本站近期紀錄中共有 {len(direct)} 筆直飛{name}的票價，'
+                   f'執飛的航空公司包括{who}。'))
+    else:
+        qa.append((f'台灣有直飛{name}的班機嗎？',
+                   f'本站近期紀錄中沒有直飛{name}的班機，查到的都是轉機航班。'
+                   f'可考慮飛鄰近機場後轉乘日本國內交通。'))
+
+    # 2 飛行時間
+    ds = [x['dur_to'] for x in direct if x.get('dur_to')]
+    if ds:
+        m = min(ds)
+        qa.append((f'台灣飛{name}要多久？',
+                   f'直飛去程最短約 {m//60} 小時 {m%60} 分。'))
+
+    # 3 價格區間
+    rts = sorted(x['price'] for x in fs if x['rt'])
+    if len(rts) >= 4:
+        q1 = rts[len(rts)//4]          # 用四分位數，不用中位數
+        med = rts[len(rts)//2]         # 中位數會被少數極高價拉高，拿來當「便宜門檻」會誤導
+        qa.append((f'台灣飛{name}的機票大概多少錢？',
+                   f'本站近期紀錄的來回含稅價最低 {money(rts[0])}，中位數約 {money(med)}。'
+                   f'約四分之一的紀錄低於 {money(q1)}，'
+                   f'因此看到 {money(q1)} 以下就算是相對便宜的價格。'
+                   f'（此為歷史紀錄，實際售價請以訂票平台查詢為準）'))
+
+    # 4 有哪些航空
+    alla = sorted({x['airname'] for x in fs})
+    if len(alla) > 1:
+        parts = []
+        if lcc: parts.append(f'廉價航空有{"、".join(lcc)}')
+        if fsc: parts.append(f'一般航空有{"、".join(fsc)}')
+        extra = [a for a in alla if a not in lcc + fsc]
+        if extra: parts.append(f'另有經第三地轉機的{"、".join(extra[:4])}')
+        qa.append((f'哪些航空公司飛{name}？', '。'.join(parts) + '。'))
+
+    # 5 哪個月份便宜（樣本需夠分散才回答）
+    bym = {}
+    for x in fs:
+        if x['rt']: bym.setdefault(x['dep'][:7], []).append(x['price'])
+    if len(bym) >= 2:
+        rank = sorted(((k, min(v), len(v)) for k, v in bym.items()), key=lambda t: t[1])
+        best = rank[0]
+        if best[2] >= 3:
+            y, mo = best[0].split('-')
+            qa.append((f'{name}機票什麼時候比較便宜？',
+                       f'就本站目前涵蓋的期間而言，{y} 年 {int(mo)} 月出發的紀錄最低，'
+                       f'來回含稅 {money(best[1])} 起。樣本僅涵蓋未來兩個月，'
+                       f'不代表全年最低。'))
+
+    # 6 哪個機場出發便宜
+    byo = {}
+    for x in fs:
+        if x['rt'] and x['o'] in ORI: byo.setdefault(x['o'], []).append(x['price'])
+    if len(byo) >= 2:
+        rank = sorted(((k, min(v)) for k, v in byo.items()), key=lambda t: t[1])
+        txt = '、'.join(f'{ORI[k]} {money(v)}' for k, v in rank)
+        qa.append((f'從哪個機場飛{name}最便宜？',
+                   f'各出發地的近期最低來回含稅價：{txt}。'))
+
+    if not qa: return ''
+    html_qa = ''.join(f'<details class="faq"><summary>{html.escape(q)}</summary>'
+                      f'<div>{html.escape(a)}</div></details>' for q, a in qa)
+    ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+                     "mainEntity": [{"@type": "Question", "name": q,
+                                     "acceptedAnswer": {"@type": "Answer", "text": a}}
+                                    for q, a in qa]}, ensure_ascii=False)
+    return (f'<h2>關於{name}機票的常見問題</h2>{html_qa}'
+            f'<script type="application/ld+json">{ld}</script>')
+
+
 def klook_tours(slug, name):
     """依頁面城市顯示 Klook 行程 widget（繁中／TWD）"""
     cid = KLOOK_CITY.get(slug)
@@ -250,7 +333,8 @@ def load():
             cls='lcc' if a in LCC else 'fsc' if a in FSC else 'other',
             price=r.get('price',0),dep=r.get('departure_at','')[:10],ret=r.get('return_at','')[:10],
             rt=bool(r.get('return_at')),tr=(r.get('transfers',0) or 0)+(r.get('return_transfers',0) or 0),
-            dur=r.get('duration',0) or 0, gate=r.get('gate','') or '',
+            dur=r.get('duration',0) or 0, dur_to=r.get('duration_to',0) or 0,
+            gate=r.get('gate','') or '',
             url=f"https://www.aviasales.com{r['link']}&marker={MARKER}" if r.get('link') else ''))
     return out
 
@@ -317,6 +401,15 @@ table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--dim);font-weight:600;font-size:.79rem}
 td b{color:var(--acc)}
+details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
+margin-top:8px;padding:0}
+details.faq summary{cursor:pointer;padding:13px 15px;font-weight:600;font-size:.95rem;
+list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"＋";color:var(--acc);font-weight:700;flex:0 0 auto}
+details.faq[open] summary::after{content:"－"}
+details.faq summary:hover{color:var(--acc)}
+details.faq>div{padding:0 15px 14px;font-size:.9rem;color:var(--dim);line-height:1.8}
 .sf{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:12px;
 padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
 .sf label{display:flex;flex-direction:column;gap:5px;font-size:.78rem;color:var(--dim);flex:1 1 150px}
@@ -570,6 +663,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
     _cheaper = any(a[3] and own_min and a[3] < own_min for a in _alts)
     if len(fs) < ROUTE_MIN or _cheaper:
         body += alt_block(slug,name,hotelcity,own_min)
+    body+=faq_block(name,fs,codes)
     body+=klook_tours(slug,name)
     body+=f'<h2>{name}住宿・上網・行程</h2>'+partner_links(name,hotelcity,slug)
     sib=[c for c in CITIES if c[3]==reg and c[0]!=slug]
