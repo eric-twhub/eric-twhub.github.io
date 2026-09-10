@@ -401,6 +401,15 @@ table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--dim);font-weight:600;font-size:.79rem}
 td b{color:var(--acc)}
+.cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
+background:var(--card);border:1px solid var(--line);border-radius:12px;
+text-decoration:none;color:var(--fg)}
+.cta:hover{border-color:var(--acc)}
+.cta .ci{font-size:1.5rem;flex:0 0 auto}
+.cta .ct{flex:1;display:flex;flex-direction:column;gap:2px}
+.cta .ct b{font-size:.98rem;font-weight:700}
+.cta .ct s{text-decoration:none;font-size:.82rem;color:var(--dim)}
+.cta .ca{color:var(--acc);font-weight:700;font-size:1.1rem;flex:0 0 auto}
 details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
 margin-top:8px;padding:0}
 details.faq summary{cursor:pointer;padding:13px 15px;font-weight:600;font-size:.95rem;
@@ -496,14 +505,24 @@ def fare_card(x,hot=False):
 <div class="mt"><span class="tg {x['cls']}">{tag}</span><span>{html.escape(x['airname'])}</span><span>{stops}</span></div>
 <div class="dt">{dates}</div>{gate_html}{btn}</article>'''
 
-def partner_links(city_name,hotel_city,slug=None):
-    # 依目的地性質挑選夥伴：都會區推行程與接送，郊區離島推租車
-    keys=['hotel','esim']
-    if slug and slug in URBAN: keys+=['activity','transfer']
-    else: keys+=['car','activity']
-    ls=''.join(
-      f'<a class="plink" href="{html.escape(plink(k,hotel_city))}" target="_blank" '
-      f'rel="nofollow noopener sponsored">{plabel(k,city_name)}</a>' for k in keys)
+def cta(kind, city_name, hotel_city, headline, sub):
+    """單一情境式 CTA。
+    不再把 4–5 個夥伴連結並排——Travelpayouts 官方明言「一段五個連結會失去信任」，
+    競品分析也顯示成效好的頁面是把連結嵌在相關段落，而非集中成一排按鈕。"""
+    p = P[kind]
+    return (f'<a class="cta" href="{html.escape(plink(kind, hotel_city))}" target="_blank" '
+            f'rel="nofollow noopener sponsored">'
+            f'<span class="ci">{p["icon"]}</span>'
+            f'<span class="ct"><b>{html.escape(headline)}</b><s>{html.escape(sub)}</s></span>'
+            f'<span class="ca">→</span></a>')
+
+
+def partner_links(city_name, hotel_city, slug=None):
+    """保留給尚未改為情境式配置的頁面（航線頁、deal 貼文），至多兩個連結。"""
+    keys = ['hotel', 'esim']
+    ls = ''.join(
+        f'<a class="plink" href="{html.escape(plink(k,hotel_city))}" target="_blank" '
+        f'rel="nofollow noopener sponsored">{plabel(k,city_name)}</a>' for k in keys)
     return (f'<div class="plinks">{ls}</div>'
             '<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>')
 
@@ -663,9 +682,18 @@ for slug,name,codes,reg,hotelcity in CITIES:
     _cheaper = any(a[3] and own_min and a[3] < own_min for a in _alts)
     if len(fs) < ROUTE_MIN or _cheaper:
         body += alt_block(slug,name,hotelcity,own_min)
+    # 看完票價 → 下一步就是找住宿，放在這裡最順
+    if fs:
+        body+=cta('hotel',name,hotelcity,f'看好機票了？接著找{name}的住宿',
+                  f'到 Agoda 查{name}房價，繁體中文、台幣計價')
     body+=faq_block(name,fs,codes)
     body+=klook_tours(slug,name)
-    body+=f'<h2>{name}住宿・上網・行程</h2>'+partner_links(name,hotelcity,slug)
+    if slug not in URBAN:
+        body+=cta('car',name,hotelcity,f'{name}自駕比較方便',
+                  '到 Klook 比較租車方案')
+    body+=cta('esim',name,hotelcity,'出發前別忘了日本上網',
+              '到 Klook 買 eSIM 或網卡，落地就能用')
+    body+='<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>'
     sib=[c for c in CITIES if c[3]==reg and c[0]!=slug]
     if sib:
         body+=(f'<h2>{REGNAME[reg]}其他航點</h2><div class="cities">'+''.join(
