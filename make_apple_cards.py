@@ -103,7 +103,29 @@ def watch(body, band="#2f2b28", h=430):
 </svg>'''
 
 
-def airpods(body="#f4f2ee", h=430):
+def watch_ultra(body="#b9b1a4", band="#3c3a35", h=430):
+    """Apple Watch Ultra：鈦金屬平面錶身、左側橘色動作按鈕。"""
+    u = _u()
+    w = int(h * 200 / 400)
+    return f'''<svg width="{w}" height="{h}" viewBox="0 0 200 400" fill="none">{_defs(body, body, u)}
+<path d="M62 2h76v122H62z" fill="{band}"/>
+<path d="M62 278h76v120H62z" fill="{band}"/>
+<rect x="54" y="100" width="92" height="28" rx="10" fill="{band}"/>
+<rect x="54" y="274" width="92" height="28" rx="10" fill="{band}"/>
+<rect x="22" y="104" width="156" height="196" rx="46" fill="url(#{u}f)"/>
+<rect x="30" y="112" width="140" height="180" rx="40" fill="#0a0c0f"/>
+<rect x="40" y="122" width="120" height="160" rx="33" fill="#12151a"/>
+<circle cx="100" cy="182" r="28" fill="none" stroke="#fb923c" stroke-width="8" stroke-linecap="round"
+ stroke-dasharray="140 36" transform="rotate(-90 100 182)"/>
+<rect x="70" y="232" width="60" height="10" rx="5" fill="#3d444e"/>
+<rect x="70" y="253" width="40" height="10" rx="5" fill="#2c323a"/>
+<rect x="12" y="176" width="14" height="48" rx="6" fill="#f97316"/>
+<rect x="176" y="150" width="16" height="40" rx="7" fill="{body}" stroke="#ffffff" stroke-opacity=".25" stroke-width="2"/>
+<rect x="177" y="206" width="13" height="48" rx="6" fill="{body}" opacity=".85"/>
+</svg>'''
+
+
+def airpods(body="#f4f2ee", h=430, tips=True):
     """AirPods Pro：矽膠耳塞＋耳機柄，左右各一。"""
     u = _u()
     w = int(h * 200 / 400)
@@ -116,11 +138,13 @@ def airpods(body="#f4f2ee", h=430):
                 f'<rect x="-8" y="104" width="16" height="5" rx="2.5" fill="{dark}" opacity=".5"/>'
                 f'<circle cx="0" cy="0" r="40" fill="{body}" stroke="{edge}" stroke-width="2"/>'
                 f'<ellipse cx="8" cy="6" rx="13" ry="19" fill="{dark}" opacity=".22"/>'
-                f'<g transform="rotate(-32)">'
-                f'<ellipse cx="0" cy="-38" rx="25" ry="21" fill="{tip}" stroke="{edge}" stroke-width="2"/>'
-                f'<ellipse cx="0" cy="-44" rx="14" ry="10" fill="{dark}"/>'
-                f'<ellipse cx="0" cy="-45" rx="9" ry="6" fill="#4a4540"/></g>'
-                f'</g>')
+                + (f'<g transform="rotate(-32)">'
+                   f'<ellipse cx="0" cy="-38" rx="25" ry="21" fill="{tip}" stroke="{edge}" stroke-width="2"/>'
+                   f'<ellipse cx="0" cy="-44" rx="14" ry="10" fill="{dark}"/>'
+                   f'<ellipse cx="0" cy="-45" rx="9" ry="6" fill="#4a4540"/></g>' if tips else
+                   f'<ellipse cx="-12" cy="-14" rx="17" ry="12" fill="{dark}" opacity=".3" '
+                   f'transform="rotate(-32 -12 -14)"/>')
+                + f'</g>')
     return (f'<svg width="{w}" height="{h}" viewBox="0 0 200 400" fill="none">'
             f'{bud(128, 128, 14, .78)}{bud(70, 244, -8, .96)}</svg>')
 
@@ -196,18 +220,20 @@ def main():
     def ex(p): return round(p["jpy"] / T * R)
 
     # (檔名, 產品名, 取價 spec, 裝置圖, 機身色, 色名)
+    # 只放 2026/9 發表會的新品，順序照發表順序
     items = [
         ("02_duo", "iPhone Duo", "256GB", iphone_pro("#ece7dd"),
-         ["#ece7dd", "#26303c"], "星光白色・夜空色"),
+         ["#ece7dd", "#26303c"], "摺疊機・7.6 吋展開"),
         ("03_18pro", "iPhone 18 Pro", "256GB", iphone_pro("#c9a227"),
          ["#c9a227", "#3a3a3c", "#d8d4cd"], "6.3 吋"),
         ("04_18promax", "iPhone 18 Pro Max", "256GB", iphone_pro("#3a3a3c"),
          ["#c9a227", "#3a3a3c", "#d8d4cd"], "6.9 吋"),
-        ("05_air", "iPhone Air", "256GB", iphone_bar("#dcd6c8"),
-         ["#dcd6c8", "#8fb4cc", "#eeece7", "#2b2b2d"], "淺金・天藍・雲白・太空黑"),
-        ("06_watch", "Apple Watch Series 12", "42mm 起", watch("#3a3a3c"),
+        ("05_watch", "Apple Watch Series 12", "42mm 起", watch("#3a3a3c"),
          ["#3a3a3c", "#c9a227", "#d8d4cd"], "42mm／46mm"),
-        ("07_pods", "AirPods Pro 3", "", airpods(), [], "主動式降噪"),
+        ("06_ultra", "Apple Watch Ultra 4", "49mm", watch_ultra(),
+         ["#b9b1a4", "#3c3a35"], "49mm 鈦金屬"),
+        ("07_pods", "AirPods 5", "USB-C 充電盒", airpods(tips=False),
+         [], "主動式降噪"),
     ]
 
     os.makedirs(OUT, exist_ok=True)
@@ -223,11 +249,12 @@ def main():
                        capture_output=True, timeout=90)
         if os.path.exists(png): made.append(fn)
 
-    iph = [p for p in ap["products"] if p["cat"] == "iPhone"]
+    new = [p for p in ap["products"] if p.get("new")]
+    iph = [p for p in new if p["cat"] == "iPhone"]
     cheap_tw = sum(1 for p in iph if p["twd"] - inc(p) < 0)
     top = max(iph, key=lambda p: p["twd"] - ex(p))
-    pods = [p for p in ap["products"] if p["cat"] == "AirPods"]
-    wat = [p for p in ap["products"] if p["cat"] == "Apple Watch"]
+    pods = [p for p in new if p["cat"] == "AirPods"]
+    wat = [p for p in new if p["cat"] == "Apple Watch"]
     w_best = max(wat, key=lambda p: p["twd"] - ex(p))
     w_gap = w_best["twd"] - ex(w_best)
     if all(p["twd"] - ex(p) < 0 for p in pods) and w_gap <= 1500:
@@ -241,7 +268,7 @@ def main():
     shot("01_cover", head_html(COVER) + f'''<div class="mid">
 <div class="q">日本買 iPhone<br>真的比較便宜嗎？</div>
 <div class="a">在 Apple 直營店買<br>台灣反而便宜</div>
-<div class="sub">15 個 iPhone 組合中，<b>{cheap_tw} 個台灣售價較低</b></div>
+<div class="sub">{len(iph)} 個新機組合中，<b>{cheap_tw} 個台灣售價較低</b></div>
 <div class="swipe">→ 滑看每個新品的實際價差</div></div>
 <div class="site">{site}</div></body></html>''')
 

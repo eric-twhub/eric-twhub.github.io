@@ -1073,6 +1073,7 @@ if os.path.exists('apple.json'):
     for cat in ('iPhone','Apple Watch','AirPods'):
         ps=[p for p in AP['products'] if p['cat']==cat]
         if not ps: continue
+        ps=sorted(ps,key=lambda p:not p.get('new'))   # 新品排前面
         tables+=('<h3>'+cat+'</h3><div class="tw"><table><thead><tr>'
                  '<th>型號</th><th>日本售價'+SMALL+'含稅</small></th>'
                  '<th>換算台幣'+SMALL+'含稅</small></th>'
@@ -1080,8 +1081,13 @@ if os.path.exists('apple.json'):
                  '<th>含稅比較</th><th>退稅後比較</th></tr></thead><tbody>'
                  +''.join(_row(p) for p in ps)+'</tbody></table></div>')
 
-    iph=[p for p in AP['products'] if p['cat']=='iPhone']
-    acc=[p for p in AP['products'] if p['cat']!='iPhone']
+    NEWP=[p for p in AP['products'] if p.get('new')]
+    OLDP=[p for p in AP['products'] if not p.get('new')]
+    iph=[p for p in NEWP if p['cat']=='iPhone']
+    acc=[p for p in NEWP if p['cat']!='iPhone']
+    EV=AP.get('event',{})
+    ev_new='、'.join(EV.get('announced',[])) or ''
+    ev_old='、'.join(sorted({p['name'] for p in OLDP}))
     cheap_tw=sum(1 for p in iph if p['twd']-round(p['jpy']*RATE)<0)
     cheap_jp=sum(1 for p in iph if p['twd']-round(p['jpy']/TAXR*RATE)>0)
     acc_tw=sum(1 for p in acc if p['twd']-round(p['jpy']/TAXR*RATE)<0)
@@ -1097,8 +1103,8 @@ if os.path.exists('apple.json'):
       '想以免稅價購買，需前往 Bic Camera、Yodobashi Camera 等有 Tax-Free 標示的家電量販店，結帳時出示護照。'
       '惟量販店定價未必與 Apple 官網相同，部分店家另收手續費，需現場確認。'),
      ('Apple Watch 和 AirPods 值得在日本買嗎？',
-      f'不太值得。本頁比較的 {len(acc)} 項配件中，有 {acc_tw} 項即使退稅後仍是台灣便宜。'
-      f'其中 AirPods Pro 3 台灣售價明顯低於日本換算價。'),
+      f'不太值得。本次發表的 {len(acc)} 項配件中，有 {acc_tw} 項即使退稅後仍是台灣便宜，'
+      f'其餘價差也不到 NT$1,000，扣掉換匯成本與保固風險並不划算。'),
      ('日本買的 iPhone 快門聲可以關嗎？',
       '可以。自 iOS 15 起，日版 iPhone 的相機快門聲僅在日本境內強制發出，離開日本後即可透過靜音開關關閉。'),
      ('日版 iPhone 在台灣可以保固嗎？',
@@ -1162,20 +1168,23 @@ if os.path.exists('apple.json'):
       head(title,desc,'apple-japan-price/','<script type="application/ld+json">'+faq_ld+'</script>')
       + crumbs([('首頁','/'),('日本買 iPhone 價差比較',None)]) + topnav()
       + '<h1>日本買 iPhone 比較便宜嗎？</h1>'
-      + '<p class="lede">把 iPhone Duo、iPhone 18 Pro、iPhone Air、Apple Watch 與 AirPods 的'
-        '台日官方定價全部換算比較，並試算<b>退稅後</b>的實際價格。</p>'
+      + f'<p class="lede">把 <b>{html.escape(EV.get("name",""))}</b>新品的台日官方定價全部換算比較，'
+        f'並試算<b>退稅後</b>的實際價格。</p>'
+      + f'<p class="upd">本次新品：{html.escape(ev_new)}<br>'
+        f'{html.escape(ev_old)} 本次未改版，一併列出供比較</p>'
       + f'<p class="upd">換算匯率 <b>{RATE}</b>'
         + (f'（中間匯率 {AP["rate"]["jpy_twd_mid"]} 加計約 {round(AP["rate"]["spread"]*100,1)}% 換匯成本）'
            if AP['rate'].get('jpy_twd_mid') else '')
         + f'　·　匯率更新 {AP["rate"]["quoted_at"]}'
         + f'　·　售價取自 Apple 日本／台灣官網　·　資料更新於 {AP["updated"]}</p>'
       + '<h2>先講結論</h2><div class="tldr"><ul>'
-      + f'<li><b>在 Apple 直營店買，台灣比較便宜。</b>{len(iph)} 個 iPhone 組合中有 {cheap_tw} 個台灣較低，'
+      + f'<li><b>在 Apple 直營店買，台灣比較便宜。</b>{len(iph)} 個新機組合中有 {cheap_tw} 個台灣較低，'
         f'差距多在 NT$1,000 上下。</li>'
       + f'<li><b>能退稅才有價差。</b>在家電量販店以免稅價購買時，{cheap_jp} 個組合日本較划算，'
         f'最多可省 {money(top_save)}（{top["name"]} {top["spec"]}）。</li>'
       + '<li><b>但 Apple 直營店已不能退稅</b>（2024/6 起），要免稅得去 Bic Camera、Yodobashi 等量販店。</li>'
-      + f'<li><b>Apple Watch 與 AirPods 不值得在日本買</b>，{len(acc)} 項中有 {acc_tw} 項連退稅後都是台灣便宜。</li>'
+      + f'<li><b>配件不值得為它退稅。</b>{len(acc)} 項新配件中有 {acc_tw} 項連退稅後仍是台灣便宜，'
+        f'其餘價差也不到 NT$1,000。</li>'
       + '</ul></div>'
       + search_form('順便查一下機票多少錢',
                     '既然在考慮飛一趟，先看看你的日期要多少。', 'TPE', 'TYO')

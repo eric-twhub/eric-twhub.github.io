@@ -18,148 +18,182 @@
       "name": "iPhone Duo",
       "spec": "256GB",
       "jpy": 364800,
-      "twd": 74900
+      "twd": 74900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone Duo",
       "spec": "512GB",
       "jpy": 399800,
-      "twd": 81900
+      "twd": 81900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone Duo",
       "spec": "1TB",
       "jpy": 469800,
-      "twd": 96900
+      "twd": 96900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone Duo",
       "spec": "2TB",
       "jpy": 574800,
-      "twd": 118900
+      "twd": 118900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone 18 Pro Max",
       "spec": "256GB",
       "jpy": 239800,
-      "twd": 49900
+      "twd": 49900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone 18 Pro Max",
       "spec": "512GB",
       "jpy": 274800,
-      "twd": 56900
+      "twd": 56900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone 18 Pro Max",
       "spec": "1TB",
       "jpy": 344800,
-      "twd": 71900
+      "twd": 71900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone 18 Pro Max",
       "spec": "2TB",
       "jpy": 449800,
-      "twd": 93900
+      "twd": 93900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone 18 Pro",
       "spec": "256GB",
       "jpy": 219800,
-      "twd": 44900
+      "twd": 44900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone 18 Pro",
       "spec": "512GB",
       "jpy": 254800,
-      "twd": 51900
+      "twd": 51900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone 18 Pro",
       "spec": "1TB",
       "jpy": 324800,
-      "twd": 66900
+      "twd": 66900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone 18 Pro",
       "spec": "2TB",
       "jpy": 429800,
-      "twd": 88900
+      "twd": 88900,
+      "new": true
     },
     {
       "cat": "iPhone",
       "name": "iPhone Air",
       "spec": "256GB",
       "jpy": 189800,
-      "twd": 39900
+      "twd": 39900,
+      "new": false
     },
     {
       "cat": "iPhone",
       "name": "iPhone Air",
       "spec": "512GB",
       "jpy": 224800,
-      "twd": 46900
+      "twd": 46900,
+      "new": false
     },
     {
       "cat": "iPhone",
       "name": "iPhone Air",
       "spec": "1TB",
       "jpy": 294800,
-      "twd": 61900
+      "twd": 61900,
+      "new": false
     },
     {
       "cat": "Apple Watch",
       "name": "Apple Watch Series 12",
       "spec": "42mm 起",
       "jpy": 71800,
-      "twd": 13900
+      "twd": 13900,
+      "new": true
     },
     {
       "cat": "Apple Watch",
       "name": "Apple Watch Ultra 4",
       "spec": "49mm",
       "jpy": 142800,
-      "twd": 27900
+      "twd": 27900,
+      "new": true
     },
     {
       "cat": "Apple Watch",
       "name": "Apple Watch SE 3",
       "spec": "40mm 起",
       "jpy": 41800,
-      "twd": 7900
+      "twd": 7900,
+      "new": false
     },
     {
       "cat": "AirPods",
       "name": "AirPods 5",
       "spec": "USB-C 充電盒",
       "jpy": 23800,
-      "twd": 4490
+      "twd": 4490,
+      "new": true
     },
     {
       "cat": "AirPods",
       "name": "AirPods 5",
       "spec": "無線充電盒",
       "jpy": 27800,
-      "twd": 5190
+      "twd": 5190,
+      "new": true
     },
     {
       "cat": "AirPods",
       "name": "AirPods Pro 3",
       "spec": "",
       "jpy": 42800,
-      "twd": 7490
+      "twd": 7490,
+      "new": false
     }
   ],
-  "_note": "台日 Apple 定價比較。價格取自 Apple 日本／台灣官網，匯率取自臺灣銀行牌告。改版或調價時更新此檔後重跑 gen.py。"
+  "_note": "台日 Apple 定價比較。價格取自 Apple 日本／台灣官網（2026-09-10 核對）。new=true 為該次發表會新品，false 為同場在售的既有機種。改版或調價時更新此檔後重跑 gen.py 與 make_apple_cards.py。",
+  "event": {
+    "name": "2026 秋季發表會",
+    "date": "2026-09-10",
+    "announced": [
+      "iPhone Duo",
+      "iPhone 18 Pro",
+      "iPhone 18 Pro Max",
+      "Apple Watch Series 12",
+      "Apple Watch Ultra 4",
+      "AirPods 5"
+    ],
+    "note": "iPhone Air、Apple Watch SE 3、AirPods Pro 3 為既有在售機種，本次未改版；標準版 iPhone 18 與第二代 iPhone Air 延至 2027 春季"
+  }
 }
