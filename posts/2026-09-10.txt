@@ -20,7 +20,7 @@
 
 　🛫 樂桃航空｜直飛
 　📅 2026-10-31 – 2026-11-05
-　💡 比同航線中位價 NT$13,670 低 53%
+　💡 低於本站近期紀錄中位價 53%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-10-taipei-tokyo/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=tpe&acity=tyo&ddate=2026-10-31&rdate=2026-11-05&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -32,7 +32,7 @@
 
 　🛫 台灣虎航｜直飛
 　📅 2026-09-21 – 2026-09-25
-　💡 比同航線中位價 NT$14,330 低 54%
+　💡 低於本站近期紀錄中位價 54%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-10-taipei-fukuoka/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=tpe&acity=fuk&ddate=2026-09-21&rdate=2026-09-25&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -44,7 +44,7 @@
 
 　🛫 捷星日本｜直飛
 　📅 2026-10-14 – 2026-10-21
-　💡 比同航線中位價 NT$14,395 低 53%
+　💡 低於本站近期紀錄中位價 53%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-10-taipei-osaka/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=tpe&acity=osa&ddate=2026-10-14&rdate=2026-10-21&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -56,7 +56,7 @@
 
 　🛫 台灣虎航｜直飛
 　📅 2026-09-17 – 2026-09-24
-　💡 比同航線中位價 NT$13,722 低 49%
+　💡 低於本站近期紀錄中位價 49%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-10-taipei-nagoya/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=tpe&acity=ngo&ddate=2026-09-17&rdate=2026-09-24&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -68,7 +68,7 @@
 
 　🛫 馬來西亞亞航｜直飛
 　📅 2026-09-22 – 2026-09-30
-　💡 比同航線中位價 NT$9,563 低 21%
+　💡 低於本站近期紀錄中位價 21%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-10-kaohsiung-osaka/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=khh&acity=osa&ddate=2026-09-22&rdate=2026-09-30&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -80,7 +80,7 @@
 
 　🛫 捷星日本｜直飛
 　📅 2026-09-20 – 2026-09-26
-　💡 比同航線中位價 NT$13,389 低 41%
+　💡 低於本站近期紀錄中位價 41%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-10-kaohsiung-tokyo/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=khh&acity=tyo&ddate=2026-09-20&rdate=2026-09-26&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -92,7 +92,7 @@
 
 　🛫 真航空｜轉機 1 次
 　📅 2026-09-14 – 2026-09-17
-　💡 比同航線中位價 NT$11,950 低 32%
+　💡 低於本站近期紀錄中位價 32%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-10-taichung-okinawa/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=rmq&acity=oka&ddate=2026-09-14&rdate=2026-09-17&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -104,7 +104,7 @@
 
 　🛫 台灣虎航｜直飛
 　📅 2026-10-06 – 2026-10-13
-　💡 比同航線中位價 NT$15,233 低 37%
+　💡 低於本站近期紀錄中位價 37%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-10-taipei-sapporo/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=tpe&acity=spk&ddate=2026-10-06&rdate=2026-10-13&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
