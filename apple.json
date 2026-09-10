@@ -195,5 +195,44 @@
       "AirPods 5"
     ],
     "note": "iPhone Air、Apple Watch SE 3、AirPods Pro 3 為既有在售機種，本次未改版；標準版 iPhone 18 與第二代 iPhone Air 延至 2027 春季"
-  }
+  },
+  "dates": {
+    "iPhone Duo": {
+      "jp_pre": "10/16 21:00",
+      "jp_sale": "10/23",
+      "tw_pre": "10/16 20:00",
+      "tw_sale": "10/23"
+    },
+    "iPhone 18 Pro": {
+      "jp_pre": "9/12 21:00",
+      "jp_sale": "9/18",
+      "tw_pre": "9/12 20:00",
+      "tw_sale": "9/18"
+    },
+    "iPhone 18 Pro Max": {
+      "jp_pre": "9/12 21:00",
+      "jp_sale": "9/18",
+      "tw_pre": "9/12 20:00",
+      "tw_sale": "9/18"
+    },
+    "Apple Watch Series 12": {
+      "jp_pre": "9/10 起",
+      "jp_sale": "9/18",
+      "tw_pre": "9/11 09:00",
+      "tw_sale": "9/18"
+    },
+    "Apple Watch Ultra 4": {
+      "jp_pre": "9/10 起",
+      "jp_sale": "9/18",
+      "tw_pre": "9/11 09:00",
+      "tw_sale": "9/18"
+    },
+    "AirPods 5": {
+      "jp_pre": "9/10 起",
+      "jp_sale": "9/18",
+      "tw_pre": "9/11 09:00",
+      "tw_sale": "9/18"
+    }
+  },
+  "dates_note": "預購／預約時間為各地當地時間；日本 21:00 JST 與台灣 20:00 為同一時刻。既有在售機種不列。核對於 2026-09-10。"
 }

@@ -1069,6 +1069,21 @@ if os.path.exists('apple.json'):
                 f'<td>¥{p["jpy"]:,}</td><td>{money(inc)}</td><td><b>{money(ex)}</b></td>'
                 f'<td>{money(p["twd"])}</td>'+_cell(p['twd']-inc)+_cell(p['twd']-ex)+'</tr>')
 
+    # 上市時間（僅本次新品；既有機種早已開賣）
+    DT=AP.get('dates',{})
+    _drows=''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td>'
+        f'<td>{d["jp_pre"]}</td><td><b>{d["jp_sale"]}</b></td>'
+        f'<td>{d["tw_pre"]}</td><td><b>{d["tw_sale"]}</b></td></tr>'
+        for n,d in DT.items())
+    dtable=('<h2>什麼時候開賣？</h2>'
+            '<p class="lede">預購時間為各地當地時間。日本 21:00（JST）與台灣 20:00 其實是同一時刻，'
+            '想在日本官網下單不必另外換算。</p>'
+            '<div class="tw"><table><thead><tr><th>型號</th>'
+            '<th>日本預約</th><th>日本開賣</th><th>台灣預購</th><th>台灣開賣</th>'
+            '</tr></thead><tbody>'+_drows+'</tbody></table></div>'
+            f'<p class="disc">{html.escape(AP.get("dates_note",""))}</p>') if _drows else ''
+
     tables=''
     for cat in ('iPhone','Apple Watch','AirPods'):
         ps=[p for p in AP['products'] if p['cat']==cat]
@@ -1191,6 +1206,7 @@ if os.path.exists('apple.json'):
       + '<h2>台日價格全表</h2>'
       + '<p class="lede">「退稅後」為日本含稅價扣除 10% 消費稅後換算之約當金額，'
         '實際免稅價與手續費依店家而異。</p>' + tables
+      + dtable
       + '<h2>買之前要知道的兩件事</h2>'
       + '<h3>1. Apple 直營店已經不能退稅</h3>'
       + '<p class="lede">Apple 日本直營店自 2024 年 6 月起取消對外國旅客的免稅服務。'

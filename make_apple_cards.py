@@ -39,21 +39,31 @@ PROD = """
 .pspec{margin-top:12px;font-size:29px;color:#a8a29c}
 table{width:100%;border-collapse:collapse;margin-top:44px;table-layout:fixed;
  font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
-th+th,td+td{padding-left:20px}
-th{font-size:23px;color:#7a736c;font-weight:600;text-align:right;
+th+th,td+td{padding-left:14px}
+th{font-size:21px;color:#7a736c;font-weight:600;text-align:right;
  padding:0 0 18px;letter-spacing:.03em;line-height:1.35}
 th:first-child{text-align:left}
-td{font-size:31px;font-weight:700;text-align:right;padding:19px 0;
+td{font-size:28px;font-weight:700;text-align:right;padding:19px 0;
  border-top:1px solid rgba(255,255,255,.09)}
-td:first-child{text-align:left;font-size:27px;color:#c9c3bc;font-weight:600;
+td:first-child{text-align:left;font-size:24px;color:#c9c3bc;font-weight:600;
+ line-height:1.35;
  padding-right:0;letter-spacing:-.01em}
+td:first-child i{display:block;font-style:normal;font-size:21px;
+ color:#8a837c;font-weight:500;margin-top:3px}
 td.ex{color:#fb923c}
-td.gap{font-weight:600;line-height:1.42;font-size:25px}
+td.jpy{color:#9c958d;font-weight:600}
+td.gap{font-weight:600;line-height:1.42;font-size:23px}
 td.gap span{display:block;white-space:nowrap}
 td.gap s{text-decoration:none;color:#6b6560;margin-right:10px;font-weight:500}
 .g-jp{color:#2dd4bf}
 .g-tw{color:#fb923c}
 .unit{margin-top:20px;font-size:23px;color:#5f5a55;line-height:1.5}
+.dates{display:flex;gap:18px;margin-top:22px}
+.dates div{flex:1;background:rgba(255,255,255,.045);border-radius:14px;padding:18px 22px}
+.dates b{display:block;font-size:24px;color:#a8a29c;font-weight:600;margin-bottom:8px;
+ letter-spacing:.05em}
+.dates u{display:block;text-decoration:none;font-size:26px;font-weight:700;line-height:1.5}
+.dates u s{text-decoration:none;color:#6b6560;font-weight:500;margin-right:8px}
 .verdict{margin-top:26px;padding:22px 28px;border-radius:16px;
  font-size:31px;font-weight:800;line-height:1.5}
 .v-tw{background:rgba(251,146,60,.16);color:#fb923c}
@@ -97,10 +107,10 @@ def main():
         ("04_18promax", "iPhone 18 Pro Max", "6.9 吋", "容量",
          [(c, "iPhone 18 Pro Max", c) for c in ("256GB", "512GB", "1TB", "2TB")]),
         ("05_acc", "Apple Watch ・ AirPods", "本次發表的配件，全部型號", "型號",
-         [("Watch S12 42mm", "Apple Watch Series 12", "42mm 起"),
-          ("Watch Ultra 4", "Apple Watch Ultra 4", "49mm"),
-          ("AirPods 5", "AirPods 5", "USB-C 充電盒"),
-          ("AirPods 5 無線盒", "AirPods 5", "無線充電盒")]),
+         [("Watch S12<i>42mm 起</i>", "Apple Watch Series 12", "42mm 起"),
+          ("Watch Ultra 4<i>49mm</i>", "Apple Watch Ultra 4", "49mm"),
+          ("AirPods 5<i>USB-C 充電盒</i>", "AirPods 5", "USB-C 充電盒"),
+          ("AirPods 5<i>無線充電盒</i>", "AirPods 5", "無線充電盒")]),
     ]
 
     os.makedirs(OUT, exist_ok=True)
@@ -140,6 +150,17 @@ def main():
 <div class="site">{site}</div></body></html>''')
 
     total = len(fams) + 2
+    DT = ap.get("dates", {})
+
+    def date_block(names):
+        d = next((DT[n] for n in names if n in DT), None)
+        if not d: return ""
+        return (f'<div class="dates">'
+                f'<div><b>日本</b><u><s>預約</s>{d["jp_pre"]}</u>'
+                f'<u><s>開賣</s>{d["jp_sale"]}</u></div>'
+                f'<div><b>台灣</b><u><s>預購</s>{d["tw_pre"]}</u>'
+                f'<u><s>開賣</s>{d["tw_sale"]}</u></div></div>')
+
     for i, (fn, title, note, col1, keys) in enumerate(fams, start=2):
         rows, gaps, gaps_inc = "", [], []
         for lbl, name, spec in keys:
@@ -154,30 +175,35 @@ def main():
                 w = "日本省" if v > 0 else "台灣省"
                 return f'<span><s>{lead}</s><b class="{c}">{w} {abs(v):,}</b></span>'
 
-            rows += (f'<tr><td>{html.escape(lbl)}</td>'
+            rows += (f'<tr><td>{lbl}</td>'   # lbl 為本檔內建字串，含 <i> 副標
+                     f'<td class="jpy">¥{p["jpy"]:,}</td>'
                      f'<td>{inc(p):,}</td><td class="ex">{ex(p):,}</td>'
                      f'<td>{p["twd"]:,}</td>'
                      f'<td class="gap">{tag(gi, "含稅")}{tag(g, "退稅")}</td></tr>')
         n_jp = sum(1 for g in gaps if g > 0)
         n_tw = sum(1 for g in gaps_inc if g < 0)
-        lead = (f"直營店價：{n_tw}／{len(gaps_inc)} 個台灣便宜" if n_tw else
-                "直營店價：日本較便宜")
+        lead = ("在 Apple 直營店買，全部都是台灣便宜" if n_tw == len(gaps_inc) else
+                "在 Apple 直營店買，多數是台灣便宜" if n_tw else
+                "在 Apple 直營店買，日本比較便宜")
         if n_jp == len(gaps):
             v = (f'<div class="verdict v-jp">{lead}<br>'
                  f'能退稅才反轉，日本最多省 NT${max(gaps):,}</div>')
         elif n_jp == 0:
             v = (f'<div class="verdict v-tw">{lead}<br>'
-                 f'連退稅後都是台灣便宜，最多省 NT${abs(min(gaps)):,}</div>')
+                 f'連退稅後都還是台灣便宜，最多省 NT${abs(min(gaps)):,}</div>')
         else:
             v = (f'<div class="verdict v-jp">{lead}<br>'
-                 f'退稅後 {n_jp}／{len(gaps)} 個日本較便宜，最多省 NT${max(gaps):,}</div>')
+                 f'退稅後部分型號日本較低，最多省 NT${max(gaps):,}</div>')
         shot(fn, head_html(PROD, f"{i}／{total}") + f'''<div class="mid">
 <div class="pname">{html.escape(title)}</div>
 <div class="pspec">{html.escape(note)}</div>
-<table><colgroup><col style="width:25%"><col style="width:17%"><col style="width:17%"><col style="width:16%"><col style="width:25%"></colgroup><thead><tr><th>{col1}</th><th>日本含稅<br>直營店</th>
+<table><colgroup><col style="width:19%"><col style="width:16%"><col style="width:14%">
+<col style="width:14%"><col style="width:14%"><col style="width:23%"></colgroup>
+<thead><tr><th>{col1}</th><th>日本售價<br>日圓</th><th>日本含稅<br>直營店</th>
 <th>日本退稅後<br>免稅價</th><th>台灣售價</th><th>價差</th></tr></thead>
 <tbody>{rows}</tbody></table>
-<div class="unit">單位 NT$，日圓依 {R} 換算　·　日本退稅後＝含稅價扣除 10% 消費稅</div>
+<div class="unit">台幣欄位單位 NT$，日圓依 {R} 換算　·　日本退稅後＝含稅價扣除 10% 消費稅</div>
+{date_block([k[1] for k in keys])}
 {v}</div>
 <div class="site">{site}</div></body></html>''')
 
