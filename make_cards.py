@@ -81,6 +81,14 @@ def card_html(d, site):
 
 
 def main():
+    # 查證後校正：python3 make_cards.py --slug 2026-09-10-taipei-tokyo --price 6699
+    # 快取價常低於訂票平台實際售價，發文一律以查證看到的價格為準
+    fix_slug = fix_price = None
+    if "--slug" in sys.argv:
+        fix_slug = sys.argv[sys.argv.index("--slug") + 1]
+    if "--price" in sys.argv:
+        fix_price = int(sys.argv[sys.argv.index("--price") + 1])
+
     if not os.path.exists("posts/deals.json"):
         sys.exit("找不到 posts/deals.json，請先執行 python3 gen.py")
     if not os.path.exists(CHROME):
@@ -92,6 +100,20 @@ def main():
     outdir = os.path.join(OUT, day)
     os.makedirs(outdir, exist_ok=True)
     tmp = os.path.abspath(".card_tmp.html")
+
+    if fix_slug:
+        deals = [d for d in deals if d["slug"] == fix_slug]
+        if not deals:
+            sys.exit(f"找不到 slug：{fix_slug}")
+        if fix_price:
+            d = deals[0]
+            old = d["price"]
+            d["price"] = fix_price
+            if d.get("med"):
+                pct = round((1 - fix_price / d["med"]) * 100)
+                d["reasons"] = [f"低於本站近期紀錄中位價 {pct}%"] if pct >= 15 else \
+                               [f"{'廉航' if d['cls']=='lcc' else '一般航空'}直飛來回含稅"]
+            print(f"   校正價格：NT${old:,} → NT${fix_price:,}")
 
     made = []
     for d in deals:
