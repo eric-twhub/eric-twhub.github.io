@@ -212,11 +212,10 @@ def main():
 <div class="h">所以到底<br>該在哪裡買？</div>
 <div class="pts">
  <div class="pt"><i>1</i><div><b>Apple 直營店已不能退稅</b><br>2024/6 起取消旅客免稅，要免稅得去 Bic Camera、Yodobashi</div></div>
- <div class="pt"><i>2</i><div><b>直營店也不能臨櫃買了</b><br>2026/2 起新機須線上下單再取貨，旅客實務上只剩量販店</div></div>
- <div class="pt"><i>3</i><div><b>能退稅才有價差</b><br>最多可省 {money(top["twd"]-ex(top))}（{top["name"]} {top["spec"]}）</div></div>
- <div class="pt"><i>4</i><div>{pt3}</div></div>
- <div class="pt"><i>5</i><div><b>11/1 起免稅要出境才退</b><br>當場先付含稅全額，海關確認後才退還消費稅</div></div>
- <div class="pt"><i>6</i><div><b>保固是區域性的</b><br>日版在台灣可能不受理，需寄回日本</div></div>
+ <div class="pt"><i>2</i><div><b>能退稅才有價差</b><br>最多可省 {money(top["twd"]-ex(top))}（{top["name"]} {top["spec"]}）</div></div>
+ <div class="pt"><i>3</i><div>{pt3}</div></div>
+ <div class="pt"><i>4</i><div><b>11/1 起免稅要出境才退</b><br>當場先付含稅全額，海關確認後才退還消費稅</div></div>
+ <div class="pt"><i>5</i><div><b>保固是區域性的</b><br>日版在台灣可能不受理，需寄回日本</div></div>
 </div></div>
 <div class="site">{site}</div></body></html>''')
 
