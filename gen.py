@@ -529,7 +529,8 @@ def topnav(cur=''):
             f'<a href="{U("/deals/")}">🔥 機票特價</a>'
             f'<a href="{U("/apple-japan-price/")}">🍎 台日 Apple 價差</a>'
             f'<a href="{U("/japan-tax-free-2026/")}">🧾 免稅新制</a>'
-            f'<a href="{U("/japan-credit-card/")}">💳 旅日信用卡</a>{ls}</nav>')
+            f'<a href="{U("/japan-credit-card/")}">💳 旅日信用卡</a>'
+            f'<a href="{U("/japan-coupon/")}">🏷️ 購物折扣</a>{ls}</nav>')
 
 def foot():
     return f'''<p class="note">
@@ -1945,6 +1946,147 @@ if os.path.exists('cards.json'):
         '頁內卡片連結非聯盟連結。</p>'
       + _calc_js + foot())
     pages.append(('/japan-card-calculator/', 0.8))
+
+    # ── 日本購物折扣：折價券 × 免稅 × 刷卡回饋 ──────────
+    if os.path.exists('coupons.json'):
+        CP = json.load(open('coupons.json', encoding='utf-8'))
+        _srows = ''.join(
+            f'<tr><td><b>{html.escape(st["name"])}</b>{SMALL}{html.escape(st["cat"])}</small></td>'
+            f'<td class="win"><b>{html.escape(st["rate"])}</b></td>'
+            f'<td>{html.escape(st["tiers"])}</td>'
+            f'<td>{html.escape(st["note"]) or "—"}</td></tr>' for st in CP['stores'])
+
+        _cpjs = _CJS + ("""
+<script>
+(function(){
+ var $=function(i){return document.getElementById(i)};
+ function run(){
+  var p=+$('sp').value||0, cr=(+$('sc').value||0)/100,
+      c=JCARD.cards[+$('sk').value], mode=$('sm').value;
+  var free=p/1.1, after=free*(1-cr);
+  var o=jback(c,after,jhas(c,mode)?mode:'base');
+  var net=o.bill-o.v, orig=p*JCARD.mid;
+  $('s1').textContent='¥'+jfmt(p);
+  $('s2').textContent='¥'+jfmt(free);
+  $('s3').textContent='¥'+jfmt(after);
+  $('s4').textContent='NT$'+jfmt(o.bill);
+  $('s5').innerHTML='－NT$'+jfmt(o.v)+'<i class="pp">'+
+    ((c.tiers.length&&!jhas(c,mode))?'此類型無加碼，僅基本回饋':'')+'</i>';
+  $('s6').innerHTML='NT$'+jfmt(net)+'<i class="pp">≈ ¥'+jfmt(net/JCARD.mid)+'</i>';
+  $('sv').className='cv '+(net<orig?'jp':'tw');
+  $('sv').textContent=p?('相當於原價的 '+(net/orig*10).toFixed(1)+' 折　·　'+
+    '共省下 NT$'+jfmt(orig-net)):'請輸入定價';
+ }
+ ['sp','sc','sk','sm'].forEach(function(i){var e=$(i);if(e){e.addEventListener('input',run);e.addEventListener('change',run);}});
+ run();
+})();
+</script>""").replace('%HUB%', json.dumps(U('/japan-credit-card')))
+
+        _sopts = ''.join(f'<option value="{i}">{html.escape(c["name"])}</option>'
+                         for i, c in enumerate(CD['cards']))
+        _copts = ('<option value="0">不使用折價券</option>'
+                  + ''.join(f'<option value="{r}"{" selected" if r==7 else ""}>折 {r}%</option>'
+                            for r in (3, 5, 7, 10, 12)))
+
+        cp_faq = [
+         ('折價券和免稅可以一起用嗎？',
+          '多數店家可以，而且順序是先扣免稅、券再以免稅後金額計算，所以不是單純把兩個百分比相加。'
+          '以 ¥10,000 含稅商品為例，免稅後約 ¥9,091，再折 7% 是 ¥8,455，'
+          '合計約省 15.4%，不是 17%。少數店家的券不可與免稅併用，結帳前要問清楚。'),
+         ('券要什麼時候出示？',
+          '結帳前。多數店家是把手機上的券畫面給店員掃描，一旦開始結帳或已經完成免稅手續才拿出來，'
+          '通常就不能補折。人多的時候先把券頁面開好。'),
+         ('2026/11/1 免稅改制後，這個算法會變嗎？',
+          '會變的是拿到退稅的時間點，不是折扣本身。11/1 起日本改採退款方式，'
+          '購買當下要先付含稅全額（券的折扣仍當場扣），出境經海關確認後才退還消費稅。'
+          '所以最終負擔差不多，但結帳當下要多掏一筆消費稅，且要記得完成出境手續。'),
+         ('哪裡拿得到這些券？',
+          '多數由店家的官方觀光頁面或合作的旅遊媒體發放，也有店家在機場、飯店、'
+          '觀光案內所放實體券。券的版本與期限經常更換，出發前一週再找一次最準，'
+          '本頁只整理常見折扣幅度，不提供券本身。'),
+         ('刷卡回饋是算在折扣後的金額嗎？',
+          '是。銀行是依實際入帳的台幣金額計算回饋，而入帳金額是折扣後的金額再換算台幣、'
+          '加上國外交易手續費。所以折扣越多，回饋的絕對金額會越少，但你總共付出的錢還是更少。'),
+        ]
+        cp_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                          + html.escape(a) + '</div></details>' for q, a in cp_faq)
+        cp_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [{"@type": "Question", "name": q,
+                            "acceptedAnswer": {"@type": "Answer", "text": a}}
+                           for q, a in cp_faq]}, ensure_ascii=False)
+
+        write('japan-coupon/index.html',
+          head('日本購物折扣怎麼疊？折價券 × 免稅 × 刷卡回饋實付價計算機',
+               f'日本藥妝、電器行折價券常見折扣幅度整理，並提供實付價試算：'
+               f'先扣免稅、再折券、最後扣刷卡回饋，直接算出相當於原價幾折。'
+               f'收錄 {len(CP["stores"])} 家店與 {len(CD["cards"])} 張信用卡。',
+               'japan-coupon/',
+               '<script type="application/ld+json">' + cp_ld + '</script>')
+          + crumbs([('首頁', '/'), ('日本購物折扣', None)]) + topnav()
+          + '<h1>日本購物折扣怎麼疊才對？</h1>'
+          + '<p class="lede">折價券、免稅、刷卡回饋是三件事，而且不是把百分比相加。'
+            '順序錯了，算出來的實付價會差很多。</p>'
+          + f'<div class="today"><div class="tday">折扣幅度查證於 {CP["checked"]}'
+            f'　·　匯率 {_MIDC} 每日更新</div>'
+            f'<div class="tans">{html.escape(CP["order"])}</div>'
+            f'<div class="tsub">以 ¥10,000 含稅商品為例：免稅後約 ¥9,091，再折 7% 是 ¥8,455，'
+            f'合計省約 15.4%——不是 10% ＋ 7% ＝ 17%。</div>'
+            f'<div class="tbuf">再疊上刷卡回饋，最高可以壓到原價的 <b>七折出頭</b>。'
+            f'下面可以用自己的金額和卡片試算。</div></div>'
+          + '<h2>實付價計算機</h2>'
+          + '<div class="calc"><div class="sf">'
+            '<label>商品定價（含稅）¥<input id="sp" type="number" value="50000" min="0" step="1000"></label>'
+            f'<label>折價券<select id="sc">{_copts}</select></label>'
+            f'<label>信用卡<select id="sk">{_sopts}</select></label>'
+            f'<label>消費類型<select id="sm">{_mopts}</select></label>'
+            '</div><div class="cres">'
+            '<div class="cl"><span>日幣定價（含稅）</span><b id="s1">—</b></div>'
+            '<div class="cl"><span>扣免稅 10% 後</span><b id="s2">—</b></div>'
+            '<div class="cl"><span>再折價券後</span><b id="s3">—</b></div>'
+            '<div class="cl"><span>台幣帳單（含手續費）</span><b id="s4">—</b></div>'
+            '<div class="cl"><span>刷卡回饋</span><b id="s5">—</b></div>'
+            '<div class="cl"><span>實際負擔</span><b id="s6">—</b></div>'
+            '<div class="cv" id="sv">—</div></div></div>'
+          + f'<p class="disc">以中間匯率 {_MIDC} 換算並加計 {_fx["typical"]}% 國外交易手續費。'
+            f'刷卡回饋依折扣後的台幣帳單計算，採各卡最高情境。'
+            f'折扣幅度為常見級距，實際以店家當期公告為準。</p>'
+          + fare_cta('tokyo', '算完省多少，機票呢')
+          + f'<h2>{len(CP["stores"])} 家常見店家的折扣幅度</h2>'
+          + '<p class="lede">以下是各店常見的券折扣級距。券的版本與期限經常更換，'
+            '出發前一週再確認一次最準——本頁整理的是幅度，不提供券本身。</p>'
+          + '<div class="tw"><table><thead><tr><th>店家</th><th>常見折扣</th>'
+            '<th>級距與條件</th><th>備註</th></tr></thead><tbody>' + _srows + '</tbody></table></div>'
+          + '<h2>三個常犯的錯</h2><div class="tldr"><ul>'
+            '<li><b>把百分比直接相加。</b>免稅 10% 加券 7% 不等於 17%。'
+            '券是以免稅後的金額計算，實際約 15.4%。</li>'
+            '<li><b>結帳到一半才拿出券。</b>多數店家要在結帳前出示，'
+            '已經開始免稅手續才拿出來通常不能補折。</li>'
+            '<li><b>以為每家都能併用。</b>少數店家的券與免稅二擇一，'
+            '百貨或車站內的櫃位也常有另外的規則。</li>'
+            '</ul></div>'
+          + '<h2>11/1 之後會不一樣</h2>'
+          + '<p class="lede">2026 年 11 月 1 日起日本免稅改採退款方式：券的折扣仍是當場扣，'
+            '但消費稅要先付、出境經海關確認後才退還。最終負擔差不多，'
+            '但結帳當下要多掏一筆，而且要記得完成出境手續，'
+            f'還有<b>購買日起 90 天</b>的確認期限。</p>'
+          + cta('esim', '日本', '東京', '出發前先把上網搞定',
+                '到 Klook 買 eSIM 或網卡，落地就能開導航找店')
+          + '<h2>常見問題</h2>' + cp_html
+          + '<h2>相關頁面</h2><div class="cities">'
+          + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張旅日信用卡</b>'
+            f'<s>回饋、上限與登錄時間</s></a>'
+          + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
+            f'<s>改成出境後才退稅</s></a>'
+          + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
+            f'<s>輸入日幣金額，換算回饋</s></a></div>'
+          + f'<p class="disc">本頁為公開資訊整理，折扣幅度查證於 {CP["checked"]}，'
+            f'券的取得管道、幅度與期限由各店家隨時調整，請以店家當期公告為準。'
+            f'本站不提供折價券本身，與文中店家亦無合作關係。'
+            f'頁內部分連結為聯盟行銷連結，本站可能獲得分潤，不影響你的價格。</p>'
+          + _cpjs + foot())
+        pages.append(('/japan-coupon/', 0.8))
+        print(f'   日本購物折扣頁：{len(CP["stores"])} 家店')
+
     print(f'   旅日信用卡：{len(CD["cards"])} 張卡頁 ＋ 比較頁 ＋ 計算機（查證 {CD["checked"]}）')
 
 # ---------- sitemap / robots ----------
