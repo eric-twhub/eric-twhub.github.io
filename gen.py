@@ -152,6 +152,28 @@ def flight_url(x):
                  dep=x['dep'], ret=x['ret'] or x['dep'],
                  tt='rt' if x['rt'] else 'ow')
 
+def fare_cta(slug, headline, sub_prefix='', before=None):
+    """帶真實票價的 CTA——右欄直接放金額。
+
+    沒有票價資料時回傳空字串：寧可不放，也不要放一個只寫「去查」、
+    沒有任何數字的連結，那種連結使用者沒有理由點。"""
+    fs = by_city.get(slug) or []
+    if before:   # 例如免稅改制前的行程，只挑該日期之前出發的航班
+        _f = [x for x in fs if x['dep'] < before]
+        fs = _f or fs
+    b = best(fs, True) or best(fs, False)
+    if not b: return ''
+    nm = CITY[slug][1]
+    pt = '來回' if b['rt'] else '單程'
+    sub = (f'{sub_prefix}台北飛{nm}・{b["airname"]}・{b["dep"]} 出發・{pt}含稅'
+           f'　→ 到 Trip.com 查這天')
+    return (f'<a class="cta" href="{html.escape(flight_url(b))}" target="_blank" '
+            f'rel="nofollow noopener sponsored">'
+            f'<span class="ci">✈️</span>'
+            f'<span class="ct"><b>{html.escape(headline)}</b><s>{html.escape(sub)}</s></span>'
+            f'<span class="ca pr">{money(b["price"])}<small>近期最低</small></span></a>')
+
+
 def compare_line(city_name=''):
     alt=[k for k in ('flight2',) if k in P]
     if not alt: return ''
@@ -427,6 +449,8 @@ text-decoration:none;color:var(--fg)}
 .cta .ct b{font-size:.98rem;font-weight:700}
 .cta .ct s{text-decoration:none;font-size:.82rem;color:var(--dim)}
 .cta .ca{color:var(--acc);font-weight:700;font-size:1.1rem;flex:0 0 auto}
+.cta .ca.pr{font-size:1.42rem;letter-spacing:-.03em;line-height:1.15;text-align:right}
+.cta .ca.pr small{display:block;font-size:.66rem;font-weight:600;color:var(--dim);letter-spacing:0}
 details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
 margin-top:8px;padding:0}
 details.faq summary{cursor:pointer;padding:13px 15px;font-weight:600;font-size:.95rem;
@@ -1223,7 +1247,8 @@ if os.path.exists('apple.json'):
                  f'<p class="lede">台北飛東京目前最低 <b>{money(_b["price"])}</b>'
                  f'（{_b["airname"]}，{_b["dep"]} 出發）。單看機身價差，通常還不夠一張機票——'
                  f'但如果本來就要去日本，那就順便。</p>'
-                 + cta('hotel','東京','東京','順便看看東京的住宿','到 Agoda 查房價，繁體中文、台幣計價')
+                 + fare_cta('tokyo','為了省幾千元專程飛一趟？先看這個數字')
+                 + cta('hotel','東京','東京','機票看好了，住宿呢','到 Agoda 查房價，繁體中文、台幣計價')
                  + '<div class="cities">'
                  + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>各出發地比價</s></a>'
                  + f'<a class="ct" href="{U("/osaka/")}"><b>大阪機票</b><s>心齋橋、道頓堀</s></a>'
@@ -1273,8 +1298,7 @@ if os.path.exists('apple.json'):
       + '<p class="lede">Apple 日本直營店自 2024 年 6 月起取消對外國旅客的免稅服務。'
         '要拿到免稅價，必須到有 Tax-Free 標示的家電量販店（Bic Camera、Yodobashi Camera 等），'
         '結帳時出示護照。量販店定價未必與 Apple 官網相同，且部分店家收取手續費，請現場確認。</p>'
-      + cta('hotel','東京','東京','要去量販店掃貨？先看住宿',
-            'Bic Camera 與 Yodobashi 都在新宿、梅田一帶，住附近最方便')
+      + fare_cta('tokyo','要去量販店掃貨？機票現在多少')
       + '<h3>2. 保固是區域性的</h3>'
       + '<p class="lede">日本購買的 iPhone 在台灣的 Apple 授權維修中心可能不受理，需寄回日本處理。'
         '省下的幾千元，遇到一次維修就可能不划算。至於快門聲，自 iOS 15 起僅在日本境內強制，'
@@ -1389,14 +1413,14 @@ if os.path.exists('apple.json'):
         + _rows + '</tbody></table></div>'
       + '<p class="disc">刷卡另有約 1.5% 國外交易手續費；退款金額依店家與退款服務商可能再扣手續費，'
         '實際入帳以店家說明為準。</p>'
-      + cta('hotel', '東京', '東京', '11 月之後去日本？先把住宿訂起來',
-            '到 Agoda 查房價，繁體中文、台幣計價')
+      + fare_cta('tokyo', '趕在改制前去？先看機票多少', before='2026-11-01')
       + '<h2>什麼時候去，適用哪個制度？</h2>'
       + '<p class="lede">制度以<b>購買日</b>為準，不是出境日。10 月 31 日當天買仍是舊制，'
         '11 月 1 日起買就是新制。如果你的行程橫跨兩邊，大筆採購排在 10 月底結帳，'
         '結帳當下就能拿到免稅價，不必墊錢也不用擔心 90 天期限。</p>'
-      + search_form('看看你的日期機票多少錢',
-                    '打算趕在改制前去，或是之後再去？先看票價。', 'TPE', 'TYO')
+      + fare_cta('osaka', '大阪也有便宜票', '')
+      + search_form('查你自己的日期',
+                    '上面是近期最低紀錄，選好日期可查目前實際可訂的價格。', 'TPE', 'TYO')
       + '<h2>三個容易踩到的地雷</h2>'
       + '<div class="tldr"><ul>'
         '<li><b>整筆交易連坐。</b>官方說明採每筆購買紀錄判定，'
