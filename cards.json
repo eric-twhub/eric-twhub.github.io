@@ -5,7 +5,7 @@
     "amex": 2.0,
     "note": "國際組織 1% ＋ 發卡行 0.5%；金管會規定發卡行加收不得逾 0.5%。美國運通約 2%。"
   },
-  "_note": "旅日信用卡回饋整理。base 為基本回饋，tiers 為各層加碼：rate 百分比、cap 該層上限（0 表未標示）、scope 適用交易類型（shop 實體消費／transit 交通卡儲值）、cond 條件。total 為實體消費情境下全部加碼皆符合時的最高值。reg_race 表示加碼需搶限量登錄。條件變動時更新本檔後重跑 gen.py。",
+  "_note": "旅日信用卡回饋整理。base 為基本回饋，tiers 為各層加碼：rate 百分比、cap 該層上限（0 表未標示）、scope 適用交易類型（shop 實體消費／transit 交通卡儲值／any 兩者皆適用）、cond 條件。total 為實體消費情境下全部加碼皆符合時的最高值。reg_race 表示加碼需搶限量登錄。條件變動時更新本檔後重跑 gen.py。",
   "cards": [
     {
       "name": "玉山熊本熊卡",
@@ -230,6 +230,242 @@
         "交通卡加碼與實體消費加碼適用於不同交易，不會在同一筆上疊加"
       ],
       "total": 6.0
+    },
+    {
+      "name": "玉山 Unicard",
+      "slug": "esun-unicard",
+      "plan": "UP選百大通路",
+      "base": 1.0,
+      "base_note": "國內外一般消費最高 1%，無上限",
+      "tiers": [
+        {
+          "label": "UP選百大通路加碼",
+          "rate": 3.5,
+          "cap": 5000,
+          "cap_unit": "每月每歸戶",
+          "scope": "shop",
+          "cond": "需訂閱 UP選（月付 149 玉山 e point，或當月刷滿 NT$30,000 且前月資產月均達 30 萬免費）。限百大指定通路，日本店家是否列入需查當期名單"
+        }
+      ],
+      "period": "2026 下半年，回饋至 2026/12/31",
+      "reg": "不需登錄，但需訂閱 UP選；未訂閱只有 1%",
+      "reg_race": false,
+      "src": "https://event.esunbank.com.tw/credit/unicard/index.html",
+      "src_name": "玉山官方活動頁",
+      "good": "已經在用玉山、願意每月訂閱 UP選的人。加碼上限每月 5,000 點很高，大額消費不容易刷爆。",
+      "bad": "只想單純刷卡的人。沒訂閱 UP選就只有 1%，在旅日卡裡是墊底的。",
+      "steps": [
+        "每月訂閱 UP選（149 e point，或達免費門檻）",
+        "確認要刷的店家在當期百大指定通路名單內",
+        "日本店家是否列入名單會隨期別調整，出發前查一次"
+      ],
+      "exclude": [
+        "未訂閱 UP選時只有 1% 基本回饋",
+        "百大名單外的消費不享 3.5% 加碼"
+      ],
+      "total": 4.5
+    },
+    {
+      "name": "永豐現金回饋 JCB 卡",
+      "slug": "sinopac-jcb",
+      "plan": "日本實體加碼",
+      "base": 2.0,
+      "base_note": "國外消費 2% 現金回饋，無上限（國內 1%）",
+      "tiers": [
+        {
+          "label": "日本實體消費加碼",
+          "rate": 3.0,
+          "cap": 300,
+          "cap_unit": "每卡戶每期",
+          "scope": "shop",
+          "cond": "需同時完成電子帳單與自動扣繳兩項任務；限交易地為日本且交易幣別為日圓"
+        },
+        {
+          "label": "日韓泰季度加碼",
+          "rate": 5.0,
+          "cap": 1000,
+          "cap_unit": "每卡戶每季",
+          "scope": "shop",
+          "cond": "每季於日／韓／泰實體消費累計滿 NT$20,000 才適用；需登錄，每季限量 5,000 名，Q3 於 2026/7/2 10:00、Q4 於 2026/10/2 10:00 開放"
+        }
+      ],
+      "period": "2026/7/1 – 2026/12/31",
+      "reg": "日韓泰季度加碼需登錄且每季限量 5,000 名；特選通路加碼需完成電子帳單與自動扣繳",
+      "reg_race": true,
+      "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/cashcardJCB.html",
+      "src_name": "永豐官方卡片頁",
+      "good": "單季日本消費會超過 NT$20,000 的人。跨過門檻後季度加碼直接拿滿 1,000 元。",
+      "bad": "消費零散、單季湊不到 2 萬的人——季度加碼是門檻制，沒到就完全沒有。",
+      "steps": [
+        "每季登錄日韓泰加碼（Q4 為 2026/10/2 10:00，限量 5,000 名）",
+        "設定電子帳單與自動扣繳，才享日本實體加碼 3%",
+        "單季日韓泰實體消費要累計滿 NT$20,000"
+      ],
+      "exclude": [
+        "未達每季 NT$20,000 門檻不享 5% 季度加碼",
+        "網購不計入日本實體加碼"
+      ],
+      "total": 10.0
+    },
+    {
+      "name": "永豐幣倍卡",
+      "slug": "sinopac-dual",
+      "plan": "日圓雙幣卡",
+      "base": 2.0,
+      "base_note": "國外消費 2% 現金回饋，無上限（國內 1%）",
+      "tiers": [
+        {
+          "label": "精選通路加碼",
+          "rate": 4.0,
+          "cap": 800,
+          "cap_unit": "每帳單週期",
+          "scope": "any",
+          "cond": "需完成指定任務：臺外幣帳戶自動扣繳＋電子／行動帳單，且前月往來資產月均達 NT$10 萬或為大戶等級。通路含國外實體商店、跨境網購與日本三大交通卡儲值"
+        },
+        {
+          "label": "新戶行動支付加碼",
+          "rate": 2.0,
+          "cap": 200,
+          "cap_unit": "每消費月份",
+          "scope": "shop",
+          "cond": "新申辦戶以 Apple Pay／Google Pay 消費"
+        }
+      ],
+      "period": "2026/7/1 – 2026/12/31",
+      "reg": "不需登錄，但精選通路加碼需先完成自動扣繳、電子帳單與資產門檻",
+      "reg_race": false,
+      "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/dual-currency-card.html",
+      "src_name": "永豐官方卡片頁",
+      "good": "會儲值日本交通卡、又有永豐資產往來的人。同一層加碼同時涵蓋實體消費與交通卡儲值。",
+      "bad": "沒有永豐資產往來的人。前月資產月均未達 10 萬就拿不到 4% 加碼，只剩 2%。",
+      "steps": [
+        "設定臺外幣帳戶自動扣繳與電子／行動帳單",
+        "確認前月往來資產月均達 NT$10 萬或具大戶等級",
+        "新戶記得以 Apple Pay／Google Pay 消費多拿 2%"
+      ],
+      "exclude": [
+        "未完成指定任務或資產未達門檻時，只有基本 2%",
+        "雙幣卡仍收 1.5% 國外交易手續費，不因以日圓結算而免收"
+      ],
+      "total": 8.0
+    },
+    {
+      "name": "中信 LINE Pay 卡",
+      "slug": "ctbc-linepay",
+      "plan": "國外實體加碼",
+      "base": 2.8,
+      "base_note": "國外實體商店消費 LINE POINTS 2.8%",
+      "tiers": [
+        {
+          "label": "國外實體加碼",
+          "rate": 2.2,
+          "cap": 450,
+          "cap_unit": "每歸戶",
+          "scope": "shop",
+          "cond": "需登錄，每週二開放 3,000 名；限面對面交易（含 Apple Pay／Google Pay／Samsung Pay），網購、條碼支付與第三方支付不計"
+        }
+      ],
+      "period": "2026/7/1 – 2026/9/30",
+      "reg": "需登錄，每週二開放 3,000 名，額滿為止",
+      "reg_race": true,
+      "src": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html",
+      "src_name": "中國信託官方卡片頁",
+      "good": "本來就在收 LINE POINTS、且這趟消費不多的人。加碼上限 450 點，刷約兩萬就滿。",
+      "bad": "現在才要辦的人——這檔加碼 2026/9/30 就結束，之後只剩 2.8%。",
+      "steps": [
+        "每週二開放登錄，限量 3,000 名，要搶",
+        "以實體卡或行動支付面對面交易",
+        "注意活動 2026/9/30 結束"
+      ],
+      "exclude": [
+        "網路交易、條碼支付、第三方支付不計",
+        "活動於 2026/9/30 結束"
+      ],
+      "total": 5.0
+    },
+    {
+      "name": "中信 uniopen 聯名卡",
+      "slug": "ctbc-uniopen",
+      "plan": "國外實體加碼",
+      "base": 3.0,
+      "base_note": "國外實體商店 1% 無上限，加上一般海外消費 2%",
+      "tiers": [
+        {
+          "label": "國外實體加碼",
+          "rate": 8.0,
+          "cap": 500,
+          "cap_unit": "每月",
+          "scope": "shop",
+          "cond": "免登錄；限面對面交易（含 Apple Pay／Google Pay／Samsung Pay），網路與第三方支付不計。回饋為 OPENPOINT"
+        }
+      ],
+      "period": "2026/9/1 – 2026/12/31",
+      "reg": "免登錄",
+      "reg_race": false,
+      "src": "https://mkt.ctbcbank.com/long/creditcard/N2025052600033_01/index.html",
+      "src_name": "中國信託官方活動頁",
+      "good": "小額多筆、又懶得每月搶登錄的人。免登錄就有 11%，是目前少見的。",
+      "bad": "單筆金額大的人。加碼上限每月 500 點，刷到約 6,250 元就滿了。",
+      "steps": [
+        "免登錄，直接以實體卡或行動支付面對面消費",
+        "加碼每月上限 500 點，額度用完換別張卡",
+        "回饋為 OPENPOINT，需確認自己用得到"
+      ],
+      "exclude": [
+        "網路交易與第三方支付不計",
+        "加碼每月上限 500 點"
+      ],
+      "total": 11.0
+    },
+    {
+      "name": "第一銀行 iLEO 卡",
+      "slug": "firstbank-ileo",
+      "plan": "海外外幣消費",
+      "base": 0.5,
+      "base_note": "海外外幣消費 0.5% 現金回饋，無上限",
+      "tiers": [
+        {
+          "label": "海外外幣加碼",
+          "rate": 1.5,
+          "cap": 500,
+          "cap_unit": "每帳單週期",
+          "scope": "any",
+          "cond": "含實體商店與海外網購，合計基本回饋為 2%"
+        },
+        {
+          "label": "海外實體加碼",
+          "rate": 1.0,
+          "cap": 200,
+          "cap_unit": "每帳單週期",
+          "scope": "shop",
+          "cond": "需設定 iLEO 帳戶自動扣繳與電子帳單；限外幣面對面交易"
+        },
+        {
+          "label": "新戶加碼",
+          "rate": 10.0,
+          "cap": 500,
+          "cap_unit": "核卡 90 天內每戶",
+          "scope": "any",
+          "cond": "前一年未持有第一銀行信用卡之新戶，核卡 90 天內之海外外幣消費"
+        }
+      ],
+      "period": "2026/7/1 – 2026/12/31",
+      "reg": "免登錄",
+      "reg_race": false,
+      "src": "https://card.firstbank.com.tw/sites/Satellite?c=CreditCard&cid=1565698492326&d=Touch&pagename=FirstBankCard%2FCreditCard%2Fzh%2FCardActivityDetailView",
+      "src_name": "第一銀行官方活動頁",
+      "good": "剛好要辦新卡、且這趟消費不大的人。新戶 90 天內 10% 加碼很猛，但上限只有 500 元。",
+      "bad": "舊戶。扣掉新戶加碼後只剩 3%，而且各層上限都低。",
+      "steps": [
+        "設定 iLEO 帳戶自動扣繳與電子帳單，才享海外實體加碼 1%",
+        "新戶把握核卡 90 天內的 10% 加碼，上限 500 元",
+        "免登錄，但各層加碼各有上限"
+      ],
+      "exclude": [
+        "新戶加碼限前一年未持有第一銀行信用卡者",
+        "各層上限偏低，加碼總額約在每期 700 元上下（新戶另加 500 元）"
+      ],
+      "total": 13.0
     }
   ]
 }

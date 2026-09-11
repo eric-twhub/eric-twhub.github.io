@@ -1540,13 +1540,14 @@ if os.path.exists('cards.json'):
     _RDATE = _ap.get('rate', {}).get('quoted_at', '')
     MODES = [('shop', '符合加碼條件的實體消費'), ('base', '一般日本消費'),
              ('transit', '交通卡儲值')]
+    SCOPE_NAME = {'shop': '實體消費', 'transit': '交通卡儲值', 'any': '實體與交通卡'}
 
     def _bill(jpy):
         """日幣消費換算台幣帳單（含國外交易手續費）"""
         return jpy * _MIDC * (1 + _fx['typical'] / 100)
 
     def _tiers(c, scope):
-        return [t for t in c['tiers'] if t['scope'] == scope]
+        return [t for t in c['tiers'] if t['scope'] in (scope, 'any')]
 
     def _has(c, mode):
         return mode == 'base' or bool(_tiers(c, mode))
@@ -1576,12 +1577,12 @@ if os.path.exists('cards.json'):
             'window.jfmt=function(n){return Math.round(n).toLocaleString("en-US")};'
             'window.jbill=function(y){return y*JCARD.mid*(1+JCARD.fee/100)};'
             'window.jback=function(c,y,mode){var b=jbill(y),v=c.base/100*b,cap=false;'
-            'if(mode!=="base"){c.tiers.filter(function(t){return t.scope===mode;})'
+            'if(mode!=="base"){c.tiers.filter(function(t){return t.scope===mode||t.scope==="any";})'
             '.forEach(function(t){var x=t.rate/100*b;'
             'if(t.cap&&x>t.cap){x=t.cap;cap=true;}v+=x;});}'
             'return {v:v,cap:cap,bill:b};};'
             'window.jhas=function(c,mode){return mode==="base"||'
-            'c.tiers.some(function(t){return t.scope===mode;});};</script>') % (
+            'c.tiers.some(function(t){return t.scope===mode||t.scope==="any";});};</script>') % (
         _MIDC, _fx['typical'],
         json.dumps([{'n': c['name'], 's': c['slug'], 'base': c['base'],
                      'tiers': c['tiers'], 'race': c.get('reg_race', False)}
@@ -1752,7 +1753,7 @@ if os.path.exists('cards.json'):
             f'<tr><td><b>{html.escape(t["label"])}</b>{SMALL}{html.escape(t["cond"])}</small></td>'
             f'<td>+{t["rate"]}%</td>'
             f'<td>{(t["cap_unit"] + " " + money(t["cap"])) if t["cap"] else "未標示"}</td>'
-            f'<td>{"實體消費" if t["scope"]=="shop" else "交通卡儲值"}</td></tr>'
+            f'<td>{SCOPE_NAME[t["scope"]]}</td></tr>'
             for t in c['tiers'])
 
         others = ''.join(
