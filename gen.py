@@ -1538,63 +1538,94 @@ if os.path.exists('cards.json'):
     _MIDC = (_ap.get('rate', {}).get('jpy_twd_mid')
              or _ap.get('rate', {}).get('jpy_twd') or 0.205)
     _RDATE = _ap.get('rate', {}).get('quoted_at', '')
+    MODES = [('shop', '符合加碼條件的實體消費'), ('base', '一般日本消費'),
+             ('transit', '交通卡儲值')]
 
     def _bill(jpy):
-        """日幣消費換算台幣帳單金額（含國外交易手續費）"""
+        """日幣消費換算台幣帳單（含國外交易手續費）"""
         return jpy * _MIDC * (1 + _fx['typical'] / 100)
 
-    def _back(c, jpy, spec=True):
+    def _tiers(c, scope):
+        return [t for t in c['tiers'] if t['scope'] == scope]
+
+    def _has(c, mode):
+        return mode == 'base' or bool(_tiers(c, mode))
+
+    def _back(c, jpy, mode='shop'):
+        """回饋金額。base 模式只算基本回饋，其餘加上該類型的各層加碼（各自受上限）。"""
         b = _bill(jpy)
         v = c['base'] / 100 * b
-        if spec and c['bonus']:
-            v += min(c['bonus'] / 100 * b, c['bonus_cap'])
-        return v
+        capped = False
+        if mode != 'base':
+            for t in _tiers(c, mode):
+                x = t['rate'] / 100 * b
+                if t['cap'] and x > t['cap']:
+                    x = t['cap']; capped = True
+                v += x
+        return v, capped
 
-    def _cap_line(c):
-        """把回饋上限換算成『刷到多少就到頂』——這才是實際會遇到的限制。"""
-        if c['bonus'] and c['bonus_cap']:
-            return round(c['bonus_cap'] / (c['bonus'] / 100))
-        return 0
+    def _maxrate(c, mode):
+        return c['base'] + (0 if mode == 'base' else sum(t['rate'] for t in _tiers(c, mode)))
+
+    def _hit(c, mode):
+        """加碼達上限所需的台幣帳單金額（取最先觸頂的那層）"""
+        ts = [t for t in _tiers(c, mode) if t['cap']]
+        return round(min(t['cap'] / (t['rate'] / 100) for t in ts)) if ts else 0
 
     _CJS = ('<script>window.JCARD={mid:%s,fee:%s,cards:%s};'
             'window.jfmt=function(n){return Math.round(n).toLocaleString("en-US")};'
             'window.jbill=function(y){return y*JCARD.mid*(1+JCARD.fee/100)};'
-            'window.jback=function(c,y,spec){var b=jbill(y),v=c.b/100*b,cap=false;'
-            'if(spec&&c.x){var o=c.x/100*b;if(o>c.c){o=c.c;cap=true;}v+=o;}'
-            'return {v:v,cap:cap,bill:b};};</script>') % (
+            'window.jback=function(c,y,mode){var b=jbill(y),v=c.base/100*b,cap=false;'
+            'if(mode!=="base"){c.tiers.filter(function(t){return t.scope===mode;})'
+            '.forEach(function(t){var x=t.rate/100*b;'
+            'if(t.cap&&x>t.cap){x=t.cap;cap=true;}v+=x;});}'
+            'return {v:v,cap:cap,bill:b};};'
+            'window.jhas=function(c,mode){return mode==="base"||'
+            'c.tiers.some(function(t){return t.scope===mode;});};</script>') % (
         _MIDC, _fx['typical'],
-        json.dumps([{'n': c['name'], 'b': c['base'], 'x': c['bonus'],
-                     'c': c['bonus_cap'], 's': c['slug']} for c in CD['cards']],
-                   ensure_ascii=False))
+        json.dumps([{'n': c['name'], 's': c['slug'], 'base': c['base'],
+                     'tiers': c['tiers'], 'race': c.get('reg_race', False)}
+                    for c in CD['cards']], ensure_ascii=False))
 
-    # 選卡介面：最佳解隨金額改變，所以讓使用者輸入金額
-    _cjson = json.dumps([{'n': c['name'], 'b': c['base'], 'x': c['bonus'],
-                          'c': c['bonus_cap']} for c in CD['cards']], ensure_ascii=False)
-    # 熊本熊（基本 2.5%＋定額加碼）與無上限 3.3% 卡的交叉金額
-    _flat = max(c['base'] for c in CD['cards'] if not c['bonus'])
-    # 交叉點要用「低金額時真正勝出」的那張加碼卡，不是上限最大的那張
-    _bon = max((c for c in CD['cards'] if c['bonus']), key=lambda c: c['total'])
-    _cross = round(_bon['bonus_cap'] / ((_flat - _bon['base']) / 100))
+    _mopts = ''.join(f'<option value="{k}">{v}</option>' for k, v in MODES)
 
+    # ── 比較表 ──
+    _crows = ''
+    for c in sorted(CD['cards'], key=lambda x: -x['total']):
+        hit = _hit(c, 'shop')
+        tr = _maxrate(c, 'transit') if _tiers(c, 'transit') else 0
+        _crows += (f'<tr><td><a href="{U("/japan-credit-card/"+c["slug"]+"/")}">'
+                   f'<b>{html.escape(c["name"])}</b></a>{SMALL}{html.escape(c["plan"])}'
+                   + ('　⚠ 需搶限量登錄' if c.get('reg_race') else '') + '</small></td>'
+                   f'<td><b>{c["total"]}%</b>{SMALL}基本 {c["base"]}%'
+                   + (f' ＋ {len(_tiers(c,"shop"))} 層加碼' if _tiers(c, 'shop') else '')
+                   + '</small></td>'
+                   f'<td>{(money(hit) + SMALL + "超過只剩 " + str(c["base"]) + "%</small>") if hit else "無加碼上限"}</td>'
+                   f'<td>{(str(tr) + "%") if tr else "—"}</td>'
+                   f'<td>{html.escape(c["period"])}</td></tr>')
+
+    # ── 選卡介面（日幣輸入）──
     _pjs = _CJS + ("""
 <script>
 (function(){
  var $=function(i){return document.getElementById(i)};
  function run(){
-  var y=+$('pa').value||0, spec=$('ps').value==='y';
-  var r=JCARD.cards.map(function(c){var o=jback(c,y,spec);
-    return {n:c.n,s:c.s,v:o.v,cap:o.cap,bill:o.bill};})
+  var y=+$('pa').value||0, mode=$('ps').value;
+  var r=JCARD.cards.filter(function(c){return jhas(c,mode)})
+   .map(function(c){var o=jback(c,y,mode);
+     return {n:c.n,s:c.s,v:o.v,cap:o.cap,bill:o.bill,race:c.race};})
    .sort(function(a,b){return b.v-a.v});
-  var bill=r.length?r[0].bill:0;
+  if(!r.length){$('pr').innerHTML='<div class="cv">這個類型目前沒有卡片有加碼</div>';return;}
+  var bill=r[0].bill;
   $('pb').textContent=y?('≈ NT$'+jfmt(bill)+'（已含 '+JCARD.fee+'% 國外交易手續費）'):'';
   $('pr').innerHTML=r.map(function(x,i){
     return '<div class="cl"><span>'+(i===0?'<b class="pw">最佳</b> ':'')+
       '<a href="'+%HUB%+'/'+x.s+'/">'+x.n+'</a>'+
-      (x.cap?'<i class="pc">加碼已達上限</i>':'')+'</span><b>NT$'+jfmt(x.v)+
+      (x.cap?'<i class="pc">加碼已達上限</i>':'')+
+      (x.race?'<i class="pc">需搶登錄</i>':'')+'</span><b>NT$'+jfmt(x.v)+
       '<i class="pp">≈ ¥'+jfmt(x.v/JCARD.mid)+'</i></b></div>';
   }).join('')+(y?('<div class="cv jp">最佳卡實際負擔 NT$'+jfmt(bill-r[0].v)+
-    '，等於打 '+((bill-r[0].v)/bill*100).toFixed(1)+' 折前的 '+
-    (100-(r[0].v/bill*100)).toFixed(1)+'%</div>'):'<div class="cv">請輸入金額</div>');
+    '　·　有效回饋率 '+(r[0].v/bill*100).toFixed(2)+'%</div>'):'<div class="cv">請輸入金額</div>');
  }
  ['pa','ps'].forEach(function(i){var e=$(i);if(e){e.addEventListener('input',run);e.addEventListener('change',run);}});
  run();
@@ -1603,80 +1634,38 @@ if os.path.exists('cards.json'):
 
     _picker = (
       '<h2>你要刷多少？答案不一樣</h2>'
-      f'<p class="lede">加碼有上限，所以「哪張最好」取決於金額。'
-      f'分水嶺約在 <b>{money(_cross)}</b>（約 ¥{round(_cross/_MIDC/(1+_fx["typical"]/100)):,}）：'
-      f'低於這個數，帶定額加碼的卡勝出；高於這個數，加碼早就用完，'
-      f'無上限的 {_flat}% 反而拿得多。輸入你打算刷的日幣金額：</p>'
+      '<p class="lede">加碼幾乎都有上限，所以「哪張最好」取決於金額與消費類型。'
+      '輸入日幣金額看實際排序：</p>'
       '<div class="calc"><div class="sf">'
       '<label>日本刷卡金額 ¥<input id="pa" type="number" value="200000" min="0" step="10000"></label>'
-      '<label>消費地點<select id="ps">'
-      '<option value="y">在該卡的加碼指定店家</option>'
-      '<option value="n">一般日本消費</option></select></label>'
+      f'<label>消費類型<select id="ps">{_mopts}</select></label>'
       '</div><p class="upd" id="pb"></p><div class="cres" id="pr"></div></div>'
       f'<p class="disc">以中間匯率 {_MIDC} 換算並加計 {_fx["typical"]}% 國外交易手續費；'
-      f'回饋以台幣帳單金額計算。試算採各卡公告之最高回饋率，未計入權益等級差異與'
-      f'個別排除通路。點數型回饋以 1 點約 1 元估算。</p>' + _pjs)
-
-    _crows = ''
-    for c in CD['cards']:
-        hit = _cap_line(c)
-        _crows += (f'<tr><td><b>{html.escape(c["name"])}</b>'
-                   f'{SMALL}{html.escape(c["plan"])}</small></td>'
-                   f'<td><b>{c["total"]}%</b>'
-                   + (f'{SMALL}{c["base"]}% ＋ 加碼 {c["bonus"]}%</small>' if c['bonus'] else
-                      f'{SMALL}無上限</small>')
-                   + '</td>'
-                   f'<td>{("加碼每期 " + str(c["bonus_cap"])) if c["bonus_cap"] else "無加碼上限"}</td>'
-                   f'<td>' + (f'<b>{money(hit)}</b>{SMALL}超過只剩 {c["base"]}%</small>'
-                              if hit else '—') + '</td>'
-                   f'<td>{html.escape(c["period"])}</td></tr>')
-
-    _cdetail = ''
-    for c in CD['cards']:
-        hit = _cap_line(c)
-        _cdetail += (
-            f'<h3>{html.escape(c["name"])}　<small style="font-weight:400;color:var(--dim)">'
-            f'{html.escape(c["plan"])}</small></h3>'
-            '<div class="tldr"><ul>'
-            f'<li><b>回饋</b>：{html.escape(c["base_note"])}'
-            + (f'；{html.escape(c["bonus_note"])}，合計最高 <b>{c["total"]}%</b>' if c['bonus'] else '')
-            + '</li>'
-            + (f'<li><b>刷到 {money(hit)} 加碼就到頂</b>，超過的部分只剩 {c["base"]}%。'
-               f'先把加碼額度用在單價高的東西上。</li>' if hit else '')
-            + f'<li><b>登錄</b>：{html.escape(c["register"])}</li>'
-            f'<li><b>怎麼用</b>：{html.escape(c["how"])}</li>'
-            f'<li><b>注意</b>：{html.escape(c["watch"])}</li>'
-            f'<li><b>來源</b>：<a href="{html.escape(c["src"])}" target="_blank" '
-            f'rel="noopener nofollow">{html.escape(c["src_name"])}</a>'
-            f'（{CD["checked"]} 查證）</li>'
-            '</ul></div>')
+      f'回饋依台幣帳單金額計算。各層加碼需同時符合其條件才疊得上去，'
+      f'試算採全部符合的最高情境。點數型回饋以 1 點約 1 元估算。</p>' + _pjs)
 
     cc_faq = [
      ('海外刷卡的手續費是多少？',
       f'多數發卡行約 {_fx["typical"]}%，由國際組織 1% 與發卡行 0.5% 組成；'
       f'金管會規定發卡行加收不得逾 0.5%。美國運通約 {_fx["amex"]}%。'
-      '算實際成本時要先把這筆加上去，再扣回饋。以 3.3% 回饋的卡為例，'
-      '扣掉 1.5% 手續費後淨賺約 1.8%。'),
+      '算實際成本時要先加上去再扣回饋。'),
      ('結帳時店員問要刷日圓還是台幣，選哪個？',
-      '一定選當地貨幣（日圓）。選台幣是動態貨幣轉換（DCC），由店家端決定匯率，'
-      '通常比卡片組織匯率差 3% 到 5%，而且多數銀行的海外加碼回饋要求以外幣結帳，'
-      '選台幣可能連回饋都拿不到，等於兩頭賠。'),
-     ('為什麼我刷了卻沒拿到高回饋？',
-      '最常見的四個原因：一是沒有事先登錄或沒切換權益方案；二是刷的通路不算數，'
-      '多數銀行的海外加碼限定「當地實體商店面對面交易」，海外訂房平台、網購、'
-      '訂閱服務常被排除；三是加碼額度已經用完；四是結帳時選了台幣。'),
+      '一定選日圓。選台幣是動態貨幣轉換（DCC），由店家端決定匯率，通常比卡片組織匯率差 3% 到 5%，'
+      '而且多數銀行的海外加碼要求以外幣結帳，選台幣可能連回饋都拿不到。'),
+     ('為什麼看到的最高回饋，我實際拿不到？',
+      '因為那是所有加碼同時成立的數字。以聯邦吉鶴卡的 11% 為例，是基本 2.5% 加上行動支付、'
+      '前月帳單滿額、指定通路、新戶四層加碼疊出來的，每層各有條件與上限，'
+      '一般人不會全部同時符合。看本站每張卡頁的逐金額試算會比較準。'),
+     ('限量登錄是什麼意思？',
+      '部分銀行的加碼採每月限量登錄，額滿為止。聯邦吉鶴卡每月 15 日 10:00 開放、限量 10,000 名；'
+      '台北富邦 J 卡的日韓泰加碼每月 20 日 16:00、交通卡加碼每月 18 日 16:00 開放。'
+      '沒搶到就只有基本回饋。出國前要先確認自己這個月登錄了沒。'),
      ('回饋上限怎麼看？',
-      '看的不是百分比，是「刷到多少就到頂」。加碼 6% 上限 500 元，代表刷到約 8,333 元'
-      '加碼就滿了；加碼 4% 上限 600 點，代表刷到 15,000 元就滿了。'
-      '買 iPhone 這種單價高的東西，加碼通常在第一筆就用完，後面全部只剩基本回饋。'),
+      '看「刷到多少就到頂」。加碼 6% 上限 500 元，代表台幣帳單刷到約 8,333 元加碼就滿了。'
+      '買 iPhone 這種單價高的東西，加碼通常第一筆就用完，後面只剩基本回饋。'),
      ('那買 iPhone 到底要在台灣刷還是日本刷？',
-      '兩邊都有回饋，要一起算才準。台灣的通路加碼在新機上市期間可能更高，'
-      '足以抵銷日本的免稅價差；日本則要多付國外交易手續費。'
-      '本站的台日 Apple 價差頁有試算工具，填入你自己那張卡的條件即可比較。'),
-     ('用 Apple Pay 綁卡在日本刷，回饋一樣嗎？',
-      '多數銀行把行動支付的面對面交易視同實體刷卡，但條件寫法各行不同，'
-      '有的明文納入 Apple Pay／Samsung Pay，有的只認實體卡。'
-      '另外以 Apple Pay 儲值 Suica 等交通卡，部分銀行不列入海外加碼，需先確認。'),
+      '兩邊都有回饋，要一起算。台灣通路在新機上市期間的加碼可能更高，足以抵銷日本的免稅價差；'
+      '日本則要多付國外交易手續費。本站的台日 Apple 價差頁有試算工具可以比較。'),
     ]
     cc_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in cc_faq)
@@ -1686,53 +1675,59 @@ if os.path.exists('cards.json'):
                        for q, a in cc_faq]}, ensure_ascii=False)
 
     _best = max(CD['cards'], key=lambda c: c['total'])
-    cc_title = f'旅日信用卡怎麼挑？{CD["checked"][:4]} 下半年日本刷卡回饋與上限整理'
-    cc_desc = ('日本刷卡回饋比較：玉山熊本熊卡、星展 eco、台新 Richart、國泰 CUBE 的回饋率、'
-               '回饋上限換算成刷多少到頂、登錄與切換方式，以及國外交易手續費與 DCC 陷阱。')
+    _race = [c['name'] for c in CD['cards'] if c.get('reg_race')]
+    cc_title = f'旅日信用卡怎麼挑？{CD["checked"][:4]} 下半年 {len(CD["cards"])} 張卡回饋與上限整理'
+    cc_desc = (f'{len(CD["cards"])} 張旅日信用卡比較：回饋率、加碼上限換算成刷多少到頂、'
+               f'限量登錄時間、國外交易手續費與 DCC 陷阱。輸入日幣金額即可試算。')
 
     write('japan-credit-card/index.html',
       head(cc_title, cc_desc, 'japan-credit-card/',
            '<script type="application/ld+json">' + cc_ld + '</script>')
       + crumbs([('首頁', '/'), ('旅日信用卡', None)]) + topnav()
       + '<h1>旅日信用卡怎麼挑？</h1>'
-      + '<p class="lede">高回饋的卡幾乎都有上限。比較回饋率之前，先看「刷到多少就到頂」——'
-        '那才是你真正拿得到的金額。</p>'
+      + '<p class="lede">帳面最高回饋幾乎都是多層加碼疊出來的，而且各有上限。'
+        '比較數字之前，先看「刷到多少就到頂」和「要不要搶登錄」。</p>'
       + f'<div class="today"><div class="tday">條件查證於 {CD["checked"]}'
-        f'　·　共 {len(CD["cards"])} 張卡，各附發卡行官方來源</div>'
+        f'　·　{len(CD["cards"])} 張卡，各附發卡行官方來源　·　匯率 {_MIDC} 每日更新</div>'
         f'<div class="tans">帳面最高是 {html.escape(_best["name"])} 的 {_best["total"]}%，'
-        f'但加碼刷到 {money(_cap_line(_best))} 就到頂</div>'
-        f'<div class="tsub">超過的部分只剩 {_best["base"]}%。買一支 iPhone 的金額，'
-        f'通常第一筆就把加碼額度用完了。所以「哪張回饋最高」要看你打算刷多少。</div>'
-        f'<div class="tbuf">別忘了先扣國外交易手續費：多數發卡行約 <b>{_fx["typical"]}%</b>'
-        f'（美國運通約 {_fx["amex"]}%）。</div></div>'
-      + '<h2>四張卡的條件比較</h2>'
-      + '<div class="tw"><table><thead><tr><th>卡片</th><th>日本／海外回饋</th>'
-        '<th>加碼上限</th><th>刷到多少到頂</th><th>活動期間</th>'
+        f'但那是 {len(_tiers(_best,"shop"))} 層加碼全部同時成立的數字</div>'
+        f'<div class="tsub">每層各有條件與上限，一般人不會全部符合。'
+        f'實際能拿多少，要看你刷多少、刷在哪裡。</div>'
+        + (f'<div class="tbuf">另外有 {len(_race)} 張卡的加碼需要<b>搶限量登錄</b>'
+           f'（{html.escape("、".join(_race))}），沒登錄到就只有基本回饋。</div>' if _race else '')
+        + '</div>'
+      + f'<h2>{len(CD["cards"])} 張卡的條件比較</h2>'
+      + '<div class="tw"><table><thead><tr><th>卡片</th><th>實體消費最高</th>'
+        '<th>加碼刷到多少到頂</th><th>交通卡儲值</th><th>活動期間</th>'
         '</tr></thead><tbody>' + _crows + '</tbody></table></div>'
-      + '<p class="disc">回饋率為各行公告之最高值，實際依權益等級、通路與交易方式而異。</p>'
+      + '<p class="disc">「實體消費最高」為該卡所有實體消費加碼同時成立時的合計值。'
+        '實際回饋依權益等級、通路與交易方式而異。</p>'
       + _picker
       + fare_cta('tokyo', '卡選好了，機票呢')
-      + '<h2>每張卡的細節</h2>' + _cdetail
       + '<h2>怎麼確實拿到這些回饋</h2>'
       + '<div class="tldr"><ul>'
-        '<li><b>先登錄或先切換。</b>加碼幾乎都要事先動作——玉山要登錄，台新與國泰要在 App '
-        '切換權益方案，而且是<b>消費當日</b>要在切換狀態，事後補切沒有用。</li>'
+        '<li><b>先確認這個月登錄了沒。</b>聯邦吉鶴卡每月 15 日 10:00、台北富邦 J 卡每月 18 日與 '
+        '20 日 16:00 開放登錄，都有名額上限，額滿為止。</li>'
+        '<li><b>該切換的要切換。</b>台新與國泰是在 App 切換權益方案，而且是<b>消費當日</b>'
+        '要在切換狀態，事後補切沒有用。</li>'
         '<li><b>結帳一律選日圓。</b>選台幣是 DCC，匯率通常差 3–5%，而且多數銀行的海外加碼'
-        '要求以外幣結帳，選台幣可能連回饋資格都沒了。</li>'
+        '要求以外幣結帳。</li>'
         '<li><b>要面對面刷。</b>多數海外加碼限定當地實體商店的面對面交易，'
         '海外訂房平台、網購、訂閱服務常被排除。</li>'
-        '<li><b>把加碼額度留給貴的東西。</b>加碼上限換算下來通常是一萬多元，'
-        '先刷單價高的，別讓額度被雜支吃掉。</li>'
-        '<li><b>留意請款名稱。</b>百貨或車站內的櫃位，請款名稱若無法辨識為指定店家，'
-        '可能不算加碼。</li>'
+        '<li><b>把加碼額度留給貴的東西。</b>加碼上限換算下來通常是一萬多元。</li>'
         '</ul></div>'
+      + '<h2>每張卡的細節</h2><div class="cities">'
+      + ''.join(f'<a class="ct" href="{U("/japan-credit-card/"+c["slug"]+"/")}">'
+                f'<b>{html.escape(c["name"])}</b><s>{html.escape(c["plan"])}</s>'
+                f'<u>最高 {c["total"]}%</u></a>' for c in sorted(CD['cards'], key=lambda x: -x['total']))
+      + '</div>'
       + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
+        f'<s>輸入日幣金額，換算回饋</s></a>'
       + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 買 iPhone 台灣還日本划算</b>'
         f'<s>可填入你的回饋率試算</s></a>'
       + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
-        f'<s>改成出境後才退稅</s></a>'
-      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>台灣飛日本，每日更新</s></a>'
-        '</div>'
+        f'<s>改成出境後才退稅</s></a></div>'
       + '<h2>常見問題</h2>' + cc_html
       + f'<p class="disc">本頁為公開資訊整理，非理財或投資建議。'
         f'各卡條件、指定通路、回饋上限與登錄規則由發卡行隨時調整，'
@@ -1740,38 +1735,44 @@ if os.path.exists('cards.json'):
         f'本站與上述發卡行無合作關係，頁內卡片連結非聯盟連結。</p>'
       + foot())
     pages.append(('/japan-credit-card/', 0.8))
-    # ── 每張卡的獨立介紹頁 ──────────────────────────────
+
+    # ── 每張卡的獨立介紹頁 ──
     _YEN = [10000, 30000, 50000, 100000, 200000, 500000]
     for c in CD['cards']:
-        hit = _cap_line(c)
+        hit = _hit(c, 'shop')
         rows = ''
         for y in _YEN:
-            b = _bill(y); v = _back(c, y, True)
-            full = bool(c['bonus'] and c['bonus'] / 100 * b > c['bonus_cap'])
+            b = _bill(y); v, cap = _back(c, y, 'shop')
             rows += (f'<tr><td>¥{y:,}</td><td>{money(round(b))}</td>'
                      f'<td class="win"><b>{money(round(v))}</b></td>'
-                     f'<td>{v/b*100:.1f}%{SMALL}{"加碼已滿" if full else "加碼未滿"}</small></td>'
+                     f'<td>{v/b*100:.1f}%{SMALL}{"加碼已滿" if cap else "加碼未滿"}</small></td>'
                      f'<td>{money(round(b-v))}</td></tr>')
+
+        trows = ''.join(
+            f'<tr><td><b>{html.escape(t["label"])}</b>{SMALL}{html.escape(t["cond"])}</small></td>'
+            f'<td>+{t["rate"]}%</td>'
+            f'<td>{(t["cap_unit"] + " " + money(t["cap"])) if t["cap"] else "未標示"}</td>'
+            f'<td>{"實體消費" if t["scope"]=="shop" else "交通卡儲值"}</td></tr>'
+            for t in c['tiers'])
 
         others = ''.join(
             f'<tr><td><a href="{U("/japan-credit-card/"+o["slug"]+"/")}">{html.escape(o["name"])}</a></td>'
             f'<td>{o["total"]}%</td>'
-            f'<td>{money(round(_back(o, 100000, True)))}</td></tr>'
-            for o in CD['cards'] if o['slug'] != c['slug'])
+            f'<td>{money(round(_back(o, 100000, "shop")[0]))}</td></tr>'
+            for o in sorted(CD['cards'], key=lambda x: -x['total']) if o['slug'] != c['slug'])
 
         cf = [
          (f'{c["name"]}在日本刷卡回饋多少？',
           f'{c["base_note"]}。'
-          + (f'{c["bonus_note"]}，合計最高 {c["total"]}%。' if c['bonus'] else '')
-          + (f'加碼換算下來，台幣帳單刷到約 {money(hit)} 就到頂，超過的部分只剩 {c["base"]}%。'
-             if hit else '沒有加碼上限。')),
-         (f'{c["name"]}要登錄嗎？',
-          c['register'] + '。' + c['how'] + '。'),
+          + (''.join(f'另有{t["label"]} {t["rate"]}%（{t["cond"]}）。' for t in c['tiers']))
+          + (f'實體消費全部加碼同時成立時合計最高 {c["total"]}%，'
+             f'但台幣帳單刷到約 {money(hit)} 加碼就到頂，超過的部分只剩 {c["base"]}%。'
+             if hit else f'合計最高 {c["total"]}%。')),
+         (f'{c["name"]}要登錄嗎？', c['reg'] + '。'),
          (f'什麼情況拿不到{c["name"]}的加碼？',
           '；'.join(c['exclude']) + '。另外結帳時若選台幣（DCC），'
-          '不只匯率差 3–5%，多數銀行的海外加碼也要求以外幣結帳，可能連回饋資格都沒有。'),
-         (f'{c["name"]}適合什麼人？',
-          f'適合：{c["good"]} 不適合：{c["bad"]}'),
+          '不只匯率差 3–5%，多數銀行的海外加碼也要求以外幣結帳。'),
+         (f'{c["name"]}適合什麼人？', f'適合：{c["good"]} 不適合：{c["bad"]}'),
         ]
         cf_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                           + html.escape(a) + '</div></details>' for q, a in cf)
@@ -1780,13 +1781,13 @@ if os.path.exists('cards.json'):
                             "acceptedAnswer": {"@type": "Answer", "text": a}}
                            for q, a in cf]}, ensure_ascii=False)
 
-        t = f'{c["name"]}日本回饋怎麼算？{c["total"]}% 上限與登錄方式（{CD["checked"][:7]}）'
-        de = (f'{c["name"]}（{c["plan"]}）日本消費回饋 {c["total"]}%，'
+        t_ = f'{c["name"]}日本回饋怎麼算？最高 {c["total"]}% 的上限與登錄方式'
+        de = (f'{c["name"]}（{c["plan"]}）日本消費最高 {c["total"]}%，'
               + (f'加碼刷到約 {money(hit)} 到頂。' if hit else '無加碼上限。')
-              + f'含各金額實拿試算、登錄與切換步驟、不適用情況。')
+              + '含各金額實拿試算、加碼層級、登錄時間與不適用情況。')
 
         write(f'japan-credit-card/{c["slug"]}/index.html',
-          head(t, de, f'japan-credit-card/{c["slug"]}/',
+          head(t_, de, f'japan-credit-card/{c["slug"]}/',
                '<script type="application/ld+json">' + cf_ld + '</script>')
           + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), (c['name'], None)])
           + topnav()
@@ -1794,20 +1795,28 @@ if os.path.exists('cards.json'):
           + f'<p class="lede">{html.escape(c["plan"])}　·　活動期間 {html.escape(c["period"])}</p>'
           + f'<div class="today"><div class="tday">條件查證於 {CD["checked"]}'
             f'　·　匯率 {_MIDC} 每日更新</div>'
-            f'<div class="tans">日本消費最高 {c["total"]}%'
-            + (f'，但加碼刷到 {money(hit)} 就到頂' if hit else '，無加碼上限') + '</div>'
-            f'<div class="tsub">{html.escape(c["base_note"])}'
-            + (f'；{html.escape(c["bonus_note"])}' if c['bonus'] else '') + '。</div>'
-            + (f'<div class="tbuf">超過之後只剩 <b>{c["base"]}%</b>。'
-               f'先把加碼額度用在單價高的東西上。</div>' if hit else '')
+            f'<div class="tans">實體消費最高 {c["total"]}%'
+            + (f'，加碼刷到 {money(hit)} 就到頂' if hit else '，無加碼上限') + '</div>'
+            f'<div class="tsub">{html.escape(c["base_note"])}。'
+            + (f'另有 {len(c["tiers"])} 層加碼，各有條件與上限，需同時符合才疊得上去。'
+               if c['tiers'] else '') + '</div>'
+            + (f'<div class="tbuf">⚠ 加碼需<b>搶限量登錄</b>：{html.escape(c["reg"])}</div>'
+               if c.get('reg_race') else
+               (f'<div class="tbuf">超過之後只剩 <b>{c["base"]}%</b>。</div>' if hit else ''))
             + '</div>'
+          + (('<h2>回饋是怎麼疊出來的</h2>'
+              f'<p class="lede">基本 {c["base"]}%（{html.escape(c["base_note"])}），'
+              f'再加上以下各層。每層各自受上限限制，也各自要符合條件。</p>'
+              '<div class="tw"><table><thead><tr><th>加碼項目</th><th>加碼</th>'
+              '<th>上限</th><th>適用</th></tr></thead><tbody>' + trows + '</tbody></table></div>')
+             if c['tiers'] else '')
           + '<h2>刷多少、實拿多少</h2>'
-          + f'<p class="lede">以中間匯率 {_MIDC} 換算，並加計 {_fx["typical"]}% 國外交易手續費。'
-            f'假設消費落在該卡的加碼指定範圍內。</p>'
+          + f'<p class="lede">以中間匯率 {_MIDC} 換算並加計 {_fx["typical"]}% 國外交易手續費，'
+            f'假設實體消費的各層加碼條件都符合。</p>'
           + '<div class="tw"><table><thead><tr><th>日幣消費</th><th>台幣帳單</th>'
             '<th>實拿回饋</th><th>有效回饋率</th><th>實際負擔</th>'
             '</tr></thead><tbody>' + rows + '</tbody></table></div>'
-          + f'<p class="disc">回饋以台幣帳單金額計算；點數型回饋以 1 點約 1 元估算。</p>'
+          + '<p class="disc">回饋以台幣帳單金額計算；點數型回饋以 1 點約 1 元估算。</p>'
           + fare_cta('tokyo', '算完回饋，順便看機票')
           + '<h2>怎麼啟用</h2><div class="tldr"><ul>'
           + ''.join(f'<li>{html.escape(x)}</li>' for x in c['steps'])
@@ -1820,15 +1829,15 @@ if os.path.exists('cards.json'):
           + f'<p class="lede"><b>適合</b>：{html.escape(c["good"])}</p>'
           + f'<p class="lede"><b>不適合</b>：{html.escape(c["bad"])}</p>'
           + '<h2>跟其他卡比（日幣 10 萬為例）</h2>'
-          + '<div class="tw"><table><thead><tr><th>卡片</th><th>最高回饋</th>'
+          + '<div class="tw"><table><thead><tr><th>卡片</th><th>實體消費最高</th>'
             '<th>¥100,000 實拿</th></tr></thead><tbody>'
           + f'<tr><td><b>{html.escape(c["name"])}</b>（本頁）</td><td>{c["total"]}%</td>'
-            f'<td class="win"><b>{money(round(_back(c, 100000, True)))}</b></td></tr>'
+            f'<td class="win"><b>{money(round(_back(c, 100000, "shop")[0]))}</b></td></tr>'
           + others + '</tbody></table></div>'
           + '<div class="cities">'
           + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
             f'<s>輸入日幣金額，換算回饋</s></a>'
-          + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 四張卡比較</b>'
+          + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張卡比較</b>'
             f'<s>上限、登錄與適用範圍</s></a>'
           + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
             f'<s>改成出境後才退稅</s></a></div>'
@@ -1841,25 +1850,29 @@ if os.path.exists('cards.json'):
           + foot())
         pages.append((f'/japan-credit-card/{c["slug"]}/', 0.7))
 
-    # ── 日幣回饋計算機 ──────────────────────────────────
+    # ── 日幣回饋計算機 ──
     _calc_js = _CJS + ("""
 <script>
 (function(){
  var $=function(i){return document.getElementById(i)};
  function run(){
-  var i=+$('kc').value, y=+$('ky').value||0, spec=$('ks').value==='y';
-  var c=JCARD.cards[i], o=jback(c,y,spec), net=o.bill-o.v;
+  var i=+$('kc').value, y=+$('ky').value||0, mode=$('ks').value;
+  var c=JCARD.cards[i];
+  if(!jhas(c,mode)){$('kv').className='cv tw';
+    $('kv').textContent='這張卡在此消費類型沒有加碼，只有基本回饋';mode='base';}
+  var o=jback(c,y,mode), net=o.bill-o.v;
   $('k1').textContent='¥'+jfmt(y);
   $('k2').textContent='NT$'+jfmt(o.bill);
   $('k3').innerHTML='NT$'+jfmt(o.v)+'<i class="pp">≈ ¥'+jfmt(o.v/JCARD.mid)+'</i>';
   $('k4').innerHTML='NT$'+jfmt(net)+'<i class="pp">≈ ¥'+jfmt(net/JCARD.mid)+'</i>';
-  $('kv').className='cv '+(o.cap?'tw':'jp');
-  $('kv').textContent=(y===0)?'請輸入金額':
-    ('有效回饋率 '+(o.v/o.bill*100).toFixed(2)+'%'+
-     (o.cap?'　·　加碼已達上限，再刷下去只剩 '+c.b+'%':''));
-  $('kr').innerHTML=JCARD.cards.map(function(x){var r=jback(x,y,spec);
-    return '<div class="cl"><span><a href="'+%HUB%+'/'+x.s+'/">'+x.n+'</a></span><b>NT$'+
-      jfmt(r.v)+'</b></div>';}).join('');
+  if(y>0&&jhas(c,$('ks').value)){$('kv').className='cv '+(o.cap?'tw':'jp');
+   $('kv').textContent='有效回饋率 '+(o.v/o.bill*100).toFixed(2)+'%'+
+    (o.cap?'　·　加碼已達上限，再刷下去只剩 '+c.base+'%':'')+
+    (c.race?'　·　此卡加碼需搶限量登錄':'');}
+  $('kr').innerHTML=JCARD.cards.map(function(x){var r=jback(x,y,jhas(x,$('ks').value)?$('ks').value:'base');
+    return '<div class="cl"><span><a href="'+%HUB%+'/'+x.s+'/">'+x.n+'</a>'+
+     (jhas(x,$('ks').value)?'':'<i class="pc">此類型無加碼</i>')+'</span><b>NT$'+
+     jfmt(r.v)+'</b></div>';}).join('');
  }
  ['kc','ky','ks'].forEach(function(i){var e=$(i);if(e){e.addEventListener('input',run);e.addEventListener('change',run);}});
  run();
@@ -1870,15 +1883,19 @@ if os.path.exists('cards.json'):
                      for i, c in enumerate(CD['cards']))
     kc_faq = [
      ('回饋是用日幣還是台幣計算？',
-      '台幣。海外刷卡會先由卡片組織以其匯率換算成台幣入帳，再加上國外交易手續費，'
-      '銀行的回饋是依這筆台幣金額計算。本頁把回饋同時折算回日幣顯示，'
-      '是為了讓你在店裡看標價時比較好抓，實際入帳與回饋都是台幣。'),
+      '台幣。海外刷卡會先由卡片組織換算成台幣入帳，再加上國外交易手續費，'
+      '銀行的回饋依這筆台幣金額計算。本頁把回饋同時折算回日幣顯示，'
+      '是為了讓你在店裡看標價時好抓，實際入帳與回饋都是台幣。'),
      ('為什麼帳單金額比我用匯率算的高？',
-      f'因為多了國外交易手續費。多數發卡行約 {_fx["typical"]}%（國際組織 1% ＋ 發卡行 0.5%），'
-      f'美國運通約 {_fx["amex"]}%。本頁的台幣帳單已經把這筆加進去。'),
+      f'因為多了國外交易手續費，多數發卡行約 {_fx["typical"]}%（國際組織 1% ＋ 發卡行 0.5%），'
+      f'美國運通約 {_fx["amex"]}%。本頁的台幣帳單已經加進去了。'),
      ('算出來的金額準嗎？',
-      '當成比較用的估算。實際入帳取決於卡片組織當日匯率與請款日，會有一到數個百分點的差異；'
-      '回饋也受權益等級、排除通路與登錄狀態影響。本頁採各卡公告的最高回饋率計算。'),
+      '當成比較用的估算。實際入帳取決於卡片組織當日匯率與請款日；'
+      '回饋也受權益等級、排除通路與登錄狀態影響。本頁採各卡公告的最高情境計算，'
+      '也就是各層加碼條件都符合時的數字。'),
+     ('為什麼有些卡在某個消費類型沒有數字？',
+      '因為那張卡在該類型沒有加碼。例如交通卡儲值加碼目前只有部分卡片提供，'
+      '其餘卡片在該情境下只有基本回饋。'),
     ]
     kc_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in kc_faq)
@@ -1889,24 +1906,22 @@ if os.path.exists('cards.json'):
 
     write('japan-card-calculator/index.html',
       head('日本刷卡回饋計算機｜輸入日幣金額，換算實拿回饋與台幣帳單',
-           f'選擇信用卡並輸入日幣消費金額，立即算出台幣帳單（含 {_fx["typical"]}% 國外交易手續費）、'
-           f'實拿回饋與實際負擔，回饋同時顯示日幣與台幣。匯率每日更新。',
-           'japan-card-calculator/',
+           f'選擇信用卡、輸入日幣消費金額，立即算出台幣帳單（含 {_fx["typical"]}% 國外交易手續費）、'
+           f'實拿回饋與實際負擔，回饋同時顯示日幣與台幣。收錄 {len(CD["cards"])} 張旅日信用卡，'
+           f'匯率每日更新。', 'japan-card-calculator/',
            '<script type="application/ld+json">' + kc_ld + '</script>')
       + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), ('回饋計算機', None)])
       + topnav()
       + '<h1>日本刷卡回饋計算機</h1>'
       + '<p class="lede">在店裡看到日圓標價，想知道刷下去實際負擔多少、回饋拿得到多少。'
-        '選卡、輸入金額就好。</p>'
+        f'選卡、輸入金額就好，目前收錄 {len(CD["cards"])} 張卡。</p>'
       + f'<p class="upd">換算匯率 {_MIDC}（中間匯率）　·　'
         f'國外交易手續費 {_fx["typical"]}%　·　匯率每日自動更新'
         + (f'　·　{_RDATE}' if _RDATE else '') + '</p>'
       + '<div class="calc"><div class="sf">'
       + f'<label>信用卡<select id="kc">{_kopts}</select></label>'
       + '<label>日幣金額 ¥<input id="ky" type="number" value="100000" min="0" step="1000"></label>'
-      + '<label>消費地點<select id="ks">'
-        '<option value="y">加碼指定店家</option>'
-        '<option value="n">一般日本消費</option></select></label>'
+      + f'<label>消費類型<select id="ks">{_mopts}</select></label>'
       + '</div><div class="cres">'
         '<div class="cl"><span>日幣消費</span><b id="k1">—</b></div>'
         '<div class="cl"><span>台幣帳單（含手續費）</span><b id="k2">—</b></div>'
@@ -1915,11 +1930,11 @@ if os.path.exists('cards.json'):
         '<div class="cv" id="kv">—</div></div></div>'
       + '<h3>同金額下其他卡拿多少</h3><div class="cres" id="kr"></div>'
       + f'<p class="disc">回饋依台幣帳單金額計算，點數型回饋以 1 點約 1 元估算。'
-        f'實際匯率、入帳金額與回饋資格以發卡行為準。條件查證於 {CD["checked"]}。</p>'
+        f'試算採各層加碼條件都符合的最高情境，實際以發卡行為準。條件查證於 {CD["checked"]}。</p>'
       + fare_cta('tokyo', '算完回饋，順便看機票')
       + '<h2>常見問題</h2>' + kc_html
       + '<h2>相關頁面</h2><div class="cities">'
-      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 四張卡完整比較</b>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張卡完整比較</b>'
         f'<s>上限、登錄方式與適用範圍</s></a>'
       + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 買 iPhone 台灣還日本划算</b>'
         f'<s>含刷卡回饋試算</s></a>'
@@ -1929,13 +1944,7 @@ if os.path.exists('cards.json'):
         '頁內卡片連結非聯盟連結。</p>'
       + _calc_js + foot())
     pages.append(('/japan-card-calculator/', 0.8))
-    print(f'   卡片介紹頁 {len(CD["cards"])} 頁　·　回饋計算機 1 頁')
-
-    print(f'   旅日信用卡頁：{len(CD["cards"])} 張卡（查證 {CD["checked"]}）')
-
-    print(f'   日本免稅新制頁：距 11/1 還有 {_left} 天')
-
-    print(f'   台日 Apple 價差頁：{len(AP["products"])} 項商品')
+    print(f'   旅日信用卡：{len(CD["cards"])} 張卡頁 ＋ 比較頁 ＋ 計算機（查證 {CD["checked"]}）')
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
