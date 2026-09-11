@@ -469,6 +469,17 @@ border:1px solid var(--line);background:var(--card);color:var(--fg);width:100%}
 border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
 .sf button:hover{opacity:.9}
 @media(max-width:520px){.sf label{flex:1 1 100%}.sf button{width:100%}}
+.calc{margin-top:12px;padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.calc .sf{margin-top:0;padding:0;background:none;border:0}
+.cres{margin-top:14px;padding:16px 18px;background:var(--card);border:1px solid var(--line);
+ border-radius:10px}
+.cres .cl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+ padding:7px 0;font-size:.95rem;border-bottom:1px dashed var(--line)}
+.cres .cl:last-of-type{border-bottom:0}
+.cres .cl b{font-size:1.16rem;font-variant-numeric:tabular-nums}
+.cres .cv{margin-top:12px;padding-top:12px;border-top:2px solid var(--line);
+ font-size:1.12rem;font-weight:800;line-height:1.5}
+.cres .cv.jp{color:var(--lcc)}.cres .cv.tw{color:var(--acc)}
 .widget{margin:12px 0 0;min-height:60px}
 .widget iframe{max-width:100%;border:0}
 .gatebar{margin:16px 0 0;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
@@ -1254,6 +1265,74 @@ if os.path.exists('apple.json'):
                  + f'<a class="ct" href="{U("/osaka/")}"><b>大阪機票</b><s>心齋橋、道頓堀</s></a>'
                  + f'<a class="ct" href="{U("/deals/")}"><b>機票特價</b><s>每日更新</s></a></div>')
 
+    # ── 信用卡試算：回饋往往比台日價差還大 ────────────────
+    _MID = AP['rate'].get('jpy_twd_mid') or RATE
+    _SPREAD = AP['rate'].get('spread', 0.016)
+    # 海外回饋 3%、手續費 1.5% 的前提下，台灣回饋要多高才會抵銷日本價差
+    def _flip(p): return 1 - (p['jpy']/TAXR*_MID*1.015*0.97)/p['twd']
+    _fl = sorted((_flip(p), p) for p in NEWP if p['cat'] == 'iPhone')
+    _flo, _fhi = _fl[0], _fl[-1]
+    _opts = ''.join(
+        f'<option value="{p["jpy"]}|{p["twd"]}">{html.escape(p["name"])} {html.escape(p["spec"])}</option>'
+        for p in NEWP if p['cat'] == 'iPhone')
+    _cjs = ("""
+<script>
+(function(){
+ var MID=%MID%, FEE0=1.5, SPREAD=%SPREAD%;
+ var $=function(i){return document.getElementById(i)};
+ function nt(n){return 'NT$'+Math.round(n).toLocaleString('en-US')}
+ function calc(){
+  var v=$('cm').value.split('|'), jpy=+v[0], twd=+v[1];
+  var ov=(+$('co').value||0)/100, dm=(+$('cd').value||0)/100, fee=(+$('cf').value||0)/100;
+  var base=($('cw').value==='ex')? jpy/1.1 : jpy;          // 量販店免稅價／直營店含稅價
+  var jp=($('cp').value==='card')? base*MID*(1+fee)*(1-ov) // 刷卡：手續費後再扣回饋
+                                 : base*MID*(1+SPREAD);    // 付現：換匯成本，無回饋
+  var tw=twd*(1-dm);
+  var d=tw-jp;
+  $('r1').textContent=nt(tw); $('r2').textContent=nt(jp);
+  var e=$('rv');
+  e.className='cv '+(d>0?'jp':'tw');
+  e.textContent=(Math.abs(d)<100)?('兩邊幾乎一樣（相差 '+nt(Math.abs(d))+'），不值得為此特地安排')
+   :(d>0?('日本便宜 '+nt(d)):('台灣便宜 '+nt(-d)+'，回饋已經吃掉價差'));
+ }
+ ['cm','co','cd','cf','cw','cp'].forEach(function(i){
+   var el=$(i); if(el){el.addEventListener('input',calc);el.addEventListener('change',calc);}
+ });
+ calc();
+})();
+</script>""").replace('%MID%', f'{_MID}').replace('%SPREAD%', f'{_SPREAD}')
+
+    calcblock = (
+      '<h2>加上信用卡回饋，結論會變嗎？</h2>'
+      '<p class="lede">會，而且可能整個翻過來。台灣的刷卡回饋同樣算數——'
+      f'假設海外刷卡回饋 3%、手續費 1.5%，國內回饋只要達到 '
+      f'<b>{_flo[0]*100:.1f}%</b>（{_flo[1]["name"]} {_flo[1]["spec"]}）到 '
+      f'<b>{_fhi[0]*100:.1f}%</b>（{_fhi[1]["name"]} {_fhi[1]["spec"]}），'
+      f'日本的免稅價差就被完全抵銷。新機上市期間國內通路的加碼活動'
+      f'確實出現過這個量級，所以別只看機身標價。'
+      '海外刷卡則要先加上國外交易手續費（多數發卡行約 1.5%：國際組織 1% ＋ 發卡行 0.5%，'
+      '金管會規定發卡行加收不得逾 0.5%；美國運通約 2%）。填入你自己那張卡的條件試算：</p>'
+      '<div class="calc"><div class="sf">'
+      f'<label>機型<select id="cm">{_opts}</select></label>'
+      '<label>日本買法<select id="cw">'
+      '<option value="ex">量販店免稅價</option>'
+      '<option value="inc">Apple 直營店含稅價</option></select></label>'
+      '<label>日本付款<select id="cp">'
+      '<option value="card">刷卡</option><option value="cash">付現</option></select></label>'
+      '<label>海外回饋 %<input id="co" type="number" value="3" min="0" max="30" step="0.1"></label>'
+      '<label>國內回饋 %<input id="cd" type="number" value="3" min="0" max="30" step="0.1"></label>'
+      '<label>國外手續費 %<input id="cf" type="number" value="1.5" min="0" max="5" step="0.1"></label>'
+      '</div>'
+      '<div class="cres">'
+      '<div class="cl"><span>台灣實付</span><b id="r1">—</b></div>'
+      '<div class="cl"><span>日本實付</span><b id="r2">—</b></div>'
+      '<div class="cv" id="rv">—</div></div></div>'
+      f'<p class="disc">以中間匯率 {_MID} 為基準：刷卡加計手續費後再扣回饋；'
+      f'付現以中間匯率加 {round(_SPREAD*100,1)}% 換匯成本計算，且沒有刷卡回饋。'
+      '各卡網實際結匯匯率與入帳日匯率會有差異，回饋多有上限與登錄條件，'
+      '結果僅供比較用，請以你的發卡行公告為準。</p>' + _cjs)
+    _APPLE_CALC = calcblock
+
     write('apple-japan-price/index.html',
       head(title,desc,'apple-japan-price/','<script type="application/ld+json">'+faq_ld+'</script>')
       + crumbs([('首頁','/'),('日本買 iPhone 價差比較',None)]) + topnav()
@@ -1293,6 +1372,7 @@ if os.path.exists('apple.json'):
         '實際免稅價與手續費依店家而異。</p>' + tables
       + dtable
       + betable
+      + _APPLE_CALC
       + '<h2>買之前要知道的兩件事</h2>'
       + '<h3>1. Apple 直營店已經不能退稅</h3>'
       + '<p class="lede">Apple 日本直營店自 2024 年 6 月起取消對外國旅客的免稅服務。'
