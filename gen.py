@@ -1951,10 +1951,13 @@ if os.path.exists('cards.json'):
     if os.path.exists('coupons.json'):
         CP = json.load(open('coupons.json', encoding='utf-8'))
         _srows = ''.join(
-            f'<tr><td><b>{html.escape(st["name"])}</b>{SMALL}{html.escape(st["cat"])}</small></td>'
+            f'<tr><td><a href="{U("/japan-coupon/"+st["slug"]+"/")}">'
+            f'<b>{html.escape(st["name"])}</b></a>{SMALL}{html.escape(st["jp"])}</small></td>'
+            f'<td>{html.escape(st["cat"])}</td>'
             f'<td class="win"><b>{html.escape(st["rate"])}</b></td>'
             f'<td>{html.escape(st["tiers"])}</td>'
-            f'<td>{html.escape(st["note"]) or "—"}</td></tr>' for st in CP['stores'])
+            f'<td>{html.escape(st["tax_min"])}</td></tr>'
+            for st in sorted(CP['stores'], key=lambda x: (x['cat'], -x['max'])))
 
         _cpjs = _CJS + ("""
 <script>
@@ -2054,8 +2057,15 @@ if os.path.exists('cards.json'):
           + f'<h2>{len(CP["stores"])} 家常見店家的折扣幅度</h2>'
           + '<p class="lede">以下是各店常見的券折扣級距。券的版本與期限經常更換，'
             '出發前一週再確認一次最準——本頁整理的是幅度，不提供券本身。</p>'
-          + '<div class="tw"><table><thead><tr><th>店家</th><th>常見折扣</th>'
-            '<th>級距與條件</th><th>備註</th></tr></thead><tbody>' + _srows + '</tbody></table></div>'
+          + '<div class="tw"><table><thead><tr><th>店家</th><th>類別</th><th>常見折扣</th>'
+            '<th>級距與條件</th><th>免稅／用券門檻</th></tr></thead><tbody>'
+            + _srows + '</tbody></table></div>'
+          + '<div class="cities">'
+          + ''.join(f'<a class="ct" href="{U("/japan-coupon/"+st["slug"]+"/")}">'
+                    f'<b>{html.escape(st["name"])}</b><s>{html.escape(st["cat"])}・'
+                    f'{html.escape(st["jp"])}</s><u>{html.escape(st["rate"])}</u></a>'
+                    for st in sorted(CP['stores'], key=lambda x: -x['max']))
+          + '</div>'
           + '<h2>三個常犯的錯</h2><div class="tldr"><ul>'
             '<li><b>把百分比直接相加。</b>免稅 10% 加券 7% 不等於 17%。'
             '券是以免稅後的金額計算，實際約 15.4%。</li>'
@@ -2085,6 +2095,112 @@ if os.path.exists('cards.json'):
             f'頁內部分連結為聯盟行銷連結，本站可能獲得分潤，不影響你的價格。</p>'
           + _cpjs + foot())
         pages.append(('/japan-coupon/', 0.8))
+
+        # ── 每家店的獨立頁 ──
+        for st in CP['stores']:
+            _ex = '<div class="tw"><table><thead><tr><th>日幣定價（含稅）</th>'\
+                  '<th>免稅後（未稅）</th><th>適用折扣</th><th>折券後</th>'\
+                  '<th>合計省下</th></tr></thead><tbody>'
+            def _rate_at(st, free):
+                """依未稅金額取得適用折扣；有級距時按級距，否則用單一費率"""
+                if not st['steps']:
+                    return st['max']
+                r = 0
+                for thr, rt in st['steps']:
+                    if free >= thr: r = rt
+                return r
+            for y in (10000, 30000, 50000, 100000):
+                free = y / 1.1
+                rt = _rate_at(st, free)
+                after = free * (1 - rt / 100)
+                _ex += (f'<tr><td>¥{y:,}</td><td>¥{round(free):,}</td>'
+                        f'<td>{(str(rt) + "%") if rt else "未達用券門檻"}</td>'
+                        f'<td class="win"><b>¥{round(after):,}</b></td>'
+                        f'<td>{(1-after/y)*100:.1f}%</td></tr>')
+            _ex += '</tbody></table></div>'
+
+            _oth = ''.join(
+                f'<tr><td><a href="{U("/japan-coupon/"+o["slug"]+"/")}">{html.escape(o["name"])}</a></td>'
+                f'<td>{html.escape(o["cat"])}</td><td>{html.escape(o["rate"])}</td></tr>'
+                for o in sorted(CP['stores'], key=lambda x: -x['max'])
+                if o['slug'] != st['slug'] and o['cat'] == st['cat'])
+
+            sf = [
+             (f'{st["name"]}的折價券可以折多少？',
+              f'{st["tiers"]}。券以免稅後的金額計算，不是直接和免稅相加——'
+              f'以 ¥10,000 含稅商品為例，免稅後約 ¥9,091，再折 {st["max"]}% 之後，'
+              f'合計約省 {(1-(10000/1.1*(1-st["max"]/100))/10000)*100:.1f}%。'),
+             (f'{st["name"]}的券可以和免稅一起用嗎？', f'{st["combo"]}。{st["tax_min"]}。'),
+             (f'{st["name"]}的券去哪裡拿？什麼時候出示？', f'{st["how"]}。{st["when"]}。'),
+             (f'在{st["name"]}買東西要注意什麼？',
+              '；'.join(st['watch']) + '。' if st['watch'] else
+              '沒有特別限制，但折扣幅度與適用商品仍以店家當期公告為準。'),
+            ]
+            sf_html = ''.join('<details class="faq"><summary>' + html.escape(q)
+                              + '</summary><div>' + html.escape(a) + '</div></details>'
+                              for q, a in sf)
+            sf_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+                "mainEntity": [{"@type": "Question", "name": q,
+                                "acceptedAnswer": {"@type": "Answer", "text": a}}
+                               for q, a in sf]}, ensure_ascii=False)
+
+            write(f'japan-coupon/{st["slug"]}/index.html',
+              head(f'{st["name"]}優惠券怎麼用？折扣幅度、免稅併用與實付價試算',
+                   f'{st["name"]}（{st["jp"]}）常見折扣 {st["rate"]}，{st["combo"]}。'
+                   f'含級距條件、券的取得與出示時機、免稅門檻，'
+                   f'以及折價券加免稅加刷卡回饋的實付價試算。',
+                   f'japan-coupon/{st["slug"]}/',
+                   '<script type="application/ld+json">' + sf_ld + '</script>')
+              + crumbs([('首頁', '/'), ('日本購物折扣', '/japan-coupon/'), (st['name'], None)])
+              + topnav()
+              + f'<h1>{html.escape(st["name"])}優惠券怎麼用？</h1>'
+              + f'<p class="lede">{html.escape(st["jp"])}　·　{html.escape(st["cat"])}　·　'
+                f'折扣幅度查證於 {CP["checked"]}</p>'
+              + f'<div class="today"><div class="tday">常見折扣 {html.escape(st["rate"])}'
+                f'　·　{html.escape(st["combo"])}　·　{html.escape(st["tax_min"])}</div>'
+                f'<div class="tans">{html.escape(st["tiers"])}</div>'
+                f'<div class="tsub">券以<b>免稅後</b>的金額計算，不是和免稅相加。'
+                f'以 ¥10,000 含稅商品為例，免稅後約 ¥9,091，再折 {st["max"]}%，'
+                f'合計約省 {(1-(10000/1.1*(1-st["max"]/100))/10000)*100:.1f}%。</div>'
+                f'<div class="tbuf">{html.escape(st["when"])}</div></div>'
+              + '<h2>不同金額省多少</h2>'
+              + f'<p class="lede">先扣免稅，券再以未稅金額計算。'
+                + ('該店有滿額級距，未稅金額決定適用哪一檔。' if st['steps'] else
+                   f'該店為單一費率 {st["max"]}%。') + '</p>'
+              + _ex
+              + f'<p class="disc">實際折扣依商品類別與當期券別而異，以店家公告為準。'
+                f'想連刷卡回饋一起算，可用<a href="{U("/japan-coupon/")}">實付價計算機</a>。</p>'
+              + fare_cta('tokyo', '算完省多少，機票呢')
+              + '<h2>券怎麼拿、什麼時候出示</h2><div class="tldr"><ul>'
+              + f'<li><b>取得</b>：{html.escape(st["how"])}</li>'
+                f'<li><b>出示時機</b>：{html.escape(st["when"])}</li>'
+                f'<li><b>免稅門檻</b>：{html.escape(st["tax_min"])}</li>'
+                f'<li><b>與免稅併用</b>：{html.escape(st["combo"])}</li>'
+              + '</ul></div>'
+              + (('<h2>要注意的地方</h2><div class="tldr"><ul>'
+                  + ''.join(f'<li>{html.escape(x)}</li>' for x in st['watch'])
+                  + '</ul></div>') if st['watch'] else '')
+              + '<h2>適合誰</h2>'
+              + f'<p class="lede"><b>好處</b>：{html.escape(st["good"])}</p>'
+              + f'<p class="lede"><b>限制</b>：{html.escape(st["bad"])}</p>'
+              + (('<h2>同類型的其他店</h2><div class="tw"><table><thead><tr>'
+                  '<th>店家</th><th>類別</th><th>常見折扣</th></tr></thead><tbody>'
+                  + _oth + '</tbody></table></div>') if _oth else '')
+              + '<h2>相關頁面</h2><div class="cities">'
+              + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 實付價計算機</b>'
+                f'<s>折價券×免稅×刷卡回饋一起算</s></a>'
+              + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
+                f'<s>哪張卡回饋最高</s></a>'
+              + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
+                f'<s>改成出境後才退稅</s></a></div>'
+              + '<h2>常見問題</h2>' + sf_html
+              + f'<p class="disc">本頁為公開資訊整理。折扣幅度與券的取得管道查證於 {CP["checked"]}，'
+                f'由店家隨時調整，請以店家當期公告為準。本站不提供折價券本身，'
+                f'與文中店家無合作關係。{html.escape(CP["tax_note"])}</p>'
+              + foot())
+            pages.append((f'/japan-coupon/{st["slug"]}/', 0.7))
+        print(f'   店家頁 {len(CP["stores"])} 頁')
+
         print(f'   日本購物折扣頁：{len(CP["stores"])} 家店')
 
     print(f'   旅日信用卡：{len(CD["cards"])} 張卡頁 ＋ 比較頁 ＋ 計算機（查證 {CD["checked"]}）')
