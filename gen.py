@@ -488,7 +488,8 @@ def topnav(cur=''):
     ls=''.join(f'<a href="{U("/"+s+"/")}"{" class=cur" if s==cur else ""}>{n}</a>' for s,n in REGIONS)
     return (f'<nav class="top"><a href="{U("/")}"{" class=cur" if not cur else ""}>首頁</a>'
             f'<a href="{U("/deals/")}">🔥 機票特價</a>'
-            f'<a href="{U("/apple-japan-price/")}">🍎 台日 Apple 價差</a>{ls}</nav>')
+            f'<a href="{U("/apple-japan-price/")}">🍎 台日 Apple 價差</a>'
+            f'<a href="{U("/japan-tax-free-2026/")}">🧾 免稅新制</a>{ls}</nav>')
 
 def foot():
     return f'''<p class="note">
@@ -1291,6 +1292,136 @@ if os.path.exists('apple.json'):
         f'本站可能獲得分潤，不影響你的價格。</p>'
       + foot())
     pages.append(('/apple-japan-price/',0.9))
+
+    # ── 2026/11/1 日本免稅改制（リファンド方式） ──────────────
+    TF_D = datetime.date(2026, 11, 1)
+    _left = (TF_D - NOW.date()).days
+    _cd = (f'還有 <b>{_left}</b> 天' if _left > 0 else
+           '<b>已經上路</b>' if _left == 0 else f'已實施 <b>{-_left}</b> 天')
+
+    def _tax(pre): return round(pre * 0.1)
+
+    _lv = [5000, 30000, 100000, 300000]
+    _rows = ''.join(f'<tr><td>¥{v:,}</td><td>¥{_tax(v):,}</td>'
+                    f'<td><b>{money(round(_tax(v)*RATE))}</b></td></tr>' for v in _lv)
+    _duo = next((p for p in AP['products'] if p['name'] == 'iPhone Duo' and p['spec'] == '2TB'), None)
+    if _duo:
+        _pre = round(_duo['jpy'] / TAXR)
+        _rows += (f'<tr><td>¥{_pre:,}{SMALL}iPhone Duo 2TB</small></td>'
+                  f'<td>¥{_tax(_pre):,}</td>'
+                  f'<td><b>{money(round(_tax(_pre)*RATE))}</b></td></tr>')
+
+    tf_faq = [
+     ('日本要取消免稅了嗎？',
+      '不是。免稅本身繼續存在，改的是拿到退稅的時間點。2026 年 11 月 1 日起改採「退款方式」'
+      '（リファンド方式）：購買當下先支付含稅全額，出境時經海關確認商品確實帶出日本後，'
+      '再由店家退還消費稅相當額。省下的錢一樣是 10%，只是變成事後拿到。'),
+     ('11 月之後買東西要先多付多少？',
+      f'先多付商品稅前金額的 10%。以目前匯率 {RATE} 換算，消費 10 萬日圓要先墊 ¥10,000'
+      f'（約 {money(round(10000*RATE))}）；買一支 iPhone Duo 2TB 則要先墊約 '
+      f'{money(round(_tax(round(_duo["jpy"]/TAXR))*RATE)) if _duo else "NT$1 萬以上"}。'
+      '這筆錢在出境並完成海關確認後才會退還，等於旅途中要多帶一筆週轉金。'),
+     ('退款什麼時候、用什麼方式拿到？',
+      '出境時經海關確認後，由店家退還。依業者說明將以信用卡或電子錢包等無現金方式退回，'
+      '不需要再回到店裡領現金。實際到帳時間依店家與退款服務商而異，官方未統一規定。'),
+     ('有期限嗎？',
+      '有，而且很容易忽略。購買日起 90 天內必須完成出境海關確認，逾期就不算免稅、拿不到退款。'
+      '例如 11 月 1 日購買，確認期限是隔年 1 月 30 日。短期旅遊通常不受影響，'
+      '但如果你買完之後還要在日本待很久，或把東西先寄放，要特別注意。'),
+     ('哪些東西可以免稅？門檻有變嗎？',
+      '依業者與公會說明，新制取消「一般物品」與「消耗品」的區分，消耗品的專用包裝也不再需要，'
+      '購買上限 50 萬日圓廢止，稅前 5,000 日圓以上即為免稅對象，不再分類別計算。'
+      '此部分細則以國稅廳與觀光廳公告為準。'),
+     ('買了之後不小心用掉或沒帶出境會怎樣？',
+      '整筆交易都拿不到退款。官方說明採每筆購買紀錄判定——同一筆交易中只要有一項商品'
+      '未通過海關確認，該筆交易就失去免稅資格，不是只扣掉那一項。'
+      '另外「別送」（把商品寄回國）制度已於 2025 年 3 月 31 日廢止，商品必須自己帶出境。'),
+     ('10 月底之前買還是舊制嗎？',
+      f'是。10 月 31 日之前購買仍適用現行的購買時免稅，結帳當下就是免稅價。'
+      f'制度以購買日為準，{_cd.replace("<b>","").replace("</b>","")}。'),
+    ]
+    tf_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in tf_faq)
+    tf_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in tf_faq]}, ensure_ascii=False)
+
+    tf_title = '2026/11/1 日本免稅新制：先付全額、出境後才退稅（懶人包）'
+    tf_desc = ('日本免稅 2026 年 11 月 1 日改採退款方式：購買時先付含稅全額，出境經海關確認後'
+               '才退還消費稅。整理新舊制對照、要先墊多少錢、90 天確認期限與常見問題。')
+
+    write('japan-tax-free-2026/index.html',
+      head(tf_title, tf_desc, 'japan-tax-free-2026/',
+           '<script type="application/ld+json">' + tf_ld + '</script>')
+      + crumbs([('首頁', '/'), ('日本免稅新制', None)]) + topnav()
+      + '<h1>2026/11/1 起，日本免稅改成「出境後才退錢」</h1>'
+      + '<p class="lede">很多人看到消息以為日本要取消免稅。不是——免稅還在，'
+        '改的是你什麼時候拿到那 10%。</p>'
+      + f'<div class="today"><div class="tday">距離 11/1 上路 {_cd}'
+        f'　·　換算匯率 {RATE}，每日自動更新</div>'
+        f'<div class="tans">購買當下先付含稅全額，出境經海關確認後，由店家退還消費稅</div>'
+        f'<div class="tsub">省下的比例一樣是 10%，但付款當下要多掏這筆錢，'
+        f'等出境並完成確認才拿得回來。對行李重、消費高的旅客，影響的是現金流。</div>'
+        f'<div class="tbuf">最容易忽略的一條：<b>購買日起 90 天內</b>必須完成出境海關確認，'
+        f'逾期就不算免稅。</div></div>'
+      + '<h2>新舊制對照</h2>'
+      + '<div class="tw"><table><thead><tr><th>　</th>'
+        '<th>10/31 前（現行）</th><th>11/1 起（新制）</th></tr></thead><tbody>'
+        '<tr><td><b>結帳金額</b></td><td>直接扣掉 10%，當場就是免稅價</td>'
+        '<td class="lose">先付含稅全額</td></tr>'
+        '<tr><td><b>拿到退稅</b></td><td>結帳當下</td>'
+        '<td class="lose">出境經海關確認後，由店家退還</td></tr>'
+        '<tr><td><b>領取方式</b></td><td>不適用</td>'
+        '<td>信用卡或電子錢包等無現金方式</td></tr>'
+        '<tr><td><b>期限</b></td><td>無</td>'
+        '<td class="lose">購買日起 90 天內須完成海關確認</td></tr>'
+        '<tr><td><b>物品分類</b></td><td>分一般物品與消耗品，消耗品須專用包裝</td>'
+        '<td class="win">取消區分，不需專用包裝</td></tr>'
+        '<tr><td><b>金額門檻</b></td><td>稅前 5,000 日圓以上，消耗品上限 50 萬日圓</td>'
+        '<td class="win">稅前 5,000 日圓以上，上限廢止</td></tr>'
+        '</tbody></table></div>'
+      + '<h2>要先墊多少錢？</h2>'
+      + '<p class="lede">先墊的是商品稅前金額的 10%。以目前匯率 '
+        f'{RATE} 換算：</p>'
+      + '<div class="tw"><table><thead><tr><th>購物金額（稅前）</th>'
+        '<th>先墊的消費稅</th><th>約合台幣</th></tr></thead><tbody>'
+        + _rows + '</tbody></table></div>'
+      + '<p class="disc">刷卡另有約 1.5% 國外交易手續費；退款金額依店家與退款服務商可能再扣手續費，'
+        '實際入帳以店家說明為準。</p>'
+      + cta('hotel', '東京', '東京', '11 月之後去日本？先把住宿訂起來',
+            '到 Agoda 查房價，繁體中文、台幣計價')
+      + '<h2>什麼時候去，適用哪個制度？</h2>'
+      + '<p class="lede">制度以<b>購買日</b>為準，不是出境日。10 月 31 日當天買仍是舊制，'
+        '11 月 1 日起買就是新制。如果你的行程橫跨兩邊，大筆採購排在 10 月底結帳，'
+        '結帳當下就能拿到免稅價，不必墊錢也不用擔心 90 天期限。</p>'
+      + search_form('看看你的日期機票多少錢',
+                    '打算趕在改制前去，或是之後再去？先看票價。', 'TPE', 'TYO')
+      + '<h2>三個容易踩到的地雷</h2>'
+      + '<div class="tldr"><ul>'
+        '<li><b>整筆交易連坐。</b>官方說明採每筆購買紀錄判定，'
+        '同一筆交易只要有一項商品沒通過海關確認，整筆都失去免稅資格，不是只扣掉那一項。</li>'
+        '<li><b>商品必須自己帶出境。</b>「別送」（把免稅品寄回國）制度已於 2025/3/31 廢止，'
+        '只能購買自己帶得走的數量。</li>'
+        '<li><b>90 天期限。</b>購買日起 90 天內要完成出境海關確認。'
+        '短期旅遊不受影響，但長住、留學或先寄放行李的情況要留意。</li>'
+        '</ul></div>'
+      + '<h2>常見問題</h2>' + tf_html
+      + cta('esim', '日本', '東京', '出發前先把上網搞定',
+            '到 Klook 買 eSIM 或網卡，落地就能開導航找免稅店')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 日本買 iPhone 划算嗎</b>'
+        f'<s>台日價格全表，每日更新匯率</s></a>'
+      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>台灣飛日本，每日更新</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>各出發地比價</s></a></div>'
+      + '<p class="disc">本頁依日本觀光廳「消費稅免稅店」網站、全國免稅店協會「リファンド方式」'
+        '特設網站及免稅系統業者公開說明整理。制度細則以日本國稅廳與觀光廳公告為準，'
+        '各店家實際作業方式可能不同，請於現場確認。'
+        '頁內部分連結為聯盟行銷連結，本站可能獲得分潤，不影響你的價格。</p>'
+      + foot())
+    pages.append(('/japan-tax-free-2026/', 0.9))
+    print(f'   日本免稅新制頁：距 11/1 還有 {_left} 天')
+
     print(f'   台日 Apple 價差頁：{len(AP["products"])} 項商品')
 
 # ---------- sitemap / robots ----------

@@ -45,7 +45,7 @@ def main():
     ap = json.load(open("apple.json", encoding="utf-8"))
     R = ap["rate"]["jpy_twd"]
     site = json.load(open("partners.json", encoding="utf-8"))["site"]["url"].rstrip("/") \
-           + "/apple-japan-price/"
+           + "/japan-tax-free-2026/"
 
     # 以本次最貴的新機示範要先墊多少稅金
     top = max((p for p in ap["products"] if p.get("new")), key=lambda p: p["jpy"])
