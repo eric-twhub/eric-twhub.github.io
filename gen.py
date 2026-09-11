@@ -477,6 +477,10 @@ border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
  padding:7px 0;font-size:.95rem;border-bottom:1px dashed var(--line)}
 .cres .cl:last-of-type{border-bottom:0}
 .cres .cl b{font-size:1.16rem;font-variant-numeric:tabular-nums}
+.cres .cl .pw{background:var(--acc);color:#fff;font-size:.7rem;padding:1px 7px;border-radius:4px;
+ font-weight:700;margin-right:4px}
+.cres .cl .pc{font-style:normal;font-size:.72rem;color:var(--hot);margin-left:8px}
+.cres .cl .pp{font-style:normal;font-size:.78rem;color:var(--dim);font-weight:600;margin-left:8px}
 .cres .cv{margin-top:12px;padding-top:12px;border-top:2px solid var(--line);
  font-size:1.12rem;font-weight:800;line-height:1.5}
 .cres .cv.jp{color:var(--lcc)}.cres .cv.tw{color:var(--acc)}
@@ -1537,6 +1541,59 @@ if os.path.exists('cards.json'):
             return round(c['bonus_cap'] / (c['bonus'] / 100))
         return 0
 
+    # 選卡介面：最佳解隨金額改變，所以讓使用者輸入金額
+    _cjson = json.dumps([{'n': c['name'], 'b': c['base'], 'x': c['bonus'],
+                          'c': c['bonus_cap']} for c in CD['cards']], ensure_ascii=False)
+    # 熊本熊（基本 2.5%＋定額加碼）與無上限 3.3% 卡的交叉金額
+    _flat = max(c['base'] for c in CD['cards'] if not c['bonus'])
+    # 交叉點要用「低金額時真正勝出」的那張加碼卡，不是上限最大的那張
+    _bon = max((c for c in CD['cards'] if c['bonus']), key=lambda c: c['total'])
+    _cross = round(_bon['bonus_cap'] / ((_flat - _bon['base']) / 100))
+
+    _pjs = ("""
+<script>
+(function(){
+ var C=%CARDS%, FEE=%FEE%;
+ var $=function(i){return document.getElementById(i)};
+ function nt(n){return 'NT$'+Math.round(n).toLocaleString('en-US')}
+ function run(){
+  var amt=+$('pa').value||0, spec=$('ps').value==='y';
+  var r=C.map(function(c){
+    var v=c.b/100*amt;
+    var capped=false;
+    if(spec&&c.x){var bo=c.x/100*amt; if(bo>c.c){bo=c.c;capped=true;} v+=bo;}
+    return {n:c.n,v:v,rate:amt?v/amt*100:0,capped:capped};
+  }).sort(function(a,b){return b.v-a.v});
+  var fee=amt*FEE/100;
+  $('pr').innerHTML=r.map(function(x,i){
+    return '<div class="cl"><span>'+(i===0?'<b class="pw">最佳</b> ':'')+x.n+
+      (x.capped?'<i class="pc">加碼已達上限</i>':'')+'</span><b>'+nt(x.v)+
+      '<i class="pp">'+x.rate.toFixed(1)+'%</i></b></div>';
+  }).join('')+
+   '<div class="cv '+(r[0].v>fee?'jp':'tw')+'">'+
+   (amt?('扣掉國外交易手續費 '+nt(fee)+'（'+FEE+'%）後，最佳卡淨賺 '+nt(r[0].v-fee)):'請輸入金額')+
+   '</div>';
+ }
+ ['pa','ps'].forEach(function(i){var e=$(i);if(e){e.addEventListener('input',run);e.addEventListener('change',run);}});
+ run();
+})();
+</script>""").replace('%CARDS%', _cjson).replace('%FEE%', str(_fx['typical']))
+
+    _picker = (
+      '<h2>你要刷多少？答案不一樣</h2>'
+      f'<p class="lede">加碼有上限，所以「哪張最好」取決於金額。'
+      f'分水嶺在 <b>{money(_cross)}</b>：低於這個數，帶定額加碼的卡勝出；'
+      f'高於這個數，加碼早就用完，無上限的 {_flat}% 反而拿得多。'
+      f'輸入你這趟打算刷的金額：</p>'
+      '<div class="calc"><div class="sf">'
+      '<label>日本刷卡金額 NT$<input id="pa" type="number" value="45000" min="0" step="1000"></label>'
+      '<label>消費地點<select id="ps">'
+      '<option value="y">在該卡的加碼指定店家</option>'
+      '<option value="n">一般日本消費</option></select></label>'
+      '</div><div class="cres" id="pr"></div></div>'
+      f'<p class="disc">試算採各卡公告之最高回饋率，未計入權益等級差異與個別排除通路；'
+      f'手續費以 {_fx["typical"]}% 計。點數型回饋以 1 點約 1 元估算。</p>' + _pjs)
+
     _crows = ''
     for c in CD['cards']:
         hit = _cap_line(c)
@@ -1630,6 +1687,7 @@ if os.path.exists('cards.json'):
         '<th>加碼上限</th><th>刷到多少到頂</th><th>活動期間</th>'
         '</tr></thead><tbody>' + _crows + '</tbody></table></div>'
       + '<p class="disc">回饋率為各行公告之最高值，實際依權益等級、通路與交易方式而異。</p>'
+      + _picker
       + fare_cta('tokyo', '卡選好了，機票呢')
       + '<h2>每張卡的細節</h2>' + _cdetail
       + '<h2>怎麼確實拿到這些回饋</h2>'
