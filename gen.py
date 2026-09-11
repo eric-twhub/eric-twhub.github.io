@@ -401,6 +401,13 @@ table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--dim);font-weight:600;font-size:.79rem}
 td b{color:var(--acc)}
+.today{background:linear-gradient(180deg,#fff,var(--soft));border:1px solid var(--line);
+ border-top:4px solid var(--acc);border-radius:12px;padding:19px 22px;margin-top:14px}
+.tday{font-size:.79rem;color:var(--dim);letter-spacing:.04em;font-weight:600}
+.tans{font-size:1.3rem;font-weight:800;line-height:1.42;margin-top:8px;letter-spacing:-.02em}
+.tsub{font-size:.93rem;color:var(--dim);line-height:1.7;margin-top:10px}
+.tbuf{font-size:.93rem;line-height:1.7;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.tbuf b{color:var(--acc)}
 .tldr{background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--acc);
 border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
 .tldr ul{margin:0;padding-left:2px}
@@ -1107,6 +1114,12 @@ if os.path.exists('apple.json'):
     cheap_jp=sum(1 for p in iph if p['twd']-round(p['jpy']/TAXR*RATE)>0)
     acc_tw=sum(1 for p in acc if p['twd']-round(p['jpy']/TAXR*RATE)<0)
     top=max(iph,key=lambda p:p['twd']-round(p['jpy']/TAXR*RATE))
+    # 臨界匯率：日圓漲到這個價位時，日本免稅價與台灣售價打平
+    def be(p): return p['twd']*TAXR/p['jpy']
+    def gap_ex(p): return p['twd']-round(p['jpy']/TAXR*RATE)
+    _win=[p for p in iph if gap_ex(p)>0]
+    _tight=min(_win,key=be) if _win else None      # 最先失去價差的機種
+    _buf=(be(_tight)/RATE-1)*100 if _tight else 0
     top_save=top['twd']-round(top['jpy']/TAXR*RATE)
 
     faq=[
@@ -1158,6 +1171,22 @@ if os.path.exists('apple.json'):
     faq_ld=json.dumps({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
         {"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faq]},
         ensure_ascii=False)
+
+
+    _berows=''.join(
+        f'<tr><td><b>{html.escape(p["name"])}</b>{SMALL}{html.escape(p["spec"])}</small></td>'
+        f'<td class="win">{money(gap_ex(p))}</td>'
+        f'<td><b>{be(p):.4f}</b></td><td>{(be(p)/RATE-1)*100:.1f}%</td></tr>'
+        for p in sorted(iph,key=be))
+    betable=('<h2>匯率要變多少，結論才會翻盤？</h2>'
+             '<p class="lede">日圓升值時，日本售價換算成台幣就會變貴，價差隨之縮小。'
+             '下表是各機種「日本免稅價與台灣售價打平」的臨界匯率——'
+             f'目前匯率 {RATE}，離臨界值越近的機種越禁不起日圓走強。</p>'
+             '<div class="tw"><table><thead><tr><th>型號</th>'
+             '<th>免稅買現在省</th><th>臨界匯率</th><th>日圓還需升值</th>'
+             '</tr></thead><tbody>'+_berows+'</tbody></table></div>'
+             '<p class="disc">臨界匯率＝台灣售價 × 1.1 ÷ 日圓售價。'
+             '未計入刷卡國外交易手續費與量販店手續費，實際緩衝會更小。</p>')
 
     _tk=by_city.get('tokyo') or []
     _b=(best(_tk,True) or best(_tk,False)) if _tk else None
@@ -1212,7 +1241,17 @@ if os.path.exists('apple.json'):
            if AP['rate'].get('jpy_twd_mid') else '')
         + f'　·　匯率更新 {AP["rate"]["quoted_at"]}'
         + f'　·　售價取自 Apple 日本／台灣官網　·　資料更新於 {AP["updated"]}</p>'
-      + '<h2>先講結論</h2><div class="tldr"><ul>'
+      + '<h2>今天的答案</h2>'
+      + (f'<div class="today"><div class="tday">{AP["updated"]} · 換算匯率 {RATE}'
+         f'（每 1 日圓 ≈ NT${RATE}）· 每日自動更新</div>'
+         f'<div class="tans">在日本量販店以免稅價買，{len(_win)}／{len(iph)} 款新機比台灣便宜</div>'
+         f'<div class="tsub">最多省 {money(top_save)}（{top["name"]} {top["spec"]}）。'
+         f'但在 Apple 直營店買含稅價，{cheap_tw} 款反而是台灣較低——直營店自 2024/6 起已不能退稅。</div>'
+         + (f'<div class="tbuf">還有多少緩衝？日圓只要再升值 <b>{_buf:.1f}%</b>'
+            f'（匯率升到 <b>{be(_tight):.4f}</b>），{_tight["name"]} {_tight["spec"]} 就會失去價差，'
+            f'成為第一個不划算的機種。</div>' if _tight else '')
+         + '</div>')
+      + '<h3>細節</h3><div class="tldr"><ul>'
       + f'<li><b>在 Apple 直營店買，台灣比較便宜。</b>{len(iph)} 個新機組合中有 {cheap_tw} 個台灣較低，'
         f'差距多在 NT$1,000 上下。</li>'
       + f'<li><b>能退稅才有價差。</b>在家電量販店以免稅價購買時，{cheap_jp} 個組合日本較划算，'
@@ -1227,6 +1266,7 @@ if os.path.exists('apple.json'):
       + '<p class="lede">「退稅後」為日本含稅價扣除 10% 消費稅後換算之約當金額，'
         '實際免稅價與手續費依店家而異。</p>' + tables
       + dtable
+      + betable
       + '<h2>買之前要知道的兩件事</h2>'
       + '<h3>1. Apple 直營店已經不能退稅</h3>'
       + '<p class="lede">Apple 日本直營店自 2024 年 6 月起取消對外國旅客的免稅服務。'
