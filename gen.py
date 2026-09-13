@@ -1109,7 +1109,7 @@ write(f'{DEALDIR}/index.html',
        f'台灣飛日本的機票特價整理，{TODAY} 共 {len(deals_out)} 則，含稅價格、航空公司與出發日期。',
        f'{DEALDIR}/')
   + crumbs([('首頁','/'),('機票特價',None)]) + topnav()
-  + f'<h1>機票特價</h1><p class="lede">符合門檻或明顯低於同航線中位價的票，今日共 <b>{len(deals_out)}</b> 則。</p>'
+  + f'<h1>機票特價</h1><p class="lede">低於門檻、或明顯低於該航線平常最低價的票，今日共 <b>{len(deals_out)}</b> 則。</p>'
   + f'<p class="upd">更新於 {NOWS}</p><h2>{TODAY} 特價</h2><div class="cities">{items_today}</div>'
   + past_html + foot())
 pages.append((f'/{DEALDIR}/',0.95))
