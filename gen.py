@@ -354,6 +354,7 @@ def load():
         out.append(dict(o=r.get('origin'),d=d,air=a,airname=LCC.get(a) or FSC.get(a) or a,
             cls='lcc' if a in LCC else 'fsc' if a in FSC else 'other',
             price=r.get('price',0),dep=r.get('departure_at','')[:10],ret=r.get('return_at','')[:10],
+            dept=r.get('departure_at','')[11:16], rett=r.get('return_at','')[11:16],
             rt=bool(r.get('return_at')),tr=(r.get('transfers',0) or 0)+(r.get('return_transfers',0) or 0),
             dur=r.get('duration',0) or 0, dur_to=r.get('duration_to',0) or 0,
             gate=r.get('gate','') or '',
@@ -397,6 +398,7 @@ display:flex;flex-direction:column;gap:6px}
 .tg.lcc{background:color-mix(in srgb,var(--lcc) 15%,transparent);color:var(--lcc)}
 .tg.fsc{background:color-mix(in srgb,var(--fsc) 15%,transparent);color:var(--fsc)}
 .tg.other{background:var(--line);color:var(--dim)}
+.tg.gt{background:color-mix(in srgb,#b45309 16%,transparent);color:#b45309}
 .gate{font-size:.73rem;color:var(--dim);display:flex;align-items:center;gap:6px;flex-wrap:wrap;
 padding-top:6px;border-top:1px dashed var(--line)}
 .gate b{color:var(--fg);font-weight:600}
@@ -530,7 +532,8 @@ def topnav(cur=''):
             f'<a href="{U("/apple-japan-price/")}">🍎 台日 Apple 價差</a>'
             f'<a href="{U("/japan-tax-free-2026/")}">🧾 免稅新制</a>'
             f'<a href="{U("/japan-credit-card/")}">💳 旅日信用卡</a>'
-            f'<a href="{U("/japan-coupon/")}">🏷️ 購物折扣</a>{ls}</nav>')
+            f'<a href="{U("/japan-coupon/")}">🏷️ 購物折扣</a>'
+            f'<a href="{U("/japan-flight-good-times/")}">☀️ 早去晚回</a>{ls}</nav>')
 
 def foot():
     return f'''<p class="note">
@@ -540,12 +543,33 @@ def foot():
 最後更新 {NOWS}　·　<a href="{U("/")}">回首頁</a>
 </p></div>{SF_JS}</body></html>'''
 
+def _hh(t):
+    """'HH:MM' → 小時整數；缺值回 None"""
+    return int(t[:2]) if t and len(t) >= 5 and t[:2].isdigit() else None
+
+
+def good_times(x):
+    """早去晚回：台灣 06–10 出發、日本 18–23 起飛返台。
+
+    刻意排除凌晨 00–05 的紅眼班機——那是「浪費假期」的極端，
+    若只用「越早越好」判斷會把最糟的班次排到最前面。"""
+    if not x.get('rt'):
+        return False
+    dh, rh = _hh(x.get('dept')), _hh(x.get('rett'))
+    if dh is None or rh is None:
+        return False
+    return 6 <= dh <= 10 and 18 <= rh <= 23
+
+
 def fare_card(x,hot=False):
     tag={'lcc':'廉航','fsc':'一般航空'}.get(x['cls'],'其他')
+    gt = good_times(x)
     cn=CITY_OF[x['d']][1]
     stops='直飛' if x['tr']==0 else f"轉機{x['tr']}"
     trip='來回' if x['rt'] else '單程'
     dates=x['dep']+(f" – {x['ret']}" if x['ret'] else '')
+    if x.get('dept'):
+        dates += f"　{x['dept']}"+(f" → {x['rett']}" if x.get('rett') else '')
     # 措辭需與上方「近期最低紀錄」區隔：紀錄是過去的，按鈕是去查現在的價
     btn=(f'<a class="btn" href="{html.escape(flight_url(x))}" target="_blank" '
          f'rel="nofollow noopener sponsored">✈️ 到 {P["flight"]["brand"]} 查這天目前票價</a>')
@@ -562,7 +586,7 @@ def fare_card(x,hot=False):
     return f'''<article class="card{' hot' if hot else ''}" data-tier="{tier}">
 <div class="rt"><b>{ORI.get(x['o'],x['o'])}</b><i>→</i><b>{cn}</b>{'<em>超值</em>' if hot else ''}</div>
 <div class="pr">NT${x['price']:,}<span class="{'rtx' if x['rt'] else 'owx'}">{trip}含稅</span></div>
-<div class="mt"><span class="tg {x['cls']}">{tag}</span><span>{html.escape(x['airname'])}</span><span>{stops}</span></div>
+<div class="mt"><span class="tg {x['cls']}">{tag}</span><span>{html.escape(x['airname'])}</span><span>{stops}</span>{'<span class="tg gt">☀️ 早去晚回</span>' if gt else ''}</div>
 <div class="dt">{dates}</div>{gate_html}{btn}</article>'''
 
 def cta(kind, city_name, hotel_city, headline, sub):
@@ -1530,6 +1554,136 @@ if os.path.exists('apple.json'):
         '頁內部分連結為聯盟行銷連結，本站可能獲得分潤，不影響你的價格。</p>'
       + foot())
     pages.append(('/japan-tax-free-2026/', 0.9))
+
+# ---------- 早去晚回 ----------
+_GT = [x for x in deals if good_times(x)]
+if _GT:
+    def _arr(x):
+        """抵達日本的當地時間（去程出發 ＋ 飛行時間 ＋ 1 小時時差）"""
+        h = _hh(x['dept'])
+        if h is None or not x.get('dur_to'):
+            return None
+        m = h * 60 + int(x['dept'][3:5]) + x['dur_to'] + 60
+        return f'{(m//60)%24:02d}:{m%60:02d}'
+
+    _rtall = [x for x in deals if x.get('rt') and x.get('dept') and x.get('rett')]
+    _red = [x for x in _rtall if (_hh(x['dept']) or 99) < 6]
+    _gt_sorted = sorted(_GT, key=lambda x: x['price'])
+
+    # 各城市：最便宜 vs 早去晚回最便宜
+    _cmp = ''
+    _skip = []
+    for slug, name, codes, reg, hc in CITIES:
+        fs = by_city.get(slug) or []
+        g = [x for x in fs if good_times(x)]
+        if not g: continue
+        cheap = best([x for x in fs if x['rt']], True)
+        bg = min(g, key=lambda x: x['price'])
+        if not cheap: continue
+        diff = bg['price'] - cheap['price']
+        # 價差超過一倍的多半是唯一一筆高價紀錄，列出來只會讓對照失真
+        if bg['price'] > cheap['price'] * 2:
+            _skip.append(name); continue
+        _cmp += (f'<tr><td><a href="{U("/"+slug+"/")}"><b>{name}</b></a></td>'
+                 f'<td>{money(cheap["price"])}{SMALL}去 {cheap["dept"]}　回 {cheap["rett"]}</small></td>'
+                 f'<td class="win"><b>{money(bg["price"])}</b>{SMALL}去 {bg["dept"]}　回 {bg["rett"]}</small></td>'
+                 f'<td>{"＋"+money(diff) if diff > 0 else "同價或更低"}</td></tr>')
+
+    _rows = ''
+    for x in _gt_sorted[:24]:
+        cn = CITY_OF[x['d']][1]
+        a = _arr(x)
+        _rows += (f'<tr><td><a href="{U("/"+CITY_OF[x["d"]][0]+"/")}">{ORI.get(x["o"],x["o"])}→{cn}</a>'
+                  f'{SMALL}{html.escape(x["airname"])}・'
+                  f'{"直飛" if x["tr"]==0 else f"轉機{x[chr(39)+chr(39)]}" if False else ("直飛" if x["tr"]==0 else "轉機"+str(x["tr"]))}</small></td>'
+                  f'<td><b>{money(x["price"])}</b></td>'
+                  f'<td>{x["dep"]}{SMALL}{x["dept"]} 起飛'
+                  + (f"，約 {a} 抵達" if a and x["tr"] == 0 else '') + '</small></td>'
+                  f'<td>{x["ret"]}{SMALL}{x["rett"]} 起飛</small></td>'
+                  f'<td><a class="btn" href="{html.escape(flight_url(x))}" target="_blank" '
+                  f'rel="nofollow noopener sponsored">查這天</a></td></tr>')
+
+    gt_faq = [
+     ('為什麼便宜的機票時間都很差？',
+      '因為航空公司把最不想飛的時段拿來降價。熱門時段（早上出發、傍晚回程）需求高、不必打折；'
+      '凌晨起飛與傍晚出發的班次不好賣，價格才會壓低。'
+      f'本站目前 {len(_rtall)} 組有完整時間的來回票中，只有 {len(_GT)} 組符合早去晚回，'
+      f'比例約 {len(_GT)/len(_rtall)*100:.0f}%。'),
+     ('凌晨出發的紅眼班機不是更早到嗎？',
+      '名義上更早，實際上更糟。凌晨 02:00 起飛代表你前一晚幾乎沒睡，抵達當天等於報廢；'
+      '而且那個時間沒有機場捷運與國道客運，前往機場的交通得自行處理。'
+      f'本站目前有 {len(_red)} 組是凌晨 00–05 出發，本頁一律排除。'),
+     ('「早去晚回」的定義是什麼？',
+      '去程由台灣 06:00–10:00 起飛，回程由日本 18:00–23:00 起飛。'
+      '這樣第一天上午就能開始行程，最後一天也能玩到傍晚才前往機場，'
+      '等於比一般廉航班次多出接近兩個半天。'),
+     ('多付的錢值得嗎？',
+      '看你的假期長度。三天兩夜的行程，多出兩個半天等於多了三分之一的時間，'
+      '通常比省下一兩千元更划算；十天以上的行程，比例就低很多，'
+      '這時候把預算放在住宿或交通票券上可能更有效。'),
+    ]
+    gt_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in gt_faq)
+    gt_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in gt_faq]}, ensure_ascii=False)
+
+    _lo = _gt_sorted[0]
+    write('japan-flight-good-times/index.html',
+      head(f'早去晚回的日本機票｜不浪費假期的班次，目前 {len(_GT)} 組',
+           f'便宜機票的時段通常很差。本頁只收去程台灣 06–10 點起飛、'
+           f'回程日本 18–23 點起飛的來回票，目前 {len(_GT)} 組，'
+           f'最低 {money(_lo["price"])}。含與最便宜班次的價差對照，每日更新。',
+           'japan-flight-good-times/',
+           '<script type="application/ld+json">' + gt_ld + '</script>')
+      + crumbs([('首頁', '/'), ('早去晚回', None)]) + topnav()
+      + '<h1>不浪費假期的日本機票</h1>'
+      + '<p class="lede">最便宜的票，時段幾乎都很差。這頁只留下'
+        '<b>去程早上出發、回程晚上才走</b>的班次。</p>'
+      + f'<div class="today"><div class="tday">{NOWS} 更新　·　'
+        f'共 {len(_rtall)} 組來回票，符合條件的只有 {len(_GT)} 組</div>'
+        f'<div class="tans">符合早去晚回的只佔 {len(_GT)/len(_rtall)*100:.0f}%，'
+        f'目前最低 {money(_lo["price"])}</div>'
+        f'<div class="tsub">定義：去程由台灣 06:00–10:00 起飛，回程由日本 18:00–23:00 起飛。'
+        f'第一天上午就能開始玩，最後一天也能待到傍晚，比一般班次多出接近兩個半天。</div>'
+        + (f'<div class="tbuf">另有 <b>{len(_red)}</b> 組是凌晨 00–05 起飛的紅眼班機——'
+           f'名義上最早到，實際上前一晚等於沒睡，本頁一律排除。</div>' if _red else '')
+        + '</div>'
+      + (('<h2>多付多少，換到好時段？</h2>'
+          '<p class="lede">同一個目的地，最便宜的班次與最便宜的早去晚回班次對照。</p>'
+          '<div class="tw"><table><thead><tr><th>目的地</th><th>最便宜</th>'
+          '<th>最便宜的早去晚回</th><th>價差</th></tr></thead><tbody>'
+          + _cmp + '</tbody></table></div>'
+          + (f'<p class="disc">{"、".join(_skip)} 的早去晚回班次價格超過最便宜班次的兩倍，'
+             f'多為單筆高價紀錄，未列入對照。</p>' if _skip else '')) if _cmp else '')
+      + f'<h2>目前的早去晚回班次</h2>'
+      + '<p class="lede">依價格排序。時間為當地時間，抵達時間為飛行時間加時差的估算。</p>'
+      + '<div class="tw"><table><thead><tr><th>航線</th><th>價格</th>'
+        '<th>去程</th><th>回程</th><th>　</th></tr></thead><tbody>'
+      + _rows + '</tbody></table></div>'
+      + '<p class="disc">價格為單人來回含稅，取自近期快取紀錄，實際票價請點擊查詢。</p>'
+      + search_form('查你自己的日期', '選好日期就能看到當天實際可訂的班次與時間。', 'TPE', 'TYO')
+      + '<h2>為什麼值得多付這筆</h2><div class="tldr"><ul>'
+        '<li><b>第一天不再報廢。</b>傍晚 17:15 出發的班次，落地已近午夜，'
+        '第一天實際只剩下從機場到飯店。早上出發則是中午前就能進市區。</li>'
+        '<li><b>最後一天能玩到傍晚。</b>回程 21:00 以後起飛，當天還有完整的白天，'
+        '中午前退房寄放行李即可。</li>'
+        '<li><b>紅眼班機不是解方。</b>凌晨 02:00 起飛看似最早到，但前一晚幾乎無法睡，'
+        '抵達後的第一天多半在補眠，而且深夜前往機場的交通也是成本。</li>'
+        '</ul></div>'
+      + cta('hotel', '東京', '東京', '時間抓好了，住宿呢',
+            '到 Agoda 查房價，繁體中文、台幣計價')
+      + '<h2>常見問題</h2>' + gt_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>每日更新</s></a>'
+      + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 購物折扣</b>'
+        f'<s>折價券×免稅×刷卡回饋</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
+        f'<s>哪張卡回饋最高</s></a></div>'
+      + foot())
+    pages.append(('/japan-flight-good-times/', 0.9))
+    print(f'   早去晚回頁：{len(_GT)} 組（來回票 {len(_rtall)} 組，紅眼 {len(_red)} 組）')
 
 # ---------- 旅日信用卡 ----------
 if os.path.exists('cards.json'):
