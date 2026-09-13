@@ -31,6 +31,14 @@ body{background:#141210;color:#f5f2ee;
  letter-spacing:-.045em;color:#fb923c}
 .price small{font-size:58px;margin-right:10px;font-weight:700}
 .unit{margin-top:22px;font-size:34px;color:#a8a29c;letter-spacing:.05em}
+.cmp{margin-top:44px;display:flex;align-items:stretch;gap:0;border-radius:16px;overflow:hidden}
+.cmp div{padding:22px 28px}
+.cmp .u{background:rgba(255,255,255,.07);flex:1}
+.cmp .u s{display:block;text-decoration:none;font-size:25px;color:#8a837c;margin-bottom:7px}
+.cmp .u b{font-size:38px;font-weight:700;color:#c9c3bc;letter-spacing:-.01em}
+.cmp .r{background:#fb923c;color:#141210;display:flex;flex-direction:column;justify-content:center}
+.cmp .r s{display:block;text-decoration:none;font-size:24px;font-weight:700;opacity:.75}
+.cmp .r b{font-size:40px;font-weight:800;line-height:1.1}
 .badge{display:inline-block;margin-top:44px;background:#fb923c;color:#141210;
  font-size:31px;font-weight:800;padding:15px 32px;border-radius:14px}
 .meta{border-top:2px solid #2b2724;padding-top:40px}
@@ -58,6 +66,16 @@ def card_html(d, site):
     yr = d["dep"][:4]
     dates = _md(d["dep"]) + ("　–　" + _md(d["ret"]) if d.get("ret") else "")
     reason = d["reasons"][0] if d.get("reasons") else ""
+    u = d.get("usual")
+    if u:
+        # 給讀者一個認得出來的基準：這條線平常要多少，這天排第幾低
+        blk = (f'<div class="cmp">'
+               f'<div class="u"><s>這條航線平常最低</s>'
+               f'<b>NT${u["lo"]:,} – {u["hi"]:,}</b></div>'
+               f'<div class="r"><s>這天</s><b>第 {d.get("rank",1)} 低</b></div></div>')
+    else:
+        blk = (f'<div><span class="badge">{html.escape(reason)}</span></div>'
+               if reason else "")
     return f"""<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
 <style>{CSS}</style></head><body>
 <div class="glow"></div>
@@ -67,7 +85,7 @@ def card_html(d, site):
 {f'<div class="via">經 {html.escape(d["via"])} 轉乘</div>' if d.get('via') else ''}
 <div class="price"><small>NT$</small>{d['price']:,}</div>
 <div class="unit">{trip}．單人{'．含機票與國內交通' if d['cls']=='transfer' else ''}</div>
-<div><span class="badge">{html.escape(reason)}</span></div>
+{blk}
 </div>
 <div class="meta">
   <div class="row"><s>{'方案' if d['cls']=='transfer' else '航空'}</s><b>{html.escape(d['air'])}</b><s>·</s><b>{html.escape(d['stops'])}</b></div>
@@ -109,10 +127,17 @@ def main():
             d = deals[0]
             old = d["price"]
             d["price"] = fix_price
-            if d.get("med"):
-                pct = round((1 - fix_price / d["med"]) * 100)
-                d["reasons"] = [f"低於本站近期紀錄中位價 {pct}%"] if pct >= 15 else \
-                               [f"{'廉航' if d['cls']=='lcc' else '一般航空'}直飛來回含稅"]
+            u = d.get("usual")
+            if u:
+                # 價格變了，排名也要跟著變，否則卡上會顯示過時的「第 1 低」
+                if fix_price < u["lo"]:
+                    d["rank"] = 1
+                elif fix_price > u["hi"]:
+                    d["usual"] = None
+                    d["reasons"] = [f"{'廉航' if d['cls']=='lcc' else '一般航空'}"
+                                    f"{d['stops']}{'總計' if d['cls']=='transfer' else '來回含稅'}"]
+                else:
+                    d["rank"] = None
             print(f"   校正價格：NT${old:,} → NT${fix_price:,}")
 
     made = []

@@ -950,16 +950,42 @@ def pick_deals():
         cap=LCC_CAP if b['cls']=='lcc' else FSC_CAP if b['cls']=='fsc' else None
         if cap and b['price']<cap:
             reasons.append(('threshold',f'{"廉航" if b["cls"]=="lcc" else "一般航空"}低於 {money(cap)}'))
-        if len(rts)>=4 and b['price']<med*0.8:
-            # 措辭需精確：med 是本站快取樣本的中位數，非市場均價
-            # （樣本含大量冷門日期與轉機票，會偏高），不可寫成「市價」
+        ur = usual_range(rts)
+        if ur and b['price'] < ur[0]:
+            lo, hi, ndays = ur
+            rk = rank_among(b['price'], rts)
+            # 講「平常多少」而不是「低於中位價幾%」——讀者對本站的中位數沒有概念，
+            # 但對「這條線平常要 X 到 Y」有感，而且可以自己驗證
             reasons.append(('discount',
-                f'低於本站近期紀錄中位價 {round((1-b["price"]/med)*100)}%'))
+                f'這條航線平常最低落在 {money(lo)}–{money(hi)}，'
+                f'這天是近期 {len(rts)} 筆紀錄中第 {rk} 低'))
         if reasons:
             k=(oslug,cslug)
             if k not in picked or b['price']<picked[k][0]['price']:
                 picked[k]=(b,reasons,med,rts)
     return picked
+
+def usual_range(rts):
+    """這條航線「平常最低要多少」。
+
+    取每個出發日的最低價，再去掉頭尾各 10%，得到一個讀者認得出來的區間。
+    不用全部票價的中位數——樣本含大量冷門日期與轉機票，中位數會被拉高，
+    講「低於中位價 53%」聽起來很漂亮，但讀者沒有那個基準，等於沒說。"""
+    by = collections.defaultdict(list)
+    for x in rts:
+        if x.get('dep'):
+            by[x['dep']].append(x['price'])
+    daily = sorted(min(v) for v in by.values())
+    if len(daily) < 6:
+        return None
+    k = max(1, len(daily) // 10)
+    return daily[k], daily[-k - 1], len(daily)
+
+
+def rank_among(price, rts):
+    """在本站近期紀錄中排第幾低（1 為最低）"""
+    return sum(1 for x in rts if x['price'] < price) + 1
+
 
 def deal_slug(o,c,d,p):
     """一天一航線一則。slug 不含價格——否則每次執行價格一變就會多出一個
@@ -983,8 +1009,11 @@ for (oslug,cslug),(b,reasons,med,rts) in sorted(pick_deals().items(),key=lambda 
           f'由{b["airname"]}執飛，{stops}。去程 {b["dep"]}，回程 {b["ret"]}。</p>'
           f'<div class="grid" style="max-width:340px">{fare_card(b,True)}</div>'+compare_line(cname)+
           f'<h2>這個價格為什麼值得買</h2><ul>{why}</ul>'
-          f'<p class="lede" style="font-size:.86rem">此航線目前共 {len(rts)} 筆來回票價，'
-          f'中位價 {money(int(med))}。</p>')
+          + (lambda ur: (f'<p class="lede" style="font-size:.86rem">此航線目前共 {len(rts)} 筆來回票價，'
+                         f'{ur[2]} 個出發日有紀錄，每日最低價多落在 '
+                         f'{money(ur[0])}–{money(ur[1])}。</p>') if ur else
+                        (f'<p class="lede" style="font-size:.86rem">此航線目前共 {len(rts)} 筆來回票價。</p>')
+             )(usual_range(rts)))
     if others:
         body+=f'<h2>同航線其他選擇</h2><div class="grid">'+''.join(fare_card(x) for x in others)+'</div>'
     body+=klook_tours(cslug,cname)
@@ -1003,7 +1032,9 @@ for (oslug,cslug),(b,reasons,med,rts) in sorted(pick_deals().items(),key=lambda 
     deals_out.append(dict(slug=slug,title=title,o=oname,c=cname,
         _oiata=b['o'],_diata=b['d'],price=b['price'],air=b['airname'],
         dep=b['dep'],ret=b['ret'],stops=stops,cls=b['cls'],reasons=[r[1] for r in reasons],
-        med=int(med),url=b['url'],hotelcity=hotelcity,cslug=cslug))
+        med=int(med),url=b['url'],hotelcity=hotelcity,cslug=cslug,
+        usual=(lambda ur: {'lo':ur[0],'hi':ur[1],'days':ur[2]} if ur else None)(usual_range(rts)),
+        rank=rank_among(b['price'],rts), n=len(rts)))
 
 # 轉乘更划算也發成貼文
 for cslug in CITY:
