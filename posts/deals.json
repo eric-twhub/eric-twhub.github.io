@@ -1,33 +1,33 @@
 [
  {
   "slug": "2026-09-13-taipei-okinawa",
-  "title": "台北飛沖繩 NT$5,188 來回含稅｜泰國獅子航空 09/13 出發",
+  "title": "台北飛沖繩 NT$5,254 來回含稅｜樂桃航空 10/06 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 5188,
-  "air": "泰國獅子航空",
-  "dep": "2026-09-13",
-  "ret": "2026-09-21",
+  "price": 5254,
+  "air": "樂桃航空",
+  "dep": "2026-10-06",
+  "ret": "2026-10-09",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "這條航線平常最低落在 NT$5,254–NT$12,606，這張是近期 16 筆紀錄中第 1 低"
+   "這條航線平常最低落在 NT$5,516–NT$12,606，這張是近期 15 筆紀錄中第 1 低"
   ],
-  "med": 12995,
-  "url": "https://www.aviasales.com/search/TPE1309OKA21091?t=SL17893140001789322400000080TPEOKA17899929001789995000000095OKATPE_25adc206870f0b28b9839fdb7fb8d1e6_13813&search_date=10092026&expected_price_uuid=01a08aea-1274-8030-60d5-eac6c85e89e6&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=bKfT-_xfaTCGm4NlJ43j0g&expected_price_source=share&expected_price_currency=twd&expected_price=5188&marker=775639",
+  "med": 13385,
+  "url": "https://www.aviasales.com/search/TPE0610OKA09101?t=MM17913099001791319800000105TPEOKA17915334001791535500000095OKATPE_7d8459ba3a6d5e5f3a08860fbe7f241a_14382&search_date=06092026&expected_price_uuid=01a0789b-d58a-8030-a14d-e05fa6a6cb3d&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=BHgVovoT5xuQgt8pNGExnQ&expected_price_source=share&expected_price_currency=twd&expected_price=5254&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 5254,
+   "lo": 5516,
    "hi": 12606,
-   "days": 8
+   "days": 7
   },
   "mbase": null,
   "rank": 1,
-  "n": 16
+  "n": 15
  },
  {
   "slug": "2026-09-13-taipei-tokyo",
