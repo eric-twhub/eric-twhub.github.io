@@ -564,17 +564,33 @@ def _hh(t):
     return int(t[:2]) if t and len(t) >= 5 and t[:2].isdigit() else None
 
 
-def good_times(x):
-    """早去晚回：台灣 06–10 出發、日本 18–23 起飛返台。
+def arr_min(x):
+    """抵達日本的當地時間，以出發日零時起算的分鐘數。
 
-    刻意排除凌晨 00–05 的紅眼班機——那是「浪費假期」的極端，
-    若只用「越早越好」判斷會把最糟的班次排到最前面。"""
+    刻意不取 %24：跨日的過夜轉機若取模會變成「凌晨 1 點抵達」，
+    看起來像「中午前到」，實際上第一天早就沒了。"""
+    t = x.get('dept')
+    if not t or not x.get('dur_to'):
+        return None
+    return int(t[:2]) * 60 + int(t[3:5]) + x['dur_to'] + 60   # +60 為台日時差
+
+
+def good_times(x):
+    """不浪費假期的班次。三個條件要同時成立：
+
+    · 出發不早於 05:00——再早就是徹夜未眠的紅眼，02:30 起飛雖然
+      06:35 就到，但那一天多半在補眠
+    · 當日中午前抵達——決定第一天能不能用的是抵達時間，不是出發
+      時間。06–10 出發但轉機拖到 16:35 才到，第一天照樣報廢
+    · 回程由日本 18–23 起飛——最後一天能玩到傍晚
+    """
     if not x.get('rt'):
         return False
-    dh, rh = _hh(x.get('dept')), _hh(x.get('rett'))
-    if dh is None or rh is None:
+    t, rh, a = x.get('dept'), _hh(x.get('rett')), arr_min(x)
+    if not t or rh is None or a is None:
         return False
-    return 6 <= dh <= 10 and 18 <= rh <= 23
+    dm = int(t[:2]) * 60 + int(t[3:5])
+    return dm >= 5 * 60 and a <= 12 * 60 and 18 <= rh <= 23
 
 
 def fare_card(x,hot=False):
@@ -1629,15 +1645,11 @@ if os.path.exists('apple.json'):
 _GT = [x for x in deals if good_times(x)]
 if _GT:
     def _arr(x):
-        """抵達日本的當地時間（去程出發 ＋ 飛行時間 ＋ 1 小時時差）"""
-        h = _hh(x['dept'])
-        if h is None or not x.get('dur_to'):
-            return None
-        m = h * 60 + int(x['dept'][3:5]) + x['dur_to'] + 60
-        return f'{(m//60)%24:02d}:{m%60:02d}'
+        a = arr_min(x)
+        return None if a is None else f'{a//60:02d}:{a%60:02d}'
 
     _rtall = [x for x in deals if x.get('rt') and x.get('dept') and x.get('rett')]
-    _red = [x for x in _rtall if (_hh(x['dept']) or 99) < 6]
+    _red = [x for x in _rtall if (_hh(x['dept']) or 99) < 5]
     _gt_sorted = sorted(_GT, key=lambda x: x['price'])
 
     # 各城市：最便宜 vs 早去晚回最便宜
@@ -1668,7 +1680,7 @@ if _GT:
                   f'{"直飛" if x["tr"]==0 else f"轉機{x[chr(39)+chr(39)]}" if False else ("直飛" if x["tr"]==0 else "轉機"+str(x["tr"]))}</small></td>'
                   f'<td><b>{money(x["price"])}</b></td>'
                   f'<td>{x["dep"]}{SMALL}{x["dept"]} 起飛'
-                  + (f"，約 {a} 抵達" if a and x["tr"] == 0 else '') + '</small></td>'
+                  + (f"，約 {a} 抵達" if a else '') + '</small></td>'
                   f'<td>{x["ret"]}{SMALL}{x["rett"]} 起飛</small></td>'
                   f'<td><a class="btn" href="{html.escape(flight_url(x))}" target="_blank" '
                   f'rel="nofollow noopener sponsored">查這天</a></td></tr>')
@@ -1680,13 +1692,15 @@ if _GT:
       f'本站目前 {len(_rtall)} 組有完整時間的來回票中，只有 {len(_GT)} 組符合早去晚回，'
       f'比例約 {len(_GT)/len(_rtall)*100:.0f}%。'),
      ('凌晨出發的紅眼班機不是更早到嗎？',
-      '名義上更早，實際上更糟。凌晨 02:00 起飛代表你前一晚幾乎沒睡，抵達當天等於報廢；'
+      '名義上更早，實際上更糟。凌晨 02:30 起飛的班次 06:35 就抵達，看起來很理想，'
+      '但那代表你半夜就要到機場、前一晚幾乎沒睡，抵達當天多半在補眠；'
       '而且那個時間沒有機場捷運與國道客運，前往機場的交通得自行處理。'
       f'本站目前有 {len(_red)} 組是凌晨 00–05 出發，本頁一律排除。'),
      ('「早去晚回」的定義是什麼？',
-      '去程由台灣 06:00–10:00 起飛，回程由日本 18:00–23:00 起飛。'
-      '這樣第一天上午就能開始行程，最後一天也能玩到傍晚才前往機場，'
-      '等於比一般廉航班次多出接近兩個半天。'),
+      '三個條件同時成立：去程當日中午前抵達日本、出發不早於 05:00、'
+      '回程由日本 18:00 至 23:00 起飛。關鍵是抵達時間而非出發時間——'
+      '早上 10:40 起飛但經第三地轉機、下午 16:35 才落地的班次，'
+      '第一天同樣用不到，本頁不列入。'),
      ('多付的錢值得嗎？',
       '看你的假期長度。三天兩夜的行程，多出兩個半天等於多了三分之一的時間，'
       '通常比省下一兩千元更划算；十天以上的行程，比例就低很多，'
@@ -1715,10 +1729,11 @@ if _GT:
         f'共 {len(_rtall)} 組來回票，符合條件的只有 {len(_GT)} 組</div>'
         f'<div class="tans">符合早去晚回的只佔 {len(_GT)/len(_rtall)*100:.0f}%，'
         f'目前最低 {money(_lo["price"])}</div>'
-        f'<div class="tsub">定義：去程由台灣 06:00–10:00 起飛，回程由日本 18:00–23:00 起飛。'
-        f'第一天上午就能開始玩，最後一天也能待到傍晚，比一般班次多出接近兩個半天。</div>'
-        + (f'<div class="tbuf">另有 <b>{len(_red)}</b> 組是凌晨 00–05 起飛的紅眼班機——'
-           f'名義上最早到，實際上前一晚等於沒睡，本頁一律排除。</div>' if _red else '')
+        f'<div class="tsub">定義：去程<b>當日中午前抵達日本</b>、出發不早於 05:00，'
+        f'回程由日本 18:00–23:00 起飛。決定第一天能不能用的是抵達時間——'
+        f'06:00 出發但轉機到下午才落地，第一天照樣報廢。</div>'
+        + (f'<div class="tbuf">另有 <b>{len(_red)}</b> 組是 05:00 前起飛的紅眼班機——'
+           f'02:30 起飛雖然 06:35 就到，但那一天多半在補眠，本頁一律排除。</div>' if _red else '')
         + '</div>'
       + (('<h2>多付多少，換到好時段？</h2>'
           '<p class="lede">同一個目的地，最便宜的班次與最便宜的早去晚回班次對照。</p>'
