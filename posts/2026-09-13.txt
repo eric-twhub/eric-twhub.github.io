@@ -20,7 +20,7 @@
 
 　🛫 樂桃航空｜直飛
 　📅 2026-10-30 – 2026-11-04
-　💡 這條航線平常最低落在 NT$6,170–NT$14,909，這天是近期 107 筆紀錄中第 1 低
+　💡 10 月出發的票，每天最便宜的平均要 NT$8,550（10 天有紀錄），這張低 29%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-13-taipei-tokyo/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=tpe&acity=tyo&ddate=2026-10-30&rdate=2026-11-04&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -32,7 +32,7 @@
 
 　🛫 捷星日本｜直飛
 　📅 2026-10-14 – 2026-10-21
-　💡 這條航線平常最低落在 NT$6,840–NT$12,151，這天是近期 60 筆紀錄中第 1 低
+　💡 10 月出發的票，每天最便宜的平均要 NT$8,142（10 天有紀錄），這張低 17%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-13-taipei-osaka/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=tpe&acity=osa&ddate=2026-10-14&rdate=2026-10-21&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -44,7 +44,7 @@
 
 　🛫 台灣虎航｜直飛
 　📅 2026-09-17 – 2026-09-23
-　💡 這條航線平常最低落在 NT$7,595–NT$11,632，這天是近期 24 筆紀錄中第 1 低
+　💡 這條航線平常最低落在 NT$7,595–NT$11,632，這張是近期 24 筆紀錄中第 1 低
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-13-taipei-fukuoka/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=tpe&acity=fuk&ddate=2026-09-17&rdate=2026-09-23&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -56,7 +56,7 @@
 
 　🛫 馬來西亞亞航｜直飛
 　📅 2026-09-22 – 2026-09-30
-　💡 這條航線平常最低落在 NT$7,943–NT$9,533，這天是近期 10 筆紀錄中第 1 低
+　💡 這條航線平常最低落在 NT$7,943–NT$9,533，這張是近期 10 筆紀錄中第 1 低
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-13-kaohsiung-osaka/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=khh&acity=osa&ddate=2026-09-22&rdate=2026-09-30&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -68,7 +68,7 @@
 
 　🛫 捷星日本｜直飛
 　📅 2026-09-20 – 2026-09-26
-　💡 這條航線平常最低落在 NT$9,321–NT$13,129，這天是近期 23 筆紀錄中第 1 低
+　💡 9 月出發的票，每天最便宜的平均要 NT$11,041（5 天有紀錄），這張低 29%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-13-kaohsiung-tokyo/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=khh&acity=tyo&ddate=2026-09-20&rdate=2026-09-26&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -80,7 +80,7 @@
 
 　🛫 真航空｜轉機 1 次
 　📅 2026-09-14 – 2026-09-17
-　💡 這條航線平常最低落在 NT$8,988–NT$13,391，這天是近期 72 筆紀錄中第 1 低
+　💡 9 月出發的票，每天最便宜的平均要 NT$11,298（14 天有紀錄），這張低 28%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-13-taichung-okinawa/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=rmq&acity=oka&ddate=2026-09-14&rdate=2026-09-17&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
