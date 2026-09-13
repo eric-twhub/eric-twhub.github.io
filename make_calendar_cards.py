@@ -14,7 +14,20 @@ import json, os, sys, datetime, subprocess, collections
 from zoneinfo import ZoneInfo
 
 W, H = 1080, 1350
-CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+def _chrome():
+    """依序找可用的 Chrome：環境變數 → macOS 路徑 → Linux 常見指令"""
+    import shutil
+    c = os.environ.get("CHROME")
+    if c and os.path.exists(c):
+        return c
+    mac = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    if os.path.exists(mac):
+        return mac
+    for n in ("google-chrome", "google-chrome-stable", "chromium-browser", "chromium"):
+        p = shutil.which(n)
+        if p:
+            return p
+    sys.exit("找不到 Chrome，請設定 CHROME 環境變數")
 OUT = "cards/calendar"
 SCAN = "/tmp/scan_all.json"
 TODAY = datetime.datetime.now(ZoneInfo("Asia/Taipei")).date()
@@ -31,7 +44,8 @@ CSS = """
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:%dpx;height:%dpx}
 body{background:#141210;color:#f5f2ee;
- font-family:"PingFang TC","Hiragino Sans GB","Heiti TC",sans-serif;
+ font-family:"PingFang TC","Noto Sans TC","Noto Sans CJK TC",
+ "Hiragino Sans GB","Heiti TC",sans-serif;
  display:flex;flex-direction:column;padding:64px 56px 52px;position:relative;overflow:hidden}
 .glow{position:absolute;width:780px;height:780px;border-radius:50%%;
  background:radial-gradient(circle,rgba(251,146,60,.18),transparent 68%%);top:-320px;right:-280px}
@@ -146,6 +160,7 @@ def main():
         if a == "--days": days = int(sys.argv[i + 1])
         if a == "--min-cov": min_cov = float(sys.argv[i + 1])
 
+    chrome = _chrome()
     data = load()
     os.makedirs(OUT, exist_ok=True)
     tmp = os.path.abspath(".cal_tmp.html")
@@ -163,10 +178,12 @@ def main():
 
         open(tmp, "w", encoding="utf-8").write(build(slug, name, prices, days))
         png = os.path.abspath(os.path.join(OUT, f"{slug}.png"))
-        subprocess.run([CHROME, "--headless", "--disable-gpu", "--hide-scrollbars",
-                        f"--screenshot={png}", f"--window-size={W},{H}",
-                        "--force-device-scale-factor=1", "file://" + tmp],
-                       capture_output=True, timeout=90)
+        cmd = [chrome, "--headless", "--disable-gpu", "--hide-scrollbars",
+               f"--screenshot={png}", f"--window-size={W},{H}",
+               "--force-device-scale-factor=1"]
+        if sys.platform.startswith("linux"):
+            cmd += ["--no-sandbox", "--disable-dev-shm-usage"]
+        subprocess.run(cmd + ["file://" + tmp], capture_output=True, timeout=90)
         if os.path.exists(png):
             made.append((name, len(prices), days, min(prices.values()), max(prices.values())))
 
