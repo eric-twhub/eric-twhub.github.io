@@ -14,9 +14,9 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "低於本站近期紀錄中位價 61%"
+   "低於本站近期紀錄中位價 60%"
   ],
-  "med": 13385,
+  "med": 12995,
   "url": "https://www.aviasales.com/search/TPE1309OKA21091?t=SL17893140001789322400000080TPEOKA17899929001789995000000095OKATPE_25adc206870f0b28b9839fdb7fb8d1e6_13813&search_date=10092026&expected_price_uuid=01a08aea-1274-8030-60d5-eac6c85e89e6&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=bKfT-_xfaTCGm4NlJ43j0g&expected_price_source=share&expected_price_currency=twd&expected_price=5188&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa"
@@ -142,7 +142,7 @@
   "reasons": [
    "低於本站近期紀錄中位價 32%"
   ],
-  "med": 11995,
+  "med": 11918,
   "url": "https://www.aviasales.com/search/RMQ1409OKA17091?t=LJ17894070001789473900001055RMQICNOKA17896734001789675200000090OKARMQ_3aec07b6d78400eee58e2065fe85797e_22341&search_date=07092026&expected_price_uuid=01a07a87-3c63-8030-6d8b-7f351cf3c89d&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=umoxNv1mAWKkXUMLX60YXA&expected_price_source=share&expected_price_currency=twd&expected_price=8130&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa"
