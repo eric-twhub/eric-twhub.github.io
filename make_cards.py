@@ -66,13 +66,20 @@ def card_html(d, site):
     yr = d["dep"][:4]
     dates = _md(d["dep"]) + ("　–　" + _md(d["ret"]) if d.get("ret") else "")
     reason = d["reasons"][0] if d.get("reasons") else ""
-    u = d.get("usual")
-    if u:
-        # 給讀者一個認得出來的基準：這條線平常要多少，這天排第幾低
+    u, mb = d.get("usual"), d.get("mbase")
+    if mb and d["price"] < mb["avg"]:
+        # 以月份為框架，符合大家規劃行程的方式；基準用「每天最便宜的平均」，
+        # 不用全部票價的平均——後者被冷門日期與轉機貴票拉高，折扣會灌水
+        off = round((1 - d["price"] / mb["avg"]) * 100)
+        blk = (f'<div class="cmp">'
+               f'<div class="u"><s>{mb["month"]} 月每天最便宜的平均</s>'
+               f'<b>NT${mb["avg"]:,}</b></div>'
+               f'<div class="r"><s>這張</s><b>低 {off}%</b></div></div>')
+    elif u:
         blk = (f'<div class="cmp">'
                f'<div class="u"><s>這條航線平常最低</s>'
                f'<b>NT${u["lo"]:,} – {u["hi"]:,}</b></div>'
-               f'<div class="r"><s>這天</s><b>第 {d.get("rank",1)} 低</b></div></div>')
+               f'<div class="r"><s>這張</s><b>第 {d.get("rank",1)} 低</b></div></div>')
     else:
         blk = (f'<div><span class="badge">{html.escape(reason)}</span></div>'
                if reason else "")
@@ -127,6 +134,9 @@ def main():
             d = deals[0]
             old = d["price"]
             d["price"] = fix_price
+            mb = d.get("mbase")
+            if mb and fix_price >= mb["avg"]:
+                d["mbase"] = None     # 已高過該月平均，不再宣稱折扣
             u = d.get("usual")
             if u:
                 # 價格變了，排名也要跟著變，否則卡上會顯示過時的「第 1 低」
