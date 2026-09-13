@@ -392,10 +392,34 @@ a{color:var(--acc)}
 h1{font-size:1.95rem;margin:14px 0 8px;letter-spacing:-.025em;line-height:1.3}
 .lede{color:var(--dim);font-size:.95rem;margin:0 0 4px}
 .upd{color:var(--dim);font-size:.78rem;margin:6px 0 0}
-nav.top{position:sticky;top:0;z-index:20;background:var(--bg);padding:11px 0;margin-top:14px;
-border-bottom:1px solid var(--line);display:flex;gap:15px;overflow-x:auto}
-nav.top a{color:var(--dim);text-decoration:none;font-size:.86rem;white-space:nowrap;font-weight:500}
-nav.top a:hover,nav.top a.cur{color:var(--acc)}
+nav.top{position:sticky;top:0;z-index:30;background:var(--bg);padding:9px 0;margin-top:14px;
+border-bottom:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+nav.top>a{color:var(--dim);text-decoration:none;font-size:.86rem;white-space:nowrap;
+font-weight:500;padding:6px 10px;border-radius:7px}
+nav.top>a:hover,nav.top>a.cur{color:var(--acc);background:var(--soft)}
+/* 用 details 做下拉：不需 JS，鍵盤可操作，手機上也不會因 hover 失效 */
+/* details 不自成定位脈絡，讓面板錨定在導覽列（position:sticky 已建立脈絡），
+   面板一律靠導覽列左緣展開，換行後也不會被推出畫面 */
+nav.top details{position:static}
+nav.top summary{list-style:none;cursor:pointer;font-size:.86rem;font-weight:500;color:var(--dim);
+padding:6px 10px;border-radius:7px;white-space:nowrap;user-select:none}
+nav.top summary::-webkit-details-marker{display:none}
+nav.top summary::after{content:"▾";margin-left:5px;font-size:.7rem;opacity:.6}
+nav.top summary:hover,nav.top details[open]>summary{color:var(--acc);background:var(--soft)}
+nav.top details[open]>summary::after{content:"▴"}
+/* 一律絕對定位：手機上若改 static，展開時會把同列其他項目擠開、版面錯位 */
+.dd{position:absolute;top:calc(100% + 4px);left:0;min-width:200px;
+max-width:min(340px,calc(100vw - 32px));max-height:70vh;overflow-y:auto;
+background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px;
+box-shadow:0 10px 28px rgba(0,0,0,.14);display:flex;flex-direction:column;gap:1px;z-index:40}
+.dd a{display:block;padding:8px 11px;border-radius:7px;color:var(--fg);text-decoration:none;
+font-size:.87rem;white-space:nowrap}
+.dd a:hover{background:var(--soft);color:var(--acc)}
+.dd a.cur{color:var(--acc);font-weight:600}
+.dd b{display:block;padding:9px 11px 4px;font-size:.72rem;color:var(--dim);font-weight:600;
+letter-spacing:.05em}
+.dd hr{border:0;border-top:1px solid var(--line);margin:5px 0}
+
 h2{font-size:1.28rem;margin:40px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--acc)}
 h3{font-size:1.02rem;margin:26px 0 8px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px;margin-top:12px}
@@ -542,14 +566,46 @@ def crumbs(items,root='/'):
            f'<script type="application/ld+json">{j}</script>'
 
 def topnav(cur=''):
-    ls=''.join(f'<a href="{U("/"+s+"/")}"{" class=cur" if s==cur else ""}>{n}</a>' for s,n in REGIONS)
-    return (f'<nav class="top"><a href="{U("/")}"{" class=cur" if not cur else ""}>首頁</a>'
-            f'<a href="{U("/deals/")}">🔥 機票特價</a>'
-            f'<a href="{U("/apple-japan-price/")}">🍎 台日 Apple 價差</a>'
-            f'<a href="{U("/japan-tax-free-2026/")}">🧾 免稅新制</a>'
-            f'<a href="{U("/japan-credit-card/")}">💳 旅日信用卡</a>'
-            f'<a href="{U("/japan-coupon/")}">🏷️ 購物折扣</a>'
-            f'<a href="{U("/japan-flight-good-times/")}">☀️ 早去晚回</a>{ls}</nav>')
+    """分類下拉導覽。原本是 15 個項目擠成一條橫向捲動列，沒有層次；
+    改為五個分類，各自展開。用 details 而非 hover 選單，手機才點得開。"""
+    def link(href, text, is_cur=False):
+        return f'<a href="{U(href)}"{" class=cur" if is_cur else ""}>{text}</a>'
+
+    regions = ''.join(link(f'/{sl}/', nm, sl == cur) for sl, nm in REGIONS)
+    origins = ''.join(link(f'/{sl}/', f'從{nm}出發') for sl, nm, _ in ORIGINS)
+    area = ('<b>日本地區</b>' + regions + '<hr><b>台灣出發地</b>' + origins)
+
+    kinds = (link('/japan-flight-good-times/', '☀️ 早去晚回')
+             + link('/deals/', '🔥 今日特價'))
+
+    shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
+            + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
+            + link('/apple-japan-price/', '🍎 台日 Apple 價差'))
+    if os.path.exists('coupons.json'):
+        _cp = json.load(open('coupons.json', encoding='utf-8'))['stores']
+        shop += '<hr><b>各店折扣</b>' + ''.join(
+            link(f'/japan-coupon/{st["slug"]}/', st['name']) for st in _cp[:6])
+
+    card = (link('/japan-credit-card/', '💳 12 張卡比較')
+            + link('/japan-card-calculator/', '🧮 回饋計算機'))
+    if os.path.exists('cards.json'):
+        _cd = json.load(open('cards.json', encoding='utf-8'))['cards']
+        card += '<hr><b>熱門卡片</b>' + ''.join(
+            link(f'/japan-credit-card/{c["slug"]}/', c['name'])
+            for c in sorted(_cd, key=lambda x: -x['total'])[:6])
+
+    def menu(label, inner):
+        return f'<details><summary>{label}</summary><div class="dd">{inner}</div></details>'
+
+    return ('<nav class="top">'
+            + link('/', '首頁', not cur)
+            + link('/deals/', '🔥 機票特價')
+            + menu('✈️ 航班地區', area)
+            + menu('🕐 航班類型', kinds)
+            + menu('🛍️ 旅日購物', shop)
+            + menu('💳 旅日信用卡', card)
+            + '</nav>')
+
 
 def foot():
     return f'''<p class="note">
