@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """台日機票速報 — 多頁 SEO 網站產生器"""
-import json, datetime, html, collections, os, urllib.parse, shutil, re
+import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics
 
 CFG=json.load(open('partners.json',encoding='utf-8'))
 W=CFG.get('widgets',{})
@@ -207,6 +207,15 @@ KLOOK_CITY = {
  'wakkanai':32,
 }
 
+def span_of(fs):
+    """這批票價實際涵蓋的出發日區間——「近期紀錄」不說期間等於沒說"""
+    ds = sorted(x['dep'] for x in fs if x.get('dep'))
+    if not ds:
+        return ''
+    a, b = ds[0], ds[-1]
+    return f"{a[5:7].lstrip('0')}/{a[8:10].lstrip('0')}–{b[5:7].lstrip('0')}/{b[8:10].lstrip('0')}"
+
+
 def faq_block(name, fs, codes):
     """由現有票價資料自動生成常見問題，並輸出 FAQPage 結構化資料。
     每個答案都必須是資料能支撐的事實，且標明樣本來源，不作無根據推論。"""
@@ -220,11 +229,12 @@ def faq_block(name, fs, codes):
     if direct:
         who = '、'.join(lcc + fsc) or '多家航空'
         qa.append((f'台灣有直飛{name}的班機嗎？',
-                   f'有。本站近期紀錄中共有 {len(direct)} 筆直飛{name}的票價，'
+                   f'有。{span_of(fs)} 出發的票價紀錄中，共有 {len(direct)} 筆直飛{name}，'
                    f'執飛的航空公司包括{who}。'))
     else:
         qa.append((f'台灣有直飛{name}的班機嗎？',
-                   f'本站近期紀錄中沒有直飛{name}的班機，查到的都是轉機航班。'
+                   f'{span_of(fs)} 出發的 {len(fs)} 筆票價紀錄中沒有直飛{name}的班機，'
+                   f'查到的都是轉機航班。'
                    f'可考慮飛鄰近機場後轉乘日本國內交通。'))
 
     # 2 飛行時間
@@ -235,15 +245,21 @@ def faq_block(name, fs, codes):
                    f'直飛去程最短約 {m//60} 小時 {m%60} 分。'))
 
     # 3 價格區間
-    rts = sorted(x['price'] for x in fs if x['rt'])
-    if len(rts) >= 4:
-        q1 = rts[len(rts)//4]          # 用四分位數，不用中位數
-        med = rts[len(rts)//2]         # 中位數會被少數極高價拉高，拿來當「便宜門檻」會誤導
+    _rt = [x for x in fs if x['rt'] and x.get('dep')]
+    if len(_rt) >= 4:
+        _by = collections.defaultdict(list)
+        for x in _rt:
+            _by[x['dep']].append(x['price'])
+        daily = sorted(min(v) for v in _by.values())
+        # 講「每天最便宜要多少」而非全部票價的中位數：後者混入冷門日期與
+        # 轉機貴票會偏高，讀者不會去買那些票，拿來當基準等於灌水
+        avg = round(statistics.mean(daily))
         qa.append((f'台灣飛{name}的機票大概多少錢？',
-                   f'本站近期紀錄的來回含稅價最低 {money(rts[0])}，中位數約 {money(med)}。'
-                   f'約四分之一的紀錄低於 {money(q1)}，'
-                   f'因此看到 {money(q1)} 以下就算是相對便宜的價格。'
-                   f'（此為歷史紀錄，實際售價請以訂票平台查詢為準）'))
+                   f'{span_of(fs)} 出發的日期中，有 {len(daily)} 天留下紀錄。'
+                   f'每天最便宜的來回含稅價平均 {money(avg)}，'
+                   f'最低曾出現 {money(daily[0])}、最高的一天也要 {money(daily[-1])}。'
+                   f'低於 {money(avg)} 就算是這條航線相對便宜的價格。'
+                   f'（以上為歷史紀錄，實際售價請以訂票平台查詢為準）'))
 
     # 4 有哪些航空
     alla = sorted({x['airname'] for x in fs})
@@ -265,9 +281,9 @@ def faq_block(name, fs, codes):
         if best[2] >= 3:
             y, mo = best[0].split('-')
             qa.append((f'{name}機票什麼時候比較便宜？',
-                       f'就本站目前涵蓋的期間而言，{y} 年 {int(mo)} 月出發的紀錄最低，'
-                       f'來回含稅 {money(best[1])} 起。樣本僅涵蓋未來兩個月，'
-                       f'不代表全年最低。'))
+                       f'目前紀錄涵蓋 {span_of(fs)} 出發的班次，其中 {y} 年 {int(mo)} 月最低，'
+                       f'來回含稅 {money(best[1])} 起（該月有 {best[2]} 筆紀錄）。'
+                       f'此區間為目前已抓到紀錄的範圍，未涵蓋的日期不代表沒有更低價。'))
 
     # 6 哪個機場出發便宜
     byo = {}
