@@ -838,7 +838,9 @@ for slug,name,codes,reg,hotelcity in CITIES:
     if sib:
         body+=(f'<h2>{REGNAME[reg]}其他航點</h2><div class="cities">'+''.join(
             f'<a class="ct" href="{U("/"+s+"/")}"><b>{n}</b><s>{REGNAME[r]}</s>'
-            + (f'<u>{money(best(by_city.get(s,[]))["price"])}<small> 起</small></u>' if by_city.get(s) else '<u style="color:var(--dim);font-weight:400;font-size:.8rem">查詢票價</u>')
+            + (f'<u>{money(best_labeled(by_city[s])[0]["price"])}'
+               f'<small> 起 · {best_labeled(by_city[s])[1]}</small></u>' if by_city.get(s)
+               else '<u style="color:var(--dim);font-weight:400;font-size:.8rem">查詢票價</u>')
             + '</a>' for s,n,_,r,_ in sib)+'</div>')
 
     write(f'{slug}/index.html', head(title,desc,f'{slug}/')
@@ -991,7 +993,8 @@ write('index.html', head(title,desc,'')
   + '<h2>依出發地查詢</h2><div class="cities">'
   + ''.join(f'<a class="ct" href="{U("/"+o+"/")}"><b>{n}飛日本機票</b>'
             f'<s>{len({CITY_OF[x["d"]][0] for x in by_origin[o]})} 個航點</s>'
-            f'<u>{money(min(x["price"] for x in by_origin[o]))}<small> 起</small></u></a>'
+            f'<u>{money(best_labeled(by_origin[o])[0]["price"])}'
+            f'<small> 起 · {best_labeled(by_origin[o])[1]}</small></u></a>'
             for o,n,_ in ORIGINS if by_origin.get(o))
   + '</div>' + sections + foot())
 pages.append(('/',1.0))
