@@ -200,24 +200,24 @@
   "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "9 月出發的票，每天最便宜的平均要 NT$11,298（14 天有紀錄），這張低 28%"
+   "9 月出發的票，每天最便宜的平均要 NT$11,333（12 天有紀錄），這張低 28%"
   ],
-  "med": 11950,
+  "med": 12260,
   "url": "https://www.aviasales.com/search/RMQ1409OKA17091?t=LJ17894070001789473900001055RMQICNOKA17896734001789675200000090OKARMQ_3aec07b6d78400eee58e2065fe85797e_22341&search_date=07092026&expected_price_uuid=01a07a87-3c63-8030-6d8b-7f351cf3c89d&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=umoxNv1mAWKkXUMLX60YXA&expected_price_source=share&expected_price_currency=twd&expected_price=8130&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 8988,
    "hi": 13391,
-   "days": 29
+   "days": 26
   },
   "mbase": {
-   "avg": 11298,
-   "days": 14,
+   "avg": 11333,
+   "days": 12,
    "month": 9
   },
   "rank": 1,
-  "n": 71
+  "n": 68
  },
  {
   "slug": "2026-09-13-transfer-tokyo-sendai",
