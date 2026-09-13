@@ -709,6 +709,30 @@ for x in deals:
     if c: by_city[c[0]].append(x)
 CITY=dict((c[0],c) for c in CITIES)
 
+def sort_key(fs):
+    """排序用：有來回票的排前面，再依價格。
+
+    單程與來回不可比——米子單程 4,440 排在沖繩來回 5,070 前面，
+    看起來比較便宜，其實是兩種東西。"""
+    b, lbl = best_labeled(fs)
+    if not b:
+        return (2, 10 ** 9)
+    return (0 if lbl == '來回' else 1, b['price'])
+
+
+def best_labeled(fs):
+    """取最低價，優先來回；沒有來回票才退回單程。
+
+    回傳 (票價紀錄, 標籤)。卡片一定要標單程或來回——單程最低往往
+    只有來回的一半（台北→沖繩 2,459 vs 5,070），混在一起取最小值
+    又不標示，讀者會以為那個數字就能來回。"""
+    r = best(fs, True)
+    if r:
+        return r, '來回'
+    o = best(fs, False)
+    return (o, '單程') if o else (None, '')
+
+
 def best(fs,rt=None):
     p=[x for x in fs if (rt is None or x['rt']==rt)]
     return min(p,key=lambda x:x['price']) if p else None
@@ -826,14 +850,15 @@ for slug,name,codes,reg,hotelcity in CITIES:
 # ---------- 地區頁（導覽用，非 SEO 主力）----------
 for reg,rname in REGIONS:
     cs=[c for c in CITIES if c[3]==reg]
-    cs.sort(key=lambda c: best(by_city.get(c[0],[]))['price'] if by_city.get(c[0]) else 10**9)
+    cs.sort(key=lambda c: sort_key(by_city.get(c[0], [])))
     n=sum(len(by_city.get(c[0],[])) for c in cs)
-    b=min([best(by_city.get(c[0],[]))['price'] for c in cs if by_city.get(c[0])] or [0])
+    b=min([best_labeled(by_city[c[0]])[0]['price'] for c in cs if by_city.get(c[0])] or [0])
     title=f'{rname}機票｜台灣飛{rname}各城市便宜機票一覽'
     desc=f'台灣飛{rname}（{"、".join(c[1] for c in cs[:5])}）的機票比較，' + (f'最低 {money(b)} 起，' if b else '') + f'共 {n} 筆票價，每日更新。'
     cards=''.join(
         f'<a class="ct" href="{U("/"+s+"/")}"><b>{nm}</b><s>{"、".join(DEST[k][1] for k in codes if k in DEST)}</s>'
-        + (f'<u>{money(best(by_city[s])["price"])}<small> 起 · {len(by_city[s])} 筆</small></u>'
+        + (f'<u>{money(best_labeled(by_city[s])[0]["price"])}'
+           f'<small> 起 · {best_labeled(by_city[s])[1]}含稅 · {len(by_city[s])} 筆</small></u>'
            if by_city.get(s) else '<u style="color:var(--dim);font-weight:400;font-size:.8rem">查詢票價</u>')
         + '</a>' for s,nm,codes,_,_ in cs)
     write(f'{reg}/index.html', head(title,desc,f'{reg}/')
@@ -909,21 +934,25 @@ for oslug,oname,codes in ORIGINS:
     if not fs: continue
     b=best(fs,True) or best(fs,False)
     dests=sorted({CITY_OF[x['d']][0] for x in fs},
-                 key=lambda c: min(y['price'] for y in fs if CITY_OF[y['d']][0]==c))
+                 key=lambda c: sort_key([y for y in fs if CITY_OF[y['d']][0]==c]))
     title=f'{oname}飛日本機票｜{len(dests)} 個航點比價，最低 {money(b["price"])}（{NOW.year}年更新）'
     desc=(f'{oname}出發飛日本 {len(dests)} 個城市的機票整理，最低 {money(b["price"])}'
           f'（{"來回" if b["rt"] else "單程"}含稅，{b["airname"]}）。共 {len(fs)} 筆票價，每日更新。')
     cards=''
     for c in dests:
         sub=[x for x in fs if CITY_OF[x['d']][0]==c]
-        mp=min(x['price'] for x in sub)
+        bb,lbl=best_labeled(sub)
+        if not bb: continue
         href=U(f'/{oslug}/{c}/') if (oslug,c) in route_pages else U(f'/{c}/')
         cards+=(f'<a class="ct" href="{href}"><b>{oname} → {CITY[c][1]}</b>'
-                f'<s>{REGNAME[CITY[c][3]]}</s><u>{money(mp)}<small> 起 · {len(sub)} 筆</small></u></a>')
+                f'<s>{REGNAME[CITY[c][3]]}</s>'
+                f'<u>{money(bb["price"])}<small> 起 · {lbl}含稅 · {len(sub)} 筆</small></u></a>')
     write(f'{oslug}/index.html', head(title,desc,f'{oslug}/')
         + crumbs([('首頁','/'),(f'{oname}飛日本機票',None)]) + topnav()
         + f'<h1>{oname}飛日本機票</h1>'
-        + f'<p class="lede">{oname}出發飛日本共 <b>{len(dests)}</b> 個航點，目前最低 <b>{money(b["price"])}</b>。點選目的地查看詳細票價。</p>'
+        + f'<p class="lede">{oname}出發飛日本共 <b>{len(dests)}</b> 個航點，'
+          f'目前最低 <b>{money(b["price"])}</b>（{"來回" if b["rt"] else "單程"}含稅）。'
+          f'下方各航點價格以來回為準，僅有單程紀錄者另行標示。</p>'
         + f'<p class="upd">更新於 {NOWS}　·　共 {len(fs)} 筆票價</p><div class="cities">{cards}</div>' + foot())
     pages.append((f'/{oslug}/',0.85))
 
@@ -938,10 +967,11 @@ desc=(f'台北、台中、高雄、台南飛日本 {len(CITIES)} 個城市的便
 sections=''
 for reg,rname in REGIONS:
     cs=[c for c in CITIES if c[3]==reg]
-    cs.sort(key=lambda c: best(by_city.get(c[0],[]))['price'] if by_city.get(c[0]) else 10**9)
+    cs.sort(key=lambda c: sort_key(by_city.get(c[0], [])))
     cards=''.join(
         f'<a class="ct" href="{U("/"+s+"/")}"><b>{nm}</b><s>{REGNAME[reg]}</s>'
-        + (f'<u>{money(best(by_city[s])["price"])}<small> 起</small></u>'
+        + (f'<u>{money(best_labeled(by_city[s])[0]["price"])}'
+           f'<small> 起 · {best_labeled(by_city[s])[1]}</small></u>'
            if by_city.get(s) else '<u style="color:var(--dim);font-weight:400;font-size:.8rem">查詢票價</u>')
         + '</a>' for s,nm,_,_,_ in cs)
     sections+=f'<h2 id="{reg}"><a href="{U("/"+reg+"/")}" style="text-decoration:none;color:inherit">{rname}</a></h2><div class="cities">{cards}</div>'
