@@ -14,24 +14,24 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "10 月出發的票，每天最便宜的平均要 NT$5,632（5 天有紀錄），這張低 21%"
+   "10 月出發的票，每天最便宜的平均要 NT$5,773（5 天有紀錄），這張低 23%"
   ],
   "med": 13385,
   "url": "https://www.aviasales.com/search/TPE2810OKA31101?t=SL17932038001793212200000080TPEOKA17934750001793477100000095OKATPE_ad706fb5776fd99709c1795ac8ef67bb_11880&search_date=13092026&expected_price_uuid=01a09b8b-0434-8030-6dd6-b077b04ede3e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=7VdLz8NTpF6fQB6X0ZaDHQ&expected_price_source=share&expected_price_currency=twd&expected_price=4462&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 5254,
+   "lo": 5516,
    "hi": 12606,
    "days": 8
   },
   "mbase": {
-   "avg": 5632,
+   "avg": 5773,
    "days": 5,
    "month": 10
   },
   "rank": 1,
-  "n": 17
+  "n": 15
  },
  {
   "slug": "2026-09-14-taipei-tokyo",
@@ -47,24 +47,24 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$8,319（9 天有紀錄），這張低 27%"
+   "10 月出發的票，每天最便宜的平均要 NT$8,514（10 天有紀錄），這張低 29%"
   ],
-  "med": 11498,
+  "med": 11748,
   "url": "https://www.aviasales.com/search/TPE3010NRT04111?t=MM17933805001793395800000195TPENRT17937969001793808900000260NRTTPE_7de812737cc48740221bb7847e6e3eae_16158&search_date=12092026&expected_price_uuid=01a09663-3964-8030-a707-02a509f3da3f&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=W8w5vOnrG_Ig8tv7zWBtuQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6076&marker=775639",
   "hotelcity": "東京",
   "cslug": "tokyo",
   "usual": {
    "lo": 6101,
-   "hi": 14909,
-   "days": 18
+   "hi": 15031,
+   "days": 19
   },
   "mbase": {
-   "avg": 8319,
-   "days": 9,
+   "avg": 8514,
+   "days": 10,
    "month": 10
   },
   "rank": 1,
-  "n": 103
+  "n": 106
  },
  {
   "slug": "2026-09-14-taipei-osaka",
@@ -80,24 +80,24 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$8,095（8 天有紀錄），這張低 17%"
+   "10 月出發的票，每天最便宜的平均要 NT$8,351（10 天有紀錄），這張低 19%"
   ],
-  "med": 14736,
+  "med": 14656,
   "url": "https://www.aviasales.com/search/TPE1410KIX21101?t=MM17920020001792015200000160TPEKIX17925690001792576500000185KIXTPE_68f99637a1c351bc1ff889d2cf5759ba_18565&search_date=08092026&expected_price_uuid=01a07ffe-1664-8030-a164-1b60f9b4e46e&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pOzAsEhzeEFLBErGBg6Wqg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6746&marker=775639",
   "hotelcity": "大阪",
   "cslug": "osaka",
   "usual": {
    "lo": 6840,
    "hi": 12151,
-   "days": 16
+   "days": 18
   },
   "mbase": {
-   "avg": 8095,
-   "days": 8,
+   "avg": 8351,
+   "days": 10,
    "month": 10
   },
   "rank": 1,
-  "n": 66
+  "n": 72
  },
  {
   "slug": "2026-09-14-taipei-fukuoka",
@@ -159,7 +159,7 @@
    "month": 9
   },
   "rank": 1,
-  "n": 69
+  "n": 63
  },
  {
   "slug": "2026-09-14-kaohsiung-tokyo",
@@ -175,9 +175,9 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "9 月出發的票，每天最便宜的平均要 NT$11,921（5 天有紀錄），這張低 22%"
+   "9 月出發的票，每天最便宜的平均要 NT$16,980（5 天有紀錄），這張低 45%"
   ],
-  "med": 12877,
+  "med": 12409,
   "url": "https://www.aviasales.com/search/KHH3009NRT05101?t=FD17907768001790793000000210KHHNRT17912085001791219900000250NRTKHH_b573d1f07d44b36b2a9508a00c23d8f3_25379&search_date=07092026&expected_price_uuid=01a07aa8-c484-8030-a0e3-d42a1e076ca7&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=v-Emzbwq24_2Bzuf77dWdw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9321&marker=775639",
   "hotelcity": "東京",
   "cslug": "tokyo",
@@ -187,12 +187,12 @@
    "days": 8
   },
   "mbase": {
-   "avg": 11921,
+   "avg": 16980,
    "days": 5,
    "month": 9
   },
   "rank": 1,
-  "n": 24
+  "n": 22
  },
  {
   "slug": "2026-09-14-transfer-tokyo-sendai",
