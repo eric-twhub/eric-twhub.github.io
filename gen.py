@@ -419,6 +419,8 @@ nav.top summary::after{content:"▾";margin-left:5px;font-size:.7rem;opacity:.6}
 nav.top summary:hover,nav.top details[open]>summary{color:var(--acc);background:var(--soft)}
 nav.top details[open]>summary::after{content:"▴"}
 /* 一律絕對定位：若改 static，展開時會把同列其他項目擠開、版面錯位 */
+/* 最右邊的分類往左展開，否則視窗接近斷點時面板會凸出畫面右緣 */
+nav.top>details.end>.dd{left:auto;right:0}
 .dd{position:absolute;top:calc(100% + 6px);left:0;min-width:220px;
 max-width:min(340px,calc(100vw - 32px));max-height:70vh;overflow-y:auto;
 background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px;
@@ -432,14 +434,14 @@ letter-spacing:.05em}
 .dd hr{border:0;border-top:1px solid var(--line);margin:5px 0}
 /* 窄螢幕導覽列會換行，面板錨在各自的項目上時很容易被推出畫面左右緣；
    改為錨定導覽列本身（position:sticky 已建立定位脈絡）並撐滿整列 */
-@media(max-width:699px){
+@media(max-width:767px){
  nav.top details{position:static}
  .dd{left:0;right:0;max-width:none;top:calc(100% + 4px)}
  .dd a{white-space:normal}
 }
 /* 漢堡選單：只在窄螢幕出現，同時把四個分類的下拉收起來 */
 nav.top>details.burger{display:none}
-@media(max-width:699px){
+@media(max-width:767px){
  nav.top>details.burger{display:block}
  nav.top>details:not(.burger){display:none}
 }
@@ -607,7 +609,7 @@ def crumbs(items,root='/'):
            f'<script type="application/ld+json">{j}</script>'
 
 def topnav(cur=''):
-    """分類導覽。寬螢幕是一列下拉；699px 以下收成漢堡選單——
+    """分類導覽。寬螢幕是一列下拉；767px 以下收成漢堡選單——
     導覽列在 375px 會折成三行、吃掉約 190px 的畫面高度，而它是 sticky 的。
     首頁與機票特價留在外面（最常點），其餘四個分類收進 ☰，一行就放得下。
 
@@ -644,9 +646,10 @@ def topnav(cur=''):
     SEC = [('✈️ 航班地區', area), ('🕐 航班類型', kinds),
            ('🛍️ 旅日購物', shop), ('💳 旅日信用卡', card)]
 
-    def menu(label, inner):
+    def menu(label, inner, end=False):
         # name 讓瀏覽器原生互斥，JS 失效時至少不會兩片面板疊在一起
-        return (f'<details name="topnav"><summary>{label}</summary>'
+        return (f'<details name="topnav"{" class=end" if end else ""}>'
+                f'<summary>{label}</summary>'
                 f'<div class="dd">{inner}</div></details>')
 
     def sub(label, inner):
@@ -660,7 +663,8 @@ def topnav(cur=''):
     return ('<nav class="top">'
             + link('/', '首頁', not cur)
             + link('/deals/', '🔥 機票特價')
-            + ''.join(menu(l, i) for l, i in SEC)
+            + ''.join(menu(l, i, end=(k == len(SEC) - 1))
+                      for k, (l, i) in enumerate(SEC))
             + burger
             + '</nav>')
 
