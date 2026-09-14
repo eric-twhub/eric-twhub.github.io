@@ -629,7 +629,8 @@ def topnav(cur=''):
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
             + link('/apple-japan-price/', '🍎 台日 Apple 價差')
-            + link('/iphone-cost/', '📉 iPhone 持有成本'))
+            + link('/iphone-cost/', '📉 iPhone 持有成本')
+            + link('/iphone-card/', '💰 買 iPhone 刷哪張卡'))
     if os.path.exists('coupons.json'):
         _cp = json.load(open('coupons.json', encoding='utf-8'))['stores']
         shop += '<hr><b>各店折扣</b>' + ''.join(
