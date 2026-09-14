@@ -635,10 +635,11 @@ def topnav(cur=''):
         shop += '<hr><b>各店折扣</b>' + ''.join(
             link(f'/japan-coupon/{st["slug"]}/', st['name']) for st in _cp[:6])
 
-    card = (link('/japan-credit-card/', '💳 12 張卡比較')
+    _cd = json.load(open('cards.json', encoding='utf-8'))['cards'] \
+        if os.path.exists('cards.json') else []
+    card = (link('/japan-credit-card/', f'💳 {len(_cd) or ""} 張卡比較'.replace('  ', ' '))
             + link('/japan-card-calculator/', '🧮 回饋計算機'))
-    if os.path.exists('cards.json'):
-        _cd = json.load(open('cards.json', encoding='utf-8'))['cards']
+    if _cd:
         card += '<hr><b>熱門卡片</b>' + ''.join(
             link(f'/japan-credit-card/{c["slug"]}/', c['name'])
             for c in sorted(_cd, key=lambda x: -x['total'])[:6])
@@ -2095,6 +2096,8 @@ if os.path.exists('apple.json'):
     tf_desc = ('日本免稅 2026 年 11 月 1 日改採退款方式：購買時先付含稅全額，出境經海關確認後'
                '才退還消費稅。整理新舊制對照、要先墊多少錢、90 天確認期限與常見問題。')
 
+    _NCARD = (len(json.load(open('cards.json', encoding='utf-8'))['cards'])
+              if os.path.exists('cards.json') else 0)
     write('japan-tax-free-2026/index.html',
       head(tf_title, tf_desc, 'japan-tax-free-2026/',
            '<script type="application/ld+json">' + tf_ld + '</script>')
@@ -2157,7 +2160,7 @@ if os.path.exists('apple.json'):
       + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 日本買 iPhone 划算嗎</b>'
         f'<s>台日價格全表，每日更新匯率</s></a>'
       + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 新制之後回饋會變多嗎</b>'
-        f'<s>刷含稅價，12 張卡的實際差額</s></a>'
+        f'<s>刷含稅價，{_NCARD} 張卡的實際差額</s></a>'
       + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>台灣飛日本，每日更新</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>各出發地比價</s></a></div>'
       + '<p class="disc">本頁依日本觀光廳「消費稅免稅店」網站、全國免稅店協會「リファンド方式」'
@@ -2430,6 +2433,11 @@ if os.path.exists('cards.json'):
      ('回饋上限怎麼看？',
       '看「刷到多少就到頂」。加碼 6% 上限 500 元，代表台幣帳單刷到約 8,333 元加碼就滿了。'
       '買 iPhone 這種單價高的東西，加碼通常第一筆就用完，後面只剩基本回饋。'),
+     ('看到「JCB MyJapan+ 日本刷滿 10 萬回 1 萬日圓」，還能參加嗎？',
+      '不行，那個活動已經結束。JCB 的 MyJapan+ App 現金回饋活動登錄期間為 2026 年 7 月 1 日至 9 月 30 日，'
+      '限量 88,888 名，官方活動頁目前顯示「活動已結束」。'
+      '它不是一張卡，而是疊在台灣發行的 JCB 卡之上的加碼，回饋預計 2026 年 10 月下旬起由各發卡行入帳。'
+      '如果你是看到別站的整理才知道這個活動，要注意那類限量活動很容易在文章更新之前就額滿。'),
      ('那買 iPhone 到底要在台灣刷還是日本刷？',
       '兩邊都有回饋，要一起算。台灣通路在新機上市期間的加碼可能更高，足以抵銷日本的免稅價差；'
       '日本則要多付國外交易手續費。本站的台日 Apple 價差頁有試算工具可以比較。'),
