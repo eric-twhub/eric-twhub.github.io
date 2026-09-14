@@ -1,6 +1,7 @@
 .env
 __pycache__/
 *.pyc
-# 圖卡不進版控，唯獨月曆卡例外——需要固定網址供取用
+# 圖卡不進版控，唯獨月曆卡與持有成本卡例外——需要固定網址供取用
 cards/*
 !cards/calendar/
+!cards/cost/
