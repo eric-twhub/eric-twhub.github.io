@@ -1,6 +1,6 @@
 [
  {
-  "slug": "2026-09-14-taipei-okinawa",
+  "slug": "2026-09-15-taipei-okinawa",
   "title": "台北飛沖繩 NT$4,462 來回含稅｜泰國獅子航空 10/28 出發",
   "o": "台北",
   "c": "沖繩",
@@ -14,19 +14,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "10 月出發的票，每天最便宜的平均要 NT$5,610（13 天有紀錄），這張低 20%"
+   "10 月出發的票，每天最便宜的平均要 NT$5,606（13 天有紀錄），這張低 20%"
   ],
   "med": 12995,
   "url": "https://www.aviasales.com/search/TPE2810OKA31101?t=SL17932038001793212200000080TPEOKA17934750001793477100000095OKATPE_ad706fb5776fd99709c1795ac8ef67bb_11880&search_date=13092026&expected_price_uuid=01a09b8b-0434-8030-6dd6-b077b04ede3e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=7VdLz8NTpF6fQB6X0ZaDHQ&expected_price_source=share&expected_price_currency=twd&expected_price=4462&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 4836,
+   "lo": 4830,
    "hi": 12606,
    "days": 16
   },
   "mbase": {
-   "avg": 5610,
+   "avg": 5606,
    "days": 13,
    "month": 10
   },
@@ -34,7 +34,7 @@
   "n": 36
  },
  {
-  "slug": "2026-09-14-taipei-tokyo",
+  "slug": "2026-09-15-taipei-tokyo",
   "title": "台北飛東京 NT$6,101 來回含稅｜酷航 09/15 出發",
   "o": "台北",
   "c": "東京",
@@ -49,12 +49,12 @@
   "reasons": [
    "9 月出發的票，每天最便宜的平均要 NT$9,599（8 天有紀錄），這張低 36%"
   ],
-  "med": 11781,
+  "med": 12113,
   "url": "https://www.aviasales.com/search/TPE1509NRT25091?t=MM17894547001789470900000210TPENRT17903733001790383200000225NRTTPE_ad373ca97b8c30b66056d3283e18cb8c_16242&search_date=13092026&expected_price_uuid=01a09b6c-6919-8040-693b-e792159544f0&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=c0N0LjzWrrDxO4zeik5jKw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6101&marker=775639",
   "hotelcity": "東京",
   "cslug": "tokyo",
   "usual": {
-   "lo": 6395,
+   "lo": 6387,
    "hi": 14909,
    "days": 18
   },
@@ -64,10 +64,10 @@
    "month": 9
   },
   "rank": 1,
-  "n": 101
+  "n": 100
  },
  {
-  "slug": "2026-09-14-taipei-osaka",
+  "slug": "2026-09-15-taipei-osaka",
   "title": "台北飛大阪 NT$6,746 來回含稅｜捷星日本 10/14 出發",
   "o": "台北",
   "c": "大阪",
@@ -80,27 +80,27 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$8,351（10 天有紀錄），這張低 19%"
+   "10 月出發的票，每天最便宜的平均要 NT$8,384（11 天有紀錄），這張低 20%"
   ],
-  "med": 14683,
+  "med": 14922,
   "url": "https://www.aviasales.com/search/TPE1410KIX21101?t=MM17920020001792015200000160TPEKIX17925690001792576500000185KIXTPE_68f99637a1c351bc1ff889d2cf5759ba_18565&search_date=08092026&expected_price_uuid=01a07ffe-1664-8030-a164-1b60f9b4e46e&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pOzAsEhzeEFLBErGBg6Wqg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6746&marker=775639",
   "hotelcity": "大阪",
   "cslug": "osaka",
   "usual": {
    "lo": 6840,
    "hi": 12151,
-   "days": 18
+   "days": 19
   },
   "mbase": {
-   "avg": 8351,
-   "days": 10,
+   "avg": 8384,
+   "days": 11,
    "month": 10
   },
   "rank": 1,
-  "n": 73
+  "n": 76
  },
  {
-  "slug": "2026-09-14-taipei-fukuoka",
+  "slug": "2026-09-15-taipei-fukuoka",
   "title": "台北飛福岡 NT$7,342 來回含稅｜台灣虎航 09/17 出發",
   "o": "台北",
   "c": "福岡",
@@ -129,32 +129,32 @@
   "n": 18
  },
  {
-  "slug": "2026-09-14-taichung-okinawa",
-  "title": "台中飛沖繩 NT$8,549 來回含稅｜台灣虎航 09/21 出發",
+  "slug": "2026-09-15-taichung-okinawa",
+  "title": "台中飛沖繩 NT$8,539 來回含稅｜台灣虎航 09/21 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 8549,
+  "price": 8539,
   "air": "台灣虎航",
   "dep": "2026-09-21",
   "ret": "2026-09-24",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "9 月出發的票，每天最便宜的平均要 NT$11,780（11 天有紀錄），這張低 27%"
+   "9 月出發的票，每天最便宜的平均要 NT$11,775（11 天有紀錄），這張低 27%"
   ],
   "med": 12137,
-  "url": "https://www.aviasales.com/search/RMQ2109OKA24091?t=IT17899746001789983600000090RMQOKA17902782001790280000000090OKARMQ_aa81e0babcc46df95ea5055ff4e8f875_22539&search_date=14092026&expected_price_uuid=01a09f48-4548-8030-63d5-e5d4352e87f0&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=klsY7nVtb5q8C-4ERRuScA&expected_price_source=share&expected_price_currency=twd&expected_price=8549&marker=775639",
+  "url": "https://www.aviasales.com/search/RMQ2109OKA24091?t=IT17899746001789983600000090RMQOKA17902782001790280000000090OKARMQ_aa81e0babcc46df95ea5055ff4e8f875_22539&search_date=14092026&expected_price_uuid=01a09f48-4548-8030-63d5-e5d4352e87f0&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=klsY7nVtb5q8C-4ERRuScA&expected_price_source=share&expected_price_currency=twd&expected_price=8539&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 9104,
-   "hi": 13712,
+   "hi": 13696,
    "days": 26
   },
   "mbase": {
-   "avg": 11780,
+   "avg": 11775,
    "days": 11,
    "month": 9
   },
@@ -162,37 +162,37 @@
   "n": 61
  },
  {
-  "slug": "2026-09-14-kaohsiung-tokyo",
-  "title": "高雄飛東京 NT$8,968 來回含稅｜捷星日本 09/29 出發",
+  "slug": "2026-09-15-kaohsiung-tokyo",
+  "title": "高雄飛東京 NT$10,023 來回含稅｜捷星日本 10/05 出發",
   "o": "高雄",
   "c": "東京",
   "_oiata": "KHH",
   "_diata": "TYO",
-  "price": 8968,
+  "price": 10023,
   "air": "捷星日本",
-  "dep": "2026-09-29",
-  "ret": "2026-10-06",
+  "dep": "2026-10-05",
+  "ret": "2026-10-08",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "這條航線平常最低落在 NT$9,142–NT$13,129，這張是近期 29 筆紀錄中第 1 低"
+   "這條航線平常最低落在 NT$10,053–NT$13,129，這張是近期 17 筆紀錄中第 1 低"
   ],
-  "med": 11770,
-  "url": "https://www.aviasales.com/search/KHH2909NRT06101?t=GK17906904001790706600000210KHHNRT17912805001791291600000245NRTKHH_9ab81f2d99cd8409043eb38e524fd132_23644&search_date=14092026&expected_price_uuid=01a09f69-8489-8030-64cd-34b48a1b6b61&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=HJgU8W3dfBETq91yVENqjA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8968&marker=775639",
+  "med": 11756,
+  "url": "https://www.aviasales.com/search/KHH0510NRT08101?t=GK17912088001791225000000210KHHNRT17914533001791464400000245NRTKHH_55b383901046d6f0df558aae8090c061_26654&search_date=12092026&expected_price_uuid=01a094b1-bcd0-8050-ac88-282a8bb23d15&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6OT7nQuTs7A8xDKZTCY0mQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=10023&marker=775639",
   "hotelcity": "東京",
   "cslug": "tokyo",
   "usual": {
-   "lo": 9142,
+   "lo": 10053,
    "hi": 13129,
-   "days": 9
+   "days": 6
   },
   "mbase": null,
   "rank": 1,
-  "n": 29
+  "n": 17
  },
  {
-  "slug": "2026-09-14-transfer-tokyo-sendai",
-  "title": "飛東京轉乘去仙台，比直飛省 NT$18,282",
+  "slug": "2026-09-15-transfer-tokyo-sendai",
+  "title": "飛東京轉乘去仙台，比直飛省 NT$18,247",
   "o": "台灣",
   "c": "仙台",
   "via": "東京",
@@ -203,15 +203,15 @@
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$18,282"
+   "比直飛省 NT$18,247"
   ],
-  "med": 29239,
+  "med": 29204,
   "url": "https://www.aviasales.com/search/TPE1509NRT25091?t=MM17894547001789470900000210TPENRT17903733001790383200000225NRTTPE_ad373ca97b8c30b66056d3283e18cb8c_16242&search_date=13092026&expected_price_uuid=01a09b6c-6919-8040-693b-e792159544f0&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=c0N0LjzWrrDxO4zeik5jKw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6101&marker=775639",
   "hotelcity": "仙台",
   "cslug": "sendai"
  },
  {
-  "slug": "2026-09-14-transfer-osaka-hiroshima",
+  "slug": "2026-09-15-transfer-osaka-hiroshima",
   "title": "飛大阪轉乘去廣島，比直飛省 NT$699",
   "o": "台灣",
   "c": "廣島",
@@ -231,8 +231,8 @@
   "cslug": "hiroshima"
  },
  {
-  "slug": "2026-09-14-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$6,135",
+  "slug": "2026-09-15-transfer-fukuoka-kumamoto",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$6,117",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
@@ -243,9 +243,9 @@
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$6,135"
+   "比直飛省 NT$6,117"
   ],
-  "med": 15739,
+  "med": 15721,
   "url": "https://www.aviasales.com/search/TPE1709FUK23091?t=IT17896551001789667400000145TPEFUK17901609001790166300000150FUKTPE_08fba1d0736b99af3ab5e88c57f99e34_19995&search_date=08092026&expected_price_uuid=01a082ba-bab1-8030-aacd-53c20630e08d&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3PtE1bBq-u7YF2QLucnadg&expected_price_source=share&expected_price_currency=twd&expected_price=7342&marker=775639",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
