@@ -130,36 +130,36 @@
  },
  {
   "slug": "2026-09-14-taichung-okinawa",
-  "title": "台中飛沖繩 NT$8,673 來回含稅｜德威航空 09/17 出發",
+  "title": "台中飛沖繩 NT$8,544 來回含稅｜台灣虎航 09/21 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 8673,
-  "air": "德威航空",
-  "dep": "2026-09-17",
+  "price": 8544,
+  "air": "台灣虎航",
+  "dep": "2026-09-21",
   "ret": "2026-09-24",
-  "stops": "轉機 1 次",
+  "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "9 月出發的票，每天最便宜的平均要 NT$11,818（11 天有紀錄），這張低 27%"
+   "9 月出發的票，每天最便宜的平均要 NT$11,777（11 天有紀錄），這張低 27%"
   ],
-  "med": 12260,
-  "url": "https://www.aviasales.com/search/RMQ1709OKA24091?t=TW17896644001789738500001175RMQICNOKA17902782001790280000000090OKARMQ_fc95b3dc0de12f7fed2f50e469457f7e_23305&search_date=10092026&expected_price_uuid=01a08a1e-499e-8030-eea5-84831afe6f2b&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=UC45kwtN_oR-iRyUQsdxvg&expected_price_source=share&expected_price_currency=twd&expected_price=8673&marker=775639",
+  "med": 12137,
+  "url": "https://www.aviasales.com/search/RMQ2109OKA24091?t=IT17899746001789983600000090RMQOKA17902782001790280000000090OKARMQ_aa81e0babcc46df95ea5055ff4e8f875_22539&search_date=14092026&expected_price_uuid=01a09f48-4548-8030-63d5-e5d4352e87f0&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=klsY7nVtb5q8C-4ERRuScA&expected_price_source=share&expected_price_currency=twd&expected_price=8544&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 9104,
    "hi": 13704,
-   "days": 24
+   "days": 26
   },
   "mbase": {
-   "avg": 11818,
+   "avg": 11777,
    "days": 11,
    "month": 9
   },
   "rank": 1,
-  "n": 58
+  "n": 61
  },
  {
   "slug": "2026-09-14-kaohsiung-tokyo",
