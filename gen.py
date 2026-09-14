@@ -347,7 +347,7 @@ SF_JS = ('<script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toL
 # details 原生不會互斥、也不會因為點別處而收起來；沒有這段，
 # 展開兩個分類就會兩片面板疊在一起，而且一直留在畫面上。
 NAV_JS = ('<script>(function(){var n=document.querySelector("nav.top");if(!n)return;'
-          'var d=[].slice.call(n.querySelectorAll("details"));'
+          'var d=[].slice.call(n.querySelectorAll(":scope>details"));'
           'function shut(x){d.forEach(function(o){if(o!==x)o.open=false})}'
           'd.forEach(function(o){o.addEventListener("toggle",function(){if(o.open)shut(o)})});'
           'document.addEventListener("click",function(e){'
@@ -437,6 +437,29 @@ letter-spacing:.05em}
  .dd{left:0;right:0;max-width:none;top:calc(100% + 4px)}
  .dd a{white-space:normal}
 }
+/* 漢堡選單：只在窄螢幕出現，同時把四個分類的下拉收起來 */
+nav.top>details.burger{display:none}
+@media(max-width:699px){
+ nav.top>details.burger{display:block}
+ nav.top>details:not(.burger){display:none}
+}
+/* 漢堡面板內的分類標題 */
+.dd>details>summary{list-style:none;cursor:pointer;user-select:none;
+font-size:.9rem;font-weight:600;color:var(--fg);padding:10px 11px;border-radius:7px;
+display:flex;justify-content:space-between;align-items:center}
+.dd>details>summary::-webkit-details-marker{display:none}
+.dd>details>summary::after{content:"▾";font-size:.7rem;color:var(--dim)}
+.dd>details[open]>summary,.dd>details>summary:hover{color:var(--acc);background:var(--soft)}
+.dd>details[open]>summary::after{content:"▴"}
+/* 就地展開的子清單，沿用 .dd 的排版但不再是浮動面板 */
+.sub{display:flex;flex-direction:column;gap:1px;padding:1px 0 8px 12px}
+.sub a{display:block;padding:8px 11px;border-radius:7px;color:var(--fg);
+text-decoration:none;font-size:.86rem}
+.sub a:hover{background:var(--soft);color:var(--acc)}
+.sub a.cur{color:var(--acc);font-weight:600}
+.sub b{display:block;padding:9px 11px 4px;font-size:.72rem;color:var(--dim);
+font-weight:600;letter-spacing:.05em}
+.sub hr{border:0;border-top:1px solid var(--line);margin:5px 0}
 
 h2{font-size:1.28rem;margin:40px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--acc)}
 h3{font-size:1.02rem;margin:26px 0 8px}
@@ -584,8 +607,13 @@ def crumbs(items,root='/'):
            f'<script type="application/ld+json">{j}</script>'
 
 def topnav(cur=''):
-    """分類下拉導覽。原本是 15 個項目擠成一條橫向捲動列，沒有層次；
-    改為五個分類，各自展開。用 details 而非 hover 選單，手機才點得開。"""
+    """分類導覽。寬螢幕是一列下拉；699px 以下收成漢堡選單——
+    導覽列在 375px 會折成三行、吃掉約 190px 的畫面高度，而它是 sticky 的。
+    首頁與機票特價留在外面（最常點），其餘四個分類收進 ☰，一行就放得下。
+
+    手機與桌機各有一份連結。多幾 KB，但換來純 CSS 切換：
+    若靠一個 details 同時當漢堡與桌機容器，桌機必須有人把它打開，
+    JS 一失效整條導覽列就只剩一個 ☰。"""
     def link(href, text, is_cur=False):
         return f'<a href="{U(href)}"{" class=cur" if is_cur else ""}>{text}</a>'
 
@@ -613,18 +641,27 @@ def topnav(cur=''):
             link(f'/japan-credit-card/{c["slug"]}/', c['name'])
             for c in sorted(_cd, key=lambda x: -x['total'])[:6])
 
+    SEC = [('✈️ 航班地區', area), ('🕐 航班類型', kinds),
+           ('🛍️ 旅日購物', shop), ('💳 旅日信用卡', card)]
+
     def menu(label, inner):
         # name 讓瀏覽器原生互斥，JS 失效時至少不會兩片面板疊在一起
         return (f'<details name="topnav"><summary>{label}</summary>'
                 f'<div class="dd">{inner}</div></details>')
 
+    def sub(label, inner):
+        # 漢堡面板內的分類：就地展開，不再疊一層浮動面板
+        return (f'<details name="burgernav"><summary>{label}</summary>'
+                f'<div class="sub">{inner}</div></details>')
+
+    burger = ('<details class="burger"><summary>☰ 選單</summary><div class="dd">'
+              + ''.join(sub(l, i) for l, i in SEC) + '</div></details>')
+
     return ('<nav class="top">'
             + link('/', '首頁', not cur)
             + link('/deals/', '🔥 機票特價')
-            + menu('✈️ 航班地區', area)
-            + menu('🕐 航班類型', kinds)
-            + menu('🛍️ 旅日購物', shop)
-            + menu('💳 旅日信用卡', card)
+            + ''.join(menu(l, i) for l, i in SEC)
+            + burger
             + '</nav>')
 
 
