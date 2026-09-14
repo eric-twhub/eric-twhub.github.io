@@ -580,7 +580,8 @@ def topnav(cur=''):
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
-            + link('/apple-japan-price/', '🍎 台日 Apple 價差'))
+            + link('/apple-japan-price/', '🍎 台日 Apple 價差')
+            + link('/iphone-cost/', '📉 iPhone 持有成本'))
     if os.path.exists('coupons.json'):
         _cp = json.load(open('coupons.json', encoding='utf-8'))['stores']
         shop += '<hr><b>各店折扣</b>' + ''.join(
@@ -1578,6 +1579,13 @@ if os.path.exists('apple.json'):
       + dtable
       + betable
       + _APPLE_CALC
+      + '<h2>先別急著比標價</h2>'
+      + '<p class="lede">台日價差多半是幾千元，但同一支機器兩三年後的<b>回收價</b>差距'
+        '往往比這個大。用台灣實際的二手回收行情把機身價攤成每月成本，'
+        '常常會得到和比標價不一樣的結論。</p>'
+      + '<div class="cities">'
+      + f'<a class="ct" href="{U("/iphone-cost/")}"><b>📉 iPhone 持有成本試算</b>'
+        f'<s>用實際回收行情算每月多少</s></a></div>'
       + '<h2>買之前要知道的兩件事</h2>'
       + '<h3>1. Apple 直營店已經不能退稅</h3>'
       + '<p class="lede">Apple 日本直營店自 2024 年 6 月起取消對外國旅客的免稅服務。'
@@ -1586,8 +1594,9 @@ if os.path.exists('apple.json'):
       + fare_cta('tokyo','要去量販店掃貨？機票現在多少')
       + '<h3>2. 保固是區域性的</h3>'
       + '<p class="lede">日本購買的 iPhone 在台灣的 Apple 授權維修中心可能不受理，需寄回日本處理。'
-        '省下的幾千元，遇到一次維修就可能不划算。至於快門聲，自 iOS 15 起僅在日本境內強制，'
-        '離開日本即可關閉，這點不必擔心。</p>'
+        '省下的幾千元，遇到一次維修就可能不划算。快門聲也一樣要先想清楚：'
+        '限制綁在銷售地版本（日本為 J/A），帶出國是否就會靜音各方實測說法不一，'
+        'Apple 未公布判定規則，在意的話不要買日版。</p>'
       + shoptable
       + flights
       + '<h2>常見問題</h2>' + faq_html
@@ -1601,6 +1610,369 @@ if os.path.exists('apple.json'):
         f'本站可能獲得分潤，不影響你的價格。</p>'
       + foot())
     pages.append(('/apple-japan-price/',0.9))
+
+    # ── iPhone 持有成本：用台灣實際二手回收行情攤提 ──────────────
+    # 網路上談「持有成本」多半自己假設一個殘值，數字沒有來源。
+    # 這裡改成反過來做：拿收購商今天公開的回收報價，除以該機種當年的
+    # 官方售價，得到「實際上掉了多少」，再用這條曲線去攤新機。
+    if os.path.exists('resale.json'):
+        RS = json.load(open('resale.json', encoding='utf-8'))
+
+        def _yrs(launch):
+            d = datetime.date(*map(int, launch.split('-')))
+            return max(1, round((NOW.date() - d).days / 365.25))
+
+        # 殘值率一律以「參考容量」計算，優先取 256GB。
+        # 若改成逐容量比對，同一個機型在不同年份會落在不同基準上
+        #（例如滿一年的 Pro Max 只有 256GB 報價、滿兩年的有 512GB），
+        # 算出來的每月成本會出現「用兩年比用一年還貴」這種假訊號。
+        REFCAP = ('256GB', '128GB', '512GB', '1TB')
+        RES = {}                      # tier → 年 → {rate, spec, name, list, resale}
+        for r in RS['rows']:
+            caps = {c[0]: c for c in r['caps']}
+            spec = next(c for c in REFCAP if c in caps)
+            _, lst, res = caps[spec]
+            RES.setdefault(r['tier'], {})[_yrs(r['launch'])] = {
+                'rate': res / lst, 'spec': spec, 'name': r['name'],
+                'launch': r['launch'], 'list': lst, 'resale': res}
+
+        def rate_of(tier, y, spec=None):
+            s = RES.get(tier, {}).get(y)
+            return s['rate'] if s else None
+
+        def tier_of(n):
+            if n.endswith('Pro Max'): return 'Pro Max'
+            if n.endswith('Pro'): return 'Pro'
+            if n.endswith('Air'): return 'Air'
+            if n.replace('iPhone ', '').isdigit(): return '標準'
+            return None                      # iPhone Duo 等新形態，沒有可比的回收行情
+
+        def mcost(twd, tier, y, spec):
+            rt = rate_of(tier, y, spec)
+            if rt is None: return None
+            keep = round(twd * rt)
+            return {'keep': keep, 'cost': twd - keep, 'm': round((twd - keep) / (y * 12))}
+
+        _YRS = sorted({_yrs(r['launch']) for r in RS['rows']})
+        _SRC = f'<a href="{RS["src"]}" rel="nofollow" target="_blank">{html.escape(RS["src_name"])}</a>'
+        TIERS_ALL = [t for t in ('Pro Max', 'Pro', '標準', 'Air') if t in RES]
+
+        # 1. 實際折舊表（各機種基本容量）
+        _drows2 = ''
+        for t in TIERS_ALL:
+            for y in sorted(RES.get(t, {})):
+                d = RES[t][y]
+                _drows2 += (f'<tr><td><b>{html.escape(d["name"])}</b>{SMALL}{d["spec"]}</small></td>'
+                            f'<td>{d["launch"].replace("-", "/")}</td><td>{y} 年</td>'
+                            f'<td>{money(d["list"])}</td><td><b>{money(d["resale"])}</b></td>'
+                            f'<td class="win">{d["rate"] * 100:.0f}%</td>'
+                            f'<td class="lose">−{money(d["list"] - d["resale"])}</td></tr>')
+
+        # 2. 殘值率速查（等級 × 年數）
+        _mrows = ''
+        for t in TIERS_ALL:
+            cells = ''.join(
+                (f'<td><b>{rate_of(t, y) * 100:.0f}%</b></td>' if rate_of(t, y) else '<td>—</td>')
+                for y in _YRS)
+            _mrows += f'<tr><td><b>{t}</b></td>{cells}</tr>'
+
+        # 3. 容量加價的殘值（同一支機器，最小容量 → 最大容量）
+        _crows = ''
+        for r in RS['rows']:
+            if len(r['caps']) < 2: continue
+            s0, l0, v0 = r['caps'][0]
+            s1, l1, v1 = r['caps'][-1]
+            up, back = l1 - l0, v1 - v0
+            _crows += (f'<tr><td><b>{html.escape(r["name"])}</b>{SMALL}{s0} → {s1}</small></td>'
+                       f'<td>{_yrs(r["launch"])} 年</td>'
+                       f'<td>＋{money(up)}</td><td>＋{money(back)}</td>'
+                       f'<td class="lose">{back / up * 100:.0f}%</td>'
+                       f'<td class="win">{v0 / l0 * 100:.0f}%</td></tr>')
+
+        # 4. 在售新機的每月成本
+        _NEWI = [p for p in AP['products'] if p['cat'] == 'iPhone']
+        _nrows = ''
+        for p in _NEWI:
+            t = tier_of(p['name'])
+            cells = ''
+            for y in _YRS:
+                m = mcost(p['twd'], t, y, p['spec']) if t else None
+                cells += f'<td><b>NT${m["m"]:,}</b></td>' if m else '<td>—</td>'
+            _nrows += (f'<tr><td><b>{html.escape(p["name"])}</b>{SMALL}{p["spec"]}</small></td>'
+                       f'<td>{money(p["twd"])}</td>{cells}</tr>')
+        _nodata = sorted({p['name'] for p in _NEWI if not tier_of(p['name'])})
+
+        # 5. 標題數字：Pro 與 Pro Max 攤到每月差多少
+        def _pick(tier, spec='256GB'):
+            return next((p for p in _NEWI
+                         if p.get('new') and tier_of(p['name']) == tier and p['spec'] == spec), None)
+        _P, _PM = _pick('Pro'), _pick('Pro Max')
+        _hl = ''
+        if _P and _PM:
+            _a2, _b2 = mcost(_P['twd'], 'Pro', 2, '256GB'), mcost(_PM['twd'], 'Pro Max', 2, '256GB')
+            _a1, _b1 = mcost(_P['twd'], 'Pro', 1, '256GB'), mcost(_PM['twd'], 'Pro Max', 1, '256GB')
+            _gap = _PM['twd'] - _P['twd']
+            _d2 = _b2['m'] - _a2['m']
+            _d1 = _b1['m'] - _a1['m']
+            _hl = (f'<div class="today">'
+                   f'<div class="tday">{RS["updated"]} · 殘值取自{RS["src_name"]}當日公開報價</div>'
+                   f'<div class="tans">{_P["name"]} 每月 NT${_a2["m"]:,}，'
+                   f'{_PM["name"]} 每月 NT${_b2["m"]:,}——用兩年，每月只差 '
+                   f'NT${abs(_d2):,}</div>'
+                   f'<div class="tsub">標價差 {money(_gap)} 看起來很多，但 Pro Max 兩年後的回收價'
+                   f'（{money(_b2["keep"])}）比 Pro（{money(_a2["keep"])}）高 '
+                   f'{money(_b2["keep"] - _a2["keep"])}，把差價吃掉了大半。</div>'
+                   f'<div class="tbuf">一年就換的人更極端：Pro 每月 <b>NT${_a1["m"]:,}</b>、'
+                   f'Pro Max 每月 <b>NT${_b1["m"]:,}</b>，'
+                   + (f'<b>Pro Max 反而便宜 NT${-_d1:,}</b>——高階機種掉價慢，持有期越短越吃香。'
+                      if _d1 < 0 else f'差距 NT${_d1:,}。') +
+                   f'</div></div>')
+
+        # 6. 去日本買，攤到每月剩多少
+        _jt = by_city.get('tokyo') or []
+        _jb = (best(_jt, True) or best(_jt, False)) if _jt else None
+        FARE = _jb['price'] if _jb else 6000
+        _jp_blk = ''
+        if _P:
+            _jex = round(_P['jpy'] / TAXR * RATE)
+            _sv = _P['twd'] - _jex
+            _sv_m = round(_sv / 24)
+            _fa_m = round(FARE / 24)
+            _jp_blk = (
+              '<h2>去日本買，攤到每月省多少？</h2>'
+              f'<p class="lede">以 {_P["name"]} {_P["spec"]} 為例：在日本量販店以免稅價買約 '
+              f'{money(_jex)}，比台灣的 {money(_P["twd"])} 少 <b>{money(_sv)}</b>。'
+              f'聽起來不錯，但攤到兩年只有<b>每月 NT${_sv_m:,}</b>——'
+              f'而台北飛東京目前最低 {money(FARE)}，同樣攤兩年是<b>每月 NT${_fa_m:,}</b>。'
+              + (f'機票比省下來的多 {money(FARE - _sv)}，'
+                 '專程為了買手機飛一趟，怎麼算都是虧的；本來就要去日本才順便買。'
+                 if FARE > _sv else
+                 f'這種票價下確實還有得賺，但價差只要縮小 {money(FARE - _sv + 1)} 就翻盤。')
+              + '</p>'
+              + fare_cta('tokyo', '本來就要去？看今天飛東京多少')
+              + f'<p class="disc">日本免稅價為日本含稅價扣除 10% 消費稅後以匯率 {RATE} 換算；'
+                '刷卡另有約 1.5% 國外交易手續費未計入。另外，日版（J/A）機在台灣二手市場'
+                '通常被收購商另行折價，本頁無法取得公開的折價幅度，'
+                '但方向是讓日本的價差再縮小一些。</p>')
+
+        # 7. 舊機漲價
+        HK = RS.get('hike') or {}
+        _hrows = ''.join(
+            f'<tr><td><b>{html.escape(n)}</b></td><td>{money(o)}</td><td><b>{money(w)}</b></td>'
+            f'<td class="lose">＋{money(w - o)}</td></tr>' for n, o, w in HK.get('items', []))
+        _hike_blk = (
+          '<h2>提醒：舊機今年不但沒降，還漲了</h2>'
+          f'<p class="lede">「等半年買舊款比較便宜」這個假設，{HK.get("date", "")} 起在台灣失效了——'
+          f'Apple 同日調高了仍在架上的舊機售價。這會直接墊高你的持有成本，'
+          f'也代表二手行情不會像過去那樣一路走低。</p>'
+          '<div class="tw"><table><thead><tr><th>機型</th><th>原價</th><th>現價</th><th>漲幅</th>'
+          '</tr></thead><tbody>' + _hrows + '</tbody></table></div>'
+          f'<p class="disc">現價為 Apple 台灣官網目前定價。'
+          f'注意 iPhone 16 等更早的機種在 iPhone 17 上市時曾調降，本次是調回，不列入本表。</p>'
+          ) if _hrows else ''
+
+        # 8. 計算機
+        _RJS = json.dumps({f'{t}|{y}': round(d['rate'], 4)
+                           for t, ys in RES.items() for y, d in ys.items()}, ensure_ascii=False)
+        _PJS = json.dumps([{'n': p['name'], 's': p['spec'], 't': tier_of(p['name']) or '',
+                            'tw': p['twd'], 'jp': round(p['jpy'] / TAXR * RATE)}
+                           for p in _NEWI], ensure_ascii=False)
+        _kdef = next((i for i, p in enumerate(_NEWI)
+                      if _P and p['name'] == _P['name'] and p['spec'] == _P['spec']),
+                     next((i for i, p in enumerate(_NEWI) if tier_of(p['name'])), 0))
+        _kopts = ''.join(
+            f'<option value="{i}"{" selected" if i == _kdef else ""}>'
+            f'{html.escape(p["name"])} {html.escape(p["spec"])}</option>'
+            for i, p in enumerate(_NEWI))
+        _kyrs = ''.join(f'<option value="{y}"{" selected" if y == 2 else ""}>{y} 年</option>'
+                        for y in _YRS)
+        _kjs = ("""
+<script>
+(function(){
+ var R=%R%, P=%P%;
+ var $=function(i){return document.getElementById(i)};
+ function nt(n){return 'NT$'+Math.round(n).toLocaleString('en-US')}
+ function rate(t,y){var v=R[t+'|'+y]; return v||null;}
+ function fill(){
+  var p=P[+$('km').value], y=+$('ky').value, a=rate(p.t,y);
+  $('kr').value = a ? (a*100).toFixed(1) : '';
+  $('kn').textContent = a ? ('同級機種滿 '+y+' 年的實際行情') : '這個機型還沒有可比的回收行情，請自行填入';
+  calc();
+ }
+ function calc(){
+  var p=P[+$('km').value], y=+$('ky').value, raw=$('kr').value;
+  if(raw===''){
+    ['rk','rc','r1','r2','r3'].forEach(function(i){$(i).textContent='—'});
+    $('rv').className='cv'; $('rv').textContent='這個機型沒有可比的回收行情，填入你自己的預期殘值才算得出來';
+    return;
+  }
+  var rt=(+raw||0)/100, fare=+$('kf').value||0, mo=y*12;
+  var kT=p.tw*rt, kJ=p.jp*rt;
+  var mT=(p.tw-kT)/mo, mJ=(p.jp-kJ)/mo, mJF=(p.jp-kJ+fare)/mo;
+  $('rk').textContent=nt(kT);
+  $('rc').textContent=nt(p.tw-kT);
+  $('r1').textContent=nt(mT);
+  $('r2').textContent=nt(mJ);
+  $('r3').textContent=nt(mJF);
+  var d=mT-mJF, e=$('rv');
+  e.className='cv '+(d>0?'jp':'tw');
+  e.textContent = (Math.abs(d)<10) ? '算上機票，兩邊每月幾乎一樣'
+   : (d>0 ? ('連機票都算進去，日本每月仍省 '+nt(d))
+          : ('把機票攤進去，日本每月反而多 '+nt(-d)+'——本來就要去才划算'));
+ }
+ ['km','ky'].forEach(function(i){$(i).addEventListener('change',fill)});
+ ['kr','kf'].forEach(function(i){$(i).addEventListener('input',calc)});
+ fill();
+})();
+</script>""").replace('%R%', _RJS).replace('%P%', _PJS)
+
+        _kcalc = (
+          '<h2>算你自己的</h2>'
+          '<p class="lede">殘值率會依機型與年數自動帶入上表的實際行情，你也可以改成自己的預期。'
+          '機票預設帶入台北飛東京目前的最低來回含稅價。'
+          '殘值率在這裡只取到小數點一位，算出來的每月成本可能與上表差個位數。</p>'
+          '<div class="calc"><div class="sf">'
+          f'<label>機型<select id="km">{_kopts}</select></label>'
+          f'<label>打算用幾年<select id="ky">{_kyrs}</select></label>'
+          '<label>屆時殘值 %<input id="kr" type="number" value="50" min="0" max="100" step="0.1"></label>'
+          f'<label>來回機票<input id="kf" type="number" value="{FARE}" min="0" step="100"></label>'
+          '</div>'
+          '<p class="disc" id="kn">—</p>'
+          '<div class="cres">'
+          '<div class="cl"><span>屆時估計回收價</span><b id="rk">—</b></div>'
+          '<div class="cl"><span>總持有成本</span><b id="rc">—</b></div>'
+          '<div class="cl"><span>台灣買，每月</span><b id="r1">—</b></div>'
+          '<div class="cl"><span>日本免稅買，每月</span><b id="r2">—</b></div>'
+          '<div class="cl"><span>日本買＋機票，每月</span><b id="r3">—</b></div>'
+          '<div class="cv" id="rv">—</div></div></div>' + _kjs)
+
+        _kfaq = [
+         ('殘值率是怎麼算出來的？',
+          f'用收購商今天公開的回收報價，除以那支機器當年在 Apple 台灣官網的建議售價。'
+          f'例如 iPhone 16 Pro Max 256GB 當年賣 NT$44,900，{RS["src_name"]}今天收 NT$24,820，'
+          f'滿兩年的殘值率就是 55%。這不是假設值，是可以自己去對的公開報價；'
+          f'回收價查詢日期為 {RS["updated"]}。'),
+         ('為什麼 Pro 和 Pro Max 每月成本差不多？',
+          '因為 Pro Max 掉價比較慢。標價雖然貴幾千元，但兩年後的回收價也高幾千元，'
+          '一來一往之後，真正花掉的錢相差有限。反過來說，如果你買 Pro 的理由是「比較便宜」，'
+          '這個理由其實不太成立；買 Pro 合理的理由是機身比較輕、比較好單手操作。'),
+         ('一年就換新機，是不是很浪費？',
+          '比想像中溫和，但仍然最貴。上市滿一年的機種殘值還有六到七成，所以一年換一次的'
+          '每月成本大約比用兩年高兩三成；用越久越便宜的方向沒有變，只是差距沒有直覺上那麼大。'
+          '另一個常被忽略的點是，持有期越短，高階機種越有利，因為它掉價慢。'),
+         ('升級容量划算嗎？',
+          '從殘值的角度看是最不划算的一筆。整支機器兩年後大約還有五成價值，'
+          '但「容量加價」的部分通常只剩三成上下，滿三年更低。'
+          '如果你不確定要不要多花錢升級容量，可以把它想成一筆折舊特別快的支出。'),
+         ('二手回收價和自己賣差多少？',
+          '收購商報價是你最快、最確定拿得到的數字，不用議價、不用面交、不用處理糾紛，'
+          '代價是比自售低。自己在拍賣平台通常能賣得更高，但要花時間、承擔詐騙與售後爭議風險。'
+          '本頁一律採用收購價，算出來的持有成本會偏保守。'),
+         ('日本買的 iPhone，殘值一樣嗎？',
+          '通常比較低。日版機（型號 J/A）在台灣二手市場常被收購商另行折價，'
+          '原因包括快門聲無法關閉與保固屬區域性。'
+          '各家折價幅度沒有公開，本頁無法量化，但方向明確：'
+          '會讓台日價差再縮小一點，計算時請自行保守一些。'),
+         ('這個數字有算保護殼、AppleCare+ 嗎？',
+          '沒有，只算機身。若加購 AppleCare+，等於每月再多一筆固定支出，'
+          '但相對地，有保固的機器在回收時比較不會因為外觀或功能瑕疵被大幅殺價。'
+          '電信資費與配件也都不在本頁範圍內。'),
+         ('回收價會變嗎？',
+          '會，而且變得不慢。收購商會依市場狀況調整報價，新機發表、記憶體漲價、'
+          '甚至某個容量在二手市場缺貨，都會讓報價在幾週內移動數千元。'
+          f'本頁的回收價查詢於 {RS["updated"]}，決定買賣前請再確認一次當日報價。'),
+        ]
+        _kfaq_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                             + html.escape(a) + '</div></details>' for q, a in _kfaq)
+        _kfaq_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+            for q, a in _kfaq]}, ensure_ascii=False)
+
+        _ktitle = 'iPhone 持有成本試算：一個月其實花你多少？（台灣實際二手回收行情）'
+        _kdesc = ('用傑昇通信公開的二手回收報價，除以各代 iPhone 當年台灣官方售價，'
+                  '算出真實殘值率，再把新機價格攤成每月成本。'
+                  'Pro 與 Pro Max 用兩年，每月成本相差不到 NT$100。')
+
+        write('iphone-cost/index.html',
+          head(_ktitle, _kdesc, 'iphone-cost/',
+               '<script type="application/ld+json">' + _kfaq_ld + '</script>')
+          + crumbs([('首頁', '/'), ('iPhone 持有成本試算', None)]) + topnav()
+          + '<h1>iPhone 一個月其實花你多少？</h1>'
+          + '<p class="lede">手機不是消耗品，買價不等於花掉的錢——'
+            '真正的成本是<b>買價減掉你之後賣掉的價錢</b>。'
+            '這頁不假設殘值，而是直接拿收購商今天的公開報價，'
+            '除以那支機器當年的官方售價，算出各代 iPhone <b>實際</b>掉了多少，'
+            '再用這條曲線把新機攤成每月成本。</p>'
+          + f'<p class="upd">回收價來源：{_SRC}（查詢於 {RS["updated"]}）'
+            f'　·　當年售價：{html.escape(RS["list_src"])}'
+            f'　·　共 {len(RS["rows"])} 款機型、{sum(len(r["caps"]) for r in RS["rows"])} 個容量組合</p>'
+          + '<h2>今天的答案</h2>' + _hl
+          + '<h3>細節</h3><div class="tldr"><ul>'
+          + '<li><b>掉價最快的不是最便宜的機型，是 iPhone Air。</b>'
+            f'上市滿一年殘值只剩 {rate_of("Air", 1) * 100:.0f}%，'
+            f'同期的 Pro Max 還有 {rate_of("Pro Max", 1) * 100:.0f}%。</li>'
+          + '<li><b>容量升級是折舊最快的一筆錢。</b>整機兩年後還有五成上下，'
+            '但多付的容量費用通常只剩三成。</li>'
+          + f'<li><b>舊機今年反而漲價。</b>{HK.get("date", "").replace("-", "/")} Apple 調高在售舊機售價，'
+            f'最多一款漲 {money(max((w - o) for _, o, w in HK.get("items", [(0, 0, 0)])))}，'
+            '「等一等比較便宜」今年不成立。</li>'
+          + '<li><b>為了台日價差專程飛一趟，攤下來是虧的。</b>'
+            '價差攤到每月只有幾十到一百多元，機票攤下來比它多。</li>'
+          + '</ul></div>'
+          + '<h2>各代 iPhone 實際掉了多少</h2>'
+          + '<p class="lede">同一天查到的回收報價，對照各機種當年的官方售價。'
+            '每一列都是實際發生過的折舊，不是推估。</p>'
+          + '<div class="tw"><table><thead><tr><th>機型</th><th>上市</th><th>已滿</th>'
+            '<th>當年售價</th><th>今日回收價</th><th>殘值率</th><th>掉了</th>'
+            '</tr></thead><tbody>' + _drows2 + '</tbody></table></div>'
+          + f'<p class="disc">{html.escape(RS["src_note"])}'
+            f'　回收價來源：{_SRC}，查詢於 {RS["updated"]}。'
+            '每個世代取同一個參考容量（優先 256GB）以利對照，'
+            '其他容量的殘值率見下方「升級容量」一節。</p>'
+          + '<h2>殘值率速查</h2>'
+          + '<p class="lede">把上表依等級與年數整理。可以清楚看到兩件事：'
+            '等級越高掉價越慢，而且第一年掉最多。</p>'
+          + '<div class="tw"><table><thead><tr><th>等級</th>'
+            + ''.join(f'<th>滿 {y} 年</th>' for y in _YRS)
+            + '</tr></thead><tbody>' + _mrows + '</tbody></table></div>'
+          + '<p class="disc">每格都取該世代的參考容量（優先 256GB，該世代沒有 256GB 時取 128GB），'
+            '避免不同年份落在不同容量上而失去可比性。'
+            '「—」表示目前沒有滿該年數的同級機種可以對照，'
+            '例如 iPhone Air 2025 年才推出，還沒有滿兩年的實際行情。</p>'
+          + '<h2>升級容量，是最不保值的一筆</h2>'
+          + '<p class="lede">同一支機器，從最小容量升到最大容量要多付一筆錢；'
+            '幾年後回收時，這筆錢還剩多少？除了才剛滿一年的 iPhone 17 之外，'
+            '答案都比整機的殘值率低，而且放越久差距越大。</p>'
+          + '<div class="tw"><table><thead><tr><th>機型</th><th>已滿</th>'
+            '<th>當年多付</th><th>回收多拿</th><th>加價殘值率</th><th>整機殘值率</th>'
+            '</tr></thead><tbody>' + _crows + '</tbody></table></div>'
+          + '<h2>在售新機的每月成本</h2>'
+          + '<p class="lede">用上面的實際殘值率，把目前在架上的 iPhone 攤成每月成本。'
+            '數字是「買價減掉估計回收價，再除以月數」。同一機型的各容量套用同一個殘值率，'
+            '但由上一節可知大容量實際上掉得更兇，所以大容量那幾列是偏樂觀的估計。</p>'
+          + '<div class="tw"><table><thead><tr><th>機型</th><th>台灣售價</th>'
+            + ''.join(f'<th>用 {y} 年</th>' for y in _YRS)
+            + '</tr></thead><tbody>' + _nrows + '</tbody></table></div>'
+          + ('<p class="disc">'
+             + '、'.join(html.escape(n) for n in _nodata)
+             + ' 是全新形態的機種，市場上沒有可比的回收行情，無法推估殘值，故不列出數字。</p>'
+             if _nodata else '')
+          + _kcalc
+          + _hike_blk
+          + _jp_blk
+          + '<h2>常見問題</h2>' + _kfaq_html
+          + '<div class="cities">'
+          + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 台日 Apple 價差</b>'
+            f'<s>每日更新的台日售價全表</s></a>'
+          + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
+            f'<s>海外回饋可能比價差還大</s></a>'
+          + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>每日更新</s></a></div>'
+          + '<p class="disc">本頁的每月成本只計機身，不含 AppleCare+、配件、電信資費。'
+            '殘值率取自收購商公開報價，會隨市場調整；估計回收價假設機況良好、配件齊全，'
+            '實際以驗機結果為準。所有數字僅供比較用，不構成購買建議。'
+            '頁內部分連結為聯盟行銷連結，本站可能獲得分潤，不影響你的價格。</p>'
+          + foot())
+        pages.append(('/iphone-cost/', 0.8))
 
     # ── 2026/11/1 日本免稅改制（リファンド方式） ──────────────
     TF_D = datetime.date(2026, 11, 1)
