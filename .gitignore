@@ -5,3 +5,4 @@ __pycache__/
 cards/*
 !cards/calendar/
 !cards/cost/
+!cards/card/

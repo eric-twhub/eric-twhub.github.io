@@ -69,9 +69,10 @@ jobs:
           # 六個二進位檔，改成要發文時手動觸發才重產。
           if [ "$DISPATCH" = "1" ]; then
             python3 make_cost_cards.py
+            python3 make_card_cards.py
           fi
           # 中文若沒算進去會整片豆腐字，用檔案大小粗略檢查是否有算繪內容
-          for f in cards/calendar/*.png cards/cost/*.png; do
+          for f in cards/calendar/*.png cards/cost/*.png cards/card/*.png; do
             [ -e "$f" ] || continue
             sz=$(wc -c < "$f")
             echo "  $f  ${sz} bytes"
