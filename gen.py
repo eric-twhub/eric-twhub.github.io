@@ -2449,6 +2449,82 @@ if os.path.exists('cards.json'):
                         "acceptedAnswer": {"@type": "Answer", "text": a}}
                        for q, a in cc_faq]}, ensure_ascii=False)
 
+    # ── 行動支付：免手續費到底省多少 ──────────────────────
+    # 「台灣電支在日本免 1.5% 國外交易手續費」是攻略常見說法，
+    # 但電支的換匯用的是各行牌告賣出價，本身就含價差。把兩邊都
+    # 換算成「相對即期中價的成本」才比得出來——省下的遠比想像中少。
+    MP = CD.get('mpay') or {}
+    _MP_BLOCK = ''
+    if MP:
+        _b = MP['bot']
+        _mid = (_b['spot_buy'] + _b['spot_sell']) / 2
+        _c_spot = (_b['spot_sell'] / _mid - 1) * 100
+        _c_cash = (_b['cash_sell'] / _mid - 1) * 100
+        _c_card = _fx['typical']                       # 卡組織匯率假設約等於中價
+        _save_spot = _c_card - _c_spot
+        _save_cash = _c_card - _c_cash
+        _mp_rows = ''.join(
+            f'<tr><td><b>{html.escape(a["name"])}</b></td>'
+            f'<td>{"可綁指定信用卡" if a["card"] else "不能綁信用卡"}'
+            f'{SMALL}{html.escape(a["card_note"])}</small></td>'
+            f'<td>{html.escape(a["fx"])}</td>'
+            f'<td>{html.escape(a["src_name"])}</td></tr>' for a in MP['apps'])
+        _MP_BLOCK = (
+          '<h2>在日本，該刷卡還是用台灣的行動支付？</h2>'
+          '<p class="lede">台灣有幾個電子支付可以在日本的 PayPay 特約店掃碼付款，'
+          f'主打<b>免 {_fx["typical"]}% 國外交易手續費</b>。但這通常不是「疊加」——'
+          '多數電支在境外不收信用卡，你是在二選一。而且免掉的手續費，也沒有省下那麼多。</p>'
+          '<h3>先看匯率：免手續費實際省多少</h3>'
+          '<p class="lede">電支的換匯是以銀行牌告<b>賣出價</b>計算，本身就含價差；'
+          '信用卡則是以卡片組織匯率結算後再加手續費。'
+          f'把兩邊都換算成「相對即期中價的成本」才比得出來——'
+          f'以 {_b["date"]} 臺灣銀行牌告為例（即期中價 {_mid:.4f}）：</p>'
+          '<div class="tw"><table><thead><tr><th>付款方式</th><th>換匯依據</th>'
+          '<th>今日匯率</th><th>相對中價的成本</th></tr></thead><tbody>'
+          f'<tr><td><b>電支（用即期賣出價）</b></td><td>即期賣出</td>'
+          f'<td>{_b["spot_sell"]}</td><td class="win">＋{_c_spot:.2f}%</td></tr>'
+          f'<tr><td><b>信用卡</b></td><td>卡組織匯率 ＋ {_c_card}% 手續費</td>'
+          f'<td>—</td><td>＋{_c_card:.2f}%</td></tr>'
+          f'<tr><td><b>電支（用現金賣出價）</b></td><td>現金賣出</td>'
+          f'<td>{_b["cash_sell"]}</td><td class="lose">＋{_c_cash:.2f}%</td></tr>'
+          '</tbody></table></div>'
+          f'<p class="disc">卡組織匯率無法事先查詢，此處假設約等於即期中價；'
+          f'若實際結算匯率高於中價，信用卡那列會再往上一點。'
+          f'匯率取自 <a href="{_b["src"]}" rel="nofollow" target="_blank">'
+          f'{html.escape(_b["src_name"])}</a>，{_b["date"]} 查詢。</p>'
+          '<div class="tldr"><ul>'
+          f'<li><b>「免 {_fx["typical"]}% 手續費」實際只省下約 {_save_spot:.1f} 個百分點。</b>'
+          f'因為電支用的即期賣出價本身就比中價高 {_c_spot:.2f}%。</li>'
+          + (f'<li><b>用現金賣出價的那幾家，等於沒省到。</b>成本 ＋{_c_cash:.2f}%，'
+             f'比信用卡的 ＋{_c_card:.2f}% 還高 {abs(_save_cash):.2f} 個百分點。</li>'
+             if _save_cash < 0 else
+             f'<li>用現金賣出價的那幾家只省 {_save_cash:.2f} 個百分點，幾乎沒有差別。</li>')
+          + '<li><b>真正的差距在回饋，不在手續費。</b>旅日信用卡的海外加碼是 '
+            f'{min(c["total"] for c in CD["cards"]):.1f}%～{max(c["total"] for c in CD["cards"]):.1f}%，'
+            f'比上面那零點幾個百分點大一個量級。走電支就拿不到這些加碼。</li>'
+          '</ul></div>'
+          '<h3>能不能綁信用卡？</h3>'
+          '<p class="lede">這決定了你是「疊加」還是「二選一」。'
+          '多數電支在境外只收銀行帳戶或儲值餘額，少數可綁自家或指定的卡。</p>'
+          '<div class="tw"><table><thead><tr><th>電子支付</th><th>境外可用的付款來源</th>'
+          '<th>換匯依據</th><th>資料來源</th></tr></thead><tbody>'
+          + _mp_rows + '</tbody></table></div>'
+          f'<p class="disc">查證於 {MP["checked"]}。'
+          '標示「第三方整理」者本站尚未逐項比對發卡行或電支業者的官方公告，'
+          '各家可綁的付款來源與檔期回饋變動很快，出發前請以業者當期公告為準。</p>'
+          '<h3>所以怎麼選</h3>'
+          '<div class="tldr"><ul>'
+          '<li><b>大額消費用信用卡。</b>買相機、電器、精品這種一筆好幾萬的，'
+          '海外加碼即使碰到上限也遠比電支的檔期回饋多，而且電支的檔期回饋'
+          '上限多半只有每月一兩百元。</li>'
+          '<li><b>小額、零散消費才輪到電支。</b>電支的檔期回饋率有時很高，'
+          '但上限低，剛好適合吃飯、便利商店這種金額。</li>'
+          '<li><b>別為了免手續費而放棄海外加碼。</b>省的是零點幾個百分點，'
+          '放棄的是好幾個百分點。</li>'
+          '<li><b>電支不是到處能用。</b>只在 PayPay 特約店有效，'
+          '且不保證每台自助機台都支援，結帳前先問店員。</li>'
+          '</ul></div>')
+
     # ── 11/1 免稅新制對回饋的影響 ────────────────────────
     # 直覺是「刷含稅價，回饋基數變大 10%」，但多數卡的加碼有上限，
     # 多刷的那 10% 其實拿不到回饋，反而讓上限更快滿。用實際卡片條件算給讀者看。
@@ -2544,6 +2620,7 @@ if os.path.exists('cards.json'):
         '海外訂房平台、網購、訂閱服務常被排除。</li>'
         '<li><b>把加碼額度留給貴的東西。</b>加碼上限換算下來通常是一萬多元。</li>'
         '</ul></div>'
+      + _MP_BLOCK
       + _TF_BLOCK
       + '<h2>每張卡的細節</h2><div class="cities">'
       + ''.join(f'<a class="ct" href="{U("/japan-credit-card/"+c["slug"]+"/")}">'

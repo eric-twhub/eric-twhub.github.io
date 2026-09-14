@@ -594,5 +594,68 @@
     "以街口支付、LINE Pay、Apple Pay、Google Pay、Samsung Pay 等支付方式結帳，可能無法列入加碼通路，只以 0.88% 計算"
    ]
   }
- ]
+ ],
+ "mpay": {
+  "checked": "2026-09-14",
+  "bot": {
+   "date": "2026-09-14",
+   "spot_buy": 0.2028,
+   "spot_sell": 0.2078,
+   "cash_buy": 0.196,
+   "cash_sell": 0.2088,
+   "src": "https://rate.bot.com.tw/xrt?Lang=zh-TW",
+   "src_name": "臺灣銀行牌告匯率"
+  },
+  "note": "台灣的電子支付可在日本 PayPay 特約店掃碼付款，主打免 1.5% 國外交易手續費；但換匯是以各行牌告賣出價計算，本身就含價差。",
+  "apps": [
+   {
+    "name": "街口支付",
+    "card": false,
+    "card_note": "境外交易不支援信用卡，只能用街口帳戶或銀行帳戶付款",
+    "fx": "即期賣出價",
+    "src": "https://tech.udn.com/tech/story/123154/7483757",
+    "src_name": "udn 科技玩家實測報導"
+   },
+   {
+    "name": "全支付",
+    "card": true,
+    "card_note": "銀行帳戶，或指定的國泰世華卡",
+    "fx": "現金賣出價",
+    "src": "https://www.beurlife.com/2025/03/how_to_use_paypay_in_japan.html",
+    "src_name": "第三方整理（尚未逐項對過官方公告）"
+   },
+   {
+    "name": "玉山 Wallet",
+    "card": true,
+    "card_note": "銀行帳戶、外幣帳戶，或指定的玉山卡",
+    "fx": "現金賣出價",
+    "src": "https://www.beurlife.com/2025/03/how_to_use_paypay_in_japan.html",
+    "src_name": "第三方整理（尚未逐項對過官方公告）"
+   },
+   {
+    "name": "台新 Pay+",
+    "card": true,
+    "card_note": "限台新自家信用卡",
+    "fx": "即期賣出價",
+    "src": "https://www.beurlife.com/2025/03/how_to_use_paypay_in_japan.html",
+    "src_name": "第三方整理（尚未逐項對過官方公告）"
+   },
+   {
+    "name": "全盈+Pay",
+    "card": false,
+    "card_note": "只能綁銀行帳戶",
+    "fx": "現金賣出價",
+    "src": "https://www.beurlife.com/2025/03/how_to_use_paypay_in_japan.html",
+    "src_name": "第三方整理（尚未逐項對過官方公告）"
+   },
+   {
+    "name": "一卡通 iPASS MONEY",
+    "card": false,
+    "card_note": "只能綁銀行帳戶",
+    "fx": "現金賣出價",
+    "src": "https://www.beurlife.com/2025/03/how_to_use_paypay_in_japan.html",
+    "src_name": "第三方整理（尚未逐項對過官方公告）"
+   }
+  ]
+ }
 }
