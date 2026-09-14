@@ -2036,6 +2036,217 @@ if os.path.exists('apple.json'):
           + foot())
         pages.append(('/iphone-cost/', 0.8))
 
+    # ── 買 iPhone 刷哪張卡：三個沒人講清楚的地方 ──────────────
+    # 攻略都在比回饋率，但真正讓人拿不到回饋的是「哪天扣款」與
+    # 「這個通路算不算」。分期 0 利率 vs 回饋也沒人算過。
+    _ICP = [p for p in AP['products'] if p['cat'] == 'iPhone']
+    if _ICP:
+        _SRC_PAY = ('<a href="https://www.apple.com/tw/shop/help/payments" rel="nofollow" '
+                    'target="_blank">Apple 台灣購物協助・付款與安全性</a>')
+        _SRC_CUBE = ('<a href="https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/'
+                     'product/CUBE_rights/index.html" rel="nofollow" target="_blank">'
+                     '國泰世華 CUBE 卡權益分級</a>')
+
+        def _even(c, n):
+            """分期 0 利率要打平 c% 回饋，手上的錢得有多少年化報酬"""
+            return 24 * c / (n + 1)
+
+        # 示範用主流機種：優先 Pro 256GB，和持有成本頁的標題機種一致
+        _demo = (next((p for p in _ICP if p.get('new') and p['spec'] == '256GB'
+                       and p['name'].endswith('Pro')), None)
+                 or next((p for p in _ICP if p.get('new') and p['spec'] == '256GB'), _ICP[0]))
+        _DEMO_C, _DEMO_R = 3.3, 1.6          # 示範用的回饋率與無風險利率
+        _terms = (3, 6, 12, 24)
+        _erows = ''.join(
+            f'<tr><td><b>{n} 期</b></td>'
+            f'<td>{money(round(_demo["twd"] * _DEMO_R / 100 * (n + 1) / 24))}</td>'
+            f'<td>{money(round(_demo["twd"] * _DEMO_C / 100))}</td>'
+            f'<td class="win">{_even(_DEMO_C, n):.1f}%</td></tr>' for n in _terms)
+
+        # 預設選在上表示範的那支，免得表格與計算機的機型對不起來
+        _iopts = ''.join(
+            f'<option value="{p["twd"]}"'
+            f'{" selected" if p is _demo else ""}>{html.escape(p["name"])} '
+            f'{html.escape(p["spec"])}（{money(p["twd"])}）</option>' for p in _ICP)
+        _ijs = ("""
+<script>
+(function(){
+ var $=function(i){return document.getElementById(i)};
+ function nt(n){return 'NT$'+Math.round(n).toLocaleString('en-US')}
+ function calc(){
+  var p=+$('im').value, n=+$('in').value;
+  var c=(+$('ic').value||0)/100, r=(+$('ir').value||0)/100;
+  var inst=p*r*(n+1)/24;          // 分期期間留在手上的錢能生的利息
+  var back=p*c;
+  $('o1').textContent=nt(back);
+  $('o2').textContent=nt(inst);
+  $('o3').textContent=(24*c/(n+1)*100).toFixed(2)+'%';
+  var d=back-inst, e=$('ov');
+  e.className='cv '+(d>0?'tw':'jp');
+  e.textContent = Math.abs(d)<50 ? '兩邊差不多，看你比較需要現金還是回饋'
+   : (d>0 ? ('一次付清拿回饋多 '+nt(d)+'——除非你本來就缺現金')
+          : ('分期 0 利率多 '+nt(-d)+'——你的資金報酬率夠高，分期划算'));
+ }
+ ['im','in','ic','ir'].forEach(function(i){
+   var el=$(i); if(el){el.addEventListener('input',calc);el.addEventListener('change',calc);}
+ });
+ calc();
+})();
+</script>""")
+
+        _icalc = (
+          '<h2>分期 0 利率和回饋，哪個划算？</h2>'
+          '<p class="lede">多數卡是二選一，但沒人告訴你該選哪個。其實算得出來——'
+          '<b>0 利率分期的價值，就是你留在手上那筆錢能生的利息</b>。'
+          '等額攤還 N 期時，平均未償餘額約為本金的 (N+1)／2N，'
+          f'所以分期的價值 ≈ 本金 × 年化報酬率 × (N+1) ÷ 24。</p>'
+          f'<p class="lede">以 {html.escape(_demo["name"])} {html.escape(_demo["spec"])}'
+          f'（{money(_demo["twd"])}）、回饋 {_DEMO_C}%、資金年化報酬 {_DEMO_R}% 為例：</p>'
+          '<div class="tw"><table><thead><tr><th>期數</th><th>分期 0 利率的價值</th>'
+          f'<th>{_DEMO_C}% 回饋</th><th>要多少報酬率才打平</th>'
+          '</tr></thead><tbody>' + _erows + '</tbody></table></div>'
+          '<p class="disc">「要多少報酬率才打平」＝ 24 × 回饋率 ÷ (期數＋1)。'
+          '台灣一年期定存目前約 1.5% 上下，要穩定拿到表中那個數字並不容易。</p>'
+          '<div class="calc"><div class="sf">'
+          f'<label>機型<select id="im">{_iopts}</select></label>'
+          '<label>期數<select id="in">'
+          + ''.join(f'<option value="{n}"{" selected" if n == 24 else ""}>{n} 期</option>'
+                    for n in _terms) +
+          '</select></label>'
+          f'<label>一次付清的回饋 %<input id="ic" type="number" value="{_DEMO_C}" '
+          'min="0" max="30" step="0.1"></label>'
+          f'<label>你的資金年報酬 %<input id="ir" type="number" value="{_DEMO_R}" '
+          'min="0" max="20" step="0.1"></label>'
+          '</div><div class="cres">'
+          '<div class="cl"><span>一次付清，拿到回饋</span><b id="o1">—</b></div>'
+          '<div class="cl"><span>分期 0 利率的價值</span><b id="o2">—</b></div>'
+          '<div class="cl"><span>打平所需年報酬率</span><b id="o3">—</b></div>'
+          '<div class="cv" id="ov">—</div></div></div>'
+          '<p class="disc">未計入分期手續費（0 利率通常免收，但部分通路會加收）、'
+          '提前清償限制，以及分期期間額度被占用的機會成本。'
+          '若你打算把那筆錢拿去投資，報酬率請填你有把握的數字，不是期望值。</p>'
+          + _ijs)
+
+        _ifaq = [
+         ('在 Apple 官網下單，什麼時候扣款？',
+          'Apple 台灣的購物說明寫明：確認訂單時只取得「預先授權」，'
+          '「當您的訂貨交付運送人時，Apple Store 得向信用卡公司請求帳款」。'
+          '也就是出貨才真正請款。很多人下單後只看到一筆 1 元的授權，那是在驗證卡片可用，'
+          '不是實際消費。'),
+         ('我下單當天切了權益，為什麼沒拿到加碼？',
+          '因為回饋是依請款日認列，而 Apple 官網是出貨才請款。'
+          '像台新、國泰這類「當日切換權益」的卡，必須在<b>扣款當天</b>處於正確方案，'
+          '下單那天切了沒有用。收到刷卡通知才是關鍵時點。'),
+         ('活動 9 月底到期，但我的機器 10 月才出貨，還算數嗎？',
+          '通常不算。回饋活動多以請款日判定，出貨日落在活動期間之外就吃不到。'
+          '這次 iPhone Duo 要到 10 月中才開放預購，出貨可能更晚，'
+          '打算靠短期活動衝回饋的人要特別注意。'),
+         ('國泰世華 CUBE 卡在 Apple 官網有 3.3% 嗎？',
+          '沒有。CUBE 卡「玩數位」方案的認列範圍是 Apple 媒體服務'
+          '（App Store、Apple Music、iCloud、Apple TV+、Apple Arcade、Apple One、iTunes 等），'
+          '國泰官方權益說明明確寫「不含 Apple Store 之交易」。'
+          '在 Apple 官網或直營店買機器不屬於這個通路。'),
+         ('分期 0 利率和刷卡回饋可以同時拿嗎？',
+          '多數卡不行，要二選一，少數卡分期仍給部分回饋。'
+          '要判斷哪個划算，可以用本頁的試算：0 利率分期的價值就是你留在手上那筆錢的利息，'
+          '把它跟一次付清的回饋比大小即可。以 24 期、3.3% 回饋來說，'
+          '你的資金要有超過 3% 的年化報酬，分期才划算。'),
+         ('為什麼這頁不直接排名哪張卡最好？',
+          '因為那需要一份逐張查證的國內回饋資料，而各行的活動期間短、條件變動快，'
+          '排出來的名次很快就過期。本站寧可先把三個會讓你「照著做卻拿不到」的機制講清楚——'
+          '這些不會隨檔期改變。日本消費的部分，本站另有逐張查證的旅日信用卡比較。'),
+        ]
+        _ifaq_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                             + a.replace('<b>', '<b>').replace('</b>', '</b>')
+                             + '</div></details>' for q, a in _ifaq)
+        _ifaq_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q,
+             "acceptedAnswer": {"@type": "Answer", "text": re.sub(r'<[^>]+>', '', a)}}
+            for q, a in _ifaq]}, ensure_ascii=False)
+
+        _ititle = '買 iPhone 刷哪張卡？三個讓你拿不到回饋的機制（Apple 官網扣款日、通路認定、分期）'
+        _idesc = ('Apple 官網是出貨才請款，切換型權益要在扣款日才有效；CUBE 卡「玩數位」'
+                  '官方載明不含 Apple Store。另附分期 0 利率與回饋的打平試算。')
+
+        write('iphone-card/index.html',
+          head(_ititle, _idesc, 'iphone-card/',
+               '<script type="application/ld+json">' + _ifaq_ld + '</script>')
+          + crumbs([('首頁', '/'), ('買 iPhone 刷哪張卡', None)]) + topnav()
+          + '<h1>買 iPhone 刷哪張卡？</h1>'
+          + '<p class="lede">網路上的攻略都在比回饋率。但真正讓人「照著做卻拿不到」的，'
+            '不是選錯卡，是<b>三個沒人講清楚的機制</b>——哪天扣款、這個通路算不算、'
+            '分期跟回饋該選哪個。</p>'
+          + '<div class="today">'
+            '<div class="tday">資料查證於 ' + NOW.date().isoformat() + '　·　附官方條款出處</div>'
+            '<div class="tans">Apple 官網是<b>出貨才請款</b>，'
+            '所以「當日切換權益」的卡要在扣款那天切對，不是下單那天</div>'
+            '<div class="tsub">下單時你只會看到一筆小額預先授權（常見 1 元），'
+            '那是在驗證卡片，不是消費。回饋依請款日認列。</div>'
+            '<div class="tbuf">連帶的後果：<b>9 月底到期的活動，10 月才出貨就吃不到</b>。'
+            'iPhone Duo 要到 10 月中才開放預購。</div></div>'
+          + '<h3>三個機制</h3><div class="tldr"><ul>'
+            '<li><b>扣款日 ≠ 下單日。</b>Apple 確認訂單時只做預先授權，'
+            '出貨交付運送人時才請款。切換型權益、短期活動都以請款日為準。</li>'
+            '<li><b>Apple Store 不算「數位」通路。</b>國泰 CUBE 卡「玩數位」的認列範圍是'
+            ' Apple 媒體服務，官方明載不含 Apple Store 的交易。看到「官網有 3.3%」要先確認。</li>'
+            '<li><b>分期 0 利率通常比不上回饋。</b>24 期、3.3% 回饋的情況下，'
+            '你的資金要有超過 3% 的年化報酬，分期才划算。</li>'
+            '</ul></div>'
+          + '<h2>1. 扣款日不是下單日</h2>'
+          + f'<p class="lede">{_SRC_PAY}寫明：確認訂單時 Apple Store 只取得'
+            '該筆金額的<b>預先授權</b>，「當您的訂貨交付運送人時，Apple Store 得向信用卡公司'
+            '請求帳款」。實體商品出貨才請款。</p>'
+          + '<div class="tw"><table><thead><tr><th>時點</th><th>發生什麼</th>'
+            '<th>對回饋的影響</th></tr></thead><tbody>'
+            '<tr><td><b>下單／預購</b></td><td>取得預先授權，常見是一筆 1 元</td>'
+            '<td>不是消費，不認列回饋</td></tr>'
+            '<tr><td><b>出貨</b></td><td>正式請款，金額入帳</td>'
+            '<td class="lose">以這天判定權益方案與活動期間</td></tr>'
+            '<tr><td><b>結帳日</b></td><td>列入當期帳單</td>'
+            '<td>回饋依發卡行週期入帳</td></tr>'
+            '</tbody></table></div>'
+          + '<div class="tldr"><ul>'
+            '<li><b>「當日切換」的卡最危險。</b>台新、國泰這類要在 App 切換權益方案的卡，'
+            '必須在收到刷卡通知（＝請款）那天處於正確方案。下單日切了、出貨前切回去，等於白做。</li>'
+            '<li><b>短期活動要看得到出貨日再說。</b>活動寫「9/30 前」，'
+            '指的通常是請款日落在期間內。</li>'
+            '<li><b>預購熱門機種尤其容易踩到。</b>出貨往往排到下個月，跨過活動結束日。</li>'
+            '</ul></div>'
+          + '<h2>2. Apple Store 不算「數位」通路</h2>'
+          + f'<p class="lede">以國泰世華 CUBE 卡為例，「玩數位」方案的認列範圍寫得很細：'
+            'App Store、Apple Music、iCloud、Apple TV+、Apple Arcade、Apple One、iTunes 等'
+            'Apple 媒體服務的訂閱與購買，<b>「不含 Apple Store 之交易」</b>。'
+            f'（{_SRC_CUBE}）</p>'
+          + '<p class="lede">也就是說，在 Apple 官網或直營店買一支手機，'
+            '不會被歸到這個方案。看到攻略寫「官網刷某卡有 3.3%」，'
+            '先去該行的權益說明確認 Apple Store 在不在認列範圍內——'
+            '這種細節通常寫在條款的括號裡。</p>'
+          + _icalc
+          + '<h2>那到底該刷哪張？</h2>'
+          + '<p class="lede">本站不排名「哪張卡最好」，原因很實際：那需要一份逐張查證的'
+            '國內回饋資料，而各行活動期間短、條件變動快，排出來的名次很快就過期。'
+            '與其給你一個會過期的名次，不如給你三個不會變的判斷原則：</p>'
+          + '<div class="tldr"><ul>'
+            '<li><b>先確認你的卡在「Apple Store」這個通路有沒有加碼</b>，'
+            '不是看它在「網購」或「數位」有多少。</li>'
+            '<li><b>再確認出貨日落在活動期間內</b>，以及那天你的權益方案是對的。</li>'
+            '<li><b>最後才比回饋率。</b>前兩關沒過，回饋率再高都是 0。</li>'
+            '</ul></div>'
+          + '<h2>常見問題</h2>' + _ifaq_html
+          + '<h2>順便看看</h2><div class="cities">'
+          + f'<a class="ct" href="{U("/iphone-cost/")}"><b>📉 iPhone 持有成本</b>'
+            f'<s>用實際回收行情算每月多少</s></a>'
+          + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 台日 Apple 價差</b>'
+            f'<s>日本買划算嗎，每日更新</s></a>'
+          + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
+            f'<s>逐張查證的日本消費回饋</s></a></div>'
+          + '<p class="disc">本頁為公開資訊整理，非理財或投資建議。'
+            '各發卡行的權益方案、指定通路與活動期間隨時可能調整，'
+            '刷卡前請以發卡行與 Apple 官方公告為準。'
+            '試算僅供比較用，未計入分期手續費、提前清償限制與額度占用的機會成本。</p>'
+          + foot())
+        pages.append(('/iphone-card/', 0.8))
+
     # ── 2026/11/1 日本免稅改制（リファンド方式） ──────────────
     TF_D = datetime.date(2026, 11, 1)
     _left = (TF_D - NOW.date()).days
