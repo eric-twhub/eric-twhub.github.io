@@ -2064,8 +2064,10 @@ if os.path.exists('apple.json'):
       f'{money(round(_tax(round(_duo["jpy"]/TAXR))*RATE)) if _duo else "NT$1 萬以上"}。'
       '這筆錢在出境並完成海關確認後才會退還，等於旅途中要多帶一筆週轉金。'),
      ('退款什麼時候、用什麼方式拿到？',
-      '出境時經海關確認後，由店家退還。依業者說明將以信用卡或電子錢包等無現金方式退回，'
-      '不需要再回到店裡領現金。實際到帳時間依店家與退款服務商而異，官方未統一規定。'),
+      '出境時經海關確認後，由店家或其委託的退稅服務商退還，不需要再回到原店。'
+      '退款方式依店家與服務商而定——退稅系統業者列出的可指定方式包含信用卡、'
+      'QR 行動支付、銀行帳戶與現金，官方並未統一規定只能用哪一種。'
+      '實際到帳時間同樣依業者而異。若你在意刷卡回饋被回沖，退回信用卡以外的方式比較單純。'),
      ('有期限嗎？',
       '有，而且很容易忽略。購買日起 90 天內必須完成出境海關確認，逾期就不算免稅、拿不到退款。'
       '例如 11 月 1 日購買，確認期限是隔年 1 月 30 日。短期旅遊通常不受影響，'
@@ -2115,7 +2117,7 @@ if os.path.exists('apple.json'):
         '<tr><td><b>拿到退稅</b></td><td>結帳當下</td>'
         '<td class="lose">出境經海關確認後，由店家退還</td></tr>'
         '<tr><td><b>領取方式</b></td><td>不適用</td>'
-        '<td>信用卡或電子錢包等無現金方式</td></tr>'
+        '<td>依店家與退稅服務商而定：信用卡、行動支付、銀行帳戶或現金</td></tr>'
         '<tr><td><b>期限</b></td><td>無</td>'
         '<td class="lose">購買日起 90 天內須完成海關確認</td></tr>'
         '<tr><td><b>物品分類</b></td><td>分一般物品與消耗品，消耗品須專用包裝</td>'
@@ -2154,6 +2156,8 @@ if os.path.exists('apple.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 日本買 iPhone 划算嗎</b>'
         f'<s>台日價格全表，每日更新匯率</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 新制之後回饋會變多嗎</b>'
+        f'<s>刷含稅價，12 張卡的實際差額</s></a>'
       + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>台灣飛日本，每日更新</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>各出發地比價</s></a></div>'
       + '<p class="disc">本頁依日本觀光廳「消費稅免稅店」網站、全國免稅店協會「リファンド方式」'
@@ -2437,6 +2441,59 @@ if os.path.exists('cards.json'):
                         "acceptedAnswer": {"@type": "Answer", "text": a}}
                        for q, a in cc_faq]}, ensure_ascii=False)
 
+    # ── 11/1 免稅新制對回饋的影響 ────────────────────────
+    # 直覺是「刷含稅價，回饋基數變大 10%」，但多數卡的加碼有上限，
+    # 多刷的那 10% 其實拿不到回饋，反而讓上限更快滿。用實際卡片條件算給讀者看。
+    _TFY = 100000                       # 稅前 10 萬日圓的商品
+    _TFY2 = round(_TFY * TAXR)          # 含稅後實際要刷的金額
+    _tf_rows, _tf_zero, _tf_d = '', 0, []
+    for c in sorted(CD['cards'], key=lambda x: -x['total'])[:6]:
+        o, _ = _back(c, _TFY, 'shop')
+        n, _ = _back(c, _TFY2, 'shop')
+        d = round(n) - round(o)
+        _tf_d.append(d)
+        if d <= 0:
+            _tf_zero += 1
+        _tf_rows += (f'<tr><td><b>{html.escape(c["name"])}</b></td>'
+                     f'<td>{money(round(o))}</td><td>{money(round(n))}</td>'
+                     + (f'<td class="win">＋{money(d)}</td>' if d > 0
+                        else '<td class="lose">沒有增加</td>')
+                     + '</tr>')
+    _TF_BLOCK = (
+      '<h2>11/1 免稅新制之後，回饋會變多嗎？</h2>'
+      '<p class="lede">11 月 1 日起在店裡要先付含稅全額，出境經海關確認後才退稅。'
+      f'同一件稅前 ¥{_TFY:,} 的商品，你刷的金額從 ¥{_TFY:,} 變成 ¥{_TFY2:,}，'
+      '回饋基數多了 10%——直覺上應該多拿一點回饋。實際算下來沒那麼好：</p>'
+      '<div class="tw"><table><thead><tr><th>卡片</th>'
+      f'<th>10/31 前<br>刷 ¥{_TFY:,}</th><th>11/1 起<br>刷 ¥{_TFY2:,}</th>'
+      '<th>差額</th></tr></thead><tbody>' + _tf_rows + '</tbody></table></div>'
+      f'<p class="disc">以稅前 ¥{_TFY:,} 的實體消費、各層加碼全部成立試算，'
+      f'匯率 {_MIDC} 並加計 {_fx["typical"]}% 國外交易手續費。'
+      f'差額落在 {money(min(_tf_d))}～{money(max(_tf_d))}，'
+      f'相當於帳單金額的 {min(_tf_d)/_bill(_TFY2)*100:.1f}%～{max(_tf_d)/_bill(_TFY2)*100:.1f}%——'
+      f'而你為此先墊了 {money(round(_bill(_TFY2) - _bill(_TFY)))} 的稅金。</p>'
+      '<div class="tldr"><ul>'
+      + (f'<li><b>回饋最高的 6 張卡裡，有 {_tf_zero} 張一毛都沒多拿。</b>'
+         '因為加碼早就到上限了，多刷的 10% 只能拿基本回饋，甚至完全不變。</li>'
+         if _tf_zero else
+         '<li><b>多拿到的金額很有限</b>，因為加碼大多有上限，多刷的 10% 只算得到基本回饋。</li>')
+      + '<li><b>上限反而更快滿。</b>加碼上限換算出來的「刷到多少到頂」是台幣金額，不會變；'
+        '但同樣的商品現在要多刷 10%，等於這個額度只夠買到原本約 <b>91%</b> 的東西。</li>'
+      '<li><b>退稅若退回原卡，回饋可能被回沖。</b>多數發卡行的條款都寫明退款時可扣回已給的回饋，'
+        '例如合作金庫：「持卡人如因任何理由退還刷卡買受之商品、服務或因簽帳爭議及其他原因而'
+        '退還刷卡消費款項時，持卡人原先已取得之本活動回饋金額、本行得逕行調整扣回。」'
+        '退稅能選退到信用卡、電子錢包、銀行帳戶或現金，'
+        '在意這點的話，退款方式選現金或電子錢包最單純。</li>'
+      '<li><b>還要先墊 10% 的現金。</b>加上 90 天內必須完成海關確認、退款服務商可能另收手續費，'
+        '這些成本都比那點回饋差額大。</li>'
+      '</ul></div>'
+      '<p class="lede">結論：<b>別為了「回饋基數變大」改變你的刷卡計畫。</b>'
+      '真正會被新制影響的是現金流與加碼額度的分配——'
+      '想把加碼留給貴的東西，記得換算的是含稅金額。</p>'
+      + '<div class="cities">'
+      + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制全解</b>'
+        f'<s>要先墊多少、90 天期限、怎麼退</s></a></div>')
+
     _best = max(CD['cards'], key=lambda c: c['total'])
     _race = [c['name'] for c in CD['cards'] if c.get('reg_race')]
     cc_title = f'旅日信用卡怎麼挑？{CD["checked"][:4]} 下半年 {len(CD["cards"])} 張卡回饋與上限整理'
@@ -2479,6 +2536,7 @@ if os.path.exists('cards.json'):
         '海外訂房平台、網購、訂閱服務常被排除。</li>'
         '<li><b>把加碼額度留給貴的東西。</b>加碼上限換算下來通常是一萬多元。</li>'
         '</ul></div>'
+      + _TF_BLOCK
       + '<h2>每張卡的細節</h2><div class="cities">'
       + ''.join(f'<a class="ct" href="{U("/japan-credit-card/"+c["slug"]+"/")}">'
                 f'<b>{html.escape(c["name"])}</b><s>{html.escape(c["plan"])}</s>'
