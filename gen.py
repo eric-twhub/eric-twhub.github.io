@@ -344,6 +344,18 @@ SF_JS = ('<script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toL
          '+(b?"&rdate="+b:"")+"&triptype="+t+"&class=y&quantity=1&locale=zh-TW&curr=TWD";'
          'window.open(u,"_blank","noopener");return false;}</script>')
 
+# details 原生不會互斥、也不會因為點別處而收起來；沒有這段，
+# 展開兩個分類就會兩片面板疊在一起，而且一直留在畫面上。
+NAV_JS = ('<script>(function(){var n=document.querySelector("nav.top");if(!n)return;'
+          'var d=[].slice.call(n.querySelectorAll("details"));'
+          'function shut(x){d.forEach(function(o){if(o!==x)o.open=false})}'
+          'd.forEach(function(o){o.addEventListener("toggle",function(){if(o.open)shut(o)})});'
+          'document.addEventListener("click",function(e){'
+          'if(!n.contains(e.target))shut(null);'
+          'else if(e.target.closest&&e.target.closest(".dd a"))shut(null)});'
+          'document.addEventListener("keydown",function(e){'
+          'if(e.key==="Escape")shut(null)});})();</script>')
+
 def widget_block(kind,title,note,**kw):
     code=(W.get(kind) or '').strip()
     if not code: return ''          # 未設定嵌入碼時整區不顯示，不留空殼
@@ -398,17 +410,16 @@ nav.top>a{color:var(--dim);text-decoration:none;font-size:.86rem;white-space:now
 font-weight:500;padding:6px 10px;border-radius:7px}
 nav.top>a:hover,nav.top>a.cur{color:var(--acc);background:var(--soft)}
 /* 用 details 做下拉：不需 JS，鍵盤可操作，手機上也不會因 hover 失效 */
-/* details 不自成定位脈絡，讓面板錨定在導覽列（position:sticky 已建立脈絡），
-   面板一律靠導覽列左緣展開，換行後也不會被推出畫面 */
-nav.top details{position:static}
+/* 寬螢幕：面板錨在自己的項目下方，點哪個就在哪個下面展開 */
+nav.top details{position:relative}
 nav.top summary{list-style:none;cursor:pointer;font-size:.86rem;font-weight:500;color:var(--dim);
 padding:6px 10px;border-radius:7px;white-space:nowrap;user-select:none}
 nav.top summary::-webkit-details-marker{display:none}
 nav.top summary::after{content:"▾";margin-left:5px;font-size:.7rem;opacity:.6}
 nav.top summary:hover,nav.top details[open]>summary{color:var(--acc);background:var(--soft)}
 nav.top details[open]>summary::after{content:"▴"}
-/* 一律絕對定位：手機上若改 static，展開時會把同列其他項目擠開、版面錯位 */
-.dd{position:absolute;top:calc(100% + 4px);left:0;min-width:200px;
+/* 一律絕對定位：若改 static，展開時會把同列其他項目擠開、版面錯位 */
+.dd{position:absolute;top:calc(100% + 6px);left:0;min-width:220px;
 max-width:min(340px,calc(100vw - 32px));max-height:70vh;overflow-y:auto;
 background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px;
 box-shadow:0 10px 28px rgba(0,0,0,.14);display:flex;flex-direction:column;gap:1px;z-index:40}
@@ -419,6 +430,13 @@ font-size:.87rem;white-space:nowrap}
 .dd b{display:block;padding:9px 11px 4px;font-size:.72rem;color:var(--dim);font-weight:600;
 letter-spacing:.05em}
 .dd hr{border:0;border-top:1px solid var(--line);margin:5px 0}
+/* 窄螢幕導覽列會換行，面板錨在各自的項目上時很容易被推出畫面左右緣；
+   改為錨定導覽列本身（position:sticky 已建立定位脈絡）並撐滿整列 */
+@media(max-width:699px){
+ nav.top details{position:static}
+ .dd{left:0;right:0;max-width:none;top:calc(100% + 4px)}
+ .dd a{white-space:normal}
+}
 
 h2{font-size:1.28rem;margin:40px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--acc)}
 h3{font-size:1.02rem;margin:26px 0 8px}
@@ -596,7 +614,9 @@ def topnav(cur=''):
             for c in sorted(_cd, key=lambda x: -x['total'])[:6])
 
     def menu(label, inner):
-        return f'<details><summary>{label}</summary><div class="dd">{inner}</div></details>'
+        # name 讓瀏覽器原生互斥，JS 失效時至少不會兩片面板疊在一起
+        return (f'<details name="topnav"><summary>{label}</summary>'
+                f'<div class="dd">{inner}</div></details>')
 
     return ('<nav class="top">'
             + link('/', '首頁', not cur)
@@ -614,7 +634,7 @@ def foot():
 實際訂購由合作平台完成：機票 Trip.com、住宿 Agoda、行程與交通票 KKday、網卡與租車 Klook。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
 最後更新 {NOWS}　·　<a href="{U("/")}">回首頁</a>
-</p></div>{SF_JS}</body></html>'''
+</p></div>{SF_JS}{NAV_JS}</body></html>'''
 
 def _hh(t):
     """'HH:MM' → 小時整數；缺值回 None"""
