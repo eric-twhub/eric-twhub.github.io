@@ -68,7 +68,7 @@
 
 　🛫 捷星日本｜直飛
 　📅 2026-10-05 – 2026-10-08
-　💡 這條航線平常最低落在 NT$10,053–NT$13,129，這張是近期 25 筆紀錄中第 1 低
+　💡 這條航線平常最低落在 NT$10,053–NT$13,129，這張是近期 31 筆紀錄中第 1 低
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-15-kaohsiung-tokyo/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=khh&acity=tyo&ddate=2026-10-05&rdate=2026-10-08&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD
@@ -80,7 +80,7 @@
 
 　🛫 飛東京再轉乘｜東北新幹線
 　📅 2026-10-30
-　💡 比直飛省 NT$17,957
+　💡 比直飛省 NT$11,973
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-15-transfer-tokyo-sendai/
 　🔍 查證連結（開啟後截圖）：（轉乘方案，請分段查證）
