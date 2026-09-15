@@ -149,6 +149,10 @@ def plink(kind,city='',**kw):
         u=u.replace('{cid}',str(cid)) if cid else p['fallback']
     u=u.replace('{q}',urllib.parse.quote(city))
     kw.setdefault('sub','')          # 沒傳就留空，別讓 {sub} 原樣留在網址裡
+    # 沒有日期可帶時，整段拿掉而不是留下空的 checkin=，否則 Trip.com 會掉回首頁
+    if '{ci}' in u and not kw.get('ci'):
+        u=re.sub(r'&(checkin|checkout|crn|adult)=\{?[^&]*\}?', '', u)
+        kw.pop('ci',None); kw.pop('co',None)
     for k,v in kw.items(): u=u.replace('{'+k+'}',str(v))
     return u
 
@@ -753,14 +757,15 @@ def fare_card(x,hot=False):
 <div class="mt"><span class="tg {x['cls']}">{tag}</span><span>{html.escape(x['airname'])}</span><span>{stops}</span>{'<span class="tg gt">☀️ 早去晚回</span>' if gt else ''}</div>
 <div class="dt">{dates}</div>{gate_html}{btn}</article>'''
 
-def cta(kind, city_name, hotel_city, headline, sub, track=''):
+def cta(kind, city_name, hotel_city, headline, sub, track='', ci='', co=''):
     """單一情境式 CTA。
     不再把 4–5 個夥伴連結並排——Travelpayouts 官方明言「一段五個連結會失去信任」，
     競品分析也顯示成效好的頁面是把連結嵌在相關段落，而非集中成一排按鈕。
 
     track 會填進 trip_sub1，用來在聯盟後台分辨是哪個頁面帶來的成交。"""
     p = P[kind]
-    return (f'<a class="cta" href="{html.escape(plink(kind, hotel_city, sub=track))}" '
+    return (f'<a class="cta" href="'
+            f'{html.escape(plink(kind, hotel_city, sub=track, ci=ci, co=co))}" '
             f'target="_blank" '
             f'rel="nofollow noopener sponsored">'
             f'<span class="ci">{p["icon"]}</span>'
@@ -1036,9 +1041,20 @@ for slug,name,codes,reg,hotelcity in CITIES:
         body += alt_block(slug,name,hotelcity,own_min)
     # 看完票價 → 下一步就是找住宿，放在這裡最順
     if fs:
-        _hb = P['hotel']['brand']
+        # 沒有城市 ID 的城市會退回 Agoda，文案就不能寫 Trip.com
+        _has_cid = hotelcity in ((P['hotel'].get('city_ids') or {}))
+        _hb = P['hotel']['brand'] if _has_cid else 'Agoda'
+        # 沒有房價資料可放（Hotellook API 已下線），但可以把日期帶過去：
+        # 落地就是他正在看的那幾晚，比一個靜態的「最低房價」更貼近實際要訂的東西
+        _hr = br or bo
+        _ci = _hr['dep'] if _hr else ''
+        _co = (_hr['ret'] if _hr and _hr['ret'] else '')
+        if _has_cid and _ci and _co:
+            _hsub = f'直接查 {_ci[5:].replace("-","/")}–{_co[5:].replace("-","/")} 這幾晚的{hotelcity}房價'
+        else:
+            _hsub = f'到 {_hb} 查{hotelcity}房價，繁體中文、台幣計價'
         body+=cta('hotel',name,hotelcity,f'看好機票了？接著找{name}的住宿',
-                  f'到 {_hb} 查{hotelcity}房價，繁體中文、台幣計價', track=slug)
+                  _hsub, track=slug, ci=_ci, co=_co)
     body+=faq_block(name,fs,codes)
     body+=klook_tours(slug,name)
     # 當地玩樂的分潤是機票的八倍（4% vs 0.5%），而且看完機票住宿的下一個問題

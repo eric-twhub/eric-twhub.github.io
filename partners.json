@@ -47,7 +47,7 @@
       "cookie": "網站 30 天／App 7 天",
       "why": "與機票同一個聯盟帳號，不必另外申請；酒店 5% 起跳，一筆三晚訂房的分潤約等於 19 張機票。",
       "note": "cookie 僅 1 天，文案要引導立即訂房",
-      "template": "https://tw.trip.com/hotels/list?city={cid}&optionId={cid}&optionType=City&optionName={q}&display={q}&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+      "template": "https://tw.trip.com/hotels/list?city={cid}&optionId={cid}&optionType=City&optionName={q}&display={q}&checkin={ci}&checkout={co}&crn=1&adult=2&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
       "fallback": "https://www.agoda.com/zh-tw/search?city={q}",
       "city_ids": {
         "_note": "Trip.com 飯店列表需要數字城市 ID，公開 HTML 抓不到（整頁 JS 算繪），只能從聯盟後台的「酒店頁面」產生器取得。每個都用 city=<id> 實際打開驗過標題。沒有 ID 的城市自動退回 Agoda 的關鍵字連結。",
@@ -57,7 +57,8 @@
         "福岡": 248,
         "札幌": 641,
         "名古屋": 360
-      }
+      },
+      "_dates": "連結會帶上該頁最低票價的去回日期，落地就是那幾晚的房價，不必再自己選日期。沒有票價可帶時退回不帶日期的列表頁。"
     },
     "activity": {
       "brand": "Trip.com",
