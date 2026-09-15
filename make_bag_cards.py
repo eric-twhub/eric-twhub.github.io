@@ -139,6 +139,14 @@ def main():
     def money(n): return f"NT${round(n):,}"
 
     rows = json.load(open(SCAN, encoding="utf-8")) if os.path.exists(SCAN) else []
+
+    def pick(cands):
+        """圖卡是要拿出去發的，數字必須有人能驗證：優先取 Trip.com 有的紀錄。
+        其他通路（Farera 等）報價常更低，但台灣讀者點進 Trip.com 對不到，
+        看起來就像我們亂寫。真的沒有 Trip.com 紀錄時才退而求其次。"""
+        tc = [r for r in cands if r.get("gate") == "Trip.com"]
+        return (tc or cands)[0] if (tc or cands) else None
+
     cities = []
     for nm, codes in TARGETS:
         f = [r for r in rows if r.get("destination") in codes and r.get("return_at")
@@ -146,7 +154,7 @@ def main():
         lcc = sorted([r for r in f if r.get("airline") not in FSC], key=lambda x: x["price"])
         fsc = sorted([r for r in f if r.get("airline") in FSC], key=lambda x: x["price"])
         if lcc and len(fsc) >= 5:
-            cities.append((nm, lcc[0], fsc[0]))
+            cities.append((nm, pick(lcc), pick(fsc)))
     if not cities:
         sys.exit("票價快取不足，無法產生圖卡（先跑 scan_all.py）")
 
@@ -174,7 +182,7 @@ def main():
 </div>
 <div class="sub">廉航的商業模式就是把行李、選位、餐食拆開來賣，讓帳面票價看起來最低。
 <b>要比，就要比含行李之後的價格。</b></div>
-<div class="swipe">行李費依{html.escape(REF["airline"])}公告費率・查證於 {BG["checked"]}</div></div>
+<div class="swipe">票價為 Trip.com 紀錄・行李費依{html.escape(REF["airline"])}公告費率・{BG["checked"]}</div></div>
 <div class="site">{site}</div></body></html>''')
 
     # ── 2 加上行李之後，價差縮多少 ────────────────────────
@@ -198,8 +206,8 @@ def main():
 </tr></thead><tbody>{trs}</tbody></table>
 <div class="kick">{worst[0]}的價差從 {money(worst[1])} 縮到 {money(worst[2])}——
 少了 {(worst[1]-worst[2])/worst[1]*100:.0f}%</div>
-<div class="unit">行李費以{html.escape(REF["airline"])}公告的 {REF["kg"]}kg 訂票時加購價估算，
-各航空不同　·　兩邊都是本站紀錄中的最低價，不是市場最低</div></div>
+<div class="unit">行李費以{html.escape(REF["airline"])}公告的 {REF["kg"]}kg 訂票時加購價估算，各航空不同<br>
+票價只取 Trip.com 的紀錄，方便自己對照；其他平台可能更低但台灣讀者未必查得到</div></div>
 <div class="site">{site}</div></body></html>''')
 
     # ── 3 越晚買越貴 ─────────────────────────────────────

@@ -130,9 +130,13 @@ def tokyo_fare():
         rows = json.load(open(SCAN, encoding="utf-8"))
     except Exception:
         return None
-    ps = [r.get("price", 0) for r in rows
-          if r.get("destination") in TOKYO and r.get("origin") in TPE
-          and r.get("return_at") and r.get("price")]
+    f = [r for r in rows
+         if r.get("destination") in TOKYO and r.get("origin") in TPE
+         and r.get("return_at") and r.get("price")]
+    # 圖卡上的價格要能被讀者驗證，優先取 Trip.com 的紀錄；
+    # 其他通路報價常更低，但台灣讀者點進 Trip.com 對不到就變成我們亂寫
+    tc = [r for r in f if r.get("gate") == "Trip.com"]
+    ps = [r["price"] for r in (tc or f)]
     return min(ps) if ps else None
 
 
