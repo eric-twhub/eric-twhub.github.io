@@ -60,13 +60,13 @@
       }
     },
     "activity": {
-      "brand": "KKday",
+      "brand": "Trip.com",
       "icon": "🎫",
       "label": "訂{q}行程與門票",
-      "rate": "1-5%",
-      "cookie": "30 天",
-      "why": "台灣品牌，日本行程與門票深耕",
-      "template": "TODO_貼上_KKDAY_分潤連結",
+      "rate": "4%（門票與演出 1.5%）",
+      "cookie": "網站 30 天／App 7 天",
+      "why": "與機票、住宿同一個聯盟帳號；當地玩樂 4%，是機票的八倍。",
+      "template": "https://tw.trip.com/things-to-do/list?pagetype=city&keyword={q}&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
       "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword={q}"
     },
     "esim": {
@@ -77,36 +77,37 @@
       "cookie": "7-30 天",
       "why": "台灣人買日本網卡的首選平台，商品選擇最多",
       "template": "TODO_貼上_KLOOK_分潤連結",
-      "fallback": "https://www.klook.com/zh-TW/search/?query=日本%20eSIM%20網卡"
+      "fallback": "https://www.klook.com/zh-TW/search/?query=日本%20eSIM%20網卡",
+      "_status": "Klook 分潤尚未申請；Trip.com 無 eSIM 品類（/esim/ 為 404），暫時維持純導流"
     },
     "transport": {
-      "brand": "KKday",
+      "brand": "Trip.com",
       "icon": "🚄",
       "label": "買 JR Pass 與日本交通票",
-      "rate": "1-5%",
-      "cookie": "30 天",
-      "why": "JR Pass 與新幹線票在台灣主要透過 KKday 購買",
-      "template": "TODO_貼上_KKDAY_交通_分潤連結",
+      "rate": "2%",
+      "cookie": "網站 30 天／App 7 天",
+      "why": "火車票 2%。日本鐵路票券本來就是看完機票的下一步。",
+      "template": "https://tw.trip.com/trains/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
       "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword=JR%20PASS%20{q}"
     },
     "car": {
-      "brand": "Klook",
+      "brand": "Trip.com",
       "icon": "🚗",
       "label": "租{q}的車",
-      "rate": "2-5%",
-      "cookie": "7 天",
-      "why": "台灣人租日本車主要透過 Klook / KKday，不用歐美平台",
-      "template": "TODO_貼上_KLOOK_租車_分潤連結",
+      "rate": "5%",
+      "cookie": "網站 30 天／App 7 天",
+      "why": "租車 5%，非都會區航點（北海道、九州、離島）用得上。",
+      "template": "https://tw.trip.com/carhire/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
       "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20租車"
     },
     "transfer": {
-      "brand": "Klook",
+      "brand": "Trip.com",
       "icon": "🚕",
       "label": "訂{q}機場接送",
-      "rate": "2-5%",
-      "cookie": "7-30 天",
-      "why": "台灣人訂日本機場接送主要透過 Klook / KKday",
-      "template": "TODO_貼上_KLOOK_接送_分潤連結",
+      "rate": "5%",
+      "cookie": "網站 30 天／App 7 天",
+      "why": "機場接送 5%。",
+      "template": "https://tw.trip.com/airport-transfers/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
       "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20機場接送"
     },
     "flight2": {

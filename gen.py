@@ -1041,9 +1041,14 @@ for slug,name,codes,reg,hotelcity in CITIES:
                   f'到 {_hb} 查{hotelcity}房價，繁體中文、台幣計價', track=slug)
     body+=faq_block(name,fs,codes)
     body+=klook_tours(slug,name)
+    # 當地玩樂的分潤是機票的八倍（4% vs 0.5%），而且看完機票住宿的下一個問題
+    # 本來就是「要玩什麼」，放在這裡最順
+    body+=cta('activity',name,name,f'機票住宿都有了，{name}要玩什麼',
+              f'到 {P["activity"]["brand"]} 看{name}的門票與一日遊，繁體中文、台幣計價',
+              track=slug)
     if slug not in URBAN:
         body+=cta('car',name,hotelcity,f'{name}自駕比較方便',
-                  '到 Klook 比較租車方案')
+                  f'到 {P["car"]["brand"]} 比較租車方案', track=slug)
     body+=cta('esim',name,hotelcity,'出發前別忘了日本上網',
               '到 Klook 買 eSIM 或網卡，落地就能用')
     body+='<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>'
