@@ -142,6 +142,11 @@ NOWS=NOW.strftime('%Y-%m-%d %H:%M'); TODAY=NOW.strftime('%Y-%m-%d')
 def plink(kind,city='',**kw):
     p=P[kind]; t=p.get('template','')
     u=t if t and not t.startswith('TODO') else p['fallback']
+    # Trip.com 的飯店列表要數字城市 ID，沒有對應 ID 的城市就退回關鍵字連結，
+    # 否則會產生一個指向錯誤城市（或整個掉回首頁）的連結
+    if '{cid}' in u:
+        cid=(p.get('city_ids') or {}).get(city)
+        u=u.replace('{cid}',str(cid)) if cid else p['fallback']
     u=u.replace('{q}',urllib.parse.quote(city))
     kw.setdefault('sub','')          # 沒傳就留空，別讓 {sub} 原樣留在網址裡
     for k,v in kw.items(): u=u.replace('{'+k+'}',str(v))
@@ -748,12 +753,15 @@ def fare_card(x,hot=False):
 <div class="mt"><span class="tg {x['cls']}">{tag}</span><span>{html.escape(x['airname'])}</span><span>{stops}</span>{'<span class="tg gt">☀️ 早去晚回</span>' if gt else ''}</div>
 <div class="dt">{dates}</div>{gate_html}{btn}</article>'''
 
-def cta(kind, city_name, hotel_city, headline, sub):
+def cta(kind, city_name, hotel_city, headline, sub, track=''):
     """單一情境式 CTA。
     不再把 4–5 個夥伴連結並排——Travelpayouts 官方明言「一段五個連結會失去信任」，
-    競品分析也顯示成效好的頁面是把連結嵌在相關段落，而非集中成一排按鈕。"""
+    競品分析也顯示成效好的頁面是把連結嵌在相關段落，而非集中成一排按鈕。
+
+    track 會填進 trip_sub1，用來在聯盟後台分辨是哪個頁面帶來的成交。"""
     p = P[kind]
-    return (f'<a class="cta" href="{html.escape(plink(kind, hotel_city))}" target="_blank" '
+    return (f'<a class="cta" href="{html.escape(plink(kind, hotel_city, sub=track))}" '
+            f'target="_blank" '
             f'rel="nofollow noopener sponsored">'
             f'<span class="ci">{p["icon"]}</span>'
             f'<span class="ct"><b>{html.escape(headline)}</b><s>{html.escape(sub)}</s></span>'
@@ -1028,8 +1036,9 @@ for slug,name,codes,reg,hotelcity in CITIES:
         body += alt_block(slug,name,hotelcity,own_min)
     # 看完票價 → 下一步就是找住宿，放在這裡最順
     if fs:
+        _hb = P['hotel']['brand']
         body+=cta('hotel',name,hotelcity,f'看好機票了？接著找{name}的住宿',
-                  f'到 Agoda 查{name}房價，繁體中文、台幣計價')
+                  f'到 {_hb} 查{hotelcity}房價，繁體中文、台幣計價', track=slug)
     body+=faq_block(name,fs,codes)
     body+=klook_tours(slug,name)
     if slug not in URBAN:
@@ -1800,7 +1809,9 @@ if os.path.exists('apple.json'):
                  f'（{_b["airname"]}，{_b["dep"]} 出發）。單看機身價差，通常還不夠一張機票——'
                  f'但如果本來就要去日本，那就順便。</p>'
                  + fare_cta('tokyo','為了省幾千元專程飛一趟？先看這個數字')
-                 + cta('hotel','東京','東京','機票看好了，住宿呢','到 Agoda 查房價，繁體中文、台幣計價')
+                 + cta('hotel','東京','東京','機票看好了，住宿呢',
+                       f'到 {P["hotel"]["brand"]} 查房價，繁體中文、台幣計價',
+                       track='apple-tokyo')
                  + '<div class="cities">'
                  + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>各出發地比價</s></a>'
                  + f'<a class="ct" href="{U("/osaka/")}"><b>大阪機票</b><s>心齋橋、道頓堀</s></a>'
@@ -2771,7 +2782,8 @@ if _GT:
         '抵達後的第一天多半在補眠，而且深夜前往機場的交通也是成本。</li>'
         '</ul></div>'
       + cta('hotel', '東京', '東京', '時間抓好了，住宿呢',
-            '到 Agoda 查房價，繁體中文、台幣計價')
+            f'到 {P["hotel"]["brand"]} 查房價，繁體中文、台幣計價',
+            track='good-times')
       + '<h2>常見問題</h2>' + gt_html
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>每日更新</s></a>'

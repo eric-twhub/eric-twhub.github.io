@@ -40,15 +40,24 @@
       }
     },
     "hotel": {
-      "brand": "Agoda",
+      "brand": "Trip.com",
       "icon": "🏨",
       "label": "找{q}住宿",
-      "rate": "6%",
-      "cookie": "1 天",
-      "why": "台灣人訂日本住宿最常用，繁中介面",
+      "rate": "5%（0–199 筆）／6%（200–999）／7%（1000+）",
+      "cookie": "網站 30 天／App 7 天",
+      "why": "與機票同一個聯盟帳號，不必另外申請；酒店 5% 起跳，一筆三晚訂房的分潤約等於 19 張機票。",
       "note": "cookie 僅 1 天，文案要引導立即訂房",
-      "template": "TODO_貼上_AGODA_分潤連結",
-      "fallback": "https://www.agoda.com/zh-tw/search?city={q}"
+      "template": "https://tw.trip.com/hotels/list?city={cid}&optionId={cid}&optionType=City&optionName={q}&display={q}&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+      "fallback": "https://www.agoda.com/zh-tw/search?city={q}",
+      "city_ids": {
+        "_note": "Trip.com 飯店列表需要數字城市 ID，公開 HTML 抓不到（整頁 JS 算繪），只能從聯盟後台的「酒店頁面」產生器取得。每個都用 city=<id> 實際打開驗過標題。沒有 ID 的城市自動退回 Agoda 的關鍵字連結。",
+        "東京": 228,
+        "大阪": 219,
+        "那霸": 92573,
+        "福岡": 248,
+        "札幌": 641,
+        "名古屋": 360
+      }
     },
     "activity": {
       "brand": "KKday",
