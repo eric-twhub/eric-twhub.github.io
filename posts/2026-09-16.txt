@@ -20,7 +20,7 @@
 
 　🛫 樂桃航空｜直飛
 　📅 2026-10-29 – 2026-11-12
-　💡 10 月出發的票，每天最便宜的平均要 NT$8,709（11 天有紀錄），這張低 24%
+　💡 10 月出發的票，每天最便宜的平均要 NT$8,707（11 天有紀錄），這張低 24%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-16-taipei-tokyo/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=tpe&acity=tyo&ddate=2026-10-29&rdate=2026-11-12&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1=tyo
@@ -32,7 +32,7 @@
 
 　🛫 樂桃航空｜直飛
 　📅 2026-10-09 – 2026-10-15
-　💡 10 月出發的票，每天最便宜的平均要 NT$8,310（9 天有紀錄），這張低 17%
+　💡 10 月出發的票，每天最便宜的平均要 NT$8,309（9 天有紀錄），這張低 17%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-16-taipei-osaka/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=tpe&acity=osa&ddate=2026-10-09&rdate=2026-10-15&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1=osa
@@ -44,7 +44,7 @@
 
 　🛫 台灣虎航｜直飛
 　📅 2026-09-21 – 2026-09-24
-　💡 9 月出發的票，每天最便宜的平均要 NT$12,317（12 天有紀錄），這張低 31%
+　💡 9 月出發的票，每天最便宜的平均要 NT$12,314（12 天有紀錄），這張低 31%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-16-taichung-okinawa/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=rmq&acity=oka&ddate=2026-09-21&rdate=2026-09-24&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1=oka
@@ -56,7 +56,7 @@
 
 　🛫 飛東京再轉乘｜東北新幹線
 　📅 2026-10-29
-　💡 比直飛省 NT$11,833
+　💡 比直飛省 NT$11,815
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-16-transfer-tokyo-sendai/
 　🔍 查證連結（開啟後截圖）：（轉乘方案，請分段查證）
@@ -68,7 +68,7 @@
 
 　🛫 飛大阪再轉乘｜山陽新幹線
 　📅 2026-10-09
-　💡 比直飛省 NT$515
+　💡 比直飛省 NT$1,239
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-16-transfer-osaka-hiroshima/
 　🔍 查證連結（開啟後截圖）：（轉乘方案，請分段查證）
