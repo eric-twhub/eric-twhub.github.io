@@ -1,0 +1,43 @@
+{
+ "checked": "2026-09-15",
+ "ref": {
+  "airline": "台灣虎航", "code": "IT", "kg": 20, "per_leg": 950,
+  "period": "2026/3/29 – 2026/10/24（台灣出發）",
+  "src": "https://www.tigerairtw.com/zh-tw/ready-to-go/fees",
+  "src_name": "台灣虎航官方行李價目表"
+ },
+ "tigerair": {
+  "period": "2026/3/29 – 2026/10/24（台灣出發，單人單航段，新台幣）",
+  "src": "https://www.tigerairtw.com/zh-tw/ready-to-go/fees",
+  "src_name": "台灣虎航官方行李價目表",
+  "cols": ["訂購機票時", "事後於行程管理", "打客服專線", "機場櫃檯"],
+  "rows": [
+   ["託運行李 15KG", 850, 1000, 1200, null],
+   ["託運行李 20KG", 950, 1150, 1350, null],
+   ["託運行李 25KG", 1050, 1350, 1550, null],
+   ["託運行李 30KG", 1350, 1650, 1850, null],
+   ["託運行李 35KG", 1650, 1950, 2200, null],
+   ["託運行李 40KG", 2000, 2400, 2600, null],
+   ["機場才買（限 15KG）", null, null, null, 1600]
+  ],
+  "over_kg": 500,
+  "oversize": [550, 650, 800, 950]
+ },
+ "fares": [
+  {"airline": "台灣虎航", "cls": "lcc",
+   "note": "基本票種 tigerlight 不含託運，只有手提 10 公斤；託運採計重制、不限件數，單件上限 30 公斤。",
+   "src": "https://www.tigerairtw.com/zh-tw/ready-to-go/fees", "src_name": "台灣虎航官網"},
+  {"airline": "樂桃航空", "cls": "lcc",
+   "note": "Minimum 票種不含託運，需另外加購；Standard 與 Standard Plus 各含 1 件免費託運。三種票種都含 2 件合計 7 公斤手提。",
+   "src": "https://www.flypeach.com/tw/lm/fares/fare_type", "src_name": "樂桃官方票價說明"},
+  {"airline": "中華航空", "cls": "fsc",
+   "note": "經濟艙的免費託運件數依航線與「訂位艙等」而定，最便宜的促銷艙等不一定和一般經濟艙相同，訂票前要看該艙等的實際額度。",
+   "src": "https://www.china-airlines.com/tw/zh/prepare-for-the-fly/information/baggage/checked-baggage",
+   "src_name": "中華航空官網託運行李"}
+ ],
+ "unverified": [
+  "泰國獅子航空", "泰越捷航空", "捷星日本", "酷航", "Air Japan",
+  "香港快運", "德威航空", "真航空", "星宇航空", "長榮航空",
+  "日本航空", "全日空", "日本越洋航空", "廈門航空", "華信航空"
+ ]
+}

@@ -624,7 +624,8 @@ def topnav(cur=''):
     area = ('<b>日本地區</b>' + regions + '<hr><b>台灣出發地</b>' + origins)
 
     kinds = (link('/japan-flight-good-times/', '☀️ 早去晚回')
-             + link('/deals/', '🔥 今日特價'))
+             + link('/deals/', '🔥 今日特價')
+            + link('/japan-flight-baggage/', '🧳 廉航行李費'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -859,6 +860,10 @@ def best(fs,rt=None):
 
 def money(n): return f'NT${n:,}'
 
+# 行李費用（城市頁的比價要用，完整說明另有專頁）
+BAG = json.load(open('baggage.json', encoding='utf-8')) if os.path.exists('baggage.json') else None
+BAG_RT = (BAG['ref']['per_leg'] * 2) if BAG else 0
+
 pages=[]  # (url, lastmod, priority)
 
 # ---------- 城市頁 ----------
@@ -908,6 +913,25 @@ for slug,name,codes,reg,hotelcity in CITIES:
             return (f'{x["dept"]} → {x["rett"]}'
                     if x.get('dept') and x.get('rett') else '—')
 
+        _bagrow, _bagnote = '', ''
+        if BAG:
+            _wb = _l['price'] + BAG_RT
+            _left = _f['price'] - _wb
+            _verdict = (f'一般航空仍貴 {money(_left)}' if _left > 0
+                        else f'反而比一般航空貴 {money(-_left)}')
+            _bagrow = (f'<tr><td><b>廉航 ＋ 來回託運 {BAG["ref"]["kg"]}kg</b></td>'
+                       f'<td><b>{money(_wb)}</b></td>'
+                       f'<td colspan="3" style="text-align:left">'
+                       f'以{html.escape(BAG["ref"]["airline"])}公告費率估，{_verdict}</td></tr>')
+            _bagnote = (f'<p class="lede">票價差 <b>{money(_gap)}</b>，但廉航的最低票價'
+                        f'<b>不含託運行李</b>——那是只能帶手提行李的價格。'
+                        f'加購來回 {BAG["ref"]["kg"]}kg 要 {money(BAG_RT)}，'
+                        f'價差就縮到 {money(_left)}。'
+                        f'<a href="{U("/japan-flight-baggage/")}">各家行李費怎麼算</a>。</p>')
+        else:
+            _bagnote = (f'<p class="lede">差 <b>{money(_gap)}</b>。'
+                        f'一般航空的票價通常已含託運行李，廉航多半要另外加購。</p>')
+
         cmp_block = (
           f'<h2>廉航和一般航空，差多少？</h2>'
           f'<p class="lede">下面的卡片按價格排序，廉航幾乎一定排在前面。'
@@ -921,13 +945,12 @@ for slug,name,codes,reg,hotelcity in CITIES:
           f'<tr><td><b>一般航空</b></td><td><b>{money(_f["price"])}</b></td>'
           f'<td>{html.escape(_f["airname"])}</td><td>{_f["dep"]}</td>'
           f'<td>{_slot(_f)}</td></tr>'
-          '</tbody></table></div>'
-          f'<p class="lede">差 <b>{money(_gap)}</b>。'
-          f'一般航空的票價通常已含託運行李，廉航多半要另外加購——'
-          f'真正要比的是「含行李之後」的價格。</p>'
-          f'<p class="disc">兩邊都是<b>本站紀錄中</b>的最低價，不是市場最低。'
-          f'全服務航空的促銷票常常不在快取裡，看到別處有更低的價格是正常的。'
-          f'共 {len(_lcc_rt)} 筆廉航來回、{len(_fsc_rt)} 筆一般航空來回。</p>')
+          + _bagrow
+          + '</tbody></table></div>'
+          + _bagnote
+          + f'<p class="disc">兩邊都是<b>本站紀錄中</b>的最低價，不是市場最低。'
+            f'全服務航空的促銷票常常不在快取裡，看到別處有更低的價格是正常的。'
+            f'共 {len(_lcc_rt)} 筆廉航來回、{len(_fsc_rt)} 筆一般航空來回。</p>')
 
     body=''
     if fs:
@@ -1013,6 +1036,187 @@ for slug,name,codes,reg,hotelcity in CITIES:
         + f'<p class="upd">更新於 {NOWS}　·　共 {len(fs)} 筆票價</p>'
         + cmp_block + body + foot())
     pages.append((f'/{slug}/',0.8 if fs else 0.5))
+
+
+# ---------- 廉航行李費 ----------
+# 城市頁的比價只到「票價」為止，但廉航最低票價是不含託運的。
+# 加購行李之後價差會縮水多少？這一頁把它算出來。
+if os.path.exists('baggage.json'):
+    BG = json.load(open('baggage.json', encoding='utf-8'))
+    _REF = BG['ref']
+    _TG = BG['tigerair']
+    _SM = '<br><small style="color:var(--dim)">'   # SMALL 在後面才定義，這裡自己來
+    _rt_fee = _REF['per_leg'] * 2
+
+    _cells = lambda r: ''.join(
+        (f'<td>{money(v)}</td>' if v else '<td class="dim">—</td>') for v in r[1:])
+    _tgrows = ''.join(f'<tr><td><b>{html.escape(r[0])}</b></td>{_cells(r)}</tr>'
+                      for r in _TG['rows'])
+
+    _farerows = ''.join(
+        f'<tr><td><b>{html.escape(f["airline"])}</b></td>'
+        f'<td>{"廉航" if f["cls"] == "lcc" else "一般航空"}</td>'
+        f'<td>{html.escape(f["note"])}</td>'
+        f'<td><a href="{f["src"]}" rel="nofollow" target="_blank">'
+        f'{html.escape(f["src_name"])}</a></td></tr>' for f in BG['fares'])
+
+    # 三個有 FSC 樣本的城市，加上行李之後的實際比較
+    _bcity = ''
+    for _s, _n, _c, _r, _h in CITIES:
+        _f = by_city.get(_s, [])
+        _l = sorted([x for x in _f if x['rt'] and x['cls'] == 'lcc'], key=lambda x: x['price'])
+        _g = sorted([x for x in _f if x['rt'] and x['cls'] == 'fsc'], key=lambda x: x['price'])
+        if not _l or len(_g) < 5:
+            continue
+        _lp, _gp = _l[0]['price'], _g[0]['price']
+        _with = _lp + _rt_fee
+        _shrink = (_gp - _lp) - (_gp - _with)
+        _bcity += (f'<tr><td><a href="{U("/"+_s+"/")}"><b>{_n}</b></a></td>'
+                   f'<td>{money(_lp)}{_SM}{html.escape(_l[0]["airname"])}</small></td>'
+                   f'<td><b>{money(_with)}</b></td>'
+                   f'<td>{money(_gp)}{_SM}{html.escape(_g[0]["airname"])}</small></td>'
+                   + (f'<td class="win">廉航仍便宜 {money(_gp - _with)}</td>'
+                      if _gp > _with else
+                      f'<td class="lose">一般航空便宜 {money(_with - _gp)}</td>')
+                   + '</tr>')
+
+    _bjs = ("""
+<script>
+(function(){
+ var $=function(i){return document.getElementById(i)};
+ function nt(n){return 'NT$'+Math.round(n).toLocaleString('en-US')}
+ function calc(){
+  var l=+$('bl').value||0, f=+$('bf').value||0, b=+$('bb').value||0, n=+$('bn').value||0;
+  var w=l+b*2*n;
+  $('q1').textContent=nt(w);
+  $('q2').textContent=nt(f);
+  var d=f-w, e=$('qv');
+  e.className='cv '+(d>0?'jp':'tw');
+  e.textContent = Math.abs(d)<100 ? '兩邊幾乎一樣，那就看時段和服務'
+   : (d>0 ? ('廉航加完行李仍便宜 '+nt(d)) : ('一般航空反而便宜 '+nt(-d)));
+ }
+ ['bl','bf','bb','bn'].forEach(function(i){
+   var el=$(i); if(el){el.addEventListener('input',calc)}
+ });
+ calc();
+})();
+</script>""")
+
+    _bdemo = None
+    for _s, _n, _c, _r, _h in CITIES:
+        _f = by_city.get(_s, [])
+        _l = sorted([x for x in _f if x['rt'] and x['cls'] == 'lcc'], key=lambda x: x['price'])
+        _g = sorted([x for x in _f if x['rt'] and x['cls'] == 'fsc'], key=lambda x: x['price'])
+        if _l and len(_g) >= 5:
+            _bdemo = (_n, _l[0]['price'], _g[0]['price'])
+            break
+    _dl = _bdemo[1] if _bdemo else 5000
+    _df = _bdemo[2] if _bdemo else 9000
+
+    bg_title = '廉航加了行李，還比較便宜嗎？台日航線託運行李費用實算'
+    bg_desc = (f'台灣虎航官方行李價目表、樂桃票種含不含託運，'
+               f'以及加購來回 {_REF["kg"]}kg 託運（約 {money(_rt_fee)}）之後，'
+               f'廉航與一般航空的價差會縮水多少。附試算。')
+
+    bg_faq = [
+     ('廉航的票價為什麼不含行李？',
+      '因為那是它的商業模式：把行李、選位、餐食拆開來賣，讓帳面票價看起來最低。'
+      f'以台灣虎航為例，基本票種 tigerlight 只含 10 公斤手提行李，'
+      f'要託運行李箱就得加購——來回 {_REF["kg"]}kg 是 {money(_rt_fee)}。'),
+     ('行李費什麼時候買最便宜？',
+      f'訂機票的當下。以虎航台灣出發的公告費率，{_REF["kg"]}kg 在訂票時加購是 '
+      f'{money(_REF["per_leg"])}，事後到行程管理加購變 {money(_TG["rows"][1][2])}，'
+      f'打客服專線是 {money(_TG["rows"][1][3])}。到機場才買只能買 15 公斤，而且要 '
+      f'{money(_TG["rows"][6][4])}——比訂票時買 15 公斤貴了將近一倍。'),
+     ('超重怎麼算？',
+      f'超過已購買的重量，依啟程站費率按每公斤收。虎航機場櫃檯的超重費是每公斤 '
+      f'{money(_TG["over_kg"])}，買個伴手禮就可能超過。'
+      '與其在機場被收超重，不如訂票時就把重量買足。'),
+     ('一般航空一定含兩件 23 公斤嗎？',
+      '不一定。中華航空的官網寫明，經濟艙的免費託運件數依航線與「訂位艙等」而定，'
+      '最便宜的促銷艙等和一般經濟艙可能不一樣。'
+      '買全服務航空的特價票之前，一樣要確認那個艙等實際含多少行李。'),
+     ('為什麼本站只列了三家航空的行李規則？',
+      f'因為只有這三家的條件我逐項對過官方頁面。其餘 {len(BG["unverified"])} 家還沒查證，'
+      '與其抄別人的整理，不如先空著並說明。本站寧可資料少但每個數字都有出處。'),
+    ]
+    bg_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in bg_faq)
+    bg_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in bg_faq]}, ensure_ascii=False)
+
+    write('japan-flight-baggage/index.html',
+      head(bg_title, bg_desc, 'japan-flight-baggage/',
+           '<script type="application/ld+json">' + bg_ld + '</script>')
+      + crumbs([('首頁', '/'), ('廉航行李費', None)]) + topnav()
+      + '<h1>廉航加了行李，還比較便宜嗎？</h1>'
+      + '<p class="lede">比票價的時候，廉航幾乎一定贏。但廉航的最低票價<b>不含託運行李</b>——'
+        '那是「只能帶手提行李」的價格。把行李費加回去，價差會縮水多少？</p>'
+      + f'<div class="today"><div class="tday">行李費率查證於 {BG["checked"]}'
+        f'　·　票價更新於 {NOWS}</div>'
+        f'<div class="tans">加購來回 {_REF["kg"]}kg 託運行李是 {money(_rt_fee)}'
+        f'（{_REF["airline"]}公告費率）</div>'
+        f'<div class="tsub">這筆錢會吃掉廉航與一般航空價差的一大塊。'
+        f'下面用本站的即時票價實際算給你看。</div></div>'
+      + (('<h2>加上行李之後，還差多少？</h2>'
+          '<p class="lede">只列出本站有足夠一般航空紀錄（5 筆以上來回）的航點。</p>'
+          '<div class="tw"><table><thead><tr><th>航點</th><th>廉航最低</th>'
+          f'<th>＋來回 {_REF["kg"]}kg 行李</th><th>一般航空最低</th><th>結果</th>'
+          '</tr></thead><tbody>' + _bcity + '</tbody></table></div>'
+          f'<p class="disc">行李費以{_REF["airline"]}公告的 {_REF["kg"]}kg 訂票時加購價'
+          f'（單程 {money(_REF["per_leg"])}）估算，實際費率各航空不同。'
+          f'一般航空的票價是否含行李，同樣要看訂位艙等。'
+          f'兩邊都是本站紀錄中的最低價，不是市場最低。</p>') if _bcity else '')
+      + '<h2>自己算</h2>'
+      + '<p class="lede">填入你查到的票價與行李費，看加完行李之後誰便宜。</p>'
+      + '<div class="calc"><div class="sf">'
+        f'<label>廉航票價<input id="bl" type="number" value="{_dl}" min="0" step="100"></label>'
+        f'<label>一般航空票價<input id="bf" type="number" value="{_df}" min="0" step="100"></label>'
+        f'<label>單程行李費<input id="bb" type="number" value="{_REF["per_leg"]}" '
+        'min="0" step="50"></label>'
+        '<label>幾個人<input id="bn" type="number" value="1" min="1" max="9" step="1"></label>'
+        '</div><div class="cres">'
+        '<div class="cl"><span>廉航＋行李</span><b id="q1">—</b></div>'
+        '<div class="cl"><span>一般航空</span><b id="q2">—</b></div>'
+        '<div class="cv" id="qv">—</div></div></div>'
+      + '<p class="disc">行李費以「單程 × 2 × 人數」計算。'
+        '若你本來就只帶手提行李，這一項填 0 即可。</p>' + _bjs
+      + f'<h2>{html.escape(_REF["airline"])}的行李價目表</h2>'
+      + f'<p class="lede">同樣的重量，<b>越晚買越貴</b>。這是少數航空公司會完整公告的費率表，'
+        f'可以拿來當台日廉航的參考值。</p>'
+      + '<div class="tw"><table><thead><tr><th>項目</th>'
+      + ''.join(f'<th>{html.escape(c)}</th>' for c in _TG['cols'])
+      + '</tr></thead><tbody>' + _tgrows + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_TG["period"])}　·　'
+        f'資料來源：<a href="{_TG["src"]}" rel="nofollow" target="_blank">'
+        f'{html.escape(_TG["src_name"])}</a>，查證於 {BG["checked"]}。'
+        f'超重另按每公斤 {money(_TG["over_kg"])} 收取（機場櫃檯費率）。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>訂票時就買最便宜。</b>{_REF["kg"]}kg 訂票時 {money(_TG["rows"][1][1])}，'
+        f'事後線上 {money(_TG["rows"][1][2])}，打客服 {money(_TG["rows"][1][3])}。</li>'
+        f'<li><b>機場才買最貴，而且只能買 15 公斤。</b>要 {money(_TG["rows"][6][4])}，'
+        f'比訂票時買同樣 15 公斤（{money(_TG["rows"][0][1])}）貴了將近一倍。</li>'
+        f'<li><b>超重比加購貴得多。</b>每公斤 {money(_TG["over_kg"])}，'
+        f'超個 3 公斤就超過一張 20kg 行李的價格。</li>'
+        '</ul></div>'
+      + '<h2>哪些票種含託運？</h2>'
+      + '<p class="lede">只列出本站逐項對過官方頁面的航空公司。</p>'
+      + '<div class="tw"><table><thead><tr><th>航空公司</th><th>類型</th>'
+        '<th>託運行李</th><th>來源</th></tr></thead><tbody>' + _farerows + '</tbody></table></div>'
+      + f'<p class="disc">其餘 {len(BG["unverified"])} 家飛台日的航空'
+        f'（{html.escape("、".join(BG["unverified"][:6]))} 等）本站尚未查證，'
+        f'所以不列。與其抄第三方整理，不如先空著。</p>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
+        f'<s>便宜票常常時段很爛，這裡只留好時段</s></a>'
+      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>每日更新</s></a>'
+      + f'<a class="ct" href="{U("/okinawa/")}"><b>沖繩機票</b><s>廉航與一般航空並列</s></a></div>'
+      + '<h2>常見問題</h2>' + bg_html
+      + '<p class="disc">行李費率與票種內容由各航空公司隨時調整，'
+        '本頁數字查證於 ' + BG['checked'] + '，購票前請以航空公司官網為準。</p>'
+      + foot())
+    pages.append(('/japan-flight-baggage/', 0.7))
 
 # ---------- 地區頁（導覽用，非 SEO 主力）----------
 for reg,rname in REGIONS:
