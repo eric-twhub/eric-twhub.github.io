@@ -71,9 +71,10 @@ jobs:
             python3 make_cost_cards.py
             python3 make_card_cards.py
             python3 make_ipcard_cards.py
+            python3 make_bag_cards.py
           fi
           # 中文若沒算進去會整片豆腐字，用檔案大小粗略檢查是否有算繪內容
-          for f in cards/calendar/*.png cards/cost/*.png cards/card/*.png cards/ipcard/*.png; do
+          for f in cards/calendar/*.png cards/cost/*.png cards/card/*.png cards/ipcard/*.png cards/bag/*.png; do
             [ -e "$f" ] || continue
             sz=$(wc -c < "$f")
             echo "  $f  ${sz} bytes"

@@ -7,3 +7,4 @@ cards/*
 !cards/cost/
 !cards/card/
 !cards/ipcard/
+!cards/bag/
