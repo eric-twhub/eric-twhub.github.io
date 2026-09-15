@@ -100,35 +100,6 @@
   "n": 59
  },
  {
-  "slug": "2026-09-16-kaohsiung-tokyo",
-  "title": "高雄飛東京 NT$8,264 來回含稅｜捷星日本 09/30 出發",
-  "o": "高雄",
-  "c": "東京",
-  "_oiata": "KHH",
-  "_diata": "TYO",
-  "price": 8264,
-  "air": "捷星日本",
-  "dep": "2026-09-30",
-  "ret": "2026-10-05",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "這條航線平常最低落在 NT$9,130–NT$11,690，這張是近期 23 筆紀錄中第 1 低"
-  ],
-  "med": 11733,
-  "url": "https://www.aviasales.com/search/KHH3009NRT05101?t=GK17907768001790793000000210KHHNRT17911941001791205200000245NRTKHH_3bb814425f9b599ae4dbf493c2c71357_21953&search_date=15092026&expected_price_uuid=01a0a3fd-8ca0-8030-2acf-99032b26bab1&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=HKfUcR_aHMDGstFpcvq3Gg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8264&marker=775639",
-  "hotelcity": "東京",
-  "cslug": "tokyo",
-  "usual": {
-   "lo": 9130,
-   "hi": 11690,
-   "days": 7
-  },
-  "mbase": null,
-  "rank": 1,
-  "n": 23
- },
- {
   "slug": "2026-09-16-taichung-okinawa",
   "title": "台中飛沖繩 NT$8,538 來回含稅｜台灣虎航 09/21 出發",
   "o": "台中",
