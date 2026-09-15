@@ -13,8 +13,8 @@
       "brand": "Trip.com",
       "icon": "✈️",
       "label": "查看票價",
-      "rate": "1-5.5%",
-      "cookie": "7-30 天",
+      "rate": "國際機票 0.5%（完成 300 筆後 0.8%）",
+      "cookie": "網站 30 天／App 7 天",
       "why": "繁中介面、TWD 計價、台灣有電視廣告與客服。分潤上限也高於 Aviasales",
       "template": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828713",
       "fallback": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD",
@@ -23,6 +23,20 @@
         "SID": "331341333",
         "trip_sub3": "D19828713",
         "_note": "Trip.com 聯盟平台產生；Allianceid=帳戶、SID=網站（台日機票速報）、trip_sub3=該連結識別碼。trip_sub1 留給本站填目的地代碼，用來看哪個航點帶來成交。"
+      },
+      "rate_table": {
+        "_source": "Trip.com 聯盟平台 › 幫助 › 佣金獎勵計劃，查證於 2026-09-16",
+        "酒店": "5%（0–199 筆）／6%（200–999）／7%（1000+）",
+        "機票_國際": "0.5%（0–299 筆）／0.8%（300+）",
+        "機票_中國國內": "USD 0.6 每張",
+        "機票+酒店": "2%（0–99）／2.25%（100–999）／2.5%（1000+）",
+        "火車票": "2%",
+        "當地玩樂": "4%（門票與演出 1.5%）",
+        "預售券": "5%",
+        "租車服務": "5%",
+        "機場接送": "5%",
+        "郵輪": "5%",
+        "_註": "機票分潤極低，站上的收益重心不應放在機票本身；同一個 Allianceid／SID 可用於酒店等其他品類，不必另外申請。"
       }
     },
     "hotel": {
