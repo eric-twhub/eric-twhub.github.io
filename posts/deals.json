@@ -47,9 +47,9 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$8,707（11 天有紀錄），這張低 24%"
+   "10 月出發的票，每天最便宜的平均要 NT$8,708（11 天有紀錄），這張低 24%"
   ],
-  "med": 13339,
+  "med": 13349,
   "url": "https://www.aviasales.com/search/TPE2910NRT12111?t=MM17932941001793309400000195TPENRT17944881001794500100000260NRTTPE_94a1facc5999837585ce90f6da9761f1_17871&search_date=10092026&expected_price_uuid=01a08a40-38f0-8040-a6d7-98666f55579b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fCz5Rpi0udz9WeP6HWIc0Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6646&marker=775639",
   "hotelcity": "東京",
   "cslug": "tokyo",
@@ -59,12 +59,12 @@
    "days": 18
   },
   "mbase": {
-   "avg": 8707,
+   "avg": 8708,
    "days": 11,
    "month": 10
   },
   "rank": 1,
-  "n": 102
+  "n": 101
  },
  {
   "slug": "2026-09-16-taipei-osaka",
@@ -101,26 +101,26 @@
  },
  {
   "slug": "2026-09-16-kaohsiung-tokyo",
-  "title": "高雄飛東京 NT$8,262 來回含稅｜捷星日本 09/30 出發",
+  "title": "高雄飛東京 NT$8,264 來回含稅｜捷星日本 09/30 出發",
   "o": "高雄",
   "c": "東京",
   "_oiata": "KHH",
   "_diata": "TYO",
-  "price": 8262,
+  "price": 8264,
   "air": "捷星日本",
   "dep": "2026-09-30",
   "ret": "2026-10-05",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "這條航線平常最低落在 NT$9,128–NT$11,690，這張是近期 23 筆紀錄中第 1 低"
+   "這條航線平常最低落在 NT$9,130–NT$11,690，這張是近期 23 筆紀錄中第 1 低"
   ],
   "med": 11733,
-  "url": "https://www.aviasales.com/search/KHH3009NRT05101?t=GK17907768001790793000000210KHHNRT17911941001791205200000245NRTKHH_3bb814425f9b599ae4dbf493c2c71357_21953&search_date=15092026&expected_price_uuid=01a0a3fd-8ca0-8030-2acf-99032b26bab1&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=HKfUcR_aHMDGstFpcvq3Gg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8262&marker=775639",
+  "url": "https://www.aviasales.com/search/KHH3009NRT05101?t=GK17907768001790793000000210KHHNRT17911941001791205200000245NRTKHH_3bb814425f9b599ae4dbf493c2c71357_21953&search_date=15092026&expected_price_uuid=01a0a3fd-8ca0-8030-2acf-99032b26bab1&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=HKfUcR_aHMDGstFpcvq3Gg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8264&marker=775639",
   "hotelcity": "東京",
   "cslug": "tokyo",
   "usual": {
-   "lo": 9128,
+   "lo": 9130,
    "hi": 11690,
    "days": 7
   },
@@ -142,7 +142,7 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "9 月出發的票，每天最便宜的平均要 NT$12,314（12 天有紀錄），這張低 31%"
+   "9 月出發的票，每天最便宜的平均要 NT$12,315（12 天有紀錄），這張低 31%"
   ],
   "med": 12302,
   "url": "https://www.aviasales.com/search/RMQ2109OKA24091?t=IT17899746001789983600000090RMQOKA17902782001790280000000090OKARMQ_aa81e0babcc46df95ea5055ff4e8f875_22539&search_date=14092026&expected_price_uuid=01a09f48-4548-8030-63d5-e5d4352e87f0&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=klsY7nVtb5q8C-4ERRuScA&expected_price_source=share&expected_price_currency=twd&expected_price=8538&marker=775639",
@@ -154,7 +154,7 @@
    "days": 28
   },
   "mbase": {
-   "avg": 12314,
+   "avg": 12315,
    "days": 12,
    "month": 9
   },
@@ -163,7 +163,7 @@
  },
  {
   "slug": "2026-09-16-transfer-tokyo-sendai",
-  "title": "飛東京轉乘去仙台，比直飛省 NT$11,815",
+  "title": "飛東京轉乘去仙台，比直飛省 NT$11,821",
   "o": "台灣",
   "c": "仙台",
   "via": "東京",
@@ -174,9 +174,9 @@
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$11,815"
+   "比直飛省 NT$11,821"
   ],
-  "med": 23317,
+  "med": 23323,
   "url": "https://www.aviasales.com/search/TPE2910NRT12111?t=MM17932941001793309400000195TPENRT17944881001794500100000260NRTTPE_94a1facc5999837585ce90f6da9761f1_17871&search_date=10092026&expected_price_uuid=01a08a40-38f0-8040-a6d7-98666f55579b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fCz5Rpi0udz9WeP6HWIc0Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6646&marker=775639",
   "hotelcity": "仙台",
   "cslug": "sendai"
