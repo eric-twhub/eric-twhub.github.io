@@ -886,10 +886,21 @@ for slug,name,codes,reg,hotelcity in CITIES:
     airs=collections.Counter(x['airname'] for x in fs)
     oris=collections.Counter(x['o'] for x in fs)
 
+    # 全站最低常常來自台灣讀者沒聽過的平台（Farera 等），點進 Trip.com 會對不到。
+    # 兩個數字都給：最低是多少、只用 Trip.com 又是多少，讓讀者自己決定要不要用陌生平台。
+    _tc = [x for x in fs if x.get('gate') == 'Trip.com']
+    _tc_best = (best(_tc, True) or best(_tc, False)) if _tc else None
+
     intro=f'<p class="lede">'
     if anchor:
         lccs=[a for a in airs if a in LCC.values()]
         intro+=f'台灣飛{name}目前最低 <b>{money(anchor["price"])}</b>（{pt}含稅，{anchor["airname"]}，{anchor["dep"]} 出發）。'
+        if _tc_best and _tc_best['price'] > anchor['price']:
+            _gn = gate_info(anchor.get('gate',''))[0]
+            _tp = '來回' if _tc_best['rt'] else '單程'
+            intro+=(f'這筆紀錄來自 {html.escape(_gn)}，台灣讀者較陌生；'
+                    f'<b>若只看 Trip.com，最低是 {money(_tc_best["price"])}</b>'
+                    f'（{_tp}含稅，{_tc_best["airname"]}，{_tc_best["dep"]} 出發）。')
         if lccs: intro+=f'飛{name}的廉價航空有 {"、".join(lccs[:4])}。'
         if len(oris)>1:
             intro+=f'{"、".join(ORI[o] for o in oris)} 都有航班。'
@@ -1347,11 +1358,16 @@ for reg,rname in REGIONS:
         + '</a>' for s,nm,_,_,_ in cs)
     sections+=f'<h2 id="{reg}"><a href="{U("/"+reg+"/")}" style="text-decoration:none;color:inherit">{rname}</a></h2><div class="cities">{cards}</div>'
 
+_ALLTC = min((x['price'] for x in deals
+              if x.get('gate') == 'Trip.com' and x['rt']), default=None)
 write('index.html', head(title,desc,'')
   + crumbs([('首頁',None)]) + topnav()
   + f'<h1>台日機票速報</h1>'
   + f'<p class="lede">台灣飛日本 <b>{len(CITIES)}</b> 個城市的便宜機票整理，價格含稅含手續費。'
-    f'目前最低 <b>{money(allbest)}</b> 來回含稅。</p>'
+    f'目前最低 <b>{money(allbest)}</b> 來回含稅'
+    + (f'；<b>只看 Trip.com 是 {money(_ALLTC)}</b>（跨平台的低價常來自台灣較陌生的訂票網站）'
+       if _ALLTC and _ALLTC > allbest else '')
+    + '。</p>'
   + f'<p class="upd">更新於 {NOWS}　·　共 {len(deals)} 筆票價</p>'
   + (f'<h2>🔥 超值票</h2><p class="lede" style="font-size:.85rem">廉航低於 {money(LCC_CAP)}／一般航空低於 {money(FSC_CAP)}</p>'
      + GATE_FILTER + f'<div class="grid">{"".join(fare_card(x,True) for x in hot[:12])}</div>' if hot else '')
