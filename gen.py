@@ -143,14 +143,19 @@ def plink(kind,city='',**kw):
     p=P[kind]; t=p.get('template','')
     u=t if t and not t.startswith('TODO') else p['fallback']
     u=u.replace('{q}',urllib.parse.quote(city))
+    kw.setdefault('sub','')          # 沒傳就留空，別讓 {sub} 原樣留在網址裡
     for k,v in kw.items(): u=u.replace('{'+k+'}',str(v))
     return u
+
+# Trip.com 分潤參數集中放這裡，SF_JS 與貼文查證連結共用，不要各自寫死
+_AFF = (P.get('flight', {}) or {}).get('affiliate') or {}
+AFF_Q = ''.join(f'&{k}={v}' for k, v in _AFF.items() if not k.startswith('_'))
 
 def flight_url(x):
     """以航班資料組出 Trip.com 搜尋連結（繁中 / TWD）"""
     return plink('flight', o=x['o'].lower(), d=x['d'].lower(),
                  dep=x['dep'], ret=x['ret'] or x['dep'],
-                 tt='rt' if x['rt'] else 'ow')
+                 tt='rt' if x['rt'] else 'ow', sub=x['d'].lower())
 
 def fare_cta(slug, headline, sub_prefix='', before=None):
     """帶真實票價的 CTA——右欄直接放金額。
@@ -341,7 +346,8 @@ def search_form(title, note, def_o='TPE', def_d='TYO'):
 SF_JS = ('<script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toLowerCase(),'
          'a=f.dep.value,b=f.ret.value,t=b?"rt":"ow",'
          'u="https://tw.trip.com/flights/showfarefirst?dcity="+o+"&acity="+d+"&ddate="+a'
-         '+(b?"&rdate="+b:"")+"&triptype="+t+"&class=y&quantity=1&locale=zh-TW&curr=TWD";'
+         '+(b?"&rdate="+b:"")+"&triptype="+t+"&class=y&quantity=1&locale=zh-TW&curr=TWD"'
+         '+"' + AFF_Q + '&trip_sub1="+d;'
          'window.open(u,"_blank","noopener");return false;}</script>')
 
 # details 原生不會互斥、也不會因為點別處而收起來；沒有這段，
@@ -1605,6 +1611,7 @@ for d in deals_out:
     _verify=(f"https://tw.trip.com/flights/showfarefirst?dcity={_oc}&acity={_dc}"
              f"&ddate={d['dep']}&rdate={d['ret'] or d['dep']}"
              f"&triptype={'rt' if d['ret'] else 'ow'}&class=y&quantity=1&locale=zh-TW&curr=TWD"
+             f"{AFF_Q}&trip_sub1={_dc}"
              ) if _dc else '（轉乘方案，請分段查證）'
     lines.append(f"""✈️【{d['o']} → {d['c']}】NT${d['price']:,} {_lbl}
 

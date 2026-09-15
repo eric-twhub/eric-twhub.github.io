@@ -16,8 +16,14 @@
       "rate": "1-5.5%",
       "cookie": "7-30 天",
       "why": "繁中介面、TWD 計價、台灣有電視廣告與客服。分潤上限也高於 Aviasales",
-      "template": "TODO_貼上_TRIPCOM_分潤連結",
-      "fallback": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD"
+      "template": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828713",
+      "fallback": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD",
+      "affiliate": {
+        "Allianceid": "10585044",
+        "SID": "331341333",
+        "trip_sub3": "D19828713",
+        "_note": "Trip.com 聯盟平台產生；Allianceid=帳戶、SID=網站（台日機票速報）、trip_sub3=該連結識別碼。trip_sub1 留給本站填目的地代碼，用來看哪個航點帶來成交。"
+      }
     },
     "hotel": {
       "brand": "Agoda",
