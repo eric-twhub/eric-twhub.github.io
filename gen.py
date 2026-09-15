@@ -892,6 +892,43 @@ for slug,name,codes,reg,hotelcity in CITIES:
         intro+=f'目前快取中沒有台灣飛{name}的票價，可點下方查詢即時價格。'
     intro+='</p>'
 
+    # 卡片是按價格排序只取前 12 張，廉航一定洗版，全服務航空一張都擠不進來。
+    # 但資料裡有三分之一是全服務航空，想帶行李、想要好時段的人看不到自己要的數字。
+    _lcc_rt = sorted([x for x in fs if x['rt'] and x['cls'] == 'lcc'], key=lambda x: x['price'])
+    _fsc_rt = sorted([x for x in fs if x['rt'] and x['cls'] == 'fsc'], key=lambda x: x['price'])
+    # 樣本太少時不做這個比較：福岡只有 2 筆一般航空來回，
+    # 拿它當「最低價」會算出 NT$12,796 的假價差
+    FSC_MIN = 5
+    cmp_block = ''
+    if _lcc_rt and len(_fsc_rt) >= FSC_MIN:
+        _l, _f = _lcc_rt[0], _fsc_rt[0]
+        _gap = _f['price'] - _l['price']
+
+        def _slot(x):
+            return (f'{x["dept"]} → {x["rett"]}'
+                    if x.get('dept') and x.get('rett') else '—')
+
+        cmp_block = (
+          f'<h2>廉航和一般航空，差多少？</h2>'
+          f'<p class="lede">下面的卡片按價格排序，廉航幾乎一定排在前面。'
+          f'如果你想要含託運行李或比較好的時段，這裡先把兩邊的最低價並排：</p>'
+          '<div class="tw"><table><thead><tr><th>類型</th><th>來回最低</th>'
+          '<th>航空公司</th><th>出發日</th><th>去程起飛 → 回程起飛</th>'
+          '</tr></thead><tbody>'
+          f'<tr><td><b>廉航</b></td><td class="win"><b>{money(_l["price"])}</b></td>'
+          f'<td>{html.escape(_l["airname"])}</td><td>{_l["dep"]}</td>'
+          f'<td>{_slot(_l)}</td></tr>'
+          f'<tr><td><b>一般航空</b></td><td><b>{money(_f["price"])}</b></td>'
+          f'<td>{html.escape(_f["airname"])}</td><td>{_f["dep"]}</td>'
+          f'<td>{_slot(_f)}</td></tr>'
+          '</tbody></table></div>'
+          f'<p class="lede">差 <b>{money(_gap)}</b>。'
+          f'一般航空的票價通常已含託運行李，廉航多半要另外加購——'
+          f'真正要比的是「含行李之後」的價格。</p>'
+          f'<p class="disc">兩邊都是<b>本站紀錄中</b>的最低價，不是市場最低。'
+          f'全服務航空的促銷票常常不在快取裡，看到別處有更低的價格是正常的。'
+          f'共 {len(_lcc_rt)} 筆廉航來回、{len(_fsc_rt)} 筆一般航空來回。</p>')
+
     body=''
     if fs:
         rts=sorted([x for x in fs if x['rt']],key=lambda x:x['price'])[:12]
@@ -906,6 +943,13 @@ for slug,name,codes,reg,hotelcity in CITIES:
         if rts:
             body+=(f'<h3>來回機票</h3><div class="grid">'
                    +''.join(fare_card(x) for x in rts)+'</div>'+compare_line(name))
+        _shown = {id(x) for x in rts}
+        _fsc_show = [x for x in _fsc_rt if id(x) not in _shown][:4]
+        if _fsc_show:
+            body += (f'<h3>一般航空的來回選擇</h3>'
+                     f'<p class="lede">上面的排序被廉航佔滿時，這裡單獨列出票價最低的'
+                     f'幾筆一般航空紀錄。</p><div class="grid">'
+                     + ''.join(fare_card(x) for x in _fsc_show) + '</div>')
         if ows:
             body+=f'<h3>單程機票</h3><div class="grid">'+''.join(fare_card(x) for x in ows)+'</div>'
         if len(airs)>1:
@@ -966,7 +1010,8 @@ for slug,name,codes,reg,hotelcity in CITIES:
     write(f'{slug}/index.html', head(title,desc,f'{slug}/')
         + crumbs([('首頁','/'),(REGNAME[reg],f'/{reg}/'),(f'{name}機票',None)])
         + topnav(reg) + f'<h1>{name}機票</h1>' + intro
-        + f'<p class="upd">更新於 {NOWS}　·　共 {len(fs)} 筆票價</p>' + body + foot())
+        + f'<p class="upd">更新於 {NOWS}　·　共 {len(fs)} 筆票價</p>'
+        + cmp_block + body + foot())
     pages.append((f'/{slug}/',0.8 if fs else 0.5))
 
 # ---------- 地區頁（導覽用，非 SEO 主力）----------
