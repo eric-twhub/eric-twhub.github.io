@@ -480,6 +480,8 @@ font-weight:600;letter-spacing:.05em}
 
 h2{font-size:1.28rem;margin:40px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--acc)}
 h3{font-size:1.02rem;margin:26px 0 8px}
+h3.grp{font-size:.78rem;letter-spacing:.12em;color:var(--dim);font-weight:700;margin:34px 0 0;text-transform:uppercase}
+h3 .tag{font-size:.7rem;font-weight:600;color:var(--dim);margin-left:7px;border:1px solid var(--line);border-radius:5px;padding:1px 5px;vertical-align:middle}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px;margin-top:12px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 14px;
 display:flex;flex-direction:column;gap:6px}
@@ -1288,21 +1290,30 @@ if os.path.exists('ski.json'):
 
     _skrows = ''
     for a in SK['airlines']:
+        _tight = bool(a['side_cm']) and a['side_cm'] < 150
         _side = (f'<b>{a["side_cm"]} 公分</b>' if a['side_cm'] else '未列')
+        if a.get('side_short'):
+            _side += f'{_SM2}{html.escape(a["side_short"])}</small>'
         _skrows += (f'<tr><td><b>{html.escape(a["name"])}</b>'
                     f'{_SM2}{"廉航" if a["cls"] == "lcc" else "一般航空"}</small></td>'
                     f'<td>{_cm(a["total_cm"])}</td>'
-                    f'<td class="{"lose" if a["side_cm"] else ""}">{_side}</td>'
+                    f'<td class="{"lose" if _tight else ""}">{_side}</td>'
                     f'<td>{_cm(a["max_kg"], "公斤")}</td>'
                     f'<td>{html.escape(a["notify"])}</td></tr>')
 
-    _skcards = ''.join(
-        f'<h3>{html.escape(a["name"])}</h3>'
-        f'<p class="lede">{html.escape(a["counts"])}。{html.escape(a["side_note"])}。</p>'
-        f'<p class="lede">{html.escape(a["extra"])}</p>'
-        f'<p class="disc">出處：<a href="{a["src"]}" rel="nofollow" target="_blank">'
-        f'{html.escape(a["src_name"])}</a>，查證於 {SK["checked"]}。</p>'
-        for a in SK['airlines'])
+    def _skcard(a):
+        return (f'<h3>{html.escape(a["name"])}<span class="tag">{a["code"]}</span></h3>'
+                f'<p class="lede">{html.escape(a["counts"])}。{html.escape(a["side_note"])}。</p>'
+                f'<p class="lede">{html.escape(a["extra"])}</p>'
+                f'<p class="disc">出處：<a href="{a["src"]}" rel="nofollow" target="_blank">'
+                f'{html.escape(a["src_name"])}</a>，查證於 {SK["checked"]}。</p>')
+
+    _skcards = ''
+    for _cls, _lbl in (('lcc', '廉價航空'), ('fsc', '一般航空')):
+        _grp = [a for a in SK['airlines'] if a['cls'] == _cls]
+        if _grp:
+            _skcards += (f'<h3 class="grp">{_lbl}</h3>'
+                         + ''.join(_skcard(a) for a in _grp))
 
     _sktraps = ''.join(
         f'<h3>{i}. {html.escape(t["title"])}</h3>'
@@ -1326,6 +1337,8 @@ if os.path.exists('ski.json'):
 
     _sk_lcc = [a for a in SK['airlines'] if a['cls'] == 'lcc']
     _sk_side = [a for a in SK['airlines'] if a['side_cm']]
+    _skn = len(SK['airlines'])
+    _skn_cn = '零一二三四五六七八九十'[_skn] if _skn <= 10 else str(_skn)
 
     sk_faq = [
      ('雪板袋可以順便塞雪衣雪褲嗎？',
@@ -1337,18 +1350,24 @@ if os.path.exists('ski.json'):
       '若你的票是計件制，分開裝可能多付一件的錢；若是計重制（如台灣虎航），'
       '重量一樣就沒差，但兩件都得符合尺寸限制。'),
      ('為什麼有些航空要我先打電話？',
-      f'因為雪板多半超出他們的標準尺寸。星宇要求起飛前 24 小時（不含例假日）聯絡客服，'
-      f'長榮建議出發前 48 小時聯繫訂位部，華航與台灣虎航則要求訂位時或事先告知。'
-      f'沒先講而現場被拒載，機票錢不會退給你。'),
+      '因為雪板多半超出他們的標準尺寸。星宇要求起飛前 24 小時（不含例假日）聯絡客服，'
+      '長榮建議出發前 48 小時聯繫訂位部，華航與台灣虎航要求訂位時或事先告知，'
+      '日本航空在 737 機材、單邊超過 79 公分時要先問國際線客服，'
+      '全日空則是三邊和超過 203 公分要先聯繫，官網還特別寫「確認可能需要時間，請及早聯絡」。'
+      '不必先打電話的只有樂桃與捷星日本——它們把超尺寸做成可以線上加購的選項。'
+      '沒先講而現場被拒載，機票錢不會退給你。'),
      ('市售雪板袋通常多長？會超過限制嗎？',
-      '常見的雪板袋落在 150–170 公分。台灣虎航規定任何一邊須在 100 公分以內，'
-      '星宇在行李無法倒放時 A321neo 的單邊上限同樣是 100 公分，'
-      '兩者都會超過，必須先聯絡客服確認該班機能不能載。'
-      'A330neo 與 A350 的單邊上限是 150 公分，仍有可能不夠。'),
-     ('為什麼這頁只列四家？',
-      f'因為只有這四家的條款我逐項對過官網原文。其餘 {len(SK["pending"])} 家'
-      f'（{html.escape("、".join(SK["pending"][:4]))} 等）還沒查證，與其抄第三方整理，不如先空著。'
-      '本站寧可資料少但每個數字都有出處。'),
+      '常見的雪板袋落在 150–170 公分，而大多數航空的單邊門檻都在這之下。'
+      '日本航空的 737 機材是 79 公分，台灣虎航是 100 公分，'
+      '星宇在行李無法倒放時 A321neo 也是 100 公分（A330neo 與 A350 放寬到 150 公分，仍可能不夠），'
+      '捷星日本則是超過 100 公分就算大型行李、要另外付費。'
+      '唯一放得下的是樂桃：深度上限 230 公分，加購超大行李選項即可。'
+      '酷航則是另一種卡法——它限制的是三邊總和 158 公分，一片 160 公分的板單邊就超了。'),
+     (f'為什麼只列這 {_skn} 家？',
+      f'因為只有這 {_skn} 家的條款逐項對過官網原文。'
+      + (f'其餘 {len(SK["pending"])} 家（{html.escape("、".join(SK["pending"]))}）還沒查證，'
+         '與其抄第三方整理，不如先空著。' if SK['pending'] else '')
+      + '本站寧可資料少但每個數字都有出處。'),
     ]
     sk_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in sk_faq)
@@ -1356,10 +1375,10 @@ if os.path.exists('ski.json'):
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
         for q, a in sk_faq]}, ensure_ascii=False)
 
-    sk_title = '雪具託運規則：台灣飛日本各航空公司比較（尺寸、單邊長度、事先申請）'
-    sk_desc = ('台灣虎航、星宇、長榮、中華的滑雪裝備託運規定逐條對照，'
-               '附官網出處。重點不是重量——虎航與星宇 A321neo 的單邊長度上限都是 100 公分，'
-               '市售雪板袋多半 150 公分以上。')
+    sk_title = f'雪具託運規則：台灣飛日本 {_skn} 家航空比較（尺寸、單邊長度、事先申請）'
+    sk_desc = ('台灣虎航、樂桃、捷星日本、酷航、星宇、長榮、中華、日航、全日空的滑雪裝備'
+               '託運規定逐條對照，附官網出處。重點不是重量——日航 737 的單邊上限只有 79 公分，'
+               '虎航與星宇 A321neo 是 100 公分，市售雪板袋多半 150 公分以上。')
 
     write('japan-ski-baggage/index.html',
       head(sk_title, sk_desc, 'japan-ski-baggage/',
@@ -1367,21 +1386,27 @@ if os.path.exists('ski.json'):
       + crumbs([('首頁', '/'), ('雪具託運規則', None)]) + topnav()
       + '<h1>帶雪具去日本，行李要怎麼算？</h1>'
       + f'<p class="lede">{html.escape(SK["intro"])}</p>'
-      + f'<div class="today"><div class="tday">四家航空的條款逐項對過官網，查證於 {SK["checked"]}</div>'
+      + f'<div class="today"><div class="tday">{_skn_cn}家航空的條款逐項對過官網，'
+        f'查證於 {SK["checked"]}</div>'
         f'<div class="tans">會卡住你的是<b>單邊長度</b>，不是重量</div>'
-        f'<div class="tsub">台灣虎航規定任何一邊須在 100 公分以內；'
-        f'星宇在行李無法倒放時，A321neo 的單邊上限也是 100 公分。'
-        f'市售雪板袋多半 150–170 公分——這兩家都得先聯絡客服。</div>'
+        f'<div class="tsub">日本航空的 737 機材寫明單邊超過 79 公分要先聯繫；'
+        f'台灣虎航規定任何一邊須在 100 公分以內；星宇在行李無法倒放時，'
+        f'A321neo 的單邊上限也是 100 公分。市售雪板袋多半 150–170 公分——這三家都得先問過。</div>'
         f'<div class="tbuf">而且雪具幾乎都是<b>計入你原本的託運額度</b>，不是另外一筆。'
-        f'買足重量之外，還要確認尺寸過得了。</div></div>'
-      + '<h2>四家航空對照</h2>'
+        f'買足重量之外，還要確認尺寸過得了。'
+        f'唯二不必先打電話的是樂桃（深度可到 230 公分）與捷星日本（超尺寸可線上加購），'
+        f'但兩家都要另外付一筆超大行李費。</div></div>'
+      + f'<h2>{_skn_cn}家航空對照</h2>'
       + '<div class="tw"><table><thead><tr><th>航空公司</th><th>總尺寸門檻</th>'
         '<th>單邊長度上限</th><th>單件重量上限</th><th>要不要事先申請</th>'
         '</tr></thead><tbody>' + _skrows + '</tbody></table></div>'
-      + '<p class="disc">總尺寸為長＋寬＋高。各家「門檻」的意義不同：'
-        '台灣虎航的 203 公分是規定上限，星宇超過 203 公分要事先聯絡客服（292 公分以上不收），'
-        '中華與長榮則是超過後開始加收超額費。超過門檻不代表一定不能帶，'
-        '多數是「需事先申請、且限貨艙可裝載時受理」，但沒先問而現場被拒載，機票錢不會退。</p>'
+      + '<p class="disc">總尺寸為長＋寬＋高，單邊長度欄標紅的是門檻低於一般板袋長度（150 公分）的航空。'
+        '各家「門檻」的意義不同：台灣虎航的 203 公分是規定上限，'
+        '樂桃超過 203 公分要加購超大行李選項，星宇超過 203 公分要事先聯絡客服（292 公分以上不收），'
+        '中華、長榮、全日空則是超過後開始加收超額費，酷航的 158 公分沒有另外的放寬條款。'
+        '捷星日本不看總尺寸，只看單邊有沒有超過 100 公分。'
+        '超過門檻不代表一定不能帶，多數是「需事先申請、且限貨艙可裝載時受理」，'
+        '但沒先問而現場被拒載，機票錢不會退。</p>'
       + '<h2>三個會讓你多付錢的地方</h2>' + _sktraps
       + '<h2>各家的完整規定</h2>' + _skcards
       + (('<h2>雪場航點的機票</h2>'
