@@ -640,7 +640,8 @@ def topnav(cur=''):
 
     kinds = (link('/japan-flight-good-times/', '☀️ 早去晚回')
              + link('/deals/', '🔥 今日特價')
-            + link('/japan-flight-baggage/', '🧳 廉航行李費'))
+            + link('/japan-flight-baggage/', '🧳 廉航行李費')
+            + link('/japan-ski-baggage/', '🎿 雪具託運'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -881,6 +882,10 @@ def money(n): return f'NT${n:,}'
 
 # 行李費用（城市頁的比價要用，完整說明另有專頁）
 BAG = json.load(open('baggage.json', encoding='utf-8')) if os.path.exists('baggage.json') else None
+
+# 東京青旅（城市頁的交叉連結要引用最低價，專頁在檔案下方產生）
+HS = json.load(open('hostels.json', encoding='utf-8')) if os.path.exists('hostels.json') else None
+HS_MIN = min((r['night'] for r in HS['rows']), default=None) if HS else None
 BAG_RT = (BAG['ref']['per_leg'] * 2) if BAG else 0
 
 pages=[]  # (url, lastmod, priority)
@@ -1055,6 +1060,11 @@ for slug,name,codes,reg,hotelcity in CITIES:
             _hsub = f'到 {_hb} 查{hotelcity}房價，繁體中文、台幣計價'
         body+=cta('hotel',name,hotelcity,f'看好機票了？接著找{name}的住宿',
                   _hsub, track=slug, ci=_ci, co=_co)
+        # 東京另有青旅專頁：清晨回程的最後一晚不能訂市區，那件事在這裡講不完
+        if slug == 'tokyo' and HS_MIN:
+            body += (f'<p class="lede">想住便宜一點？'
+                     f'<a href="{U("/tokyo/hostel/")}">東京青年旅館一晚 {money(HS_MIN)} 起的實查價格</a>，'
+                     f'另附清晨回程的最後一晚該怎麼處理。</p>')
     body+=faq_block(name,fs,codes)
     body+=klook_tours(slug,name)
     # 當地玩樂的分潤是機票的八倍（4% vs 0.5%），而且看完機票住宿的下一個問題
@@ -1264,6 +1274,132 @@ if os.path.exists('baggage.json'):
         '本頁數字查證於 ' + BG['checked'] + '，購票前請以航空公司官網為準。</p>'
       + foot())
     pages.append(('/japan-flight-baggage/', 0.7))
+
+
+# ---------- 雪具託運 ----------
+# 「雪具託運」是明確的搜尋意圖，而且季節性強（雪季 12 月起，現在正在訂機票）。
+# 各家對「單邊長度」的限制差很多，但攻略多半只談重量——這頁把長度講清楚。
+if os.path.exists('ski.json'):
+    SK = json.load(open('ski.json', encoding='utf-8'))
+    _SM2 = '<br><small style="color:var(--dim)">'
+
+    def _cm(v, unit='公分'):
+        return f'{v} {unit}' if v else '—'
+
+    _skrows = ''
+    for a in SK['airlines']:
+        _side = (f'<b>{a["side_cm"]} 公分</b>' if a['side_cm'] else '未列')
+        _skrows += (f'<tr><td><b>{html.escape(a["name"])}</b>'
+                    f'{_SM2}{"廉航" if a["cls"] == "lcc" else "一般航空"}</small></td>'
+                    f'<td>{_cm(a["total_cm"])}</td>'
+                    f'<td class="{"lose" if a["side_cm"] else ""}">{_side}</td>'
+                    f'<td>{_cm(a["max_kg"], "公斤")}</td>'
+                    f'<td>{html.escape(a["notify"])}</td></tr>')
+
+    _skcards = ''.join(
+        f'<h3>{html.escape(a["name"])}</h3>'
+        f'<p class="lede">{html.escape(a["counts"])}。{html.escape(a["side_note"])}。</p>'
+        f'<p class="lede">{html.escape(a["extra"])}</p>'
+        f'<p class="disc">出處：<a href="{a["src"]}" rel="nofollow" target="_blank">'
+        f'{html.escape(a["src_name"])}</a>，查證於 {SK["checked"]}。</p>'
+        for a in SK['airlines'])
+
+    _sktraps = ''.join(
+        f'<h3>{i}. {html.escape(t["title"])}</h3>'
+        f'<p class="lede">{html.escape(t["body"])}</p>'
+        f'<p class="disc">依據：{html.escape(t["who"])}官網條款。</p>'
+        for i, t in enumerate(SK['traps'], 1))
+
+    # 雪場航點的即時票價——看完規則的下一步就是訂票
+    _SKI_CITY = [('sapporo', '札幌'), ('hakodate', '函館'), ('sendai', '仙台'),
+                 ('aomori', '青森'), ('akita', '秋田'), ('morioka', '盛岡・花卷')]
+    _skfare = ''
+    for _s, _n in _SKI_CITY:
+        _f = by_city.get(_s) or []
+        if not _f:
+            continue
+        _b = best(_f, True) or best(_f, False)
+        _skfare += (f'<tr><td><a href="{U("/"+_s+"/")}"><b>{_n}</b></a></td>'
+                    f'<td><b>{money(_b["price"])}</b>{_SM2}'
+                    f'{html.escape(_b["airname"])}・{"來回" if _b["rt"] else "單程"}含稅</small></td>'
+                    f'<td>{_b["dep"]}</td></tr>')
+
+    _sk_lcc = [a for a in SK['airlines'] if a['cls'] == 'lcc']
+    _sk_side = [a for a in SK['airlines'] if a['side_cm']]
+
+    sk_faq = [
+     ('雪板袋可以順便塞雪衣雪褲嗎？',
+      '不要。長榮與華航的條款都寫明，運動器材包裝內含衣物或非運動用物品時，'
+      '整件會被視為一般行李並加收超尺寸費用。板袋只放板、靴、杖，衣服放行李箱。'),
+     ('雪板和雪靴分開裝比較好嗎？',
+      '要看你的額度。中華航空寫明「如果一套運動器材分開包裝，則不會被視為單一行李，'
+      '收費金額依實際託運的行李件數來計算」——分開裝就是兩件。'
+      '若你的票是計件制，分開裝可能多付一件的錢；若是計重制（如台灣虎航），'
+      '重量一樣就沒差，但兩件都得符合尺寸限制。'),
+     ('為什麼有些航空要我先打電話？',
+      f'因為雪板多半超出他們的標準尺寸。星宇要求起飛前 24 小時（不含例假日）聯絡客服，'
+      f'長榮建議出發前 48 小時聯繫訂位部，華航與台灣虎航則要求訂位時或事先告知。'
+      f'沒先講而現場被拒載，機票錢不會退給你。'),
+     ('市售雪板袋通常多長？會超過限制嗎？',
+      '常見的雪板袋落在 150–170 公分。台灣虎航規定任何一邊須在 100 公分以內，'
+      '星宇在行李無法倒放時 A321neo 的單邊上限同樣是 100 公分，'
+      '兩者都會超過，必須先聯絡客服確認該班機能不能載。'
+      'A330neo 與 A350 的單邊上限是 150 公分，仍有可能不夠。'),
+     ('為什麼這頁只列四家？',
+      f'因為只有這四家的條款我逐項對過官網原文。其餘 {len(SK["pending"])} 家'
+      f'（{html.escape("、".join(SK["pending"][:4]))} 等）還沒查證，與其抄第三方整理，不如先空著。'
+      '本站寧可資料少但每個數字都有出處。'),
+    ]
+    sk_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in sk_faq)
+    sk_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in sk_faq]}, ensure_ascii=False)
+
+    sk_title = '雪具託運規則：台灣飛日本各航空公司比較（尺寸、單邊長度、事先申請）'
+    sk_desc = ('台灣虎航、星宇、長榮、中華的滑雪裝備託運規定逐條對照，'
+               '附官網出處。重點不是重量——虎航與星宇 A321neo 的單邊長度上限都是 100 公分，'
+               '市售雪板袋多半 150 公分以上。')
+
+    write('japan-ski-baggage/index.html',
+      head(sk_title, sk_desc, 'japan-ski-baggage/',
+           '<script type="application/ld+json">' + sk_ld + '</script>')
+      + crumbs([('首頁', '/'), ('雪具託運規則', None)]) + topnav()
+      + '<h1>帶雪具去日本，行李要怎麼算？</h1>'
+      + f'<p class="lede">{html.escape(SK["intro"])}</p>'
+      + f'<div class="today"><div class="tday">四家航空的條款逐項對過官網，查證於 {SK["checked"]}</div>'
+        f'<div class="tans">會卡住你的是<b>單邊長度</b>，不是重量</div>'
+        f'<div class="tsub">台灣虎航規定任何一邊須在 100 公分以內；'
+        f'星宇在行李無法倒放時，A321neo 的單邊上限也是 100 公分。'
+        f'市售雪板袋多半 150–170 公分——這兩家都得先聯絡客服。</div>'
+        f'<div class="tbuf">而且雪具幾乎都是<b>計入你原本的託運額度</b>，不是另外一筆。'
+        f'買足重量之外，還要確認尺寸過得了。</div></div>'
+      + '<h2>四家航空對照</h2>'
+      + '<div class="tw"><table><thead><tr><th>航空公司</th><th>總尺寸門檻</th>'
+        '<th>單邊長度上限</th><th>單件重量上限</th><th>要不要事先申請</th>'
+        '</tr></thead><tbody>' + _skrows + '</tbody></table></div>'
+      + '<p class="disc">總尺寸為長＋寬＋高。各家「門檻」的意義不同：'
+        '台灣虎航的 203 公分是規定上限，星宇超過 203 公分要事先聯絡客服（292 公分以上不收），'
+        '中華與長榮則是超過後開始加收超額費。超過門檻不代表一定不能帶，'
+        '多數是「需事先申請、且限貨艙可裝載時受理」，但沒先問而現場被拒載，機票錢不會退。</p>'
+      + '<h2>三個會讓你多付錢的地方</h2>' + _sktraps
+      + '<h2>各家的完整規定</h2>' + _skcards
+      + (('<h2>雪場航點的機票</h2>'
+          '<p class="lede">規則看完了，票價順便看一下。以下是本站紀錄中，'
+          '台灣飛這幾個雪場門戶的最低價。</p>'
+          '<div class="tw"><table><thead><tr><th>航點</th><th>本站最低紀錄</th><th>出發日</th>'
+          '</tr></thead><tbody>' + _skfare + '</tbody></table></div>'
+          + fare_cta('sapporo', '札幌現在多少錢')) if _skfare else '')
+      + '<h2>常見問題</h2>' + sk_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
+        f'<s>加購行李的費率與時機</s></a>'
+      + f'<a class="ct" href="{U("/sapporo/")}"><b>札幌機票</b><s>北海道雪場門戶</s></a>'
+      + f'<a class="ct" href="{U("/hakodate/")}"><b>函館機票</b><s>道南</s></a></div>'
+      + f'<p class="disc">各航空的行李規定與費率隨時可能調整，本頁條款查證於 {SK["checked"]}，'
+        f'出發前請以航空公司官網為準。雪具能否託運最終以航空公司現場判定為準。</p>'
+      + foot())
+    pages.append(('/japan-ski-baggage/', 0.7))
 
 # ---------- 地區頁（導覽用，非 SEO 主力）----------
 for reg,rname in REGIONS:
@@ -3633,6 +3769,190 @@ if os.path.exists('cards.json'):
         print(f'   日本購物折扣頁：{len(CP["stores"])} 家店')
 
     print(f'   旅日信用卡：{len(CD["cards"])} 張卡頁 ＋ 比較頁 ＋ 計算機（查證 {CD["checked"]}）')
+
+# ---------- 東京青年旅館 ----------
+if HS:
+    _hs_s = HS['sample']; _hs_r = HS['redeye']; _hs_ap = HS['airport']
+    _hs_cid = HS['city_id']
+    _SM = '<br><small style="color:var(--dim)">'
+
+    # 住宿分潤參數取自 partners.json 的 hotel template，不要在這裡寫死第二份
+    _hs_aff = {k: v for k, v in
+               urllib.parse.parse_qsl(urllib.parse.urlsplit(P['hotel']['template']).query)
+               if k in ('Allianceid', 'SID', 'trip_sub3')}
+
+    def hostel_url(hid, sub, ci=None, co=None):
+        """單一旅館的訂房頁，帶上查價日期與分潤參數。
+        用 detail 頁而非列表頁：使用者已經在本頁挑好了，再丟回列表等於要他重挑一次。"""
+        q = {'cityId': _hs_cid, 'hotelId': hid,
+             'checkIn': ci or _hs_s['checkin'], 'checkOut': co or _hs_s['checkout'],
+             'adult': _hs_s['adult'], 'children': 0, 'crn': 1,
+             'curr': 'TWD', 'locale': 'zh-TW'}
+        q.update(_hs_aff)
+        q['trip_sub1'] = sub
+        return 'https://tw.trip.com/hotels/detail/?' + urllib.parse.urlencode(q)
+
+    # 列表頁：住宿類型只留青年旅社（TAG_519）與膠囊旅館（TAG_520），並依含稅價由低到高排序。
+    # listFilters 的格式是 Trip.com 自己的，實際點開驗過才寫進來，不要自行推測其他 TAG 編號。
+    _hs_list = (f'https://tw.trip.com/hotels/list?cityId={_hs_cid}&countryId=78'
+                f'&cityName={urllib.parse.quote(HS["city"])}'
+                f'&destName={urllib.parse.quote(HS["city"])}&searchType=CT'
+                f'&checkin={_hs_s["checkin"]}&checkout={_hs_s["checkout"]}'
+                f'&crn=1&adult={_hs_s["adult"]}'
+                f'&listFilters=75~TAG_519*75*519,75~TAG_520*75*520,17~3*17*3'
+                f'&curr=TWD&locale=zh-TW'
+                + ''.join(f'&{k}={v}' for k, v in _hs_aff.items())
+                + '&trip_sub1=tokyo-hostel-list')
+
+    _hs_sorted = sorted(HS['rows'], key=lambda r: r['night'])
+    _hs_lo, _hs_hi = _hs_sorted[0], _hs_sorted[-1]
+    _hs_n = _hs_s['nights']
+
+    _hs_rows = ''
+    for r in _hs_sorted:
+        _hs_rows += (
+            f'<tr><td><b>{html.escape(r["name"])}</b>{_SM}{html.escape(r["area"])}・'
+            f'{html.escape(r["room"])}</small></td>'
+            f'<td>{r["score"]}{_SM}{r["reviews"]} 則</small></td>'
+            f'<td><b>{money(r["night"])}</b>{_SM}{_hs_n} 晚 {money(r["total"])}</small></td>'
+            f'<td>{html.escape(r["near"])}</td>'
+            f'<td><a class="btn" href="{html.escape(hostel_url(r["id"], "tokyo-hostel-" + r["id"]))}" '
+            f'target="_blank" rel="nofollow noopener sponsored">查空房</a></td></tr>')
+
+    _hs_faq = [
+     ('東京的青年旅館一晚大概多少錢？',
+      f'本站在 {HS["checked"]} 查 {_hs_s["checkin"]} – {_hs_s["checkout"]} 這 {_hs_n} 晚、'
+      f'單人含稅的實際可訂價格，區間是 {money(_hs_lo["night"])} 到 {money(_hs_hi["night"])} 一晚。'
+      f'最低的那幾家在{_hs_lo["area"]}、{_hs_sorted[1]["area"]}這種離都心一段距離的地方；'
+      f'走得到鬧區的（{_hs_sorted[2]["area"]}、{_hs_sorted[3]["area"]}一帶）大約 '
+      f'{money(_hs_sorted[2]["night"])} 起。'
+      '房價每天變動，這是查價當天的快照，不是保證。'),
+     ('清晨起飛的班機，最後一晚該住哪裡？',
+      f'住機場，不要住市區。以 {_hs_r["example_flight"]} 為例，{_hs_r["example_dep"]} 起飛，'
+      f'報到櫃檯在起飛前 {_hs_r["checkin_close_min"]} 分鐘關閉，也就是 04:40 前必須辦完。'
+      f'而{_hs_r["first_train"]["from"]}往{_hs_r["terminal"]}的第一班電車是 '
+      f'{_hs_r["first_train"]["dep"]} 發——電車抵達的時候，飛機已經走了。'
+      '早朝巴士也只到 4 點多。所以最後一晚訂市區住宿，等於訂了一個你不能睡的房間。'),
+     ('那最後一晚的選擇有哪些？',
+      f'兩個。一是在{_hs_r["terminal"]}過夜，航廈 24 小時開放，費用是零；'
+      f'二是住與航廈直接相連的飯店，例如{_hs_ap["name"]}，'
+      f'查價當天一晚 {money(_hs_ap["night"])}。'
+      '差別是你願不願意為幾個小時的睡眠付這筆錢——如果隔天要上班，通常值得。'),
+     ('床位房和膠囊旅館差在哪？',
+      '床位房是一個房間裡放數張上下舖，中間多半只有簾子；膠囊是一人一個有門或簾的獨立艙，'
+      '隔音與私密性較好，價格通常高一到兩百元。'
+      '兩種都是共用衛浴。本表兩種都收，房型欄位有標。'),
+     ('訂之前要特別確認什麼？',
+      '第一是櫃檯時間。清晨落地的紅眼班機，很多青旅的櫃檯根本還沒開，'
+      '要挑 24 小時櫃檯或明寫可深夜入住的。第二是性別限制，'
+      '本表有幾家的該價位房型是女性或男性專用。第三是入住時間，'
+      '一般是下午三四點才能進房，清晨到只能先寄放行李。'),
+    ]
+    _hs_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                       + html.escape(a) + '</div></details>' for q, a in _hs_faq)
+    _hs_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in _hs_faq]}, ensure_ascii=False)
+
+    write('tokyo/hostel/index.html',
+      head(f'東京青年旅館｜一晚 {money(_hs_lo["night"])} 起，'
+           f'清晨班機的最後一晚別訂市區',
+           f'東京青年旅館與膠囊旅館的實查價格，一晚 {money(_hs_lo["night"])} 起（'
+           f'{HS["checked"]} 查證，{_hs_n} 晚單人含稅）。'
+           f'另附清晨起飛班機的最後一晚怎麼算——報到截止時間比第一班電車還早。',
+           'tokyo/hostel/',
+           '<script type="application/ld+json">' + _hs_ld + '</script>')
+      + crumbs([('首頁', '/'), ('東京機票', '/tokyo/'), ('東京青年旅館', None)]) + topnav()
+      + '<h1>東京青年旅館怎麼挑</h1>'
+      + f'<p class="lede">東京市區一晚 {money(_hs_lo["night"])} 起是真的。'
+        f'但如果你的回程是清晨起飛的廉航，<b>最後一晚不管多便宜都不要訂市區</b>——'
+        f'先看完下面這段再去比價。</p>'
+      + f'<div class="today"><div class="tday">房價查證於 {HS["checked"]}'
+        f'　·　樣本 {_hs_s["checkin"]} – {_hs_s["checkout"]}，{_hs_n} 晚單人含稅</div>'
+        f'<div class="tans">{len(HS["rows"])} 家實查，一晚 {money(_hs_lo["night"])} – '
+        f'{money(_hs_hi["night"])}</div>'
+        f'<div class="tsub">房價每天變動，本頁是查價當天的快照而非最低價保證。'
+        f'表格右邊的按鈕會帶著同一組日期開到該旅館的訂房頁，可以直接對照現在的價格。</div>'
+        f'</div>'
+      + '<h2>清晨起飛：那一晚你買不到能睡的房間</h2>'
+      + f'<p class="lede">廉航的回程常常落在清晨五點多。看起來是多賺一晚，'
+        f'實際上是<b>少了一晚</b>。以 {html.escape(_hs_r["example_flight"])} 為例：</p>'
+      + '<div class="tw"><table><thead><tr><th>時間</th><th>發生什麼事</th>'
+        '</tr></thead><tbody>'
+      + f'<tr><td>02:55</td><td>報到櫃檯開始受理（{html.escape(_hs_r["checkin_open"])}）</td></tr>'
+      + f'<tr class="win"><td><b>04:40</b></td><td><b>報到截止</b>'
+        f'（起飛前 {_hs_r["checkin_close_min"]} 分鐘），這之後到了也上不了飛機</td></tr>'
+      + f'<tr><td>{_hs_r["first_train"]["dep"]}</td>'
+        f'<td>{html.escape(_hs_r["first_train"]["from"])}往{html.escape(_hs_r["terminal"])}'
+        f'的<b>第一班電車才發車</b>（{html.escape(_hs_r["first_train"]["line"])}）</td></tr>'
+      + f'<tr><td>{_hs_r["example_dep"]}</td><td>飛機起飛</td></tr>'
+      + '</tbody></table></div>'
+      + f'<p class="disc">報到時間出處：'
+        f'<a href="{_hs_r["checkin_src"]}" rel="nofollow" target="_blank">'
+        f'{html.escape(_hs_r["checkin_src_name"])}</a>；'
+        f'{html.escape(_hs_r["checkin_note"])}。'
+        f'首班電車出處：<a href="{_hs_r["first_train"]["src"]}" rel="nofollow" target="_blank">'
+        f'{html.escape(_hs_r["first_train"]["src_name"])}</a>。'
+        f'{html.escape(_hs_r["bus"]["note"])}（'
+        f'<a href="{_hs_r["bus"]["src"]}" rel="nofollow" target="_blank">'
+        f'{html.escape(_hs_r["bus"]["src_name"])}</a>）。以上查證於 {HS["checked"]}，'
+        f'出發前請依自己的班機重算一次。</p>'
+      + '<div class="tldr"><ul>'
+        '<li><b>電車比報到截止還晚。</b>不是「趕一下應該可以」，是時刻表上就到不了。</li>'
+        '<li><b>計程車不是省錢方案。</b>深夜從都心到羽田的車資，'
+        '通常超過你那晚青旅房費的好幾倍，算下來不如直接住機場。</li>'
+        f'<li><b>所以最後一晚只有兩個選項：</b>在{html.escape(_hs_r["terminal"])}過夜（'
+        f'24 小時開放，零元），或住航廈直結的飯店。</li>'
+        '</ul></div>'
+      + f'<h2>最後一晚住機場</h2>'
+      + f'<p class="lede">{html.escape(_hs_ap["note"])}，不必賭任何一班車。</p>'
+      + '<div class="tw"><table><thead><tr><th>住宿</th><th>評分</th><th>一晚</th>'
+        '<th>　</th></tr></thead><tbody>'
+      + f'<tr><td><b>{html.escape(_hs_ap["name"])}</b>{_SM}'
+        f'{html.escape(_hs_ap["en"])}</small></td>'
+        f'<td>{_hs_ap["score"]}{_SM}{_hs_ap["reviews"]:,} 則</small></td>'
+        f'<td><b>{money(_hs_ap["night"])}</b>{_SM}'
+        f'{_hs_ap["sample"]["checkin"]} – {_hs_ap["sample"]["checkout"]}</small></td>'
+        f'<td><a class="btn" href="'
+        f'{html.escape(hostel_url(_hs_ap["id"], "tokyo-hnd-lastnight", _hs_ap["sample"]["checkin"], _hs_ap["sample"]["checkout"]))}" '
+        f'target="_blank" rel="nofollow noopener sponsored">查空房</a></td></tr>'
+      + '</tbody></table></div>'
+      + f'<p class="disc">價格查證於 {HS["checked"]}。'
+        f'同期間的市區青旅一晚大約 {money(_hs_lo["night"])}，兩者差約 '
+        f'{money(_hs_ap["night"] - _hs_lo["night"])}——這筆錢買的是不用在航廈長椅上坐到天亮。</p>'
+      + f'<h2>市區這 {_hs_n} 晚：{len(HS["rows"])} 家實查價格</h2>'
+      + f'<p class="lede">依每晚價格由低到高。價格是床位房的單人價（不是整間），'
+        f'含稅含費用，樣本日期 {_hs_s["checkin"]} – {_hs_s["checkout"]}。</p>'
+      + '<div class="tw"><table><thead><tr><th>住宿</th><th>評分</th>'
+        f'<th>每晚 / {_hs_n} 晚</th><th>位置</th><th>　</th></tr></thead><tbody>'
+      + _hs_rows + '</tbody></table></div>'
+      + f'<p class="disc">資料來源：{html.escape(_hs_s["src_name"])}，查證於 {HS["checked"]}。'
+        f'{html.escape(_hs_s["note"])}。'
+        f'本表不是東京所有青旅的排行，是查價當天實際可訂、且評論數足以參考的幾家。</p>'
+      + '<h2>哪一家值得挑</h2><div class="tldr"><ul>'
+      + ''.join(f'<li><b>{html.escape(r["name"])}（{money(r["night"])}／晚）</b>'
+                f'{html.escape(r["pick"])}。</li>'
+                for r in _hs_sorted if r.get('pick'))
+      + '</ul></div>'
+      + (f'<a class="cta" href="{html.escape(_hs_list)}" target="_blank" '
+         f'rel="nofollow noopener sponsored"><span class="ci">{P["hotel"]["icon"]}</span>'
+         f'<span class="ct"><b>自己看完整的 {HS["city"]}青旅清單</b>'
+         f'<s>到 {P["hotel"]["brand"]} 看全部，已篩青年旅館＋膠囊、依含稅價排序</s></span>'
+         f'<span class="ca">→</span></a>')
+      + '<h2>常見問題</h2>' + _hs_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b>'
+        f'<s>廉航與一般航空並列，每日更新</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
+        f'<s>不想住機場，就從班次時段挑起</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
+        f'<s>省下的房費別又賠在行李上</s></a></div>'
+      + f'<p class="disc">房價由平台即時調整，本頁數字查證於 {HS["checked"]}，'
+        f'訂房前請以訂房頁顯示的價格為準。班機時刻與報到規定以航空公司公告為準。</p>'
+      + foot())
+    pages.append(('/tokyo/hostel/', 0.8))
+    print(f'   東京青旅頁：{len(HS["rows"])} 家（查證 {HS["checked"]}，'
+          f'{money(_hs_lo["night"])}–{money(_hs_hi["night"])}／晚）')
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
