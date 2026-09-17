@@ -1394,8 +1394,11 @@ if os.path.exists('ski.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
         f'<s>加購行李的費率與時機</s></a>'
-      + f'<a class="ct" href="{U("/sapporo/")}"><b>札幌機票</b><s>北海道雪場門戶</s></a>'
-      + f'<a class="ct" href="{U("/hakodate/")}"><b>函館機票</b><s>道南</s></a></div>'
+      + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
+        f'<s>雪季便宜的班次時段通常很差</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京青旅</b>'
+        f'<s>紅眼班機的最後一晚怎麼睡</s></a>'
+      + f'<a class="ct" href="{U("/sapporo/")}"><b>札幌機票</b><s>北海道雪場門戶</s></a></div>'
       + f'<p class="disc">各航空的行李規定與費率隨時可能調整，本頁條款查證於 {SK["checked"]}，'
         f'出發前請以航空公司官網為準。雪具能否託運最終以航空公司現場判定為準。</p>'
       + foot())
@@ -2951,9 +2954,11 @@ if _GT:
             track='good-times')
       + '<h2>常見問題</h2>' + gt_html
       + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京青旅</b>'
+        f'<s>真的要搭紅眼？最後一晚這樣安排</s></a>'
+      + f'<a class="ct" href="{U("/japan-ski-baggage/")}"><b>🎿 雪具託運</b>'
+        f'<s>去滑雪的人多半也在搭這種班次</s></a>'
       + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>每日更新</s></a>'
-      + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 購物折扣</b>'
-        f'<s>折價券×免稅×刷卡回饋</s></a>'
       + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
         f'<s>哪張卡回饋最高</s></a></div>'
       + foot())
@@ -3946,7 +3951,9 @@ if HS:
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
         f'<s>不想住機場，就從班次時段挑起</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
-        f'<s>省下的房費別又賠在行李上</s></a></div>'
+        f'<s>省下的房費別又賠在行李上</s></a>'
+      + f'<a class="ct" href="{U("/japan-ski-baggage/")}"><b>🎿 雪具託運</b>'
+        f'<s>帶板子的人，住宿與行李都要另算</s></a></div>'
       + f'<p class="disc">房價由平台即時調整，本頁數字查證於 {HS["checked"]}，'
         f'訂房前請以訂房頁顯示的價格為準。班機時刻與報到規定以航空公司公告為準。</p>'
       + foot())
