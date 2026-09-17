@@ -542,6 +542,7 @@ border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
 .tw td.win{color:var(--lcc);font-weight:700}
 .tw td.lose{color:var(--acc);font-weight:700}
+.tw td.win b,.tw td.lose b{color:inherit}
 .cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
 background:var(--card);border:1px solid var(--line);border-radius:12px;
 text-decoration:none;color:var(--fg)}
@@ -1290,14 +1291,14 @@ if os.path.exists('ski.json'):
 
     _skrows = ''
     for a in SK['airlines']:
-        _tight = bool(a['side_cm']) and a['side_cm'] < 150
+        _roomy = bool(a['side_cm']) and a['side_cm'] >= 150
         _side = (f'<b>{a["side_cm"]} 公分</b>' if a['side_cm'] else '未列')
         if a.get('side_short'):
             _side += f'{_SM2}{html.escape(a["side_short"])}</small>'
         _skrows += (f'<tr><td><b>{html.escape(a["name"])}</b>'
                     f'{_SM2}{"廉航" if a["cls"] == "lcc" else "一般航空"}</small></td>'
                     f'<td>{_cm(a["total_cm"])}</td>'
-                    f'<td class="{"lose" if _tight else ""}">{_side}</td>'
+                    f'<td class="{"win" if _roomy else ""}">{_side}</td>'
                     f'<td>{_cm(a["max_kg"], "公斤")}</td>'
                     f'<td>{html.escape(a["notify"])}</td></tr>')
 
@@ -1400,7 +1401,8 @@ if os.path.exists('ski.json'):
       + '<div class="tw"><table><thead><tr><th>航空公司</th><th>總尺寸門檻</th>'
         '<th>單邊長度上限</th><th>單件重量上限</th><th>要不要事先申請</th>'
         '</tr></thead><tbody>' + _skrows + '</tbody></table></div>'
-      + '<p class="disc">總尺寸為長＋寬＋高，單邊長度欄標紅的是門檻低於一般板袋長度（150 公分）的航空。'
+      + '<p class="disc">總尺寸為長＋寬＋高。單邊長度欄標成綠色的，是門檻容得下一般板袋'
+        '（150–170 公分）的航空；其餘幾家的門檻都在板袋長度之下。'
         '各家「門檻」的意義不同：台灣虎航的 203 公分是規定上限，'
         '樂桃超過 203 公分要加購超大行李選項，星宇超過 203 公分要事先聯絡客服（292 公分以上不收），'
         '中華、長榮、全日空則是超過後開始加收超額費，酷航的 158 公分沒有另外的放寬條款。'
