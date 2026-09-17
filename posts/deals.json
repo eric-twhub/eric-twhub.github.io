@@ -25,7 +25,7 @@
    "days": 16
   },
   "mbase": {
-   "avg": 5656,
+   "avg": 5655,
    "days": 13,
    "month": 10
   },
@@ -46,7 +46,7 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$8,892（13 天有紀錄），這張低 22%"
+   "10 月出發的票，每天最便宜的平均要 NT$8,889（13 天有紀錄），這張低 22%"
   ],
   "med": 13330,
   "url": "https://www.aviasales.com/search/TPE2910NRT04111?t=MM17932941001793309400000195TPENRT17937969001793808900000260NRTTPE_e6e09da89eb9fcd007a080eeb4d99e7a_18301&search_date=11092026&expected_price_uuid=01a08e6f-7783-8030-ad58-32454cc25089&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=p5qUVHckcPtrRH0hvYt99g&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6898&marker=775639",
@@ -58,7 +58,7 @@
    "days": 18
   },
   "mbase": {
-   "avg": 8892,
+   "avg": 8889,
    "days": 13,
    "month": 10
   },
@@ -112,7 +112,7 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "9 月出發的票，每天最便宜的平均要 NT$11,512（11 天有紀錄），這張低 26%"
+   "9 月出發的票，每天最便宜的平均要 NT$11,508（11 天有紀錄），這張低 26%"
   ],
   "med": 12467,
   "url": "https://www.aviasales.com/search/RMQ2109OKA24091?t=IT17899746001789983600000090RMQOKA17902782001790280000000090OKARMQ_aa81e0babcc46df95ea5055ff4e8f875_22539&search_date=14092026&expected_price_uuid=01a09f48-4548-8030-63d5-e5d4352e87f0&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=klsY7nVtb5q8C-4ERRuScA&expected_price_source=share&expected_price_currency=twd&expected_price=8538&marker=775639",
@@ -120,11 +120,11 @@
   "cslug": "okinawa",
   "usual": {
    "lo": 9114,
-   "hi": 13891,
+   "hi": 13873,
    "days": 28
   },
   "mbase": {
-   "avg": 11512,
+   "avg": 11508,
    "days": 11,
    "month": 9
   },
@@ -133,21 +133,21 @@
  },
  {
   "slug": "2026-09-17-transfer-tokyo-sendai",
-  "title": "飛東京轉乘去仙台，比直飛省 NT$12,625",
+  "title": "飛東京轉乘去仙台，比直飛省 NT$12,601",
   "o": "台灣",
   "c": "仙台",
   "via": "東京",
-  "price": 11523,
+  "price": 11515,
   "air": "飛東京再轉乘",
   "dep": "2026-10-29",
   "ret": "",
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$12,625"
+   "比直飛省 NT$12,601"
   ],
-  "med": 24148,
-  "url": "https://www.aviasales.com/search/TPE2910NRT12111?t=MM17932941001793309400000195TPENRT17944881001794500100000260NRTTPE_94a1facc5999837585ce90f6da9761f1_17653&search_date=17092026&expected_price_uuid=01a0ae57-0820-8030-e794-e7b04671c07e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fCz5Rpi0udz9WeP6HWIc0Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6667&marker=775639",
+  "med": 24116,
+  "url": "https://www.aviasales.com/search/TPE2910NRT12111?t=MM17932941001793309400000195TPENRT17944881001794500100000260NRTTPE_94a1facc5999837585ce90f6da9761f1_17653&search_date=17092026&expected_price_uuid=01a0ae57-0820-8030-e794-e7b04671c07e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fCz5Rpi0udz9WeP6HWIc0Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6659&marker=775639",
   "hotelcity": "仙台",
   "cslug": "sendai"
  },
