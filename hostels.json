@@ -1,0 +1,75 @@
+{
+ "_說明": "東京青年旅館／膠囊旅館實查價格。數字是 Trip.com 在 checked 當天、以 sample 的日期與人數查到的實際可訂價格，不是「最低價保證」。房價每天變動，重查請重跑並更新 checked。",
+ "checked": "2026-09-16",
+ "city": "東京",
+ "city_id": 228,
+ "sample": {
+  "checkin": "2026-10-04",
+  "checkout": "2026-10-08",
+  "nights": 4,
+  "adult": 1,
+  "src_name": "Trip.com 東京住宿列表（住宿類型：青年旅社＋膠囊旅館）",
+  "note": "單人、含稅含費用、每晚均價由總價除以晚數得出；床位房為一個床位的價格，非整間"
+ },
+ "rows": [
+  {"name": "A16 旅舍", "en": "A16 HOSTEL TOKYO", "id": "114847053",
+   "area": "馬喰町", "near": "JR 馬喰町站 530m，走到銀座 970m",
+   "room": "男女混合宿舍床位", "score": 8.8, "reviews": 122, "night": 557, "total": 2228,
+   "pick": "位置與價格的平衡點：每晚只比全市最低貴 53 元，但在都心，成田羽田都有直達"},
+  {"name": "普雷萊飯店", "en": "Hotel Prele", "id": "113392204",
+   "area": "上野", "near": "鄰近淺草",
+   "room": "混合樓層宿舍單人床", "score": 8.6, "reviews": 365, "night": 569, "total": 2276,
+   "pick": "評論數 365 則，是這個價位帶樣本最厚的一家"},
+  {"name": "11Capsules（E JOY INN 東日暮里）", "en": "11Capsules", "id": "117026642",
+   "area": "日暮里", "near": "JR 日暮里站步行 1 分鐘",
+   "room": "女性專用宿舍", "score": 8.0, "reviews": 610, "night": 605, "total": 2420,
+   "pick": "頁面明寫可深夜入住——紅眼班機清晨落地時，這件事比省兩百塊重要"},
+  {"name": "東京旅館板橋宿", "en": "Tokyo Guest House ITABASHI-JUKU", "id": "11894276",
+   "area": "板橋", "near": "近中板橋，往池袋方向",
+   "room": "男女混住 20 人宿舍", "score": 9.0, "reviews": 55, "night": 606, "total": 2424,
+   "pick": "評分 9.0 是本表最高，但樣本只有 55 則"},
+  {"name": "三上淺草橋飯店", "en": "MIKAMI ASAKUSABASHI HOTEL", "id": "131625245",
+   "area": "淺草橋", "near": "鄰近日本橋濱町",
+   "room": "男女共用宿舍房", "score": 9.0, "reviews": 536, "night": 732, "total": 2928,
+   "pick": "2025 年開業，9.0 分配 536 則評論；貴的那 175 元買的是新"},
+  {"name": "街區客房膠囊飯店", "en": "Capsule Hotel Block Room", "id": "45693340",
+   "area": "赤羽", "near": "JR 赤羽站",
+   "room": "女性專用膠囊", "score": 7.4, "reviews": 169, "night": 508, "total": 2032,
+   "pick": "全表次低價，代價是評分 7.4 與偏北的位置"},
+  {"name": "東京民宿－王子音樂 Lounge", "en": "Tokyo Guest House Ouji Music Lounge", "id": "10574472",
+   "area": "王子", "near": "JR 王子站，往池袋方向",
+   "room": "混合宿舍床位", "score": 8.2, "reviews": 61, "night": 504, "total": 2017,
+   "pick": "本表最低價。省下的錢會有一部分還回去給交通"},
+  {"name": "Do-c 五反田", "en": "Do-C Gotanda", "id": "9569447",
+   "area": "五反田", "near": "品川一帶，往羽田方向",
+   "room": "男性專用膠囊", "score": 8.0, "reviews": 124, "night": 612, "total": 2448,
+   "pick": "在往羽田的那一側，早班機的人可以少一段路"}
+ ],
+ "airport": {
+  "name": "維拉芳泉羽田機場大飯店", "en": "Hotel Villa Fontaine Grand Haneda Airport",
+  "id": "49509069", "score": 9.3, "reviews": 7723, "night": 3686,
+  "note": "與第 3 航廈直接相連，走路就到報到櫃檯",
+  "sample": {"checkin": "2026-10-08", "checkout": "2026-10-09"}
+ },
+ "redeye": {
+  "_說明": "清晨起飛的班機，最後一晚不能訂市區住宿。這一段的數字決定了整頁的結論。",
+  "example_flight": "台灣虎航 IT217（羽田 → 桃園）",
+  "example_dep": "05:25",
+  "terminal": "羽田第 3 航廈",
+  "checkin_open": "起飛前 2.5 小時",
+  "checkin_close_min": 45,
+  "checkin_src": "https://www.tigerairtw.com/zh-tw/welcome-on-board/boarding",
+  "checkin_src_name": "台灣虎航搭機須知",
+  "checkin_note": "台中、高雄上午七點前出發的航班與沖繩出發航班改為起飛前 2 小時開櫃；澳門、越南出發是起飛前 60 分鐘關櫃",
+  "first_train": {
+   "from": "品川", "dep": "05:09", "line": "京急本線往羽田空港第 3 航廈",
+   "src": "https://www.navitime.co.jp/diagram/depArrTimeList?departure=00007825&arrival=00009589&line=00000298&updown=1",
+   "src_name": "NAVITIME 品川→羽田空港第３ターミナル"
+  },
+  "bus": {
+   "note": "早朝アクセスバス最快也要 4 點多才進第 3 航廈，而且 2026/10/1 改點，出發前要重查",
+   "src": "https://www.tokyobus.or.jp/accessbus/",
+   "src_name": "東京巴士協會 羽田空港深夜早朝アクセスバス"
+  }
+ }
+}
