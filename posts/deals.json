@@ -162,35 +162,6 @@
   "n": 54
  },
  {
-  "slug": "2026-09-17-kaohsiung-tokyo",
-  "title": "高雄飛東京 NT$9,523 來回含稅｜捷星日本 09/29 出發",
-  "o": "高雄",
-  "c": "東京",
-  "_oiata": "KHH",
-  "_diata": "TYO",
-  "price": 9523,
-  "air": "捷星日本",
-  "dep": "2026-09-29",
-  "ret": "2026-10-06",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "這條航線平常最低落在 NT$9,674–NT$11,690，這張是近期 23 筆紀錄中第 1 低"
-  ],
-  "med": 11830,
-  "url": "https://www.aviasales.com/search/KHH2909NRT06101?t=GK17906904001790706600000210KHHNRT17912805001791291600000245NRTKHH_9ab81f2d99cd8409043eb38e524fd132_25193&search_date=17092026&expected_price_uuid=01a0acd8-fdc1-8030-6f40-2f225ff1726c&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=HJgU8W3dfBETq91yVENqjA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9523&marker=775639",
-  "hotelcity": "東京",
-  "cslug": "tokyo",
-  "usual": {
-   "lo": 9674,
-   "hi": 11690,
-   "days": 9
-  },
-  "mbase": null,
-  "rank": 1,
-  "n": 23
- },
- {
   "slug": "2026-09-17-transfer-tokyo-sendai",
   "title": "飛東京轉乘去仙台，比直飛省 NT$13,003",
   "o": "台灣",
