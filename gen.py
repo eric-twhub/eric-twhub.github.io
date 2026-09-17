@@ -1430,7 +1430,15 @@ def pick_deals():
     for (oslug,cslug),fs in by_route.items():
         rts=[x for x in fs if x['rt']]
         if not rts: continue
-        b=min(rts,key=lambda x:x['price'])
+        # 頭條只用 Trip.com 的票。貼文的查證按鈕就是 Trip.com 搜尋頁，拿 Farera
+        # 這類台灣陌生平台的低價當頭條，讀者點進去必然對不上（9/15 寫 NT$4,462、
+        # 實際 NT$5,392；9/17 寫泰國獅航 NT$4,934、實際樂桃 NT$4,863）。
+        # 全站沒有 Trip.com 紀錄的航線就不發——查不到的價格不該當頭條。
+        tc=[x for x in rts if x.get('gate')=='Trip.com']
+        if not tc: continue
+        b=min(tc,key=lambda x:x['price'])
+        # 統計基準仍用全部紀錄：基準被陌生平台的低價拉低，折扣率只會低估不會誇大，
+        # 「共 N 筆票價」也才和頁面下方的來源說明一致。
         med=statistics.median([x['price'] for x in rts])
         reasons=[]
         cap=LCC_CAP if b['cls']=='lcc' else FSC_CAP if b['cls']=='fsc' else None
