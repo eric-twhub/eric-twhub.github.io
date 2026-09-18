@@ -916,18 +916,27 @@ for slug,name,codes,reg,hotelcity in CITIES:
     # 全站最低常常來自台灣讀者沒聽過的平台（Farera 等），點進 Trip.com 會對不到。
     # 兩個數字都給：最低是多少、只用 Trip.com 又是多少，讓讀者自己決定要不要用陌生平台。
     _tc = [x for x in fs if x.get('gate') == 'Trip.com']
-    _tc_best = (best(_tc, True) or best(_tc, False)) if _tc else None
+    # 比較要同類。原本是 best(來回) or best(單程)，於是在只有 Trip.com 單程紀錄的
+    # 航線（福岡、札幌、函館）拿單程去比跨平台的來回，算出「Trip.com 比較便宜」
+    # 而整段揭露被跳過——標題掛著讀者在 Trip.com 對不到的數字。
+    _tc_best = best(_tc, anchor['rt']) if (_tc and anchor) else None
 
     intro=f'<p class="lede">'
     if anchor:
         lccs=[a for a in airs if a in LCC.values()]
         intro+=f'台灣飛{name}目前最低 <b>{money(anchor["price"])}</b>（{pt}含稅，{anchor["airname"]}，{anchor["dep"]} 出發）。'
-        if _tc_best and _tc_best['price'] > anchor['price']:
-            _gn = gate_info(anchor.get('gate',''))[0]
-            _tp = '來回' if _tc_best['rt'] else '單程'
-            intro+=(f'這筆紀錄來自 {html.escape(_gn)}，台灣讀者較陌生；'
-                    f'<b>若只看 Trip.com，最低是 {money(_tc_best["price"])}</b>'
-                    f'（{_tp}含稅，{_tc_best["airname"]}，{_tc_best["dep"]} 出發）。')
+        # 只要這個數字不是 Trip.com 的，就要講清楚——不論 Trip.com 是貴是便宜，
+        # 或根本沒有可對照的紀錄。讀者點進去對不到價，是這個網站最不該犯的錯。
+        if anchor.get('gate') and anchor['gate'] != 'Trip.com':
+            _gn = gate_info(anchor.get('gate', ''))[0]
+            intro += f'這筆紀錄來自 {html.escape(_gn)}，台灣讀者較陌生；'
+            if _tc_best:
+                intro += (f'<b>同樣是{pt}，只看 Trip.com 的最低紀錄是 '
+                          f'{money(_tc_best["price"])}</b>'
+                          f'（{_tc_best["airname"]}，{_tc_best["dep"]} 出發）。')
+            else:
+                intro += (f'<b>本站目前沒有 Trip.com 的{pt}紀錄可以對照</b>，'
+                          f'點下方按鈕可查當日實際票價。')
         if lccs: intro+=f'飛{name}的廉價航空有 {"、".join(lccs[:4])}。'
         if len(oris)>1:
             intro+=f'{"、".join(ORI[o] for o in oris)} 都有航班。'
