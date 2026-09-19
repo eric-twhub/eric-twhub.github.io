@@ -616,6 +616,11 @@ def head(title,desc,path,extra=''):
 <style>{CSS}</style>{extra}{DRIVE}</head><body><div class="wrap">'''
 
 def crumbs(items,root='/'):
+    # 只有一項的麵包屑沒有意義：它顯示不出任何路徑，而首頁的那一項文字又正好和
+    # 導覽列第一個連結一樣，畫面上會出現兩個「首頁」上下疊著。
+    # 連帶產生的 BreadcrumbList 也只有一個 ListItem 且 item 是 null，對 Google 無用。
+    if len(items) < 2:
+        return ''
     parts=[]; ld=[]
     for i,(name,url) in enumerate(items):
         parts.append(f'<a href="{U(url)}">{name}</a>' if url else f'<span>{name}</span>')
