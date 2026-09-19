@@ -125,6 +125,7 @@ def main():
     site = json.load(open("partners.json", encoding="utf-8"))["site"]["url"].rstrip("/") \
            + "/fukuoka/"
     CK, RT, TG = D["checked"], D["route"], D["trigger"]
+    CC = D["method"]["cabin_compare"]
 
     def money(n): return f"NT${n:,}"
     def md(s): return s.replace("-", "/").lstrip("0")
@@ -293,7 +294,7 @@ def main():
 
 {TG['note']}
 
-順帶一提，查價的時候參數要一致。同樣是 10/27 台北→福岡，用「經濟艙」查是 {money(3228)}，用「經濟艙／豪華經濟艙」查是 {money(3262)}。比較倍數時兩邊參數不同，算出來的數字就沒有意義。
+順帶一提，查價的時候參數要一致。同樣是 {md(CC['date'])} {RT}，用「經濟艙」查是 {money(CC['y'])}，用「經濟艙／豪華經濟艙」查是 {money(CC['ys'])}。比較倍數時兩邊參數不同，算出來的數字就沒有意義。
 
 {L}"""),
      ("05_end", f"""看到機票特價貼文，先做三件事：
