@@ -94,4 +94,25 @@ jobs:
           fi
           N=$(python3 -c "import json;print(len(json.load(open('/tmp/scan_all.json'))))")
           git commit -m "自動更新票價（$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M') 台北時間，${N} 筆）"
-          git push
+
+          # concurrency 只擋得住「兩個 CI 撞在一起」，擋不住有人在這一輪跑的
+          # 期間從本機推了 commit。push 被打回就整輪掃描白跑，所以要重試。
+          #
+          # rebase 時 -X theirs 保留的是「正在重播的這個 commit」＝本輪產生的
+          # 頁面。這些 HTML 都是從票價快取重新生成的，用比較新的那一份覆蓋是對的。
+          # 但要注意：若對方改的是 gen.py，本輪的 HTML 是用舊版 gen.py 產的，
+          # 要等下一輪排程才會套用新版——這是刻意的取捨，總比整輪丟掉好。
+          for i in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "push 被打回（第 $i 次），與遠端整合後重試"
+            git fetch origin main
+            if ! git rebase -X theirs origin/main; then
+              git rebase --abort || true
+              echo "::error::rebase 失敗，本輪票價未推送"
+              exit 1
+            fi
+          done
+          echo "::error::重試三次仍無法推送"
+          exit 1
