@@ -14,24 +14,24 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "10 月出發的票，每天最便宜的平均要 NT$5,876（13 天有紀錄），這張低 13%"
+   "10 月出發的票，每天最便宜的平均要 NT$6,068（14 天有紀錄），這張低 15%"
   ],
-  "med": 9832,
+  "med": 9950,
   "url": "https://www.aviasales.com/search/TPE2710OKA31101?t=MM17931252001793134200000090TPEOKA17934345001793436900000100OKATPE_aa224c9859973da875c6acddaef7d757_13617&search_date=19092026&expected_price_uuid=01a0b76b-455f-8030-ee7c-afc32feda020&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_wdccK7w_kzQnqNVp8cPKQ&expected_price_source=share&expected_price_currency=twd&expected_price=5128&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 5084,
-   "hi": 7568,
-   "days": 15
+   "hi": 8322,
+   "days": 16
   },
   "mbase": {
-   "avg": 5876,
-   "days": 13,
+   "avg": 6068,
+   "days": 14,
    "month": 10
   },
   "rank": 3,
-  "n": 38
+  "n": 40
  },
  {
   "slug": "2026-09-19-taichung-okinawa",
@@ -68,21 +68,21 @@
  },
  {
   "slug": "2026-09-19-transfer-tokyo-sendai",
-  "title": "飛東京轉乘去仙台，比直飛省 NT$12,691",
+  "title": "飛東京轉乘去仙台，比直飛省 NT$12,660",
   "o": "台灣",
   "c": "仙台",
   "via": "東京",
-  "price": 11435,
+  "price": 11466,
   "air": "飛東京再轉乘",
   "dep": "2026-10-29",
   "ret": "",
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$12,691"
+   "比直飛省 NT$12,660"
   ],
   "med": 24126,
-  "url": "https://www.aviasales.com/search/TPE2910NRT12111?t=GK17932782001793292900000185TPENRT17945223001794533400000245NRTTPE_51fd50febc6e81e31378a29f20ae0dc4_17470&search_date=19092026&expected_price_uuid=01a0b87d-285e-8030-6e51-bf1e47661577&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0PtpdgGVycNuicuXUgUq7Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6579&marker=775639",
+  "url": "https://www.aviasales.com/search/TPE2910NRT12111?t=GK17932941001793309400000195TPENRT17945223001794533400000245NRTTPE_f98b8af83d0edd86938b4986277683db_17554&search_date=19092026&expected_price_uuid=01a0b9ef-d11f-8030-aa15-571f0b17fe75&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pO7hejyDTT4PH-dyGI9ZnA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6610&marker=775639",
   "hotelcity": "仙台",
   "cslug": "sendai"
  },
