@@ -1,70 +1,37 @@
 [
  {
   "slug": "2026-09-19-taipei-okinawa",
-  "title": "台北飛沖繩 NT$5,147 來回含稅｜樂桃航空 10/29 出發",
+  "title": "台北飛沖繩 NT$5,128 來回含稅｜樂桃航空 10/27 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 5147,
+  "price": 5128,
   "air": "樂桃航空",
-  "dep": "2026-10-29",
-  "ret": "2026-11-02",
+  "dep": "2026-10-27",
+  "ret": "2026-10-31",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "10 月出發的票，每天最便宜的平均要 NT$5,891（13 天有紀錄），這張低 13%"
+   "10 月出發的票，每天最便宜的平均要 NT$5,876（13 天有紀錄），這張低 13%"
   ],
-  "med": 11343,
-  "url": "https://www.aviasales.com/search/TPE2910OKA02111?t=MM17932980001793307000000090TPEOKA17936073001793609700000100OKATPE_496414b202845ccb2d1df8c6a030e745_13673&search_date=14092026&expected_price_uuid=01a0a03a-1a60-8030-6fef-ea8e6bb50e72&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_wdccK7w_kzQnqNVp8cPKQ&expected_price_source=share&expected_price_currency=twd&expected_price=5147&marker=775639",
+  "med": 9832,
+  "url": "https://www.aviasales.com/search/TPE2710OKA31101?t=MM17931252001793134200000090TPEOKA17934345001793436900000100OKATPE_aa224c9859973da875c6acddaef7d757_13617&search_date=19092026&expected_price_uuid=01a0b76b-455f-8030-ee7c-afc32feda020&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_wdccK7w_kzQnqNVp8cPKQ&expected_price_source=share&expected_price_currency=twd&expected_price=5128&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 5084,
-   "hi": 8322,
-   "days": 16
+   "hi": 7568,
+   "days": 15
   },
   "mbase": {
-   "avg": 5891,
+   "avg": 5876,
    "days": 13,
    "month": 10
   },
   "rank": 3,
-  "n": 39
- },
- {
-  "slug": "2026-09-19-taipei-osaka",
-  "title": "台北飛大阪 NT$8,069 來回含稅｜真航空 09/20 出發",
-  "o": "台北",
-  "c": "大阪",
-  "_oiata": "TPE",
-  "_diata": "OSA",
-  "price": 8069,
-  "air": "真航空",
-  "dep": "2026-09-20",
-  "ret": "2026-09-25",
-  "stops": "轉機 2 次",
-  "cls": "lcc",
-  "reasons": [
-   "9 月出發的票，每天最便宜的平均要 NT$9,819（5 天有紀錄），這張低 18%"
-  ],
-  "med": 15362,
-  "url": "https://www.aviasales.com/search/TPE2009KIX25091?t=LJ17898720001789898100000375TPEPUSKIX17903637001790381400000355KIXICNTPE_b727edec3100bbe9c56d14b9da7c28e8_21484&search_date=13092026&expected_price_uuid=01a09b21-cc71-8030-6847-9397343cedf9&static_fare_key=TY%7CP0%7CH1%7CL1_1_15%7CCH0%7CR0%7CTBC1&itinerary_key=Q6tq07PFiwf3LegCGhXWyg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8069&marker=775639",
-  "hotelcity": "大阪",
-  "cslug": "osaka",
-  "usual": {
-   "lo": 7045,
-   "hi": 12151,
-   "days": 14
-  },
-  "mbase": {
-   "avg": 9819,
-   "days": 5,
-   "month": 9
-  },
-  "rank": 12,
-  "n": 68
+  "n": 38
  },
  {
   "slug": "2026-09-19-taichung-okinawa",
@@ -80,24 +47,24 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "9 月出發的票，每天最便宜的平均要 NT$11,917（12 天有紀錄），這張低 28%"
+   "9 月出發的票，每天最便宜的平均要 NT$12,036（11 天有紀錄），這張低 29%"
   ],
-  "med": 12683,
+  "med": 12413,
   "url": "https://www.aviasales.com/search/RMQ2109OKA24091?t=IT17899746001789983600000090RMQOKA17902782001790280000000090OKARMQ_aa81e0babcc46df95ea5055ff4e8f875_22539&search_date=14092026&expected_price_uuid=01a09f48-4548-8030-63d5-e5d4352e87f0&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=klsY7nVtb5q8C-4ERRuScA&expected_price_source=share&expected_price_currency=twd&expected_price=8538&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 9349,
+   "lo": 9541,
    "hi": 13878,
-   "days": 30
+   "days": 31
   },
   "mbase": {
-   "avg": 11917,
-   "days": 12,
+   "avg": 12036,
+   "days": 11,
    "month": 9
   },
-  "rank": 1,
-  "n": 69
+  "rank": 2,
+  "n": 77
  },
  {
   "slug": "2026-09-19-transfer-tokyo-sendai",
@@ -115,7 +82,7 @@
    "比直飛省 NT$12,691"
   ],
   "med": 24126,
-  "url": "https://www.aviasales.com/search/TPE2910NRT12111?t=GK17932782001793292900000185TPENRT17945223001794533400000245NRTTPE_51fd50febc6e81e31378a29f20ae0dc4_17492&search_date=18092026&expected_price_uuid=01a0b2e7-b4c2-8030-217c-4b4abd054b28&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0PtpdgGVycNuicuXUgUq7Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6579&marker=775639",
+  "url": "https://www.aviasales.com/search/TPE2910NRT12111?t=GK17932782001793292900000185TPENRT17945223001794533400000245NRTTPE_51fd50febc6e81e31378a29f20ae0dc4_17470&search_date=19092026&expected_price_uuid=01a0b87d-285e-8030-6e51-bf1e47661577&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0PtpdgGVycNuicuXUgUq7Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6579&marker=775639",
   "hotelcity": "仙台",
   "cslug": "sendai"
  },
