@@ -1,6 +1,6 @@
 [
  {
-  "slug": "2026-09-20-taipei-okinawa",
+  "slug": "2026-09-21-taipei-okinawa",
   "title": "台北飛沖繩 NT$5,147 來回含稅｜樂桃航空 10/27 出發",
   "o": "台北",
   "c": "沖繩",
@@ -34,7 +34,7 @@
   "n": 42
  },
  {
-  "slug": "2026-09-20-taichung-okinawa",
+  "slug": "2026-09-21-taichung-okinawa",
   "title": "台中飛沖繩 NT$9,349 來回含稅｜真航空 09/29 出發",
   "o": "台中",
   "c": "沖繩",
@@ -67,7 +67,7 @@
   "n": 81
  },
  {
-  "slug": "2026-09-20-transfer-tokyo-sendai",
+  "slug": "2026-09-21-transfer-tokyo-sendai",
   "title": "飛東京轉乘去仙台，比直飛省 NT$12,037",
   "o": "台灣",
   "c": "仙台",
@@ -87,7 +87,7 @@
   "cslug": "sendai"
  },
  {
-  "slug": "2026-09-20-transfer-osaka-hiroshima",
+  "slug": "2026-09-21-transfer-osaka-hiroshima",
   "title": "飛大阪轉乘去廣島，比直飛省 NT$1,124",
   "o": "台灣",
   "c": "廣島",
@@ -107,7 +107,7 @@
   "cslug": "hiroshima"
  },
  {
-  "slug": "2026-09-20-transfer-fukuoka-kumamoto",
+  "slug": "2026-09-21-transfer-fukuoka-kumamoto",
   "title": "飛福岡轉乘去熊本，比直飛省 NT$5,528",
   "o": "台灣",
   "c": "熊本",
