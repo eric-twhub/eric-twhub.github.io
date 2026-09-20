@@ -96,6 +96,21 @@ STAT = """
 .mid2 b{color:#f6f2ee;font-weight:700}
 """
 
+TAX = """
+.rows{margin-top:34px}
+.r{background:rgba(255,255,255,.05);border-radius:16px;padding:24px 28px;
+ display:flex;align-items:center;gap:22px;margin-top:18px}
+.r .l{flex:1}
+.r b{display:block;font-size:31px;font-weight:800;line-height:1.3}
+.r s{text-decoration:none;display:block;margin-top:7px;font-size:23px;
+ color:#a49a92;line-height:1.45}
+.r u{text-decoration:none;font-size:44px;font-weight:800;letter-spacing:-.02em;
+ font-variant-numeric:tabular-nums;white-space:nowrap}
+.r i{font-style:normal;display:block;font-size:20px;color:#726860;margin-top:5px;
+ text-align:right;white-space:nowrap}
+.r i del{color:#726860}
+"""
+
 LIST = """
 .pts{margin-top:38px;display:flex;flex-direction:column;gap:24px}
 .pt{background:rgba(255,255,255,.05);border-radius:18px;padding:26px 30px}
@@ -239,6 +254,31 @@ def main():
 你看到這則的時候請自己再查一次</div></div>
 <div class="site">{site}</div></body></html>''')
 
+    # ── 6 「未稅價」是怎麼把數字講小的 ─────────────────
+    AA = D.get("airasia")
+    if AA:
+        # 變數不要叫 rows——外層的 rows 是每日票價，後面的文案還要用
+        _ar = ''.join(
+            f'<div class="r"><div class="l"><b>{html.escape(r["route"])}</b>'
+            f'<s>{html.escape(r["air"])}・{html.escape(r["leg"])}<br>'
+            f'{html.escape(r["note"])}</s></div>'
+            f'<div><u style="color:'
+            + ("#34d399" if r["flag"] == "win" else "#f472b6" if r["flag"] == "lo" else "#f6f2ee")
+            + f'">{money(r["price"])}</u>'
+            f'<i>{html.escape(r["src"])}含稅'
+            + (f'・<del>{money(r["was"])}</del> {html.escape(r["off"])}' if r.get("was") else '')
+            + '</i></div></div>'
+            for r in AA["rows"])
+        shot("06_tax", head_html(TAX) + f'''<div class="mid">
+<div class="ttl">「{AA["claim"]:,} 元起」<br>——那是<span style="color:#f472b6">未稅</span>價</div>
+<div class="note">亞航秋季促銷。同一天（{md(AA["sample_date"])}）在能真的訂票的地方查到的是：</div>
+{_ar}
+<div class="kick">{html.escape(AA["kicker"])}</div>
+<div class="unit">他附的連結是 Trip.com 的亞航航空公司頁，那頁自己寫「價格包括所有費用」——
+{AA["claim"]:,} 在那個連結上永遠看不到<br>
+查證於 {AA["checked"]}・價格每天變動</div></div>
+<div class="site">{site}</div></body></html>''')
+
     os.path.exists(tmp) and os.remove(tmp)
 
     L = site
@@ -313,6 +353,30 @@ def main():
 
 {L}"""),
     ]
+    if AA:
+        _rl = "\n".join(
+            f"・{r['route']}　{money(r['price'])}（{r['src']}含稅"
+            + (f"，原價 {money(r['was'])} {r['off']}" if r.get('was') else "")
+            + f"）\n　　{r['air']}・{r['leg']}\n　　{r['note']}"
+            for r in AA["rows"])
+        posts.append(("06_tax", f"""亞航秋季促銷的貼文寫：「台北出發 大阪｜福岡｜札幌｜沖繩……最低 {AA['claim']:,} 元起（單程未稅價）」。
+
+未稅。那不是你要付的錢。
+
+同一天（{md(AA['sample_date'])}），在能真的訂票的地方查到的是：
+
+{_rl}
+
+{AA['kicker']}
+
+還有一件事：{AA['missing']}
+
+而那則貼文附的 Trip.com 連結，其實不是任何一條航線的搜尋結果，是 Trip.com 的亞航航空公司頁。那一頁自己寫著「價格包括所有費用（含稅金、燃油費、行李費），無任何隱藏費用」——所以 {AA['claim']:,} 這個數字，在他給你的那個連結上永遠看不到。
+
+促銷是真的，折扣也是真的。只是「起」跟「未稅」這兩個字，各自把數字講小了一次。
+
+查證於 {AA['checked']}。價格每天變動，請自己再查一次。
+{L}"""))
     os.makedirs("posts", exist_ok=True)
     pf = "posts/oneway.txt"
     with open(pf, "w", encoding="utf-8") as f:
