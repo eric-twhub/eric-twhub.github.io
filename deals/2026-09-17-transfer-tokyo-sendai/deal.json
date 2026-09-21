@@ -1,0 +1,23 @@
+{
+ "schema": 1,
+ "slug": "2026-09-17-transfer-tokyo-sendai",
+ "generated": "2026-09-17 23:45",
+ "backfilled_from": "index.html",
+ "kind": "transfer",
+ "city": "sendai",
+ "via": "tokyo",
+ "own": 24116,
+ "fare": {
+  "price": 6659
+ },
+ "fare_rt": null,
+ "jpy_text": "約 ¥11,400",
+ "twd_one_way": 2349,
+ "rate": 0.2061,
+ "rate_at": "",
+ "route": "東京 → 仙台",
+ "mode": "東北新幹線",
+ "tm": "約 1.5 小時",
+ "total": 11357,
+ "save": 12759
+}

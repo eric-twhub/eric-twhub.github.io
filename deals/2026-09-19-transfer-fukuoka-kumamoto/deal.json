@@ -1,0 +1,23 @@
+{
+ "schema": 1,
+ "slug": "2026-09-19-transfer-fukuoka-kumamoto",
+ "generated": "2026-09-19 23:42",
+ "backfilled_from": "index.html",
+ "kind": "transfer",
+ "city": "kumamoto",
+ "via": "fukuoka",
+ "own": 15718,
+ "fare": {
+  "price": 10358
+ },
+ "fare_rt": null,
+ "jpy_text": "¥5,310（自由席）",
+ "twd_one_way": 1094,
+ "rate": 0.2061,
+ "rate_at": "",
+ "route": "博多 → 熊本",
+ "mode": "九州新幹線",
+ "tm": "約 40 分",
+ "total": 12546,
+ "save": 3172
+}

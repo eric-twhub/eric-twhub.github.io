@@ -858,6 +858,18 @@ def alt_block(slug,name,hotelcity,own_min=None):
             + '</div>'
             + '<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>')
 
+def write_deal_data(slug, payload):
+    """把特價頁的來源資料存成 deal.json，放在頁面旁邊。
+
+    特價頁是一次性快照、之後不會重產，所以模板或換算方式改了，
+    舊頁永遠追不回來——2026-09-21 就是這樣讓 33 頁帶著寫死的匯率
+    在線上放了十幾天。存下來之後，改模板可以整批重新產生。
+    """
+    write(f'{DEALDIR}/{slug}/deal.json',
+          json.dumps(dict(schema=1, slug=slug, generated=NOWS, **payload),
+                     ensure_ascii=False, indent=1))
+
+
 def write(path,content):
     d=os.path.dirname(path)
     if d: os.makedirs(d,exist_ok=True)
@@ -1737,6 +1749,10 @@ for (oslug,cslug),(b,reasons,med,rts) in sorted(pick_deals().items(),key=lambda 
         + topnav(reg) + f'<h1>{title}</h1>'
         + f'<p class="upd">發布於 {NOWS}　·　票價隨時變動，請以訂購頁面為準</p>' + body + foot())
     pages.append((f'/{DEALDIR}/{slug}/',0.9))
+    write_deal_data(slug, dict(
+        kind='fare', origin=oslug, city=cslug,
+        fare=b, reasons=[r[1] for r in reasons], med=int(med), n_rt=len(rts),
+        others=others))
     deals_out.append(dict(slug=slug,title=title,o=oname,c=cname,
         _oiata=b['o'],_diata=b['d'],price=b['price'],air=b['airname'],
         dep=b['dep'],ret=b['ret'],stops=stops,cls=b['cls'],reasons=[r[1] for r in reasons],
@@ -1777,6 +1793,11 @@ for cslug in CITY:
             + topnav(reg) + f'<h1>{title}</h1>'
             + f'<p class="upd">發布於 {NOWS}</p>' + body + foot())
         pages.append((f'/{DEALDIR}/{slug}/',0.9))
+        write_deal_data(slug, dict(
+            kind='transfer', city=cslug, via=aslug, own=own,
+            fare=ab, fare_rt=bool(ab['rt']),
+            jpy_text=fare, twd_one_way=twd, rate=JPY, rate_at=JPY_AT,
+            route=route, mode=mode, tm=tm, total=total_v, save=own-total_v))
         # o 用「台灣」而非中轉城市，避免被誤讀成「福岡→熊本要價 8,913」
         deals_out.append(dict(slug=slug,title=title,o='台灣',c=cname,via=aname,
             price=total_v,air=f'飛{aname}再轉乘',
