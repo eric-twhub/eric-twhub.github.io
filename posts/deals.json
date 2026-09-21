@@ -1,12 +1,12 @@
 [
  {
   "slug": "2026-09-21-taipei-okinawa",
-  "title": "台北飛沖繩 NT$5,142 來回含稅｜樂桃航空 10/27 出發",
+  "title": "台北飛沖繩 NT$5,141 來回含稅｜樂桃航空 10/27 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 5142,
+  "price": 5141,
   "air": "樂桃航空",
   "dep": "2026-10-27",
   "ret": "2026-10-31",
@@ -16,8 +16,8 @@
    "廉航低於 NT$6,000",
    "10 月出發的票，每天最便宜的平均要 NT$6,069（14 天有紀錄），這張低 15%"
   ],
-  "med": 9950,
-  "url": "https://www.aviasales.com/search/TPE2710OKA31101?t=MM17931252001793134200000090TPEOKA17934345001793436900000100OKATPE_aa224c9859973da875c6acddaef7d757_13617&search_date=21092026&expected_price_uuid=01a0c17b-b226-8030-a13e-aa0053e997a5&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_wdccK7w_kzQnqNVp8cPKQ&expected_price_source=share&expected_price_currency=twd&expected_price=5142&marker=775639",
+  "med": 8558,
+  "url": "https://www.aviasales.com/search/TPE2710OKA31101?t=MM17931252001793134200000090TPEOKA17934345001793436900000100OKATPE_aa224c9859973da875c6acddaef7d757_13617&search_date=21092026&expected_price_uuid=01a0c17b-b226-8030-a13e-aa0053e997a5&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_wdccK7w_kzQnqNVp8cPKQ&expected_price_source=share&expected_price_currency=twd&expected_price=5141&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
@@ -31,7 +31,7 @@
    "month": 10
   },
   "rank": 3,
-  "n": 40
+  "n": 39
  },
  {
   "slug": "2026-09-21-taichung-okinawa",
@@ -47,24 +47,24 @@
   "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "9 月出發的票，每天最便宜的平均要 NT$12,384（10 天有紀錄），這張低 25%"
+   "9 月出發的票，每天最便宜的平均要 NT$12,133（10 天有紀錄），這張低 23%"
   ],
-  "med": 12548,
+  "med": 12749,
   "url": "https://www.aviasales.com/search/RMQ2909OKA06101?t=LJ17907030001790769900001055RMQICNOKA17913132001791315000000090OKARMQ_aeb1db25422d02cac2b610cbdbf6f9c9_24716&search_date=17092026&expected_price_uuid=01a0ae14-f3ec-8030-2a78-e6e3355de46f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=dnN4-VdEaButjZYH1JsdBQ&expected_price_source=share&expected_price_currency=twd&expected_price=9349&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 10192,
+   "lo": 9541,
    "hi": 14000,
-   "days": 34
+   "days": 36
   },
   "mbase": {
-   "avg": 12384,
+   "avg": 12133,
    "days": 10,
    "month": 9
   },
-  "rank": 2,
-  "n": 82
+  "rank": 3,
+  "n": 86
  },
  {
   "slug": "2026-09-21-transfer-tokyo-sendai",
