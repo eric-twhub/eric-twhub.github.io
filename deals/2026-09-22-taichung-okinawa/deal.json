@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-22-taichung-okinawa",
- "generated": "2026-09-22 00:25",
+ "generated": "2026-09-22 02:06",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "LJ",
   "airname": "真航空",
   "cls": "lcc",
-  "price": 9207,
+  "price": 9209,
   "dep": "2026-09-28",
   "ret": "2026-10-01",
   "dept": "17:30",
@@ -21,10 +21,10 @@
   "dur": 1145,
   "dur_to": 305,
   "gate": "Trip.com",
-  "url": "https://www.aviasales.com/search/RMQ2809OKA01101?t=LJ17906166001790683500001055RMQICNOKA17908830001790884800000090OKARMQ_ed1552990bc3449aa8794ac0c1b8a5e5_24430&search_date=21092026&expected_price_uuid=01a0c2b7-7ed1-8030-66ca-7a1282946446&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=umoxNv1mAWKkXUMLX60YXA&expected_price_source=share&expected_price_currency=twd&expected_price=9207&marker=775639"
+  "url": "https://www.aviasales.com/search/RMQ2809OKA01101?t=LJ17906166001790683500001055RMQICNOKA17908830001790884800000090OKARMQ_ed1552990bc3449aa8794ac0c1b8a5e5_24430&search_date=21092026&expected_price_uuid=01a0c2b7-7ed1-8030-66ca-7a1282946446&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=umoxNv1mAWKkXUMLX60YXA&expected_price_source=share&expected_price_currency=twd&expected_price=9209&marker=775639"
  },
  "reasons": [
-  "9 月出發的票，每天最便宜的平均要 NT$12,361（9 天有紀錄），這張低 26%"
+  "9 月出發的票，每天最便宜的平均要 NT$12,362（9 天有紀錄），這張低 26%"
  ],
  "med": 12831,
  "n_rt": 82,
@@ -35,7 +35,7 @@
    "air": "JX",
    "airname": "星宇航空",
    "cls": "fsc",
-   "price": 8173,
+   "price": 8175,
    "dep": "2026-09-22",
    "ret": "2026-09-25",
    "dept": "16:40",
@@ -45,7 +45,7 @@
    "dur": 190,
    "dur_to": 90,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/RMQ2209OKA25091?t=JX17900952001790104200000090RMQOKA17903547001790357100000100OKARMQ_1d32f4a2a1876bc23ff0a0bf862f4955_21677&search_date=21092026&expected_price_uuid=01a0c214-25b7-8030-e37b-4d393f3668b0&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6jwF8aoDJFOcY4pf3Xu7eA&expected_price_source=share&expected_price_currency=twd&expected_price=8173&marker=775639"
+   "url": "https://www.aviasales.com/search/RMQ2209OKA25091?t=JX17900952001790104200000090RMQOKA17903547001790357100000100OKARMQ_1d32f4a2a1876bc23ff0a0bf862f4955_21677&search_date=21092026&expected_price_uuid=01a0c214-25b7-8030-e37b-4d393f3668b0&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6jwF8aoDJFOcY4pf3Xu7eA&expected_price_source=share&expected_price_currency=twd&expected_price=8175&marker=775639"
   },
   {
    "o": "RMQ",
