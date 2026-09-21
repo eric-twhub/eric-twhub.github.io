@@ -36,7 +36,16 @@ def gate_info(g):
     return (g or '其他平台','C')
 
 URBAN={'tokyo','osaka','nagoya','fukuoka','kobe','kitakyushu'}
-JPY=0.213  # 1 日圓 ≈ 0.213 台幣（概估，實際依匯率）
+# 日圓匯率。CI 每天跑 update_rate.py 把牌告匯率寫進 apple.json，
+# 這裡直接讀它——原本寫死 0.213，比實際高約 5%，會把轉乘的車資算貴、
+# 讓「比直飛省多少」看起來比實際少。抓不到就退回舊常數，不讓頁面壞掉。
+def _jpy_rate():
+    try:
+        _r = json.load(open('apple.json', encoding='utf-8'))['rate']
+        return float(_r['jpy_twd']), _r.get('quoted_at', '')[:16]
+    except Exception:
+        return 0.213, ''
+JPY, JPY_AT = _jpy_rate()
 # 替代方案：目的地 → [(替代城市slug, 路線, 交通方式, 時間, 已查證票價 或 None)]
 ALT={
  'kobe':[('osaka','關西機場 → 神戶','高速船／利木津巴士','約 30–70 分',None)],
@@ -818,18 +827,22 @@ def alt_block(slug,name,hotelcity,own_min=None):
         farecell=(f'{fare}<br><small style="color:var(--dim)">約 NT${twd:,} 單程</small>'
                   if twd else '<a href="'+html.escape(plink("transport",ac[4]))+'" target="_blank" rel="nofollow noopener sponsored">到 '+P["transport"]["brand"]+' 查詢</a>')
         rows+=(f'<tr><td><a href="{U(f"/{aslug}/")}">{ac[1]}</a><br>'
-               f'<small style="color:var(--dim)">機票 {money(b["price"])} 起</small></td>'
+               f'<small style="color:var(--dim)">機票 {money(b["price"])} 起'
+               f'（{"來回" if b["rt"] else "單程"}）</small></td>'
                f'<td>{route}<br><small style="color:var(--dim)">{mode}</small></td>'
                f'<td>{tm}</td><td>{farecell}</td><td>{total}</td></tr>')
     if not rows: return ''
-    note=('<p class="lede" style="font-size:.86rem">日圓票價依 1 日圓 ≈ 0.213 台幣概估，'
-          '交通費以來回兩趟計算。實際票價請以 JR 官網或購票平台為準。</p>')
+    note=(f'<p class="lede" style="font-size:.86rem">日圓票價依 1 日圓 ≈ {JPY} 台幣換算'
+          + (f'（{JPY_AT} 更新）' if JPY_AT else '（概估）')
+          + '，交通費以來回兩趟計算。機票欄已標示來回或單程。'
+            '實際票價請以 JR 官網或購票平台為準。</p>')
     cheaper=[a for a in alts if a[3] and own_min and a[3]<own_min]
     if cheaper:
         bestalt=min(cheaper,key=lambda a:a[3])
         hd=(f'<h2>飛{CITY[bestalt[0]][1]}再轉乘，比直飛便宜 {money(own_min-bestalt[3])}</h2>'
             f'<p class="lede">直飛{name}最低 {money(own_min)}，但飛到{CITY[bestalt[0]][1]}'
-            f'（{money(bestalt[1]["price"])}）再搭{bestalt[5]}（{bestalt[6]}），'
+            f'（{money(bestalt[1]["price"])} {"來回" if bestalt[1]["rt"] else "單程"}）'
+            f'再搭{bestalt[5]}（{bestalt[6]}），'
             f'總計約 <b>{money(bestalt[3])}</b>。</p>')
     else:
         hd=(f'<h2>飛不到{name}？從鄰近機場轉乘</h2>'
@@ -1743,13 +1756,15 @@ for cslug in CITY:
         cname=CITY[cslug][1]; aname=CITY[aslug][1]; reg=CITY[cslug][3]
         slug=f'{TODAY}-transfer-{aslug}-{cslug}'
         title=f'飛{aname}轉乘去{cname}，比直飛省 {money(own-total_v)}'
-        desc=(f'直飛{cname}最低 {money(own)}，改飛{aname}（{money(ab["price"])}）'
+        _ablbl = "來回" if ab["rt"] else "單程"
+        desc=(f'直飛{cname}最低 {money(own)}，改飛{aname}（{money(ab["price"])} {_ablbl}）'
               f'再搭{mode}（{tm}），總計約 {money(total_v)}，省下 {money(own-total_v)}。')
         ld=json.dumps({"@context":"https://schema.org","@type":"BlogPosting","headline":title,
             "datePublished":TODAY,"dateModified":TODAY,"description":desc,
             "author":{"@type":"Organization","name":SITENAME}},ensure_ascii=False)
         body=(f'<p class="lede">直飛{cname}目前最低 <b>{money(own)}</b>，但飛到{aname}只要 '
-              f'<b>{money(ab["price"])}</b>，再搭{mode}（{route}，{tm}，單程約 NT${twd:,}），'
+              f'<b>{money(ab["price"])}</b>（{_ablbl}含稅），'
+              f'再搭{mode}（{route}，{tm}，單程約 NT${twd:,}），'
               f'加起來約 <b>{money(total_v)}</b>——<b style="color:var(--hot)">省下 {money(own-total_v)}</b>。</p>'
               + alt_block(cslug,cname,CITY[cslug][4],own)
               + f'<h2>延伸閱讀</h2><div class="cities">'
@@ -1765,6 +1780,8 @@ for cslug in CITY:
         # o 用「台灣」而非中轉城市，避免被誤讀成「福岡→熊本要價 8,913」
         deals_out.append(dict(slug=slug,title=title,o='台灣',c=cname,via=aname,
             price=total_v,air=f'飛{aname}再轉乘',
+            # 「總計」不是一張機票的價格，文案要能拆給人看
+            fl_price=ab['price'], fl_rt=bool(ab['rt']), fl_to=aname, tr_twd=twd, tr_mode=mode,
             dep=ab['dep'],ret='',stops=mode,cls='transfer',
             reasons=[f'比直飛省 {money(own-total_v)}'],med=own,url=ab['url'],
             hotelcity=CITY[cslug][4],cslug=cslug))
@@ -1831,11 +1848,16 @@ for d in deals_out:
              f"&triptype={'rt' if d['ret'] else 'ow'}&class=y&quantity=1&locale=zh-TW&curr=TWD"
              f"{AFF_Q}&trip_sub1={_dc}"
              ) if _dc else '（轉乘方案，請分段查證）'
+    _mix=''
+    if d['cls']=='transfer' and d.get('fl_price'):
+        _mix=(f"\n　🧮 組成：機票飛{d['fl_to']} NT${d['fl_price']:,}"
+              f"（{'來回' if d['fl_rt'] else '單程'}含稅）"
+              f" ＋ {d['tr_mode']} NT${d['tr_twd']:,}×2")
     lines.append(f"""✈️【{d['o']} → {d['c']}】NT${d['price']:,} {_lbl}
 
 　🛫 {d['air']}｜{d['stops']}
 　📅 {_dates}
-　💡 {d['reasons'][0]}
+　💡 {d['reasons'][0]}{_mix}
 
 　🔗 貼文用連結：{_url}
 　🔍 查證連結（開啟後截圖）：{_verify}
