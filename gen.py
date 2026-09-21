@@ -826,9 +826,12 @@ def alt_block(slug,name,hotelcity,own_min=None):
                if total_v else '<span style="color:var(--dim)">機票＋交通另計</span>')
         farecell=(f'{fare}<br><small style="color:var(--dim)">約 NT${twd:,} 單程</small>'
                   if twd else '<a href="'+html.escape(plink("transport",ac[4]))+'" target="_blank" rel="nofollow noopener sponsored">到 '+P["transport"]["brand"]+' 查詢</a>')
+        # 通路也要標。這個數字撐起整個「比直飛省多少」，
+        # 但它可能來自台灣讀者沒聽過的平台，點進 Trip.com 會對不到。
+        _bg = gate_info(b.get('gate', ''))[0]
         rows+=(f'<tr><td><a href="{U(f"/{aslug}/")}">{ac[1]}</a><br>'
                f'<small style="color:var(--dim)">機票 {money(b["price"])} 起'
-               f'（{"來回" if b["rt"] else "單程"}）</small></td>'
+               f'（{"來回" if b["rt"] else "單程"}・{html.escape(_bg)}）</small></td>'
                f'<td>{route}<br><small style="color:var(--dim)">{mode}</small></td>'
                f'<td>{tm}</td><td>{farecell}</td><td>{total}</td></tr>')
     if not rows: return ''
@@ -1773,6 +1776,28 @@ for cslug in CITY:
         slug=f'{TODAY}-transfer-{aslug}-{cslug}'
         title=f'飛{aname}轉乘去{cname}，比直飛省 {money(own-total_v)}'
         _ablbl = "來回" if ab["rt"] else "單程"
+        # 城市頁早就有「最低價不是 Trip.com 就揭露」，轉乘頁一直沒有。
+        # 這裡的機票價撐起整頁的「省下多少」，更不能含糊。
+        _disc = ''
+        _tcb = None          # 迴圈跨筆，先歸零，免得沿用上一則的比較對象
+        _abg = ab.get('gate', '')
+        if _abg and _abg != 'Trip.com':
+            _gn = gate_info(_abg)[0]
+            _tcb = best([x for x in (by_city.get(aslug) or [])
+                         if x.get('gate') == 'Trip.com'], ab['rt'])
+            if _tcb:
+                _t2 = _tcb['price'] + twd * 2
+                _disc = (f'<p class="disc">飛{aname}的這筆 {money(ab["price"])} 來自 '
+                         f'{html.escape(_gn)}，台灣讀者較陌生。同樣是{_ablbl}，'
+                         f'只看 Trip.com 的最低是 <b>{money(_tcb["price"])}</b>'
+                         f'（{html.escape(_tcb["airname"])}，{_tcb["dep"]} 出發），'
+                         f'這樣總計約 {money(_t2)}'
+                         + (f'，仍比直飛省 {money(own - _t2)}。'
+                            if _t2 < own else '，就不比直飛便宜了。') + '</p>')
+            else:
+                _disc = (f'<p class="disc">飛{aname}的這筆 {money(ab["price"])} 來自 '
+                         f'{html.escape(_gn)}，台灣讀者較陌生；本站目前沒有 Trip.com 的'
+                         f'{_ablbl}紀錄可以對照，實際票價請點連結確認。</p>')
         desc=(f'直飛{cname}最低 {money(own)}，改飛{aname}（{money(ab["price"])} {_ablbl}）'
               f'再搭{mode}（{tm}），總計約 {money(total_v)}，省下 {money(own-total_v)}。')
         ld=json.dumps({"@context":"https://schema.org","@type":"BlogPosting","headline":title,
@@ -1782,6 +1807,7 @@ for cslug in CITY:
               f'<b>{money(ab["price"])}</b>（{_ablbl}含稅），'
               f'再搭{mode}（{route}，{tm}，單程約 NT${twd:,}），'
               f'加起來約 <b>{money(total_v)}</b>——<b style="color:var(--hot)">省下 {money(own-total_v)}</b>。</p>'
+              + _disc
               + alt_block(cslug,cname,CITY[cslug][4],own)
               + f'<h2>延伸閱讀</h2><div class="cities">'
                 f'<a class="ct" href="{U(f"/{cslug}/")}"><b>{cname}機票</b><s>直飛票價</s></a>'
@@ -1797,6 +1823,10 @@ for cslug in CITY:
             kind='transfer', city=cslug, via=aslug, own=own,
             fare=ab, fare_rt=bool(ab['rt']),
             jpy_text=fare, twd_one_way=twd, rate=JPY, rate_at=JPY_AT,
+            fare_gate=_abg,
+            tc_alt=({'price': _tcb['price'], 'airname': _tcb['airname'],
+                     'dep': _tcb['dep'], 'total': _tcb['price'] + twd * 2}
+                    if (_abg and _abg != 'Trip.com' and _tcb) else None),
             route=route, mode=mode, tm=tm, total=total_v, save=own-total_v))
         # o 用「台灣」而非中轉城市，避免被誤讀成「福岡→熊本要價 8,913」
         deals_out.append(dict(slug=slug,title=title,o='台灣',c=cname,via=aname,
