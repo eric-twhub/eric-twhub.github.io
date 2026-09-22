@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-22-taipei-okinawa",
- "generated": "2026-09-22 02:06",
+ "generated": "2026-09-22 09:40",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "MM",
   "airname": "樂桃航空",
   "cls": "lcc",
-  "price": 5136,
+  "price": 5133,
   "dep": "2026-10-27",
   "ret": "2026-10-31",
   "dept": "18:20",
@@ -21,11 +21,11 @@
   "dur": 190,
   "dur_to": 90,
   "gate": "Trip.com",
-  "url": "https://www.aviasales.com/search/TPE2710OKA31101?t=MM17931252001793134200000090TPEOKA17934345001793436900000100OKATPE_aa224c9859973da875c6acddaef7d757_13617&search_date=21092026&expected_price_uuid=01a0c17b-b226-8030-a13e-aa0053e997a5&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_wdccK7w_kzQnqNVp8cPKQ&expected_price_source=share&expected_price_currency=twd&expected_price=5136&marker=775639"
+  "url": "https://www.aviasales.com/search/TPE2710OKA31101?t=MM17931252001793134200000090TPEOKA17934345001793436900000100OKATPE_aa224c9859973da875c6acddaef7d757_13617&search_date=21092026&expected_price_uuid=01a0c17b-b226-8030-a13e-aa0053e997a5&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_wdccK7w_kzQnqNVp8cPKQ&expected_price_source=share&expected_price_currency=twd&expected_price=5133&marker=775639"
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "10 月出發的票，每天最便宜的平均要 NT$6,190（9 天有紀錄），這張低 17%"
+  "10 月出發的票，每天最便宜的平均要 NT$6,189（9 天有紀錄），這張低 17%"
  ],
  "med": 8322,
  "n_rt": 25,
