@@ -550,6 +550,17 @@ border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
 .tw table{min-width:640px;font-size:.84rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
 .tw td.win{color:var(--lcc);font-weight:700}
+/* 回饋計算機的並排比較表 */
+.cmp{width:100%;border-collapse:collapse}
+.cmp th,.cmp td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;
+ white-space:nowrap;vertical-align:baseline}
+.cmp th:first-child,.cmp td:first-child{text-align:left;color:var(--dim);font-weight:600}
+.cmp thead th{font-weight:700;border-bottom:2px solid var(--line);color:var(--fg)}
+.cmp thead th a{text-decoration:none}
+.cmp b{font-variant-numeric:tabular-nums;font-size:1.06rem}
+.cmp .pw{background:var(--acc);color:#fff;font-size:.68rem;padding:1px 6px;border-radius:4px;
+ font-weight:700;margin-right:5px;vertical-align:middle}
+.cmp .pc{font-style:normal;color:var(--hot)}
 .tw td.lose{color:var(--acc);font-weight:700}
 .tw td.win b,.tw td.lose b{color:inherit}
 .cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
@@ -3131,7 +3142,12 @@ if os.path.exists('cards.json'):
             'if(t.cap&&x>t.cap){x=t.cap;cap=true;}v+=x;});}'
             'return {v:v,cap:cap,bill:b};};'
             'window.jhas=function(c,mode){return mode==="base"||'
-            'c.tiers.some(function(t){return t.scope===mode||t.scope==="any";});};</script>') % (
+            'c.tiers.some(function(t){return t.scope===mode||t.scope==="any";});};'
+            # 第一個上限在哪個台幣帳單金額卡住；沒有上限回 0。
+            # 各層的 cap 各自獨立計算，所以取最小的那個
+            'window.jcapat=function(c,mode){if(mode==="base")return 0;var m=0;'
+            'c.tiers.filter(function(t){return (t.scope===mode||t.scope==="any")&&t.cap;})'
+            '.forEach(function(t){var x=t.cap/(t.rate/100);if(!m||x<m)m=x;});return m;};</script>') % (
         _MIDC, _fx['typical'],
         json.dumps([{'n': c['name'], 's': c['slug'], 'base': c['base'],
                      'tiers': c['tiers'], 'race': c.get('reg_race', False)}
@@ -3541,32 +3557,83 @@ if os.path.exists('cards.json'):
 <script>
 (function(){
  var $=function(i){return document.getElementById(i)};
- function run(){
-  var i=+$('kc').value, y=+$('ky').value||0, mode=$('ks').value;
-  var c=JCARD.cards[i];
-  if(!jhas(c,mode)){$('kv').className='cv tw';
-    $('kv').textContent='這張卡在此消費類型沒有加碼，只有基本回饋';mode='base';}
-  var o=jback(c,y,mode), net=o.bill-o.v;
-  $('k1').textContent='¥'+jfmt(y);
-  $('k2').textContent='NT$'+jfmt(o.bill);
-  $('k3').innerHTML='NT$'+jfmt(o.v)+'<i class="pp">≈ ¥'+jfmt(o.v/JCARD.mid)+'</i>';
-  $('k4').innerHTML='NT$'+jfmt(net)+'<i class="pp">≈ ¥'+jfmt(net/JCARD.mid)+'</i>';
-  if(y>0&&jhas(c,$('ks').value)){$('kv').className='cv '+(o.cap?'tw':'jp');
-   $('kv').textContent='有效回饋率 '+(o.v/o.bill*100).toFixed(2)+'%'+
-    (o.cap?'　·　加碼已達上限，再刷下去只剩 '+c.base+'%':'')+
-    (c.race?'　·　此卡加碼需搶限量登錄':'');}
-  $('kr').innerHTML=JCARD.cards.map(function(x){var r=jback(x,y,jhas(x,$('ks').value)?$('ks').value:'base');
-    return '<div class="cl"><span><a href="'+%HUB%+'/'+x.s+'/">'+x.n+'</a>'+
-     (jhas(x,$('ks').value)?'':'<i class="pc">此類型無加碼</i>')+'</span><b>NT$'+
-     jfmt(r.v)+'</b></div>';}).join('');
+ var HUB=%HUB%;
+ function pick(){                       // 選到的卡（去重、略過未選）
+  var out=[],seen={};
+  ['kc0','kc1','kc2'].forEach(function(id){
+   var e=$(id); if(!e||e.value==='') return;
+   var i=+e.value; if(seen[i]) return; seen[i]=1; out.push(i);
+  });
+  return out;
  }
- ['kc','ky','ks'].forEach(function(i){var e=$(i);if(e){e.addEventListener('input',run);e.addEventListener('change',run);}});
+ function run(){
+  var y=+$('ky').value||0, want=$('ks').value, idx=pick();
+  var bill=jbill(y);
+  $('k1').textContent='¥'+jfmt(y);
+  $('k2').innerHTML='NT$'+jfmt(bill);
+  if(!idx.length){$('kcmp').innerHTML='';$('kv').textContent='請至少選一張卡';$('kv').className='cv';return;}
+
+  var rows=idx.map(function(i){
+   var c=JCARD.cards[i], ok=jhas(c,want), mode=ok?want:'base';
+   var o=jback(c,y,mode), at=jcapat(c,mode);
+   return {c:c,ok:ok,v:o.v,cap:o.cap,at:at,net:bill-o.v,
+           rate:bill>0?o.v/bill*100:0};
+  });
+  var top=Math.max.apply(null,rows.map(function(r){return r.v}));
+
+  var th='<th>項目</th>'+rows.map(function(r){
+    return '<th><a href="'+HUB+'/'+r.c.s+'/">'+r.c.n+'</a></th>';}).join('');
+  function tr(label,f){
+   return '<tr><td>'+label+'</td>'+rows.map(function(r){
+     return '<td>'+f(r)+'</td>';}).join('')+'</tr>';
+  }
+  $('kcmp').innerHTML='<table class="cmp"><thead><tr>'+th+'</tr></thead><tbody>'
+   + tr('實拿回饋',function(r){return (r.v===top&&rows.length>1?'<span class="pw">最高</span>':'')
+        +'<b>NT$'+jfmt(r.v)+'</b>';})
+   + tr('有效回饋率',function(r){return r.rate.toFixed(2)+'%';})
+   + tr('實際負擔',function(r){return 'NT$'+jfmt(r.net);})
+   + tr('加碼上限',function(r){
+       if(!r.ok) return '<i class="pc">此類型無加碼</i>';
+       return r.at? '刷到 NT$'+jfmt(r.at)+' 為止' : '無上限';})
+   + tr('目前狀態',function(r){
+       if(!r.ok) return '只有基本 '+r.c.base+'%';
+       if(r.cap) return '<i class="pc">已達上限，再刷只剩 '+r.c.base+'%</i>';
+       return r.at? '未達上限' : '—';})
+   + '</tbody></table>';
+
+  if(y<=0){$('kv').className='cv';$('kv').textContent='輸入金額後比較';return;}
+  var best=rows.filter(function(r){return r.v===top})[0];
+  var msg='';
+  if(rows.length>1){
+   var low=Math.min.apply(null,rows.map(function(r){return r.v}));
+   msg=best.c.n+' 回饋最高 NT$'+jfmt(top)
+     +(top>low?'，比最低的多 NT$'+jfmt(top-low):'，與其他卡相同');
+  } else {
+   msg='有效回饋率 '+best.rate.toFixed(2)+'%';
+  }
+  var capped=rows.filter(function(r){return r.cap});
+  if(capped.length) msg+='　·　'+capped.map(function(r){return r.c.n}).join('、')+' 已達加碼上限';
+  var race=rows.filter(function(r){return r.c.race});
+  if(race.length) msg+='　·　'+race.map(function(r){return r.c.n}).join('、')+' 需搶限量登錄';
+  $('kv').className='cv '+(capped.length?'tw':'jp');
+  $('kv').textContent=msg;
+ }
+ ['kc0','kc1','kc2','ky','ks'].forEach(function(i){
+   var e=$(i); if(e){e.addEventListener('input',run);e.addEventListener('change',run);}});
  run();
 })();
 </script>""").replace('%HUB%', json.dumps(U('/japan-credit-card')))
 
-    _kopts = ''.join(f'<option value="{i}">{html.escape(c["name"])}（{html.escape(c["plan"])}）</option>'
-                     for i, c in enumerate(CD['cards']))
+    # 預設帶三張回饋最高的，一進來就看得到比較，不必自己先選
+    _ktop = [CD['cards'].index(c) for c in sorted(CD['cards'], key=lambda x: -x['total'])[:3]]
+
+    def _ksel(n, sel, optional):
+        o = ('<option value="">—（不比較）</option>' if optional else '') + ''.join(
+            f'<option value="{i}"{" selected" if i == sel else ""}>'
+            f'{html.escape(c["name"])}（{html.escape(c["plan"])}）</option>'
+            for i, c in enumerate(CD['cards']))
+        return (f'<label>卡片 {n}{"（可不選）" if optional else ""}'
+                f'<select id="kc{n-1}">{o}</select></label>')
     kc_faq = [
      ('回饋是用日幣還是台幣計算？',
       '台幣。海外刷卡會先由卡片組織換算成台幣入帳，再加上國外交易手續費，'
@@ -3579,6 +3646,12 @@ if os.path.exists('cards.json'):
       '當成比較用的估算。實際入帳取決於卡片組織當日匯率與請款日；'
       '回饋也受權益等級、排除通路與登錄狀態影響。本頁採各卡公告的最高情境計算，'
       '也就是各層加碼條件都符合時的數字。'),
+     ('為什麼金額一改，最高回饋的卡就換人了？',
+      '因為加碼有上限。上限一到，超過的部分只剩基本回饋，'
+      '所以「哪張最划算」會隨金額改變——小額時加碼率高的卡贏，'
+      '金額拉大之後，上限高的卡反而後來居上。'
+      '表格裡的「加碼上限」那一列就是各卡的臨界點，'
+      '把你實際會刷的金額填進去再比，才看得出真正的差別。'),
      ('為什麼有些卡在某個消費類型沒有數字？',
       '因為那張卡在該類型沒有加碼。例如交通卡儲值加碼目前只有部分卡片提供，'
       '其餘卡片在該情境下只有基本回饋。'),
@@ -3591,30 +3664,30 @@ if os.path.exists('cards.json'):
                        for q, a in kc_faq]}, ensure_ascii=False)
 
     write('japan-card-calculator/index.html',
-      head('日本刷卡回饋計算機｜輸入日幣金額，換算實拿回饋與台幣帳單',
-           f'選擇信用卡、輸入日幣消費金額，立即算出台幣帳單（含 {_fx["typical"]}% 國外交易手續費）、'
-           f'實拿回饋與實際負擔，回饋同時顯示日幣與台幣。收錄 {len(CD["cards"])} 張旅日信用卡，'
-           f'匯率每日更新。', 'japan-card-calculator/',
+      head('日本刷卡回饋計算機｜最多三張卡並排比，看回饋差多少、上限卡在哪',
+           f'挑 1–3 張信用卡、輸入日幣消費金額，一次比出台幣帳單（含 {_fx["typical"]}% '
+           f'國外交易手續費）、實拿回饋、有效回饋率，以及各卡的加碼上限會在哪個金額卡住。'
+           f'收錄 {len(CD["cards"])} 張旅日信用卡，匯率每日更新。', 'japan-card-calculator/',
            '<script type="application/ld+json">' + kc_ld + '</script>')
       + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), ('回饋計算機', None)])
       + topnav()
       + '<h1>日本刷卡回饋計算機</h1>'
-      + '<p class="lede">在店裡看到日圓標價，想知道刷下去實際負擔多少、回饋拿得到多少。'
-        f'選卡、輸入金額就好，目前收錄 {len(CD["cards"])} 張卡。</p>'
+      + '<p class="lede">在店裡看到日圓標價，想知道刷下去實際負擔多少、哪張卡回饋最多。'
+        f'最多可以挑三張並排比，順便看加碼上限會在哪個金額卡住。目前收錄 {len(CD["cards"])} 張卡。</p>'
       + f'<p class="upd">換算匯率 {_MIDC}（中間匯率）　·　'
         f'國外交易手續費 {_fx["typical"]}%　·　匯率每日自動更新'
         + (f'　·　{_RDATE}' if _RDATE else '') + '</p>'
       + '<div class="calc"><div class="sf">'
-      + f'<label>信用卡<select id="kc">{_kopts}</select></label>'
+      + _ksel(1, _ktop[0], False)
+      + _ksel(2, _ktop[1] if len(_ktop) > 1 else None, True)
+      + _ksel(3, _ktop[2] if len(_ktop) > 2 else None, True)
       + '<label>日幣金額 ¥<input id="ky" type="number" value="100000" min="0" step="1000"></label>'
       + f'<label>消費類型<select id="ks">{_mopts}</select></label>'
       + '</div><div class="cres">'
         '<div class="cl"><span>日幣消費</span><b id="k1">—</b></div>'
         '<div class="cl"><span>台幣帳單（含手續費）</span><b id="k2">—</b></div>'
-        '<div class="cl"><span>實拿回饋</span><b id="k3">—</b></div>'
-        '<div class="cl"><span>實際負擔</span><b id="k4">—</b></div>'
-        '<div class="cv" id="kv">—</div></div></div>'
-      + '<h3>同金額下其他卡拿多少</h3><div class="cres" id="kr"></div>'
+        '</div><div class="tw" id="kcmp"></div>'
+        '<div class="cres"><div class="cv" id="kv">—</div></div></div>'
       + f'<p class="disc">回饋依台幣帳單金額計算，點數型回饋以 1 點約 1 元估算。'
         f'試算採各層加碼條件都符合的最高情境，實際以發卡行為準。條件查證於 {CD["checked"]}。</p>'
       + fare_cta('tokyo', '算完回饋，順便看機票')
