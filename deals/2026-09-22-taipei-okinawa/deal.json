@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-22-taipei-okinawa",
- "generated": "2026-09-22 09:40",
+ "generated": "2026-09-22 23:44",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -25,29 +25,11 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "10 月出發的票，每天最便宜的平均要 NT$6,189（9 天有紀錄），這張低 17%"
+  "10 月出發的票，每天最便宜的平均要 NT$6,342（8 天有紀錄），這張低 19%"
  ],
  "med": 8322,
- "n_rt": 25,
+ "n_rt": 19,
  "others": [
-  {
-   "o": "TPE",
-   "d": "OKA",
-   "air": "VZ",
-   "airname": "泰越捷航空",
-   "cls": "lcc",
-   "price": 4966,
-   "dep": "2026-10-19",
-   "ret": "2026-10-24",
-   "dept": "14:55",
-   "rett": "08:10",
-   "rt": true,
-   "tr": 0,
-   "dur": 180,
-   "dur_to": 85,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE1910OKA24101?t=MM17924217001792430400000085TPEOKA17928294001792831500000095OKATPE_95255e4e283cdfb30739aa57e4f75c10_13183&search_date=15092026&expected_price_uuid=01a0a34c-a40a-8030-e664-4bbdea5cdb8a&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=iksR5vczlJfLfq12cPOPMQ&expected_price_source=share&expected_price_currency=twd&expected_price=4966&marker=775639"
-  },
   {
    "o": "TPE",
    "d": "OKA",
@@ -83,6 +65,24 @@
    "dur_to": 85,
    "gate": "Kiwi.com",
    "url": "https://www.aviasales.com/search/TPE2810OKA31101?t=VZ17931987001793207400000085TPEOKA17934702001793472600000100OKATPE_6626d6814670d3a80051df91f0a1d84b_14373&search_date=16092026&expected_price_uuid=01a0a9c5-e76c-8030-af24-01f61fb5e87b&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=HybUvmjGxyKCYZLF2Y0qoQ&expected_price_source=share&expected_price_currency=twd&expected_price=5453&marker=775639"
+  },
+  {
+   "o": "TPE",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 5996,
+   "dep": "2026-10-02",
+   "ret": "2026-10-04",
+   "dept": "18:30",
+   "rett": "08:10",
+   "rt": true,
+   "tr": 0,
+   "dur": 175,
+   "dur_to": 80,
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/TPE0210OKA04101?t=MM17909658001790974200000080TPEOKA17911014001791103500000095OKATPE_411b0d4a24decb60f8d424f4040d55b6_15807&search_date=16092026&expected_price_uuid=01a0a9c4-281b-8030-add2-9e47d21331f4&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Msk3PNYs1yxealjuFzkLRA&expected_price_source=share&expected_price_currency=twd&expected_price=5996&marker=775639"
   }
  ]
 }
