@@ -35,60 +35,85 @@
  },
  {
   "slug": "2026-09-23-taichung-okinawa",
-  "title": "台中飛沖繩 NT$9,149 來回含稅｜真航空 09/29 出發",
+  "title": "台中飛沖繩 NT$9,144 來回含稅｜真航空 09/29 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 9149,
+  "price": 9144,
   "air": "真航空",
   "dep": "2026-09-29",
   "ret": "2026-10-06",
   "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "9 月出發的票，每天最便宜的平均要 NT$13,028（8 天有紀錄），這張低 30%"
+   "9 月出發的票，每天最便宜的平均要 NT$13,026（8 天有紀錄），這張低 30%"
   ],
   "med": 13291,
-  "url": "https://www.aviasales.com/search/RMQ2909OKA06101?t=LJ17907030001790769900001055RMQICNOKA17913132001791315000000090OKARMQ_aeb1db25422d02cac2b610cbdbf6f9c9_24178&search_date=22092026&expected_price_uuid=01a0c7b6-36e4-8030-e272-f4a46e424420&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=dnN4-VdEaButjZYH1JsdBQ&expected_price_source=share&expected_price_currency=twd&expected_price=9149&marker=775639",
+  "url": "https://www.aviasales.com/search/RMQ2909OKA06101?t=LJ17907030001790769900001055RMQICNOKA17913132001791315000000090OKARMQ_aeb1db25422d02cac2b610cbdbf6f9c9_24178&search_date=22092026&expected_price_uuid=01a0c7b6-36e4-8030-e272-f4a46e424420&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=dnN4-VdEaButjZYH1JsdBQ&expected_price_source=share&expected_price_currency=twd&expected_price=9144&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 9922,
+   "lo": 9917,
    "hi": 14104,
-   "days": 30
+   "days": 31
   },
   "mbase": {
-   "avg": 13028,
+   "avg": 13026,
    "days": 8,
    "month": 9
   },
   "rank": 1,
-  "n": 81
+  "n": 83
  },
  {
   "slug": "2026-09-23-transfer-tokyo-sendai",
-  "title": "飛東京轉乘去仙台，比直飛省 NT$12,274",
+  "title": "飛東京轉乘去仙台，比直飛省 NT$12,283",
   "o": "台灣",
   "c": "仙台",
   "via": "東京",
-  "price": 11230,
+  "price": 11221,
   "air": "飛東京再轉乘",
-  "fl_price": 6560,
+  "fl_price": 6557,
   "fl_rt": true,
   "fl_to": "東京",
-  "tr_twd": 2335,
+  "tr_twd": 2332,
   "tr_mode": "東北新幹線",
   "dep": "2026-10-29",
   "ret": "",
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$12,274"
+   "比直飛省 NT$12,283"
   ],
   "med": 23504,
-  "url": "https://www.aviasales.com/search/TPE2910NRT02111?t=GK17932941001793309400000195TPENRT17936583001793669400000245NRTTPE_c029ce312974e41aa605b174d4b1c76e_17456&search_date=22092026&expected_price_uuid=01a0c909-7702-8030-aa9a-00d945e67dbb&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=IGvP5kKhT6Zw59amYRidMQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6560&marker=775639",
+  "url": "https://www.aviasales.com/search/TPE2910NRT02111?t=GK17932941001793309400000195TPENRT17936583001793669400000245NRTTPE_c029ce312974e41aa605b174d4b1c76e_17456&search_date=22092026&expected_price_uuid=01a0c909-7702-8030-aa9a-00d945e67dbb&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=IGvP5kKhT6Zw59amYRidMQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6557&marker=775639",
   "hotelcity": "仙台",
   "cslug": "sendai"
+ },
+ {
+  "slug": "2026-09-23-transfer-osaka-hiroshima",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$7,910",
+  "o": "台灣",
+  "c": "廣島",
+  "via": "大阪",
+  "price": 11168,
+  "air": "飛大阪再轉乘",
+  "fl_price": 6992,
+  "fl_rt": true,
+  "fl_to": "大阪",
+  "tr_twd": 2088,
+  "tr_mode": "山陽新幹線",
+  "dep": "2026-10-10",
+  "ret": "",
+  "stops": "山陽新幹線",
+  "cls": "transfer",
+  "reasons": [
+   "比直飛省 NT$7,910"
+  ],
+  "med": 19078,
+  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=MM17916564001791669600000160TPEKIX17920773001792085400000195KIXTPE_f4ddd9d7bd68536a2a4f84a4d2270db7_18499&search_date=20092026&expected_price_uuid=01a0c082-508a-8030-275a-58e4c73e4bdd&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ufyAv-JlkdV1BcRs4BRzjQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6992&marker=775639",
+  "hotelcity": "廣島",
+  "cslug": "hiroshima"
  }
 ]
