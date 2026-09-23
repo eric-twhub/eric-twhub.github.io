@@ -1,0 +1,223 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="google-site-verification" content="lL18Diq98hRIL65-BKEiZ-mhQ2DNyf0WYwRpRBiT-Rk">
+<title>在日本收得到台灣的簡訊驗證碼嗎？2026 年 3 月之後答案變了</title>
+<meta name="description" content="日本三大電信的 3G 已全部關閉，最後一家 docomo 是 2026 年 3 月 31 日。台灣門號要在日本收得到簡訊，手機一定要開 VoLTE——關掉數據漫遊就收不到。這頁整理中華電信、台灣大哥大、遠傳的官方說法，以及不用付漫遊費的做法。">
+<link rel="canonical" href="https://eric-twhub.github.io/japan-sms-roaming/">
+<meta property="og:title" content="在日本收得到台灣的簡訊驗證碼嗎？2026 年 3 月之後答案變了">
+<meta property="og:description" content="日本三大電信的 3G 已全部關閉，最後一家 docomo 是 2026 年 3 月 31 日。台灣門號要在日本收得到簡訊，手機一定要開 VoLTE——關掉數據漫遊就收不到。這頁整理中華電信、台灣大哥大、遠傳的官方說法，以及不用付漫遊費的做法。">
+<meta property="og:type" content="website"><meta property="og:url" content="https://eric-twhub.github.io/japan-sms-roaming/">
+<style>*{box-sizing:border-box}
+/* 固定淺色主題：color-scheme 讓下拉選單與日期選擇器等原生元件也維持淺色，
+   否則使用者系統為深色模式時表單控制項會變黑，與頁面不一致 */
+:root{color-scheme:light;
+--bg:#f7f7f5;--card:#fff;--fg:#1a1a1a;--dim:#63605c;--line:#e5e3de;--acc:#c2410c;
+--hot:#dc2626;--lcc:#0f766e;--fsc:#4f46e5;--soft:#faf9f7}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 72px}
+a{color:var(--acc)}
+.crumb{font-size:.8rem;color:var(--dim);padding:16px 0 0}
+.crumb a{color:var(--dim);text-decoration:none}.crumb a:hover{color:var(--acc)}
+h1{font-size:1.95rem;margin:14px 0 8px;letter-spacing:-.025em;line-height:1.3}
+.lede{color:var(--dim);font-size:.95rem;margin:0 0 4px}
+.upd{color:var(--dim);font-size:.78rem;margin:6px 0 0}
+nav.top{position:sticky;top:0;z-index:30;background:var(--bg);padding:9px 0;margin-top:14px;
+border-bottom:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+nav.top>a{color:var(--dim);text-decoration:none;font-size:.86rem;white-space:nowrap;
+font-weight:500;padding:6px 10px;border-radius:7px}
+nav.top>a:hover,nav.top>a.cur{color:var(--acc);background:var(--soft)}
+/* 用 details 做下拉：不需 JS，鍵盤可操作，手機上也不會因 hover 失效 */
+/* 寬螢幕：面板錨在自己的項目下方，點哪個就在哪個下面展開 */
+nav.top details{position:relative}
+nav.top summary{list-style:none;cursor:pointer;font-size:.86rem;font-weight:500;color:var(--dim);
+padding:6px 10px;border-radius:7px;white-space:nowrap;user-select:none}
+nav.top summary::-webkit-details-marker{display:none}
+nav.top summary::after{content:"▾";margin-left:5px;font-size:.7rem;opacity:.6}
+nav.top summary:hover,nav.top details[open]>summary{color:var(--acc);background:var(--soft)}
+nav.top details[open]>summary::after{content:"▴"}
+/* 一律絕對定位：若改 static，展開時會把同列其他項目擠開、版面錯位 */
+/* 最右邊的分類往左展開，否則視窗接近斷點時面板會凸出畫面右緣 */
+nav.top>details.end>.dd{left:auto;right:0}
+.dd{position:absolute;top:calc(100% + 6px);left:0;min-width:220px;
+max-width:min(340px,calc(100vw - 32px));max-height:70vh;overflow-y:auto;
+background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px;
+box-shadow:0 10px 28px rgba(0,0,0,.14);display:flex;flex-direction:column;gap:1px;z-index:40}
+.dd a{display:block;padding:8px 11px;border-radius:7px;color:var(--fg);text-decoration:none;
+font-size:.87rem;white-space:nowrap}
+.dd a:hover{background:var(--soft);color:var(--acc)}
+.dd a.cur{color:var(--acc);font-weight:600}
+.dd b{display:block;padding:9px 11px 4px;font-size:.72rem;color:var(--dim);font-weight:600;
+letter-spacing:.05em}
+.dd hr{border:0;border-top:1px solid var(--line);margin:5px 0}
+/* 窄螢幕導覽列會換行，面板錨在各自的項目上時很容易被推出畫面左右緣；
+   改為錨定導覽列本身（position:sticky 已建立定位脈絡）並撐滿整列 */
+@media(max-width:767px){
+ nav.top details{position:static}
+ .dd{left:0;right:0;max-width:none;top:calc(100% + 4px)}
+ .dd a{white-space:normal}
+}
+/* 漢堡選單：只在窄螢幕出現，同時把四個分類的下拉收起來 */
+nav.top>details.burger{display:none}
+@media(max-width:767px){
+ nav.top>details.burger{display:block}
+ nav.top>details:not(.burger){display:none}
+}
+/* 漢堡面板內的分類標題 */
+.dd>details>summary{list-style:none;cursor:pointer;user-select:none;
+font-size:.9rem;font-weight:600;color:var(--fg);padding:10px 11px;border-radius:7px;
+display:flex;justify-content:space-between;align-items:center}
+.dd>details>summary::-webkit-details-marker{display:none}
+.dd>details>summary::after{content:"▾";font-size:.7rem;color:var(--dim)}
+.dd>details[open]>summary,.dd>details>summary:hover{color:var(--acc);background:var(--soft)}
+.dd>details[open]>summary::after{content:"▴"}
+/* 就地展開的子清單，沿用 .dd 的排版但不再是浮動面板 */
+.sub{display:flex;flex-direction:column;gap:1px;padding:1px 0 8px 12px}
+.sub a{display:block;padding:8px 11px;border-radius:7px;color:var(--fg);
+text-decoration:none;font-size:.86rem}
+.sub a:hover{background:var(--soft);color:var(--acc)}
+.sub a.cur{color:var(--acc);font-weight:600}
+.sub b{display:block;padding:9px 11px 4px;font-size:.72rem;color:var(--dim);
+font-weight:600;letter-spacing:.05em}
+.sub hr{border:0;border-top:1px solid var(--line);margin:5px 0}
+
+h2{font-size:1.28rem;margin:40px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--acc)}
+h3{font-size:1.02rem;margin:26px 0 8px}
+h3.grp{font-size:.78rem;letter-spacing:.12em;color:var(--dim);font-weight:700;margin:34px 0 0;text-transform:uppercase}
+h3 .tag{font-size:.7rem;font-weight:600;color:var(--dim);margin-left:7px;border:1px solid var(--line);border-radius:5px;padding:1px 5px;vertical-align:middle}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px;margin-top:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 14px;
+display:flex;flex-direction:column;gap:6px}
+.card.hot{border-color:var(--hot)}
+.rt{display:flex;align-items:center;gap:6px;font-size:.96rem;flex-wrap:wrap}
+.rt i{color:var(--dim);font-style:normal}
+.rt em{background:var(--hot);color:#fff;font-size:.66rem;padding:2px 6px;border-radius:4px;font-style:normal;font-weight:700}
+.pr{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.pr span{font-size:.68rem;font-weight:600;margin-left:6px;padding:2px 6px;border-radius:4px}
+.pr .rtx{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc)}
+.pr .owx{background:var(--line);color:var(--dim)}
+.mt{display:flex;gap:6px;flex-wrap:wrap;font-size:.78rem;color:var(--dim)}
+.tg{padding:1px 6px;border-radius:4px;font-size:.69rem;font-weight:600}
+.tg.lcc{background:color-mix(in srgb,var(--lcc) 15%,transparent);color:var(--lcc)}
+.tg.fsc{background:color-mix(in srgb,var(--fsc) 15%,transparent);color:var(--fsc)}
+.tg.other{background:var(--line);color:var(--dim)}
+.tg.gt{background:color-mix(in srgb,#b45309 16%,transparent);color:#b45309}
+.gate{font-size:.73rem;color:var(--dim);display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+padding-top:6px;border-top:1px dashed var(--line)}
+.gate b{color:var(--fg);font-weight:600}
+.gate span{padding:1px 6px;border-radius:4px;font-size:.66rem;font-weight:600}
+.gate.ga span{background:color-mix(in srgb,var(--lcc) 18%,transparent);color:var(--lcc)}
+.gate.gb span{background:var(--line);color:var(--dim)}
+.gate.gc span{background:color-mix(in srgb,var(--hot) 14%,transparent);color:var(--hot)}
+.dt{font-size:.81rem;color:var(--dim);font-variant-numeric:tabular-nums}
+.btn{margin-top:auto;display:block;text-align:center;background:var(--acc);color:#fff;
+text-decoration:none;padding:7px;border-radius:7px;font-size:.83rem;font-weight:600}
+.cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:9px;margin-top:12px}
+.ct{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;
+padding:12px 13px;text-decoration:none;color:var(--fg)}
+.ct:hover{border-color:var(--acc)}
+.ct b{display:block;font-size:1rem}
+.ct s{display:block;font-size:.74rem;color:var(--dim);text-decoration:none;margin-top:1px}
+.ct u{display:block;font-size:.95rem;color:var(--acc);text-decoration:none;font-weight:700;margin-top:6px}
+.ct u small{font-weight:400;font-size:.7rem;color:var(--dim)}
+.plinks{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.plink{flex:1 1 190px;text-align:center;border:1px solid var(--line);background:var(--card);
+color:var(--fg);text-decoration:none;padding:11px 13px;border-radius:9px;font-size:.88rem;font-weight:600}
+.plink:hover{border-color:var(--acc);color:var(--acc)}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-weight:600;font-size:.79rem}
+td b{color:var(--acc)}
+.today{background:linear-gradient(180deg,#fff,var(--soft));border:1px solid var(--line);
+ border-top:4px solid var(--acc);border-radius:12px;padding:19px 22px;margin-top:14px}
+.tday{font-size:.79rem;color:var(--dim);letter-spacing:.04em;font-weight:600}
+.tans{font-size:1.3rem;font-weight:800;line-height:1.42;margin-top:8px;letter-spacing:-.02em}
+.tsub{font-size:.93rem;color:var(--dim);line-height:1.7;margin-top:10px}
+.tbuf{font-size:.93rem;line-height:1.7;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.tbuf b{color:var(--acc)}
+.tldr{background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--acc);
+border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
+.tldr ul{margin:0;padding-left:2px}
+.tldr li{margin-bottom:9px;font-size:.94rem;line-height:1.75}
+.tldr li:last-child{margin-bottom:0}
+/* 規格／官方原文的引用塊：原文照抄，cite 放出處或中譯 */
+blockquote.q{margin:14px 0;padding:12px 16px;background:var(--card);
+border-left:3px solid var(--acc);border-radius:0 8px 8px 0;font-size:.9rem;line-height:1.75}
+blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem;color:var(--dim)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
+.tw table{min-width:640px;font-size:.84rem}
+.tw th,.tw td{white-space:nowrap;padding:9px 11px}
+.tw td.win{color:var(--lcc);font-weight:700}
+/* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
+.tw td.nm{white-space:normal;line-height:1.55;min-width:150px;max-width:290px}
+/* 欄位少的表格不要被 min-width 逼出橫向捲動 */
+.tw.narrow table{min-width:0}
+/* 回饋計算機的並排比較表 */
+.cmp{width:100%;border-collapse:collapse}
+.cmp th,.cmp td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;
+ white-space:nowrap;vertical-align:baseline}
+.cmp th:first-child,.cmp td:first-child{text-align:left;color:var(--dim);font-weight:600}
+.cmp thead th{font-weight:700;border-bottom:2px solid var(--line);color:var(--fg)}
+.cmp thead th a{text-decoration:none}
+.cmp b{font-variant-numeric:tabular-nums;font-size:1.06rem}
+.tw td .pw,.cmp .pw{background:var(--acc);color:#fff;font-size:.68rem;padding:1px 6px;border-radius:4px;
+ font-weight:700;margin-right:5px;vertical-align:middle}
+.cmp .pc{font-style:normal;color:var(--hot)}
+.tw td.lose{color:var(--acc);font-weight:700}
+.tw td.win b,.tw td.lose b{color:inherit}
+.cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
+background:var(--card);border:1px solid var(--line);border-radius:12px;
+text-decoration:none;color:var(--fg)}
+.cta:hover{border-color:var(--acc)}
+.cta .ci{font-size:1.5rem;flex:0 0 auto}
+.cta .ct{flex:1;display:flex;flex-direction:column;gap:2px}
+.cta .ct b{font-size:.98rem;font-weight:700}
+.cta .ct s{text-decoration:none;font-size:.82rem;color:var(--dim)}
+.cta .ca{color:var(--acc);font-weight:700;font-size:1.1rem;flex:0 0 auto}
+.cta .ca.pr{font-size:1.42rem;letter-spacing:-.03em;line-height:1.15;text-align:right}
+.cta .ca.pr small{display:block;font-size:.66rem;font-weight:600;color:var(--dim);letter-spacing:0}
+details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
+margin-top:8px;padding:0}
+details.faq summary{cursor:pointer;padding:13px 15px;font-weight:600;font-size:.95rem;
+list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"＋";color:var(--acc);font-weight:700;flex:0 0 auto}
+details.faq[open] summary::after{content:"－"}
+details.faq summary:hover{color:var(--acc)}
+details.faq>div{padding:0 15px 14px;font-size:.9rem;color:var(--dim);line-height:1.8}
+.sf{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:12px;
+padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.sf label{display:flex;flex-direction:column;gap:5px;font-size:.78rem;color:var(--dim);flex:1 1 150px}
+.sf select,.sf input{font:inherit;font-size:.92rem;padding:9px 10px;border-radius:8px;
+border:1px solid var(--line);background:var(--card);color:var(--fg);width:100%}
+.sf button{font:inherit;font-weight:700;font-size:.92rem;padding:10px 22px;border:0;
+border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
+.sf button:hover{opacity:.9}
+@media(max-width:520px){.sf label{flex:1 1 100%}.sf button{width:100%}}
+.calc{margin-top:12px;padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.calc .sf{margin-top:0;padding:0;background:none;border:0}
+.cres{margin-top:14px;padding:16px 18px;background:var(--card);border:1px solid var(--line);
+ border-radius:10px}
+.cres .cl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+ padding:7px 0;font-size:.95rem;border-bottom:1px dashed var(--line)}
+.cres .cl:last-of-type{border-bottom:0}
+.cres .cl b{font-size:1.16rem;font-variant-numeric:tabular-nums}
+.cres .cl .pw{background:var(--acc);color:#fff;font-size:.7rem;padding:1px 7px;border-radius:4px;
+ font-weight:700;margin-right:4px}
+.cres .cl .pc{font-style:normal;font-size:.72rem;color:var(--hot);margin-left:8px}
+.cres .cl .pp{font-style:normal;font-size:.78rem;color:var(--dim);font-weight:600;margin-left:8px}
+.cres .cv{margin-top:12px;padding-top:12px;border-top:2px solid var(--line);
+ font-size:1.12rem;font-weight:800;line-height:1.5}
+.cres .cv.jp{color:var(--lcc)}.cres .cv.tw{color:var(--acc)}
+.widget{margin:12px 0 0;min-height:60px}
+.widget iframe{max-width:100%;border:0}
+.gatebar{margin:16px 0 0;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
+.disc{font-size:.76rem;color:var(--dim);margin:8px 0 0;line-height:1.6}
+.note{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:.79rem;color:var(--dim);line-height:1.85}
+.note a{color:var(--dim)}
+@media(max-width:520px){h1{font-size:1.5rem}.grid{grid-template-columns:1fr}}</style><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "去日本，台灣門號關掉數據漫遊就能只收簡訊嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不行。日本三大電信的 3G 已經全部關閉，最後一家 docomo 是 2026 年 3 月 31 日。手機要靠 4G/5G 才註冊得上日本的網路，而三家台灣電信都寫明：沒有開通漫遊上網與 VoLTE，就「無訊號亦無法使用漫遊語音、簡訊及上網」。關掉數據漫遊確實不會被收費，但你也收不到驗證碼。"}}, {"@type": "Question", "name": "那要怎麼收到銀行或 Google 的驗證碼？", "acceptedAnswer": {"@type": "Answer", "text": "兩條路。一是申請漫遊上網方案並開啟數據漫遊與 VoLTE，最穩但要多付一份網路錢。二是開 VoLTE 與 Wi-Fi Calling，到日本後開飛航模式再單獨打開 Wi-Fi，透過飯店或店家的 Wi-Fi 收簡訊——台灣大哥大官方寫這樣「計費方式同國內語音電話費率」，遠傳寫「不會收取國際語音漫遊費用」。"}}, {"@type": "Question", "name": "在國外收簡訊要錢嗎？", "acceptedAnswer": {"@type": "Answer", "text": "一般簡訊不用。台灣大哥大官方寫「漫遊時收一般簡訊免費」。會收錢的是接聽電話（漫遊費加國際電話費）、發送簡訊，以及多媒體簡訊。"}}, {"@type": "Question", "name": "為什麼一定要開飛航模式？只開 Wi-Fi Calling 不行嗎？", "acceptedAnswer": {"@type": "Answer", "text": "遠傳的官方頁面說明了原因：Wi-Fi 訊號不好的時候，通話會自動切回當地漫遊業者，然後就產生國際漫遊話費。飛航模式是把這條退路封死。"}}, {"@type": "Question", "name": "我買了日本的 eSIM，它能收我台灣的簡訊嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不能。日本的 eSIM 幾乎都是純數據，沒有電話號碼，也不能收台灣發來的簡訊。驗證碼還是會發到你原本的台灣門號，所以這兩件事要分開處理。"}}, {"@type": "Question", "name": "開飛航模式的話，我的 eSIM 不是也一起關掉了嗎？", "acceptedAnswer": {"@type": "Answer", "text": "對，這是做法 B 最實際的限制。單人出遊的話，等於要在「用 eSIM 上網」跟「收簡訊」之間切換。同行有兩支手機就好辦：一支用 eSIM 開熱點，另一支開飛航模式連那個熱點的 Wi-Fi 收簡訊。"}}]}</script><script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2">(function(){var s=document.createElement("script");s.async=1;s.setAttribute("data-cmp-ab","2");s.src='https://tpembars.com/NTcyMTY4.js?t=572168';document.head.appendChild(s);})();</script></head><body><div class="wrap"><div class="crumb"><a href="/">首頁</a> › <span>台灣門號在日本收簡訊</span></div><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首頁", "item": "https://eric-twhub.github.io/"}, {"@type": "ListItem", "position": 2, "name": "台灣門號在日本收簡訊", "item": null}]}</script><nav class="top"><a href="/" class=cur>首頁</a><a href="/deals/">🔥 機票特價</a><details name="topnav"><summary>✈️ 航班地區</summary><div class="dd"><b>日本地區</b><a href="/okinawa-islands/">沖繩・離島</a><a href="/kyushu/">九州</a><a href="/kansai/">關西</a><a href="/kanto/">關東</a><a href="/chubu/">中部・北陸</a><a href="/hokkaido/">北海道</a><a href="/tohoku/">東北</a><a href="/chugoku/">中國</a><a href="/shikoku/">四國</a><hr><b>台灣出發地</b><a href="/taipei/">從台北出發</a><a href="/taichung/">從台中出發</a><a href="/kaohsiung/">從高雄出發</a><a href="/tainan/">從台南出發</a></div></details><details name="topnav"><summary>🕐 航班類型</summary><div class="dd"><a href="/japan-flight-good-times/">☀️ 早去晚回</a><a href="/deals/">🔥 今日特價</a><a href="/japan-flight-baggage/">🧳 廉航行李費</a><a href="/japan-ski-baggage/">🎿 雪具託運</a><a href="/japan-airport-last-train/">🚉 機場末班車</a><a href="/japan-esim/">📱 日本 eSIM 比較</a><a href="/japan-esim-native-roaming/">📱 原生還是漫遊</a><a href="/japan-sms-roaming/">✉️ 台灣門號收簡訊</a></div></details><details name="topnav"><summary>🛍️ 旅日購物</summary><div class="dd"><a href="/japan-coupon/">🏷️ 購物折扣總覽</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a><a href="/apple-japan-price/">🍎 台日 Apple 價差</a><a href="/iphone-cost/">📉 iPhone 持有成本</a><a href="/iphone-card/">💰 買 iPhone 刷哪張卡</a><hr><b>各店折扣</b><a href="/japan-coupon/matsukiyo/">松本清 matsukiyo</a><a href="/japan-coupon/sundrug/">SUNDRUG 尚都樂客</a><a href="/japan-coupon/daikoku/">大國藥妝 DAIKOKU</a><a href="/japan-coupon/tsuruha/">鶴羽藥妝 TSURUHA</a><a href="/japan-coupon/sapporo-drug/">札幌藥妝</a><a href="/japan-coupon/bic-camera/">Bic Camera</a></div></details><details name="topnav" class=end><summary>💳 旅日信用卡</summary><div class="dd"><a href="/japan-credit-card/">💳 15 張卡比較</a><a href="/japan-card-calculator/">🧮 回饋計算機</a><hr><b>熱門卡片</b><a href="/japan-credit-card/firstbank-ileo/">第一銀行 iLEO 卡</a><a href="/japan-credit-card/ubot-jiho/">聯邦吉鶴卡</a><a href="/japan-credit-card/ctbc-uniopen/">中信 uniopen 聯名卡</a><a href="/japan-credit-card/sinopac-jcb/">永豐現金回饋 JCB 卡</a><a href="/japan-credit-card/esun-kumamon/">玉山熊本熊卡</a><a href="/japan-credit-card/sinopac-dual/">永豐幣倍卡</a></div></details><details class="burger"><summary>☰ 選單</summary><div class="dd"><details name="burgernav"><summary>✈️ 航班地區</summary><div class="sub"><b>日本地區</b><a href="/okinawa-islands/">沖繩・離島</a><a href="/kyushu/">九州</a><a href="/kansai/">關西</a><a href="/kanto/">關東</a><a href="/chubu/">中部・北陸</a><a href="/hokkaido/">北海道</a><a href="/tohoku/">東北</a><a href="/chugoku/">中國</a><a href="/shikoku/">四國</a><hr><b>台灣出發地</b><a href="/taipei/">從台北出發</a><a href="/taichung/">從台中出發</a><a href="/kaohsiung/">從高雄出發</a><a href="/tainan/">從台南出發</a></div></details><details name="burgernav"><summary>🕐 航班類型</summary><div class="sub"><a href="/japan-flight-good-times/">☀️ 早去晚回</a><a href="/deals/">🔥 今日特價</a><a href="/japan-flight-baggage/">🧳 廉航行李費</a><a href="/japan-ski-baggage/">🎿 雪具託運</a><a href="/japan-airport-last-train/">🚉 機場末班車</a><a href="/japan-esim/">📱 日本 eSIM 比較</a><a href="/japan-esim-native-roaming/">📱 原生還是漫遊</a><a href="/japan-sms-roaming/">✉️ 台灣門號收簡訊</a></div></details><details name="burgernav"><summary>🛍️ 旅日購物</summary><div class="sub"><a href="/japan-coupon/">🏷️ 購物折扣總覽</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a><a href="/apple-japan-price/">🍎 台日 Apple 價差</a><a href="/iphone-cost/">📉 iPhone 持有成本</a><a href="/iphone-card/">💰 買 iPhone 刷哪張卡</a><hr><b>各店折扣</b><a href="/japan-coupon/matsukiyo/">松本清 matsukiyo</a><a href="/japan-coupon/sundrug/">SUNDRUG 尚都樂客</a><a href="/japan-coupon/daikoku/">大國藥妝 DAIKOKU</a><a href="/japan-coupon/tsuruha/">鶴羽藥妝 TSURUHA</a><a href="/japan-coupon/sapporo-drug/">札幌藥妝</a><a href="/japan-coupon/bic-camera/">Bic Camera</a></div></details><details name="burgernav"><summary>💳 旅日信用卡</summary><div class="sub"><a href="/japan-credit-card/">💳 15 張卡比較</a><a href="/japan-card-calculator/">🧮 回饋計算機</a><hr><b>熱門卡片</b><a href="/japan-credit-card/firstbank-ileo/">第一銀行 iLEO 卡</a><a href="/japan-credit-card/ubot-jiho/">聯邦吉鶴卡</a><a href="/japan-credit-card/ctbc-uniopen/">中信 uniopen 聯名卡</a><a href="/japan-credit-card/sinopac-jcb/">永豐現金回饋 JCB 卡</a><a href="/japan-credit-card/esun-kumamon/">玉山熊本熊卡</a><a href="/japan-credit-card/sinopac-dual/">永豐幣倍卡</a></div></details></div></details></nav><h1>在日本，收得到台灣的簡訊驗證碼嗎？</h1><p class="lede">問題從來不是「收簡訊要不要錢」——一般簡訊本來就免費。問題是 2026 年 3 月之後，你在日本可能根本註冊不上網路，所以收不到。</p><div class="today"><div class="tday">三家電信與 docomo 的官方說法，查證於 2026-09-23</div><div class="tans">關掉數據漫遊，在日本就<b>收不到簡訊</b>了</div><div class="tsub">日本三大電信的 3G 已經全部關閉，最後一家 docomo 是 2026 年 3 月 31 日。手機要靠 4G/5G 才註冊得上日本的網路，而 4G 語音要 VoLTE。中華電信的原文是：沒有開通漫遊上網與 VoLTE，就「無訊號亦無法使用漫遊語音、簡訊及上網」。</div><div class="tbuf">好消息是<b>收一般簡訊本來就免費</b>，而且有一條幾乎不用錢的路：開 VoLTE 與 Wi-Fi Calling，到日本開飛航模式再連 Wi-Fi。台灣大哥大官方寫這樣「計費方式同國內語音電話費率」。</div></div><h2>為什麼今年開始不一樣</h2><p class="lede">日本三大電信的 3G 陸續關掉，最後一家 docomo 的 FOMA 在 2026 年 3 月 31 日終止。3G 沒了之後，手機要能在日本註冊上網路、收得到簡訊，就必須走 VoLTE——這不是「比較好」，是沒有就完全沒訊號。</p><blockquote class="q">2026年3月31日（火曜）に「FOMA」および「iモード」のサービスを終了しました。<cite>FOMA 與 iモード 的服務已於 2026 年 3 月 31 日（週二）終止。</cite></blockquote><p class="disc">出處：<a href="https://www.docomo.ne.jp/info/3g_closed/" rel="nofollow" target="_blank">NTT docomo 官網・FOMA 與 iモード 服務終止公告</a>，查證於 2026-09-23。</p><h2>三家電信怎麼說</h2><div class="tw"><table><thead><tr><th>電信商</th><th>收一般簡訊</th><th>日本需要 VoLTE</th><th>說明</th></tr></thead><tbody><tr><td><b>中華電信</b></td><td>未在該頁單列</td><td class="lose"><b>要</b></td><td>一般簡訊免費（各家漫遊計費原則相同，中華電信未在該頁單獨列出）</td></tr><tr><td><b>台灣大哥大</b></td><td>免費</td><td class="lose"><b>要</b></td><td>漫遊時收一般簡訊免費（多媒體簡訊依上網傳輸費計）</td></tr><tr><td><b>遠傳電信</b></td><td>免費</td><td class="lose"><b>要</b></td><td>一般簡訊免費（VoLTE 通話與簡訊不佔用上網傳輸量）</td></tr></tbody></table></div><p class="disc">「日本需要 VoLTE」三家都是「要」，所以整欄標紅——這不是選配，是沒開就沒訊號。以下是各家的原文。</p><h3>中華電信</h3><blockquote class="q">因各地區行動業者陸續關閉3G網路（如美國、日本、中港澳、新加坡、澳大利亞及歐洲等地區），僅剩4G/5G網路，客戶若無開通漫遊上網及VoLTE服務，則無訊號亦無法使用漫遊語音、簡訊及上網。<cite>中華電信・國際漫遊優惠費率與線上申請</cite></blockquote><p class="lede">使用 VoLTE 漫遊服務要同時符合：申請目的地漫遊上網方案、門號已開通 VoLTE、手機支援 VoLTE 漫遊、開啟手機 VoLTE 與數據漫遊。</p><p class="disc">出處：<a href="https://www.cht.com.tw/home/consumer/mobservice/roaming/266" rel="nofollow" target="_blank">中華電信・國際漫遊優惠費率與線上申請</a>，查證於 2026-09-23。</p><h3>台灣大哥大</h3><blockquote class="q">因日本業者已終止3G網路，若手機未開啟VoLTE功能並申請漫遊上網方案，則無法於當地使用漫遊服務(含發送/接收簡訊及上網)<cite>台灣大哥大・原號漫遊日本</cite></blockquote><p class="lede">官方同時給了只收簡訊的做法：「若您僅需收簡訊及語音電話功能，建議於出國時同時開啟VoLTE與Wi-Fi Calling功能並開啟飛航模式，即可透過當地的Wi-Fi使用語音通話及接收簡訊功能（計費方式同國內語音電話費率）。」</p><p class="disc">出處：<a href="https://www.taiwanmobile.com/travel/postpaid-roaming-jp.html" rel="nofollow" target="_blank">台灣大哥大・原號漫遊日本</a>、<a href="https://www.taiwanmobile.com/travel/phonesms.html" rel="nofollow" target="_blank">同上・漫遊通話及簡訊</a>，查證於 2026-09-23。</p><h3>遠傳電信</h3><blockquote class="q">在國外使用「Wi-Fi 通話(Wi-Fi Calling)」時，若要確保該通話不會因 Wi-Fi 訊號不良自動切換至當地漫遊業者發話，進而產生國際漫遊話費。請於發話前將手機設定為飛航模式，即可避免語音漫遊費用產生。<cite>遠傳電信・4G 語音（VoLTE）服務</cite></blockquote><p class="lede">VoLTE 自 2022/7/19 起對月租型客戶免費提供；Wi-Fi 通話在國內外都依現行資費的國內語音費率計費，不收國際漫遊費。遠傳頁面上曾寫日本夥伴 docomo 仍有 3G，但 docomo 的 3G 已於 2026-03-31 終止，那段敘述已經過時。</p><p class="disc">出處：<a href="https://www.fetnet.net/content/cbu/tw/postpaid/volte.html" rel="nofollow" target="_blank">遠傳電信・4G 語音（VoLTE）服務</a>，查證於 2026-09-23。</p><h2>兩條路，看你願意付什麼</h2><h3>做法 A：開數據漫遊＋VoLTE</h3><p class="lede">出國前申請目的地的漫遊上網方案，到日本後開啟數據漫遊與 VoLTE。</p><div class="tw narrow"><table class="cmp"><tbody><tr><th>好處</th><td>最穩。不依賴 Wi-Fi，走到哪收到哪。</td></tr><tr><th>代價</th><td>你已經買了 eSIM，等於再買一份網路。而且三家都寫明「要申請漫遊上網方案」才註冊得上，不是關掉數據就能只留簡訊。</td></tr><tr><th>費用</th><td>漫遊上網方案的費用另計，各家不同。</td></tr></tbody></table></div><h3>做法 B：Wi-Fi Calling ＋ 飛航模式</h3><p class="lede">出國前確認 VoLTE 與 Wi-Fi Calling 都開著。到日本後開飛航模式，再單獨把 Wi-Fi 打開，連上飯店、店家或同行者熱點的 Wi-Fi。</p><div class="tw narrow"><table class="cmp"><tbody><tr><th>好處</th><td>台灣大哥大官方寫「計費方式同國內語音電話費率」，遠傳寫「不會收取國際語音漫遊費用」。收一般簡訊本來就免費，所以這條路幾乎不用錢。飛航模式也讓你不可能誤觸漫遊。</td></tr><tr><th>代價</th><td>前提是要有 Wi-Fi。人在路上、沒有 Wi-Fi 的時候收不到。而且飛航模式會一併關掉你的 eSIM，所以單機的人要在「上網」與「收簡訊」之間切換。</td></tr><tr><th>費用</th><td>遠傳官網明寫 VoLTE 自 2022/7/19 起對月租型客戶免費提供。中華電信與台灣大哥大的頁面沒有單獨列出 VoLTE 或 Wi-Fi Calling 的月租費，本站不替它們下結論——申請前自己確認一下。</td></tr></tbody></table></div><h2>飛航模式不是多此一舉</h2><p class="lede">很多人覺得既然要用 Wi-Fi Calling，開不開飛航模式沒差。遠傳的官方頁面直接說明了差在哪：Wi-Fi 訊號不好的時候，通話會自動切回當地漫遊業者，然後就產生國際漫遊話費。飛航模式是把這條退路封死，確保不會在你沒注意的時候跳回漫遊。</p><p class="disc">出處：<a href="https://www.fetnet.net/content/cbu/tw/postpaid/volte.html" rel="nofollow" target="_blank">遠傳電信・4G 語音（VoLTE）服務</a>，查證於 2026-09-23。</p><h2>出國前後的檢查清單</h2><div class="tldr"><ul><li>出國前：確認手機支援 VoLTE，而且門號已經開通（遠傳明寫免費，中華與台灣大的頁面沒單獨列費用，打客服問一下最快）。</li><li>出國前：把 Wi-Fi Calling（Wi-Fi 通話）也打開。這是走 B 路線的前提。</li><li>出國前：決定走 A 還是 B。走 A 要先申請漫遊上網方案，臨時在日本才想申請會很麻煩。</li><li>落地後（走 B）：開飛航模式，再單獨打開 Wi-Fi。不要只關數據漫遊就當作安全。</li><li>日常狀態：eSIM 那條線開數據上網，台灣門號那條線的數據漫遊保持關閉——這樣最省，但也正是這個狀態下你收不到簡訊。要收驗證碼的時候，就切到上面的 A 或 B。</li></ul></div><h2>三個常見誤解</h2><h3>「我把數據漫遊關掉就不會被收費」</h3><p class="lede">關掉確實不會產生數據漫遊費，但在日本你同時也會收不到簡訊——因為 3G 關了之後，手機要靠 4G/5G 才註冊得上網路。三家電信都寫明這件事。</p><h3>「在國外收簡訊要錢」</h3><p class="lede">一般簡訊不用。台灣大哥大官方寫「漫遊時收一般簡訊免費」。真正會收錢的是接聽電話（漫遊費＋國際電話費）與發送簡訊。</p><h3>「買了 eSIM 就能收台灣的簡訊」</h3><p class="lede">不能。日本的 eSIM 幾乎都是純數據，沒有你的台灣號碼，銀行與 Google 的驗證碼還是會發到你原本的門號。</p><h2>這頁查不到的部分</h2><ul class="lede"><li><b>iPhone 雙卡時，Wi-Fi Calling 能不能走另一張 eSIM 的行動數據</b><br><small style="color:var(--dim)">兩家電信的官方說法都是「透過當地的 Wi-Fi」並搭配飛航模式，沒有提到用另一張 SIM 的行動數據。查不到明確說法，所以不寫成可行。</small></li><li><b>中華電信與遠傳在日本收一般簡訊的單獨費率</b><br><small style="color:var(--dim)">兩家頁面沒有像台灣大哥大那樣單獨列出「收一般簡訊免費」，只寫漫遊計費原則。寧可標示未單列，不從別家推。</small></li><li><b>中華電信與台灣大哥大的 VoLTE／Wi-Fi Calling 是否收月租</b><br><small style="color:var(--dim)">兩家的頁面沒有單獨列出這兩項的月租費。只有遠傳明寫免費，所以不替另外兩家推論。</small></li></ul><h2>常見問題</h2><details class="faq"><summary>去日本，台灣門號關掉數據漫遊就能只收簡訊嗎？</summary><div>不行。日本三大電信的 3G 已經全部關閉，最後一家 docomo 是 2026 年 3 月 31 日。手機要靠 4G/5G 才註冊得上日本的網路，而三家台灣電信都寫明：沒有開通漫遊上網與 VoLTE，就「無訊號亦無法使用漫遊語音、簡訊及上網」。關掉數據漫遊確實不會被收費，但你也收不到驗證碼。</div></details><details class="faq"><summary>那要怎麼收到銀行或 Google 的驗證碼？</summary><div>兩條路。一是申請漫遊上網方案並開啟數據漫遊與 VoLTE，最穩但要多付一份網路錢。二是開 VoLTE 與 Wi-Fi Calling，到日本後開飛航模式再單獨打開 Wi-Fi，透過飯店或店家的 Wi-Fi 收簡訊——台灣大哥大官方寫這樣「計費方式同國內語音電話費率」，遠傳寫「不會收取國際語音漫遊費用」。</div></details><details class="faq"><summary>在國外收簡訊要錢嗎？</summary><div>一般簡訊不用。台灣大哥大官方寫「漫遊時收一般簡訊免費」。會收錢的是接聽電話（漫遊費加國際電話費）、發送簡訊，以及多媒體簡訊。</div></details><details class="faq"><summary>為什麼一定要開飛航模式？只開 Wi-Fi Calling 不行嗎？</summary><div>遠傳的官方頁面說明了原因：Wi-Fi 訊號不好的時候，通話會自動切回當地漫遊業者，然後就產生國際漫遊話費。飛航模式是把這條退路封死。</div></details><details class="faq"><summary>我買了日本的 eSIM，它能收我台灣的簡訊嗎？</summary><div>不能。日本的 eSIM 幾乎都是純數據，沒有電話號碼，也不能收台灣發來的簡訊。驗證碼還是會發到你原本的台灣門號，所以這兩件事要分開處理。</div></details><details class="faq"><summary>開飛航模式的話，我的 eSIM 不是也一起關掉了嗎？</summary><div>對，這是做法 B 最實際的限制。單人出遊的話，等於要在「用 eSIM 上網」跟「收簡訊」之間切換。同行有兩支手機就好辦：一支用 eSIM 開熱點，另一支開飛航模式連那個熱點的 Wi-Fi 收簡訊。</div></details><h2>順便看看</h2><div class="cities"><a class="ct" href="/japan-esim/"><b>📱 日本 eSIM 比較</b><s>232 個方案的每日單價</s></a><a class="ct" href="/japan-esim-native-roaming/"><b>📱 原生還是漫遊</b><s>會不會變成香港的網路</s></a><a class="ct" href="/japan-airport-last-train/"><b>🚉 機場末班車</b><s>落地之後還回得去市區嗎</s></a><a class="ct" href="/tokyo/"><b>東京機票</b><s>今天查到的價格</s></a></div><p class="disc">漫遊資費與服務條件由各電信商隨時調整，本頁引用的原文查證於 2026-09-23，出發前請以你自己電信商的官網或客服為準。手機型號與系統版本不同，VoLTE 與 Wi-Fi Calling 的設定位置也會不一樣。</p><p class="note">
+票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
+實際訂購由合作平台完成：機票 Trip.com、住宿 Agoda、行程與交通票 KKday、網卡與租車 Klook。<br>
+本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
+最後更新 2026-09-23 18:45　·　<a href="/">回首頁</a>
+</p></div><script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toLowerCase(),a=f.dep.value,b=f.ret.value,t=b?"rt":"ow",u="https://tw.trip.com/flights/showfarefirst?dcity="+o+"&acity="+d+"&ddate="+a+(b?"&rdate="+b:"")+"&triptype="+t+"&class=y&quantity=1&locale=zh-TW&curr=TWD"+"&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1="+d;window.open(u,"_blank","noopener");return false;}</script><script>(function(){var n=document.querySelector("nav.top");if(!n)return;var d=[].slice.call(n.querySelectorAll(":scope>details"));function shut(x){d.forEach(function(o){if(o!==x)o.open=false})}d.forEach(function(o){o.addEventListener("toggle",function(){if(o.open)shut(o)})});document.addEventListener("click",function(e){if(!n.contains(e.target))shut(null);else if(e.target.closest&&e.target.closest(".dd a"))shut(null)});document.addEventListener("keydown",function(e){if(e.key==="Escape")shut(null)});})();</script></body></html>
