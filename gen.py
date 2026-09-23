@@ -590,6 +590,7 @@ blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem
 .tw td .pw,.cmp .pw{background:var(--acc);color:#fff;font-size:.68rem;padding:1px 6px;border-radius:4px;
  font-weight:700;margin-right:5px;vertical-align:middle}
 .cmp .pc{font-style:normal;color:var(--hot)}
+.cmp .pp{font-style:normal;font-size:.76rem;color:var(--dim);font-weight:600;margin-left:6px}
 .tw td.lose{color:var(--acc);font-weight:700}
 .tw td.win b,.tw td.lose b{color:inherit}
 .cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
@@ -5027,10 +5028,15 @@ if os.path.exists('cards.json'):
   var rows=idx.map(function(i){
    var c=JCARD.cards[i], ok=jhas(c,want), mode=ok?want:'base';
    var o=jback(c,y,mode), at=jcapat(c,mode);
+   // 沒登錄到／沒設定好的話就只剩基本回饋。有些沒加碼但基本高的卡，
+   // 在這個情境下反而會贏過有上限的加碼卡，所以兩種都要算出來比。
+   var bo=jback(c,y,'base');
    return {c:c,ok:ok,v:o.v,cap:o.cap,at:at,net:bill-o.v,
-           rate:bill>0?o.v/bill*100:0};
+           bv:bo.v,rate:bill>0?o.v/bill*100:0};
   });
   var top=Math.max.apply(null,rows.map(function(r){return r.v}));
+  var btop=Math.max.apply(null,rows.map(function(r){return r.bv}));
+  var anyDep=rows.some(function(r){return r.bv<r.v});
 
   var th='<th>項目</th>'+rows.map(function(r){
     return '<th><a href="'+HUB+'/'+r.c.s+'/">'+r.c.n+'</a></th>';}).join('');
@@ -5041,6 +5047,12 @@ if os.path.exists('cards.json'):
   $('kcmp').innerHTML='<table class="cmp"><thead><tr>'+th+'</tr></thead><tbody>'
    + tr('實拿回饋',function(r){return (r.v===top&&rows.length>1?'<span class="pw">最高</span>':'')
         +'<b>NT$'+jfmt(r.v)+'</b>';})
+   + (anyDep? tr('沒完成前提時',function(r){
+        // 這一列要能直接互相比大小，所以每一格都印金額，
+        // 「不受影響」只是附註，不是拿來取代數字的
+        return (r.bv===btop&&rows.length>1?'<span class="pw">最高</span>':'')
+          +'<b>NT$'+jfmt(r.bv)+'</b>'
+          +(r.bv>=r.v?'<span class="pp">不受影響</span>':'');}) : '')
    + tr('有效回饋率',function(r){return r.rate.toFixed(2)+'%';})
    + tr('實際負擔',function(r){return 'NT$'+jfmt(r.net);})
    + tr('加碼上限',function(r){
@@ -5055,8 +5067,9 @@ if os.path.exists('cards.json'):
        if(!r.c.reg) return '—';
        return (r.c.lv==='none') ? r.c.reg : '<i class="pc">'+r.c.reg+'</i>';})
    + '</tbody></table>'
-   + '<p class="disc">上面的回饋金額都是<b>已經完成「加碼前提」那一列</b>的算法。'
-   + '沒登錄到、或忘了切 App、沒設好自動扣繳，實際只會拿到基本回饋。</p>';
+   + '<p class="disc">「實拿回饋」是<b>已經完成最底下「加碼前提」那一列</b>的算法；'
+   + '「沒完成前提時」是沒登錄到、忘了切 App 或沒設好自動扣繳，只剩基本回饋的金額。'
+   + '標「不受影響」的卡是本來就沒有加碼、或不需要任何前提。</p>';
 
   if(y<=0){$('kv').className='cv';$('kv').textContent='輸入金額後比較';return;}
   var best=rows.filter(function(r){return r.v===top})[0];
@@ -5074,6 +5087,11 @@ if os.path.exists('cards.json'):
   if(race.length) msg+='　·　'+race.map(function(r){return r.c.n}).join('、')+' 需搶限量登錄';
   var need=rows.filter(function(r){return r.ok&&!r.c.race&&r.c.lv&&r.c.lv!=='none'});
   if(need.length) msg+='　·　'+need.map(function(r){return r.c.n}).join('、')+' 要先登錄或設定';
+  if(anyDep&&rows.length>1){
+   var bbest=rows.filter(function(r){return r.bv===btop})[0];
+   if(bbest.c.n!==best.c.n)
+     msg+='　·　⚠ 沒完成前提的話，最高變成 '+bbest.c.n+' NT$'+jfmt(btop);
+  }
   $('kv').className='cv '+(capped.length?'tw':'jp');
   $('kv').textContent=msg;
  }
