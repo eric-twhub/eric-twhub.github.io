@@ -4415,7 +4415,8 @@ if os.path.exists('cards.json'):
             '.forEach(function(t){var x=t.cap/(t.rate/100);if(!m||x<m)m=x;});return m;};</script>') % (
         _MIDC, _fx['typical'],
         json.dumps([{'n': c['name'], 's': c['slug'], 'base': c['base'],
-                     'tiers': c['tiers'], 'race': c.get('reg_race', False)}
+                     'tiers': c['tiers'], 'race': c.get('reg_race', False),
+                     'reg': c.get('reg_short', ''), 'lv': c.get('reg_level', '')}
                     for c in CD['cards']], ensure_ascii=False))
 
     _mopts = ''.join(f'<option value="{k}">{v}</option>' for k, v in MODES)
@@ -4427,7 +4428,9 @@ if os.path.exists('cards.json'):
         tr = _maxrate(c, 'transit') if _tiers(c, 'transit') else 0
         _crows += (f'<tr><td><a href="{U("/japan-credit-card/"+c["slug"]+"/")}">'
                    f'<b>{html.escape(c["name"])}</b></a>{SMALL}{html.escape(c["plan"])}'
-                   + ('　⚠ 需搶限量登錄' if c.get('reg_race') else '') + '</small></td>'
+                   + ('　⚠ ' + html.escape(c['reg_short'])
+                      if c.get('reg_level') not in (None, '', 'none')
+                      else '　· ' + html.escape(c.get('reg_short', ''))) + '</small></td>'
                    f'<td><b>{c["total"]}%</b>{SMALL}基本 {c["base"]}%'
                    + (f' ＋ {len(_tiers(c,"shop"))} 層加碼' if _tiers(c, 'shop') else '')
                    + '</small></td>'
@@ -4444,7 +4447,7 @@ if os.path.exists('cards.json'):
   var y=+$('pa').value||0, mode=$('ps').value;
   var r=JCARD.cards.filter(function(c){return jhas(c,mode)})
    .map(function(c){var o=jback(c,y,mode);
-     return {n:c.n,s:c.s,v:o.v,cap:o.cap,bill:o.bill,race:c.race};})
+     return {n:c.n,s:c.s,v:o.v,cap:o.cap,bill:o.bill,race:c.race,reg:c.reg,lv:c.lv};})
    .sort(function(a,b){return b.v-a.v});
   if(!r.length){$('pr').innerHTML='<div class="cv">這個類型目前沒有卡片有加碼</div>';return;}
   var bill=r[0].bill;
@@ -4916,7 +4919,13 @@ if os.path.exists('cards.json'):
        if(!r.ok) return '只有基本 '+r.c.base+'%';
        if(r.cap) return '<i class="pc">已達上限，再刷只剩 '+r.c.base+'%</i>';
        return r.at? '未達上限' : '—';})
-   + '</tbody></table>';
+   + tr('加碼前提',function(r){
+       if(!r.ok) return '—';
+       if(!r.c.reg) return '—';
+       return (r.c.lv==='none') ? r.c.reg : '<i class="pc">'+r.c.reg+'</i>';})
+   + '</tbody></table>'
+   + '<p class="disc">上面的回饋金額都是<b>已經完成「加碼前提」那一列</b>的算法。'
+   + '沒登錄到、或忘了切 App、沒設好自動扣繳，實際只會拿到基本回饋。</p>';
 
   if(y<=0){$('kv').className='cv';$('kv').textContent='輸入金額後比較';return;}
   var best=rows.filter(function(r){return r.v===top})[0];
@@ -4932,6 +4941,8 @@ if os.path.exists('cards.json'):
   if(capped.length) msg+='　·　'+capped.map(function(r){return r.c.n}).join('、')+' 已達加碼上限';
   var race=rows.filter(function(r){return r.c.race});
   if(race.length) msg+='　·　'+race.map(function(r){return r.c.n}).join('、')+' 需搶限量登錄';
+  var need=rows.filter(function(r){return r.ok&&!r.c.race&&r.c.lv&&r.c.lv!=='none'});
+  if(need.length) msg+='　·　'+need.map(function(r){return r.c.n}).join('、')+' 要先登錄或設定';
   $('kv').className='cv '+(capped.length?'tw':'jp');
   $('kv').textContent=msg;
  }
