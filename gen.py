@@ -3709,7 +3709,8 @@ if os.path.exists('cards.json'):
         'tap': '點擊後才會啟用條碼，官方明文不接受截圖——請當場開頁面，別存圖',
         'live': '券就是那個即時頁面，結帳前直接出示手機畫面',
         'app': '券發在店家官方 App 內，沒有網頁版',
-        'image': '店家官網提供的靜態券圖，注意事項另寫在圖外',
+        # 別寫死「店家官網」——山田是自家網域，Alpen 是平台，由 form_note 交代
+        'image': '以靜態券圖提供，注意事項通常另寫在圖外',
     }
     if os.path.exists('coupons.json'):
         CP = json.load(open('coupons.json', encoding='utf-8'))
@@ -4023,6 +4024,10 @@ if os.path.exists('cards.json'):
               + (f'<li><b>券的形式</b>：{html.escape(_FORM[st["form"]])}'
                  + (f'　{html.escape(st["form_note"])}' if st.get('form_note') else '')
                  + '</li>' if st.get('form') else '')
+              + (f'<li><b>有效期限</b>：{st["expires"]}'
+                 + ('　<b style="color:var(--hot)">⚠ 已過期，請到發券頁確認新券</b>'
+                    if st['expires'] < TODAY else '')
+                 + '</li>' if st.get('expires') else '')
               + '</ul></div>'
               + (f'<div class="plinks"><a class="plink" href="{html.escape(st["src"])}" '
                  f'target="_blank" rel="nofollow noopener">🏷️ 到{html.escape(st["src_name"])}領券</a>'

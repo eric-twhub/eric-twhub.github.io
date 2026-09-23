@@ -39,7 +39,9 @@
    ],
    "src": "https://matcha-jp.com/tw/coupon/72",
    "src_name": "MATCHA 發券頁（繁中）",
-   "form_note": "訪日券不在 matsukiyo.co.jp，由合作媒體發放"
+   "form_note": "頁面寫「請在櫃檯結帳時出示給店員」；專櫃保養品、香菸、雜誌、嬰兒尿布與嬰兒食品不適用",
+   "form": "live",
+   "expires": "2027-03-31"
   },
   {
    "name": "SUNDRUG 尚都樂客",
@@ -125,7 +127,10 @@
    ],
    "steps": [],
    "src": "https://matcha-jp.com/tw/coupon/74",
-   "src_name": "MATCHA 發券頁（繁中）"
+   "src_name": "MATCHA 發券頁（繁中）",
+   "form": "live",
+   "form_note": "頁面寫「請在櫃檯結帳時出示給店員」，且只限符合免稅資格的顧客使用",
+   "expires": "2027-12-31"
   },
   {
    "name": "札幌藥妝",
@@ -148,7 +153,10 @@
    ],
    "steps": [],
    "src": "https://matcha-jp.com/tw/coupon/22",
-   "src_name": "MATCHA 發券頁（繁中）"
+   "src_name": "MATCHA 發券頁（繁中）",
+   "form": "live",
+   "form_note": "頁面寫「使用時請於結帳櫃檯提示護照與此優惠券」，付款後不能補折",
+   "expires": "2029-12-31"
   },
   {
    "name": "Bic Camera",
@@ -342,9 +350,11 @@
    "watch": [],
    "steps": [],
    "src": "https://www.taxfreeshops.jp/ja/tieup/11",
-   "src_name": "TAXFREESHOPS.JP 發券頁（資訊提供：株式会社アルペン）"
+   "src_name": "TAXFREESHOPS.JP 發券頁（資訊提供：株式会社アルペン）",
+   "form": "image",
+   "form_note": "券是平台提供的一張長圖（含注意事項），非店家自家網域；標示 2026/06 更新"
   }
  ],
  "tax_note": "免稅門檻為同一店舖同一天未稅合計 ¥5,000 以上，2026/11/1 新制後此門檻不變；取消的是消耗品 50 萬日圓上限。護照需有入境章。",
- "_form_說明": "form 是券的實際形式，決定它能不能被重製：tap＝點擊啟用條碼且官方禁止截圖；live＝券就是即時頁面，需現場出示；app＝券在官方 App 內；image＝店家自家網域提供的靜態圖。未填代表尚未逐頁查證機制。查證於 2026-09-23。"
+ "_form_說明": "form 是券的實際形式，決定它能不能被重製：tap＝點擊啟用條碼且官方禁止截圖；live＝結帳時當場出示券／頁面；app＝券在官方 App 內；image＝以靜態圖提供。expires 是發券頁標示的有效期限，沒標就不填。查證於 2026-09-23。"
 }
