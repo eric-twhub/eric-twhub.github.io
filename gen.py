@@ -3705,6 +3705,12 @@ if os.path.exists('cards.json'):
     pages.append(('/japan-card-calculator/', 0.8))
 
     # ── 日本購物折扣：折價券 × 免稅 × 刷卡回饋 ──────────
+    _FORM = {
+        'tap': '點擊後才會啟用條碼，官方明文不接受截圖——請當場開頁面，別存圖',
+        'live': '券就是那個即時頁面，結帳前直接出示手機畫面',
+        'app': '券發在店家官方 App 內，沒有網頁版',
+        'image': '店家官網提供的靜態券圖，注意事項另寫在圖外',
+    }
     if os.path.exists('coupons.json'):
         CP = json.load(open('coupons.json', encoding='utf-8'))
         _srows = ''.join(
@@ -3933,7 +3939,13 @@ if os.path.exists('cards.json'):
                 f'<li><b>出示時機</b>：{html.escape(st["when"])}</li>'
                 f'<li><b>免稅門檻</b>：{html.escape(st["tax_min"])}</li>'
                 f'<li><b>與免稅併用</b>：{html.escape(st["combo"])}</li>'
+              + (f'<li><b>券的形式</b>：{html.escape(_FORM[st["form"]])}'
+                 + (f'　{html.escape(st["form_note"])}' if st.get('form_note') else '')
+                 + '</li>' if st.get('form') else '')
               + '</ul></div>'
+              + (f'<div class="plinks"><a class="plink" href="{html.escape(st["src"])}" '
+                 f'target="_blank" rel="nofollow noopener">🏷️ 到{html.escape(st["src_name"])}領券</a>'
+                 f'</div>' if st.get('src') else '')
               + (('<h2>要注意的地方</h2><div class="tldr"><ul>'
                   + ''.join(f'<li>{html.escape(x)}</li>' for x in st['watch'])
                   + '</ul></div>') if st['watch'] else '')
@@ -3951,6 +3963,9 @@ if os.path.exists('cards.json'):
               + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
                 f'<s>改成出境後才退稅</s></a></div>'
               + '<h2>常見問題</h2>' + sf_html
+              + (f'<p class="disc">領券頁：<a href="{html.escape(st["src"])}" '
+                 f'rel="nofollow" target="_blank">{html.escape(st["src_name"])}</a>，'
+                 f'查證於 {CP["checked"]}。</p>' if st.get('src') else '')
               + f'<p class="disc">本頁為公開資訊整理。折扣幅度與券的取得管道查證於 {CP["checked"]}，'
                 f'由店家隨時調整，請以店家當期公告為準。本站不提供折價券本身，'
                 f'與文中店家無合作關係。{html.escape(CP["tax_note"])}</p>'
