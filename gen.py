@@ -1681,8 +1681,10 @@ if os.path.exists('lasttrain.json'):
         for r in ap['rail']:
             _direct = (r.get('cut') == r.get('dep_wd'))
             _fare = f'{r["fare"]:,} 円' if r.get('fare') else '—'
+            _meta = [html.escape(r['revision'])] if r.get('revision') else []
+            _meta.append(f'<a href="{r["src"]}" rel="nofollow" target="_blank">官方時刻表 →</a>')
             rows += (f'<tr><td><b>{html.escape(r["name"])}</b>'
-                     f'{(_LSM + html.escape(r["revision"]) + "</small>") if r.get("revision") else ""}</td>'
+                     f'{_LSM}{" · ".join(_meta)}</small></td>'
                      f'<td>{_lt_dep(r)}</td>'
                      f'<td class="{"" if _direct else "lose"}">{html.escape(r["to"])}</td>'
                      f'<td class="{"win" if _direct else ""}"><b>{html.escape(r["cut"])}</b></td>'
@@ -1727,7 +1729,9 @@ if os.path.exists('lasttrain.json'):
                              f'<td><b>{html.escape(t)}</b></td>{cells}</tr>')
                 out += ('<div class="tw"><table><thead><tr><th></th>'
                         '<th>機場發車</th>' + head_ + '</tr></thead><tbody>'
-                        + body + '</tbody></table></div>')
+                        + body + '</tbody></table></div>'
+                        f'<p class="disc"><a href="{b["src"]}" rel="nofollow" target="_blank">'
+                        f'官方時刻表 →</a></p>')
                 if b.get('fare'):
                     out += f'<p class="lede">單程 {b["fare"]:,} 円。'
                     out += (html.escape(b['stop']) + '。') if b.get('stop') else ''
@@ -1773,12 +1777,27 @@ if os.path.exists('lasttrain.json'):
                 f'<p class="disc">出處：<a href="{f["src"]}" rel="nofollow" target="_blank">'
                 f'{html.escape(f["src_name"])}</a>，查證於 {LT["checked"]}。</p>')
 
+    def _lt_shuttle(ap):
+        s = ap.get('shuttle')
+        if not s:
+            return ''
+        return (f'<h3 class="grp">{html.escape(s["title"])}</h3>'
+                f'<p class="lede">{html.escape(s["note"])}</p>'
+                '<p class="lede">深夜時段的班次：'
+                + '；'.join(html.escape(x) for x in s['late']) + '。'
+                + ('免費。' if s.get('free') else '') + '</p>'
+                f'<p class="lede"><b>{html.escape(s["trap"])}</b></p>'
+                f'<p class="disc">出處：<a href="{s["src"]}" rel="nofollow" target="_blank">'
+                f'{html.escape(s["src_name"])}</a>（{html.escape(s["revision"])}），'
+                f'查證於 {LT["checked"]}。</p>')
+
     _lt_body = ''
     for ap in LT['airports']:
         _lt_body += (f'<h2 id="{ap["code"].lower()}">{html.escape(ap["name"])}'
                      f'<span class="tag">{ap["code"]}</span></h2>'
                      f'<p class="lede">查的是{html.escape(ap["station"])}。</p>'
                      f'<p class="lede"><b>{html.escape(ap["verdict"])}</b></p>'
+                     + _lt_shuttle(ap)
                      + _lt_table(ap)
                      + '<p class="disc">「最後一班直達市區」標成綠色的，代表末班車本身就到得了市區；'
                        '標成紅色的終點站，代表末班車只開到中途，那一欄的時刻會比末班早。</p>'
@@ -1800,16 +1819,22 @@ if os.path.exists('lasttrain.json'):
      ('為什麼末班車的時刻，跟我在換乘 App 上查到的不一樣？',
       '多半是因為末班車只開到中途站。本頁把「末班發車」跟「最後一班直達市區」拆成兩欄，'
       '就是因為這兩個數字常常差很多——成田的 Access 特急末班是 23:11，但那班只到京成高砂；'
-      '羽田京急的全線末班 00:13 只到京急蒲田。'),
+      '關西 JR 的末班 23:43 只到日根野；羽田京急的全線末班 00:13 只到京急蒲田。'),
      ('羽田跟成田，紅眼票該選哪個？',
       '單看回程的末班車，羽田寬鬆很多：電車開到 00:10 之後，還有四班深夜巴士到新宿池袋。'
       '成田最後一班能直接進市區的是 23:03 的 Skyliner，票價 2,470 円，'
       '比它便宜的班次收班更早。如果兩邊票價差不多，羽田的落地時間容錯高得多。'),
+     ('關西機場的末班車算寬鬆還是緊？',
+      '軌道的部分算寬鬆——南海空港急行 23:55 發車，直接開到難波 00:39，'
+      '而且末班本身就到市區，沒有中途止的問題。但 JR 那邊要小心：末班 23:43 與前一班 23:24 '
+      '都只開到日根野，最後一班進得了市區的是 23:09 的關空快速。'
+      '另外搭樂桃在第 2 航廈落地的人，還要先算上 7 分鐘的接駁車。'),
      ('這些時刻多久會變一次？',
-      '日本鐵道大約一年改點一次，通常在三月，但近年也有十二月改點的。'
-      '本頁京急與京成的資料都是 2025-12-13 改正版。出發前請用每一列附的官方連結重查。'),
-     ('為什麼只有羽田跟成田？',
-      '因為只查到這兩個。關西、中部、福岡、新千歲、那霸都還沒查，列在頁尾的待查清單裡。'
+      '日本鐵道大約一年改點一次，通常在三月，但近年也有十二月改點的，各家也不同步：'
+      '本頁京急與京成是 2025-12-13 改正、JR 西日本是 2026-03-14 改正、南海是 2024-12-21 現在。'
+      '所以每一列的路線名底下都直接附了那家公司的官方時刻表連結，出發前請點過去重查。'),
+     ('為什麼只有這三個機場？',
+      '因為只查到這三個。中部、福岡、新千歲、那霸都還沒查，列在頁尾的待查清單裡。'
       '與其抄第三方整理，不如先空著。'),
     ]
     lt_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
@@ -1818,10 +1843,10 @@ if os.path.exists('lasttrain.json'):
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
         for q, a in lt_faq]}, ensure_ascii=False)
 
-    lt_title = '日本機場末班車：羽田、成田落地後還回得去市區嗎（附官方時刻表）'
-    lt_desc = ('紅眼班機落地之後的末班車時刻。羽田京急末班 00:08 到品川、單軌電車 00:10 到浜松町；'
-               '成田最後一班直達市區的是 23:03 的 Skyliner。每一列都附官方時刻表出處，'
-               '並標出「末班車只開到中途站」的陷阱。')
+    lt_title = '日本機場末班車：羽田、成田、關西落地後還回得去市區嗎（附官方時刻表）'
+    lt_desc = ('紅眼班機落地之後的末班車時刻。羽田京急 00:08 到品川、單軌電車 00:10 到浜松町；'
+               '成田最後一班直達市區的是 23:03 的 Skyliner；關西南海空港急行 23:55 到難波 00:39，'
+               '但 JR 末班只到日根野。每一列都附官方時刻表連結，並標出「末班車只開到中途站」的陷阱。')
 
     write('japan-airport-last-train/index.html',
       head(lt_title, lt_desc, 'japan-airport-last-train/',
@@ -1837,7 +1862,12 @@ if os.path.exists('lasttrain.json'):
         f'要 2,470 円。羽田京急的全線末班 00:13 也一樣，只到京急蒲田。</div>'
         f'<div class="tbuf">另一個反直覺的地方是：<b>便宜的那條線通常先收班</b>。'
         f'成田土休日的晚上，20:38 那班往西馬込的 Access 特急開走之後，'
-        f'就沒有不加價又直達市區的班次了。</div></div>'
+        f'就沒有不加價又直達市區的班次了。關西剛好相反——要加錢的 Rapi:t 比免費的'
+        f'空港急行早快一小時收班。</div>'
+        f'<div class="tbuf">還有一個只有搭廉航才會遇到的：關西機場的車站直通第 1 航廈，'
+        f'<b>樂桃停的第 2 航廈沒有車站</b>，要先搭 7 分鐘的免費接駁車。'
+        f'要趕南海 23:55 的末班，最晚只能搭 23:39 那班接駁車——'
+        f'再下一班 23:47 到第 1 航廈只剩一分鐘，等於趕不上。</div></div>'
       + '<h2>怎麼用這張表</h2>'
       + f'<ol class="lede">{_lt_steps}</ol>'
       + f'<p class="disc">{html.escape(LT["rule"]["note"])}</p>'
@@ -1852,7 +1882,7 @@ if os.path.exists('lasttrain.json'):
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
         f'<s>便宜的班次時段通常很差</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a>'
-      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日特價</b><s>全站最低價</s></a></div>'
+      + f'<a class="ct" href="{U("/osaka/")}"><b>大阪機票</b><s>關西機場的航線與價格</s></a></div>'
       + '<p class="disc">時刻表會改點，各鐵道公司通常一年調整一次。'
         f'本頁資料查證於 {LT["checked"]}，出發前請以各列附的官方時刻表為準。'
         '深夜巴士遇塞車會延誤，計程車定額運賃不含高速公路通行費。</p>'
