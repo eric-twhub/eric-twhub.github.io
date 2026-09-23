@@ -1768,12 +1768,17 @@ if os.path.exists('lasttrain.json'):
         f = ap.get('fares_ref')
         if not f:
             return ''
+        # 各家能查到的欄位不一樣：京成是 IC／車票，ゆいレール 是運賃／標準時間
+        def _cell(v):
+            return f'{v:,} 円' if isinstance(v, int) else html.escape(str(v))
+        cols = f.get('cols', ['到站', 'IC 卡', '車票'])
+        head_ = ''.join(f'<th>{html.escape(c)}</th>' for c in cols)
         rows = ''.join(f'<tr><td>{html.escape(r["to"])}</td>'
-                       f'<td>{r["ic"]:,} 円</td><td>{r["ticket"]:,} 円</td></tr>'
+                       f'<td>{_cell(r["ic"])}</td><td>{_cell(r["ticket"])}</td></tr>'
                        for r in f['rows'])
         return (f'<p class="lede">{html.escape(f["note"])}</p>'
-                '<div class="tw narrow"><table><thead><tr><th>到站</th>'
-                '<th>IC 卡</th><th>車票</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+                '<div class="tw narrow"><table><thead><tr>' + head_
+                + '</tr></thead><tbody>' + rows + '</tbody></table></div>'
                 f'<p class="disc">出處：<a href="{f["src"]}" rel="nofollow" target="_blank">'
                 f'{html.escape(f["src_name"])}</a>，查證於 {LT["checked"]}。</p>')
 
@@ -1844,8 +1849,8 @@ if os.path.exists('lasttrain.json'):
      ('這些時刻多久會變一次？',
       '日本鐵道大約一年改點一次，通常在三月，但近年也有十二月改點的，各家也不同步：'
       '本頁京急與京成是 2025-12-13 改正、JR 西日本是 2026-03-14 改正、'
-      '南海是 2024-12-21 現在、福岡市地下鐵是 2026-04-01 改正、名鐵與 JR 北海道是 2026-09-23 現在，'
-      '西鐵巴士則是照 2026-10-01 改點後的時刻列的。'
+      '南海是 2024-12-21 現在、福岡市地下鐵是 2026-04-01 改正、名鐵與 JR 北海道是 2026-09-23 現在、'
+      'ゆいレール 的平日是 2025-09-01、假日是 2026-09-06，西鐵巴士則是照 2026-10-01 改點後的時刻列的。'
       '所以每一列的路線名底下都直接附了那家公司的官方時刻表連結，出發前請點過去重查。'),
      ('福岡離市區那麼近，為什麼還要看這頁？',
       '因為近的是國內線航廈。福岡的地鐵站從機場算起兩站就到博多，確實是日本主要機場裡最近的，'
@@ -1857,13 +1862,16 @@ if os.path.exists('lasttrain.json'):
       'Access Plaza，兩棟之間的免費連絡巴士 21:45 就收班——比名鐵末班 23:31 早了將近兩小時。'
       '官方說可以走過去，徒步 10 分鐘，但沒有公布那條通路幾點關，所以我們沒有把它當成確定的備案。'
       '另外第 2 航廈本身 23:00 關門，第 1 航廈的 Access Plaza 才是 24 小時開放。'),
-     ('六個機場裡，哪一個最不容易出事？',
+     ('七個機場裡，哪一個最不容易出事？',
       '新千歲。它是唯一一個國際線航廈用走的就到車站的——有連絡設施與電動步道，不必等接駁巴士，'
       '也就不會被巴士的末班卡住。末班 23:21 的特別快速，JR 北海道官網明說就是給晚到的班機用的。'
       '但同一頁也寫了「不管飛機有沒有誤點都照原時刻開」，所以它不等你。'),
-     ('為什麼只有這六個機場？',
-      '因為只查到這六個。那霸還沒查，列在頁尾的待查清單裡。'
-      '與其抄第三方整理，不如先空著。'),
+     ('那霸的末班算晚還是早？',
+      '偏早。那霸是 23:30，而羽田 00:10、關西 23:55、中部 23:31 都比它晚。'
+      '好處是它最單純——末班直接開到終點，沿途停縣廳前、牧志、首里，沒有中途止；'
+      '平日與假日的晚間時刻完全相同，班距 15 分鐘；票價也是七個機場裡唯一官方一次列齊的，'
+      '到縣廳前 290 円、13 分鐘。國際線落地後要走到國內線那一側才有車站，但走館內通道，'
+      '不必等接駁巴士。'),
     ]
     lt_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in lt_faq)
@@ -1871,10 +1879,10 @@ if os.path.exists('lasttrain.json'):
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
         for q, a in lt_faq]}, ensure_ascii=False)
 
-    lt_title = '日本機場末班車：六個機場落地後還回得去市區嗎（附官方時刻表）'
-    lt_desc = ('紅眼班機落地之後的末班車時刻，羽田、成田、關西、福岡、中部、新千歲六個機場逐班對過'
-               '官方時刻表。成田最後一班直達市區的是 23:03 的 Skyliner；關西 JR 末班只到日根野；'
-               '福岡與中部真正卡住人的是航廈間的接駁巴士，不是電車。每一列都附官方時刻表連結。')
+    lt_title = '日本機場末班車：七個機場落地後還回得去市區嗎（附官方時刻表）'
+    lt_desc = ('紅眼班機落地之後的末班車時刻，羽田、成田、關西、福岡、中部、新千歲、那霸七個機場'
+               '逐班對過官方時刻表。成田最後一班直達市區的是 23:03 的 Skyliner；關西 JR 末班只到'
+               '日根野；福岡與中部真正卡住人的是航廈間的接駁巴士，不是電車。每一列都附官方連結。')
 
     write('japan-airport-last-train/index.html',
       head(lt_title, lt_desc, 'japan-airport-last-train/',
@@ -1882,7 +1890,7 @@ if os.path.exists('lasttrain.json'):
       + crumbs([('首頁', '/'), ('機場末班車', None)]) + topnav()
       + '<h1>落地之後，還回得去市區嗎？</h1>'
       + f'<p class="lede">{html.escape(LT["intro"])}</p>'
-      + f'<div class="today"><div class="tday">羽田與成田的末班車，逐班對過官方時刻表，'
+      + f'<div class="today"><div class="tday">七個機場的末班車，逐班對過各家官方時刻表，'
         f'查證於 {LT["checked"]}</div>'
         f'<div class="tans">會害到你的不是末班車，是<b>末班車只開到中途站</b></div>'
         f'<div class="tsub">成田的 Access 特急末班 23:11，聽起來很晚，'
@@ -1892,14 +1900,14 @@ if os.path.exists('lasttrain.json'):
         f'成田土休日晚上 20:38 之後就沒有不加價又直達市區的班次；關西剛好相反，'
         f'要加錢的 Rapi:t 比免費的空港急行早快一小時收班。中部最誇張——'
         f'μ-SKY 比末班早 84 分鐘收班，卻只快 6 分鐘，而末班那班還不用加價。</div>'
-        f'<div class="tbuf">還有一件事，查完六個機場才看出來：'
+        f'<div class="tbuf">還有一件事，查完七個機場才看出來：'
         f'<b>有三個機場的車站不在廉航落地的那一棟</b>。'
         f'關西的車站直通第 1 航廈，樂桃停的第 2 航廈要先搭 7 分鐘接駁車，'
         f'而要趕南海 23:55 的末班最晚只能搭 23:39 那班。福岡的地鐵站在國內線航廈，'
         f'台灣航班停的國際線航廈在跑道另一側，末班接駁巴士 23:21。'
         f'中部最早——虎航停的第 2 航廈沒有車站，連絡巴士 <b>21:45</b> 就收班，'
         f'比名鐵末班早了一小時四十六分。這三個機場，決定你回不回得去的是接駁車，不是電車。'
-        f'六個機場裡只有新千歲例外——國際線航廈用走的就到車站。</div></div>'
+        f'新千歲與那霸則不必——國際線落地後走館內通道就到車站。</div></div>'
       + '<h2>怎麼用這張表</h2>'
       + f'<ol class="lede">{_lt_steps}</ol>'
       + f'<p class="disc">{html.escape(LT["rule"]["note"])}</p>'
@@ -1918,7 +1926,8 @@ if os.path.exists('lasttrain.json'):
       + f'<a class="ct" href="{U("/fukuoka/")}"><b>福岡機票</b><s>離市區最近的大機場</s></a>'
       + f'<a class="ct" href="{U("/tigerair-nagoya/")}"><b>虎航名古屋班表</b>'
         f'<s>停第 2 航廈，回程要算接駁車</s></a>'
-      + f'<a class="ct" href="{U("/sapporo/")}"><b>札幌機票</b><s>新千歲的航線與價格</s></a></div>'
+      + f'<a class="ct" href="{U("/sapporo/")}"><b>札幌機票</b><s>新千歲的航線與價格</s></a>'
+      + f'<a class="ct" href="{U("/okinawa/")}"><b>沖繩機票</b><s>那霸的航線與價格</s></a></div>'
       + '<p class="disc">時刻表會改點，各鐵道公司通常一年調整一次。'
         f'本頁資料查證於 {LT["checked"]}，出發前請以各列附的官方時刻表為準。'
         '深夜巴士遇塞車會延誤，計程車定額運賃不含高速公路通行費。</p>'
