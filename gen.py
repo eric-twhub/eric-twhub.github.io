@@ -3613,6 +3613,57 @@ if os.path.exists('cards.json'):
 
     # ── 每張卡的獨立介紹頁 ──
     _YEN = [10000, 30000, 50000, 100000, 200000, 500000]
+    # Klook 給這幾家銀行的專屬優惠碼，掛在對應的卡片頁上。
+    # 碼按月輪替，過期就不顯示——顯示一個輸入會被拒絕的碼，比不顯示更糟。
+    KC = json.load(open('klook-codes.json', encoding='utf-8')) \
+        if os.path.exists('klook-codes.json') else None
+
+    def _kcode_block(slug):
+        if not KC:
+            return ''
+        cs = [x for x in KC['codes']
+              if slug in x['cards'] and x['expires'] >= TODAY]
+        if not cs:
+            return ''
+        rows = ''.join(
+            f'<tr><td><b>{html.escape(x["code"])}</b>'
+            f'{SMALL}{html.escape(x["desc"])}</small></td>'
+            f'<td>{html.escape(x["label"])}</td>'
+            f'<td class="{"lose" if x["cap"] else ""}">'
+            + (money(x['cap']) if x['cap'] else '未載明') + '</td>'
+            f'<td class="dim">{html.escape(x.get("quota") or "—")}'
+            f'{SMALL}到 {x["expires"]}</small></td></tr>'
+            for x in sorted(cs, key=lambda x: -(x['pct'] or 0)))
+
+        # 折扣率高不等於拿得多。兩組都有 pct 與 cap 時，算出交叉金額
+        note = ''
+        withcap = [x for x in cs if x['pct'] and x['cap']]
+        if len(withcap) >= 2:
+            hi = max(withcap, key=lambda x: x['pct'])
+            lo = min(withcap, key=lambda x: x['pct'])
+            if hi['cap'] < lo['cap'] and lo['pct']:
+                cross = hi['cap'] / (lo['pct'] / 100)
+                note = (f'<div class="cv tw">{html.escape(hi["code"])} 看起來折得多'
+                        f'（{hi["pct"]}%），但上限只有 {money(hi["cap"])}；'
+                        f'{html.escape(lo["code"])} 只有 {lo["pct"]}% 卻能折到 {money(lo["cap"])}。'
+                        f'<b>消費超過約 {money(round(cross / 100) * 100)} 之後，'
+                        f'後者反而拿得多。</b></div>')
+
+        return ('<h2>這張卡在 Klook 的專屬優惠碼</h2>'
+                '<p class="lede">訂日本行程、交通票券或飯店時可以疊加。'
+                '折扣率不是重點——<b>看上限</b>。</p>'
+                '<div class="tw"><table><thead><tr><th>優惠碼</th><th>折扣</th>'
+                '<th>最高折抵</th><th>限量與期限</th></tr></thead><tbody>'
+                + rows + '</tbody></table></div>'
+                + note
+                + f'<p class="disc">優惠碼由 Klook 提供，按月輪替，過期後本頁不再顯示。'
+                  f'每組另有適用商品限制與帳號使用次數上限，'
+                  f'實際折抵以 Klook 結帳頁為準。查證於 {KC["checked"]}。</p>'
+                + '<div class="plinks">'
+                + f'<a class="plink" href="{html.escape(klook(KC["shop_url"]))}" '
+                  f'target="_blank" rel="nofollow noopener sponsored">'
+                  f'🎟️ 到 Klook 逛日本行程</a></div>')
+
     for c in CD['cards']:
         hit = _hit(c, 'shop')
         rows = ''
@@ -3716,6 +3767,7 @@ if os.path.exists('cards.json'):
             f'<s>上限、登錄與適用範圍</s></a>'
           + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
             f'<s>改成出境後才退稅</s></a></div>'
+          + _kcode_block(c['slug'])
           + '<h2>常見問題</h2>' + cf_html
           + f'<p class="disc">本頁為公開資訊整理，非理財建議。條件查證於 {CD["checked"]}，'
             f'來源：<a href="{html.escape(c["src"])}" target="_blank" rel="noopener nofollow">'

@@ -1,0 +1,294 @@
+{
+ "_說明": "Klook 聯盟授權優惠碼中，能對應到本站卡片頁的部分。資料來自 Klook 後台的「優惠碼」匯出檔，cap／quota 由服務條款解析而來。碼會按月輪替，過期的不顯示。",
+ "checked": "2026-09-23",
+ "src": "https://affiliate.klook.com/zh-TW/my_ads/ad_promo_code",
+ "src_name": "Klook 聯盟後台・優惠碼",
+ "_重點": "折扣率是廣告，上限才是真相。玉山 Unicard 的 88 折上限只有 NT$200，而玉山的 95 折上限是 NT$1,000——消費超過 NT$4,000 之後，95 折反而拿得多。",
+ "_欄位": {
+  "pct": "折扣百分比（TWD 定額券為 null）",
+  "cap": "最高折抵金額，null 代表條款沒寫",
+  "scope": "bank＝該行任一張卡可用；card＝限特定卡",
+  "cards": "對應本站的卡片 slug，人工指定",
+  "quota": "每月限量，搶完為止",
+  "expires": "有效期限，過期不顯示"
+ },
+ "codes": [
+  {
+   "code": "CUBE269509",
+   "label": "5%折扣",
+   "desc": "刷國泰世華信用卡 海外商品95折",
+   "cards": [
+    "cathay-cube"
+   ],
+   "scope": "bank",
+   "category": "海外商品",
+   "pct": 5,
+   "cap": 1000,
+   "per_account": "每個帳號限使用1次，最高折抵金額",
+   "quota": null,
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=142,54"
+  },
+  {
+   "code": "CTBCLP2642",
+   "label": "TWD1",
+   "desc": "刷中國信託LINE Pay卡 全站4%LINE POINTS回饋",
+   "cards": [
+    "ctbc-linepay"
+   ],
+   "scope": "card",
+   "category": "全站商品",
+   "pct": null,
+   "cap": 80,
+   "per_account": "每個帳號全年限用10次，單筆訂單",
+   "quota": "每月限量520組",
+   "expires": "2026-12-31",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=1,142"
+  },
+  {
+   "code": "CTBCLP26102",
+   "label": "TWD1",
+   "desc": "刷中國信託LINE Pay卡 海外商品10%LINE POINTS回饋",
+   "cards": [
+    "ctbc-linepay"
+   ],
+   "scope": "card",
+   "category": "海外商品",
+   "pct": null,
+   "cap": 1000,
+   "per_account": "每個帳號全年限用10次，單筆訂單",
+   "quota": "每月限量100組",
+   "expires": "2026-12-31",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=1,142,54"
+  },
+  {
+   "code": "DBS269509",
+   "label": "5%折扣",
+   "desc": "刷星展銀行 海外商品95折",
+   "cards": [
+    "dbs-eco",
+    "dbs-aov"
+   ],
+   "scope": "bank",
+   "category": "海外商品",
+   "pct": 5,
+   "cap": 1000,
+   "per_account": "每個帳號限使用1次，最高折抵金額",
+   "quota": "每月限量50組",
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=142,54"
+  },
+  {
+   "code": "DBS2645009",
+   "label": "TWD450",
+   "desc": "刷星展銀行 全站商品滿3000折450",
+   "cards": [
+    "dbs-eco",
+    "dbs-aov"
+   ],
+   "scope": "bank",
+   "category": "全站商品",
+   "pct": null,
+   "cap": 450,
+   "per_account": "每個帳號限使用1次，最高折抵金額",
+   "quota": null,
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=1,142"
+  },
+  {
+   "code": "UNICARDALL2609",
+   "label": "12%折扣",
+   "desc": "刷玉山銀行Unicard 全站商品88折",
+   "cards": [
+    "esun-unicard"
+   ],
+   "scope": "card",
+   "category": "全站商品",
+   "pct": 12,
+   "cap": 200,
+   "per_account": "每個帳號每月限使用1次，最高折抵",
+   "quota": null,
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=142"
+  },
+  {
+   "code": "UNICARDHOT2609",
+   "label": "12%折扣",
+   "desc": "刷玉山銀行Unicard 海外飯店88折",
+   "cards": [
+    "esun-unicard"
+   ],
+   "scope": "card",
+   "category": "海外飯店",
+   "pct": 12,
+   "cap": 600,
+   "per_account": "每個帳號每月限使用1次，最高折抵",
+   "quota": null,
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids="
+  },
+  {
+   "code": "ESUNSKS2688",
+   "label": "12%折扣",
+   "desc": "刷玉山銀行信用卡 享日本新幹線88折",
+   "cards": [
+    "esun-unicard",
+    "esun-kumamon"
+   ],
+   "scope": "bank",
+   "category": "日本新幹線",
+   "pct": 12,
+   "cap": 300,
+   "per_account": "每個帳號每月限使用1次，最高折抵",
+   "quota": null,
+   "expires": "2026-12-31",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids="
+  },
+  {
+   "code": "ESUN269509",
+   "label": "5%折扣",
+   "desc": "刷玉山銀行 海外商品95折",
+   "cards": [
+    "esun-unicard",
+    "esun-kumamon"
+   ],
+   "scope": "bank",
+   "category": "海外商品",
+   "pct": 5,
+   "cap": 1000,
+   "per_account": "每個帳號限使用1次，最高折抵金額",
+   "quota": "每月限量100組",
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=142,54"
+  },
+  {
+   "code": "FCBHOT268509",
+   "label": "15%折扣",
+   "desc": "刷第一銀行信用卡 全球飯店 85 折",
+   "cards": [
+    "firstbank-ileo"
+   ],
+   "scope": "bank",
+   "category": "全球飯店",
+   "pct": 15,
+   "cap": 400,
+   "per_account": "每個帳號限使用1次，最高折抵金額",
+   "quota": "每月限量150組",
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=1,142"
+  },
+  {
+   "code": "FCB269509",
+   "label": "5%折扣",
+   "desc": "刷第一銀行信用卡 海外商品95折",
+   "cards": [
+    "firstbank-ileo"
+   ],
+   "scope": "bank",
+   "category": "海外商品",
+   "pct": 5,
+   "cap": 1000,
+   "per_account": "每個帳號限使用1次，最高折抵金額",
+   "quota": "每月限量100組",
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=142,54"
+  },
+  {
+   "code": "JCARDKR7509",
+   "label": "25%折扣",
+   "desc": "刷富邦J卡 韓國鐵路75折",
+   "cards": [
+    "fubon-j"
+   ],
+   "scope": "card",
+   "category": "韓國鐵路",
+   "pct": 25,
+   "cap": 200,
+   "per_account": "每個帳號限使用1次，最高折抵金額",
+   "quota": "每月限量200組",
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=1,142"
+  },
+  {
+   "code": "JCARDHO09",
+   "label": "10%折扣",
+   "desc": "刷富邦J卡 星野集團指定飯店9折",
+   "cards": [
+    "fubon-j"
+   ],
+   "scope": "card",
+   "category": "星野集團指定飯店",
+   "pct": 10,
+   "cap": 500,
+   "per_account": "每個帳號限使用1次，最高折抵金額",
+   "quota": "每月限量100組",
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=1"
+  },
+  {
+   "code": "JCARD269509",
+   "label": "5%折扣",
+   "desc": "刷富邦J卡 海外商品95折",
+   "cards": [
+    "fubon-j"
+   ],
+   "scope": "card",
+   "category": "海外商品",
+   "pct": 5,
+   "cap": 1000,
+   "per_account": "每個帳號限使用1次，最高折抵金額",
+   "quota": "每月限量30組",
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=142,54"
+  },
+  {
+   "code": "UBOTTM2625009",
+   "label": "15%折扣",
+   "desc": "刷聯邦銀行 全球體驗交通85折",
+   "cards": [
+    "ubot-jiho"
+   ],
+   "scope": "bank",
+   "category": "全球體驗與交通",
+   "pct": 15,
+   "cap": 250,
+   "per_account": "每個帳號限使用1次，最高折抵金額",
+   "quota": "每月限量200組",
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=1,142"
+  },
+  {
+   "code": "UBOT269509",
+   "label": "5%折扣",
+   "desc": "刷聯邦銀行 海外商品95折",
+   "cards": [
+    "ubot-jiho"
+   ],
+   "scope": "bank",
+   "category": "海外商品",
+   "pct": 5,
+   "cap": 1000,
+   "per_account": "每個帳號限使用1次，最高折抵金額",
+   "quota": "每月限量100組",
+   "expires": "2026-09-30",
+   "residents": "TW",
+   "excluded_url": "https://www.klook.com/zh-TW/no_applicable_activities_list_new?coupon_forbid_act_batch_ids=142,54"
+  }
+ ],
+ "shop_url": "https://www.klook.com/zh-TW/search/?query=日本"
+}
