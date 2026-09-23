@@ -624,6 +624,8 @@ border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
 @media(max-width:520px){.sf label{flex:1 1 100%}.sf button{width:100%}}
 .calc{margin-top:12px;padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
 .calc .sf{margin-top:0;padding:0;background:none;border:0}
+.calc .klv{margin-top:5px;font-size:.82rem}
+.cmp thead th .pp{display:block;margin:2px 0 0;font-weight:600}
 .cres{margin-top:14px;padding:16px 18px;background:var(--card);border:1px solid var(--line);
  border-radius:10px}
 .cres .cl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
@@ -4548,7 +4550,8 @@ if os.path.exists('cards.json'):
         _MIDC, _fx['typical'],
         json.dumps([{'n': c['name'], 's': c['slug'], 'base': c['base'],
                      'tiers': c['tiers'], 'race': c.get('reg_race', False),
-                     'reg': c.get('reg_short', ''), 'lv': c.get('reg_level', '')}
+                     'reg': c.get('reg_short', ''), 'lv': c.get('reg_level', ''),
+                     'levels': c.get('levels')}
                     for c in CD['cards']], ensure_ascii=False))
 
     _mopts = ''.join(f'<option value="{k}">{v}</option>' for k, v in MODES)
@@ -5018,7 +5021,34 @@ if os.path.exists('cards.json'):
   });
   return out;
  }
+ // 有 levels 的卡才顯示等級下拉；換卡時重建選項並保留同 key 的選擇
+ function syncLv(){
+  ['kc0','kc1','kc2'].forEach(function(id,k){
+   var ce=$(id), le=$('kl'+k); if(!ce||!le) return;
+   var c=(ce.value==='')?null:JCARD.cards[+ce.value];
+   if(!c||!c.levels){le.hidden=true;le.innerHTML='';return;}
+   var keep=le.value;
+   le.innerHTML=c.levels.options.map(function(o){
+     return '<option value="'+o.key+'">'+c.levels.label+'：'+o.name+'</option>';}).join('');
+   if(c.levels.options.some(function(o){return o.key===keep})) le.value=keep;
+   le.hidden=false;
+  });
+ }
+ // 那一格目前該用哪組 tiers
+ function lvTiers(c,k){
+  if(!c.levels) return c.tiers;
+  var le=$('kl'+k), key=le&&le.value?le.value:c.levels.options[0].key;
+  var o=c.levels.options.filter(function(x){return x.key===key})[0];
+  return o?o.tiers:c.tiers;
+ }
+ function lvName(c,k){
+  if(!c.levels) return '';
+  var le=$('kl'+k), key=le&&le.value?le.value:c.levels.options[0].key;
+  var o=c.levels.options.filter(function(x){return x.key===key})[0];
+  return o?o.name:'';
+ }
  function run(){
+  syncLv();
   var y=+$('ky').value||0, want=$('ks').value, idx=pick();
   var bill=jbill(y);
   $('k1').textContent='¥'+jfmt(y);
@@ -5026,7 +5056,12 @@ if os.path.exists('cards.json'):
   if(!idx.length){$('kcmp').innerHTML='';$('kv').textContent='請至少選一張卡';$('kv').className='cv';return;}
 
   var rows=idx.map(function(i){
-   var c=JCARD.cards[i], ok=jhas(c,want), mode=ok?want:'base';
+   var c0=JCARD.cards[i], slot=idx.indexOf(i);
+   // 用選到的等級組一份暫時的卡物件，其餘欄位沿用原卡
+   var c={};for(var k2 in c0)c[k2]=c0[k2];
+   c.tiers=lvTiers(c0,slot>=0?slot:0);
+   c.lvname=lvName(c0,slot>=0?slot:0);
+   var ok=jhas(c,want), mode=ok?want:'base';
    var o=jback(c,y,mode), at=jcapat(c,mode);
    // 沒登錄到／沒設定好的話就只剩基本回饋。有些沒加碼但基本高的卡，
    // 在這個情境下反而會贏過有上限的加碼卡，所以兩種都要算出來比。
@@ -5039,7 +5074,8 @@ if os.path.exists('cards.json'):
   var anyDep=rows.some(function(r){return r.bv<r.v});
 
   var th='<th>項目</th>'+rows.map(function(r){
-    return '<th><a href="'+HUB+'/'+r.c.s+'/">'+r.c.n+'</a></th>';}).join('');
+    return '<th><a href="'+HUB+'/'+r.c.s+'/">'+r.c.n+'</a>'
+      +(r.c.lvname?'<span class="pp">'+r.c.lvname+'</span>':'')+'</th>';}).join('');
   function tr(label,f){
    return '<tr><td>'+label+'</td>'+rows.map(function(r){
      return '<td>'+f(r)+'</td>';}).join('')+'</tr>';
@@ -5095,7 +5131,7 @@ if os.path.exists('cards.json'):
   $('kv').className='cv '+(capped.length?'tw':'jp');
   $('kv').textContent=msg;
  }
- ['kc0','kc1','kc2','ky','ks'].forEach(function(i){
+ ['kc0','kc1','kc2','kl0','kl1','kl2','ky','ks'].forEach(function(i){
    var e=$(i); if(e){e.addEventListener('input',run);e.addEventListener('change',run);}});
  run();
 })();
@@ -5109,8 +5145,11 @@ if os.path.exists('cards.json'):
             f'<option value="{i}"{" selected" if i == sel else ""}>'
             f'{html.escape(c["name"])}（{html.escape(c["plan"])}）</option>'
             for i, c in enumerate(CD['cards']))
+        # 有資產／權益等級的卡（目前只有永豐大戶）才會顯示這個下拉，
+        # 其餘卡片選到時 JS 會把它藏起來
         return (f'<label>卡片 {n}{"（可不選）" if optional else ""}'
-                f'<select id="kc{n-1}">{o}</select></label>')
+                f'<select id="kc{n-1}">{o}</select>'
+                f'<select id="kl{n-1}" class="klv" hidden></select></label>')
     kc_faq = [
      ('回饋是用日幣還是台幣計算？',
       '台幣。海外刷卡會先由卡片組織換算成台幣入帳，再加上國外交易手續費，'
