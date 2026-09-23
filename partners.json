@@ -81,15 +81,19 @@
    "brand": "Klook",
    "icon": "📱",
    "label": "買日本網卡 / eSIM",
-   "rate": "未申請，官方未公開費率表",
+   "rate": "待後台確認（核准後以 Klook 後台顯示為準）",
    "cookie": "7-30 天",
    "why": "台灣人買日本網卡的首選平台，商品選擇最多",
-   "template": "TODO_貼上_KLOOK_分潤連結",
+   "template": "https://affiliate.klook.com/redirect?aid=136311&aff_adid={adid}&k_site={k}",
    "fallback": "https://www.klook.com/zh-TW/search/?query=日本%20eSIM%20網卡",
-   "_status": "分潤尚未申請，目前是純導流零收益（template 仍為 TODO）。Trip.com 無 eSIM 品類（/esim/ 為 404），所以這塊只能走 Klook。",
+   "_status": "2026-09-23 已申請並取得分潤連結。template 的 {k} 放 URL-encoded 的 Klook 目標網址，{adid} 放廣告單元 ID。",
    "apply": "https://affiliate.klook.com/",
    "apply_note": "官方直接申請（不必一定走聯盟網路）。條件：必須擁有網站或部落格——本站符合。多個網站可各自取得獨立的 Affiliate ID。聯絡信箱 affiliate@klook.com。Klook 持有台灣旅行業執照 甲 03950。查證於 2026-09-23。",
-   "rate_hearsay": "第三方（Involve Asia 部落格）稱 eSIM 20%、行程與飯店 6.5%、多數品項 5%、禮品卡 2%；cookie 30 天（飯店與租車 7 天）；審核約 2 個工作天。★ 這組數字非官方來源，核准後要以後台實際費率為準。"
+   "rate_hearsay": "第三方（Involve Asia 部落格）稱 eSIM 20%、行程與飯店 6.5%、多數品項 5%、禮品卡 2%；cookie 30 天（飯店與租車 7 天）；審核約 2 個工作天。★ 這組數字非官方來源，核准後要以後台實際費率為準。",
+   "aid": "136311",
+   "adid_default": "1446215",
+   "target_default": "https://www.klook.com/zh-TW/search/?query=日本 eSIM 網卡",
+   "tracking_note": "實測 aff_sid 會被 redirect 清空（回傳 aff_sid=），不能用來分頁追蹤。要分辨哪一頁帶來的點擊，得在 Klook 後台另建廣告單元取得不同的 aff_adid，做法同 Trip.com 的 D19828713／D19828818。"
   },
   "transport": {
    "brand": "Trip.com",

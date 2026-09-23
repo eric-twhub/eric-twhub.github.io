@@ -148,8 +148,28 @@ except Exception:
     NOW=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8)))
 NOWS=NOW.strftime('%Y-%m-%d %H:%M'); TODAY=NOW.strftime('%Y-%m-%d')
 
+def klook(target, adid=None):
+    """把任何 Klook 網址包成分潤連結。
+
+    格式是 affiliate.klook.com/redirect?aid=..&aff_adid=..&k_site=<encoded>。
+    實測 aff_sid 會被 redirect 清空，所以要分辨哪一頁帶來的點擊，
+    得在 Klook 後台另開廣告單元拿不同的 aff_adid，不能靠 query 參數。
+    """
+    p = P.get('esim') or {}
+    t = p.get('template', '')
+    if not t or t.startswith('TODO'):
+        return target
+    return (t.replace('{adid}', str(adid or p.get('adid_default', '')))
+             .replace('{k}', urllib.parse.quote(target, safe='')))
+
+
 def plink(kind,city='',**kw):
     p=P[kind]; t=p.get('template','')
+    # Klook 的 template 是外層轉址，目標網址要整條編碼塞進 k_site，
+    # 跟其他夥伴「把參數填進網址」的形式不同，單獨處理
+    if kind == 'esim' and '{k}' in t:
+        tgt = p.get('target_default') or p['fallback']
+        return klook(tgt, kw.get('adid'))
     u=t if t and not t.startswith('TODO') else p['fallback']
     # Trip.com 的飯店列表要數字城市 ID，沒有對應 ID 的城市就退回關鍵字連結，
     # 否則會產生一個指向錯誤城市（或整個掉回首頁）的連結
