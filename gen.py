@@ -550,6 +550,8 @@ border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
 .tw table{min-width:640px;font-size:.84rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
 .tw td.win{color:var(--lcc);font-weight:700}
+/* 欄位少的表格不要被 min-width 逼出橫向捲動 */
+.tw.narrow table{min-width:0}
 /* 回饋計算機的並排比較表 */
 .cmp{width:100%;border-collapse:collapse}
 .cmp th,.cmp td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;
@@ -937,6 +939,13 @@ BAG_RT = (BAG['ref']['per_leg'] * 2) if BAG else 0
 
 pages=[]  # (url, lastmod, priority)
 
+# 有獨立班表頁的航線（航空公司＋航線的長尾字，城市頁答不了班次問題）
+AIRLINE_SCHED = {}
+if os.path.exists('tigerair-nagoya.json'):
+    AIRLINE_SCHED['nagoya'] = {
+        'url': '/tigerair-nagoya/', 'label': '台灣虎航飛名古屋的完整班表',
+        'blurb': '桃園與台中的航班號、起飛時間與每週營運日，夏季與冬季兩版都列'}
+
 # ---------- 城市頁 ----------
 for slug,name,codes,reg,hotelcity in CITIES:
     fs=by_city.get(slug,[])
@@ -1113,6 +1122,11 @@ for slug,name,codes,reg,hotelcity in CITIES:
     _cheaper = any(a[3] and own_min and a[3] < own_min for a in _alts)
     if len(fs) < ROUTE_MIN or _cheaper:
         body += alt_block(slug,name,hotelcity,own_min)
+    # 有專屬班表頁的航線，從城市頁導過去——城市頁答不了「幾點飛、哪幾天有」
+    if slug in AIRLINE_SCHED:
+        _as = AIRLINE_SCHED[slug]
+        body += (f'<p class="lede"><a href="{U(_as["url"])}"><b>{html.escape(_as["label"])}</b></a>'
+                 f'——{html.escape(_as["blurb"])}</p>')
     # 看完票價 → 下一步就是找住宿，放在這裡最順
     if fs:
         # 沒有城市 ID 的城市會退回 Agoda，文案就不能寫 Trip.com
@@ -1496,6 +1510,132 @@ if os.path.exists('ski.json'):
         f'出發前請以航空公司官網為準。雪具能否託運最終以航空公司現場判定為準。</p>'
       + foot())
     pages.append(('/japan-ski-baggage/', 0.7))
+
+# ---------- 航空公司 × 航線的班表頁 ----------
+# GSC 顯示「虎航名古屋航班」這類「航空公司＋航線」的字有曝光，而城市頁答不了
+# ——使用者要的是班次、營運日與換季，不是最低票價。
+if os.path.exists('tigerair-nagoya.json'):
+    TN = json.load(open('tigerair-nagoya.json', encoding='utf-8'))
+    _tn_air, _tn_city = TN['airline'], TN['city']
+    _SEA = {x['key']: x for x in TN['seasons']}
+
+    def _tnrows(rt, season):
+        out = ''
+        for f in rt['flights']:
+            if f['season'] != season:
+                continue
+            # 手機上欄位一多，營運日就被擠出畫面——而那正是這頁要回答的東西。
+            # 備註收進航班欄的小字，日期不加空格，四欄就放得下。
+            out += (f'<tr><td><b>{f["no"]}</b>'
+                    + (f'<br><small style="color:var(--dim)">{html.escape(f["note"])}</small>'
+                       if f.get('note') else '')
+                    + '</td>'
+                    f'<td>{f["dep"]}</td>'
+                    f'<td>{f["arr"]}'
+                    + ('<i class="pc">＋1</i>' if f.get('plus1') else '')
+                    + '</td>'
+                    f'<td><b>{f["days"]}</b></td></tr>')
+        return out
+
+    _tntab = ''
+    for sk in ('winter', 'summer'):
+        se = _SEA[sk]
+        blocks = ''
+        for rt in TN['routes']:
+            rows = _tnrows(rt, sk)
+            if not rows:
+                continue
+            blocks += (f'<h3>{html.escape(rt["from"])} → {html.escape(rt["to"])}</h3>'
+                       '<div class="tw narrow"><table><thead><tr><th>航班</th><th>起飛</th>'
+                       '<th>抵達</th><th>營運日</th></tr></thead><tbody>'
+                       + rows + '</tbody></table></div>')
+        if blocks:
+            _tntab += (f'<h2>{html.escape(se["label"])}（{se["from"]} – {se["to"]}）</h2>'
+                       + blocks)
+
+    _tnnotes = ''.join(
+        f'<h3>{i}. {html.escape(n["t"])}</h3><p class="lede">{html.escape(n["b"])}</p>'
+        for i, n in enumerate(TN['notes'], 1))
+
+    # 行李費率直接引 baggage.json，不另外維護一份
+    _tnbag = ''
+    if BAG:
+        _r20 = next((r for r in BAG['tigerair']['rows'] if '20KG' in r[0]), None)
+        _rap = next((r for r in BAG['tigerair']['rows'] if '機場' in r[0]), None)
+        if _r20:
+            _tnbag = (f'<h2>行李要另外買</h2>'
+                      f'<p class="lede">虎航最低票價不含託運行李。'
+                      f'以 {BAG["ref"]["kg"]} 公斤為例，'
+                      f'訂票時加購 {money(_r20[1])}、事後線上 {money(_r20[2])}、'
+                      f'打客服 {money(_r20[3])}'
+                      + (f'；機場才買只能買 15 公斤且要 {money(_rap[4])}' if _rap else '')
+                      + f'。超重每公斤 {money(BAG["tigerair"]["over_kg"])}。</p>'
+                      f'<p class="disc">{html.escape(TN["bag_note"])}　·　'
+                      f'費率期間 {html.escape(BAG["tigerair"]["period"])}，'
+                      f'出處：<a href="{BAG["ref"]["src"]}" rel="nofollow" target="_blank">'
+                      f'{html.escape(BAG["ref"]["src_name"])}</a>。</p>')
+
+    tn_faq = [
+     (f'{_tn_air}飛{_tn_city}一週有幾班？',
+      '桃園出發夏季與冬季都是每天一班以上：IT206 飛一、二、三、五、六，'
+      'IT706 飛日、四。回程則分成 IT207（二、六）、IT209（一、三、五）、'
+      'IT707（日、四）。台中出發是 IT778／IT779，去回都在一、三、五。'),
+     ('為什麼查到的起飛時間跟別的網站不一樣？',
+      '因為虎航一年換兩次班表，3 月底與 10 月底各一次，同一個航班號在兩季的時刻不同。'
+      f'本頁把 {_SEA["summer"]["from"]}–{_SEA["summer"]["to"]} 與 '
+      f'{_SEA["winter"]["from"]}–{_SEA["winter"]["to"]} 兩版都列出來，'
+      '看自己的出發日落在哪一段。'),
+     ('回程真的有隔天才到台灣的班次嗎？',
+      '夏季週四的 IT707 是名古屋 22:05 起飛、台灣時間隔天 00:10 抵達。'
+      '訂票頁只顯示 22:05，很容易以為當天回得了家。冬季改成 19:40 起飛、22:15 抵達，當天到。'),
+     ('台中可以直飛名古屋嗎？',
+      '可以。IT778 從台中直飛，一、三、五各一班；回程 IT779 同樣一、三、五。'
+      '班次比桃園少，但中南部出發能省掉往桃園的交通時間。'),
+     ('名古屋是哪個機場？',
+      f'{TN["airport"]}。位於愛知縣常滑市的人工島上，到名古屋市區搭名鐵約 30 分鐘。'),
+    ]
+    tn_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in tn_faq)
+    tn_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in tn_faq]}, ensure_ascii=False)
+
+    tn_title = f'{_tn_air}飛{_tn_city}航班｜班次時刻、營運日與換季時間（{TN["checked"][:4]}年更新）'
+    tn_desc = (f'{_tn_air}桃園與台中飛{_tn_city}的完整班表：航班號、起飛抵達時間、每週營運日，'
+               f'夏季與冬季兩版都列。含 10/25 換季的時刻變動、回程隔天抵達的班次，'
+               f'以及行李加購費率。時刻取自官方時刻表，查證於 {TN["checked"]}。')
+
+    write('tigerair-nagoya/index.html',
+      head(tn_title, tn_desc, 'tigerair-nagoya/',
+           '<script type="application/ld+json">' + tn_ld + '</script>')
+      + crumbs([('首頁', '/'), ('名古屋機票', '/nagoya/'), (f'{_tn_air}班表', None)])
+      + topnav()
+      + f'<h1>{html.escape(_tn_air)}飛{_tn_city}，班次怎麼看？</h1>'
+      + f'<p class="lede">桃園與台中都有直飛。以下是官方班表的完整時刻與營運日，'
+        f'夏季與冬季兩版分開列——同一個航班號換季之後時間會變。</p>'
+      + f'<div class="today"><div class="tday">時刻取自官方時刻表，查證於 {TN["checked"]}</div>'
+        f'<div class="tans">10/25 換冬季班表，<b>時刻整批變動</b></div>'
+        f'<div class="tsub">桃園的 IT206 從 09:00 提前到 08:45；IT706 夏季分成週日與週四'
+        f'兩種時段，冬季合併成 15:05 起飛。訂跨季的票要看清楚搭到哪一版。</div>'
+        f'<div class="tbuf">另外，夏季週四的回程 IT707 是 22:05 起飛、'
+        f'<b>台灣時間隔天 00:10 才到</b>。訂票頁只顯示 22:05，很容易誤判。</div></div>'
+      + _tntab
+      + '<h2>四個訂票前要知道的地方</h2>' + _tnnotes
+      + _tnbag
+      + fare_cta('nagoya', '看名古屋現在的票價')
+      + '<h2>常見問題</h2>' + tn_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/nagoya/")}"><b>名古屋機票</b><s>所有航空的即時票價</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
+        f'<s>加購時機差一倍</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
+        f'<s>便宜班次的時段通常很差</s></a></div>'
+      + f'<p class="disc">班表隨時可能調整，官方時刻表亦註明「僅供參考、更改不另行通知」。'
+        f'本頁查證於 {TN["checked"]}，出發前請以'
+        f'<a href="{TN["src"]}" rel="nofollow" target="_blank">'
+        f'{html.escape(TN["src_name"])}</a>為準。</p>'
+      + foot())
+    pages.append(('/tigerair-nagoya/', 0.7))
 
 # ---------- 地區頁（導覽用，非 SEO 主力）----------
 for reg,rname in REGIONS:
