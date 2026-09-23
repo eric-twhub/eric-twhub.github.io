@@ -3713,6 +3713,21 @@ if os.path.exists('cards.json'):
     }
     if os.path.exists('coupons.json'):
         CP = json.load(open('coupons.json', encoding='utf-8'))
+        # 免稅門檻從 tax_min 的文字取數字；取不到就用日本通則 ¥5,000
+        def _tmin(st):
+            m = re.search(r'([\d,]+)', st.get('tax_min', '') or '')
+            return int(m.group(1).replace(',', '')) if m else 5000
+
+        _SJS = ('<script>window.JSHOP=%s;</script>' % json.dumps(
+            [{'n': st['name'], 's': st['slug'], 'c': st['cat'],
+              'max': st['max'], 'steps': st['steps'], 'tmin': _tmin(st),
+              'src': st.get('src', '')}
+             for st in CP['stores']], ensure_ascii=False))
+
+        _cats = sorted({st['cat'] for st in CP['stores']})
+        _ropts = '<option value="">全部類別</option>' + ''.join(
+            f'<option value="{html.escape(c)}">{html.escape(c)}</option>' for c in _cats)
+
         _srows = ''.join(
             f'<tr><td><a href="{U("/japan-coupon/"+st["slug"]+"/")}">'
             f'<b>{html.escape(st["name"])}</b></a>{SMALL}{html.escape(st["jp"])}</small></td>'
@@ -3721,6 +3736,60 @@ if os.path.exists('cards.json'):
             f'<td>{html.escape(st["tiers"])}</td>'
             f'<td>{html.escape(st["tax_min"])}</td></tr>'
             for st in sorted(CP['stores'], key=lambda x: (x['cat'], -x['max'])))
+
+        _rankjs = _SJS + ("""
+<script>
+(function(){
+ var $=function(i){return document.getElementById(i)};
+ var HUB=%SHUB%;
+ // 自己帶一份格式化函式：這段會在 _CJS 之前執行，不能依賴 window.jfmt
+ var jfmt=function(n){return Math.round(n).toLocaleString("en-US")};
+ function rateAt(st,free){                 // 有級距就按級距，沒有就是單一費率
+  if(!st.steps||!st.steps.length) return st.max;
+  var r=0; st.steps.forEach(function(p){ if(free>=p[0]) r=p[1]; });
+  return r;
+ }
+ function run(){
+  var y=+$('rq').value||0, cat=$('rc').value;
+  if(y<=0){$('rr').innerHTML='';$('rv').textContent='輸入金額後比較';return;}
+  var free=y/1.1;
+  var rows=JSHOP.filter(function(st){return !cat||st.c===cat}).map(function(st){
+   var tf=free>=st.tmin, rate=tf?rateAt(st,free):0;
+   var pay=tf?free*(1-rate/100):y;
+   return {st:st,tf:tf,rate:rate,pay:pay,save:y-pay,off:pay/y*10};
+  }).sort(function(a,b){return a.pay-b.pay});
+
+  var best=rows[0];
+  $('rr').innerHTML='<table class="cmp"><thead><tr><th>店家</th><th>適用折扣</th>'
+   +'<th>實付</th><th>省下</th><th>相當於</th></tr></thead><tbody>'
+   + rows.map(function(r,i){
+     var note = !r.tf ? '<i class="pc">未達免稅門檻 ¥'+jfmt(r.st.tmin)+'</i>'
+              : (r.rate? r.rate+'%' : '<i class="pc">已免稅，未達用券門檻</i>');
+     return '<tr><td>'+(i===0&&rows.length>1?'<span class="pw">最省</span>':'')
+      +'<a href="'+HUB+'/'+r.st.s+'/">'+r.st.n+'</a>'
+      +'<small>'+r.st.c+'</small></td>'
+      +'<td>'+note+'</td>'
+      +'<td><b>¥'+jfmt(r.pay)+'</b></td>'
+      +'<td>¥'+jfmt(r.save)+'</td>'
+      +'<td>'+(r.off<10?r.off.toFixed(1)+' 折':'原價')+'</td></tr>';
+    }).join('')+'</tbody></table>';
+
+  var reach=rows.filter(function(r){return r.tf&&r.rate>0});
+  if(!reach.length){
+   $('rv').className='cv tw';
+   $('rv').textContent='這個金額在所有店家都還沒到用券門檻——先湊到各店的最低級距再結帳';
+  } else {
+   var worst=rows[rows.length-1];
+   $('rv').className='cv jp';
+   $('rv').textContent=best.st.n+' 最省，實付 ¥'+jfmt(best.pay)
+    +'（'+best.off.toFixed(1)+' 折）'
+    +(rows.length>1&&worst.pay>best.pay? '　·　同一筆金額，選錯店多付 ¥'+jfmt(worst.pay-best.pay):'');
+  }
+ }
+ ['rq','rc'].forEach(function(i){var e=$(i);if(e){e.addEventListener('input',run);e.addEventListener('change',run);}});
+ run();
+})();
+</script>""").replace('%SHUB%', json.dumps(U('/japan-coupon')))
 
         _cpjs = _CJS + ("""
 <script>
@@ -3799,6 +3868,17 @@ if os.path.exists('cards.json'):
             f'合計省約 15.4%——不是 10% ＋ 7% ＝ 17%。</div>'
             f'<div class="tbuf">再疊上刷卡回饋，最高可以壓到原價的 <b>七折出頭</b>。'
             f'下面可以用自己的金額和卡片試算。</div></div>'
+          + '<h2>這筆金額，哪家折最多</h2>'
+          + '<p class="lede">輸入預計消費的含稅金額，算出各店扣完免稅與券之後的實付價，'
+            '由低到高排序。級距不同，金額一變名次就會換人。</p>'
+          + '<div class="calc"><div class="sf">'
+            '<label>預計消費（含稅）¥'
+            '<input id="rq" type="number" value="30000" min="0" step="1000"></label>'
+            f'<label>只看類別<select id="rc">{_ropts}</select></label>'
+            '</div><div class="tw" id="rr"></div>'
+            '<div class="cres"><div class="cv" id="rv">—</div></div></div>'
+          + f'<p class="disc">先扣免稅再折券，不是把百分比相加。未達各店免稅門檻時以原價計。'
+            f'級距與門檻查證於 {CP["checked"]}，實際以店家當期公告為準。</p>'
           + '<h2>實付價計算機</h2>'
           + '<div class="calc"><div class="sf">'
             '<label>商品定價（含稅）¥<input id="sp" type="number" value="50000" min="0" step="1000"></label>'
@@ -3845,6 +3925,7 @@ if os.path.exists('cards.json'):
           + cta('esim', '日本', '東京', '出發前先把上網搞定',
                 '到 Klook 買 eSIM 或網卡，落地就能開導航找店')
           + '<h2>常見問題</h2>' + cp_html
+          + _rankjs
           + '<h2>相關頁面</h2><div class="cities">'
           + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張旅日信用卡</b>'
             f'<s>回饋、上限與登錄時間</s></a>'
