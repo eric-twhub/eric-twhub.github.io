@@ -259,7 +259,7 @@ border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
   $('kcmp').innerHTML='<table class="cmp"><thead><tr>'+th+'</tr></thead><tbody>'
    + tr('實拿回饋',function(r){return (r.v===top&&rows.length>1?'<span class="pw">最高</span>':'')
         +'<b>NT$'+jfmt(r.v)+'</b>';})
-   + (anyDep? tr('沒完成前提時',function(r){
+   + (anyDep? tr('未加碼時回饋',function(r){
         // 這一列要能直接互相比大小，所以每一格都印金額，
         // 「不受影響」只是附註，不是拿來取代數字的
         return (r.bv===btop&&rows.length>1?'<span class="pw">最高</span>':'')
@@ -280,7 +280,7 @@ border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
        return (r.c.lv==='none') ? r.c.reg : '<i class="pc">'+r.c.reg+'</i>';})
    + '</tbody></table>'
    + '<p class="disc">「實拿回饋」是<b>已經完成最底下「加碼前提」那一列</b>的算法；'
-   + '「沒完成前提時」是沒登錄到、忘了切 App 或沒設好自動扣繳，只剩基本回饋的金額。'
+   + '「未加碼時回饋」是沒登錄到、忘了切 App 或沒設好自動扣繳，只剩基本回饋的金額。'
    + '標「不受影響」的卡是本來就沒有加碼、或不需要任何前提。</p>';
 
   if(y<=0){$('kv').className='cv';$('kv').textContent='輸入金額後比較';return;}
@@ -302,7 +302,7 @@ border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
   if(anyDep&&rows.length>1){
    var bbest=rows.filter(function(r){return r.bv===btop})[0];
    if(bbest.c.n!==best.c.n)
-     msg+='　·　⚠ 沒完成前提的話，最高變成 '+bbest.c.n+' NT$'+jfmt(btop);
+     msg+='　·　⚠ 沒拿到加碼的話，最高變成 '+bbest.c.n+' NT$'+jfmt(btop);
   }
   $('kv').className='cv '+(capped.length?'tw':'jp');
   $('kv').textContent=msg;
@@ -315,5 +315,5 @@ border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
 票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
 實際訂購由合作平台完成：機票 Trip.com、住宿 Agoda、行程與交通票 KKday、網卡與租車 Klook。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
-最後更新 2026-09-23 23:33　·　<a href="/">回首頁</a>
+最後更新 2026-09-23 23:41　·　<a href="/">回首頁</a>
 </p></div><script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toLowerCase(),a=f.dep.value,b=f.ret.value,t=b?"rt":"ow",u="https://tw.trip.com/flights/showfarefirst?dcity="+o+"&acity="+d+"&ddate="+a+(b?"&rdate="+b:"")+"&triptype="+t+"&class=y&quantity=1&locale=zh-TW&curr=TWD"+"&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1="+d;window.open(u,"_blank","noopener");return false;}</script><script>(function(){var n=document.querySelector("nav.top");if(!n)return;var d=[].slice.call(n.querySelectorAll(":scope>details"));function shut(x){d.forEach(function(o){if(o!==x)o.open=false})}d.forEach(function(o){o.addEventListener("toggle",function(){if(o.open)shut(o)})});document.addEventListener("click",function(e){if(!n.contains(e.target))shut(null);else if(e.target.closest&&e.target.closest(".dd a"))shut(null)});document.addEventListener("keydown",function(e){if(e.key==="Escape")shut(null)});})();</script></body></html>
