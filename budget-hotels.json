@@ -1,0 +1,116 @@
+{
+ "_說明": "東京的便宜『旅館』——有自己一間房、衛浴共用的廉價旅館。跟 hostels.json（跨區平價住宿比較，含床位與膠囊）分開：這頁只收私人房。評分以 Booking 為準，樣本太小或 Booking 沒收的才用 Trip.com 並標明。",
+ "checked": "2026-09-23",
+ "city_id": 228,
+ "sample": {
+  "checkin": "2026-10-04",
+  "checkout": "2026-10-08",
+  "nights": 4,
+  "adult": 1,
+  "note": "單人、4 晚總價、含稅。全部是私人房（非床位、非膠囊），衛浴除另註明外皆為共用"
+ },
+ "benchmark": {
+  "_說明": "對照組：同期間東京評分 8.3 以上、附私人衛浴的商務飯店最低價。",
+  "name": "APA 六本木駅東",
+  "score": 8.4, "reviews": 5890, "total": 14287
+ },
+
+ "cluster": {
+  "name": "南千住・三之輪",
+  "_說明": "東京便宜私人房幾乎全部集中在這裡。這一帶（舊稱山谷）是戰後的簡易旅館區，現在整排都是廉價旅館，房間小、衛浴共用、位置分偏低（7.6–7.7），換來的是商務飯店三分之一的價格。日比谷線直達上野 3 站、銀座不用轉車。",
+  "rows": [
+   {"name": "嗨卡里飯店", "en": "Hotel Hikari", "room": "日式房",
+    "score": 9.0, "src": "Trip.com", "reviews": null, "total": 3256,
+    "near": "南千住 430m", "trip_id": "7609120",
+    "warn": "只有吸菸房可訂，住四晚建議跳過",
+    "note": "於飯店付款、免費取消"},
+
+   {"name": "明月酒店", "en": "Hotel Meigetsu", "room": "單人房",
+    "score": 8.8, "src": "Booking", "reviews": 1454, "total": 3450,
+    "near": "南千住 450m（實走約 10 分）",
+    "url": "https://www.booking.com/hotel/jp/hotel-meigetsu.zh-tw.html",
+    "sub": "整潔 9.0・服務 9.2・CP 值 9.1・位置 7.7",
+    "note": "全表評分最高。有小浴場與共用廚房，Agoda 94% 房客願意推薦",
+    "weak": "隔音差——住客反覆寫「建議跟櫃台索取耳塞，有人趕早班機會很早起來整理行李」。房間只放得下一張單人床加摺疊桌，二樓無電梯",
+    "desk": "櫃檯 08:00–23:30，入住 15:00 起"},
+
+   {"name": "加優酒店", "en": "Juyoh Hotel／ホテル寿陽", "room": "單人房",
+    "score": 8.4, "src": "Booking", "reviews": 2302, "total": 3591,
+    "official_jpy": 13600, "official_twd": 2840,
+    "official_url": "https://juyoh.co.jp/rate/",
+    "near": "南千住（實走 11–15 分）",
+    "url": "https://www.booking.com/hotel/jp/juyoh.zh-tw.html",
+    "sub": "服務 8.8・CP 值 8.7・整潔 8.3・位置 7.6",
+    "note": "全館個室 70 間，這一帶唯一有電梯的。1F 有咖啡館",
+    "weak": "整潔 8.3 是這群裡最低。共用廁所、浴室、吹風機的空間完全分開，用起來不順；沒有可泡澡的浴池",
+    "desk": "櫃檯 07:30–23:30，門禁 23:30，之後按密碼進門"},
+
+   {"name": "日本宮殿飯店", "en": "Hotel Palace Japan", "room": "雙床房・禁菸 6㎡",
+    "score": 9.4, "src": "Trip.com", "reviews": 107, "total": 3812,
+    "near": "南千住 450m", "trip_id": "688077",
+    "note": "Trip.com 標註「過去 2 年內未收到任何負面評論」。於飯店付款",
+    "weak": "6 平方公尺是真的小，就是一張上下舖加走道。評論樣本只有 107 則"},
+
+   {"name": "丸忠中心飯店", "en": "Hotel Maruchu Centro", "room": "單人房・禁菸",
+    "score": 9.0, "src": "Trip.com", "reviews": 41, "total": 4265,
+    "near": "南千住 190m", "trip_id": "23193725",
+    "note": "這群裡離車站最近的一家",
+    "weak": "評論只有 41 則，樣本薄，分數要打折看"}
+  ]
+ },
+
+ "others": {
+  "_說明": "南千住以外的私人房。價格跳一個級距，多半是因為位置好或多了設施。",
+  "rows": [
+   {"name": "Hostel LodgingTokyo Minowa", "room": "標準單人房", "area": "三之輪",
+    "score": 7.2, "src": "Booking", "reviews": 984, "total": 2097,
+    "url": "https://www.booking.com/hotel/jp/hostel-hideaway-dong-jing.zh-tw.html",
+    "warn": "全表最便宜，但 7.2 分配 984 則是穩定的普通，不是樣本不足"},
+   {"name": "ZAITO 錦糸町 Economy Inn", "room": "雙床房", "area": "錦糸町 0.9km",
+    "score": 7.9, "src": "Booking", "reviews": 344, "total": 5663,
+    "url": "https://www.booking.com/hotel/jp/zaito-skytree-economy-inn.zh-tw.html"},
+   {"name": "Sugoi Sauna & Stay 麻布十番", "room": "標準單人房・男性", "area": "東京鐵塔 0.6km",
+    "score": 8.3, "src": "Booking", "reviews": 229, "total": 5717,
+    "url": "https://www.booking.com/hotel/jp/sugoisauna-amp-suteima-bu-shi-fan-yi-qian-gang-qu.zh-tw.html",
+    "note": "港區唯一在預算內的私人房，附桑拿"},
+   {"name": "可米旅館 Kimi Ryokan", "room": "日式房", "area": "池袋 550m",
+    "score": 8.3, "src": "Booking", "reviews": 1010, "total": 6633, "total_src": "Trip.com",
+    "trip_id": "1741153",
+    "warn": "門禁 01:00–07:00，那段時間連大門都進不去"},
+   {"name": "池袋賓館 House Ikebukuro", "room": "日式經濟間", "area": "池袋 0.6km",
+    "score": 8.4, "src": "Booking", "reviews": 1364, "total": 7650,
+    "url": "https://www.booking.com/hotel/jp/house-ikebukuro.zh-tw.html"},
+   {"name": "OCICA 東京押上", "room": "雙人房・共用衛浴", "area": "押上 500m",
+    "score": 8.7, "src": "Booking", "reviews": 792, "total": 8334,
+    "trip_id": "127676551",
+    "note": "六項細項全部 8.9 以上，沒有弱項。24 小時櫃檯——清晨落地就能放行李，這群裡唯一做得到的"},
+   {"name": "東京上野新伊豆酒店", "room": "單人房・共用衛浴", "area": "上野",
+    "score": 8.4, "src": "Booking", "reviews": 2595, "total": 11073,
+    "url": "https://www.booking.com/hotel/jp/tokyo-ueno-new-izu.zh-tw.html",
+    "warn": "一萬一買共用衛浴的單人房，比南千住同等級貴三倍"}
+  ]
+ },
+
+ "official": {
+  "_說明": "官網會不會比較便宜？查了三家，結論是分老字號與新連鎖。",
+  "rows": [
+   {"name": "加優酒店", "verdict": "官網便宜 22%",
+    "detail": "官網公告住 3 晚以上每晚 ¥3,400（單晚 ¥3,500），4 晚 ¥13,600 約 NT$2,840，比 Booking 的 3,591 便宜 751。折扣只給官網直訂",
+    "catch": "代價是取消政策：入住前 2 天內或當天取消收 100%、3 天前收 50%；Booking 那邊是免費取消"},
+   {"name": "明月酒店", "verdict": "沒有差",
+    "detail": "官網 Rate 頁第一行就寫「For the latest availability and rates, please visit Booking.com」，直接把訂房導去 Booking"},
+   {"name": "OCICA 押上", "verdict": "官網最貴",
+    "detail": "官網 NT$10,130，比最便宜的通路貴 1,796。2025 年 4 月才開的新飯店還在靠 OTA 衝住房率"}
+  ],
+  "rule": "老字號的獨立旅館官網通常較便宜，新開的連鎖不一定——沒有通則，要逐家點開比。"
+ },
+
+ "checklist": [
+  {"q": "櫃檯幾點開、有沒有門禁",
+   "a": "這群旅館多半不是 24 小時櫃檯。加優 07:30 開、明月 08:00 開——清晨落地的紅眼班機還算友善；可米旅館有 01:00–07:00 門禁，那段時間連大門都進不去。真的需要一下飛機就放行李，只有 OCICA 的 24 小時櫃檯做得到。"},
+  {"q": "是不是吸菸房",
+   "a": "這一帶的老旅館很多只剩吸菸房。嗨卡里最便宜的日式房就是可吸菸，住四晚會很有感。訂之前看房型名稱有沒有「禁菸」。"},
+  {"q": "有沒有電梯",
+   "a": "南千住這群裡只有加優明確有電梯。明月的客房在二樓、無電梯，有住客寫「帶大行李下樓很擔心摔死」。行李重的話這一項比房價重要。"}
+ ]
+}

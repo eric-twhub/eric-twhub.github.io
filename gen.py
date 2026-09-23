@@ -1180,8 +1180,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
         # 東京另有青旅專頁：清晨回程的最後一晚不能訂市區，那件事在這裡講不完
         if slug == 'tokyo' and HS_MIN:
             body += (f'<p class="lede">想住便宜一點？'
-                     f'<a href="{U("/tokyo/hostel/")}">東京 8 個區的平價住宿實查</a>——'
-                     f'{HS_NIGHTS} 晚 {money(HS_MIN)} 起，附各家的弱點與櫃檯開門時間。</p>')
+                     f'<a href="{U("/tokyo/hostel/")}">東京 8 個區的平價住宿實查</a>'
+                     f'（{HS_NIGHTS} 晚 {money(HS_MIN)} 起，附各家的弱點與櫃檯開門時間）；'
+                     f'不想睡床位的話，另有'
+                     f'<a href="{U("/tokyo/budget-hotel/")}">共用衛浴的私人房</a>。</p>')
     body+=faq_block(name,fs,codes)
     body+=klook_tours(slug,name)
     # 當地玩樂的分潤是機票的八倍（4% vs 0.5%），而且看完機票住宿的下一個問題
@@ -5607,12 +5609,12 @@ if HS:
          f'<span class="ca">→</span></a>')
       + '<h2>常見問題</h2>' + _hs_html
       + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/budget-hotel/")}"><b>🛌 東京便宜旅館</b>'
+        f'<s>不睡床位：共用衛浴的私人房</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b>'
         f'<s>廉航與一般航空並列，每日更新</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
-        f'<s>不想住機場，就從班次時段挑起</s></a>'
-      + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
-        f'<s>省下的房費別又賠在行李上</s></a></div>'
+        f'<s>不想住機場，就從班次時段挑起</s></a></div>'
       + f'<p class="disc">房價與評分由各平台即時調整，本頁數字查證於 {HS["checked"]}，'
         f'訂房前請以訂房頁顯示的為準。班機時刻與報到規定以航空公司公告為準。'
         f'表中連到 Trip.com 的按鈕為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，'
@@ -5621,6 +5623,202 @@ if HS:
     pages.append(('/tokyo/hostel/', 0.8))
     print(f'   東京平價住宿頁：{len(HS["areas"])} 區（查證 {HS["checked"]}，'
           f'最低 {money(_hs_lo["total"])}／{_hs_n} 晚）')
+
+# ---------- 東京便宜旅館（共用衛浴的私人房）----------
+BH = (json.load(open('budget-hotels.json', encoding='utf-8'))
+      if os.path.exists('budget-hotels.json') else None)
+if BH:
+    _bh_s = BH['sample']; _bh_n = _bh_s['nights']
+    _bh_cl = BH['cluster']; _bh_bm = BH['benchmark']
+    _BSM = '<br><small style="color:var(--dim)">'
+
+    _bh_aff = {k: v for k, v in
+               urllib.parse.parse_qsl(urllib.parse.urlsplit(P['hotel']['template']).query)
+               if k in ('Allianceid', 'SID', 'trip_sub3')}
+
+    def _bh_trip(hid, sub):
+        q = {'cityId': BH['city_id'], 'hotelId': hid,
+             'checkIn': _bh_s['checkin'], 'checkOut': _bh_s['checkout'],
+             'adult': _bh_s['adult'], 'children': 0, 'crn': 1,
+             'curr': 'TWD', 'locale': 'zh-TW'}
+        q.update(_bh_aff)
+        q['trip_sub1'] = sub
+        return 'https://tw.trip.com/hotels/detail/?' + urllib.parse.urlencode(q)
+
+    def _bh_btn(r):
+        """有 Trip.com ID 走分潤連結，否則連回查價來源（Booking，無分潤）。"""
+        if r.get('trip_id'):
+            return (f'<a class="btn" href="{html.escape(_bh_trip(r["trip_id"], "tokyo-bh-" + r["trip_id"]))}" '
+                    f'target="_blank" rel="nofollow noopener sponsored">Trip.com 查空房</a>')
+        if r.get('url'):
+            return (f'<a class="btn" href="{html.escape(r["url"])}" target="_blank" '
+                    f'rel="nofollow noopener">Booking 查空房</a>')
+        return ''
+
+    def _bh_score(r):
+        _n = f'{_BSM}{r["src"]}' + (f'・{r["reviews"]:,} 則' if r.get('reviews') else '') + '</small>'
+        return f'{r["score"]}{_n}'
+
+    _bh_all = _bh_cl['rows'] + BH['others']['rows']
+    _bh_lo = min(_bh_all, key=lambda r: r['total'])
+    # 代表家只從「Booking 評分 ＋ 樣本夠厚」的挑。本頁自己的論點就是 Trip.com 分數
+    # 偏高、小樣本要打折，拿 Trip.com 的 9.4／107 則當招牌會自相矛盾；
+    # 跟商務飯店對比時也才是同一個平台的分數，比得過去。
+    _bh_solid = [r for r in _bh_cl['rows']
+                 if r.get('src') == 'Booking' and (r.get('reviews') or 0) >= 500]
+    _bh_best = max(_bh_solid or _bh_cl['rows'],
+                   key=lambda r: (r['score'], r.get('reviews') or 0))
+    _bh_save = _bh_bm['total'] - _bh_best['total']
+
+    _bh_crows = ''
+    for r in sorted(_bh_cl['rows'], key=lambda r: r['total']):
+        _w = (f'{_BSM}⚠️ {html.escape(r["warn"])}</small>' if r.get('warn') else '')
+        _o = (f'{_BSM}官網 {money(r["official_twd"])}</small>' if r.get('official_twd') else '')
+        _bh_crows += (
+            f'<tr><td><b>{html.escape(r["name"])}</b>{_BSM}{html.escape(r["room"])}・'
+            f'{html.escape(r["near"])}</small></td>'
+            f'<td>{_bh_score(r)}</td>'
+            f'<td><b>{money(r["total"])}</b>{_o}</td>'
+            f'<td>{html.escape(r.get("note", ""))}{_w}</td>'
+            f'<td>{_bh_btn(r)}</td></tr>')
+
+    _bh_orows = ''
+    for r in sorted(BH['others']['rows'], key=lambda r: r['total']):
+        _w = (f'{_BSM}⚠️ {html.escape(r["warn"])}</small>' if r.get('warn') else '')
+        _sr = (f'{_BSM}{html.escape(r["total_src"])}</small>' if r.get('total_src') else '')
+        _bh_orows += (
+            f'<tr><td><b>{html.escape(r["name"])}</b>{_BSM}{html.escape(r["room"])}</small></td>'
+            f'<td>{html.escape(r["area"])}</td>'
+            f'<td>{_bh_score(r)}</td>'
+            f'<td><b>{money(r["total"])}</b>{_sr}</td>'
+            f'<td>{html.escape(r.get("note", ""))}{_w}</td>'
+            f'<td>{_bh_btn(r)}</td></tr>')
+
+    _bh_weak = ''.join(
+        f'<li><b>{html.escape(r["name"])}</b>　{html.escape(r["weak"])}。</li>'
+        for r in _bh_cl['rows'] if r.get('weak'))
+
+    _OF = BH['official']
+    _bh_of = ''.join(
+        f'<tr><td>{html.escape(r["name"])}</td>'
+        f'<td><b>{html.escape(r["verdict"])}</b></td>'
+        f'<td>{html.escape(r["detail"])}'
+        + (f'{_BSM}⚠️ {html.escape(r["catch"])}</small>' if r.get('catch') else '')
+        + '</td></tr>' for r in _OF['rows'])
+
+    _bh_chk = ''.join(f'<details class="faq"><summary>{html.escape(c["q"])}</summary>'
+                      f'<div>{html.escape(c["a"])}</div></details>' for c in BH['checklist'])
+
+    _bh_list = (f'https://tw.trip.com/hotels/list?cityId={BH["city_id"]}&countryId=78'
+                f'&cityName={urllib.parse.quote("東京")}'
+                f'&destName={urllib.parse.quote("東京")}&searchType=CT'
+                f'&checkin={_bh_s["checkin"]}&checkout={_bh_s["checkout"]}'
+                f'&crn=1&adult={_bh_s["adult"]}&listFilters=17~3*17*3'
+                f'&curr=TWD&locale=zh-TW'
+                + ''.join(f'&{k}={v}' for k, v in _bh_aff.items())
+                + '&trip_sub1=tokyo-budget-hotel')
+
+    _bh_faq = [
+     ('東京最便宜的私人房多少錢？',
+      f'本站在 {BH["checked"]} 查 {_bh_s["checkin"]} – {_bh_s["checkout"]} 這 {_bh_n} 晚、'
+      f'單人含稅的實際可訂價格，共用衛浴的私人房從 {money(_bh_lo["total"])} 起，'
+      f'評分站得住腳的大約 {money(_bh_best["total"])}。'
+      f'同期間附私人衛浴的商務飯店（{_bh_bm["name"]}，{_bh_bm["score"]} 分）最低要 '
+      f'{money(_bh_bm["total"])}，差了 {money(_bh_save)}。'),
+     ('為什麼便宜的旅館都集中在南千住？',
+      f'{_bh_cl["_說明"]}'),
+     ('共用衛浴會很不方便嗎？',
+      '看旅館怎麼配置。明月酒店的住客普遍說衛浴「很乾淨也很大間」，還有小浴場；'
+      '加優酒店則是廁所、浴室、吹吹風機的空間完全分開，用起來比較麻煩。'
+      '這件事房價看不出來，要去翻評論。'),
+     ('官網會比訂房網便宜嗎？',
+      f'{_OF["rule"]}加優酒店官網住 3 晚以上每晚 ¥3,400，4 晚約 '
+      f'{money(3591 - 751)}，比 Booking 便宜 22%；但明月酒店的官網直接把訂房導去 Booking，'
+      'OCICA 押上的官網反而是全部通路裡最貴的。'),
+     ('清晨落地的紅眼班機，這些旅館進得去嗎？',
+      '多半不行。加優櫃檯 07:30 開、明月 08:00 開，算是這群裡最友善的；'
+      '可米旅館有 01:00–07:00 門禁。真的要一下飛機就放行李，'
+      '只有 OCICA 押上的 24 小時櫃檯做得到，但它一晚的價格是南千住那幾家的兩倍多。'),
+    ]
+    _bh_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                       + html.escape(a) + '</div></details>' for q, a in _bh_faq)
+    _bh_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in _bh_faq]}, ensure_ascii=False)
+
+    write('tokyo/budget-hotel/index.html',
+      head(f'東京便宜旅館｜共用衛浴的私人房，{_bh_n} 晚 {money(_bh_lo["total"])} 起',
+           f'不想睡床位、也不想付商務飯店的錢？東京有一整區的廉價旅館提供共用衛浴的私人房，'
+           f'{_bh_n} 晚單人含稅 {money(_bh_best["total"])} 上下，是同級商務飯店的四分之一。'
+           f'{BH["checked"]} 實查 {len(_bh_all)} 家，附每一家的弱點與官網比價。',
+           'tokyo/budget-hotel/',
+           '<script type="application/ld+json">' + _bh_ld + '</script>')
+      + crumbs([('首頁', '/'), ('東京機票', '/tokyo/'), ('東京便宜旅館', None)]) + topnav()
+      + '<h1>東京便宜旅館：有自己一間房，但衛浴共用</h1>'
+      + f'<p class="lede">不想睡床位，也不想付商務飯店的錢——這中間有一層很少人寫的選擇：'
+        f'<b>共用衛浴的私人房</b>。{_bh_n} 晚 {money(_bh_best["total"])} 上下，'
+        f'是同級商務飯店的四分之一。代價是衛浴要共用，而且幾乎全部集中在同一區。</p>'
+      + f'<div class="today"><div class="tday">查證於 {BH["checked"]}'
+        f'　·　樣本 {_bh_s["checkin"]} – {_bh_s["checkout"]}，{_bh_n} 晚單人含稅</div>'
+        f'<div class="tans">{len(_bh_all)} 家實查，{money(_bh_lo["total"])} – '
+        f'{money(max(r["total"] for r in _bh_all))}</div>'
+        f'<div class="tsub">{html.escape(_bh_s["note"])}。'
+        f'評分以 Booking 為準，樣本太小或 Booking 沒收的才用 Trip.com 並標明。'
+        f'房價每天變動，本頁是查價當天的快照。</div></div>'
+      + f'<h2>省下多少？跟商務飯店比一次</h2>'
+      + '<div class="tw"><table><thead><tr><th>類型</th><th>代表</th><th>評分</th>'
+        f'<th>{_bh_n} 晚</th></tr></thead><tbody>'
+      + f'<tr class="win"><td><b>廉價旅館・共用衛浴</b></td>'
+        f'<td>{html.escape(_bh_best["name"])}{_BSM}{html.escape(_bh_best["near"])}</small></td>'
+        f'<td>{_bh_best["score"]}{_BSM}{_bh_best["reviews"]:,} 則</small></td>'
+        f'<td><b>{money(_bh_best["total"])}</b></td></tr>'
+      + f'<tr><td>商務飯店・私人衛浴</td><td>{html.escape(_bh_bm["name"])}</td>'
+        f'<td>{_bh_bm["score"]}{_BSM}{_bh_bm["reviews"]:,} 則</small></td>'
+        f'<td>{money(_bh_bm["total"])}</td></tr>'
+      + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_bh_bm["_說明"])}兩邊都是 Booking 的分數，'
+        f'只差 {abs(_bh_best["score"] - _bh_bm["score"]):.1f} 分，價差 {money(_bh_save)}——'
+        f'你多付的那筆，買的主要是房間裡那間廁所。</p>'
+      + f'<h2>便宜的私人房，幾乎全在{html.escape(_bh_cl["name"])}</h2>'
+      + f'<p class="lede">{html.escape(_bh_cl["_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>旅館</th><th>評分</th>'
+        f'<th>{_bh_n} 晚</th><th>說明</th><th>　</th></tr></thead><tbody>'
+      + _bh_crows + '</tbody></table></div>'
+      + '<h2>每一家的弱點</h2>'
+      + '<p class="lede">這個價位帶沒有完美的選擇，差別在弱點落在你在不在意的地方。</p>'
+      + '<div class="tldr"><ul>' + _bh_weak + '</ul></div>'
+      + '<h2>官網會比較便宜嗎？查了三家</h2>'
+      + f'<p class="lede">{html.escape(_OF["_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>旅館</th><th>結論</th>'
+        '<th>細節</th></tr></thead><tbody>' + _bh_of + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_OF["rule"])}</p>'
+      + f'<h2>{html.escape(_bh_cl["name"])}以外的選擇</h2>'
+      + f'<p class="lede">{html.escape(BH["others"]["_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>旅館</th><th>區域</th><th>評分</th>'
+        f'<th>{_bh_n} 晚</th><th>說明</th><th>　</th></tr></thead><tbody>'
+      + _bh_orows + '</tbody></table></div>'
+      + '<h2>訂之前確認三件事</h2>' + _bh_chk
+      + (f'<a class="cta" href="{html.escape(_bh_list)}" target="_blank" '
+         f'rel="nofollow noopener sponsored"><span class="ci">{P["hotel"]["icon"]}</span>'
+         f'<span class="ct"><b>自己看東京的完整住宿清單</b>'
+         f'<s>到 {P["hotel"]["brand"]} 依含稅價由低到高排，繁體中文、台幣計價</s></span>'
+         f'<span class="ca">→</span></a>')
+      + '<h2>常見問題</h2>' + _bh_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
+        f'<s>8 個區比較，含膠囊與床位房</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b>'
+        f'<s>廉航與一般航空並列，每日更新</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
+        f'<s>不浪費假期的班次</s></a></div>'
+      + f'<p class="disc">房價與評分由各平台即時調整，本頁數字查證於 {BH["checked"]}，'
+        f'訂房前請以訂房頁顯示的為準。表中連到 Trip.com 的按鈕為聯盟行銷連結，'
+        f'透過連結完成訂購時本站可獲得分潤，不影響你的價格；'
+        f'連到 Booking 的按鈕是查價來源，本站沒有分潤。</p>'
+      + foot())
+    pages.append(('/tokyo/budget-hotel/', 0.8))
+    print(f'   東京便宜旅館頁：{len(_bh_all)} 家（查證 {BH["checked"]}，'
+          f'{money(_bh_lo["total"])} 起／{_bh_n} 晚）')
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
