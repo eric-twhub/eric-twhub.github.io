@@ -691,7 +691,8 @@ def topnav(cur=''):
     kinds = (link('/japan-flight-good-times/', '☀️ 早去晚回')
              + link('/deals/', '🔥 今日特價')
             + link('/japan-flight-baggage/', '🧳 廉航行李費')
-            + link('/japan-ski-baggage/', '🎿 雪具託運'))
+            + link('/japan-ski-baggage/', '🎿 雪具託運')
+            + link('/japan-airport-last-train/', '🚉 機場末班車'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -1656,6 +1657,208 @@ if os.path.exists('tigerair-nagoya.json'):
         f'{html.escape(TN["src_name"])}</a>為準。</p>'
       + foot())
     pages.append(('/tigerair-nagoya/', 0.7))
+
+# ---------- 機場末班車 ----------
+# 紅眼票的下一個問題就是「落地之後回不回得去」。資料來自各鐵道／巴士官方時刻表，
+# 每一列都帶 src；查不到的寧可留在 pending，不要放第三方整理的數字。
+if os.path.exists('lasttrain.json'):
+    LT = json.load(open('lasttrain.json', encoding='utf-8'))
+    _LSM = '<br><small style="color:var(--dim)">'
+
+    def _lt_dep(r):
+        wd, hol = r.get('dep_wd'), r.get('dep_hol')
+        if wd and hol and wd == hol:
+            return f'<b>{html.escape(wd)}</b>{_LSM}平日與土休日相同</small>'
+        parts = []
+        if wd:
+            parts.append(f'平日 <b>{html.escape(wd)}</b>')
+        if hol:
+            parts.append(f'土休日 <b>{html.escape(hol)}</b>')
+        return '<br>'.join(parts) if parts else '—'
+
+    def _lt_table(ap):
+        rows = ''
+        for r in ap['rail']:
+            _direct = (r.get('cut') == r.get('dep_wd'))
+            _fare = f'{r["fare"]:,} 円' if r.get('fare') else '—'
+            rows += (f'<tr><td><b>{html.escape(r["name"])}</b>'
+                     f'{(_LSM + html.escape(r["revision"]) + "</small>") if r.get("revision") else ""}</td>'
+                     f'<td>{_lt_dep(r)}</td>'
+                     f'<td class="{"" if _direct else "lose"}">{html.escape(r["to"])}</td>'
+                     f'<td class="{"win" if _direct else ""}"><b>{html.escape(r["cut"])}</b></td>'
+                     f'<td>{_fare}</td></tr>')
+        return ('<div class="tw"><table><thead><tr><th>路線</th><th>末班發車</th>'
+                '<th>末班開到哪</th><th>最後一班直達市區</th><th>車資</th>'
+                '</tr></thead><tbody>' + rows + '</tbody></table></div>')
+
+    def _lt_notes(ap):
+        out = ''
+        for r in ap['rail']:
+            out += (f'<h3>{html.escape(r["name"])}</h3>'
+                    f'<p class="lede">{html.escape(r["cut_note"])}</p>')
+            if r.get('last_any'):
+                out += (f'<p class="lede">全線最後一班是 {html.escape(r["last_any"])}，'
+                        f'{html.escape(r["last_any_note"])}</p>')
+            if r.get('arr'):
+                out += f'<p class="lede">抵達時刻：{html.escape(r["arr"])}。</p>'
+            if r.get('fare_note'):
+                out += f'<p class="lede">{html.escape(r["fare_note"])}</p>'
+            out += (f'<p class="disc">出處：<a href="{r["src"]}" rel="nofollow" target="_blank">'
+                    f'{html.escape(r["src_name"])}</a>'
+                    + (f'、<a href="{r["src2"]}" rel="nofollow" target="_blank">'
+                       f'{html.escape(r["src2_name"])}</a>' if r.get('src2') else '')
+                    + f'，查證於 {LT["checked"]}。</p>')
+        return out
+
+    def _lt_bus(ap):
+        out = ''
+        for b in ap.get('bus', []):
+            out += f'<h3>{html.escape(b["name"])}</h3>'
+            if b.get('runs'):
+                _dest = list(b.get('arr') or {})
+                head_ = ''.join(f'<th>{html.escape(d)}</th>' for d in _dest)
+                body = ''
+                for i, t in enumerate(b['runs']):
+                    cells = ''
+                    for d in _dest:
+                        v = b['arr'][d][i]
+                        cells += f'<td>{html.escape(v) if v else "—"}</td>'
+                    body += (f'<tr><td><b>第 {i + 1} 班</b></td>'
+                             f'<td><b>{html.escape(t)}</b></td>{cells}</tr>')
+                out += ('<div class="tw"><table><thead><tr><th></th>'
+                        '<th>機場發車</th>' + head_ + '</tr></thead><tbody>'
+                        + body + '</tbody></table></div>')
+                if b.get('fare'):
+                    out += f'<p class="lede">單程 {b["fare"]:,} 円。'
+                    out += (html.escape(b['stop']) + '。') if b.get('stop') else ''
+                    out += '</p>'
+            if b.get('runs_note'):
+                out += f'<p class="lede">{html.escape(b["runs_note"])}</p>'
+            if b.get('fare_note'):
+                out += f'<p class="lede">{html.escape(b["fare_note"])}</p>'
+            if b.get('mins_note'):
+                out += f'<p class="lede">{html.escape(b["mins_note"])}</p>'
+            out += (f'<p class="disc">出處：<a href="{b["src"]}" rel="nofollow" target="_blank">'
+                    f'{html.escape(b["src_name"])}</a>'
+                    + (f'、<a href="{b["src2"]}" rel="nofollow" target="_blank">'
+                       f'{html.escape(b["src2_name"])}</a>' if b.get('src2') else '')
+                    + f'，查證於 {LT["checked"]}。</p>')
+        _o = ap.get('bus_other')
+        if _o:
+            out += (f'<p class="lede">{html.escape(_o["note"])}'
+                    + '、'.join(html.escape(x) for x in _o['routes']) + '。'
+                    f'（<a href="{_o["src"]}" rel="nofollow" target="_blank">'
+                    f'{html.escape(_o["src_name"])}</a>）</p>')
+        _t = ap.get('taxi')
+        if _t:
+            out += (f'<h3>計程車</h3><p class="lede">{html.escape(_t["note"])}</p>'
+                    f'<p class="disc">出處：<a href="{_t["src"]}" rel="nofollow" target="_blank">'
+                    f'{html.escape(_t["src_name"])}</a>，查證於 {LT["checked"]}。</p>')
+        _s = ap.get('stay')
+        if _s:
+            out += (f'<p class="lede">{html.escape(_s["note"])}'
+                    f'　<a href="{U(_s["link"])}">看住宿價格 →</a></p>')
+        return out
+
+    def _lt_fares_ref(ap):
+        f = ap.get('fares_ref')
+        if not f:
+            return ''
+        rows = ''.join(f'<tr><td>{html.escape(r["to"])}</td>'
+                       f'<td>{r["ic"]:,} 円</td><td>{r["ticket"]:,} 円</td></tr>'
+                       for r in f['rows'])
+        return (f'<p class="lede">{html.escape(f["note"])}</p>'
+                '<div class="tw narrow"><table><thead><tr><th>到站</th>'
+                '<th>IC 卡</th><th>車票</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+                f'<p class="disc">出處：<a href="{f["src"]}" rel="nofollow" target="_blank">'
+                f'{html.escape(f["src_name"])}</a>，查證於 {LT["checked"]}。</p>')
+
+    _lt_body = ''
+    for ap in LT['airports']:
+        _lt_body += (f'<h2 id="{ap["code"].lower()}">{html.escape(ap["name"])}'
+                     f'<span class="tag">{ap["code"]}</span></h2>'
+                     f'<p class="lede">查的是{html.escape(ap["station"])}。</p>'
+                     f'<p class="lede"><b>{html.escape(ap["verdict"])}</b></p>'
+                     + _lt_table(ap)
+                     + '<p class="disc">「最後一班直達市區」標成綠色的，代表末班車本身就到得了市區；'
+                       '標成紅色的終點站，代表末班車只開到中途，那一欄的時刻會比末班早。</p>'
+                     + '<h3 class="grp">各條線的細節</h3>' + _lt_notes(ap)
+                     + _lt_fares_ref(ap)
+                     + f'<h3 class="grp">來不及的話</h3>' + _lt_bus(ap))
+
+    _lt_steps = ''.join(f'<li>{html.escape(s)}</li>' for s in LT['rule']['steps'])
+    _lt_pending = ''.join(
+        f'<li><b>{html.escape(p["what"])}</b>'
+        f'<br><small style="color:var(--dim)">{html.escape(p["why"])}</small></li>'
+        for p in LT['pending']['items'])
+
+    lt_faq = [
+     ('紅眼班機落地後，大概多久能走到車站？',
+      '沒有官方數字可以引用，這裡只能給經驗值：入境審查加等行李抓 40～60 分鐘，'
+      '從航廈走到車站再抓 5～10 分鐘。也就是說表訂落地時間要比末班車早大約一個半小時才算安全。'
+      '班機誤點 30 分鐘就可能整個翻盤，所以紅眼票在訂之前就該先看末班車。'),
+     ('為什麼末班車的時刻，跟我在換乘 App 上查到的不一樣？',
+      '多半是因為末班車只開到中途站。本頁把「末班發車」跟「最後一班直達市區」拆成兩欄，'
+      '就是因為這兩個數字常常差很多——成田的 Access 特急末班是 23:11，但那班只到京成高砂；'
+      '羽田京急的全線末班 00:13 只到京急蒲田。'),
+     ('羽田跟成田，紅眼票該選哪個？',
+      '單看回程的末班車，羽田寬鬆很多：電車開到 00:10 之後，還有四班深夜巴士到新宿池袋。'
+      '成田最後一班能直接進市區的是 23:03 的 Skyliner，票價 2,470 円，'
+      '比它便宜的班次收班更早。如果兩邊票價差不多，羽田的落地時間容錯高得多。'),
+     ('這些時刻多久會變一次？',
+      '日本鐵道大約一年改點一次，通常在三月，但近年也有十二月改點的。'
+      '本頁京急與京成的資料都是 2025-12-13 改正版。出發前請用每一列附的官方連結重查。'),
+     ('為什麼只有羽田跟成田？',
+      '因為只查到這兩個。關西、中部、福岡、新千歲、那霸都還沒查，列在頁尾的待查清單裡。'
+      '與其抄第三方整理，不如先空著。'),
+    ]
+    lt_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in lt_faq)
+    lt_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in lt_faq]}, ensure_ascii=False)
+
+    lt_title = '日本機場末班車：羽田、成田落地後還回得去市區嗎（附官方時刻表）'
+    lt_desc = ('紅眼班機落地之後的末班車時刻。羽田京急末班 00:08 到品川、單軌電車 00:10 到浜松町；'
+               '成田最後一班直達市區的是 23:03 的 Skyliner。每一列都附官方時刻表出處，'
+               '並標出「末班車只開到中途站」的陷阱。')
+
+    write('japan-airport-last-train/index.html',
+      head(lt_title, lt_desc, 'japan-airport-last-train/',
+           '<script type="application/ld+json">' + lt_ld + '</script>')
+      + crumbs([('首頁', '/'), ('機場末班車', None)]) + topnav()
+      + '<h1>落地之後，還回得去市區嗎？</h1>'
+      + f'<p class="lede">{html.escape(LT["intro"])}</p>'
+      + f'<div class="today"><div class="tday">羽田與成田的末班車，逐班對過官方時刻表，'
+        f'查證於 {LT["checked"]}</div>'
+        f'<div class="tans">會害到你的不是末班車，是<b>末班車只開到中途站</b></div>'
+        f'<div class="tsub">成田的 Access 特急末班 23:11，聽起來很晚，'
+        f'但那班只開到京成高砂——還在千葉縣。最後一班真正進得了市區的是 23:03 的 Skyliner，'
+        f'要 2,470 円。羽田京急的全線末班 00:13 也一樣，只到京急蒲田。</div>'
+        f'<div class="tbuf">另一個反直覺的地方是：<b>便宜的那條線通常先收班</b>。'
+        f'成田土休日的晚上，20:38 那班往西馬込的 Access 特急開走之後，'
+        f'就沒有不加價又直達市區的班次了。</div></div>'
+      + '<h2>怎麼用這張表</h2>'
+      + f'<ol class="lede">{_lt_steps}</ol>'
+      + f'<p class="disc">{html.escape(LT["rule"]["note"])}</p>'
+      + _lt_body
+      + '<h2>還沒查的部分</h2>'
+      + f'<p class="lede">{html.escape(LT["pending"]["_說明"])}</p>'
+      + f'<ul class="lede">{_lt_pending}</ul>'
+      + '<h2>常見問題</h2>' + lt_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京青旅</b>'
+        f'<s>清晨班機的最後一晚怎麼睡</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
+        f'<s>便宜的班次時段通常很差</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a>'
+      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日特價</b><s>全站最低價</s></a></div>'
+      + '<p class="disc">時刻表會改點，各鐵道公司通常一年調整一次。'
+        f'本頁資料查證於 {LT["checked"]}，出發前請以各列附的官方時刻表為準。'
+        '深夜巴士遇塞車會延誤，計程車定額運賃不含高速公路通行費。</p>'
+      + foot())
+    pages.append(('/japan-airport-last-train/', 0.7))
+
 
 # ---------- 地區頁（導覽用，非 SEO 主力）----------
 for reg,rname in REGIONS:
@@ -4465,8 +4668,8 @@ if HS:
         f'<s>不想住機場，就從班次時段挑起</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
         f'<s>省下的房費別又賠在行李上</s></a>'
-      + f'<a class="ct" href="{U("/japan-ski-baggage/")}"><b>🎿 雪具託運</b>'
-        f'<s>帶板子的人，住宿與行李都要另算</s></a></div>'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>回程那一晚：落地之後還回得去市區嗎</s></a></div>'
       + f'<p class="disc">房價由平台即時調整，本頁數字查證於 {HS["checked"]}，'
         f'訂房前請以訂房頁顯示的價格為準。班機時刻與報到規定以航空公司公告為準。</p>'
       + foot())
