@@ -566,6 +566,10 @@ border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
 .tldr ul{margin:0;padding-left:2px}
 .tldr li{margin-bottom:9px;font-size:.94rem;line-height:1.75}
 .tldr li:last-child{margin-bottom:0}
+/* 規格／官方原文的引用塊：原文照抄，cite 放出處或中譯 */
+blockquote.q{margin:14px 0;padding:12px 16px;background:var(--card);
+border-left:3px solid var(--acc);border-radius:0 8px 8px 0;font-size:.9rem;line-height:1.75}
+blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem;color:var(--dim)}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
 .tw table{min-width:640px;font-size:.84rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
@@ -692,7 +696,8 @@ def topnav(cur=''):
              + link('/deals/', '🔥 今日特價')
             + link('/japan-flight-baggage/', '🧳 廉航行李費')
             + link('/japan-ski-baggage/', '🎿 雪具託運')
-            + link('/japan-airport-last-train/', '🚉 機場末班車'))
+            + link('/japan-airport-last-train/', '🚉 機場末班車')
+            + link('/japan-esim-native-roaming/', '📱 eSIM 原生還是漫遊'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -1933,6 +1938,141 @@ if os.path.exists('lasttrain.json'):
         '深夜巴士遇塞車會延誤，計程車定額運賃不含高速公路通行費。</p>'
       + foot())
     pages.append(('/japan-airport-last-train/', 0.7))
+
+# ---------- eSIM：原生還是漫遊 ----------
+# 「會不會用到一半變成香港的網路」是台灣讀者實際會問的問題。
+# 技術主張一律附 GSMA 規格或總務省原文；查不到公開文件的放在 unverified，不寫成結論。
+if os.path.exists('esim.json'):
+    _ES = json.load(open('esim.json', encoding='utf-8'))
+    EG = _ES.get('profile_guide')
+else:
+    EG = None
+
+if EG:
+    def _eg_src(o, extra=''):
+        s = (f'<p class="disc">{extra}出處：<a href="{o["src"]}" rel="nofollow" target="_blank">'
+             f'{html.escape(o["src_name"])}</a>')
+        if o.get('src2'):
+            s += (f'、<a href="{o["src2"]}" rel="nofollow" target="_blank">'
+                  f'{html.escape(o["src2_name"])}</a>')
+        return s + f'，查證於 {EG["checked"]}。</p>'
+
+    _l1, _l2 = EG['layer1'], EG['layer2']
+    _eg_l1 = (f'<h2>{html.escape(_l1["title"])}</h2>'
+              f'<p class="lede">{html.escape(_l1["body"])}</p>'
+              f'<p class="lede"><b>{html.escape(_l1["key"])}</b></p>'
+              f'<blockquote class="q">{html.escape(_l1["quote"])}'
+              f'<cite>{html.escape(_l1["quote_where"])}</cite></blockquote>'
+              + _eg_src(_l1))
+
+    _eg_q2 = ''.join(f'<blockquote class="q">{html.escape(q["jp"])}'
+                     f'<cite>{html.escape(q["zh"])}</cite></blockquote>'
+                     for q in _l2['quotes'])
+    _eg_l2 = (f'<h2>{html.escape(_l2["title"])}</h2>'
+              f'<p class="lede">{html.escape(_l2["body"])}</p>' + _eg_q2
+              + f'<p class="lede"><b>{html.escape(_l2["key"])}</b></p>'
+              + _eg_src(_l2))
+
+    _sd = EG['slowdown']
+    _eg_sd = (f'<h2>{html.escape(_sd["title"])}</h2><ol class="lede">'
+              + ''.join(f'<li>{html.escape(x)}</li>' for x in _sd['items'])
+              + f'</ol><p class="lede"><b>{html.escape(_sd["key"])}</b></p>')
+
+    _bb = EG['before_buy']
+    _eg_bb_rows = ''.join(
+        f'<tr><td>{html.escape(r["wording"])}</td>'
+        f'<td class="{"lose" if r["weight"] == "偏漫遊" else ("win" if r["weight"] == "偏原生" else "")}">'
+        f'<b>{html.escape(r["weight"])}</b></td>'
+        f'<td>{html.escape(r["read"])}</td></tr>' for r in _bb['rows'])
+    _eg_bb = (f'<h2>{html.escape(_bb["title"])}</h2>'
+              '<div class="tw"><table><thead><tr><th>商品頁上的寫法</th>'
+              '<th>代表什麼</th><th>為什麼</th></tr></thead><tbody>'
+              + _eg_bb_rows + '</tbody></table></div>'
+              f'<p class="disc">{html.escape(_bb["stance"])}</p>')
+
+    _hc = EG['how_to_check']
+    _eg_hc = (f'<h2>{html.escape(_hc["title"])}</h2>'
+              + ''.join(f'<h3>{s["n"]}. {html.escape(s["what"])}</h3>'
+                        + (f'<p class="lede">{html.escape(s["how"])}</p>' if s.get('how') else '')
+                        + f'<p class="lede">{html.escape(s["means"])}</p>'
+                        for s in _hc['steps']))
+
+    _im = EG['impact']
+    _eg_im = (f'<h2>{html.escape(_im["title"])}</h2><ul class="lede">'
+              + ''.join(f'<li>{html.escape(x)}</li>' for x in _im['items']) + '</ul>')
+
+    _eg_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>'
+                     f'<br><small style="color:var(--dim)">{html.escape(u["why"])}</small></li>'
+                     for u in EG['unverified'])
+
+    eg_faq = [
+     ('我買的 eSIM 會不會用到一半變成香港或中國的網路？',
+      '如果你買到的是 Home Routed 漫遊，那不是「用到一半變成」，而是從連上的第一秒就是——你的資料會先回到發行方所在地的網路才出去，公網 IP 一直都在那個國家。'
+      '反過來說，真正會「用到一半改變」的是速度：吃到飽超量降速、MVNO 尖峰降速，或多 IMSI 產品切換到另一家日本電信商。'
+      '最後那一種是在日本國內換電信商，不會讓你的 IP 跑到國外。'),
+     ('原生 eSIM 是不是一定比較快？',
+      '不一定。日本的 MVNO 向大手電信商租一段網路來賣，總務省寫明訊號涵蓋跟大手相同，但「午休、通勤時段、夜間等壅塞時間，資料通訊速度有時會下降」。'
+      '所以原生保證的是訊號涵蓋，不是尖峰速度。'),
+     ('商品頁寫「使用 docomo／SoftBank 網路」，這樣算原生嗎？',
+      '不算，那句話什麼都沒說——漫遊訪客用的也是日本當地電信商的網路，差別在資料從哪個國家出去。'
+      '而且同時列出多家日本電信商，通常反而是多 IMSI 或轉售整合的特徵。'),
+     ('怎麼自己確認？',
+      '兩步：先看電信商名稱（iPhone 在設定 → 行動服務 → 點那張 eSIM），再用瀏覽器查自己的公網 IP 落在哪一國。'
+      '電信商顯示日本、IP 也顯示日本，就是本地出口；電信商顯示日本但 IP 在香港或新加坡，就是 Home Routed 漫遊。'
+      '只看電信商名稱不夠，那只說明無線電那一段。'),
+     ('IP 不在日本，實際會怎樣？',
+      '最常遇到的是只對日本開放的網站與串流內容看不了，部分日本網銀、政府與購票網站也會擋海外 IP，另外延遲會高一些。'
+      '但這一欄沒有絕對的好壞——如果你本來就想在日本用台灣的服務，IP 不在日本反而方便。'),
+     ('為什麼這頁沒有列出哪個商品是原生、哪個是漫遊？',
+      '因為查不到。商品頁多半不寫，而這件事沒有可靠的第三方資料可抄。'
+      '本站的作法是只在官方明載或供應商回覆時才填，其餘留白——所以先把判斷方法寫清楚，讓你自己驗。'),
+    ]
+    eg_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in eg_faq)
+    eg_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in eg_faq]}, ensure_ascii=False)
+
+    eg_title = '日本 eSIM 是原生還是漫遊？會不會變成香港的網路（附 GSMA 規格出處）'
+    eg_desc = ('買日本 eSIM 最常見的疑問：用的是日本原生網路還是漫遊，會不會用到一半 IP 變成香港。'
+               '答案藏在 GSMA 漫遊規格的 Home Routed 與 Local Breakout 兩種路由裡。'
+               '這頁說明差別在哪、商品頁的哪些寫法有線索，以及啟用後三十秒怎麼自己驗。')
+
+    write('japan-esim-native-roaming/index.html',
+      head(eg_title, eg_desc, 'japan-esim-native-roaming/',
+           '<script type="application/ld+json">' + eg_ld + '</script>')
+      + crumbs([('首頁', '/'), ('eSIM 原生還是漫遊', None)]) + topnav()
+      + '<h1>你買的日本 eSIM，是日本的網路還是繞回香港的？</h1>'
+      + f'<p class="lede">{html.escape(EG["thesis"])}</p>'
+      + f'<div class="today"><div class="tday">技術說明對照 GSMA 漫遊規格與日本總務省原文，'
+        f'查證於 {EG["checked"]}</div>'
+        f'<div class="tans">會不會變成香港的網路，<b>不是你決定的，也不是日本電信商決定的</b></div>'
+        f'<div class="tsub">GSMA 的規格寫明：漫遊時資料要走 Home Routed（先回發行方的國家再出去）'
+        f'還是 Local Breakout（就在日本出去），由<b>發行方的母網</b>逐條決定。'
+        f'所以只要你買到的是 Home Routed 漫遊，從連上的第一秒 IP 就在國外，不是用到一半才變。</div>'
+        f'<div class="tbuf">而「用到一半變慢」通常是另一回事——吃到飽超量降速、'
+        f'MVNO 尖峰降速，或多 IMSI 產品切換到<b>另一家日本電信商</b>。'
+        f'最後那種是在日本國內換，不會讓 IP 跑到香港。</div></div>'
+      + _eg_l1 + _eg_l2 + _eg_sd + _eg_bb + _eg_hc + _eg_im
+      + '<h2>這頁還查不到的部分</h2>'
+      + '<p class="lede">寧可留白也不要寫成結論：</p>'
+      + f'<ul class="lede">{_eg_un}</ul>'
+      + '<h2>常見問題</h2>' + eg_html
+      + cta('esim', '日本', '東京', '看看有哪些日本 eSIM 方案',
+            '商品頁的寫法怎麼讀，上面那張表有')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>落地之後還回得去市區嗎</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
+        f'<s>加購時機差一倍</s></a>'
+      + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 購物折扣</b>'
+        f'<s>12 家店的折價券實查</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a></div>'
+      + '<p class="disc">本頁解釋的是規格層面的機制，不是任何特定商品的判定。'
+        '各家 eSIM 實際採用哪種路由，請以供應商的正式回覆或你自己啟用後的實測為準。</p>'
+      + foot())
+    pages.append(('/japan-esim-native-roaming/', 0.7))
+
 
 
 # ---------- 地區頁（導覽用，非 SEO 主力）----------
