@@ -20,7 +20,7 @@
 
 　🛫 真航空｜轉機 1 次
 　📅 2026-09-29 – 2026-10-06
-　💡 9 月出發的票，每天最便宜的平均要 NT$12,493（8 天有紀錄），這張低 27%
+　💡 9 月出發的票，每天最便宜的平均要 NT$12,167（8 天有紀錄），這張低 25%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-23-taichung-okinawa/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=rmq&acity=oka&ddate=2026-09-29&rdate=2026-10-06&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1=oka
@@ -45,7 +45,7 @@
 
 　🛫 飛大阪再轉乘｜山陽新幹線
 　📅 2026-10-10
-　💡 比直飛省 NT$7,913
+　💡 比直飛省 NT$7,942
 　🧮 組成：機票飛大阪 NT$6,992（來回含稅） ＋ 山陽新幹線 NT$2,088×2
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-23-transfer-osaka-hiroshima/

@@ -31,7 +31,7 @@
    "month": 10
   },
   "rank": 1,
-  "n": 18
+  "n": 20
  },
  {
   "slug": "2026-09-23-taichung-okinawa",
@@ -47,19 +47,19 @@
   "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "9 月出發的票，每天最便宜的平均要 NT$12,493（8 天有紀錄），這張低 27%"
+   "9 月出發的票，每天最便宜的平均要 NT$12,167（8 天有紀錄），這張低 25%"
   ],
-  "med": 13198,
+  "med": 13083,
   "url": "https://www.aviasales.com/search/RMQ2909OKA06101?t=LJ17907030001790769900001055RMQICNOKA17913132001791315000000090OKARMQ_aeb1db25422d02cac2b610cbdbf6f9c9_24178&search_date=22092026&expected_price_uuid=01a0c7b6-36e4-8030-e272-f4a46e424420&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=dnN4-VdEaButjZYH1JsdBQ&expected_price_source=share&expected_price_currency=twd&expected_price=9144&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 9917,
-   "hi": 14038,
-   "days": 33
+   "hi": 14000,
+   "days": 32
   },
   "mbase": {
-   "avg": 12493,
+   "avg": 12167,
    "days": 8,
    "month": 9
   },
@@ -93,7 +93,7 @@
  },
  {
   "slug": "2026-09-23-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$7,913",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$7,942",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
@@ -109,9 +109,9 @@
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$7,913"
+   "比直飛省 NT$7,942"
   ],
-  "med": 19081,
+  "med": 19110,
   "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=MM17916564001791669600000160TPEKIX17920773001792085400000195KIXTPE_f4ddd9d7bd68536a2a4f84a4d2270db7_18499&search_date=20092026&expected_price_uuid=01a0c082-508a-8030-275a-58e4c73e4bdd&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ufyAv-JlkdV1BcRs4BRzjQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6992&marker=775639",
   "hotelcity": "廣島",
   "cslug": "hiroshima"
