@@ -942,11 +942,24 @@ for slug,name,codes,reg,hotelcity in CITIES:
     fs=by_city.get(slug,[])
     br=best(fs,True); bo=best(fs,False)
     anchor=br or bo
-    if anchor:
+    # 轉乘比直飛便宜時，標題就別掛那個沒人會買的直飛價。
+    # 廣島是典型：只有 1 筆 Kiwi.com 的當日單程 19,081，標題卻拿它當賣點，
+    # 而同一天我們自己的轉乘頁在說「飛大阪轉乘總計 11,168，省 7,910」。
+    # GSC 上這類城市的查詢也都帶「直飛」二字，使用者問的就是這件事。
+    _altc = [a for a in alt_calc(slug) if a[3] and anchor and a[3] < anchor['price']]
+    _altb = min(_altc, key=lambda a: a[3]) if _altc else None
+    if anchor and not _altb:
         pt=('來回' if anchor['rt'] else '單程')
         title=f'{name}機票｜台灣飛{name}最低 {money(anchor["price"])} {pt}含稅（{NOW.year}年更新）'
         desc=(f'台北、台中、高雄飛{name}的便宜機票整理，目前最低 {money(anchor["price"])} {pt}含稅，'
               f'由{anchor["airname"]}提供。共 {len(fs)} 筆票價，含航空公司、日期與轉機資訊，每日更新。')
+    elif _altb:
+        _pt=('來回' if anchor['rt'] else '單程')
+        _via=CITY[_altb[0]][1]
+        title=f'{name}機票｜直飛要 {money(anchor["price"])}，飛{_via}轉乘只要 {money(_altb[3])}'
+        desc=(f'台灣飛{name}目前最低 {money(anchor["price"])}（{_pt}含稅），'
+              f'但改飛{_via}再搭{_altb[5]}（{_altb[6]}）總計約 {money(_altb[3])}，'
+              f'省下 {money(anchor["price"]-_altb[3])}。本頁同時提供直飛票價與轉乘方案試算，每日更新。')
     else:
         title=f'{name}機票｜台灣沒有直飛？鄰近機場轉乘方案與費用試算'
         a=ALT.get(slug) or []
