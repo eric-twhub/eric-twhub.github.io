@@ -701,7 +701,8 @@ def topnav(cur=''):
             + link('/japan-airport-last-train/', '🚉 機場末班車')
             + link('/japan-esim/', '📱 日本 eSIM 比較')
             + link('/japan-esim-native-roaming/', '📱 原生還是漫遊')
-            + link('/japan-sms-roaming/', '✉️ 台灣門號收簡訊'))
+            + link('/japan-sms-roaming/', '✉️ 台灣門號收簡訊')
+            + link('/japan-driving-licence/', '🚗 日本租車・駕照譯本'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -1188,6 +1189,11 @@ for slug,name,codes,reg,hotelcity in CITIES:
     if slug not in URBAN:
         body+=cta('car',name,hotelcity,f'{name}自駕比較方便',
                   f'到 {P["car"]["brand"]} 比較租車方案', track=slug)
+        # 台灣的國際駕照在日本不能用，沒帶日文譯本現場租不到車，
+        # 放在租車連結後面才有意義
+        body+=(f'<p class="disc">提醒：台灣的國際駕照在日本<b>不能用</b>，'
+               f'要帶的是駕照正本加「日文譯本」。監理站 100 元、一小時就辦得好，'
+               f'<a href="{U("/japan-driving-licence/")}">怎麼辦、有哪些陷阱看這裡</a>。</p>')
     body+=cta('esim',name,hotelcity,'出發前別忘了日本上網',
               '到 Klook 買 eSIM 或網卡，落地就能用')
     body+='<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>'
@@ -2214,6 +2220,136 @@ if RS2:
         f'VoLTE 與 Wi-Fi Calling 的設定位置也會不一樣。</p>'
       + foot())
     pages.append(('/japan-sms-roaming/', 0.7))
+
+# ---------- 台灣駕照在日本開車 ----------
+# 日本不承認台灣的國際駕照，要的是「日文譯本」。
+# 兩個官方自己點名、但部落格幾乎都沒寫的陷阱：10 人座、舊護照上的入境章。
+DRV = json.load(open('jp-driving.json', encoding='utf-8')) if os.path.exists('jp-driving.json') else None
+
+if DRV:
+    def _dv_src(o):
+        s = (f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow" target="_blank">'
+             f'{html.escape(o["src_name"])}</a>')
+        if o.get('src2'):
+            s += (f'、<a href="{o["src2"]}" rel="nofollow" target="_blank">'
+                  f'{html.escape(o["src2_name"])}</a>')
+        return s + f'，查證於 {DRV["checked"]}。</p>'
+
+    _c = DRV['core']
+    _dv_core = (f'<h2>{html.escape(_c["title"])}</h2>'
+                f'<p class="lede">{html.escape(_c["body"])}</p>'
+                f'<blockquote class="q">{html.escape(_c["quote"])}'
+                f'<cite>{html.escape(_c["quote_zh"])}</cite></blockquote>' + _dv_src(_c))
+
+    _dv_bring = ''.join(f'<li><b>{html.escape(b["what"])}</b>'
+                        f'<br><small style="color:var(--dim)">{html.escape(b["note"])}</small></li>'
+                        for b in DRV['bring'])
+
+    _dv_traps = ''.join(
+        f'<h3>{i}. {html.escape(t["title"])}</h3>'
+        f'<p class="lede">{html.escape(t["body"])}</p>'
+        f'<blockquote class="q">{html.escape(t["quote"])}</blockquote>' + _dv_src(t)
+        for i, t in enumerate(DRV['traps'], 1))
+
+    _pd = DRV['period']
+    _dv_period = (f'<h2>{html.escape(_pd["title"])}</h2>'
+                  f'<p class="lede"><b>{html.escape(_pd["rule"])}</b></p>'
+                  f'<p class="lede">{html.escape(_pd["reentry"])}</p>'
+                  f'<blockquote class="q">{html.escape(_pd["quote"])}'
+                  f'<cite>{html.escape(_pd["quote_zh"])}</cite></blockquote>' + _dv_src(_pd))
+
+    _ap = DRV['apply']
+    _dv_apply = (f'<h2>{html.escape(_ap["title"])}</h2>'
+                 '<div class="tw"><table><thead><tr><th>方式</th><th>要帶什麼</th>'
+                 '<th>規費</th><th>時間</th></tr></thead><tbody>'
+                 + ''.join(f'<tr><td><b>{html.escape(r["way"])}</b></td>'
+                           f'<td>{html.escape(r["doc"])}</td>'
+                           f'<td class="win"><b>{html.escape(r["fee"])}</b></td>'
+                           f'<td>{html.escape(r["time"])}</td></tr>' for r in _ap['rows'])
+                 + '</tbody></table></div>'
+                 + f'<p class="lede">{html.escape(_ap["expired"])}</p>' + _dv_src(_ap))
+
+    _fg = DRV['forgot']
+    _dv_forgot = (f'<h2>{html.escape(_fg["title"])}</h2>'
+                  f'<p class="lede">{html.escape(_fg["body"])}</p>' + _dv_src(_fg))
+
+    _dv_notes = ''.join(f'<h3>{html.escape(n["t"])}</h3>'
+                        f'<p class="lede">{html.escape(n["d"])}</p>' for n in DRV['notes'])
+    _dv_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>'
+                     f'<br><small style="color:var(--dim)">{html.escape(u["why"])}</small></li>'
+                     for u in DRV['unverified'])
+
+    dv_faq = [
+     ('台灣的國際駕照可以在日本開車嗎？',
+      '不行。日本台灣交流協會的頁面第一句就是「日本では、台湾の国際運転免許証の使用は認められていません」。'
+      '要帶的是台灣駕照正本加上指定機關發的日文譯本，再加上載有最終入境日的護照。'),
+     ('日文譯本去哪裡辦、多少錢？',
+      '在台灣，到任何一個監理站都可以辦，可以越區。帶國民身分證正本與駕照正本，規費新臺幣 100 元，'
+      '處理時限 1 小時。也可以用自然人憑證在監理服務網線上申請，寄送到府。'),
+     ('租 10 人座的車可以開嗎？',
+      '不行，這是官方自己點名的「容易搞錯的例子」。台灣的「小客車」駕照在日本只能開乘車定員 9 人以下的車；'
+      '日本的「普通」免許才能開 10 人。一群人出遊要租大車的話，這一條會直接卡住你。'),
+     ('譯本每次去日本都要重辦嗎？',
+      '不用。只要駕照的記載內容沒有變，就可以一直用。但如果你換了照、或駕照上的記載事項有變更，'
+      '就要重新辦一份。'),
+     ('可以開多久？',
+      '入境日本後 1 年內，而且台灣駕照還在有效期內，兩個條件要同時成立。'
+      '離開日本再入境的話，1 年從再入境那天重新起算。超過期限開車，官方寫明「即屬無照駕駛，會受罰」。'),
+     ('到了日本才發現沒辦譯本，怎麼辦？',
+      '日本境內也有指定機關可以辦：台北駐日經濟文化代表處各事務所、JAF、ジップラス、訪日運転者支援協会。'
+      '但要另外跑一趟，租車那天的行程大概就泡湯了。在台灣先辦只要 100 元、一小時。'),
+    ]
+    dv_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in dv_faq)
+    dv_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in dv_faq]}, ensure_ascii=False)
+
+    dv_title = '台灣駕照在日本租車：國際駕照不能用，要辦的是日文譯本'
+    dv_desc = ('日本不承認台灣的國際駕照。要帶的是台灣駕照正本＋日文譯本＋護照，'
+               '譯本在任一監理站 100 元、一小時就好。另外兩個官方點名但少有人講的陷阱：'
+               '台灣小客車駕照開不了 10 人座，以及入境章可能留在舊護照上。')
+
+    write('japan-driving-licence/index.html',
+      head(dv_title, dv_desc, 'japan-driving-licence/',
+           '<script type="application/ld+json">' + dv_ld + '</script>')
+      + crumbs([('首頁', '/'), ('日本租車・駕照譯本', None)]) + topnav()
+      + '<h1>台灣駕照能在日本租車嗎？國際駕照不能用</h1>'
+      + f'<p class="lede">{html.escape(DRV["thesis"])}</p>'
+      + f'<div class="today"><div class="tday">日本台灣交流協會與公路局的官方頁面，'
+        f'原文照引，查證於 {DRV["checked"]}</div>'
+        f'<div class="tans">在台灣辦的<b>國際駕照，日本不收</b></div>'
+        f'<div class="tsub">要辦的是「日文譯本」。任何一個監理站都能辦，可以越區，'
+        f'帶身分證與駕照正本，規費 100 元、一小時拿到。也可以線上申請寄到家。</div>'
+        f'<div class="tbuf">兩個官方自己點名、但幾乎沒人講的陷阱：'
+        f'台灣的小客車駕照<b>開不了 10 人座</b>的車（日本普通免許才行），'
+        f'以及警察要看的是<b>載有最終入境日的那本護照</b>——換過護照的人要注意。</div></div>'
+      + _dv_core
+      + '<h2>上路要帶的三樣東西</h2>'
+      + f'<div class="tldr"><ul>{_dv_bring}</ul></div>'
+      + '<h2>兩個會讓你當場開不了車的細節</h2>' + _dv_traps
+      + _dv_period + _dv_apply + _dv_forgot
+      + '<h2>其他要知道的</h2>' + _dv_notes
+      + '<h2>這頁查不到的部分</h2>'
+      + f'<ul class="lede">{_dv_un}</ul>'
+      + '<h2>常見問題</h2>' + dv_html
+      + cta('car', '沖繩', '那霸', '譯本辦好了，車還沒訂',
+            f'到 {P["car"]["brand"]} 比較沖繩的租車方案', track='driving')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/okinawa/")}"><b>沖繩機票</b>'
+        f'<s>沒車幾乎玩不了的地方</s></a>'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>不開車的話，幾點以前要到車站</s></a>'
+      + f'<a class="ct" href="{U("/japan-sms-roaming/")}"><b>✉️ 台灣門號收簡訊</b>'
+        f'<s>租車公司打來你接得到嗎</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📱 日本 eSIM 比較</b>'
+        f'<s>導航吃流量，用量要算進去</s></a></div>'
+      + f'<p class="disc">法規與規費可能調整，本頁引用的官方原文查證於 {DRV["checked"]}，'
+        f'出發前請以日本台灣交流協會與公路局的公告為準。'
+        f'各租車公司現場可能另有要求（信用卡、最低駕齡等），以業者條款為準。</p>'
+      + foot())
+    pages.append(('/japan-driving-licence/', 0.7))
+
 
 
 # ---------- eSIM：方案比較與每日單價計算 ----------
