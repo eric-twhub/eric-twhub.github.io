@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-23-taipei-okinawa",
- "generated": "2026-09-23 18:06",
+ "generated": "2026-09-23 18:38",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -25,10 +25,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "10 月出發的票，每天最便宜的平均要 NT$6,342（8 天有紀錄），這張低 19%"
+  "10 月出發的票，每天最便宜的平均要 NT$6,524（7 天有紀錄），這張低 21%"
  ],
- "med": 13042,
- "n_rt": 20,
+ "med": 14159,
+ "n_rt": 16,
  "others": [
   {
    "o": "TPE",
@@ -51,38 +51,38 @@
   {
    "o": "TPE",
    "d": "OKA",
-   "air": "VZ",
-   "airname": "泰越捷航空",
+   "air": "MM",
+   "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 5453,
-   "dep": "2026-10-28",
-   "ret": "2026-10-31",
-   "dept": "14:45",
-   "rett": "18:10",
+   "price": 6129,
+   "dep": "2026-09-27",
+   "ret": "2026-10-04",
+   "dept": "18:05",
+   "rett": "08:10",
    "rt": true,
    "tr": 0,
-   "dur": 185,
-   "dur_to": 85,
+   "dur": 200,
+   "dur_to": 105,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TPE2810OKA31101?t=VZ17931987001793207400000085TPEOKA17934702001793472600000100OKATPE_6626d6814670d3a80051df91f0a1d84b_14373&search_date=16092026&expected_price_uuid=01a0a9c5-e76c-8030-af24-01f61fb5e87b&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=HybUvmjGxyKCYZLF2Y0qoQ&expected_price_source=share&expected_price_currency=twd&expected_price=5453&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2709OKA04101?t=MM17905323001790542200000105TPEOKA17911014001791103500000095OKATPE_2b412b06e93d2a03343f58a250116927_16216&search_date=20092026&expected_price_uuid=01a0bf4f-e488-8030-6a30-8887fe6b4b19&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=EsZaICj-r59VuPCndaydAw&expected_price_source=share&expected_price_currency=twd&expected_price=6129&marker=775639"
   },
   {
    "o": "TPE",
    "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
+   "air": "VZ",
+   "airname": "泰越捷航空",
    "cls": "lcc",
-   "price": 5996,
+   "price": 6381,
    "dep": "2026-10-02",
-   "ret": "2026-10-04",
-   "dept": "18:30",
-   "rett": "08:10",
+   "ret": "2026-10-06",
+   "dept": "14:55",
+   "rett": "10:10",
    "rt": true,
    "tr": 0,
    "dur": 175,
-   "dur_to": 80,
+   "dur_to": 85,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE0210OKA04101?t=MM17909658001790974200000080TPEOKA17911014001791103500000095OKATPE_411b0d4a24decb60f8d424f4040d55b6_15807&search_date=16092026&expected_price_uuid=01a0a9c4-281b-8030-add2-9e47d21331f4&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Msk3PNYs1yxealjuFzkLRA&expected_price_source=share&expected_price_currency=twd&expected_price=5996&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE0210OKA06101?t=IT17909529001790961600000085TPEOKA17912814001791283200000090OKATPE_4e79bb25ffb7730a773b9b23433b25f0_16944&search_date=23092026&expected_price_uuid=01a0ccd0-e367-8030-e99e-be70a7814c8f&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=XyyuYpC4XNcGDjoxwFCT9g&expected_price_source=share&expected_price_currency=twd&expected_price=6381&marker=775639"
   }
  ]
 }
