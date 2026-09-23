@@ -964,9 +964,11 @@ def money(n): return f'NT${n:,}'
 # 行李費用（城市頁的比價要用，完整說明另有專頁）
 BAG = json.load(open('baggage.json', encoding='utf-8')) if os.path.exists('baggage.json') else None
 
-# 東京青旅（城市頁的交叉連結要引用最低價，專頁在檔案下方產生）
+# 東京平價住宿（城市頁的交叉連結要引用最低價，專頁在檔案下方產生）
 HS = json.load(open('hostels.json', encoding='utf-8')) if os.path.exists('hostels.json') else None
-HS_MIN = min((r['night'] for r in HS['rows']), default=None) if HS else None
+# 跨區比較的最低總價；新宿那種沒有可推薦選項的區沒有 total，要濾掉
+HS_MIN = min((a['total'] for a in HS['areas'] if a.get('total')), default=None) if HS else None
+HS_NIGHTS = (HS['sample']['nights'] if HS else None)
 BAG_RT = (BAG['ref']['per_leg'] * 2) if BAG else 0
 
 pages=[]  # (url, lastmod, priority)
@@ -1178,8 +1180,8 @@ for slug,name,codes,reg,hotelcity in CITIES:
         # 東京另有青旅專頁：清晨回程的最後一晚不能訂市區，那件事在這裡講不完
         if slug == 'tokyo' and HS_MIN:
             body += (f'<p class="lede">想住便宜一點？'
-                     f'<a href="{U("/tokyo/hostel/")}">東京青年旅館一晚 {money(HS_MIN)} 起的實查價格</a>，'
-                     f'另附清晨回程的最後一晚該怎麼處理。</p>')
+                     f'<a href="{U("/tokyo/hostel/")}">東京 8 個區的平價住宿實查</a>——'
+                     f'{HS_NIGHTS} 晚 {money(HS_MIN)} 起，附各家的弱點與櫃檯開門時間。</p>')
     body+=faq_block(name,fs,codes)
     body+=klook_tours(slug,name)
     # 當地玩樂的分潤是機票的八倍（4% vs 0.5%），而且看完機票住宿的下一個問題
@@ -1542,7 +1544,7 @@ if os.path.exists('ski.json'):
         f'<s>加購行李的費率與時機</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
         f'<s>雪季便宜的班次時段通常很差</s></a>'
-      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京青旅</b>'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
         f'<s>紅眼班機的最後一晚怎麼睡</s></a>'
       + f'<a class="ct" href="{U("/sapporo/")}"><b>札幌機票</b><s>北海道雪場門戶</s></a></div>'
       + f'<p class="disc">各航空的行李規定與費率隨時可能調整，本頁條款查證於 {SK["checked"]}，'
@@ -1935,7 +1937,7 @@ if os.path.exists('lasttrain.json'):
       + f'<ul class="lede">{_lt_pending}</ul>'
       + '<h2>常見問題</h2>' + lt_html
       + '<h2>順便看看</h2><div class="cities">'
-      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京青旅</b>'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
         f'<s>清晨班機的最後一晚怎麼睡</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
         f'<s>便宜的班次時段通常很差</s></a>'
@@ -4334,7 +4336,7 @@ if _GT:
             track='good-times')
       + '<h2>常見問題</h2>' + gt_html
       + '<h2>順便看看</h2><div class="cities">'
-      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京青旅</b>'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
         f'<s>真的要搭紅眼？最後一晚這樣安排</s></a>'
       + f'<a class="ct" href="{U("/japan-ski-baggage/")}"><b>🎿 雪具託運</b>'
         f'<s>去滑雪的人多半也在搭這種班次</s></a>'
@@ -5370,10 +5372,10 @@ if os.path.exists('cards.json'):
 
     print(f'   旅日信用卡：{len(CD["cards"])} 張卡頁 ＋ 比較頁 ＋ 計算機（查證 {CD["checked"]}）')
 
-# ---------- 東京青年旅館 ----------
+# ---------- 東京平價住宿（跨區比較）----------
 if HS:
     _hs_s = HS['sample']; _hs_r = HS['redeye']; _hs_ap = HS['airport']
-    _hs_cid = HS['city_id']
+    _hs_cid = HS['city_id']; _hs_n = _hs_s['nights']
     _SM = '<br><small style="color:var(--dim)">'
 
     # 住宿分潤參數取自 partners.json 的 hotel template，不要在這裡寫死第二份
@@ -5382,8 +5384,7 @@ if HS:
                if k in ('Allianceid', 'SID', 'trip_sub3')}
 
     def hostel_url(hid, sub, ci=None, co=None):
-        """單一旅館的訂房頁，帶上查價日期與分潤參數。
-        用 detail 頁而非列表頁：使用者已經在本頁挑好了，再丟回列表等於要他重挑一次。"""
+        """Trip.com 的單一旅館訂房頁，帶上查價日期與分潤參數。"""
         q = {'cityId': _hs_cid, 'hotelId': hid,
              'checkIn': ci or _hs_s['checkin'], 'checkOut': co or _hs_s['checkout'],
              'adult': _hs_s['adult'], 'children': 0, 'crn': 1,
@@ -5392,8 +5393,8 @@ if HS:
         q['trip_sub1'] = sub
         return 'https://tw.trip.com/hotels/detail/?' + urllib.parse.urlencode(q)
 
-    # 列表頁：住宿類型只留青年旅社（TAG_519）與膠囊旅館（TAG_520），並依含稅價由低到高排序。
-    # listFilters 的格式是 Trip.com 自己的，實際點開驗過才寫進來，不要自行推測其他 TAG 編號。
+    # 列表頁：住宿類型只留青年旅社（TAG_519）與膠囊旅館（TAG_520），依含稅價由低到高。
+    # listFilters 的格式是 Trip.com 自己的，實際點開驗過才寫進來，不要推測其他 TAG 編號。
     _hs_list = (f'https://tw.trip.com/hotels/list?cityId={_hs_cid}&countryId=78'
                 f'&cityName={urllib.parse.quote(HS["city"])}'
                 f'&destName={urllib.parse.quote(HS["city"])}&searchType=CT'
@@ -5404,49 +5405,111 @@ if HS:
                 + ''.join(f'&{k}={v}' for k, v in _hs_aff.items())
                 + '&trip_sub1=tokyo-hostel-list')
 
-    _hs_sorted = sorted(HS['rows'], key=lambda r: r['night'])
-    _hs_lo, _hs_hi = _hs_sorted[0], _hs_sorted[-1]
-    _hs_n = _hs_s['nights']
+    # 有價格的區，依總價排序；沒有可推薦選項的區（新宿）排最後並單獨說明
+    _hs_hit = sorted([a for a in HS['areas'] if a.get('total')], key=lambda a: a['total'])
+    _hs_miss = [a for a in HS['areas'] if not a.get('total')]
+    _hs_lo = _hs_hit[0]
+
+    def _hs_link(a):
+        """有 Trip.com ID 就走分潤連結，否則連到查價來源（Booking），並標明去哪。"""
+        if a.get('trip_id'):
+            return (f'<a class="btn" href="'
+                    f'{html.escape(hostel_url(a["trip_id"], "tokyo-area-" + a["trip_id"]))}" '
+                    f'target="_blank" rel="nofollow noopener sponsored">Trip.com 查空房</a>')
+        return (f'<a class="btn" href="{html.escape(a["url"])}" target="_blank" '
+                f'rel="nofollow noopener">Booking 查空房</a>')
 
     _hs_rows = ''
-    for r in _hs_sorted:
+    for a in _hs_hit:
+        _extra = (f'{_SM}＋每天往返東京車資約 {money(a["transport"])}</small>'
+                  if a.get('transport') else '')
+        _src = (f'{_SM}{html.escape(a["total_src"])}</small>' if a.get('total_src') else '')
         _hs_rows += (
-            f'<tr><td><b>{html.escape(r["name"])}</b>{_SM}{html.escape(r["area"])}・'
-            f'{html.escape(r["room"])}</small></td>'
-            f'<td>{r["score"]}{_SM}{r["reviews"]} 則</small></td>'
-            f'<td><b>{money(r["night"])}</b>{_SM}{_hs_n} 晚 {money(r["total"])}</small></td>'
-            f'<td>{html.escape(r["near"])}</td>'
-            f'<td><a class="btn" href="{html.escape(hostel_url(r["id"], "tokyo-hostel-" + r["id"]))}" '
-            f'target="_blank" rel="nofollow noopener sponsored">查空房</a></td></tr>')
+            f'<tr><td><b>{html.escape(a["area"])}</b></td>'
+            f'<td>{html.escape(a["name"])}{_SM}{html.escape(a["type"])}・'
+            f'{html.escape(a["near"])}</small></td>'
+            f'<td>{a["score"]}{_SM}{a["reviews"]:,} 則</small></td>'
+            f'<td><b>{money(a["total"])}</b>{_src}{_extra}</td>'
+            f'<td>{_hs_link(a)}</td></tr>')
+
+    _hs_why = ''.join(f'<li><b>{html.escape(a["area"])}｜{html.escape(a["name"])}</b>'
+                      f'（{money(a["total"])}）{html.escape(a["note"])}。</li>'
+                      for a in _hs_hit if a.get('note'))
+    # 沒有可推薦選項的區（例如新宿）：粗體區名後要有分隔，否則會黏成「新宿3 公里內」
+    _hs_why += ''.join(f'<li><b>{html.escape(a["area"])}</b>　'
+                       f'{html.escape(a["note"])}。</li>' for a in _hs_miss)
+
+    _BC = HS['bad_cheap']
+    _hs_bad = ''.join(
+        f'<tr><td>{html.escape(r["area"])}</td><td>{html.escape(r["name"])}</td>'
+        f'<td class="lose"><b>{r["score"]}</b>{_SM}{r["reviews"]:,} 則</small></td>'
+        f'<td>{money(r["total"])}</td></tr>'
+        for r in sorted(_BC['rows'], key=lambda r: r['score']))
+
+    _PG = HS['platform_gap']
+    _hs_gap = ''.join(
+        f'<tr><td>{html.escape(r["name"])}</td>'
+        f'<td>{r["trip"]}{_SM}{r["trip_n"]:,} 則</small></td>'
+        f'<td class="win"><b>{r["bk"]}</b>{_SM}{r["bk_n"]:,} 則</small></td>'
+        f'<td>{r["trip"] - r["bk"]:+.1f}</td></tr>'
+        for r in sorted(_PG['rows'], key=lambda r: r['bk'] - r['trip']))
+
+    _DK = HS['desks']
+    _hs_desk = ''.join(
+        f'<tr><td>{html.escape(r["name"])}</td><td><b>{html.escape(r["open"])}</b></td>'
+        f'<td>{html.escape(r.get("note", ""))}</td></tr>' for r in _DK['rows'])
+
+    _WK = HS['weakness']
+    _hs_weak = ''.join(f'<li><b>{html.escape(r["name"])}</b>　{html.escape(r["weak"])}。</li>'
+                       for r in _WK['rows'])
+
+    _CH = HS['channels']
+    _ch_lo = min(r['total'] for r in _CH['rows'])
+    _hs_ch = ''.join(
+        f'<tr><td>{html.escape(r["ch"])}</td><td>{html.escape(r["cancel"])}</td>'
+        f'<td{" class=win" if r["total"] == _ch_lo else ""}><b>{money(r["total"])}</b></td>'
+        f'<td>{html.escape(r.get("note", ""))}</td></tr>'
+        for r in sorted(_CH['rows'], key=lambda r: r['total']))
+
+    _hs_alt = ''.join(
+        f'<tr><td>{html.escape(x["name"])}'
+        + (f'{_SM}{x["score"]}／{x["reviews"]:,} 則</small>' if x.get('score') else '')
+        + f'</td><td><b>{money(x["price"]) if x["price"] else "0 元"}</b></td>'
+        f'<td>{html.escape(x.get("note", ""))}</td></tr>' for x in _hs_ap['alts'])
 
     _hs_faq = [
-     ('東京的青年旅館一晚大概多少錢？',
+     ('東京平價住宿一晚大概多少錢？',
       f'本站在 {HS["checked"]} 查 {_hs_s["checkin"]} – {_hs_s["checkout"]} 這 {_hs_n} 晚、'
-      f'單人含稅的實際可訂價格，區間是 {money(_hs_lo["night"])} 到 {money(_hs_hi["night"])} 一晚。'
-      f'最低的那幾家在{_hs_lo["area"]}、{_hs_sorted[1]["area"]}這種離都心一段距離的地方；'
-      f'走得到鬧區的（{_hs_sorted[2]["area"]}、{_hs_sorted[3]["area"]}一帶）大約 '
-      f'{money(_hs_sorted[2]["night"])} 起。'
+      f'單人含稅的實際可訂價格。膠囊與床位房 {_hs_n} 晚約 '
+      f'{money(_hs_hit[0]["total"])} 到 {money(_hs_hit[2]["total"])}；'
+      f'共用衛浴的私人房從 {money(3450)} 起。'
+      '價位取決於區域遠大於住宿本身——同樣的分數，池袋要價是南千住的兩倍。'
       '房價每天變動，這是查價當天的快照，不是保證。'),
+     ('為什麼便宜的住宿都不在新宿、池袋？',
+      '因為那些是山手線大站加商圈，房價被商務客和購物客撐住，平價住宿沒有生存空間。'
+      '新宿 3 公里內找不到任何 8 分以上、非宿舍、非女性限定的選項；'
+      '便宜的那幾家是四千多則評語撐出 6.7 分，不是樣本不足。'
+      '上野到淺草、南千住那一帶才是東京平價住宿的甜蜜點。'),
+     ('不同訂房網的評分為什麼差這麼多？',
+      'Trip.com 的分數普遍偏高而且樣本小，Booking 的樣本深得多。'
+      '同一家新宿的膠囊旅館，Trip.com 是 8.0 分（941 則），Booking 是 6.7 分（4,629 則）。'
+      '要判斷品質就看樣本大的那一邊；要比價才需要把每個平台都點開。'),
+     ('清晨落地的紅眼班機，行李怎麼辦？',
+      '多數平價住宿的櫃檯下午兩三點才開，清晨到只能先寄放。'
+      '最簡單的解法是車站的大型投幣置物櫃，一天約 ¥700–1,000。'
+      '不想用置物櫃就要挑 24 小時櫃檯的住宿，但那類通常貴一截。'
+      '另外要注意有些旅館設門禁，凌晨時段連大門都進不去。'),
      ('清晨起飛的班機，最後一晚該住哪裡？',
       f'住機場，不要住市區。以 {_hs_r["example_flight"]} 為例，{_hs_r["example_dep"]} 起飛，'
       f'報到櫃檯在起飛前 {_hs_r["checkin_close_min"]} 分鐘關閉，也就是 04:40 前必須辦完。'
       f'而{_hs_r["first_train"]["from"]}往{_hs_r["terminal"]}的第一班電車是 '
       f'{_hs_r["first_train"]["dep"]} 發——電車抵達的時候，飛機已經走了。'
       '早朝巴士也只到 4 點多。所以最後一晚訂市區住宿，等於訂了一個你不能睡的房間。'),
-     ('那最後一晚的選擇有哪些？',
-      f'兩個。一是在{_hs_r["terminal"]}過夜，航廈 24 小時開放，費用是零；'
-      f'二是住與航廈直接相連的飯店，例如{_hs_ap["name"]}，'
-      f'查價當天一晚 {money(_hs_ap["night"])}。'
-      '差別是你願不願意為幾個小時的睡眠付這筆錢——如果隔天要上班，通常值得。'),
-     ('床位房和膠囊旅館差在哪？',
-      '床位房是一個房間裡放數張上下舖，中間多半只有簾子；膠囊是一人一個有門或簾的獨立艙，'
-      '隔音與私密性較好，價格通常高一到兩百元。'
-      '兩種都是共用衛浴。本表兩種都收，房型欄位有標。'),
-     ('訂之前要特別確認什麼？',
-      '第一是櫃檯時間。清晨落地的紅眼班機，很多青旅的櫃檯根本還沒開，'
-      '要挑 24 小時櫃檯或明寫可深夜入住的。第二是性別限制，'
-      '本表有幾家的該價位房型是女性或男性專用。第三是入住時間，'
-      '一般是下午三四點才能進房，清晨到只能先寄放行李。'),
+     ('床位房、膠囊、私人房差在哪？',
+      '床位房是一個房間放數張上下舖，中間多半只有簾子；膠囊是一人一個有門或簾的獨立艙，'
+      '隔音與私密性較好；共用衛浴的私人房是自己一間房、衛浴共用，'
+      f'本表最便宜的那間 {_hs_n} 晚 {money(3450)}。三種都要共用衛浴，'
+      '差別在你關不關得上一扇門。'),
     ]
     _hs_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                        + html.escape(a) + '</div></details>' for q, a in _hs_faq)
@@ -5455,25 +5518,52 @@ if HS:
         for q, a in _hs_faq]}, ensure_ascii=False)
 
     write('tokyo/hostel/index.html',
-      head(f'東京青年旅館｜一晚 {money(_hs_lo["night"])} 起，'
-           f'清晨班機的最後一晚別訂市區',
-           f'東京青年旅館與膠囊旅館的實查價格，一晚 {money(_hs_lo["night"])} 起（'
-           f'{HS["checked"]} 查證，{_hs_n} 晚單人含稅）。'
-           f'另附清晨起飛班機的最後一晚怎麼算——報到截止時間比第一班電車還早。',
+      head(f'東京平價住宿｜{len(HS["areas"])} 區實查比較，{_hs_n} 晚 {money(_hs_lo["total"])} 起',
+           f'東京 8 個區的平價住宿實查：膠囊、床位房與共用衛浴私人房的真實價格與評分，'
+           f'{_hs_n} 晚單人含稅 {money(_hs_lo["total"])} 起（{HS["checked"]} 查證）。'
+           f'附各家的弱點、櫃檯開門時間，以及同一間房在六個訂房通路的價差。',
            'tokyo/hostel/',
            '<script type="application/ld+json">' + _hs_ld + '</script>')
-      + crumbs([('首頁', '/'), ('東京機票', '/tokyo/'), ('東京青年旅館', None)]) + topnav()
-      + '<h1>東京青年旅館怎麼挑</h1>'
-      + f'<p class="lede">東京市區一晚 {money(_hs_lo["night"])} 起是真的。'
-        f'但如果你的回程是清晨起飛的廉航，<b>最後一晚不管多便宜都不要訂市區</b>——'
-        f'先看完下面這段再去比價。</p>'
-      + f'<div class="today"><div class="tday">房價查證於 {HS["checked"]}'
+      + crumbs([('首頁', '/'), ('東京機票', '/tokyo/'), ('東京平價住宿', None)]) + topnav()
+      + '<h1>東京平價住宿：8 個區實查比較</h1>'
+      + f'<p class="lede">同樣是 8 分出頭的住宿，在池袋要 {money(6633)}，在上野只要 '
+        f'{money(_hs_lo["total"])}。<b>決定價格的是區域，不是住宿本身。</b>'
+        f'這頁把 8 個區各自最好的選項並排，並標出每一家的弱點。</p>'
+      + f'<div class="today"><div class="tday">查證於 {HS["checked"]}'
         f'　·　樣本 {_hs_s["checkin"]} – {_hs_s["checkout"]}，{_hs_n} 晚單人含稅</div>'
-        f'<div class="tans">{len(HS["rows"])} 家實查，一晚 {money(_hs_lo["night"])} – '
-        f'{money(_hs_hi["night"])}</div>'
-        f'<div class="tsub">房價每天變動，本頁是查價當天的快照而非最低價保證。'
-        f'表格右邊的按鈕會帶著同一組日期開到該旅館的訂房頁，可以直接對照現在的價格。</div>'
-        f'</div>'
+        f'<div class="tans">8 區最低 {money(_hs_lo["total"])}'
+        f'（{html.escape(_hs_lo["area"])}・{html.escape(_hs_lo["type"])}）</div>'
+        f'<div class="tsub">價格與評分以 {html.escape(HS["source"])} 為準（樣本最深），'
+        f'另註明者除外。{html.escape(_hs_s["note"])}。'
+        f'房價每天變動，本頁是查價當天的快照而非最低價保證。</div></div>'
+      + '<h2>8 個區，各自最好的那一個</h2>'
+      + f'<p class="lede">{html.escape(HS["_areas_note"])}依 {_hs_n} 晚總價排序。</p>'
+      + '<div class="tw"><table><thead><tr><th>區域</th><th>住宿</th><th>評分</th>'
+        f'<th>{_hs_n} 晚</th><th>　</th></tr></thead><tbody>'
+      + _hs_rows + '</tbody></table></div>'
+      + '<div class="tldr"><ul>' + _hs_why + '</ul></div>'
+      + '<h2>便宜的區和貴的區，差的不只是錢</h2>'
+      + f'<p class="lede">{html.escape(_BC["_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>區域</th><th>住宿</th><th>評分</th>'
+        f'<th>{_hs_n} 晚</th></tr></thead><tbody>' + _hs_bad + '</tbody></table></div>'
+      + '<h2>同一家住宿，兩個平台差 1.3 分</h2>'
+      + f'<p class="lede">{html.escape(_PG["_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>住宿</th><th>Trip.com</th>'
+        '<th>Booking</th><th>差</th></tr></thead><tbody>' + _hs_gap
+      + '</tbody></table></div>'
+      + '<h2>櫃檯幾點開：清晨落地的人才會問</h2>'
+      + f'<p class="lede">{html.escape(_DK["_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>住宿</th><th>櫃檯／入住</th>'
+        '<th>備註</th></tr></thead><tbody>' + _hs_desk + '</tbody></table></div>'
+      + '<h2>每一家的弱點</h2>'
+      + f'<p class="lede">{html.escape(_WK["_說明"])}</p>'
+      + '<div class="tldr"><ul>' + _hs_weak + '</ul></div>'
+      + '<h2>同一間房，六個通路的價差</h2>'
+      + f'<p class="lede">{html.escape(_CH["_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>通路</th><th>取消政策</th>'
+        f'<th>{_hs_n} 晚總價</th><th>備註</th></tr></thead><tbody>' + _hs_ch
+      + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_CH["counter_examples"])}</p>'
       + '<h2>清晨起飛：那一晚你買不到能睡的房間</h2>'
       + f'<p class="lede">廉航的回程常常落在清晨五點多。看起來是多賺一晚，'
         f'實際上是<b>少了一晚</b>。以 {html.escape(_hs_r["example_flight"])} 為例：</p>'
@@ -5497,46 +5587,22 @@ if HS:
         f'<a href="{_hs_r["bus"]["src"]}" rel="nofollow" target="_blank">'
         f'{html.escape(_hs_r["bus"]["src_name"])}</a>）。以上查證於 {HS["checked"]}，'
         f'出發前請依自己的班機重算一次。</p>'
-      + '<div class="tldr"><ul>'
-        '<li><b>電車比報到截止還晚。</b>不是「趕一下應該可以」，是時刻表上就到不了。</li>'
-        '<li><b>計程車不是省錢方案。</b>深夜從都心到羽田的車資，'
-        '通常超過你那晚青旅房費的好幾倍，算下來不如直接住機場。</li>'
-        f'<li><b>所以最後一晚只有兩個選項：</b>在{html.escape(_hs_r["terminal"])}過夜（'
-        f'24 小時開放，零元），或住航廈直結的飯店。</li>'
-        '</ul></div>'
-      + f'<h2>最後一晚住機場</h2>'
-      + f'<p class="lede">{html.escape(_hs_ap["note"])}，不必賭任何一班車。</p>'
-      + '<div class="tw"><table><thead><tr><th>住宿</th><th>評分</th><th>一晚</th>'
-        '<th>　</th></tr></thead><tbody>'
-      + f'<tr><td><b>{html.escape(_hs_ap["name"])}</b>{_SM}'
-        f'{html.escape(_hs_ap["en"])}</small></td>'
-        f'<td>{_hs_ap["score"]}{_SM}{_hs_ap["reviews"]:,} 則</small></td>'
-        f'<td><b>{money(_hs_ap["night"])}</b>{_SM}'
-        f'{_hs_ap["sample"]["checkin"]} – {_hs_ap["sample"]["checkout"]}</small></td>'
-        f'<td><a class="btn" href="'
+      + '<h2>最後一晚的選項</h2>'
+      + f'<p class="lede">{html.escape(_hs_ap["note"])}。</p>'
+      + '<div class="tw"><table><thead><tr><th>選項</th><th>一晚</th>'
+        '<th>備註</th></tr></thead><tbody>'
+      + f'<tr class="win"><td><b>{html.escape(_hs_ap["name"])}</b>{_SM}'
+        f'{_hs_ap["score"]}／{_hs_ap["reviews"]:,} 則・T3 直結</small></td>'
+        f'<td><b>{money(_hs_ap["night"])}</b></td>'
+        f'<td>{html.escape(_hs_ap["sample"]["checkin"])} – '
+        f'{html.escape(_hs_ap["sample"]["checkout"])}　'
+        f'<a class="btn" href="'
         f'{html.escape(hostel_url(_hs_ap["id"], "tokyo-hnd-lastnight", _hs_ap["sample"]["checkin"], _hs_ap["sample"]["checkout"]))}" '
         f'target="_blank" rel="nofollow noopener sponsored">查空房</a></td></tr>'
-      + '</tbody></table></div>'
-      + f'<p class="disc">價格查證於 {HS["checked"]}。'
-        f'同期間的市區青旅一晚大約 {money(_hs_lo["night"])}，兩者差約 '
-        f'{money(_hs_ap["night"] - _hs_lo["night"])}——這筆錢買的是不用在航廈長椅上坐到天亮。</p>'
-      + f'<h2>市區這 {_hs_n} 晚：{len(HS["rows"])} 家實查價格</h2>'
-      + f'<p class="lede">依每晚價格由低到高。價格是床位房的單人價（不是整間），'
-        f'含稅含費用，樣本日期 {_hs_s["checkin"]} – {_hs_s["checkout"]}。</p>'
-      + '<div class="tw"><table><thead><tr><th>住宿</th><th>評分</th>'
-        f'<th>每晚 / {_hs_n} 晚</th><th>位置</th><th>　</th></tr></thead><tbody>'
-      + _hs_rows + '</tbody></table></div>'
-      + f'<p class="disc">資料來源：{html.escape(_hs_s["src_name"])}，查證於 {HS["checked"]}。'
-        f'{html.escape(_hs_s["note"])}。'
-        f'本表不是東京所有青旅的排行，是查價當天實際可訂、且評論數足以參考的幾家。</p>'
-      + '<h2>哪一家值得挑</h2><div class="tldr"><ul>'
-      + ''.join(f'<li><b>{html.escape(r["name"])}（{money(r["night"])}／晚）</b>'
-                f'{html.escape(r["pick"])}。</li>'
-                for r in _hs_sorted if r.get('pick'))
-      + '</ul></div>'
+      + _hs_alt + '</tbody></table></div>'
       + (f'<a class="cta" href="{html.escape(_hs_list)}" target="_blank" '
          f'rel="nofollow noopener sponsored"><span class="ci">{P["hotel"]["icon"]}</span>'
-         f'<span class="ct"><b>自己看完整的 {HS["city"]}青旅清單</b>'
+         f'<span class="ct"><b>自己看完整的{HS["city"]}平價住宿清單</b>'
          f'<s>到 {P["hotel"]["brand"]} 看全部，已篩青年旅館＋膠囊、依含稅價排序</s></span>'
          f'<span class="ca">→</span></a>')
       + '<h2>常見問題</h2>' + _hs_html
@@ -5546,15 +5612,15 @@ if HS:
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
         f'<s>不想住機場，就從班次時段挑起</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
-        f'<s>省下的房費別又賠在行李上</s></a>'
-      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
-        f'<s>回程那一晚：落地之後還回得去市區嗎</s></a></div>'
-      + f'<p class="disc">房價由平台即時調整，本頁數字查證於 {HS["checked"]}，'
-        f'訂房前請以訂房頁顯示的價格為準。班機時刻與報到規定以航空公司公告為準。</p>'
+        f'<s>省下的房費別又賠在行李上</s></a></div>'
+      + f'<p class="disc">房價與評分由各平台即時調整，本頁數字查證於 {HS["checked"]}，'
+        f'訂房前請以訂房頁顯示的為準。班機時刻與報到規定以航空公司公告為準。'
+        f'表中連到 Trip.com 的按鈕為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，'
+        f'不影響你的價格；連到 Booking 的按鈕是查價來源，本站沒有分潤。</p>'
       + foot())
     pages.append(('/tokyo/hostel/', 0.8))
-    print(f'   東京青旅頁：{len(HS["rows"])} 家（查證 {HS["checked"]}，'
-          f'{money(_hs_lo["night"])}–{money(_hs_hi["night"])}／晚）')
+    print(f'   東京平價住宿頁：{len(HS["areas"])} 區（查證 {HS["checked"]}，'
+          f'最低 {money(_hs_lo["total"])}／{_hs_n} 晚）')
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
