@@ -2,7 +2,6 @@
  "_說明": "日本 eSIM 方案比較。每個商品（product）底下有多個方案（plan），方案才是真正在賣的東西。價格與規格請以 Klook 商品頁當下顯示為準，填完更新 checked。",
  "checked": "",
  "_待辦": "分潤尚未申請。核准後把 partners.json 的 esim.template 填上，本檔的 url 會自動帶分潤參數。",
-
  "_欄位說明": {
   "product": {
    "name": "商品名稱，用 Klook 頁面上的原名，不要自己改寫",
@@ -21,7 +20,12 @@
    "clock_starts": "效期從何時起算。★ 多數是「連上當地網路才開始」，不是購買日——這點最多人誤解",
    "device_note": "支援機型限制，例如 iPhone XS 以上／Samsung／Pixel",
    "refund": "退款政策摘要",
-   "src_checked": "這個商品的資料查證日期"
+   "src_checked": "這個商品的資料查證日期",
+   "profile": "★ 原生（local）還是漫遊（roaming）。很多『日本 eSIM』底層是香港或中國 MVNO 的漫遊 profile，掛在日本電信商上。這欄是全表最該比、也最少人寫出來的。值：native／roaming／unknown",
+   "issuer_region": "發行方註冊地（日本／香港／中國／新加坡…）。漫遊 profile 的出口通常在這裡",
+   "carrier_locked": "是否鎖定單一電信商。false＝會在多家之間切換，有人回報用到一半顯示變成別家",
+   "exit_note": "已知的出口／路由問題，例如需要 VPN 才能用某些服務。沒有已知問題就填 null",
+   "verify": "這筆 profile 資訊怎麼來的：官方商品頁明載／供應商回覆／實機測試／評論推測。★ 推測的要標明，不要當成事實"
   },
   "plan": {
    "days": "天數（整數）",
@@ -32,12 +36,11 @@
    "note": "其他限制"
   }
  },
-
  "_頁面設計": {
   "主張": "『NT$10 起』的起字，跟機票那些貼文是同一個問題——那是最短天數、最小流量的價格。實際要用的天數與流量，價差可以好幾倍。",
   "核心工具": "輸入旅遊天數與每日流量需求，算出各方案的每日單價並由低到高排序。跟回饋計算機、折價券排序同一套邏輯。",
   "要凸顯的三件事": [
-   "底層電信商決定郊區有沒有訊號，但商品頁多半寫在很下面",
+   "原生還是漫遊——漫遊 profile 可能繞回發卡國出口，也可能在壅塞時被降優先權",
    "『吃到飽』超量後會降速，降到多少各家不同",
    "效期從連上當地網路才起算，不是購買日"
   ],
@@ -50,7 +53,6 @@
    "相關頁面（機票、行李、信用卡）"
   ]
  },
-
  "products": [
   {
    "_範例": true,
@@ -95,15 +97,50 @@
    "refund": "",
    "src_checked": "",
    "plans": [
-    {"days": 5, "data": "每日 1GB", "unlimited": false, "throttle": "128kbps", "price": 0, "note": ""}
+    {
+     "days": 5,
+     "data": "每日 1GB",
+     "unlimited": false,
+     "throttle": "128kbps",
+     "price": 0,
+     "note": ""
+    }
    ]
   }
  ],
-
  "候選商品": [
-  {"name": "日本eSIM（掃描QR Code即可立即使用）", "id": "104976", "rating": 4.3, "reviews": 668},
-  {"name": "日本 eSIM（NTT docomo／Sakura Mobile 提供）", "id": "79682", "rating": 4.2, "reviews": 1860},
-  {"name": "日本 Softbank eSIM 網卡｜小資專業型｜天數流量任選", "id": "124754", "rating": 4.7, "reviews": 854},
-  {"name": "日本 eSIM 網卡｜電子郵件寄送｜限時優惠", "id": "124251", "rating": 4.3, "reviews": 255}
- ]
+  {
+   "name": "日本eSIM（掃描QR Code即可立即使用）",
+   "id": "104976",
+   "rating": 4.3,
+   "reviews": 668
+  },
+  {
+   "name": "日本 eSIM（NTT docomo／Sakura Mobile 提供）",
+   "id": "79682",
+   "rating": 4.2,
+   "reviews": 1860
+  },
+  {
+   "name": "日本 Softbank eSIM 網卡｜小資專業型｜天數流量任選",
+   "id": "124754",
+   "rating": 4.7,
+   "reviews": 854
+  },
+  {
+   "name": "日本 eSIM 網卡｜電子郵件寄送｜限時優惠",
+   "id": "124251",
+   "rating": 4.3,
+   "reviews": 255
+  }
+ ],
+ "_驗證方法": {
+  "profile": [
+   "商品頁若明寫「原生網路」「非漫遊」「docomo 直連」→ native，並記下原文",
+   "供應商註冊地在香港／中國，且未聲明原生 → 先填 unknown，別直接判 roaming",
+   "評論搜尋關鍵字：漫遊、香港、中國、繞路、顯示別家、VPN",
+   "最硬的證據是實機測試：落地後看「電信業者」顯示什麼、用 ipinfo 之類看出口 IP 在哪國",
+   "★ 沒實測過就標 verify=推測，不要寫得像查證過"
+  ]
+ }
 }
