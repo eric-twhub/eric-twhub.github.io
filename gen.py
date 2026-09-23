@@ -5041,6 +5041,12 @@ if os.path.exists('cards.json'):
   var o=c.levels.options.filter(function(x){return x.key===key})[0];
   return o?o.tiers:c.tiers;
  }
+ // 等級也可能直接改寫基本回饋率，不是每張卡都靠外加的 tier
+ function lvOpt(c,k){
+  if(!c.levels) return null;
+  var le=$('kl'+k), key=le&&le.value?le.value:c.levels.options[0].key;
+  return c.levels.options.filter(function(x){return x.key===key})[0]||null;
+ }
  function lvName(c,k){
   if(!c.levels) return '';
   var le=$('kl'+k), key=le&&le.value?le.value:c.levels.options[0].key;
@@ -5059,8 +5065,10 @@ if os.path.exists('cards.json'):
    var c0=JCARD.cards[i], slot=idx.indexOf(i);
    // 用選到的等級組一份暫時的卡物件，其餘欄位沿用原卡
    var c={};for(var k2 in c0)c[k2]=c0[k2];
-   c.tiers=lvTiers(c0,slot>=0?slot:0);
-   c.lvname=lvName(c0,slot>=0?slot:0);
+   var sl=slot>=0?slot:0, lo=lvOpt(c0,sl);
+   c.tiers=lvTiers(c0,sl);
+   if(lo&&lo.base!==undefined) c.base=lo.base;
+   c.lvname=lvName(c0,sl);
    var ok=jhas(c,want), mode=ok?want:'base';
    var o=jback(c,y,mode), at=jcapat(c,mode);
    // 沒登錄到／沒設定好的話就只剩基本回饋。有些沒加碼但基本高的卡，
