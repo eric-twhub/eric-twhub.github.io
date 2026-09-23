@@ -2090,6 +2090,7 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
                          _q['gb'] or 0, _q['price']])
     _pnames = [{'id': p['id'], 'name': p['name'], 'url': klook(p['url']),
                 'clue': p['profile_clue'], 'w': p['clue_weight'],
+                'hot': bool(p.get('hotspot')),
                 'rating': p.get('rating'), 'reviews': p.get('reviews')} for p in EP]
 
     _ep_lo = min((q['price'], p['id'], q['days'], q['label'])
@@ -2114,6 +2115,30 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
     _tot.sort(key=lambda x: x['days'])
     _tot_line = '、'.join(f'{q["days"]} 天 NT${q["price"]}' for q in _tot[:6]) if _tot else ''
 
+    _NA = '<span style="color:var(--dim)">未載</span>'
+
+    def _thr(p):
+        return html.escape(p['throttle']) if p.get('throttle') else _NA
+
+    def _yn(v, yes='是', no='否'):
+        return yes if v is True else (no if v is False else _NA)
+
+    _ep_terms = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(p["name"])}</b></td>'
+        f'<td>{_yn(p.get("data_only"))}</td>'
+        f'<td>{_yn(p.get("hotspot"))}'
+        + (f'{_ESM}{html.escape(p["hotspot_note"])}</small>' if p.get('hotspot_note') else '')
+        + '</td>'
+        f'<td class="{"win" if p.get("throttle") else ""}">'
+        f'{_thr(p)}</td>'
+        f'<td class="{"lose" if p.get("conflict") else ""}">'
+        f'{html.escape(p.get("refund_short") or "—")}</td></tr>' for p in EP)
+
+    _ep_obs = ''.join(
+        f'<h3>{i}. {html.escape(o["what"])}</h3>'
+        f'<p class="lede">{html.escape(o["detail"])}</p>'
+        for i, o in enumerate(_ES['_觀察_條款差異']['items'], 1))
+
     ep_faq = [
      ('商品頁寫「NT$11 起」，為什麼我結帳時貴那麼多？',
       f'因為那個「起」字是最短天數、最小流量的價格。本站查到的最低價是 {_ep_lo[2]} 天 {_ep_lo[3]}，'
@@ -2127,8 +2152,15 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
       '因為它本質上是按天計價。本站查到的資料裡，吃到飽的每日單價從 1 天到 30 天幾乎是一條平線，'
       '長天期只便宜一點點。總流量型才有明顯的規模效應。'),
      ('「吃到飽」超量之後會降速到多少？',
-      '五個商品的頁面都沒寫。本站的 throttle 欄目前全部留白——'
-      '這是「吃到飽」最常被忽略的地方，但查不到就不寫。'),
+      '五個商品裡只有「Softbank 小資專業型」寫了數字：「不斷線，降速至 128kbps」。'
+      '其餘四家的頁面都找不到。'
+      '128kbps 是文字訊息可以、地圖很吃力、影片不用想的等級。'
+      '這是「吃到飽」最常被忽略的地方，查不到的那四家，下單前值得問客服。'),
+     ('幾個人一起去，買一張開熱點划算嗎？',
+      '上面的計算機把人數填進去就會同時算兩種做法：每人各買一張，跟買一張開熱點共用。'
+      '共用那一欄只列出商品頁明確寫可以開熱點的商品。'
+      '要注意共用的代價不只是錢——開熱點的手機要一直在身邊，而且很耗電，'
+      '「Sakura Mobile」那個商品的頁面就直接寫「熱點分享將導致降速及設備發熱」。'),
      ('效期是從買的時候開始算嗎？',
       '不是，是從你的裝置第一次連上當地網路才開始計算。所以提前買不會浪費天數，'
       '但也不要以為買了就能放著慢慢用。'),
@@ -2146,42 +2178,74 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
     _EJS = ('<script>const EP=' + json.dumps(_pjs, separators=(',', ':'))
             + ',EN=' + json.dumps(_pnames, ensure_ascii=False, separators=(',', ':')) + ';'
             + r"""
-function erun(){
- var d=+document.getElementById('ed').value||0, g=+document.getElementById('eg').value||0;
- var box=document.getElementById('eout');
- if(d<1){box.innerHTML='<p class="lede">請輸入天數。</p>';return;}
+function epick(d,need){
  var best={};
  for(var i=0;i<EP.length;i++){
   var r=EP[i],pi=r[0],mode=r[1],days=r[2],gb=r[3],price=r[4];
   if(days<d) continue;
-  if(mode===1 && gb<g) continue;
-  if(mode===0 && gb<g*d) continue;
-  if(!best[pi]||price<best[pi].price) best[pi]={price:price,mode:mode,days:days,gb:gb};
+  if(mode===1 && gb<need) continue;
+  if(mode===0 && gb<need*d) continue;
+  if(!best[pi]||price<best[pi].price) best[pi]={price:price,mode:mode,days:days,gb:gb,pi:pi};
  }
- var rows=Object.keys(best).map(function(k){var b=best[k];b.pi=+k;b.per=b.price/d;return b;});
- rows.sort(function(a,b){return a.per-b.per;});
- if(!rows.length){box.innerHTML='<p class="lede">這個天數與用量，五個商品都沒有對應的方案。'
-   +'試著把每日用量調低，或改用吃到飽。</p>';return;}
+ return Object.keys(best).map(function(k){return best[k];}).sort(function(a,b){return a.price-b.price;});
+}
+function espec(b){
  var mn=['總流量','每日流量','吃到飽'];
- var h='<div class="tw narrow"><table><thead><tr><th>每日單價</th><th>商品</th>'
+ return mn[b.mode]+(b.mode===2?'':' '+(b.gb>=1?b.gb+'GB':Math.round(b.gb*1024)+'MB'))+'　'+b.days+' 天';
+}
+function etable(rows,d,per,head){
+ var h='<div class="tw narrow"><table><thead><tr><th>'+head+'</th><th>商品</th>'
    +'<th>方案</th><th>總價</th></tr></thead><tbody>';
  rows.forEach(function(b,i){
   var n=EN[b.pi];
-  var spec=mn[b.mode]+(b.mode===2?'':' '+(b.gb>=1?b.gb+'GB':Math.round(b.gb*1024)+'MB'))
-    +'　'+b.days+' 天';
-  h+='<tr><td class="'+(i===0?'win':'')+'"><b>NT$'+b.per.toFixed(0)+'</b>'
+  h+='<tr><td class="'+(i===0?'win':'')+'"><b>NT$'+Math.round(b.price/per)+'</b>'
     +(i===0?' <em class="pw">最低</em>':'')+'</td>'
     +'<td class="nm"><a href="'+n.url+'" rel="sponsored nofollow" target="_blank">'+n.name+'</a></td>'
-    +'<td>'+spec+'</td><td>NT$'+b.price+'</td></tr>';
+    +'<td>'+espec(b)+'</td><td>NT$'+b.price+'</td></tr>';
  });
- h+='</tbody></table></div>';
- var sp=rows[rows.length-1].per/rows[0].per;
- if(sp>1.2) h+='<p class="disc">同樣的天數與用量，最貴的比最便宜的多花 '
-   +sp.toFixed(1)+' 倍。</p>';
+ return h+'</tbody></table></div>';
+}
+function erun(){
+ var d=+document.getElementById('ed').value||0,
+     g=+document.getElementById('eg').value||0,
+     n=+document.getElementById('en').value||1;
+ var box=document.getElementById('eout');
+ if(d<1){box.innerHTML='<p class="lede">請輸入天數。</p>';return;}
+ var solo=epick(d,g);
+ if(!solo.length){box.innerHTML='<p class="lede">這個天數與用量，五個商品都沒有對應的方案。'
+   +'試著把每日用量調低，或改用吃到飽。</p>';return;}
+ var h='';
+ if(n>1) h+='<h3>做法 A：每人各買一張</h3>';
+ h+=etable(solo,d,d,'每人每天');
+ if(n>1){
+  var soloTotal=solo[0].price*n;
+  h+='<p class="disc">'+n+' 個人各買一張，總共 NT$'+soloTotal+'。</p>';
+  var share=epick(d,g*n).filter(function(b){return EN[b.pi].hot;});
+  h+='<h3>做法 B：買一張開熱點，大家共用</h3>';
+  if(!share.length){
+   h+='<p class="lede">找不到流量夠 '+n+' 個人共用、又確認可以開熱點的方案。'
+     +'人多的時候共用不一定划算，這種情況就各買各的。</p>';
+  }else{
+   h+=etable(share,d,d*n,'每人每天')
+    +'<p class="disc">只列出商品頁明確寫可以開熱點的商品。'
+    +'總價是一張的錢，除以 '+n+' 人再除以天數，就是每人每天。</p>';
+   var sv=soloTotal-share[0].price;
+   h+='<div class="tldr"><ul><li>'
+    +(sv>0?'<b>共用比較省</b>：一張 NT$'+share[0].price+' vs 各買 NT$'+soloTotal
+        +'，差 NT$'+sv+'（省 '+Math.round(sv/soloTotal*100)+'%）。'
+      :'<b>各買各的比較省</b>：各買 NT$'+soloTotal+' vs 共用一張 NT$'+share[0].price
+        +'，共用反而多花 NT$'+(-sv)+'。')
+    +'</li><li>共用的前提是開熱點的那支手機要一直在身邊，而且熱點很耗電。'
+    +'「Sakura Mobile」那個商品的頁面就直接寫「熱點分享將導致降速及設備發熱」。</li></ul></div>';
+  }
+ }else{
+  var sp=solo[solo.length-1].price/solo[0].price;
+  if(sp>1.2) h+='<p class="disc">同樣的天數與用量，最貴的比最便宜的多花 '+sp.toFixed(1)+' 倍。</p>';
+ }
  box.innerHTML=h;
 }
 document.addEventListener('DOMContentLoaded',function(){
- ['ed','eg'].forEach(function(id){document.getElementById(id).addEventListener('input',erun);});
+ ['ed','eg','en'].forEach(function(id){document.getElementById(id).addEventListener('input',erun);});
  erun();
 });
 </script>""")
@@ -2211,7 +2275,8 @@ document.addEventListener('DOMContentLoaded',function(){
       + '<h2>輸入你的行程</h2>'
       + '<div class="calc"><div class="sf">'
         '<label>待幾天 <input id="ed" type="number" min="1" max="30" value="5"></label>'
-        '<label>每天大概用多少 GB <input id="eg" type="number" min="0" max="10" step="0.5" value="1"></label>'
+        '<label>每人每天用多少 GB <input id="eg" type="number" min="0" max="10" step="0.5" value="1"></label>'
+        '<label>幾個人 <input id="en" type="number" min="1" max="6" value="1"></label>'
         '</div></div><div id="eout"></div>'
       + '<p class="disc">計算方式：每個商品挑出「天數夠、流量夠」之中最便宜的一個方案，'
         '再除以天數得到每日單價。總流量型是用「每日用量 × 天數」判斷夠不夠，'
@@ -2224,17 +2289,27 @@ document.addEventListener('DOMContentLoaded',function(){
         f'五個商品的頁面都沒有明寫，本站只記下商品頁上可查證的寫法。'
         f'為什麼這件事重要、以及怎麼在啟用後三十秒自己驗，'
         f'寫在<a href="{U("/japan-esim-native-roaming/")}">原生還是漫遊那一頁</a>。</p>'
+      + '<h2>條款對照：純數據、熱點、降速、退款</h2>'
+      + '<div class="tw"><table><thead><tr><th>商品</th><th>純數據</th><th>可開熱點</th>'
+        '<th>超量降速</th><th>退款</th></tr></thead><tbody>' + _ep_terms + '</tbody></table></div>'
+      + '<p class="disc">「純數據」是指沒有日本電話號碼，不能打電話、不能收日本簡訊——'
+        '多數日本 eSIM 都是這樣，所以需要簡訊驗證的服務要靠你原本的台灣門號。'
+        '「未載」代表商品頁上找不到，不是「沒有」，查不到就不猜。</p>'
+      + '<h2>逐頁查完才知道的三件事</h2>' + _ep_obs
       + '<h2>三個容易誤解的地方</h2>'
       + f'<h3>1. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][0])}</h3>'
         f'<p class="lede">這是唯一一件買之前查不到、但影響整趟網路體驗的事。'
         f'本站五個商品的 profile 欄全部留白，因為商品頁都沒寫。'
         f'<a href="{U("/japan-esim-native-roaming/")}">判斷方法在這裡</a>。</p>'
       + f'<h3>2. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][1])}</h3>'
-        f'<p class="lede">五個商品的頁面都沒有寫超量後降到多少，所以本站的 throttle 欄也全部留白。'
+        f'<p class="lede">五個商品裡只有一家把降速後的數字寫出來，上面的條款對照表有。'
+        f'其餘四家都留白——不是「沒有降速」，是頁面上找不到。'
         f'買吃到飽之前，這是最該問客服的一題。</p>'
       + f'<h3>3. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][2])}</h3>'
-        f'<p class="lede">效期從裝置第一次連上當地網路才起算，不是購買日。'
-        f'所以提早幾天買不會浪費天數。</p>'
+        f'<p class="lede">效期從裝置第一次連上當地網路才起算，不是購買日，'
+        f'所以提早幾天買不會浪費天數。但要注意另一個時限：'
+        f'「Softbank 小資專業型」寫明收到 QR Code 後要在 29 天內完成安裝。'
+        f'也就是說可以提早買，但不能提早太久。</p>'
       + '<h2>常見問題</h2>' + ep_html
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-esim-native-roaming/")}"><b>📱 原生還是漫遊</b>'

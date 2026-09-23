@@ -1156,7 +1156,11 @@
    ],
    "profile": null,
    "profile_clue": "商品頁同時列出 SoftBank 5G 與 docomo 4G LTE 兩家電信商",
-   "clue_weight": "偏漫遊"
+   "clue_weight": "偏漫遊",
+   "throttle": null,
+   "activate_note": "App 內一鍵開通或掃 QR Code",
+   "refund_short": "啟用前免費退",
+   "fields_checked": "2026-09-23"
   },
   {
    "name": "日本 Softbank eSIM 網卡｜小資專業型｜天數流量任選",
@@ -1522,7 +1526,18 @@
      "price": 3030,
      "throttle": null
     }
-   ]
+   ],
+   "hotspot": true,
+   "data_only": true,
+   "keep_number": null,
+   "throttle": "128kbps",
+   "throttle_note": "商品規格表寫「所選套餐高速流量使用完畢後，不斷線，降速至 128kbps」",
+   "activate_note": "收到 QR Code 後 29 天內要安裝",
+   "clock_starts": "安裝後，人到日本啟用才開始計算第一天",
+   "refund": "賣點條列寫「未使用可取消，網路不穩可以退款」，但 Klook 的取消政策欄位寫「不可取消或退款」——同一頁兩種說法",
+   "refund_short": "說法不一致",
+   "conflict": true,
+   "fields_checked": "2026-09-23"
   },
   {
    "name": "日本 eSIM（NTT docomo／Sakura Mobile 提供）",
@@ -1704,7 +1719,17 @@
      "price": 1208,
      "throttle": null
     }
-   ]
+   ],
+   "hotspot": true,
+   "data_only": true,
+   "keep_number": null,
+   "throttle": null,
+   "hotspot_note": "可以開熱點，但商品頁警告「熱點分享將導致降速及設備發熱」",
+   "activate_note": null,
+   "clock_starts": null,
+   "refund": "「如因相容性問題而無法使用 SIM 卡，恕無法取消訂單或退款」——買之前要自己確認手機相容",
+   "refund_short": "相容性問題不退",
+   "fields_checked": "2026-09-23"
   },
   {
    "name": "日本 eSIM 網卡｜電子郵件寄送｜限時優惠",
@@ -1886,7 +1911,16 @@
      "price": 2531,
      "throttle": null
     }
-   ]
+   ],
+   "hotspot": null,
+   "data_only": null,
+   "keep_number": null,
+   "throttle": null,
+   "activate_note": null,
+   "clock_starts": null,
+   "refund": "未使用可取消；若網路不穩，經 LINE 或 WhatsApp 客服確認可以退款",
+   "refund_short": "未使用可取消",
+   "fields_checked": "2026-09-23"
   },
   {
    "name": "日本eSIM（掃描QR Code即可立即使用）",
@@ -1988,7 +2022,16 @@
      "price": 1160,
      "throttle": null
     }
-   ]
+   ],
+   "hotspot": null,
+   "data_only": null,
+   "keep_number": null,
+   "throttle": null,
+   "activate_note": null,
+   "clock_starts": null,
+   "refund": "「體驗滿意度保證──若經確認的連線問題無法解決，將提供更換或退款」",
+   "refund_short": "連線問題可退或換",
+   "fields_checked": "2026-09-23"
   }
  ],
  "_驗證方法": {
@@ -2117,6 +2160,24 @@
    {
     "what": "各商品實際上是原生、HR 漫遊還是 LBO 漫遊",
     "why": "要逐一向供應商確認或實機測試。比較表的 profile 欄目前全部留白。"
+   }
+  ]
+ },
+ "_觀察_條款差異": {
+  "checked": "2026-09-23",
+  "note": "逐頁查證五個商品的條款欄位之後，發現三件值得寫出來的事。",
+  "items": [
+   {
+    "what": "「吃到飽」降速到多少，只有一家寫",
+    "detail": "只有「Softbank 小資專業型」那個商品的規格表寫了數字：「不斷線，降速至 128kbps」。其餘四家的頁面都找不到。128kbps 大概是什麼概念——文字訊息可以，地圖會很吃力，影片不用想。"
+   },
+   {
+    "what": "同一個商品頁，退款寫了兩種說法",
+    "detail": "「Softbank 小資專業型」的賣點條列寫「未使用可取消，網路不穩可以退款」，但同一頁下方、Klook 自己的取消政策欄位寫「不可取消或退款」。兩段都在同一個商品頁上。以哪個為準，下單前該問客服。"
+   },
+   {
+    "what": "相容性問題不一定能退",
+    "detail": "「Sakura Mobile」那個商品寫明「如因相容性問題而無法使用 SIM 卡，恕無法取消訂單或退款」。也就是說手機不支援是你自己的責任——買之前先撥 *#06#，看得到 EID 才代表這支手機支援 eSIM。"
    }
   ]
  }
