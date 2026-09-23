@@ -1,0 +1,109 @@
+{
+ "_說明": "日本 eSIM 方案比較。每個商品（product）底下有多個方案（plan），方案才是真正在賣的東西。價格與規格請以 Klook 商品頁當下顯示為準，填完更新 checked。",
+ "checked": "",
+ "_待辦": "分潤尚未申請。核准後把 partners.json 的 esim.template 填上，本檔的 url 會自動帶分潤參數。",
+
+ "_欄位說明": {
+  "product": {
+   "name": "商品名稱，用 Klook 頁面上的原名，不要自己改寫",
+   "id": "Klook activity id（網址中的數字），用來組連結與去重",
+   "url": "商品頁網址（不含分潤參數，分潤由 partners.json 的 template 組上去）",
+   "carrier": "底層電信商，例如 SoftBank 5G／docomo 4G。★ 這是最該比的欄位——決定郊區、山區、雪場有沒有訊號",
+   "rating": "星等，例如 4.6",
+   "reviews": "評價則數。★ 4.6(47750) 和 3.8(6) 的可信度天差地別，一定要記",
+   "joined": "參加人數字串，例如 2M+",
+   "esim_only": "true=純 eSIM；false=含實體卡選項",
+   "data_only": "true=純數據、無日本門號（多數如此）",
+   "keep_number": "是否能保留原門號接電話簡訊",
+   "hotspot": "能否分享熱點／多裝置共用",
+   "topup": "能否中途加購流量，填可加購的區間字串",
+   "activate": "啟用方式，例如 App／QR Code／手動 SMDP+",
+   "clock_starts": "效期從何時起算。★ 多數是「連上當地網路才開始」，不是購買日——這點最多人誤解",
+   "device_note": "支援機型限制，例如 iPhone XS 以上／Samsung／Pixel",
+   "refund": "退款政策摘要",
+   "src_checked": "這個商品的資料查證日期"
+  },
+  "plan": {
+   "days": "天數（整數）",
+   "data": "流量描述，例如 每日 1GB、總量 10GB、吃到飽",
+   "unlimited": "true=標示吃到飽",
+   "throttle": "超量後降速到多少，例如 128kbps。★ 吃到飽的真相在這欄，沒有就填 null",
+   "price": "台幣價格（整數）",
+   "note": "其他限制"
+  }
+ },
+
+ "_頁面設計": {
+  "主張": "『NT$10 起』的起字，跟機票那些貼文是同一個問題——那是最短天數、最小流量的價格。實際要用的天數與流量，價差可以好幾倍。",
+  "核心工具": "輸入旅遊天數與每日流量需求，算出各方案的每日單價並由低到高排序。跟回饋計算機、折價券排序同一套邏輯。",
+  "要凸顯的三件事": [
+   "底層電信商決定郊區有沒有訊號，但商品頁多半寫在很下面",
+   "『吃到飽』超量後會降速，降到多少各家不同",
+   "效期從連上當地網路才起算，不是購買日"
+  ],
+  "區塊順序": [
+   "h1 ＋ 重點框（『NT$X 起』的真相）",
+   "天數／流量輸入 → 每日單價排序表",
+   "商品層級對照表（電信商、評價、熱點、加購、效期起算）",
+   "三個容易誤解的地方",
+   "常見問題 FAQ（含 schema.org FAQPage）",
+   "相關頁面（機票、行李、信用卡）"
+  ]
+ },
+
+ "products": [
+  {
+   "_範例": true,
+   "_note": "以下為 2026-09-23 從商品頁抓到的可驗證欄位，plans 尚未填。其餘商品請照這個格式補。",
+   "name": "日本 eSIM | 吃到飽，不穩就退 | Softbank 5G / DOCOMO 4G LTE",
+   "id": "109393",
+   "url": "https://www.klook.com/zh-TW/activity/109393-japan-esim-high-speed-internet-qr-code-voucher/",
+   "carrier": "SoftBank 5G／docomo 4G LTE",
+   "rating": 4.6,
+   "reviews": 47750,
+   "joined": "2M+",
+   "esim_only": true,
+   "data_only": true,
+   "keep_number": true,
+   "hotspot": true,
+   "topup": "App 內加購 1GB–20GB",
+   "activate": "Klook App／QR Code／手動輸入 SMDP+",
+   "clock_starts": "連上當地網路才開始計算，不是購買日",
+   "device_note": "支援部分 iPhone、Samsung、Pixel，機型清單見 Klook FAQ",
+   "refund": "啟用前可免費取消全額退；啟用後視用量全額或部分退，另贈 10% Klook 酷幣",
+   "src_checked": "2026-09-23",
+   "plans": []
+  },
+  {
+   "_範例": true,
+   "_note": "空白範本，複製這一份來填。不確定的欄位請填 null，不要猜。",
+   "name": "",
+   "id": "",
+   "url": "",
+   "carrier": "",
+   "rating": null,
+   "reviews": null,
+   "joined": "",
+   "esim_only": null,
+   "data_only": null,
+   "keep_number": null,
+   "hotspot": null,
+   "topup": "",
+   "activate": "",
+   "clock_starts": "",
+   "device_note": "",
+   "refund": "",
+   "src_checked": "",
+   "plans": [
+    {"days": 5, "data": "每日 1GB", "unlimited": false, "throttle": "128kbps", "price": 0, "note": ""}
+   ]
+  }
+ ],
+
+ "候選商品": [
+  {"name": "日本eSIM（掃描QR Code即可立即使用）", "id": "104976", "rating": 4.3, "reviews": 668},
+  {"name": "日本 eSIM（NTT docomo／Sakura Mobile 提供）", "id": "79682", "rating": 4.2, "reviews": 1860},
+  {"name": "日本 Softbank eSIM 網卡｜小資專業型｜天數流量任選", "id": "124754", "rating": 4.7, "reviews": 854},
+  {"name": "日本 eSIM 網卡｜電子郵件寄送｜限時優惠", "id": "124251", "rating": 4.3, "reviews": 255}
+ ]
+}
