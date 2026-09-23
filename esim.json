@@ -1,7 +1,7 @@
 {
  "_說明": "日本 eSIM 方案比較。每個商品（product）底下有多個方案（plan），方案才是真正在賣的東西。價格與規格請以 Klook 商品頁當下顯示為準，填完更新 checked。",
- "checked": "",
- "_待辦": "Klook 分潤已接上（partners.json 的 esim.template，aid=136311）。剩下的是 plans（天數×流量×價格）與各商品的 profile 尚未填。",
+ "checked": "2026-09-23",
+ "_待辦": "plans 已補齊（232 個方案，2026-09-23 從 Klook 商品 API 取得台幣價）。剩下 profile（原生／漫遊）與 throttle（超量降速到多少）——兩者商品頁都沒寫，要供應商回覆或實機測試才填，在那之前一律 null。",
  "_欄位說明": {
   "product": {
    "name": "商品名稱，用 Klook 頁面上的原名，不要自己改寫",
@@ -37,10 +37,10 @@
   }
  },
  "_頁面設計": {
-  "主張": "『NT$10 起』的起字，跟機票那些貼文是同一個問題——那是最短天數、最小流量的價格。實際要用的天數與流量，價差可以好幾倍。",
+  "主張": "商品頁的「NT$X 起」，起的是最短天數、最小流量的價格。實際要用的天數與流量，價差是十幾倍到三十幾倍——跟機票貼文報單程價是同一種事。",
   "核心工具": "輸入旅遊天數與每日流量需求，算出各方案的每日單價並由低到高排序。跟回饋計算機、折價券排序同一套邏輯。",
   "要凸顯的三件事": [
-   "原生還是漫遊——漫遊 profile 可能繞回發卡國出口，也可能在壅塞時被降優先權",
+   "原生還是漫遊——漫遊可能讓你的出口 IP 落在發卡國，而不是日本",
    "『吃到飽』超量後會降速，降到多少各家不同",
    "效期從連上當地網路才起算，不是購買日"
   ],
@@ -55,8 +55,6 @@
  },
  "products": [
   {
-   "_範例": true,
-   "_note": "以下為 2026-09-23 從商品頁抓到的可驗證欄位，plans 尚未填。其餘商品請照這個格式補。",
    "name": "日本 eSIM | 吃到飽，不穩就退 | Softbank 5G / DOCOMO 4G LTE",
    "id": "109393",
    "url": "https://www.klook.com/zh-TW/activity/109393-japan-esim-high-speed-internet-qr-code-voucher/",
@@ -74,64 +72,1923 @@
    "device_note": "支援部分 iPhone、Samsung、Pixel，機型清單見 Klook FAQ",
    "refund": "啟用前可免費取消全額退；啟用後視用量全額或部分退，另贈 10% Klook 酷幣",
    "src_checked": "2026-09-23",
-   "plans": []
-  },
-  {
-   "_範例": true,
-   "_note": "空白範本，複製這一份來填。不確定的欄位請填 null，不要猜。",
-   "name": "",
-   "id": "",
-   "url": "",
-   "carrier": "",
-   "rating": null,
-   "reviews": null,
-   "joined": "",
-   "esim_only": null,
-   "data_only": null,
-   "keep_number": null,
-   "hotspot": null,
-   "topup": "",
-   "activate": "",
-   "clock_starts": "",
-   "device_note": "",
-   "refund": "",
-   "src_checked": "",
    "plans": [
     {
+     "mode": "daily",
+     "days": 1,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 23,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 1,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 41,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 2,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 45,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 2,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 82,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 3,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 68,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 3,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 123,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 4,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 90,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 4,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 164,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
      "days": 5,
-     "data": "每日 1GB",
-     "unlimited": false,
-     "throttle": "128kbps",
-     "price": 0,
-     "note": ""
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 113,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 5,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 206,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 6,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 135,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 6,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 247,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 7,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 158,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 7,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 288,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 8,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 180,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 8,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 329,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 9,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 203,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 9,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 370,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 10,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 225,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 10,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 411,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 11,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 248,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 11,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 452,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 12,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 270,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 12,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 493,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 13,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 293,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 13,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 534,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 14,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 315,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 14,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 576,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 15,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 338,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 15,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 617,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 16,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 360,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 16,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 658,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 17,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 383,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 17,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 699,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 18,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 405,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 18,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 740,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 19,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 428,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 19,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 781,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 20,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 450,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 20,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 822,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 21,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 473,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 21,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 863,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 22,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 495,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 22,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 905,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 23,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 518,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 23,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 945,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 24,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 540,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 24,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 987,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 25,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 563,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 25,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 1028,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 26,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 585,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 26,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 1069,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 27,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 608,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 27,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 1110,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 28,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 630,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 28,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 1151,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 29,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 653,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 29,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 1192,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 30,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 589,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 30,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 1233,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 1,
+     "gb": 0.488,
+     "label": "500MB",
+     "price": 11,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 1,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 20,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 1,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 72,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 1,
+     "gb": 5.0,
+     "label": "5GB",
+     "price": 141,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 1,
+     "gb": 10.0,
+     "label": "10GB",
+     "price": 193,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 2,
+     "gb": 0.488,
+     "label": "500MB",
+     "price": 11,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 2,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 20,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 2,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 74,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 2,
+     "gb": 5.0,
+     "label": "5GB",
+     "price": 143,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 2,
+     "gb": 10.0,
+     "label": "10GB",
+     "price": 195,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 3,
+     "gb": 0.488,
+     "label": "500MB",
+     "price": 11,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 3,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 20,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 3,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 74,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 3,
+     "gb": 5.0,
+     "label": "5GB",
+     "price": 145,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 3,
+     "gb": 10.0,
+     "label": "10GB",
+     "price": 197,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 5,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 21,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 5,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 77,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 5,
+     "gb": 5.0,
+     "label": "5GB",
+     "price": 150,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 5,
+     "gb": 10.0,
+     "label": "10GB",
+     "price": 201,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 5,
+     "gb": 20.0,
+     "label": "20GB",
+     "price": 373,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 7,
+     "gb": 1.0,
+     "label": "1GB",
+     "price": 48,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 7,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 79,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 7,
+     "gb": 5.0,
+     "label": "5GB",
+     "price": 154,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 7,
+     "gb": 10.0,
+     "label": "10GB",
+     "price": 205,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 7,
+     "gb": 20.0,
+     "label": "20GB",
+     "price": 380,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 10,
+     "gb": 3.0,
+     "label": "3GB",
+     "price": 83,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 10,
+     "gb": 5.0,
+     "label": "5GB",
+     "price": 161,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 10,
+     "gb": 10.0,
+     "label": "10GB",
+     "price": 211,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 10,
+     "gb": 20.0,
+     "label": "20GB",
+     "price": 392,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 15,
+     "gb": 5.0,
+     "label": "5GB",
+     "price": 174,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 15,
+     "gb": 10.0,
+     "label": "10GB",
+     "price": 222,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 15,
+     "gb": 20.0,
+     "label": "20GB",
+     "price": 412,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 15,
+     "gb": 50.0,
+     "label": "50GB",
+     "price": 797,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 20,
+     "gb": 5.0,
+     "label": "5GB",
+     "price": 187,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 20,
+     "gb": 10.0,
+     "label": "10GB",
+     "price": 233,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 20,
+     "gb": 20.0,
+     "label": "20GB",
+     "price": 433,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 20,
+     "gb": 50.0,
+     "label": "50GB",
+     "price": 838,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 25,
+     "gb": 5.0,
+     "label": "5GB",
+     "price": 202,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 25,
+     "gb": 10.0,
+     "label": "10GB",
+     "price": 245,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 25,
+     "gb": 20.0,
+     "label": "20GB",
+     "price": 455,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 25,
+     "gb": 50.0,
+     "label": "50GB",
+     "price": 881,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 30,
+     "gb": 5.0,
+     "label": "5GB",
+     "price": 217,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 30,
+     "gb": 10.0,
+     "label": "10GB",
+     "price": 258,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 30,
+     "gb": 20.0,
+     "label": "20GB",
+     "price": 478,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 30,
+     "gb": 50.0,
+     "label": "50GB",
+     "price": 927,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 1,
+     "gb": null,
+     "label": "不限流量",
+     "price": 74,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 2,
+     "gb": null,
+     "label": "不限流量",
+     "price": 148,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 3,
+     "gb": null,
+     "label": "不限流量",
+     "price": 222,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 4,
+     "gb": null,
+     "label": "不限流量",
+     "price": 296,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 5,
+     "gb": null,
+     "label": "不限流量",
+     "price": 370,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 6,
+     "gb": null,
+     "label": "不限流量",
+     "price": 443,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 7,
+     "gb": null,
+     "label": "不限流量",
+     "price": 518,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 8,
+     "gb": null,
+     "label": "不限流量",
+     "price": 591,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 9,
+     "gb": null,
+     "label": "不限流量",
+     "price": 665,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 10,
+     "gb": null,
+     "label": "不限流量",
+     "price": 739,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 11,
+     "gb": null,
+     "label": "不限流量",
+     "price": 813,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 12,
+     "gb": null,
+     "label": "不限流量",
+     "price": 887,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 13,
+     "gb": null,
+     "label": "不限流量",
+     "price": 961,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 14,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1035,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 15,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1109,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 16,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1171,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 17,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1232,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 18,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1291,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 19,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1349,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 20,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1406,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 21,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1461,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 22,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1516,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 23,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1569,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 24,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1621,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 25,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1671,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 26,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1721,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 27,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1769,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 28,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1816,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 29,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1862,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 30,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1907,
+     "throttle": null
     }
-   ]
-  }
- ],
- "候選商品": [
-  {
-   "name": "日本eSIM（掃描QR Code即可立即使用）",
-   "id": "104976",
-   "rating": 4.3,
-   "reviews": 668
-  },
-  {
-   "name": "日本 eSIM（NTT docomo／Sakura Mobile 提供）",
-   "id": "79682",
-   "rating": 4.2,
-   "reviews": 1860
+   ],
+   "profile": null,
+   "profile_clue": "商品頁同時列出 SoftBank 5G 與 docomo 4G LTE 兩家電信商",
+   "clue_weight": "偏漫遊"
   },
   {
    "name": "日本 Softbank eSIM 網卡｜小資專業型｜天數流量任選",
    "id": "124754",
+   "url": "https://www.klook.com/zh-TW/activity/124754-japan-softbank-esim/",
+   "carrier": "SoftBank",
    "rating": 4.7,
-   "reviews": 854
+   "reviews": 854,
+   "profile": null,
+   "profile_clue": "商品名與網址都只寫 SoftBank 一家日本電信商",
+   "clue_weight": "偏原生",
+   "src_checked": "2026-09-23",
+   "plans": [
+    {
+     "mode": "daily",
+     "days": 1,
+     "gb": 1.0,
+     "label": "每日1GB",
+     "price": 55,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 1,
+     "gb": 2.0,
+     "label": "每日2GB",
+     "price": 110,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 1,
+     "gb": 3.0,
+     "label": "每日3GB",
+     "price": 120,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 3,
+     "gb": 1.0,
+     "label": "每日1GB",
+     "price": 119,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 3,
+     "gb": 2.0,
+     "label": "每日2GB",
+     "price": 215,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 3,
+     "gb": 3.0,
+     "label": "每日3GB",
+     "price": 270,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 5,
+     "gb": 1.0,
+     "label": "每日1GB",
+     "price": 150,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 5,
+     "gb": 2.0,
+     "label": "每日2GB",
+     "price": 311,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 5,
+     "gb": 3.0,
+     "label": "每日3GB",
+     "price": 410,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 6,
+     "gb": 1.0,
+     "label": "每日1GB",
+     "price": 199,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 6,
+     "gb": 2.0,
+     "label": "每日2GB",
+     "price": 364,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 6,
+     "gb": 3.0,
+     "label": "每日3GB",
+     "price": 483,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 7,
+     "gb": 1.0,
+     "label": "每日1GB",
+     "price": 245,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 7,
+     "gb": 2.0,
+     "label": "每日2GB",
+     "price": 405,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 7,
+     "gb": 3.0,
+     "label": "每日3GB",
+     "price": 568,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 8,
+     "gb": 1.0,
+     "label": "每日1GB",
+     "price": 289,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 8,
+     "gb": 2.0,
+     "label": "每日2GB",
+     "price": 488,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 8,
+     "gb": 3.0,
+     "label": "每日3GB",
+     "price": 652,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 9,
+     "gb": 1.0,
+     "label": "每日1GB",
+     "price": 325,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 9,
+     "gb": 2.0,
+     "label": "每日2GB",
+     "price": 523,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 9,
+     "gb": 3.0,
+     "label": "每日3GB",
+     "price": 790,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 10,
+     "gb": 1.0,
+     "label": "每日1GB",
+     "price": 350,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 10,
+     "gb": 2.0,
+     "label": "每日2GB",
+     "price": 599,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 10,
+     "gb": 3.0,
+     "label": "每日3GB",
+     "price": 825,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 15,
+     "gb": 1.0,
+     "label": "每日1GB",
+     "price": 590,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 15,
+     "gb": 2.0,
+     "label": "每日2GB",
+     "price": 819,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 15,
+     "gb": 3.0,
+     "label": "每日3GB",
+     "price": 1250,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 20,
+     "gb": 1.0,
+     "label": "每日1GB",
+     "price": 735,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 20,
+     "gb": 2.0,
+     "label": "每日2GB",
+     "price": 1208,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 20,
+     "gb": 3.0,
+     "label": "每日3GB",
+     "price": 1638,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 30,
+     "gb": 1.0,
+     "label": "每日1GB",
+     "price": 961,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 30,
+     "gb": 2.0,
+     "label": "每日2GB",
+     "price": 1664,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 30,
+     "gb": 3.0,
+     "label": "每日3GB",
+     "price": 2577,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 1,
+     "gb": null,
+     "label": "不限流量",
+     "price": 155,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 3,
+     "gb": null,
+     "label": "不限流量",
+     "price": 326,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 5,
+     "gb": null,
+     "label": "不限流量",
+     "price": 531,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 6,
+     "gb": null,
+     "label": "不限流量",
+     "price": 648,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 7,
+     "gb": null,
+     "label": "不限流量",
+     "price": 783,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 8,
+     "gb": null,
+     "label": "不限流量",
+     "price": 901,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 9,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1199,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 10,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1358,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 15,
+     "gb": null,
+     "label": "不限流量",
+     "price": 1666,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 20,
+     "gb": null,
+     "label": "不限流量",
+     "price": 2255,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 30,
+     "gb": null,
+     "label": "不限流量",
+     "price": 3030,
+     "throttle": null
+    }
+   ]
+  },
+  {
+   "name": "日本 eSIM（NTT docomo／Sakura Mobile 提供）",
+   "id": "79682",
+   "url": "https://www.klook.com/zh-TW/activity/79682-4g-lte-esim-japan-nttdocomo-unlimited-data-sakura-mobile/",
+   "carrier": "NTT docomo（Sakura Mobile）",
+   "rating": 4.2,
+   "reviews": 1860,
+   "profile": null,
+   "profile_clue": "商品名與網址都寫 Sakura Mobile——那是 docomo 回線的日本 MVNO",
+   "clue_weight": "偏原生",
+   "src_checked": "2026-09-23",
+   "plans": [
+    {
+     "mode": "total",
+     "days": 3,
+     "gb": 3.0,
+     "label": "3 GB",
+     "price": 171,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 3,
+     "gb": 5.0,
+     "label": "5 GB",
+     "price": 362,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 3,
+     "gb": 10.0,
+     "label": "10 GB",
+     "price": 443,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 5,
+     "gb": 3.0,
+     "label": "3 GB",
+     "price": 302,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 5,
+     "gb": 5.0,
+     "label": "5 GB",
+     "price": 362,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 5,
+     "gb": 10.0,
+     "label": "10 GB",
+     "price": 443,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 7,
+     "gb": 3.0,
+     "label": "3 GB",
+     "price": 332,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 7,
+     "gb": 5.0,
+     "label": "5 GB",
+     "price": 403,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 7,
+     "gb": 10.0,
+     "label": "10 GB",
+     "price": 443,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 10,
+     "gb": 10.0,
+     "label": "10 GB",
+     "price": 503,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 10,
+     "gb": 20.0,
+     "label": "20 GB",
+     "price": 765,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 10,
+     "gb": 30.0,
+     "label": "30 GB",
+     "price": 1057,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 15,
+     "gb": 10.0,
+     "label": "10 GB",
+     "price": 503,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 15,
+     "gb": 20.0,
+     "label": "20 GB",
+     "price": 765,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 15,
+     "gb": 30.0,
+     "label": "30 GB",
+     "price": 1057,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 20,
+     "gb": 10.0,
+     "label": "10 GB",
+     "price": 604,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 20,
+     "gb": 20.0,
+     "label": "20 GB",
+     "price": 865,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 20,
+     "gb": 30.0,
+     "label": "30 GB",
+     "price": 1157,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 30,
+     "gb": 10.0,
+     "label": "10 GB",
+     "price": 704,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 30,
+     "gb": 20.0,
+     "label": "20 GB",
+     "price": 966,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 30,
+     "gb": 30.0,
+     "label": "30 GB",
+     "price": 1208,
+     "throttle": null
+    }
+   ]
   },
   {
    "name": "日本 eSIM 網卡｜電子郵件寄送｜限時優惠",
    "id": "124251",
+   "url": "https://www.klook.com/zh-TW/activity/124251-japan-esim-by-e-mail-limited-offer/",
+   "carrier": null,
    "rating": 4.3,
-   "reviews": 255
+   "reviews": 255,
+   "profile": null,
+   "profile_clue": "商品名與網址都沒有提到任何電信商",
+   "clue_weight": "無法判斷",
+   "src_checked": "2026-09-23",
+   "plans": [
+    {
+     "mode": "daily",
+     "days": 5,
+     "gb": 0.488,
+     "label": "每日500MB",
+     "price": 280,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 7,
+     "gb": 0.488,
+     "label": "每日500MB",
+     "price": 321,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 10,
+     "gb": 0.488,
+     "label": "每日500MB",
+     "price": 373,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 15,
+     "gb": 0.488,
+     "label": "每日500MB",
+     "price": 405,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 5,
+     "gb": 10.0,
+     "label": "總量型10GB",
+     "price": 357,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 7,
+     "gb": 10.0,
+     "label": "總量型10GB",
+     "price": 373,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 7,
+     "gb": 20.0,
+     "label": "總量型20GB",
+     "price": 652,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 10,
+     "gb": 10.0,
+     "label": "總量型10GB",
+     "price": 399,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 10,
+     "gb": 20.0,
+     "label": "總量型20GB",
+     "price": 771,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 15,
+     "gb": 10.0,
+     "label": "總量型10GB",
+     "price": 416,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 15,
+     "gb": 20.0,
+     "label": "總量型20GB",
+     "price": 803,
+     "throttle": null
+    },
+    {
+     "mode": "total",
+     "days": 30,
+     "gb": 20.0,
+     "label": "總量型20GB",
+     "price": 832,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 5,
+     "gb": null,
+     "label": "吃到飽",
+     "price": 489,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 6,
+     "gb": null,
+     "label": "吃到飽",
+     "price": 531,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 7,
+     "gb": null,
+     "label": "吃到飽",
+     "price": 598,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 8,
+     "gb": null,
+     "label": "吃到飽",
+     "price": 656,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 9,
+     "gb": null,
+     "label": "吃到飽",
+     "price": 749,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 10,
+     "gb": null,
+     "label": "吃到飽",
+     "price": 813,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 15,
+     "gb": null,
+     "label": "吃到飽",
+     "price": 1138,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 20,
+     "gb": null,
+     "label": "吃到飽",
+     "price": 1525,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 30,
+     "gb": null,
+     "label": "吃到飽",
+     "price": 2531,
+     "throttle": null
+    }
+   ]
+  },
+  {
+   "name": "日本eSIM（掃描QR Code即可立即使用）",
+   "id": "104976",
+   "url": "https://www.klook.com/zh-TW/activity/104976-xplori-4g-5g-esim-japan/",
+   "carrier": null,
+   "rating": 4.3,
+   "reviews": 668,
+   "profile": null,
+   "profile_clue": "網址的品牌是 Xplori，屬於全球型 eSIM 品牌，不是日本電信商",
+   "clue_weight": "偏漫遊",
+   "src_checked": "2026-09-23",
+   "plans": [
+    {
+     "mode": "daily",
+     "days": 1,
+     "gb": 0.586,
+     "label": "每日600 MB",
+     "price": 22,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 3,
+     "gb": 1.5,
+     "label": "每日1.5 GB",
+     "price": 82,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 5,
+     "gb": 1.5,
+     "label": "每日1.5 GB",
+     "price": 124,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 7,
+     "gb": 1.5,
+     "label": "每日1.5 GB",
+     "price": 190,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 15,
+     "gb": 1.5,
+     "label": "每日1.5 GB",
+     "price": 349,
+     "throttle": null
+    },
+    {
+     "mode": "daily",
+     "days": 30,
+     "gb": 1.5,
+     "label": "每日1.5 GB",
+     "price": 729,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 3,
+     "gb": null,
+     "label": "無限流量",
+     "price": 285,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 5,
+     "gb": null,
+     "label": "無限流量",
+     "price": 472,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 7,
+     "gb": null,
+     "label": "無限流量",
+     "price": 637,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 15,
+     "gb": null,
+     "label": "無限流量",
+     "price": 1160,
+     "throttle": null
+    },
+    {
+     "mode": "unlimited",
+     "days": 30,
+     "gb": null,
+     "label": "無限流量",
+     "price": 1160,
+     "throttle": null
+    }
+   ]
   }
  ],
  "_驗證方法": {

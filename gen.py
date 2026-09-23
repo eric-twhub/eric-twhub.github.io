@@ -574,6 +574,8 @@ blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem
 .tw table{min-width:640px;font-size:.84rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
 .tw td.win{color:var(--lcc);font-weight:700}
+/* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
+.tw td.nm{white-space:normal;line-height:1.55;min-width:150px;max-width:290px}
 /* 欄位少的表格不要被 min-width 逼出橫向捲動 */
 .tw.narrow table{min-width:0}
 /* 回饋計算機的並排比較表 */
@@ -584,7 +586,7 @@ blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem
 .cmp thead th{font-weight:700;border-bottom:2px solid var(--line);color:var(--fg)}
 .cmp thead th a{text-decoration:none}
 .cmp b{font-variant-numeric:tabular-nums;font-size:1.06rem}
-.cmp .pw{background:var(--acc);color:#fff;font-size:.68rem;padding:1px 6px;border-radius:4px;
+.tw td .pw,.cmp .pw{background:var(--acc);color:#fff;font-size:.68rem;padding:1px 6px;border-radius:4px;
  font-weight:700;margin-right:5px;vertical-align:middle}
 .cmp .pc{font-style:normal;color:var(--hot)}
 .tw td.lose{color:var(--acc);font-weight:700}
@@ -697,7 +699,8 @@ def topnav(cur=''):
             + link('/japan-flight-baggage/', '🧳 廉航行李費')
             + link('/japan-ski-baggage/', '🎿 雪具託運')
             + link('/japan-airport-last-train/', '🚉 機場末班車')
-            + link('/japan-esim-native-roaming/', '📱 eSIM 原生還是漫遊'))
+            + link('/japan-esim/', '📱 日本 eSIM 比較')
+            + link('/japan-esim-native-roaming/', '📱 原生還是漫遊'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -2072,6 +2075,181 @@ if EG:
         '各家 eSIM 實際採用哪種路由，請以供應商的正式回覆或你自己啟用後的實測為準。</p>'
       + foot())
     pages.append(('/japan-esim-native-roaming/', 0.7))
+
+# ---------- eSIM：方案比較與每日單價計算 ----------
+# 「NT$X 起」的起字是 1 天最小流量的價格。實際要用的天數與流量，價差 10 倍起跳。
+# 232 個方案的價格是 2026-09-23 從 Klook 商品 API 取的台幣價，會變動，頁面上要講清楚。
+if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
+    EP = _ES['products']
+    _ESM = '<br><small style="color:var(--dim)">'
+    _MODE = {'total': 0, 'daily': 1, 'unlimited': 2}
+    _pjs = []
+    for _i, _p in enumerate(EP):
+        for _q in _p['plans']:
+            _pjs.append([_i, _MODE[_q['mode']], _q['days'],
+                         _q['gb'] or 0, _q['price']])
+    _pnames = [{'id': p['id'], 'name': p['name'], 'url': klook(p['url']),
+                'clue': p['profile_clue'], 'w': p['clue_weight'],
+                'rating': p.get('rating'), 'reviews': p.get('reviews')} for p in EP]
+
+    _ep_lo = min((q['price'], p['id'], q['days'], q['label'])
+                 for p in EP for q in p['plans'])
+    _ep_un5 = [q['price'] for p in EP if p['id'] == _ep_lo[1]
+               for q in p['plans'] if q['mode'] == 'unlimited' and q['days'] == 5]
+    _ep_mult = round(_ep_un5[0] / _ep_lo[0]) if _ep_un5 else None
+
+    _ep_rows = ''.join(
+        f'<tr><td class="nm"><b><a href="{klook(p["url"])}" rel="sponsored nofollow" target="_blank">'
+        f'{html.escape(p["name"])}</a></b>'
+        f'{_ESM}{len(p["plans"])} 個方案'
+        + (f'　·　{p["rating"]} 分（{p["reviews"]:,} 則評價）' if p.get('rating') else '')
+        + '</small></td>'
+        f'<td class="{"win" if p["clue_weight"] == "偏原生" else ("lose" if p["clue_weight"] == "偏漫遊" else "")}">'
+        f'<b>{html.escape(p["clue_weight"])}</b></td>'
+        f'<td>{html.escape(p["profile_clue"])}</td></tr>' for p in EP)
+
+    # 總流量型「天數幾乎不加價」的實例，直接從資料撈，不寫死
+    _tot = [q for p in EP if p['id'] == '109393' for q in p['plans']
+            if q['mode'] == 'total' and q['label'] == '5GB']
+    _tot.sort(key=lambda x: x['days'])
+    _tot_line = '、'.join(f'{q["days"]} 天 NT${q["price"]}' for q in _tot[:6]) if _tot else ''
+
+    ep_faq = [
+     ('商品頁寫「NT$11 起」，為什麼我結帳時貴那麼多？',
+      f'因為那個「起」字是最短天數、最小流量的價格。本站查到的最低價是 {_ep_lo[2]} 天 {_ep_lo[3]}，'
+      f'NT${_ep_lo[0]}；同一個商品的 5 天吃到飽是 NT${_ep_un5[0] if _ep_un5 else 0}，'
+      f'差了 {_ep_mult} 倍。上面的計算機輸入你實際的天數與每日用量，看到的才是你要付的錢。'),
+     ('總流量型跟每日流量型，哪個划算？',
+      '看你的用量。如果每天只開 Google Maps 跟通訊軟體，總流量型幾乎穩贏——'
+      '而且總流量型有個很多人不知道的特性：天數幾乎不影響價格，天數只是效期。'
+      '反過來如果你要在路上看影片，每日流量型或吃到飽才不會用到一半斷掉。'),
+     ('吃到飽為什麼沒有長天期折扣？',
+      '因為它本質上是按天計價。本站查到的資料裡，吃到飽的每日單價從 1 天到 30 天幾乎是一條平線，'
+      '長天期只便宜一點點。總流量型才有明顯的規模效應。'),
+     ('「吃到飽」超量之後會降速到多少？',
+      '五個商品的頁面都沒寫。本站的 throttle 欄目前全部留白——'
+      '這是「吃到飽」最常被忽略的地方，但查不到就不寫。'),
+     ('效期是從買的時候開始算嗎？',
+      '不是，是從你的裝置第一次連上當地網路才開始計算。所以提前買不會浪費天數，'
+      '但也不要以為買了就能放著慢慢用。'),
+     ('這頁的價格多久會過期？',
+      'Klook 的 eSIM 價格天天在動，本頁的 232 筆價格是 2026-09-23 一次抓下來的，'
+      '沒有自動更新。拿它看「哪種計價方式划算」是可以的，'
+      '要看今天實際多少錢，請點商品連結。'),
+    ]
+    ep_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in ep_faq)
+    ep_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in ep_faq]}, ensure_ascii=False)
+
+    _EJS = ('<script>const EP=' + json.dumps(_pjs, separators=(',', ':'))
+            + ',EN=' + json.dumps(_pnames, ensure_ascii=False, separators=(',', ':')) + ';'
+            + r"""
+function erun(){
+ var d=+document.getElementById('ed').value||0, g=+document.getElementById('eg').value||0;
+ var box=document.getElementById('eout');
+ if(d<1){box.innerHTML='<p class="lede">請輸入天數。</p>';return;}
+ var best={};
+ for(var i=0;i<EP.length;i++){
+  var r=EP[i],pi=r[0],mode=r[1],days=r[2],gb=r[3],price=r[4];
+  if(days<d) continue;
+  if(mode===1 && gb<g) continue;
+  if(mode===0 && gb<g*d) continue;
+  if(!best[pi]||price<best[pi].price) best[pi]={price:price,mode:mode,days:days,gb:gb};
+ }
+ var rows=Object.keys(best).map(function(k){var b=best[k];b.pi=+k;b.per=b.price/d;return b;});
+ rows.sort(function(a,b){return a.per-b.per;});
+ if(!rows.length){box.innerHTML='<p class="lede">這個天數與用量，五個商品都沒有對應的方案。'
+   +'試著把每日用量調低，或改用吃到飽。</p>';return;}
+ var mn=['總流量','每日流量','吃到飽'];
+ var h='<div class="tw narrow"><table><thead><tr><th>每日單價</th><th>商品</th>'
+   +'<th>方案</th><th>總價</th></tr></thead><tbody>';
+ rows.forEach(function(b,i){
+  var n=EN[b.pi];
+  var spec=mn[b.mode]+(b.mode===2?'':' '+(b.gb>=1?b.gb+'GB':Math.round(b.gb*1024)+'MB'))
+    +'　'+b.days+' 天';
+  h+='<tr><td class="'+(i===0?'win':'')+'"><b>NT$'+b.per.toFixed(0)+'</b>'
+    +(i===0?' <em class="pw">最低</em>':'')+'</td>'
+    +'<td class="nm"><a href="'+n.url+'" rel="sponsored nofollow" target="_blank">'+n.name+'</a></td>'
+    +'<td>'+spec+'</td><td>NT$'+b.price+'</td></tr>';
+ });
+ h+='</tbody></table></div>';
+ var sp=rows[rows.length-1].per/rows[0].per;
+ if(sp>1.2) h+='<p class="disc">同樣的天數與用量，最貴的比最便宜的多花 '
+   +sp.toFixed(1)+' 倍。</p>';
+ box.innerHTML=h;
+}
+document.addEventListener('DOMContentLoaded',function(){
+ ['ed','eg'].forEach(function(id){document.getElementById(id).addEventListener('input',erun);});
+ erun();
+});
+</script>""")
+
+    ep_title = '日本 eSIM 怎麼選：232 個方案的每日單價比較（含吃到飽的真相）'
+    ep_desc = ('「NT$11 起」的起字是 1 天最小流量的價格，跟你實際要用的差三十幾倍。'
+               '這頁把 Klook 上五個日本 eSIM 商品、232 個方案的價格拆成每日單價，'
+               '輸入天數與每日用量就排序。另外說明總流量型為什麼天數幾乎不加價。')
+
+    write('japan-esim/index.html',
+      head(ep_title, ep_desc, 'japan-esim/',
+           '<script type="application/ld+json">' + ep_ld + '</script>')
+      + crumbs([('首頁', '/'), ('日本 eSIM 比較', None)]) + topnav()
+      + '<h1>日本 eSIM 的「NT$11 起」，起的是什麼？</h1>'
+      + f'<p class="lede">{html.escape(_ES["_頁面設計"]["主張"])}</p>'
+      + f'<div class="today"><div class="tday">五個商品、232 個方案的台幣價，'
+        f'2026-09-23 一次抓下來</div>'
+        f'<div class="tans">最低價 NT${_ep_lo[0]} 是 <b>{_ep_lo[2]} 天 {html.escape(_ep_lo[3])}</b>'
+        + (f'，同商品的 5 天吃到飽 NT${_ep_un5[0]}——差 <b>{_ep_mult} 倍</b>' if _ep_un5 else '')
+        + '</div>'
+        f'<div class="tsub">三種計價方式的每日單價差距很大：同樣是 5 天，'
+        f'總流量型可以低到每天 NT$4，吃到飽要每天 NT$100 以上。'
+        f'下面輸入你的天數與每日用量，算的是你真正要付的錢。</div>'
+        f'<div class="tbuf">另外一件幾乎沒人講的事：<b>總流量型的天數只是效期，幾乎不影響價格</b>。'
+        + (f'同一個商品的總流量 5GB，{_tot_line}——天數差 15 倍，價格只差兩成多。' if _tot_line else '')
+        + '用量小的人買長天期反而安心。</div></div>'
+      + '<h2>輸入你的行程</h2>'
+      + '<div class="calc"><div class="sf">'
+        '<label>待幾天 <input id="ed" type="number" min="1" max="30" value="5"></label>'
+        '<label>每天大概用多少 GB <input id="eg" type="number" min="0" max="10" step="0.5" value="1"></label>'
+        '</div></div><div id="eout"></div>'
+      + '<p class="disc">計算方式：每個商品挑出「天數夠、流量夠」之中最便宜的一個方案，'
+        '再除以天數得到每日單價。總流量型是用「每日用量 × 天數」判斷夠不夠，'
+        '每日流量型是看單日額度夠不夠，吃到飽不看流量。'
+        '價格查證於 2026-09-23，會變動，實際金額以商品頁為準。</p>'
+      + '<h2>五個商品的基本資料</h2>'
+      + '<div class="tw"><table><thead><tr><th>商品</th><th>原生還是漫遊</th>'
+        '<th>線索</th></tr></thead><tbody>' + _ep_rows + '</tbody></table></div>'
+      + f'<p class="disc">「原生還是漫遊」這一欄<b>不是結論，是線索</b>——'
+        f'五個商品的頁面都沒有明寫，本站只記下商品頁上可查證的寫法。'
+        f'為什麼這件事重要、以及怎麼在啟用後三十秒自己驗，'
+        f'寫在<a href="{U("/japan-esim-native-roaming/")}">原生還是漫遊那一頁</a>。</p>'
+      + '<h2>三個容易誤解的地方</h2>'
+      + f'<h3>1. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][0])}</h3>'
+        f'<p class="lede">這是唯一一件買之前查不到、但影響整趟網路體驗的事。'
+        f'本站五個商品的 profile 欄全部留白，因為商品頁都沒寫。'
+        f'<a href="{U("/japan-esim-native-roaming/")}">判斷方法在這裡</a>。</p>'
+      + f'<h3>2. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][1])}</h3>'
+        f'<p class="lede">五個商品的頁面都沒有寫超量後降到多少，所以本站的 throttle 欄也全部留白。'
+        f'買吃到飽之前，這是最該問客服的一題。</p>'
+      + f'<h3>3. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][2])}</h3>'
+        f'<p class="lede">效期從裝置第一次連上當地網路才起算，不是購買日。'
+        f'所以提早幾天買不會浪費天數。</p>'
+      + '<h2>常見問題</h2>' + ep_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-esim-native-roaming/")}"><b>📱 原生還是漫遊</b>'
+        f'<s>會不會變成香港的網路</s></a>'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>落地之後還回得去市區嗎</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
+        f'<s>加購時機差一倍</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a></div>'
+      + '<p class="disc">本頁的商品連結為 Klook 分潤連結，你的價格不會因此改變。'
+        '價格與方案內容由 Klook 與各供應商隨時調整，本頁數字查證於 2026-09-23，'
+        '下單前請以商品頁顯示的為準。</p>'
+      + _EJS + foot())
+    pages.append(('/japan-esim/', 0.8))
+
 
 
 
