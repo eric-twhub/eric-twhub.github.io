@@ -576,6 +576,7 @@ blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem
 .tw td.win{color:var(--lcc);font-weight:700}
 /* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
 .tw td.nm{white-space:normal;line-height:1.55;min-width:150px;max-width:290px}
+.tw td.dimcell{color:var(--dim);opacity:.55}
 /* 欄位少的表格不要被 min-width 逼出橫向捲動 */
 .tw.narrow table{min-width:0}
 /* 回饋計算機的並排比較表 */
@@ -709,7 +710,9 @@ def topnav(cur=''):
             + link('/japan-sms-roaming/', '✉️ 台灣門號收簡訊')
             + '<hr><b>租車自駕</b>'
             + link('/japan-driving-licence/', '🚗 駕照日文譯本')
-            + link('/japan-rentacar-noc/', '🚗 租車的 NOC'))
+            + link('/japan-rentacar-noc/', '🚗 租車的 NOC')
+            + '<hr><b>出事之前</b>'
+            + link('/japan-travel-insurance/', '🛡️ 旅平險怎麼賠'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -2491,6 +2494,134 @@ if NOC:
         f'本頁只查了三家全國性業者，在地業者的條款可能不同。</p>'
       + foot())
     pages.append(('/japan-rentacar-noc/', 0.7))
+
+# ---------- 旅平險：什麼情況才會賠 ----------
+# 金融商品，只解釋條款怎麼運作，不做投保建議。條文全部引官方原文。
+INS = json.load(open('travel-insurance.json', encoding='utf-8')) if os.path.exists('travel-insurance.json') else None
+
+if INS:
+    def _in_src(o):
+        return (f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow" target="_blank">'
+                f'{html.escape(o["src_name"])}</a>，查證於 {INS["checked"]}。</p>')
+
+    _in_layers = ''.join(
+        f'<h3>第 {l["n"]} 層：{html.escape(l["name"])}</h3>'
+        f'<p class="lede"><b>保障期間：</b>{html.escape(l["when"])}</p>'
+        f'<p class="lede">{html.escape(l["body"])}</p>'
+        f'<blockquote class="q">{html.escape(l["quote"])}</blockquote>'
+        f'<p class="lede"><b>{html.escape(l["means"])}</b></p>' + _in_src(l)
+        for l in INS['layers'])
+
+    _ic = INS['inconvenience']
+    _in_ic = (f'<h2>{html.escape(_ic["title"])}</h2>'
+              f'<p class="lede">{html.escape(_ic["body"])}</p>'
+              '<div class="tw narrow"><table><thead><tr><th>項目</th><th>條款門檻</th>'
+              '</tr></thead><tbody>'
+              + ''.join(f'<tr><td><b>{html.escape(r["item"])}</b></td>'
+                        f'<td class="nm">{html.escape(r["threshold"])}</td></tr>'
+                        for r in _ic['rows'])
+              + '</tbody></table></div>'
+              f'<p class="lede"><b>{html.escape(_ic["key"])}</b></p>' + _in_src(_ic))
+
+    _nh = INS['nhi']
+    _in_nhi = (f'<h2>{html.escape(_nh["title"])}</h2>'
+               f'<p class="lede">{html.escape(_nh["body"])}</p>'
+               f'<div class="tw narrow"><table><thead><tr><th>項目</th>'
+               f'<th>{html.escape(_nh["period"])} 核退上限</th></tr></thead><tbody>'
+               + ''.join(f'<tr><td>{html.escape(r["item"])}</td>'
+                         f'<td class="lose"><b>{html.escape(r["amt"])}</b></td></tr>'
+                         for r in _nh['rows'])
+               + '</tbody></table></div>'
+               f'<p class="lede"><b>{html.escape(_nh["key"])}</b></p>' + _in_src(_nh))
+
+    _mx = INS['matrix']
+    _MK = {'○': 'win', '✕': 'lose', '△': '', '？': '', '—': 'dimcell'}
+    _in_mx = ('<div class="tw"><table><thead><tr>'
+              + ''.join(f'<th>{html.escape(c)}</th>' for c in _mx['cols'])
+              + '</tr></thead><tbody>'
+              + ''.join('<tr><td class="nm">' + html.escape(r['case']) + '</td>'
+                        + ''.join(f'<td class="{_MK.get(v, "")}"><b>{v}</b></td>' for v in r['v'])
+                        + '</tr>' for r in _mx['rows'])
+              + '</tbody></table></div>'
+              + '<p class="disc">'
+              + '　·　'.join(html.escape(x) for x in _mx['legend']) + '</p>'
+              + f'<p class="disc">{html.escape(_mx["note"])}</p>')
+
+    _in_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>'
+                     f'<br><small style="color:var(--dim)">{html.escape(u["why"])}</small></li>'
+                     for u in INS['unverified'])
+
+    in_faq = [
+     ('刷機票送的旅平險，在日本跌倒骨折會賠嗎？',
+      '多半不會。保險局的消費手冊寫明信用卡綜合保險的範圍是「在飛機上的期間」，'
+      '加上前往機場與離開機場的一段時間。人已經在市區觀光、在旅館、在滑雪場，'
+      '都不在那段期間裡。'),
+     ('旅平險主約為什麼不賠我看醫生的錢？',
+      '因為主約賠的是「意外傷害事故致殘廢或死亡」。看門診拿藥不構成殘廢或死亡，'
+      '所以要靠「意外傷害醫療」附約。示範條款第 2 條就是這樣寫的。'),
+     ('在日本吃壞肚子掛急診，旅平險賠嗎？',
+      '主約不賠。示範條款把「意外傷害事故」定義為「非由疾病引起之外來突發事故」，'
+      '疾病在定義層次就被排除了。要賠得有「海外突發疾病醫療」附約，而那是另外加保的。'),
+     ('班機延誤多久才賠？',
+      '金管會的參考條款寫的是「實際出發時間較預定出發時間延誤四小時以上」。'
+      '行李延誤則是「在抵達目的地六小時後仍未領得」。這些門檻是條款訂的，不是可以商量的。'),
+     ('反正有健保可以核退，不用買保險吧？',
+      '健保核退有每季公告的上限，而且採核實給付、超過不給付。'
+      '2026 年第三季的上限是門診每次 1,162 元、急診每次 3,866 元、住院每日 7,239 元。'
+      '要不要買保險是你自己的判斷，但把健保核退當成完整的備案，數字上對不起來。'),
+     ('這頁可以當作投保建議嗎？',
+      '不行。本站不是保險業者也不是保險經紀人，這頁整理的是公開的示範條款與官方說明，'
+      '用來解釋條款的運作邏輯。實際保障以你自己那張保單為準，'
+      '要投保什麼請問保險公司或你的業務員。'),
+    ]
+    in_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in in_faq)
+    in_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in in_faq]}, ensure_ascii=False)
+
+    in_title = '旅平險什麼情況才會賠？刷卡送的那份只保飛機上那幾小時'
+    in_desc = ('「旅平險」底下其實是三種不同的東西。刷機票送的只保搭機期間與往返機場；'
+               '主約全程有效但只賠意外造成的失能或死亡，生病不賠；醫療費要靠附約。'
+               '本頁引金管會示範條款、保險局消費手冊與健保署核退上限原文說明。')
+
+    write('japan-travel-insurance/index.html',
+      head(in_title, in_desc, 'japan-travel-insurance/',
+           '<script type="application/ld+json">' + in_ld + '</script>')
+      + crumbs([('首頁', '/'), ('旅平險怎麼賠', None)]) + topnav()
+      + '<h1>旅平險，什麼情況才真的會賠？</h1>'
+      + f'<p class="lede">{html.escape(INS["thesis"])}</p>'
+      + f'<p class="disc"><b>先說清楚：</b>{html.escape(INS["disclaimer"])}</p>'
+      + f'<div class="today"><div class="tday">金管會示範條款、保險局消費手冊與健保署公告的原文，'
+        f'查證於 {INS["checked"]}</div>'
+        f'<div class="tans">刷機票送的那份，<b>不保你在市區的時間</b></div>'
+        f'<div class="tsub">保險局的消費手冊寫得很直接：信用卡綜合保險的範圍是「在飛機上的期間」，'
+        f'加上前往機場與離開機場的一段時間。在旅館樓梯跌倒、在滑雪場摔傷，都不在那段期間裡。</div>'
+        f'<div class="tbuf">第二個誤解是主約。示範條款把承保範圍寫成'
+        f'「因遭受意外傷害事故，致其身體蒙受傷害而致殘廢或死亡」，'
+        f'而「意外傷害事故」的定義是<b>「非由疾病引起之外來突發事故」</b>——'
+        f'吃壞肚子、感冒、舊疾發作都不算；而且看個門診也構不成「殘廢或死亡」。</div></div>'
+      + '<h2>「旅平險」其實是三層</h2>' + _in_layers
+      + f'<h2>{html.escape(_mx["title"])}</h2>' + _in_mx
+      + _in_ic + _in_nhi
+      + '<h2>這頁查不到的部分</h2>'
+      + f'<ul class="lede">{_in_un}</ul>'
+      + '<h2>常見問題</h2>' + in_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
+        f'<s>刷哪張回饋最高</s></a>'
+      + f'<a class="ct" href="{U("/japan-driving-licence/")}"><b>🚗 駕照日文譯本</b>'
+        f'<s>租車前要先辦的</s></a>'
+      + f'<a class="ct" href="{U("/japan-rentacar-noc/")}"><b>🚗 租車的 NOC</b>'
+        f'<s>另一種「以為有保其實沒有」</s></a>'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>落地之後還回得去市區嗎</s></a></div>'
+      + f'<p class="disc">{html.escape(INS["disclaimer"])}'
+        f'本頁引用的條文查證於 {INS["checked"]}；示範條款與健保核退上限都會修訂，'
+        f'請以金管會、保險局與健保署的最新公告為準。</p>'
+      + foot())
+    pages.append(('/japan-travel-insurance/', 0.7))
+
 
 
 
