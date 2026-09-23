@@ -702,7 +702,8 @@ def topnav(cur=''):
             + link('/japan-esim/', '📱 日本 eSIM 比較')
             + link('/japan-esim-native-roaming/', '📱 原生還是漫遊')
             + link('/japan-sms-roaming/', '✉️ 台灣門號收簡訊')
-            + link('/japan-driving-licence/', '🚗 日本租車・駕照譯本'))
+            + link('/japan-driving-licence/', '🚗 駕照日文譯本')
+            + link('/japan-rentacar-noc/', '🚗 租車的 NOC'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -1193,7 +1194,9 @@ for slug,name,codes,reg,hotelcity in CITIES:
         # 放在租車連結後面才有意義
         body+=(f'<p class="disc">提醒：台灣的國際駕照在日本<b>不能用</b>，'
                f'要帶的是駕照正本加「日文譯本」。監理站 100 元、一小時就辦得好，'
-               f'<a href="{U("/japan-driving-licence/")}">怎麼辦、有哪些陷阱看這裡</a>。</p>')
+               f'<a href="{U("/japan-driving-licence/")}">怎麼辦、有哪些陷阱看這裡</a>。'
+               f'另外櫃檯會問你要不要加購補償——'
+               f'<a href="{U("/japan-rentacar-noc/")}">那筆叫 NOC，不買可能賠 2～5 萬日圓</a>。</p>')
     body+=cta('esim',name,hotelcity,'出發前別忘了日本上網',
               '到 Klook 買 eSIM 或網卡，落地就能用')
     body+='<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>'
@@ -2349,6 +2352,136 @@ if DRV:
         f'各租車公司現場可能另有要求（信用卡、最低駕齡等），以業者條款為準。</p>'
       + foot())
     pages.append(('/japan-driving-licence/', 0.7))
+
+# ---------- 日本租車的 NOC（營業補償）----------
+# 買了免責補償不等於不用賠：NOC 是另一筆，2～5 萬日圓，而且「汚損」就會觸發。
+NOC = json.load(open('rentacar-noc.json', encoding='utf-8')) if os.path.exists('rentacar-noc.json') else None
+
+if NOC:
+    def _nc_src(o):
+        return (f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow" target="_blank">'
+                f'{html.escape(o["src_name"])}</a>，查證於 {NOC["checked"]}。</p>')
+
+    _w = NOC['what']
+    _nc_what = (f'<h2>{html.escape(_w["title"])}</h2>'
+                f'<p class="lede">{html.escape(_w["body"])}</p>'
+                f'<blockquote class="q">{html.escape(_w["quote"])}'
+                f'<cite>{html.escape(_w["quote_zh"])}</cite></blockquote>'
+                f'<p class="lede"><b>{html.escape(_w["key"])}</b></p>' + _nc_src(_w))
+
+    _nc_amt = ('<div class="tw narrow"><table><thead><tr><th>情況</th><th>要付多少</th>'
+               '</tr></thead><tbody>'
+               + ''.join(f'<tr><td class="nm">{html.escape(a["case"])}</td>'
+                         f'<td class="lose"><b>{html.escape(a["amt"])}</b></td></tr>'
+                         for a in NOC['amounts'])
+               + '</tbody></table></div>')
+
+    _nc_tbl = ''.join(
+        f'<tr><td class="nm"><b><a href="{t["src"]}" rel="nofollow" target="_blank">'
+        f'{html.escape(t["name"])}</a></b></td>'
+        f'<td class="lose"><b>{html.escape(t["noc"])}</b></td>'
+        f'<td>{html.escape(t["cdw"])}</td>'
+        f'<td class="win"><b>{html.escape(t["waiver"])}</b></td>'
+        f'<td>{html.escape(t["extra"])}</td></tr>' for t in NOC['table'])
+
+    _m = NOC['math']
+    _nc_math = (f'<h2>{html.escape(_m["title"])}</h2>'
+                f'<p class="lede">{html.escape(_m["body"])}</p>'
+                f'<div class="tldr"><ul><li><b>{html.escape(_m["rule"])}</b></li>'
+                f'<li>{html.escape(_m["note"])}</li></ul></div>')
+
+    _e = NOC['exclusions']
+    _nc_ex = (f'<h2>{html.escape(_e["title"])}</h2>'
+              f'<p class="lede">{html.escape(_e["body"])}</p>'
+              f'<blockquote class="q">{html.escape(_e["quote"])}'
+              f'<cite>{html.escape(_e["quote_zh"])}</cite></blockquote>'
+              f'<p class="lede">{html.escape(_e["also"])}</p>' + _nc_src(_e))
+
+    _nc_notes = ''.join(f'<h3>{html.escape(n["t"])}</h3>'
+                        f'<p class="lede">{html.escape(n["d"])}</p>' for n in NOC['notes'])
+    _nc_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>'
+                     f'<br><small style="color:var(--dim)">{html.escape(u["why"])}</small></li>'
+                     for u in NOC['unverified'])
+
+    nc_faq = [
+     ('我買了免責補償，還要付 NOC 嗎？',
+      '要。免責補償免除的是保險的自負額（免責額），NOC 是另一筆營業補償。'
+      '兩家都把它們分成兩個商品賣——豐田的免責補償 1,100 円，要連 NOC 一起免除得買 1,650 円的安心 W 方案。'),
+     ('NOC 是多少錢？',
+      '查到的三家全國性業者金額一致：自己把車開回原店是 20,000 円，開不回去或沒還到原店是 50,000 円。'
+      '車子還能開卻丟在路邊，也算 50,000 円。'),
+     ('沒有出車禍也要付嗎？',
+      '可能要。官方原文寫的是「事故・盗難・故障・汚損等」造成車輛需要「修理・清掃」時。'
+      '嘔吐、飲料打翻、在禁菸車抽菸這些需要特別清潔的情況都在範圍內。'),
+     ('那個免除 NOC 的加購方案值得買嗎？',
+      '以豐田為例，加價是每 24 小時 550 円，租 5 天 2,750 円，而 NOC 最低是 20,000 円。'
+      '換算下來，只要你覺得這趟有一成四以上的機率會刮到、弄髒或故障就划算。'
+      'ORIX 的安心 Pack 是 660 円／24 小時，日本租車的 Full Support 是 2,200 円／日起，各家差很多。'),
+     ('買了免除方案就一定不用付嗎？',
+      '不一定。豐田寫明違反約款的禁止行為、故意的事故、被認定的汙損（含在禁菸車內吸菸）都不免除。'
+      '另外「車還能開卻丟在路邊」那一條，在免除方案的說明底下仍標著 50,000 円，'
+      '金額很大，租車時值得直接問櫃檯。'),
+     ('出了事故要先做什麼？',
+      '報警。豐田與 ORIX 都明列「沒有向警方報案、拿不出事故證明」是保險不適用的情形。'
+      '先跟租車公司談而沒報警，可能整份補償都用不上。'),
+    ]
+    nc_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in nc_faq)
+    nc_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in nc_faq]}, ensure_ascii=False)
+
+    nc_title = '日本租車的 NOC 是什麼？買了免責補償還是要賠 2 萬到 5 萬日圓'
+    nc_desc = ('日本租車帳單上最容易被忽略的一筆：NOC 營業補償，2 萬或 5 萬日圓，'
+               '而且免責補償不含它。官方原文寫「汚損」也算——不用撞車，把車弄髒到需要清潔就會產生。'
+               '這頁對照豐田、日本租車、ORIX 三家的金額與免除方案。')
+
+    write('japan-rentacar-noc/index.html',
+      head(nc_title, nc_desc, 'japan-rentacar-noc/',
+           '<script type="application/ld+json">' + nc_ld + '</script>')
+      + crumbs([('首頁', '/'), ('日本租車・NOC', None)]) + topnav()
+      + '<h1>日本租車：買了免責補償，為什麼還是要賠錢？</h1>'
+      + f'<p class="lede">{html.escape(NOC["thesis"])}</p>'
+      + f'<div class="today"><div class="tday">豐田、日本租車、ORIX 三家的官方條款原文，'
+        f'查證於 {NOC["checked"]}</div>'
+        f'<div class="tans">NOC 是<b>另一筆</b>，免責補償不含它</div>'
+        f'<div class="tsub">三家查到的金額一致：自己把車開回原店 20,000 円，'
+        f'開不回去或沒還到原店 50,000 円。而免責補償免除的只是保險自負額，兩者是分開賣的商品。</div>'
+        f'<div class="tbuf">最容易被忽略的是觸發條件。官方原文是「事故・盗難・故障・<b>汚損</b>等」'
+        f'造成車輛需要「修理・<b>清掃</b>」——不用撞車，嘔吐、飲料打翻、在禁菸車抽菸都算。'
+        f'而免除它的加購，豐田只要每 24 小時多 550 円。</div></div>'
+      + _nc_what
+      + '<h2>要付多少</h2>' + _nc_amt
+      + '<h2>三家的金額與免除方案</h2>'
+      + '<div class="tw"><table><thead><tr><th>業者</th><th>NOC</th><th>免責補償</th>'
+        '<th>連 NOC 一起免除</th><th>備註</th></tr></thead><tbody>'
+        + _nc_tbl + '</tbody></table></div>'
+      + '<p class="disc">紅色是你可能要付的，綠色是免掉它要花的錢。'
+        '三家的 NOC 金額一樣，但免除方案的價差不小——'
+        '豐田是在免責補償上加 550 円，ORIX 的安心 Pack 是 660 円／24 小時，'
+        '日本租車的 Full Support 則是 2,200 円／日起（內容也比較多）。</p>'
+      + _nc_math + _nc_ex
+      + '<h2>其他容易漏掉的</h2>' + _nc_notes
+      + '<h2>這頁查不到的部分</h2>'
+      + f'<ul class="lede">{_nc_un}</ul>'
+      + '<h2>常見問題</h2>' + nc_html
+      + cta('car', '沖繩', '那霸', '知道要加購什麼了，車還沒訂',
+            f'到 {P["car"]["brand"]} 比較沖繩的租車方案', track='noc')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-driving-licence/")}"><b>🚗 駕照日文譯本</b>'
+        f'<s>國際駕照在日本不能用</s></a>'
+      + f'<a class="ct" href="{U("/okinawa/")}"><b>沖繩機票</b>'
+        f'<s>沒車幾乎玩不了的地方</s></a>'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>不開車的話幾點以前要到車站</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📱 日本 eSIM 比較</b>'
+        f'<s>導航吃流量，用量要算進去</s></a></div>'
+      + f'<p class="disc">各家條款與金額隨時可能調整，本頁引用的原文查證於 {NOC["checked"]}，'
+        f'租車前請以該業者的官方頁面與現場貸渡約款為準。'
+        f'本頁只查了三家全國性業者，在地業者的條款可能不同。</p>'
+      + foot())
+    pages.append(('/japan-rentacar-noc/', 0.7))
+
 
 
 
