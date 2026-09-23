@@ -682,7 +682,7 @@ def crumbs(items,root='/'):
 def topnav(cur=''):
     """分類導覽。寬螢幕是一列下拉；767px 以下收成漢堡選單——
     導覽列在 375px 會折成三行、吃掉約 190px 的畫面高度，而它是 sticky 的。
-    首頁與機票特價留在外面（最常點），其餘四個分類收進 ☰，一行就放得下。
+    首頁與機票特價留在外面（最常點），其餘分類收進 ☰，一行就放得下。
 
     手機與桌機各有一份連結。多幾 KB，但換來純 CSS 切換：
     若靠一個 details 同時當漢堡與桌機容器，桌機必須有人把它打開，
@@ -694,14 +694,20 @@ def topnav(cur=''):
     origins = ''.join(link(f'/{sl}/', f'從{nm}出發') for sl, nm, _ in ORIGINS)
     area = ('<b>日本地區</b>' + regions + '<hr><b>台灣出發地</b>' + origins)
 
+    # 這一組只放「還在挑機票」時會看的東西。
+    # 上網、租車、末班車那些是訂完票之後的事，混進來使用者找不到。
     kinds = (link('/japan-flight-good-times/', '☀️ 早去晚回')
              + link('/deals/', '🔥 今日特價')
             + link('/japan-flight-baggage/', '🧳 廉航行李費')
-            + link('/japan-ski-baggage/', '🎿 雪具託運')
-            + link('/japan-airport-last-train/', '🚉 機場末班車')
+            + link('/japan-ski-baggage/', '🎿 雪具託運'))
+
+    # 訂完票之後才會看的東西。同一層放太多會找不到，所以分兩組小標。
+    trip = (link('/japan-airport-last-train/', '🚉 機場末班車')
+            + '<hr><b>上網與門號</b>'
             + link('/japan-esim/', '📱 日本 eSIM 比較')
             + link('/japan-esim-native-roaming/', '📱 原生還是漫遊')
             + link('/japan-sms-roaming/', '✉️ 台灣門號收簡訊')
+            + '<hr><b>租車自駕</b>'
             + link('/japan-driving-licence/', '🚗 駕照日文譯本')
             + link('/japan-rentacar-noc/', '🚗 租車的 NOC'))
 
@@ -724,7 +730,7 @@ def topnav(cur=''):
             link(f'/japan-credit-card/{c["slug"]}/', c['name'])
             for c in sorted(_cd, key=lambda x: -x['total'])[:6])
 
-    SEC = [('✈️ 航班地區', area), ('🕐 航班類型', kinds),
+    SEC = [('✈️ 航班地區', area), ('🕐 航班類型', kinds), ('🧭 行前準備', trip),
            ('🛍️ 旅日購物', shop), ('💳 旅日信用卡', card)]
 
     def menu(label, inner, end=False):
