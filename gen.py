@@ -700,7 +700,8 @@ def topnav(cur=''):
             + link('/japan-ski-baggage/', '🎿 雪具託運')
             + link('/japan-airport-last-train/', '🚉 機場末班車')
             + link('/japan-esim/', '📱 日本 eSIM 比較')
-            + link('/japan-esim-native-roaming/', '📱 原生還是漫遊'))
+            + link('/japan-esim-native-roaming/', '📱 原生還是漫遊')
+            + link('/japan-sms-roaming/', '✉️ 台灣門號收簡訊'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -2068,13 +2069,152 @@ if EG:
         f'<s>落地之後還回得去市區嗎</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
         f'<s>加購時機差一倍</s></a>'
-      + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 購物折扣</b>'
-        f'<s>12 家店的折價券實查</s></a>'
+      + f'<a class="ct" href="{U("/japan-sms-roaming/")}"><b>✉️ 台灣門號收簡訊</b>'
+        f'<s>關掉漫遊就收不到驗證碼</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a></div>'
       + '<p class="disc">本頁解釋的是規格層面的機制，不是任何特定商品的判定。'
         '各家 eSIM 實際採用哪種路由，請以供應商的正式回覆或你自己啟用後的實測為準。</p>'
       + foot())
     pages.append(('/japan-esim-native-roaming/', 0.7))
+
+# ---------- 台灣門號在日本收簡訊 ----------
+# docomo 的 3G 在 2026-03-31 收掉之後，這題的答案跟去年不一樣了：
+# 不開 VoLTE 不是「比較慢」，是完全註冊不上網路、收不到驗證碼。
+if os.path.exists('roaming-sms.json'):
+    RS2 = json.load(open('roaming-sms.json', encoding='utf-8'))
+else:
+    RS2 = None
+
+if RS2:
+    _rsm = '<br><small style="color:var(--dim)">'
+
+    def _rs_src(o, label='出處'):
+        s = (f'<p class="disc">{label}：<a href="{o["src"]}" rel="nofollow" target="_blank">'
+             f'{html.escape(o["src_name"])}</a>')
+        if o.get('src2'):
+            s += (f'、<a href="{o["src2"]}" rel="nofollow" target="_blank">'
+                  f'{html.escape(o["src2_name"])}</a>')
+        return s + f'，查證於 {RS2["checked"]}。</p>'
+
+    _wn = RS2['why_now']
+    _rs_why = (f'<h2>{html.escape(_wn["title"])}</h2>'
+               f'<p class="lede">{html.escape(_wn["body"])}</p>'
+               f'<blockquote class="q">{html.escape(_wn["quote"])}'
+               f'<cite>{html.escape(_wn["quote_zh"])}</cite></blockquote>'
+               + _rs_src(_wn))
+
+    _rs_rows = ''.join(
+        f'<tr><td><b>{html.escape(c["name"])}</b></td>'
+        f'<td>{html.escape(c["sms_in_short"])}</td>'
+        f'<td class="lose"><b>{html.escape(c["jp_volte"])}</b></td>'
+        f'<td>{html.escape(c["sms_in"])}</td></tr>' for c in RS2['carriers'])
+
+    _rs_cards = ''.join(
+        f'<h3>{html.escape(c["name"])}</h3>'
+        f'<blockquote class="q">{html.escape(c["quote"])}'
+        f'<cite>{html.escape(c["src_name"])}</cite></blockquote>'
+        f'<p class="lede">{html.escape(c["condition"])}</p>'
+        + _rs_src(c) for c in RS2['carriers'])
+
+    _rs_routes = ''.join(
+        f'<h3>做法 {html.escape(r["id"])}：{html.escape(r["title"])}</h3>'
+        f'<p class="lede">{html.escape(r["how"])}</p>'
+        '<div class="tw narrow"><table class="cmp"><tbody>'
+        f'<tr><th>好處</th><td>{html.escape(r["good"])}</td></tr>'
+        f'<tr><th>代價</th><td>{html.escape(r["bad"])}</td></tr>'
+        f'<tr><th>費用</th><td>{html.escape(r["cost"])}</td></tr>'
+        '</tbody></table></div>' for r in RS2['routes'])
+
+    _am = RS2['airplane_mode']
+    _rs_am = (f'<h2>{html.escape(_am["title"])}</h2>'
+              f'<p class="lede">{html.escape(_am["body"])}</p>' + _rs_src(_am))
+
+    _rs_check = ''.join(f'<li>{html.escape(x)}</li>' for x in RS2['checklist'])
+    _rs_myth = ''.join(f'<h3>{html.escape(m["m"])}</h3>'
+                       f'<p class="lede">{html.escape(m["t"])}</p>' for m in RS2['myths'])
+    _rs_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>'
+                     f'<br><small style="color:var(--dim)">{html.escape(u["why"])}</small></li>'
+                     for u in RS2['unverified'])
+
+    rs_faq = [
+     ('去日本，台灣門號關掉數據漫遊就能只收簡訊嗎？',
+      '不行。日本三大電信的 3G 已經全部關閉，最後一家 docomo 是 2026 年 3 月 31 日。'
+      '手機要靠 4G/5G 才註冊得上日本的網路，而三家台灣電信都寫明：沒有開通漫遊上網與 VoLTE，'
+      '就「無訊號亦無法使用漫遊語音、簡訊及上網」。關掉數據漫遊確實不會被收費，但你也收不到驗證碼。'),
+     ('那要怎麼收到銀行或 Google 的驗證碼？',
+      '兩條路。一是申請漫遊上網方案並開啟數據漫遊與 VoLTE，最穩但要多付一份網路錢。'
+      '二是開 VoLTE 與 Wi-Fi Calling，到日本後開飛航模式再單獨打開 Wi-Fi，'
+      '透過飯店或店家的 Wi-Fi 收簡訊——台灣大哥大官方寫這樣「計費方式同國內語音電話費率」，'
+      '遠傳寫「不會收取國際語音漫遊費用」。'),
+     ('在國外收簡訊要錢嗎？',
+      '一般簡訊不用。台灣大哥大官方寫「漫遊時收一般簡訊免費」。'
+      '會收錢的是接聽電話（漫遊費加國際電話費）、發送簡訊，以及多媒體簡訊。'),
+     ('為什麼一定要開飛航模式？只開 Wi-Fi Calling 不行嗎？',
+      '遠傳的官方頁面說明了原因：Wi-Fi 訊號不好的時候，通話會自動切回當地漫遊業者，'
+      '然後就產生國際漫遊話費。飛航模式是把這條退路封死。'),
+     ('我買了日本的 eSIM，它能收我台灣的簡訊嗎？',
+      '不能。日本的 eSIM 幾乎都是純數據，沒有電話號碼，也不能收台灣發來的簡訊。'
+      '驗證碼還是會發到你原本的台灣門號，所以這兩件事要分開處理。'),
+     ('開飛航模式的話，我的 eSIM 不是也一起關掉了嗎？',
+      '對，這是做法 B 最實際的限制。單人出遊的話，等於要在「用 eSIM 上網」跟「收簡訊」之間切換。'
+      '同行有兩支手機就好辦：一支用 eSIM 開熱點，另一支開飛航模式連那個熱點的 Wi-Fi 收簡訊。'),
+    ]
+    rs_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in rs_faq)
+    rs_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in rs_faq]}, ensure_ascii=False)
+
+    rs_title = '在日本收得到台灣的簡訊驗證碼嗎？2026 年 3 月之後答案變了'
+    rs_desc = ('日本三大電信的 3G 已全部關閉，最後一家 docomo 是 2026 年 3 月 31 日。'
+               '台灣門號要在日本收得到簡訊，手機一定要開 VoLTE——關掉數據漫遊就收不到。'
+               '這頁整理中華電信、台灣大哥大、遠傳的官方說法，以及不用付漫遊費的做法。')
+
+    write('japan-sms-roaming/index.html',
+      head(rs_title, rs_desc, 'japan-sms-roaming/',
+           '<script type="application/ld+json">' + rs_ld + '</script>')
+      + crumbs([('首頁', '/'), ('台灣門號在日本收簡訊', None)]) + topnav()
+      + '<h1>在日本，收得到台灣的簡訊驗證碼嗎？</h1>'
+      + f'<p class="lede">{html.escape(RS2["thesis"])}</p>'
+      + f'<div class="today"><div class="tday">三家電信與 docomo 的官方說法，'
+        f'查證於 {RS2["checked"]}</div>'
+        f'<div class="tans">關掉數據漫遊，在日本就<b>收不到簡訊</b>了</div>'
+        f'<div class="tsub">日本三大電信的 3G 已經全部關閉，最後一家 docomo 是 2026 年 3 月 31 日。'
+        f'手機要靠 4G/5G 才註冊得上日本的網路，而 4G 語音要 VoLTE。'
+        f'中華電信的原文是：沒有開通漫遊上網與 VoLTE，就「無訊號亦無法使用漫遊語音、簡訊及上網」。</div>'
+        f'<div class="tbuf">好消息是<b>收一般簡訊本來就免費</b>，'
+        f'而且有一條幾乎不用錢的路：開 VoLTE 與 Wi-Fi Calling，到日本開飛航模式再連 Wi-Fi。'
+        f'台灣大哥大官方寫這樣「計費方式同國內語音電話費率」。</div></div>'
+      + _rs_why
+      + '<h2>三家電信怎麼說</h2>'
+      + '<div class="tw"><table><thead><tr><th>電信商</th><th>收一般簡訊</th>'
+        '<th>日本需要 VoLTE</th><th>說明</th></tr></thead><tbody>'
+        + _rs_rows + '</tbody></table></div>'
+      + '<p class="disc">「日本需要 VoLTE」三家都是「要」，所以整欄標紅——'
+        '這不是選配，是沒開就沒訊號。以下是各家的原文。</p>'
+      + _rs_cards
+      + '<h2>兩條路，看你願意付什麼</h2>' + _rs_routes
+      + _rs_am
+      + '<h2>出國前後的檢查清單</h2>'
+      + f'<div class="tldr"><ul>{_rs_check}</ul></div>'
+      + '<h2>三個常見誤解</h2>' + _rs_myth
+      + '<h2>這頁查不到的部分</h2>'
+      + f'<ul class="lede">{_rs_un}</ul>'
+      + '<h2>常見問題</h2>' + rs_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📱 日本 eSIM 比較</b>'
+        f'<s>232 個方案的每日單價</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim-native-roaming/")}"><b>📱 原生還是漫遊</b>'
+        f'<s>會不會變成香港的網路</s></a>'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>落地之後還回得去市區嗎</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a></div>'
+      + f'<p class="disc">漫遊資費與服務條件由各電信商隨時調整，本頁引用的原文查證於 {RS2["checked"]}，'
+        f'出發前請以你自己電信商的官網或客服為準。手機型號與系統版本不同，'
+        f'VoLTE 與 Wi-Fi Calling 的設定位置也會不一樣。</p>'
+      + foot())
+    pages.append(('/japan-sms-roaming/', 0.7))
+
 
 # ---------- eSIM：方案比較與每日單價計算 ----------
 # 「NT$X 起」的起字是 1 天最小流量的價格。實際要用的天數與流量，價差 10 倍起跳。
@@ -2292,9 +2432,11 @@ document.addEventListener('DOMContentLoaded',function(){
       + '<h2>條款對照：純數據、熱點、降速、退款</h2>'
       + '<div class="tw"><table><thead><tr><th>商品</th><th>純數據</th><th>可開熱點</th>'
         '<th>超量降速</th><th>退款</th></tr></thead><tbody>' + _ep_terms + '</tbody></table></div>'
-      + '<p class="disc">「純數據」是指沒有日本電話號碼，不能打電話、不能收日本簡訊——'
-        '多數日本 eSIM 都是這樣，所以需要簡訊驗證的服務要靠你原本的台灣門號。'
-        '「未載」代表商品頁上找不到，不是「沒有」，查不到就不猜。</p>'
+      + f'<p class="disc">「純數據」是指沒有日本電話號碼，不能打電話、不能收日本簡訊——'
+        f'多數日本 eSIM 都是這樣，所以需要簡訊驗證的服務要靠你原本的台灣門號。'
+        f'但那件事沒那麼單純：日本的 3G 已經全關，台灣門號不開 VoLTE 在日本收不到簡訊，'
+        f'<a href="{U("/japan-sms-roaming/")}">整理在這一頁</a>。'
+        f'「未載」代表商品頁上找不到，不是「沒有」，查不到就不猜。</p>'
       + '<h2>逐頁查完才知道的三件事</h2>' + _ep_obs
       + '<h2>三個容易誤解的地方</h2>'
       + f'<h3>1. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][0])}</h3>'
