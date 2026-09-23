@@ -3589,7 +3589,9 @@ if os.path.exists('apple.json'):
         + (f'（中間匯率 {AP["rate"]["jpy_twd_mid"]} 加計約 {round(AP["rate"]["spread"]*100,1)}% 換匯成本）'
            if AP['rate'].get('jpy_twd_mid') else '')
         + f'　·　匯率更新 {AP["rate"]["quoted_at"]}'
-        + f'　·　售價取自 Apple 日本／台灣官網　·　資料更新於 {AP["updated"]}</p>'
+        + f'　·　售價取自 <a href="{AP["price_src"]}" rel="nofollow" target="_blank">'
+          f'Apple 日本</a>／<a href="{AP["price_src_tw"]}" rel="nofollow" target="_blank">'
+          f'台灣官網</a>，核對於 {AP["price_checked"]}</p>'
       + '<h2>今天的答案</h2>'
       + (f'<div class="today"><div class="tday">{AP["updated"]} · 換算匯率 {RATE}'
          f'（每 1 日圓 ≈ NT${RATE}）· 每日自動更新</div>'
