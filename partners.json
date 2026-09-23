@@ -1,148 +1,151 @@
 {
-  "_說明": "選擇標準：① 有繁體中文 ② 台灣使用者熟悉 ③ 才看分潤率。信任度優先於分潤率——導流到陌生平台的轉換率損失，遠大於分潤率差距。",
-  "_連結標示原則": "每個連結都標明會前往哪個平台（參考 Skyscanner 做法），讓使用者點擊前就知道目的地。",
-  "marker": "775639",
-  "site": {
-    "url": "https://eric-twhub.github.io",
-    "base": "",
-    "name": "台日機票速報",
-    "_base說明": "根目錄站（<帳號>.github.io）填空字串；專案站填 /repo名稱"
+ "_說明": "選擇標準：① 有繁體中文 ② 台灣使用者熟悉 ③ 才看分潤率。信任度優先於分潤率——導流到陌生平台的轉換率損失，遠大於分潤率差距。",
+ "_連結標示原則": "每個連結都標明會前往哪個平台（參考 Skyscanner 做法），讓使用者點擊前就知道目的地。",
+ "marker": "775639",
+ "site": {
+  "url": "https://eric-twhub.github.io",
+  "base": "",
+  "name": "台日機票速報",
+  "_base說明": "根目錄站（<帳號>.github.io）填空字串；專案站填 /repo名稱"
+ },
+ "partners": {
+  "flight": {
+   "brand": "Trip.com",
+   "icon": "✈️",
+   "label": "查看票價",
+   "rate": "國際機票 0.5%（完成 300 筆後 0.8%）",
+   "cookie": "網站 30 天／App 7 天",
+   "why": "繁中介面、TWD 計價、台灣有電視廣告與客服。分潤上限也高於 Aviasales",
+   "template": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828713",
+   "fallback": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD",
+   "affiliate": {
+    "Allianceid": "10585044",
+    "SID": "331341333",
+    "trip_sub3": "D19828713",
+    "_note": "Trip.com 聯盟平台產生；Allianceid=帳戶、SID=網站（台日機票速報）、trip_sub3=該連結識別碼。trip_sub1 留給本站填目的地代碼，用來看哪個航點帶來成交。"
+   },
+   "rate_table": {
+    "_source": "Trip.com 聯盟平台 › 幫助 › 佣金獎勵計劃，查證於 2026-09-16",
+    "酒店": "5%（0–199 筆）／6%（200–999）／7%（1000+）",
+    "機票_國際": "0.5%（0–299 筆）／0.8%（300+）",
+    "機票_中國國內": "USD 0.6 每張",
+    "機票+酒店": "2%（0–99）／2.25%（100–999）／2.5%（1000+）",
+    "火車票": "2%",
+    "當地玩樂": "4%（門票與演出 1.5%）",
+    "預售券": "5%",
+    "租車服務": "5%",
+    "機場接送": "5%",
+    "郵輪": "5%",
+    "_註": "機票分潤極低，站上的收益重心不應放在機票本身；同一個 Allianceid／SID 可用於酒店等其他品類，不必另外申請。"
+   }
   },
-  "partners": {
-    "flight": {
-      "brand": "Trip.com",
-      "icon": "✈️",
-      "label": "查看票價",
-      "rate": "國際機票 0.5%（完成 300 筆後 0.8%）",
-      "cookie": "網站 30 天／App 7 天",
-      "why": "繁中介面、TWD 計價、台灣有電視廣告與客服。分潤上限也高於 Aviasales",
-      "template": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828713",
-      "fallback": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD",
-      "affiliate": {
-        "Allianceid": "10585044",
-        "SID": "331341333",
-        "trip_sub3": "D19828713",
-        "_note": "Trip.com 聯盟平台產生；Allianceid=帳戶、SID=網站（台日機票速報）、trip_sub3=該連結識別碼。trip_sub1 留給本站填目的地代碼，用來看哪個航點帶來成交。"
-      },
-      "rate_table": {
-        "_source": "Trip.com 聯盟平台 › 幫助 › 佣金獎勵計劃，查證於 2026-09-16",
-        "酒店": "5%（0–199 筆）／6%（200–999）／7%（1000+）",
-        "機票_國際": "0.5%（0–299 筆）／0.8%（300+）",
-        "機票_中國國內": "USD 0.6 每張",
-        "機票+酒店": "2%（0–99）／2.25%（100–999）／2.5%（1000+）",
-        "火車票": "2%",
-        "當地玩樂": "4%（門票與演出 1.5%）",
-        "預售券": "5%",
-        "租車服務": "5%",
-        "機場接送": "5%",
-        "郵輪": "5%",
-        "_註": "機票分潤極低，站上的收益重心不應放在機票本身；同一個 Allianceid／SID 可用於酒店等其他品類，不必另外申請。"
-      }
-    },
-    "hotel": {
-      "brand": "Trip.com",
-      "icon": "🏨",
-      "label": "找{q}住宿",
-      "rate": "5%（0–199 筆）／6%（200–999）／7%（1000+）",
-      "cookie": "網站 30 天／App 7 天",
-      "why": "與機票同一個聯盟帳號，不必另外申請；酒店 5% 起跳，一筆三晚訂房的分潤約等於 19 張機票。",
-      "note": "cookie 僅 1 天，文案要引導立即訂房",
-      "template": "https://tw.trip.com/hotels/list?city={cid}&optionId={cid}&optionType=City&optionName={q}&display={q}&checkin={ci}&checkout={co}&crn=1&adult=2&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
-      "fallback": "https://www.agoda.com/zh-tw/search?city={q}",
-      "city_ids": {
-        "_note": "Trip.com 飯店列表需要數字城市 ID，公開 HTML 抓不到（整頁 JS 算繪），只能從聯盟後台的「酒店頁面」產生器取得。每個都用 city=<id> 實際打開驗過標題。沒有 ID 的城市自動退回 Agoda 的關鍵字連結。",
-        "東京": 228,
-        "大阪": 219,
-        "那霸": 92573,
-        "福岡": 248,
-        "札幌": 641,
-        "名古屋": 360
-      },
-      "_dates": "連結會帶上該頁最低票價的去回日期，落地就是那幾晚的房價，不必再自己選日期。沒有票價可帶時退回不帶日期的列表頁。",
-      "_agoda_fallback": {
-        "角色": "沒有 Trip.com 城市 ID 時的備援連結，非聯盟連結（未申請）",
-        "若要申請": "Affiliates.One 上的條件：完成購買獎金 4.5% CPS、Cookie 1 天、獎金確認 90 天",
-        "比較": "Trip.com 酒店 5% 起、Cookie 30 天，兩項都勝過 Agoda，所以主線維持 Trip.com",
-        "價格 API": "Agoda 有 Affiliate Lite／Long Tail Search API，但要走認證流程（選合作模式 → 與其團隊對接 → 取得站台憑證 → 送認證 → 測試通過），不是自助註冊，現階段流量規模談不下來",
-        "查證": "2026-09-16"
-      }
-    },
-    "activity": {
-      "brand": "Trip.com",
-      "icon": "🎫",
-      "label": "訂{q}行程與門票",
-      "rate": "4%（門票與演出 1.5%）",
-      "cookie": "網站 30 天／App 7 天",
-      "why": "與機票、住宿同一個聯盟帳號；當地玩樂 4%，是機票的八倍。",
-      "template": "https://tw.trip.com/things-to-do/list?pagetype=city&keyword={q}&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
-      "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword={q}"
-    },
-    "esim": {
-      "brand": "Klook",
-      "icon": "📱",
-      "label": "買日本網卡 / eSIM",
-      "rate": "2-5%",
-      "cookie": "7-30 天",
-      "why": "台灣人買日本網卡的首選平台，商品選擇最多",
-      "template": "TODO_貼上_KLOOK_分潤連結",
-      "fallback": "https://www.klook.com/zh-TW/search/?query=日本%20eSIM%20網卡",
-      "_status": "Klook 分潤尚未申請；Trip.com 無 eSIM 品類（/esim/ 為 404），暫時維持純導流"
-    },
-    "transport": {
-      "brand": "Trip.com",
-      "icon": "🚄",
-      "label": "買 JR Pass 與日本交通票",
-      "rate": "2%",
-      "cookie": "網站 30 天／App 7 天",
-      "why": "火車票 2%。日本鐵路票券本來就是看完機票的下一步。",
-      "template": "https://tw.trip.com/trains/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
-      "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword=JR%20PASS%20{q}"
-    },
-    "car": {
-      "brand": "Trip.com",
-      "icon": "🚗",
-      "label": "租{q}的車",
-      "rate": "5%",
-      "cookie": "網站 30 天／App 7 天",
-      "why": "租車 5%，非都會區航點（北海道、九州、離島）用得上。",
-      "template": "https://tw.trip.com/carhire/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
-      "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20租車"
-    },
-    "transfer": {
-      "brand": "Trip.com",
-      "icon": "🚕",
-      "label": "訂{q}機場接送",
-      "rate": "5%",
-      "cookie": "網站 30 天／App 7 天",
-      "why": "機場接送 5%。",
-      "template": "https://tw.trip.com/airport-transfers/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
-      "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20機場接送"
-    },
-    "flight2": {
-      "brand": "易遊網",
-      "icon": "🔍",
-      "label": "比價",
-      "rate": "待確認",
-      "cookie": "待確認",
-      "why": "台灣最大 OTA，含旅行社切位票（Trip.com 與 Aviasales 都看不到的貨源）",
-      "network": "聯盟網 Affiliates.One（與 Travelpayouts 不同，需另外申請）",
-      "template": "TODO_加入聯盟網後貼上_易遊網_分潤連結",
-      "fallback": "https://flight.eztravel.com.tw/activity/cheap-flights-to-japan/"
-    }
+  "hotel": {
+   "brand": "Trip.com",
+   "icon": "🏨",
+   "label": "找{q}住宿",
+   "rate": "5%（0–199 筆）／6%（200–999）／7%（1000+）",
+   "cookie": "網站 30 天／App 7 天",
+   "why": "與機票同一個聯盟帳號，不必另外申請；酒店 5% 起跳，一筆三晚訂房的分潤約等於 19 張機票。",
+   "note": "cookie 僅 1 天，文案要引導立即訂房",
+   "template": "https://tw.trip.com/hotels/list?city={cid}&optionId={cid}&optionType=City&optionName={q}&display={q}&checkin={ci}&checkout={co}&crn=1&adult=2&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+   "fallback": "https://www.agoda.com/zh-tw/search?city={q}",
+   "city_ids": {
+    "_note": "Trip.com 飯店列表需要數字城市 ID，公開 HTML 抓不到（整頁 JS 算繪），只能從聯盟後台的「酒店頁面」產生器取得。每個都用 city=<id> 實際打開驗過標題。沒有 ID 的城市自動退回 Agoda 的關鍵字連結。",
+    "東京": 228,
+    "大阪": 219,
+    "那霸": 92573,
+    "福岡": 248,
+    "札幌": 641,
+    "名古屋": 360
+   },
+   "_dates": "連結會帶上該頁最低票價的去回日期，落地就是那幾晚的房價，不必再自己選日期。沒有票價可帶時退回不帶日期的列表頁。",
+   "_agoda_fallback": {
+    "角色": "沒有 Trip.com 城市 ID 時的備援連結，非聯盟連結（未申請）",
+    "若要申請": "Affiliates.One 上的條件：完成購買獎金 4.5% CPS、Cookie 1 天、獎金確認 90 天",
+    "比較": "Trip.com 酒店 5% 起、Cookie 30 天，兩項都勝過 Agoda，所以主線維持 Trip.com",
+    "價格 API": "Agoda 有 Affiliate Lite／Long Tail Search API，但要走認證流程（選合作模式 → 與其團隊對接 → 取得站台憑證 → 送認證 → 測試通過），不是自助註冊，現階段流量規模談不下來",
+    "查證": "2026-09-16"
+   }
   },
-  "_已排除及原因": {
-    "Aviasales": "1.1-1.5%。俄系比價站，台灣使用者不認識，有被誤認為詐騙的風險",
-    "Yesim": "18% 分潤很高，但台灣沒有知名度、無繁中，實際轉換率會極低",
-    "Saily": "15%，同上",
-    "GetYourGuide": "8%，歐美平台，台灣人訂日本行程不會用",
-    "DiscoverCars": "23-54% 分潤最高，但台灣人租日本車不會用這個平台",
-    "Omio": "6%，歐洲交通平台，不是台灣人買 JR Pass 的管道",
-    "Vio.com": "40-64%，台灣無知名度",
-    "Booking.com": "訂房可考慮，但機票分潤是 €1.5 固定且 cookie 只有 One session"
+  "activity": {
+   "brand": "Trip.com",
+   "icon": "🎫",
+   "label": "訂{q}行程與門票",
+   "rate": "4%（門票與演出 1.5%）",
+   "cookie": "網站 30 天／App 7 天",
+   "why": "與機票、住宿同一個聯盟帳號；當地玩樂 4%，是機票的八倍。",
+   "template": "https://tw.trip.com/things-to-do/list?pagetype=city&keyword={q}&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+   "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword={q}"
   },
-  "widgets": {
-    "_說明": "Klook 行程 widget（Travelpayouts 產生）。{city_id} 由 gen.py 依頁面自動帶入。",
-    "_sub_id": "若要分頁面追蹤成效，請在 Travelpayouts widget 設定頁填 SUB ID 後重新產生，把新網址貼回這裡（勿自行猜測參數格式，猜錯會導致完全無法追蹤）",
-    "klook_tours": "<script async src=\"https://tpembd.com/content?currency=TWD&trs=572168&shmarker=775639&locale=zh-TW&city_id={city_id}&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497\" charset=\"utf-8\"></script>"
+  "esim": {
+   "brand": "Klook",
+   "icon": "📱",
+   "label": "買日本網卡 / eSIM",
+   "rate": "未申請，官方未公開費率表",
+   "cookie": "7-30 天",
+   "why": "台灣人買日本網卡的首選平台，商品選擇最多",
+   "template": "TODO_貼上_KLOOK_分潤連結",
+   "fallback": "https://www.klook.com/zh-TW/search/?query=日本%20eSIM%20網卡",
+   "_status": "分潤尚未申請，目前是純導流零收益（template 仍為 TODO）。Trip.com 無 eSIM 品類（/esim/ 為 404），所以這塊只能走 Klook。",
+   "apply": "https://affiliate.klook.com/",
+   "apply_note": "官方直接申請（不必一定走聯盟網路）。條件：必須擁有網站或部落格——本站符合。多個網站可各自取得獨立的 Affiliate ID。聯絡信箱 affiliate@klook.com。Klook 持有台灣旅行業執照 甲 03950。查證於 2026-09-23。",
+   "rate_hearsay": "第三方（Involve Asia 部落格）稱 eSIM 20%、行程與飯店 6.5%、多數品項 5%、禮品卡 2%；cookie 30 天（飯店與租車 7 天）；審核約 2 個工作天。★ 這組數字非官方來源，核准後要以後台實際費率為準。"
+  },
+  "transport": {
+   "brand": "Trip.com",
+   "icon": "🚄",
+   "label": "買 JR Pass 與日本交通票",
+   "rate": "2%",
+   "cookie": "網站 30 天／App 7 天",
+   "why": "火車票 2%。日本鐵路票券本來就是看完機票的下一步。",
+   "template": "https://tw.trip.com/trains/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+   "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword=JR%20PASS%20{q}"
+  },
+  "car": {
+   "brand": "Trip.com",
+   "icon": "🚗",
+   "label": "租{q}的車",
+   "rate": "5%",
+   "cookie": "網站 30 天／App 7 天",
+   "why": "租車 5%，非都會區航點（北海道、九州、離島）用得上。",
+   "template": "https://tw.trip.com/carhire/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+   "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20租車"
+  },
+  "transfer": {
+   "brand": "Trip.com",
+   "icon": "🚕",
+   "label": "訂{q}機場接送",
+   "rate": "5%",
+   "cookie": "網站 30 天／App 7 天",
+   "why": "機場接送 5%。",
+   "template": "https://tw.trip.com/airport-transfers/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+   "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20機場接送"
+  },
+  "flight2": {
+   "brand": "易遊網",
+   "icon": "🔍",
+   "label": "比價",
+   "rate": "待確認",
+   "cookie": "待確認",
+   "why": "台灣最大 OTA，含旅行社切位票（Trip.com 與 Aviasales 都看不到的貨源）",
+   "network": "聯盟網 Affiliates.One（與 Travelpayouts 不同，需另外申請）",
+   "template": "TODO_加入聯盟網後貼上_易遊網_分潤連結",
+   "fallback": "https://flight.eztravel.com.tw/activity/cheap-flights-to-japan/"
   }
+ },
+ "_已排除及原因": {
+  "Aviasales": "1.1-1.5%。俄系比價站，台灣使用者不認識，有被誤認為詐騙的風險",
+  "Yesim": "18% 分潤很高，但台灣沒有知名度、無繁中，實際轉換率會極低",
+  "Saily": "15%，同上",
+  "GetYourGuide": "8%，歐美平台，台灣人訂日本行程不會用",
+  "DiscoverCars": "23-54% 分潤最高，但台灣人租日本車不會用這個平台",
+  "Omio": "6%，歐洲交通平台，不是台灣人買 JR Pass 的管道",
+  "Vio.com": "40-64%，台灣無知名度",
+  "Booking.com": "訂房可考慮，但機票分潤是 €1.5 固定且 cookie 只有 One session"
+ },
+ "widgets": {
+  "_說明": "Klook 行程 widget（Travelpayouts 產生）。{city_id} 由 gen.py 依頁面自動帶入。",
+  "_sub_id": "若要分頁面追蹤成效，請在 Travelpayouts widget 設定頁填 SUB ID 後重新產生，把新網址貼回這裡（勿自行猜測參數格式，猜錯會導致完全無法追蹤）",
+  "klook_tours": "<script async src=\"https://tpembd.com/content?currency=TWD&trs=572168&shmarker=775639&locale=zh-TW&city_id={city_id}&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497\" charset=\"utf-8\"></script>"
+ }
 }
