@@ -5047,7 +5047,7 @@ if os.path.exists('cards.json'):
   $('kcmp').innerHTML='<table class="cmp"><thead><tr>'+th+'</tr></thead><tbody>'
    + tr('實拿回饋',function(r){return (r.v===top&&rows.length>1?'<span class="pw">最高</span>':'')
         +'<b>NT$'+jfmt(r.v)+'</b>';})
-   + (anyDep? tr('沒完成前提時',function(r){
+   + (anyDep? tr('未加碼時回饋',function(r){
         // 這一列要能直接互相比大小，所以每一格都印金額，
         // 「不受影響」只是附註，不是拿來取代數字的
         return (r.bv===btop&&rows.length>1?'<span class="pw">最高</span>':'')
@@ -5068,7 +5068,7 @@ if os.path.exists('cards.json'):
        return (r.c.lv==='none') ? r.c.reg : '<i class="pc">'+r.c.reg+'</i>';})
    + '</tbody></table>'
    + '<p class="disc">「實拿回饋」是<b>已經完成最底下「加碼前提」那一列</b>的算法；'
-   + '「沒完成前提時」是沒登錄到、忘了切 App 或沒設好自動扣繳，只剩基本回饋的金額。'
+   + '「未加碼時回饋」是沒登錄到、忘了切 App 或沒設好自動扣繳，只剩基本回饋的金額。'
    + '標「不受影響」的卡是本來就沒有加碼、或不需要任何前提。</p>';
 
   if(y<=0){$('kv').className='cv';$('kv').textContent='輸入金額後比較';return;}
@@ -5090,7 +5090,7 @@ if os.path.exists('cards.json'):
   if(anyDep&&rows.length>1){
    var bbest=rows.filter(function(r){return r.bv===btop})[0];
    if(bbest.c.n!==best.c.n)
-     msg+='　·　⚠ 沒完成前提的話，最高變成 '+bbest.c.n+' NT$'+jfmt(btop);
+     msg+='　·　⚠ 沒拿到加碼的話，最高變成 '+bbest.c.n+' NT$'+jfmt(btop);
   }
   $('kv').className='cv '+(capped.length?'tw':'jp');
   $('kv').textContent=msg;
