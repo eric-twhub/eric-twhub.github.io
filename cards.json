@@ -50,7 +50,7 @@
    "src": "https://www.dbs.com.tw/personal-zh/cards/dbs_eco/index.html",
    "src_name": "星展官方卡片頁",
    "good": "整趟日本消費約在 15,000 元以內，而且都在當地實體店面付款的人。",
-   "bad": "會用海外訂房平台或網購的人——非面對面交易不算加碼，只剩 1%。",
+   "bad": "會用海外訂房平台或網購的人：非面對面交易不算加碼，只剩 1%。",
    "steps": [
     "以實體卡或 Apple Pay／Samsung Pay 在當地實體門市面對面刷卡",
     "結帳選日圓，帳單上要看得到國外交易手續費",
@@ -111,7 +111,7 @@
    "period": "依國泰世華公告",
    "src": "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/product/japancoupons/index.html",
    "src_name": "國泰世華官方活動頁",
-   "good": "已經有國泰台幣帳戶、會登入 CUBE App 並設定自動扣繳卡款的人——這樣才拿得到 3% 以上。",
+   "good": "已經有國泰台幣帳戶、會登入 CUBE App 並設定自動扣繳卡款的人：這樣才拿得到 3% 以上。",
    "bad": "只辦卡、沒有國泰帳戶的人。權益等級只有 2%，低於台新的 3.3%。",
    "steps": [
     "在 CUBE App 於消費當日切換至「趣旅行」",
@@ -253,7 +253,7 @@
    "reg_race": true,
    "src": "https://www.fubon.com/banking/Personal/credit_card/all_card/omiyage/omiyage.htm",
    "src_name": "台北富邦官方卡片頁",
-   "good": "會用 Apple Pay 儲值 Suica／PASMO 的人——交通卡合計最高 10%，是目前檯面上最高的一檔。",
+   "good": "會用 Apple Pay 儲值 Suica／PASMO 的人：交通卡合計最高 10%，是目前檯面上最高的一檔。",
    "bad": "懶得每月登錄的人。兩項加碼分兩個日期、各有名額，漏掉就只剩 3%。",
    "steps": [
     "每月 18 日 16:00 登錄交通卡加碼（限量 10,000 名）",
@@ -332,7 +332,7 @@
    "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/cashcardJCB.html",
    "src_name": "永豐官方卡片頁",
    "good": "單季日本消費會超過 NT$20,000 的人。跨過門檻後季度加碼直接拿滿 1,000 元。",
-   "bad": "消費零散、單季湊不到 2 萬的人——季度加碼是門檻制，沒到就完全沒有。",
+   "bad": "消費零散、單季湊不到 2 萬的人：季度加碼是門檻制，沒到就完全沒有。",
    "steps": [
     "每季登錄日韓泰加碼（Q4 為 2026/10/2 10:00，限量 5,000 名）",
     "設定電子帳單與自動扣繳，才享日本實體加碼 3%",
@@ -412,7 +412,7 @@
    "src": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html",
    "src_name": "中國信託官方卡片頁",
    "good": "本來就在收 LINE POINTS、且這趟消費不多的人。加碼上限 450 點，刷約兩萬就滿。",
-   "bad": "現在才要辦的人——這檔加碼 2026/9/30 就結束，之後只剩 2.8%。",
+   "bad": "現在才要辦的人：這檔加碼 2026/9/30 就結束，之後只剩 2.8%。",
    "steps": [
     "每週二開放登錄，限量 3,000 名，要搶",
     "以實體卡或行動支付面對面交易",
