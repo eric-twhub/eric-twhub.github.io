@@ -3102,6 +3102,43 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 </script>""")
 
+    # ---- 評價的中立分析：星等一定要連樣本數一起看 ----
+    _RA = _ES.get('_評價分析') or {}
+    _ra_items = _RA.get('items') or []
+
+    def _ra_bar(it):
+        # 用區間寬度反映「這個星等有多可信」——寬的那條就是沒什麼資訊量
+        w = it['ci_width']
+        cls = 'win' if w <= 0.05 else ('lose' if w >= 0.30 else '')
+        return ('<td class="' + cls + '">' if cls else '<td>') + \
+               f'{it["ci"][0]:.2f} – {it["ci"][1]:.2f}' + \
+               '<br><small>寬 ' + f'{w:.2f}' + '</small></td>'
+
+    _ra_rows = ''.join(
+        '<tr><td class="nm"><b>' + html.escape(it['name']) + '</b><br>'
+        '<small>' + html.escape(it['clue'] or '') + '</small></td>'
+        '<td><b>' + str(it['rating']) + '</b></td>'
+        '<td>' + f'{it["reviews"]:,}' + '</td>'
+        + _ra_bar(it)
+        + ('<td><b>NT$' + str(it['price_5d_1gb']) + '</b></td>'
+           if it['price_5d_1gb'] else '<td class="dimcell">沒有這個組合</td>')
+        + '</tr>' for it in _ra_items)
+
+    _ra_tbl = ('<div class="tw"><table><tr><th>商品</th><th>星等</th><th>則數</th>'
+               '<th>95% 區間</th><th>5 天<br>每天 1GB</th></tr>'
+               + _ra_rows + '</table></div>')
+
+    def _ra_card(it):
+        st = ''.join('<li>' + html.escape(x) + '</li>' for x in it['strengths'])
+        ca = ''.join('<li>' + html.escape(x) + '</li>' for x in it['cautions'])
+        return ('<div class="pp"><b>' + html.escape(it['name']) + '</b>'
+                '<p><b>強項</b></p><ul>' + st + '</ul>'
+                '<p><b>要注意</b></p><ul>' + ca + '</ul>'
+                '<p class="disc">' + html.escape(it['suits']) + '</p></div>')
+
+    _ra_cards = '<div class="cmp">' + ''.join(_ra_card(it) for it in _ra_items) + '</div>'
+    _ra_concl = ''.join('<li>' + html.escape(x) + '</li>' for x in (_RA.get('_結論') or []))
+
     ep_title = '日本 eSIM 怎麼選：232 個方案的每日單價比較（含吃到飽的真相）'
     ep_desc = ('「NT$11 起」的起字是 1 天最小流量的價格，跟你實際要用的差三十幾倍。'
                '這頁把 Klook 上五個日本 eSIM 商品、232 個方案的價格拆成每日單價，'
@@ -3164,6 +3201,27 @@ document.addEventListener('DOMContentLoaded',function(){
         f'所以提早幾天買不會浪費天數。但要注意另一個時限：'
         f'「Softbank 小資專業型」寫明收到 QR Code 後要在 29 天內完成安裝。'
         f'也就是說可以提早買，但不能提早太久。</p>'
+      + '<h2>評價要連樣本數一起看</h2>'
+      + '<p class="lede">五個商品的星等從 4.2 到 4.7，但則數從 255 到 47,750 差了 187 倍。'
+        '把平均星等換算成信賴區間之後，有些差距是真的，有些完全是雜訊。'
+        '最後一欄是同一個需求（五天、每天 1GB）下各自最便宜的方案，'
+        '把「評價好不好」和「要付多少」擺在一起看。</p>'
+      + _ra_tbl
+      + '<p class="disc">算法：Klook 只公布平均星等與則數，沒有星等分布。'
+        '這裡把平均星等當成 (r−1)/4 的比例，用 Wilson 區間算 95% 信賴區間再換算回星等。'
+        '這是近似——嚴謹做法要用分布，但足以回答「這個 0.1 的差距是不是雜訊」。'
+        '區間越寬代表這個星等越不可信：寬 0.02 的那個幾乎沒有不確定性，'
+        '寬 0.38 的那個等於沒告訴你任何事。</p>'
+      + '<h2>五個商品各自強在哪、弱在哪</h2>'
+      + '<p class="lede">依評價則數由多到少排。每個商品的弱點與強項並列，'
+        '包含賣最好的那一個。</p>'
+      + _ra_cards
+      + '<h2>把上面的東西加起來</h2>'
+      + '<ul class="lede">' + _ra_concl + '</ul>'
+      + '<p class="disc"><b>利益揭露：</b>這五個商品全部來自 Klook，'
+        '你透過本站連結完成購買時本站可獲得分潤，你的價格不會改變。'
+        '正因為如此，上面每個商品都列了弱點，而且本頁沒有給出「推薦這一個」的結論——'
+        '五個商品沒有一個在所有項目都贏，選哪個取決於你在意什麼。</p>'
       + '<h2>常見問題</h2>' + ep_html
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-esim-native-roaming/")}"><b>📱 原生還是漫遊</b>'
