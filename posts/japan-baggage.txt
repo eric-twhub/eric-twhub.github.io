@@ -27,7 +27,7 @@ https://eric-twhub.github.io/japan-flight-baggage/
 
 用本站的即時票價實際算（廉航最低 ＋ 來回 20kg 託運 NT$1,900，對照一般航空最低）：
 
-・沖繩　價差 NT$4,682 → NT$2,782
+・沖繩　價差 NT$4,673 → NT$2,773
 ・東京　價差 NT$2,736 → NT$836
 ・大阪　價差 NT$4,249 → NT$2,349
 

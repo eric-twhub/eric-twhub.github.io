@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-24-taichung-okinawa",
- "generated": "2026-09-24 20:03",
+ "generated": "2026-09-24 22:47",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "LJ",
   "airname": "真航空",
   "cls": "lcc",
-  "price": 7655,
+  "price": 7648,
   "dep": "2026-10-06",
   "ret": "2026-10-13",
   "dept": "10:40",
@@ -21,12 +21,12 @@
   "dur": 1555,
   "dur_to": 295,
   "gate": "Trip.com",
-  "url": "https://www.aviasales.com/search/RMQ0610OKA13101?t=LJ17912832001791374700001465RMQICNOKA17919180001791919800000090OKARMQ_c8d2aecb23c51bcc2bf64d5d9269e2f6_20453&search_date=24092026&expected_price_uuid=01a0d27e-ea1b-8030-2b35-55d6a0e6b3b8&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=f9aDNOwi4kRy5phrJV7GTQ&expected_price_source=share&expected_price_currency=twd&expected_price=7655&marker=775639"
+  "url": "https://www.aviasales.com/search/RMQ0610OKA13101?t=LJ17912832001791374700001465RMQICNOKA17919180001791919800000090OKARMQ_c8d2aecb23c51bcc2bf64d5d9269e2f6_20453&search_date=24092026&expected_price_uuid=01a0d27e-ea1b-8030-2b35-55d6a0e6b3b8&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=f9aDNOwi4kRy5phrJV7GTQ&expected_price_source=share&expected_price_currency=twd&expected_price=7648&marker=775639"
  },
  "reasons": [
-  "10 月出發的票，每天最便宜的平均要 NT$11,126（23 天有紀錄），這張低 31%"
+  "10 月出發的票，每天最便宜的平均要 NT$11,124（23 天有紀錄），這張低 31%"
  ],
- "med": 12091,
+ "med": 12079,
  "n_rt": 81,
  "others": [
   {
