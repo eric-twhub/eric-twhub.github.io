@@ -762,10 +762,27 @@ def topnav(cur=''):
             + '</nav>')
 
 
+def _partner_line():
+    """頁尾的合作平台宣告，直接從 partners.json 產生。
+
+    先前這行是手寫的，寫著「住宿 Agoda、行程與交通票 KKday」，但實際上
+    那幾項都是 Trip.com——夥伴換過之後文字沒跟著改，等於在每一頁上都給了
+    不實的揭露。改成從資料產生，就不會再漂移。"""
+    LABEL = {'flight': '機票', 'hotel': '住宿', 'activity': '行程與門票',
+             'transport': '交通票', 'car': '租車', 'transfer': '機場接送',
+             'esim': '網卡與 eSIM'}
+    by_brand = {}
+    for k, name in LABEL.items():
+        b = (P.get(k) or {}).get('brand')
+        if b:
+            by_brand.setdefault(b, []).append(name)
+    return '、'.join(f'{"／".join(v)} {b}' for b, v in by_brand.items())
+
+
 def foot():
     return f'''<p class="note">
 票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
-實際訂購由合作平台完成：機票 Trip.com、住宿 Agoda、行程與交通票 KKday、網卡與租車 Klook。<br>
+實際訂購由合作平台完成：{_partner_line()}。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
 最後更新 {NOWS}　·　<a href="{U("/")}">回首頁</a>
 </p></div>{SF_JS}{NAV_JS}</body></html>'''
