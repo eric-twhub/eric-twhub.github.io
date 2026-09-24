@@ -804,7 +804,8 @@ def topnav(cur=''):
             + link('/japan-driving-licence/', '🚗 駕照日文譯本')
             + link('/japan-rentacar-noc/', '🚗 租車的 NOC')
             + '<hr><b>出事之前</b>'
-            + link('/japan-travel-insurance/', '🛡️ 旅平險怎麼賠'))
+            + link('/japan-travel-insurance/', '🛡️ 旅平險怎麼賠')
+            + link('/japan-card-insurance/', '💳 刷卡送的保險賠什麼'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -2742,6 +2743,8 @@ if INS:
       + f'<ul class="lede">{_in_un}</ul>'
       + '<h2>常見問題</h2>' + in_html
       + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-card-insurance/")}"><b>💳 刷卡送的保險賠什麼</b>'
+        f'<s>15 張卡逐條對照</s></a>'
       + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
         f'<s>刷哪張回饋最高</s></a>'
       + f'<a class="ct" href="{U("/japan-driving-licence/")}"><b>🚗 駕照日文譯本</b>'
@@ -2755,6 +2758,171 @@ if INS:
         f'請以金管會、保險局與健保署的最新公告為準。</p>'
       + foot())
     pages.append(('/japan-travel-insurance/', 0.7))
+
+# ---------- 刷卡送的保險：逐卡對照 ----------
+# 這頁的價值在跨來源對照：十家銀行各自把保額散在不同頁面、不同卡等分組裡，
+# 沒有人能用一次搜尋回答「我這張卡受傷看醫生賠多少」。AI 摘要也答不完。
+if os.path.exists('card-insurance.json'):
+    CI = json.load(open('card-insurance.json', encoding='utf-8'))
+
+    def _ci_money(v):
+        if v is None:
+            return '<td class="lose"><b>無</b></td>'
+        if isinstance(v, str):
+            return '<td>' + html.escape(v) + '</td>'
+        if v >= 10000000:
+            return '<td>' + f'{v // 10000:,}' + ' 萬</td>'
+        if v >= 10000:
+            return '<td>' + f'{v // 10000:,}' + ' 萬</td>'
+        return '<td>' + f'{v:,}' + '</td>'
+
+    def _ci_med(v):
+        # 傷害醫療是最可能用到的一格，單獨上色
+        if v is None:
+            return '<td class="lose"><b>沒有</b></td>'
+        cls = ' class="win"' if v >= 1000000 else ''
+        return '<td' + cls + '><b>' + f'{v // 10000:,}' + ' 萬</b></td>'
+
+    _ci_rows = ''
+    for r in CI['comparison']:
+        nm = html.escape(r['name']) + (
+            '<sup>†</sup>' if r.get('note') else '')
+        sub = '<small>' + html.escape(r['bank']) + '</small>'
+        if r.get('unknown'):
+            _ci_rows += ('<tr><td class="nm"><b>' + nm + '</b><br>' + sub + '</td>'
+                         '<td colspan="6" class="dimcell">卡等未確認，不列數字</td></tr>')
+            continue
+        _ci_rows += ('<tr><td class="nm"><b>' + nm + '</b><br>' + sub + '</td>'
+                     + _ci_med(r['傷害醫療'])
+                     + _ci_money(r['身故失能'])
+                     + _ci_money(r['班機延誤'])
+                     + _ci_money(r['行李遺失'])
+                     + _ci_money(r['行程取消或縮短'])
+                     + _ci_money(r['海外全程']) + '</tr>')
+
+    _ci_tbl = ('<div class="tw"><table><tr>'
+               '<th>卡片</th><th>受傷看醫生<br><small>傷害醫療</small></th>'
+               '<th>身故失能</th><th>班機延誤</th><th>行李遺失</th>'
+               '<th>行程取消<br>或縮短</th><th>海外全程</th></tr>'
+               + _ci_rows + '</table></div>')
+
+    _ci_cond = ''.join(
+        '<details class="faq"><summary>' + html.escape(k) + '</summary><div>'
+        + html.escape(v) + '</div></details>'
+        for k, v in CI['_十家共通的生效條件'].items())
+
+    _ci_un = ''.join(
+        '<li><b>' + html.escape(u['what']) + '</b>——' + html.escape(u['why'])
+        + (('　<i>影響：' + html.escape(u['影響']) + '</i>') if u.get('影響') else '')
+        + '</li>' for u in CI['unverified'])
+
+    ci_faq = [
+     ('我刷機票送的保險，在日本生病看醫生會賠嗎？',
+      '不會。十家銀行沒有一家的刷卡送保險含「海外突發疾病醫療」。'
+      '玉山官網寫得最直白：「旅遊平安險未承保疾病／突發疾病醫療保險」。'
+      '這些保險賠的是「意外傷害」，定義是非由疾病引起之外來突發事故。'
+      '吃壞肚子、感冒、舊疾發作都不在內。'),
+     ('那受傷呢？跌倒骨折會賠嗎？',
+      '看你哪張卡，而且差距很大。國泰世華 CUBE 卡與第一銀行 iLEO 卡是 100 萬，'
+      '永豐 30 萬，玉山、星展、聯邦、滙豐 10 萬，台新 Richart 5 萬；'
+      '台北富邦 J 卡、中信 LINE Pay 卡與 uniopen 卡則是完全沒有傷害醫療給付。'
+      '但還有兩個折扣：只保在公共運輸工具上與往返機場五小時內，而且非健保身分只賠七成。'),
+     ('「非健保身分只賠七成」是什麼意思？',
+      '玉山與永豐的條款都逐字寫明：未以全民健康保險身分治療時，'
+      '保險公司就實際醫療費用的 70% 給付。在日本看病本來就不是健保身分，'
+      '所以那一格保額實際上要先打七折再算。'),
+     ('用哩程換的機票有保障嗎？',
+      '沒有。滙豐明文把「哩程兌換」寫進不保清單，其他家寫的是「點數、兌換券、優待憑證」抵付票款。'
+      '只刷機場稅或兵險附加費的那種換票方式，十家都明文排除。'),
+     ('搭捷運去機場的路上出事，算在保障內嗎？',
+      '不算。星展、富邦、滙豐都把大眾捷運系統、公車與纜車排除在「公共運輸工具」之外，'
+      '中信連計程車都列進不算的清單。台新則是在往返機場的條文裡括號排除機車與腳踏車。'),
+     ('班機取消，航空公司把錢退給我了，保險還賠嗎？',
+      '聯邦的條款寫得最狠：「或由航空業者依約退費導致刷卡交易不存在者亦同」——'
+      '退費讓刷卡交易消失，保障就跟著消失。其他家寫的是取消或刷退後不負理賠之責。'),
+     ('這頁可以當作投保建議嗎？',
+      '不行。本站不是保險業者也不是保險經紀人。這頁整理的是十家銀行官網公開的保障表與條款原文，'
+      '用途是讓你知道自己手上那張卡的範圍在哪裡。實際保障以你那張卡當年度的保險證為準，'
+      '而且各家每年重新投保、保額會變。'),
+    ]
+    ci_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in ci_faq)
+    ci_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in ci_faq]}, ensure_ascii=False)
+
+    ci_title = '刷卡送的旅平險，15 張卡實際賠什麼？受傷看醫生差到 20 倍'
+    ci_desc = ('十家銀行、十五張旅日信用卡附贈保險的逐條對照。沒有一張賠生病；'
+               '傷害醫療從 100 萬到 0 都有；三張卡完全沒有醫療給付。'
+               '另附十家共通的生效條件與兩個少有人知的折扣條款，全部引官網原文。')
+
+    write('japan-card-insurance/index.html',
+      head(ci_title, ci_desc, 'japan-card-insurance/',
+           '<script type="application/ld+json">' + ci_ld + '</script>')
+      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
+                ('刷卡送的保險', None)]) + topnav()
+      + '<h1>刷卡送的旅平險，你那張卡實際賠什麼？</h1>'
+      + '<p class="lede">十家銀行把保額散在各自的頁面、各自的卡等分組裡，'
+        '沒有一個地方能回答「我這張卡在日本受傷看醫生賠多少」。這頁把十五張卡拉到同一張表上。</p>'
+      + '<div class="today">'
+        '<div class="tday">十家銀行官網的保障表與條款原文，查證於' + CI['checked'] + '</div>'
+        '<div class="tans">沒有一張卡賠<b>生病</b></div>'
+        '<div class="tsub">十家都一樣。玉山寫得最直白：「旅遊平安險未承保疾病／突發疾病醫療保險」。'
+        '刷卡送的保險賠的是「意外傷害」——非由疾病引起之外來突發事故。'
+        '在日本感冒、腸胃炎、舊疾發作，一毛都沒有。</div>'
+        '<div class="tbuf">受傷倒是有賠，但差距大到不合理：'
+        '國泰世華 CUBE 與第一銀 iLEO 是 <b>100 萬</b>，台新 Richart 是 <b>5 萬</b>，'
+        '富邦 J 卡與中信兩張是 <b>0</b>。而且這個數字還要再打折，見下面兩個共通條款。</div></div>'
+      + '<h2>十五張卡逐條對照</h2>'
+      + '<p class="lede">依「受傷看醫生」那一格由高到低排。'
+        '身故失能的數字都很大，但那是最不可能用到的一格。</p>'
+      + _ci_tbl
+      + '<p class="disc">† 卡等未逐一查證，但該行的鈦金／御璽／晶緻／白金四級保額完全相同，'
+        '只要不是金卡或普卡就是這組數字。金額單位為新臺幣，各項皆為實支實付上限而非定額給付。</p>'
+      + '<h2>兩個各家共通、但很少人知道的折扣</h2>'
+      + '<div class="cmp">'
+        '<div class="pp"><b>非健保身分只賠七成</b>'
+        '<p>玉山與永豐的條款都逐字寫明。在日本看病本來就不是健保身分，'
+        '所以表上的傷害醫療要先乘以 0.7 再算。星展與台新的寫法是'
+        '「超過全民健康保險給付部分」給付，措辭不同但方向一樣。</p></div>'
+        '<div class="pp"><b>往返機場只保五小時</b>'
+        '<p>星展、台新、永豐三家都寫五小時：起飛前五小時內去機場、抵達後五小時內離開機場。'
+        '台新另外用括號排除機車與腳踏車。提早一天到機場旁邊住一晚的那段，不在內。</p></div>'
+        '</div>'
+      + '<h2>生效條件：這些做錯了，保額多少都沒意義</h2>'
+      + '<p class="lede">十家的門檻幾乎一致，而且是條款寫死的，不是可以商量的。</p>'
+      + _ci_cond
+      + '<h2>所以你實際需要的是什麼</h2>'
+      + '<p class="lede">刷卡送的那份，定位是「搭機期間的高額身故失能」加「班機與行李的不便補償」。'
+        '它不是醫療保險，把它當醫療保險用會在最需要的時候落空。</p>'
+      + '<ul class="lede">'
+        '<li><b>只去三五天、行程單純</b>——刷卡送的不便險其實夠用，'
+        '班機延誤一萬、行李遺失三萬，是這類旅程最常遇到的損失。</li>'
+        '<li><b>會滑雪、潛水、騎車、帶小孩跑跳</b>——受傷的機率才是重點，'
+        '那就要看你那張卡的傷害醫療是 100 萬還是 0，差距是實質的。</li>'
+        '<li><b>擔心生病</b>——刷卡送的完全沒有這塊，只能另外買含'
+        '「海外突發疾病醫療」的旅平險附約。這是十五張卡一致的空白。</li>'
+        '<li><b>用哩程換票</b>——保障直接歸零，不管你手上是哪張卡。</li>'
+        '</ul>'
+      + '<h2>這頁查不到的部分</h2>'
+      + '<ul class="lede">' + _ci_un + '</ul>'
+      + '<h2>常見問題</h2>' + ci_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + '<a class="ct" href="' + U('/japan-travel-insurance/') + '"><b>🛡️ 旅平險怎麼賠</b>'
+        '<s>三層保障的差別</s></a>'
+      + '<a class="ct" href="' + U('/japan-credit-card/') + '"><b>💳 旅日信用卡比較</b>'
+        '<s>刷哪張回饋最高</s></a>'
+      + '<a class="ct" href="' + U('/japan-rentacar-noc/') + '"><b>🚗 租車的 NOC</b>'
+        '<s>另一種「以為有保其實沒有」</s></a>'
+      + '<a class="ct" href="' + U('/japan-card-calculator/') + '"><b>🧮 回饋計算機</b>'
+        '<s>算你這筆刷哪張</s></a></div>'
+      + '<p class="disc">本站不是保險業者也不是保險經紀人，這頁整理的是各行官網公開的保障表與條款原文，'
+        '不構成投保建議。各家每年重新投保、保額與承保公司都會變動，'
+        '且保險期間起訖不一致（第一銀行自四月、滙豐自七月起算，其餘七家為曆年制）。'
+        '實際保障以你那張卡當年度的保險證為準。查證於' + CI['checked'] + '。</p>'
+      + foot())
+    pages.append(('/japan-card-insurance/', 0.7))
+
 
 
 
