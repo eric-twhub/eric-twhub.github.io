@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-24-taichung-okinawa",
- "generated": "2026-09-24 02:07",
+ "generated": "2026-09-24 09:40",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -26,8 +26,8 @@
  "reasons": [
   "9 月出發的票，每天最便宜的平均要 NT$12,003（7 天有紀錄），這張低 24%"
  ],
- "med": 12524,
- "n_rt": 83,
+ "med": 12413,
+ "n_rt": 81,
  "others": [
   {
    "o": "RMQ",
