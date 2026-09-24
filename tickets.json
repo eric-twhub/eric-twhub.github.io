@@ -1,0 +1,86 @@
+{
+ "_說明": "城市頁的門票區塊。只放指定商品，不放關鍵字搜尋頁——搜尋頁落地是 3.5% 與 1% 混雜的清單，買到哪種控制不了。",
+ "_為什麼是 KKday 不是 Trip.com": "Trip.com 的門票與演出只有 1.5%，是整個費率表最低的一項；KKday 門票 3.5%，2.3 倍。行程與交通票仍維持 Trip.com（4% 與 2% 都比 KKday 好）。",
+ "_查證": "2026-09-24",
+ "_查證方法": "每個 prod_mid 都對 kkday-1pct.json 驗過不在特殊商品清單上（確認 3.5%），商品頁各自取回 HTTP 200。區域欄位取自 KKday 自己的 destinations。",
+ "_沒有放售價的原因": "KKday 商品頁的價格是前端算繪的，伺服器 HTML 拿不到，CI 無法每日更新。寧可不放，也不要放一個會過期的數字。",
+ "_複查週期": "每季。KKday 隨時可能把商品加進特殊商品清單，加進去就從 3.5% 掉到 1%，屆時該商品要換掉或移除。",
+ "cities": {
+  "tokyo": [
+   {
+    "id": 22396,
+    "name": "teamLab Planets TOKYO",
+    "area": "豐洲",
+    "url": "https://www.kkday.com/zh-tw/product/22396-japan-teamlab-planets-tokyo-ticket"
+   },
+   {
+    "id": 19252,
+    "name": "東京迪士尼樂園／海洋",
+    "area": "舞濱",
+    "url": "https://www.kkday.com/zh-tw/product/19252-tokyo-disney-resort-disneyland-disneysea"
+   },
+   {
+    "id": 133300,
+    "name": "SHIBUYA SKY 展望台",
+    "area": "澀谷",
+    "url": "https://www.kkday.com/zh-tw/product/133300-shibuya-sky-observatory-e-ticket-tokyo"
+   },
+   {
+    "id": 10759,
+    "name": "東京晴空塔",
+    "area": "押上・晴空街道",
+    "url": "https://www.kkday.com/zh-tw/product/10759-tokyo-skytree-observatory-advance-ticket-japan"
+   },
+   {
+    "id": 144383,
+    "name": "哈利波特影城",
+    "area": "練馬・華納兄弟東京",
+    "url": "https://www.kkday.com/zh-tw/product/144383-warner-bros-studio-tour-tokyo-the-making-of-harry-potter-ticket"
+   },
+   {
+    "id": 20133,
+    "name": "富士急樂園",
+    "area": "富士吉田・可從東京當日來回",
+    "url": "https://www.kkday.com/zh-tw/product/20133-fuji-q-highland-e-ticket"
+   }
+  ],
+  "osaka": [
+   {
+    "id": 2247,
+    "name": "日本環球影城門票",
+    "area": "此花・USJ",
+    "url": "https://www.kkday.com/zh-tw/product/2247-universal-studios-japan-ticket-osaka"
+   },
+   {
+    "id": 18618,
+    "name": "環球影城快速通關券",
+    "area": "此花・USJ",
+    "url": "https://www.kkday.com/zh-tw/product/18618-universal-studios-japan-express-pass-osaka"
+   },
+   {
+    "id": 4849,
+    "name": "大阪海遊館",
+    "area": "港區・天保山",
+    "url": "https://www.kkday.com/zh-tw/product/4849-osaka-aquarium-kaiyukan-ticket"
+   },
+   {
+    "id": 19513,
+    "name": "阿倍野 HARUKAS 300",
+    "area": "天王寺",
+    "url": "https://www.kkday.com/zh-tw/product/19513-osaka-abeno-harukas-300-observatory-tickets-japan"
+   },
+   {
+    "id": 22352,
+    "name": "梅田藍天大廈 空中庭園",
+    "area": "梅田",
+    "url": "https://www.kkday.com/zh-tw/product/22352-night-views-at-umeda-sky-building-kuchu-teien-observatory-osaka"
+   },
+   {
+    "id": 12156,
+    "name": "大阪周遊卡 1/2 日券",
+    "area": "含 40 多處設施免費入場",
+    "url": "https://www.kkday.com/zh-tw/product/12156-osaka-amazing-pass-e-ticket-japan"
+   }
+  ]
+ }
+}

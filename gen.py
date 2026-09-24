@@ -270,6 +270,34 @@ GATE_FILTER = ('<div class="bar gatebar"><b>訂票通路</b>'
 
 # 城市 slug → Klook city_id（取自 Klook search suggest API，2026-09-10）
 # 沒有對應城市的頁面不顯示 widget，避免在福島頁顯示東京的行程
+TICKETS = json.load(open('tickets.json', encoding='utf-8'))
+
+
+def ticket_block(slug, name):
+    """城市頁的門票區塊。
+
+    只放指定商品，不放關鍵字搜尋頁：搜尋頁落地是 3.5% 與 1% 混雜的清單，
+    使用者買到哪一種我們控制不了。每個 prod_mid 都對 kkday-1pct.json
+    驗過不在特殊商品清單上。不放售價——KKday 的價格是前端算繪的，
+    CI 拿不到，放了就會過期。
+    """
+    items = (TICKETS.get('cities') or {}).get(slug) or []
+    if not items:
+        return ''
+    cards = ''.join(
+        f'<a class="ct" href="{kkday(it["url"], "ticket", slug)}" target="_blank" '
+        f'rel="nofollow noopener sponsored">'
+        f'<b>{html.escape(it["name"])}</b><s>{html.escape(it["area"])}</s></a>'
+        for it in items)
+    return (f'<h2>{name}熱門景點門票</h2>'
+            f'<p class="lede">熱門時段的現場票常常當天就沒了，這幾個都可以先在台灣買好、'
+            f'帶著 QR Code 直接入場。</p>'
+            f'<div class="cities">{cards}</div>'
+            f'<p class="disc">連往 {P["activity2"]["brand"]}，繁體中文、台幣計價。'
+            f'透過這些連結完成購買時本站可獲得分潤，不影響你的價格。'
+            f'售價與庫存以 {P["activity2"]["brand"]} 頁面為準，本站不另外標價。</p>')
+
+
 KLOOK_CITY = {
  'tokyo':28, 'osaka':29, 'okinawa':6484, 'fukuoka':5209, 'nagoya':71,
  'sapporo':133938, 'sendai':17384, 'hakodate':119753, 'kobe':135,
@@ -799,7 +827,8 @@ def _partner_line():
     先前這行是手寫的，寫著「住宿 Agoda、行程與交通票 KKday」，但實際上
     那幾項都是 Trip.com——夥伴換過之後文字沒跟著改，等於在每一頁上都給了
     不實的揭露。改成從資料產生，就不會再漂移。"""
-    LABEL = {'flight': '機票', 'hotel': '住宿', 'activity': '行程與門票',
+    LABEL = {'flight': '機票', 'hotel': '住宿', 'activity': '行程與一日遊',
+             'activity2': '景點門票',
              'transport': '交通票', 'car': '租車', 'transfer': '機場接送',
              'esim': '網卡與 eSIM'}
     by_brand = {}
@@ -1246,11 +1275,21 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'<a href="{U("/tokyo/budget-hotel/")}">共用衛浴的私人房</a>。</p>')
     body+=faq_block(name,fs,codes)
     body+=klook_tours(slug,name)
+    # 門票走 KKday 不走 Trip.com：Trip.com 的門票與演出只有 1.5%，
+    # 是整個費率表最低的一項，KKday 門票 3.5%。行程與交通票仍維持 Trip.com。
+    body+=ticket_block(slug,name)
     # 當地玩樂的分潤是機票的八倍（4% vs 0.5%），而且看完機票住宿的下一個問題
     # 本來就是「要玩什麼」，放在這裡最順
-    body+=cta('activity',name,name,f'機票住宿都有了，{name}要玩什麼',
-              f'到 {P["activity"]["brand"]} 看{name}的門票與一日遊，繁體中文、台幣計價',
-              track=slug)
+    # 門票已經由上面的 KKday 區塊接走的城市，這裡只講行程與一日遊。
+    # 兩塊相鄰都說門票的話，等於拿 1.5% 的連結去吃 3.5% 的。
+    if (TICKETS.get('cities') or {}).get(slug):
+        body+=cta('activity',name,name,f'門票以外，{name}還想找一日遊',
+                  f'到 {P["activity"]["brand"]} 看{name}的一日遊、包車與在地行程',
+                  track=slug)
+    else:
+        body+=cta('activity',name,name,f'機票住宿都有了，{name}要玩什麼',
+                  f'到 {P["activity"]["brand"]} 看{name}的門票與一日遊，繁體中文、台幣計價',
+                  track=slug)
     if slug not in URBAN:
         body+=cta('car',name,hotelcity,f'{name}自駕比較方便',
                   f'到 {P["car"]["brand"]} 比較租車方案', track=slug)
