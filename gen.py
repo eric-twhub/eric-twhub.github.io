@@ -1798,6 +1798,17 @@ if os.path.exists('lasttrain.json'):
                     f'　<a href="{U(_s["link"])}">看住宿價格 →</a></p>')
         return out
 
+    def _lt_transfer(ap):
+        t = ap.get('transfer')
+        if not t:
+            return ''
+        return (f'<a class="cta" href="{klook(t["url"])}" target="_blank" '
+                f'rel="nofollow noopener sponsored">'
+                f'<span class="ci">🚕</span><span class="ct">'
+                f'<b>{html.escape(t["headline"])}</b>'
+                f'<s>{html.escape(t["sub"])}</s></span>'
+                f'<span class="ca">→</span></a>')
+
     def _lt_fares_ref(ap):
         f = ap.get('fares_ref')
         if not f:
@@ -1852,7 +1863,8 @@ if os.path.exists('lasttrain.json'):
                        '標成紅色的終點站，代表末班車只開到中途，那一欄的時刻會比末班早。</p>'
                      + '<h3 class="grp">各條線的細節</h3>' + _lt_notes(ap)
                      + _lt_fares_ref(ap)
-                     + f'<h3 class="grp">來不及的話</h3>' + _lt_bus(ap))
+                     + f'<h3 class="grp">來不及的話</h3>' + _lt_bus(ap)
+                     + _lt_transfer(ap))
 
     _lt_steps = ''.join(f'<li>{html.escape(s)}</li>' for s in LT['rule']['steps'])
     _lt_pending = ''.join(
@@ -1962,7 +1974,9 @@ if os.path.exists('lasttrain.json'):
         f'<s>停第 2 航廈，回程要算接駁車</s></a>'
       + f'<a class="ct" href="{U("/sapporo/")}"><b>札幌機票</b><s>新千歲的航線與價格</s></a>'
       + f'<a class="ct" href="{U("/okinawa/")}"><b>沖繩機票</b><s>那霸的航線與價格</s></a></div>'
-      + '<p class="disc">時刻表會改點，各鐵道公司通常一年調整一次。'
+      + '<p class="disc">本頁各機場的「叫車」連結為 Klook 分潤連結，'
+        '你的價格不會因此改變；放在那裡是因為錯過末班車之後它是真的選項，'
+        '不是因為分潤。時刻表會改點，各鐵道公司通常一年調整一次。'
         f'本頁資料查證於 {LT["checked"]}，出發前請以各列附的官方時刻表為準。'
         '深夜巴士遇塞車會延誤，計程車定額運賃不含高速公路通行費。</p>'
       + foot())

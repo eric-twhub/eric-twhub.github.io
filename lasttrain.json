@@ -149,6 +149,12 @@
    "stay": {
     "note": "真的來不及，羽田第3航廈有直接連通的飯店。我們的東京便宜住宿頁有當天查到的價格。",
     "link": "/tokyo-hostel/"
+   },
+   "transfer": {
+    "url": "https://www.klook.com/zh-TW/airport-transfers/service/hnd-tokyo-haneda-international-airport/",
+    "headline": "趕不上就別硬撐，羽田機場叫車",
+    "sub": "深夜巴士只到新宿池袋，其他方向就得叫車",
+    "checked": "2026-09-24"
    }
   },
   {
@@ -234,7 +240,13 @@
      "src": "https://tyo-nrt.com/timetable/to-tokyo",
      "src_name": "Airport Bus 東京・成田 官網時刻表"
     }
-   ]
+   ],
+   "transfer": {
+    "url": "https://www.klook.com/zh-TW/airport-transfers/service/nrt-narita-international-airport/",
+    "headline": "趕不上就別硬撐，成田機場叫車",
+    "sub": "23:03 之後沒有軌道進市區，成田離市區又遠",
+    "checked": "2026-09-24"
+   }
   },
   {
    "code": "KIX",
@@ -360,7 +372,13 @@
      "src": "https://www.kate.co.jp/timetable",
      "src_name": "關西機場交通 全路線時刻表一覽"
     }
-   ]
+   ],
+   "transfer": {
+    "url": "https://www.klook.com/zh-TW/airport-transfers/service/kix-kansai-international-airport/",
+    "headline": "趕不上就別硬撐，關西機場叫車",
+    "sub": "第 2 航廈接駁 23:47 之後，走不到車站",
+    "checked": "2026-09-24"
+   }
   },
   {
    "code": "FUK",
@@ -426,7 +444,13 @@
      "src": "http://jik.nishitetsu.jp/busroute?f=busikisaki&list=0000%2CD11069&ns=1",
      "src_name": "西鐵巴士 福岡空港國際線 時刻表"
     }
-   ]
+   ],
+   "transfer": {
+    "url": "https://www.klook.com/zh-TW/airport-transfers/service/fuk-fukuoka-airport/",
+    "headline": "趕不上就別硬撐，福岡機場叫車",
+    "sub": "末班接駁 23:21，之後從國際線航廈出不去",
+    "checked": "2026-09-24"
+   }
   },
   {
    "code": "NGO",
@@ -490,7 +514,13 @@
      "src": "https://trainbus.meitetsu.co.jp/meitetsu-transfer/pc/diagram/TrainDiagram?startId=00009406&linkId=00001057&direction=up",
      "src_name": "名古屋鐵道 中部國際空港站時刻表"
     }
-   ]
+   ],
+   "transfer": {
+    "url": "https://www.klook.com/zh-TW/airport-transfers/service/ngo-chubu-centrair-international-airport/",
+    "headline": "趕不上就別硬撐，中部機場叫車",
+    "sub": "連絡巴士 21:45 收班，名鐵末班還有一個半小時",
+    "checked": "2026-09-24"
+   }
   },
   {
    "code": "CTS",
@@ -545,7 +575,13 @@
      "src": "https://www.hokkaido-airports.com/ja/new-chitose/access/bus/",
      "src_name": "新千歲機場官網・巴士時刻表與乘降場一覽"
     }
-   ]
+   ],
+   "transfer": {
+    "url": "https://www.klook.com/zh-TW/airport-transfers/service/cts-new-chitose-airport/",
+    "headline": "趕不上就別硬撐，新千歲機場叫車",
+    "sub": "23:21 那班不等誤點的飛機",
+    "checked": "2026-09-24"
+   }
   },
   {
    "code": "OKA",
@@ -621,6 +657,12 @@
     "verify": "官方頁面",
     "src": "https://www.yui-rail.co.jp/routemap/nahakuko/?t=fare",
     "src_name": "ゆいレール 那霸機場站・運賃表"
+   },
+   "transfer": {
+    "url": "https://www.klook.com/zh-TW/airport-transfers/service/oka-naha-airport/",
+    "headline": "趕不上就別硬撐，那霸機場叫車",
+    "sub": "單軌 23:30 收班，在七個機場裡偏早",
+    "checked": "2026-09-24"
    }
   }
  ],
