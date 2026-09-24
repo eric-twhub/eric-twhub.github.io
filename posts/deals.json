@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "10 月出發的票，每天最便宜的平均要 NT$6,553（7 天有紀錄），這張低 21%"
+   "10 月出發的票，每天最便宜的平均要 NT$6,560（6 天有紀錄），這張低 22%"
   ],
   "med": 14447,
   "url": "https://www.aviasales.com/search/TPE2610OKA30101?t=MM17930388001793047800000090TPEOKA17933481001793350500000100OKATPE_a6b50ad2acc18fa4bbd169e995ee4cf4_13690&search_date=18092026&expected_price_uuid=01a0b38b-2423-8030-eb0a-5d7a0ec16598&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_wdccK7w_kzQnqNVp8cPKQ&expected_price_source=share&expected_price_currency=twd&expected_price=5148&marker=775639",
@@ -23,15 +23,15 @@
   "usual": {
    "lo": 5330,
    "hi": 7572,
-   "days": 9
+   "days": 8
   },
   "mbase": {
-   "avg": 6553,
-   "days": 7,
+   "avg": 6560,
+   "days": 6,
    "month": 10
   },
   "rank": 1,
-  "n": 18
+  "n": 16
  },
  {
   "slug": "2026-09-24-taichung-okinawa",
