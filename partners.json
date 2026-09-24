@@ -140,8 +140,8 @@
    "brand": "KKday",
    "icon": "🎫",
    "label": "在 KKday 找{q}行程",
-   "rate": "待後台確認",
-   "cookie": "待後台確認",
+   "rate": "全品項 3.5%（行程導覽／美食生鮮／活動展覽／體驗活動，四類同價）",
+   "cookie": "30 天",
    "why": "台灣最大的在地行程平台，日本商品數與知名度都在 Trip.com 之上。Trip.com 的行程分潤 4%、門票僅 1.5%、火車票 2%，這幾項是站上最弱的費率，KKday 是唯一有機會打贏的替代品——但要換要先看後台實際費率。",
    "network": "聯盟網 Affiliates.One",
    "template": "https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1={s1}&subid_2={s2}&t={t}",
@@ -157,7 +157,28 @@
     "subid 去向": "subid_1/subid_2 不會傳進 KKday 網址，只留在聯盟網那一層。要確認後台報表有沒有依 subid 拆分，才算真的能分頁追蹤。"
    },
    "_風險_轉址網域": "affclkr.online。不是品牌網域，.online + affclkr（affiliate clicker）正是廣告攔截清單會鎖的命名特徵。若被 uBlock／AdGuard／Pi-hole 擋掉，點擊會靜默消失而不是報錯。聯盟網後台的「備用轉跳網址」可能就是為此而設，待查。",
-   "_fallback版位是死的": "2026-09-24 實測：整站生成後 kkday.com 出現 0 次、agoda.com 0 次。activity／transport 的 KKday fallback 與 hotel 的 Agoda fallback 從來沒被觸發過，因為 Trip.com 的 template 每次都成功、所有城市也都有 Trip.com 城市 ID。所以『接上分潤就有收入』是錯的——KKday 要賺錢必須主動配置版位，不能靠 fallback。"
+   "_fallback版位是死的": "2026-09-24 實測：整站生成後 kkday.com 出現 0 次、agoda.com 0 次。activity／transport 的 KKday fallback 與 hotel 的 Agoda fallback 從來沒被觸發過，因為 Trip.com 的 template 每次都成功、所有城市也都有 Trip.com 城市 ID。所以『接上分潤就有收入』是錯的——KKday 要賺錢必須主動配置版位，不能靠 fallback。",
+   "rate_table": {
+    "_source": "聯盟網 Affiliates.One › KKday 電商頁，查證於 2026-09-24",
+    "行程導覽": "3.5%",
+    "美食生鮮": "3.5%",
+    "活動展覽": "3.5%",
+    "體驗活動": "3.5%",
+    "交通票_JR_Pass": "未列出——四個類別裡沒有交通票。要先看【特殊商品清單】才知道是另計還是排除",
+    "成效歸屬": "最終點擊",
+    "成效確認": "90 天",
+    "獎金確認": "90 天",
+    "註冊／訂單時間": "5 分鐘內"
+   },
+   "_成效標準": "『訂單成立，消費者消費並使用後，即為一筆有效訂單』——不是訂了就算，要等旅客實際去玩完。加上 90 天成效確認，一筆二月出發的行程，分潤可能要到五月才確認。Trip.com 那邊的認列條件我還沒查，不能直接說誰比較寬。",
+   "_待查_特殊商品清單": "電商頁的【特殊商品清單】有一個『請點此』連結還沒打開。這種清單通常放降費率或零分潤的品項，JR Pass、交通票、eSIM 很常在上面。配置版位前必須先看。",
+   "_可用工具": "Ad Link 轉址、自訂連結、促銷優惠（促銷優惠可能可以接到 /japan-coupon/）",
+   "_對照_TripCom": {
+    "行程／當地玩樂": "Trip.com 4% ＞ KKday 3.5% → 維持 Trip.com",
+    "門票與演出": "Trip.com 1.5% ＜ KKday 3.5%（活動展覽）→ 換 KKday，2.3 倍",
+    "火車票": "Trip.com 2%；KKday 未列出 → 等特殊商品清單",
+    "Cookie": "Trip.com 網站 30 天、KKday 30 天，打平"
+   }
   }
  },
  "_已排除及原因": {
