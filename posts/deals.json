@@ -16,12 +16,12 @@
    "廉航低於 NT$6,000",
    "10 月出發的票，每天最便宜的平均要 NT$6,560（6 天有紀錄），這張低 22%"
   ],
-  "med": 14447,
+  "med": 14438,
   "url": "https://www.aviasales.com/search/TPE2610OKA30101?t=MM17930388001793047800000090TPEOKA17933481001793350500000100OKATPE_a6b50ad2acc18fa4bbd169e995ee4cf4_13690&search_date=18092026&expected_price_uuid=01a0b38b-2423-8030-eb0a-5d7a0ec16598&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_wdccK7w_kzQnqNVp8cPKQ&expected_price_source=share&expected_price_currency=twd&expected_price=5148&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 5330,
+   "lo": 5326,
    "hi": 7572,
    "days": 8
   },
@@ -35,22 +35,22 @@
  },
  {
   "slug": "2026-09-24-taichung-okinawa",
-  "title": "台中飛沖繩 NT$7,662 來回含稅｜真航空 10/06 出發",
+  "title": "台中飛沖繩 NT$7,655 來回含稅｜真航空 10/06 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 7662,
+  "price": 7655,
   "air": "真航空",
   "dep": "2026-10-06",
   "ret": "2026-10-13",
   "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$11,128（23 天有紀錄），這張低 31%"
+   "10 月出發的票，每天最便宜的平均要 NT$11,126（23 天有紀錄），這張低 31%"
   ],
-  "med": 12101,
-  "url": "https://www.aviasales.com/search/RMQ0610OKA13101?t=LJ17912832001791374700001465RMQICNOKA17919180001791919800000090OKARMQ_c8d2aecb23c51bcc2bf64d5d9269e2f6_20453&search_date=24092026&expected_price_uuid=01a0d27e-ea1b-8030-2b35-55d6a0e6b3b8&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=f9aDNOwi4kRy5phrJV7GTQ&expected_price_source=share&expected_price_currency=twd&expected_price=7662&marker=775639",
+  "med": 12091,
+  "url": "https://www.aviasales.com/search/RMQ0610OKA13101?t=LJ17912832001791374700001465RMQICNOKA17919180001791919800000090OKARMQ_c8d2aecb23c51bcc2bf64d5d9269e2f6_20453&search_date=24092026&expected_price_uuid=01a0d27e-ea1b-8030-2b35-55d6a0e6b3b8&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=f9aDNOwi4kRy5phrJV7GTQ&expected_price_source=share&expected_price_currency=twd&expected_price=7655&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
@@ -59,7 +59,7 @@
    "days": 29
   },
   "mbase": {
-   "avg": 11128,
+   "avg": 11126,
    "days": 23,
    "month": 10
   },
