@@ -248,13 +248,43 @@ def fare_cta(slug, headline, sub_prefix='', before=None):
             f'<span class="ca pr">{money(b["price"])}<small>近期最低</small></span></a>')
 
 
-def compare_line(city_name=''):
-    alt=[k for k in ('flight2',) if k in P]
-    if not alt: return ''
-    ls='、'.join(
-      f'<a href="{html.escape(plink(k,city_name))}" target="_blank" rel="nofollow noopener sponsored">'
-      f'{P[k]["brand"]}</a>' for k in alt)
-    return f'<p class="disc">票價僅供參考，建議到 {ls} 再比一次價——台灣 OTA 常有旅行社切位票，是國際比價站看不到的貨源。</p>'
+def ez_url(slug=''):
+    """易遊網的該航線查詢頁。
+
+    他們的路線頁用城市代碼而不是機場代碼（東京 TYO 不是 NRT），而且
+    多機場城市不能靠位置猜——宮古島的 codes 是 ['MMY','SHI']，SHI 是
+    下地島機場。所以代碼走 partners.json 的明確對照表，查不到就退回
+    日本總覽頁，寧可少一層精準也不要送出 404。
+    """
+    p = P.get('flight2') or {}
+    code = (p.get('city_codes') or {}).get(slug)
+    t = p.get('route_template', '')
+    u = t.replace('{code}', code.lower()) if (code and t) else p.get('fallback', '')
+    aff = p.get('template', '')
+    if aff and not aff.startswith('TODO'):      # 分潤連結拿到之後才包
+        return _monetise_ez(u, slug)
+    return u
+
+
+def _monetise_ez(u, slug=''):
+    """易遊網的分潤連結。聯盟網的轉址格式與 KKday 同形式：目標網址雙重編碼。"""
+    p = P.get('flight2') or {}
+    t = p.get('template', '')
+    once = urllib.parse.quote(u, safe='').replace('%20', '+')
+    twice = urllib.parse.quote(once, safe='').replace('%20', '+')
+    return (t.replace('{s1}', 'compare')
+             .replace('{s2}', urllib.parse.quote(str(slug), safe=''))
+             .replace('{t}', twice))
+
+
+def compare_line(city_name='', slug=''):
+    p = P.get('flight2')
+    if not p: return ''
+    ls=(f'<a href="{html.escape(ez_url(slug))}" target="_blank" '
+        f'rel="nofollow noopener sponsored">{p["brand"]}</a>')
+    where = f'查{city_name}這條線' if (p.get('city_codes') or {}).get(slug) else '再比一次價'
+    return (f'<p class="disc">票價僅供參考，建議到 {ls} {where}'
+            f'——台灣 OTA 常有旅行社切位票，是國際比價站看不到的貨源。</p>')
 
 GATE_FILTER = ('<div class="bar gatebar"><b>訂票通路</b>'
   '<button class="chip" id="gfAll" onclick="gf(0)">全部平台</button>'
@@ -1201,7 +1231,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
         body+=GATE_FILTER
         if rts:
             body+=(f'<h3>來回機票</h3><div class="grid">'
-                   +''.join(fare_card(x) for x in rts)+'</div>'+compare_line(name))
+                   +''.join(fare_card(x) for x in rts)+'</div>'+compare_line(name,slug))
         _shown = {id(x) for x in rts}
         _fsc_show = [x for x in _fsc_rt if id(x) not in _shown][:4]
         if _fsc_show:
@@ -3042,7 +3072,7 @@ for (oslug,cslug),fs in by_route.items():
     rts=sorted([x for x in fs if x['rt']],key=lambda x:x['price'])[:12]
     ows=sorted([x for x in fs if not x['rt']],key=lambda x:x['price'])[:8]
     if rts: body+=(f'<h3>來回機票</h3><div class="grid">'
-                   +''.join(fare_card(x) for x in rts)+'</div>'+compare_line(cname))
+                   +''.join(fare_card(x) for x in rts)+'</div>'+compare_line(cname,cslug))
     if ows: body+=f'<h3>單程機票</h3><div class="grid">'+''.join(fare_card(x) for x in ows)+'</div>'
     if len(airs)>1:
         rows=''
@@ -3240,7 +3270,7 @@ for (oslug,cslug),(b,reasons,med,rts) in sorted(pick_deals().items(),key=lambda 
         "description":desc,"author":{"@type":"Organization","name":SITENAME}},ensure_ascii=False)
     body=(f'<p class="lede">{oname}飛{cname}，<b>{money(b["price"])}</b> 來回含稅，'
           f'由{b["airname"]}執飛，{stops}。去程 {b["dep"]}，回程 {b["ret"]}。</p>'
-          f'<div class="grid" style="max-width:340px">{fare_card(b,True)}</div>'+compare_line(cname)+
+          f'<div class="grid" style="max-width:340px">{fare_card(b,True)}</div>'+compare_line(cname,cslug)+
           f'<h2>這個價格為什麼值得買</h2><ul>{why}</ul>'
           + (lambda ur, mb: (f'<p class="lede" style="font-size:.86rem">此航線目前共 {len(rts)} 筆來回票價。'
                     + (f'{b["dep"][5:7].lstrip("0")} 月有 {mb[1]} 天留下紀錄，'
