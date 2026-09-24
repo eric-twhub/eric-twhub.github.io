@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-24-taipei-okinawa",
- "generated": "2026-09-24 22:47",
+ "generated": "2026-09-24 23:46",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -25,10 +25,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "10 月出發的票，每天最便宜的平均要 NT$6,558（6 天有紀錄），這張低 22%"
+  "10 月出發的票，每天最便宜的平均要 NT$6,557（6 天有紀錄），這張低 21%"
  ],
- "med": 15150,
- "n_rt": 18,
+ "med": 15124,
+ "n_rt": 20,
  "others": [
   {
    "o": "TPE",
@@ -36,7 +36,7 @@
    "air": "VZ",
    "airname": "泰越捷航空",
    "cls": "lcc",
-   "price": 5321,
+   "price": 5312,
    "dep": "2026-10-27",
    "ret": "2026-10-31",
    "dept": "14:45",
@@ -46,7 +46,7 @@
    "dur": 185,
    "dur_to": 85,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2710OKA31101?t=VZ17931123001793121000000085TPEOKA17934702001793472600000100OKATPE_c7758d55bc0daf4a4beb1edaf12f70c2_14186&search_date=24092026&expected_price_uuid=01a0d207-c1a3-8030-6980-196429bc87f0&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=WDPQy6oiy_V4u-YgPrjU6w&expected_price_source=share&expected_price_currency=twd&expected_price=5321&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2710OKA31101?t=VZ17931123001793121000000085TPEOKA17934702001793472600000100OKATPE_c7758d55bc0daf4a4beb1edaf12f70c2_14186&search_date=24092026&expected_price_uuid=01a0d207-c1a3-8030-6980-196429bc87f0&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=WDPQy6oiy_V4u-YgPrjU6w&expected_price_source=share&expected_price_currency=twd&expected_price=5312&marker=775639"
   },
   {
    "o": "TPE",
