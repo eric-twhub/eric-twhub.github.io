@@ -135,6 +135,29 @@
    "network": "聯盟網 Affiliates.One（與 Travelpayouts 不同，需另外申請）",
    "template": "TODO_加入聯盟網後貼上_易遊網_分潤連結",
    "fallback": "https://flight.eztravel.com.tw/activity/cheap-flights-to-japan/"
+  },
+  "activity2": {
+   "brand": "KKday",
+   "icon": "🎫",
+   "label": "在 KKday 找{q}行程",
+   "rate": "待後台確認",
+   "cookie": "待後台確認",
+   "why": "台灣最大的在地行程平台，日本商品數與知名度都在 Trip.com 之上。Trip.com 的行程分潤 4%、門票僅 1.5%、火車票 2%，這幾項是站上最弱的費率，KKday 是唯一有機會打贏的替代品——但要換要先看後台實際費率。",
+   "network": "聯盟網 Affiliates.One",
+   "template": "https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1={s1}&subid_2={s2}&t={t}",
+   "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword={q}",
+   "_status": "2026-09-24 聯盟網過審並取得推廣連結。",
+   "_encoding": "{t} 是目標網址『雙重』URL-encode（空白先變 + 再編成 %2B）。與 Klook 的 k_site 只編一層不同，編錯會整條掉回 KKday 首頁。",
+   "_verified": {
+    "日期": "2026-09-24",
+    "方法": "curl 追 301 Location，測原始連結與自組連結各一條",
+    "自組連結可用": "是——t 參數沒有簽章驗證，任何 kkday.com 網址都能包，可 template 化",
+    "中文關鍵字": "正常，東京 一日遊 正確編成 %E6%9D%B1%E4%BA%AC%20%E4%B8%80%E6%97%A5%E9%81%8A",
+    "轉址後 KKday 收到": "cid=2318、ud1=109820（我們的發布者 ID）、ud2=<每次點擊不同的雜湊>、vtm_channel=affiliatescomtw",
+    "subid 去向": "subid_1/subid_2 不會傳進 KKday 網址，只留在聯盟網那一層。要確認後台報表有沒有依 subid 拆分，才算真的能分頁追蹤。"
+   },
+   "_風險_轉址網域": "affclkr.online。不是品牌網域，.online + affclkr（affiliate clicker）正是廣告攔截清單會鎖的命名特徵。若被 uBlock／AdGuard／Pi-hole 擋掉，點擊會靜默消失而不是報錯。聯盟網後台的「備用轉跳網址」可能就是為此而設，待查。",
+   "_fallback版位是死的": "2026-09-24 實測：整站生成後 kkday.com 出現 0 次、agoda.com 0 次。activity／transport 的 KKday fallback 與 hotel 的 Agoda fallback 從來沒被觸發過，因為 Trip.com 的 template 每次都成功、所有城市也都有 Trip.com 城市 ID。所以『接上分潤就有收入』是錯的——KKday 要賺錢必須主動配置版位，不能靠 fallback。"
   }
  },
  "_已排除及原因": {

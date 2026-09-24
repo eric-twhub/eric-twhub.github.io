@@ -163,6 +163,37 @@ def klook(target, adid=None):
              .replace('{k}', urllib.parse.quote(target, safe='')))
 
 
+def kkday(target, s1='', s2=''):
+    """把任何 KKday 網址包成聯盟網分潤連結。
+
+    目標網址要『雙重』編碼塞進 t —— 與 Klook 的 k_site 只編一層不同。
+    空白在第一層變成 +，第二層再編成 %2B；編錯會整條掉回 KKday 首頁。
+    subid_1／subid_2 只留在聯盟網那層，不會傳進 KKday 的網址。
+    """
+    p = P.get('activity2') or {}
+    t = p.get('template', '')
+    if not t or t.startswith('TODO'):
+        return target
+    once = urllib.parse.quote(target, safe='').replace('%20', '+')
+    twice = urllib.parse.quote(once, safe='').replace('%20', '+')
+    return (t.replace('{s1}', urllib.parse.quote(str(s1), safe=''))
+             .replace('{s2}', urllib.parse.quote(str(s2), safe=''))
+             .replace('{t}', twice))
+
+
+def _monetise(u, s1='', s2=''):
+    """fallback 版位本來就指向 KKday／Klook，只是沒帶分潤參數。
+    在這裡依網域統一補上，免得每個 fallback 各自記得要包一次。
+    已經是轉址網址的（affclkr／affiliate.klook）原樣放行，不要包兩層。"""
+    if 'affclkr.online' in u or 'affiliate.klook.com' in u:
+        return u
+    if 'kkday.com' in u:
+        return kkday(u, s1, s2)
+    if 'klook.com' in u:
+        return klook(u)
+    return u
+
+
 def plink(kind,city='',**kw):
     p=P[kind]; t=p.get('template','')
     # Klook 的 template 是外層轉址，目標網址要整條編碼塞進 k_site，
@@ -183,7 +214,7 @@ def plink(kind,city='',**kw):
         u=re.sub(r'&(checkin|checkout|crn|adult)=\{?[^&]*\}?', '', u)
         kw.pop('ci',None); kw.pop('co',None)
     for k,v in kw.items(): u=u.replace('{'+k+'}',str(v))
-    return u
+    return _monetise(u, kind, city or kw.get('sub',''))
 
 # Trip.com 分潤參數集中放這裡，SF_JS 與貼文查證連結共用，不要各自寫死
 _AFF = (P.get('flight', {}) or {}).get('affiliate') or {}
