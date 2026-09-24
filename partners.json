@@ -129,10 +129,10 @@
    "brand": "易遊網",
    "icon": "🔍",
    "label": "比價",
-   "rate": "待確認",
-   "cookie": "待確認",
+   "rate": "CPS 3.5%（公開頁面數字，未分商品類別；待後台確認）",
+   "cookie": "30 天（公開頁面數字）",
    "why": "台灣最大 OTA，含旅行社切位票（Trip.com 與 Aviasales 都看不到的貨源）",
-   "network": "聯盟網 Affiliates.One（與 Travelpayouts 不同，需另外申請）",
+   "network": "聯盟網 Affiliates.One（offer 3256）",
    "template": "TODO_加入聯盟網後貼上_易遊網_分潤連結",
    "fallback": "https://flight.eztravel.com.tw/activity/cheap-flights-to-japan/",
    "route_template": "https://flight.eztravel.com.tw/tickets-tpe-{code}",
@@ -214,7 +214,17 @@
     ],
     "未查證的依據": "這批路線頁是系統性產生的——連台北飛愛丁堡 EDI 這種沒有直飛的航線都有專頁，沖繩飛石垣 OKA-ISG、高雄飛石垣 KHH-ISG 也有。判斷涵蓋率是完整的。若日後發現某條 404，把該 slug 從 city_codes 移除即可自動退回總覽頁。"
    },
-   "_分潤狀態": "尚未接上。聯盟網的易遊網推廣連結要用你的帳號產生，我拿不到。拿到之後把 template 填成與 KKday 同形式的轉址網址，route_template 的結果包進去即可。"
+   "_分潤狀態": "尚未接上。聯盟網的易遊網推廣連結要用你的帳號產生，我拿不到。拿到之後把 template 填成與 KKday 同形式的轉址網址，route_template 的結果包進去即可。",
+   "apply": "https://network.affiliates.one/affiliates/offers/3256",
+   "_公開頁面條件": {
+    "_來源": "https://blog.affiliates.one/zh-TW/blog/post/eztravel-affiliate-program，查證於 2026-09-24",
+    "完成購買獎金": "CPS 3.5%",
+    "Cookie天數": "30 天",
+    "獎金確認時間": "60 天內",
+    "商品類別": "頁面沒有分機票／訂房／團體／自由行，只列一個 3.5%",
+    "_原頁註記": "「以上資料僅供參考，詳細請依照會員後台為主」——所以這組數字不能當定案。"
+   },
+   "_待後台確認_最關鍵": "機票到底算不算 3.5%。機票毛利本來就只有 1–2%，OTA 很少在機票上給到 3.5%（Trip.com 國際機票才 0.5%）。後台十之八九會有分類費率或排除清單，廉航票尤其可能被排除。若機票真的有 3.5%，那是 Trip.com 的 7 倍，這個版位的定位要整個重想——不再只是『再比一次價』的註腳，而可能該變成主要機票出口之一。"
   },
   "activity2": {
    "brand": "KKday",
