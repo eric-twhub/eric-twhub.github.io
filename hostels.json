@@ -11,146 +11,318 @@
   "adult": 1,
   "note": "單人、4 晚總價、含稅；床位房為一個床位的價格，非整間。已排除女性限定房型"
  },
-
  "areas": [
-  {"area": "上野", "name": "Hotel Tomariya Ueno", "type": "膠囊・男性",
-   "score": 8.2, "reviews": 2769, "total": 2258, "refundable": 2509,
+  {
+   "area": "上野",
+   "name": "Hotel Tomariya Ueno",
+   "type": "膠囊・男性",
+   "score": 8.2,
+   "reviews": 2769,
+   "total": 2258,
+   "refundable": 2509,
    "near": "上野公園站 950m",
    "url": "https://www.booking.com/hotel/jp/hoterubo-wu-shang-ye.zh-tw.html",
-   "note": "員工素質 9.2、CP 值 8.7，六項細項最低 8.4，沒有弱項。八區最便宜的可信選項"},
-
-  {"area": "淺草", "name": "plat hostel keikyu asakusa karin", "type": "混合宿舍",
-   "score": 8.7, "reviews": 1282, "total": 2665,
+   "note": "員工素質 9.2、CP 值 8.7，六項細項最低 8.4，沒有弱項。八區最便宜的可信選項"
+  },
+  {
+   "area": "淺草",
+   "name": "plat hostel keikyu asakusa karin",
+   "type": "混合宿舍",
+   "score": 8.7,
+   "reviews": 1282,
+   "total": 2665,
    "near": "淺草站 400m",
    "url": "https://www.booking.com/hotel/jp/plat-hostel-keikyu.zh-tw.html",
-   "note": "Agoda 8.9／95% 推薦，服務 98% 正面、CP 值 100% 正面。整潔 9.2"},
-
-  {"area": "東京鐵塔", "name": "Akasaka Guesthouse HIVE", "type": "混合宿舍",
-   "score": 8.4, "reviews": 1551, "total": 2931,
+   "note": "Agoda 8.9／95% 推薦，服務 98% 正面、CP 值 100% 正面。整潔 9.2"
+  },
+  {
+   "area": "東京鐵塔",
+   "name": "Akasaka Guesthouse HIVE",
+   "type": "混合宿舍",
+   "score": 8.4,
+   "reviews": 1551,
+   "total": 2931,
    "near": "赤坂・近地鐵",
    "url": "https://www.booking.com/hotel/jp/akasaka-guesthouse-hive.zh-tw.html",
-   "note": "港區唯一同時做到分數夠高、樣本夠厚的預算內選項"},
-
-  {"area": "南千住", "name": "明月酒店 Hotel Meigetsu", "type": "私人房・共用衛浴",
-   "score": 8.8, "reviews": 1454, "total": 3450,
+   "note": "港區唯一同時做到分數夠高、樣本夠厚的預算內選項"
+  },
+  {
+   "area": "南千住",
+   "name": "明月酒店 Hotel Meigetsu",
+   "type": "私人房・共用衛浴",
+   "score": 8.8,
+   "reviews": 1454,
+   "total": 3450,
    "near": "南千住 450m（實走約 10 分）",
    "url": "https://www.booking.com/hotel/jp/hotel-meigetsu.zh-tw.html",
-   "note": "全表評分最高的私人房。整潔 9.0、服務 9.2、CP 值 9.1，有小浴場與廚房"},
-
-  {"area": "橫濱", "name": "橫濱中華街 Global Cabin", "type": "cabin・男性",
-   "score": 8.6, "reviews": 1166, "total": 4076, "transport": 1034,
+   "note": "全表評分最高的私人房。整潔 9.0、服務 9.2、CP 值 9.1，有小浴場與廚房"
+  },
+  {
+   "area": "橫濱",
+   "name": "橫濱中華街 Global Cabin",
+   "type": "cabin・男性",
+   "score": 8.6,
+   "reviews": 1166,
+   "total": 4076,
+   "transport": 1034,
    "near": "中華街内",
    "url": "https://www.booking.com/hotel/jp/global-cabin-yokohama-chukagai.zh-tw.html",
-   "note": "Dormy Inn 系，有大浴場，六項細項全部 8.8 以上。但要加每天往返東京的車資"},
-
-  {"area": "押上", "name": "Wise Owl Hostels River Tokyo", "type": "混合宿舍",
-   "score": 8.7, "reviews": 3454, "total": 4167,
+   "note": "Dormy Inn 系，有大浴場，六項細項全部 8.8 以上。但要加每天往返東京的車資"
+  },
+  {
+   "area": "押上",
+   "name": "Wise Owl Hostels River Tokyo",
+   "type": "混合宿舍",
+   "score": 8.7,
+   "reviews": 3454,
+   "total": 4167,
    "near": "本所吾妻橋 250m・押上 850m",
    "url": "https://www.booking.com/hotel/jp/wise-owl-hostels-river-tokyo.zh-tw.html",
-   "note": "樣本最深的一家。晴空塔 650m，一樓咖啡廳兼酒吧"},
-
-  {"area": "池袋", "name": "可米旅館 Kimi Ryokan", "type": "日式房",
-   "score": 8.3, "reviews": 1010, "total": 6633, "total_src": "Trip.com",
+   "note": "樣本最深的一家。晴空塔 650m，一樓咖啡廳兼酒吧"
+  },
+  {
+   "area": "池袋",
+   "name": "可米旅館 Kimi Ryokan",
+   "type": "日式房",
+   "score": 8.3,
+   "reviews": 1010,
+   "total": 6633,
+   "total_src": "Trip.com",
    "near": "池袋站 550m",
    "url": "https://tw.trip.com/hotels/detail/?hotelId=1741153",
    "trip_id": "1741153",
-   "note": "⚠️ 門禁 01:00–07:00。同樣 8.3 分，價格是南千住 8.8 分那家的兩倍"},
-
-  {"area": "新宿", "name": null, "type": null,
-   "score": null, "reviews": null, "total": null,
-   "note": "3 公里內、8.0 分以上、非宿舍、非女性限定的選項一個都沒有"}
+   "note": "⚠️ 門禁 01:00–07:00。同樣 8.3 分，價格是南千住 8.8 分那家的兩倍"
+  },
+  {
+   "area": "新宿",
+   "name": null,
+   "type": null,
+   "score": null,
+   "reviews": null,
+   "total": null,
+   "note": "3 公里內、8.0 分以上、非宿舍、非女性限定的選項一個都沒有"
+  }
  ],
-
  "_areas_note": "每區只列一個代表：該區「價格 × 評分 × 樣本數」綜合最好的。同區其他選項見各區段落。",
-
  "bad_cheap": {
   "_說明": "新宿與池袋的便宜住宿不是樣本不足，是上千則評語撐出來的低分。列出來是要說明「便宜的區」和「貴的區」差的不只是錢。",
   "rows": [
-   {"area": "新宿", "name": "新宿區役所前膠囊酒店", "score": 6.7, "reviews": 4629, "total": 2784},
-   {"area": "新宿", "name": "東京環球飯店（男性膠囊）", "score": 7.8, "reviews": 3042, "total": 4252},
-   {"area": "新宿", "name": "ELE Cabin 歌舞伎町", "score": 7.5, "reviews": 1613, "total": 3911},
-   {"area": "新宿", "name": "Hotel&Co. Sagami", "score": 3.9, "reviews": 173, "total": 9394},
-   {"area": "池袋", "name": "Ryoma Ikebukuro（男性膠囊）", "score": 7.3, "reviews": 425, "total": 4212},
-   {"area": "池袋", "name": "AN HOTEL", "score": 4.7, "reviews": 217, "total": 4268},
-   {"area": "東京鐵塔", "name": "54Journey Roppongi", "score": 4.3, "reviews": 324, "total": 2637}
+   {
+    "area": "新宿",
+    "name": "新宿區役所前膠囊酒店",
+    "score": 6.7,
+    "reviews": 4629,
+    "total": 2784
+   },
+   {
+    "area": "新宿",
+    "name": "東京環球飯店（男性膠囊）",
+    "score": 7.8,
+    "reviews": 3042,
+    "total": 4252
+   },
+   {
+    "area": "新宿",
+    "name": "ELE Cabin 歌舞伎町",
+    "score": 7.5,
+    "reviews": 1613,
+    "total": 3911
+   },
+   {
+    "area": "新宿",
+    "name": "Hotel&Co. Sagami",
+    "score": 3.9,
+    "reviews": 173,
+    "total": 9394
+   },
+   {
+    "area": "池袋",
+    "name": "Ryoma Ikebukuro（男性膠囊）",
+    "score": 7.3,
+    "reviews": 425,
+    "total": 4212
+   },
+   {
+    "area": "池袋",
+    "name": "AN HOTEL",
+    "score": 4.7,
+    "reviews": 217,
+    "total": 4268
+   },
+   {
+    "area": "東京鐵塔",
+    "name": "54Journey Roppongi",
+    "score": 4.3,
+    "reviews": 324,
+    "total": 2637
+   }
   ]
  },
-
  "platform_gap": {
   "_說明": "同一家住宿在不同平台的評分。Trip.com 的分數普遍偏高且樣本小，Booking 樣本深得多。要判斷品質就看 Booking 那欄。",
   "rows": [
-   {"name": "新宿區役所前膠囊", "trip": 8.0, "trip_n": 941, "bk": 6.7, "bk_n": 4629},
-   {"name": "東京環球飯店", "trip": 8.9, "trip_n": 553, "bk": 7.8, "bk_n": 3042},
-   {"name": "OCICA 押上", "trip": 9.5, "trip_n": 139, "bk": 8.7, "bk_n": 792},
-   {"name": "A16 旅舍", "trip": 8.8, "trip_n": 122, "bk": 8.2, "bk_n": 1201},
-   {"name": "MyCUBE 藏前", "trip": 9.5, "trip_n": 590, "bk": 9.0, "bk_n": 1857},
-   {"name": "CITAN 旅舍", "trip": 9.2, "trip_n": 42, "bk": 8.9, "bk_n": 2240}
+   {
+    "name": "新宿區役所前膠囊",
+    "trip": 8.0,
+    "trip_n": 941,
+    "bk": 6.7,
+    "bk_n": 4629
+   },
+   {
+    "name": "東京環球飯店",
+    "trip": 8.9,
+    "trip_n": 553,
+    "bk": 7.8,
+    "bk_n": 3042
+   },
+   {
+    "name": "OCICA 押上",
+    "trip": 9.5,
+    "trip_n": 139,
+    "bk": 8.7,
+    "bk_n": 792
+   },
+   {
+    "name": "A16 旅舍",
+    "trip": 8.8,
+    "trip_n": 122,
+    "bk": 8.2,
+    "bk_n": 1201
+   },
+   {
+    "name": "MyCUBE 藏前",
+    "trip": 9.5,
+    "trip_n": 590,
+    "bk": 9.0,
+    "bk_n": 1857
+   },
+   {
+    "name": "CITAN 旅舍",
+    "trip": 9.2,
+    "trip_n": 42,
+    "bk": 8.9,
+    "bk_n": 2240
+   }
   ]
  },
-
  "desks": {
   "_說明": "清晨落地的紅眼班機最在意的一件事。多數平價住宿的櫃檯要下午才開，行李只能先寄投幣置物櫃（大型一天約 ¥700–1,000）。",
   "rows": [
-   {"name": "OCICA 押上", "open": "24 小時", "note": "一下車就能放行李"},
-   {"name": "加優酒店（南千住）", "open": "07:30", "note": "門禁 23:30；有住客回報早上 8 點就讓入住"},
-   {"name": "明月酒店（南千住）", "open": "08:00", "note": "入住 15:00 起"},
-   {"name": "Tora Hotel Asakusa", "open": "14:00", "note": "入住到隔日 00:00，窗口最寬"},
-   {"name": "Hotel Tomariya Ueno", "open": "15:00", "note": "到 23:00"},
-   {"name": "Wise Owl（押上）", "open": "15:00", "note": "到 23:00，限 18 歲以上"},
-   {"name": "plat karin（淺草）", "open": "16:00", "note": "到 23:00，無電梯"},
-   {"name": "可米旅館（池袋）", "open": "15:00", "note": "⚠️ 門禁 01:00–07:00，那段時間進不去"}
+   {
+    "name": "OCICA 押上",
+    "open": "24 小時",
+    "note": "一下車就能放行李"
+   },
+   {
+    "name": "加優酒店（南千住）",
+    "open": "07:30",
+    "note": "門禁 23:30；有住客回報早上 8 點就讓入住"
+   },
+   {
+    "name": "明月酒店（南千住）",
+    "open": "08:00",
+    "note": "入住 15:00 起"
+   },
+   {
+    "name": "Tora Hotel Asakusa",
+    "open": "14:00",
+    "note": "入住到隔日 00:00，窗口最寬"
+   },
+   {
+    "name": "Hotel Tomariya Ueno",
+    "open": "15:00",
+    "note": "到 23:00"
+   },
+   {
+    "name": "Wise Owl（押上）",
+    "open": "15:00",
+    "note": "到 23:00，限 18 歲以上"
+   },
+   {
+    "name": "plat karin（淺草）",
+    "open": "16:00",
+    "note": "到 23:00，無電梯"
+   },
+   {
+    "name": "可米旅館（池袋）",
+    "open": "15:00",
+    "note": "⚠️ 門禁 01:00–07:00，那段時間進不去"
+   }
   ]
  },
-
  "weakness": {
   "_說明": "每一家都有弱點，沒有一家是「沒有負評」的。Booking 頁面預設只顯示好評，這些是從細項評分、Agoda 的情緒分析和住宿自述挖出來的。",
   "rows": [
-   {"name": "Wise Owl（押上）",
-    "weak": "隔音。Agoda 71 篇提及、69% 負面；Booking 頁面的注意事項是住宿自己寫的：「住宿位於鐵路高架橋下，住客可能受到些許火車噪音干擾」。淋浴設備 50 篇提及、正負各半"},
-   {"name": "plat karin（淺草）",
-    "weak": "客房面積。Agoda 23 篇提及、39% 負面。無電梯且樓梯窄陡，大行李箱要自己扛"},
-   {"name": "明月酒店（南千住）",
-    "weak": "位置 7.7，實走南千住站約 10 分鐘。住客反覆提到隔音差，「建議跟櫃台索取耳塞，有人趕早班機會很早起來整理行李」。二樓無電梯"},
-   {"name": "鎧淺草 Yoroi",
-    "weak": "員工素質 8.4，是它七項裡唯一低於 8.5 的（其餘六項都 8.9 以上）"},
-   {"name": "Tora Hotel Asakusa", "weak": "WiFi 8.1，設施與舒適都是 8.5"},
-   {"name": "Guest House Tokyo Samurai", "weak": "舒適 8.3、清潔 8.4，是同價位帶最低"},
-   {"name": "加優酒店（南千住）",
-    "weak": "位置 7.6（實走 11–15 分）、整潔 8.3。共用廁所、浴室、吹風機的空間完全分開"}
+   {
+    "name": "Wise Owl（押上）",
+    "weak": "隔音。Agoda 71 篇提及、69% 負面；Booking 頁面的注意事項是住宿自己寫的：「住宿位於鐵路高架橋下，住客可能受到些許火車噪音干擾」。淋浴設備 50 篇提及、正負各半"
+   },
+   {
+    "name": "plat karin（淺草）",
+    "weak": "客房面積。Agoda 23 篇提及、39% 負面。無電梯且樓梯窄陡，大行李箱要自己扛"
+   },
+   {
+    "name": "明月酒店（南千住）",
+    "weak": "位置 7.7，實走南千住站約 10 分鐘。住客反覆提到隔音差，「建議跟櫃台索取耳塞，有人趕早班機會很早起來整理行李」。二樓無電梯"
+   },
+   {
+    "name": "鎧淺草 Yoroi",
+    "weak": "員工素質 8.4，是它七項裡唯一低於 8.5 的（其餘六項都 8.9 以上）"
+   },
+   {
+    "name": "Tora Hotel Asakusa",
+    "weak": "WiFi 8.1，設施與舒適都是 8.5"
+   },
+   {
+    "name": "Guest House Tokyo Samurai",
+    "weak": "舒適 8.3、清潔 8.4，是同價位帶最低"
+   },
+   {
+    "name": "加優酒店（南千住）",
+    "weak": "位置 7.6（實走 11–15 分）、整潔 8.3。共用廁所、浴室、吹風機的空間完全分開"
+   }
   ]
  },
-
- "channels": {
-  "_說明": "同一間房、同一組日期，六個通路的實際總價。以 OCICA 押上的共用衛浴雙人房為例。結論是沒有哪個通路一定便宜，要逐家比。連「官網最便宜」都不是通則。",
-  "hotel": "OCICA 押上（私人房・共用衛浴）",
-  "rows": [
-   {"ch": "Booking", "cancel": "不可退款", "total": 8207},
-   {"ch": "Klook", "cancel": "免費取消至 9/28", "total": 8334},
-   {"ch": "Agoda", "cancel": "不可退款", "total": 8408, "note": "JCB 折 841，但服務費疊了四層又收回去"},
-   {"ch": "Booking", "cancel": "免費取消至 10/1", "total": 9119},
-   {"ch": "Trip.com", "cancel": "免費取消至 10/1", "total": 9434},
-   {"ch": "官網（R Hotels）", "cancel": "免費取消至 9/30", "total": 10130, "note": "最貴。2025 年新開的飯店還在靠 OTA 衝住房率"}
-  ],
-  "counter_examples": "但加優酒店的官網（住 3 晚以上每晚 ¥3,400）比 Booking 便宜 22%，9h 浜松町官網會員價便宜 9%。老字號獨立旅館官網通常較便宜，新開的連鎖不一定。"
- },
-
  "airport": {
   "name": "維拉芳泉羽田機場大飯店",
   "en": "Hotel Villa Fontaine Grand Haneda Airport",
-  "id": "49509069", "score": 8.7, "reviews": 30021, "night": 3970,
+  "id": "49509069",
+  "score": 8.7,
+  "reviews": 30021,
+  "night": 3970,
   "note": "與第 3 航廈直接相連，步行約 5 分鐘。自助 check-in／out，半夜退房不用等櫃檯；12 樓溫泉幾乎 24 小時營業，樓下有 24 小時 LAWSON",
-  "sample": {"checkin": "2026-10-08", "checkout": "2026-10-09"},
+  "sample": {
+   "checkin": "2026-10-08",
+   "checkout": "2026-10-09"
+  },
   "alts": [
-   {"name": "羽田第 3 航廈過夜", "price": 0,
-    "note": "航廈 24 小時開放。睡覺點：2F 到達大廳長椅（有充電）、4F 江戶小町店前、4F 伊藤園（咖啡時段後開放）、5F 往觀景台。淋浴室（2F）¥1,500／30 分。24 小時營業有 TULLY'S（2F）、1F LAWSON"},
-   {"name": "Royal Park Hotel Tokyo Haneda（T3）", "price": 4889, "score": 8.5, "reviews": 14744},
-   {"name": "Haneda Excel Hotel Tokyu（T2）", "price": 5234, "score": 8.5, "reviews": 3792,
-    "note": "⚠️ 在 T2，凌晨要跨航廈"},
-   {"name": "First Cabin Haneda（T1）", "price": 5569, "score": 7.7, "reviews": 3100,
-    "note": "⚠️ 在 T1，凌晨要跨航廈"}
+   {
+    "name": "羽田第 3 航廈過夜",
+    "price": 0,
+    "note": "航廈 24 小時開放。睡覺點：2F 到達大廳長椅（有充電）、4F 江戶小町店前、4F 伊藤園（咖啡時段後開放）、5F 往觀景台。淋浴室（2F）¥1,500／30 分。24 小時營業有 TULLY'S（2F）、1F LAWSON"
+   },
+   {
+    "name": "Royal Park Hotel Tokyo Haneda（T3）",
+    "price": 4889,
+    "score": 8.5,
+    "reviews": 14744
+   },
+   {
+    "name": "Haneda Excel Hotel Tokyu（T2）",
+    "price": 5234,
+    "score": 8.5,
+    "reviews": 3792,
+    "note": "⚠️ 在 T2，凌晨要跨航廈"
+   },
+   {
+    "name": "First Cabin Haneda（T1）",
+    "price": 5569,
+    "score": 7.7,
+    "reviews": 3100,
+    "note": "⚠️ 在 T1，凌晨要跨航廈"
+   }
   ]
  },
-
  "redeye": {
   "_說明": "清晨起飛的班機，最後一晚不能訂市區住宿。這一段的數字決定了整頁的結論。",
   "example_flight": "台灣虎航 IT217（羽田 → 桃園）",
@@ -162,7 +334,9 @@
   "checkin_src_name": "台灣虎航搭機須知",
   "checkin_note": "台中、高雄上午七點前出發的航班與沖繩出發航班改為起飛前 2 小時開櫃；澳門、越南出發是起飛前 60 分鐘關櫃",
   "first_train": {
-   "from": "品川", "dep": "05:09", "line": "京急本線往羽田空港第 3 航廈",
+   "from": "品川",
+   "dep": "05:09",
+   "line": "京急本線往羽田空港第 3 航廈",
    "src": "https://www.navitime.co.jp/diagram/depArrTimeList?departure=00007825&arrival=00009589&line=00000298&updown=1",
    "src_name": "NAVITIME 品川→羽田空港第３ターミナル"
   },
@@ -171,5 +345,6 @@
    "src": "https://www.tokyobus.or.jp/accessbus/",
    "src_name": "東京巴士協會 羽田空港深夜早朝アクセスバス"
   }
- }
+ },
+ "_通路價差已搬家": "六個通路的價差對照已移至 price-check.json（頁面 /hotel-price-check/），這裡不再保留第二份，避免兩邊漂移。"
 }

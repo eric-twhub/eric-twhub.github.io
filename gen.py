@@ -795,7 +795,8 @@ def topnav(cur=''):
             + link('/japan-ski-baggage/', '🎿 雪具託運'))
 
     # 訂完票之後才會看的東西。同一層放太多會找不到，所以分兩組小標。
-    trip = (link('/japan-airport-last-train/', '🚉 機場末班車')
+    trip = (link('/hotel-price-check/', '🏨 訂房比價')
+            + link('/japan-airport-last-train/', '🚉 機場末班車')
             + '<hr><b>上網與門號</b>'
             + link('/japan-esim/', '📱 日本 eSIM 比較')
             + link('/japan-esim-native-roaming/', '📱 原生還是漫遊')
@@ -6037,14 +6038,6 @@ if HS:
     _hs_weak = ''.join(f'<li><b>{html.escape(r["name"])}</b>　{html.escape(r["weak"])}。</li>'
                        for r in _WK['rows'])
 
-    _CH = HS['channels']
-    _ch_lo = min(r['total'] for r in _CH['rows'])
-    _hs_ch = ''.join(
-        f'<tr><td>{html.escape(r["ch"])}</td><td>{html.escape(r["cancel"])}</td>'
-        f'<td{" class=win" if r["total"] == _ch_lo else ""}><b>{money(r["total"])}</b></td>'
-        f'<td>{html.escape(r.get("note", ""))}</td></tr>'
-        for r in sorted(_CH['rows'], key=lambda r: r['total']))
-
     _hs_alt = ''.join(
         f'<tr><td>{html.escape(x["name"])}'
         + (f'{_SM}{x["score"]}／{x["reviews"]:,} 則</small>' if x.get('score') else '')
@@ -6132,12 +6125,12 @@ if HS:
       + '<h2>每一家的弱點</h2>'
       + f'<p class="lede">{html.escape(_WK["_說明"])}</p>'
       + '<div class="tldr"><ul>' + _hs_weak + '</ul></div>'
-      + '<h2>同一間房，六個通路的價差</h2>'
-      + f'<p class="lede">{html.escape(_CH["_說明"])}</p>'
-      + '<div class="tw"><table><thead><tr><th>通路</th><th>取消政策</th>'
-        f'<th>{_hs_n} 晚總價</th><th>備註</th></tr></thead><tbody>' + _hs_ch
-      + '</tbody></table></div>'
-      + f'<p class="disc">{html.escape(_CH["counter_examples"])}</p>'
+      + '<h2>訂之前先比通路</h2>'
+      + f'<p class="lede">同一間房在不同訂房網的總價可以差一兩千，'
+        f'手機版和桌機版也不一樣。本站實測過 6 個通路與 5 間飯店，'
+        f'整理成<a href="{U("/hotel-price-check/")}">訂房比價</a>：'
+        f'哪個平台要在哪搜、官網是不是真的最便宜、'
+        f'返利網要多少回饋才划得來。</p>'
       + '<h2>清晨起飛：那一晚你買不到能睡的房間</h2>'
       + f'<p class="lede">廉航的回程常常落在清晨五點多。看起來是多賺一晚，'
         f'實際上是<b>少了一晚</b>。以 {html.escape(_hs_r["example_flight"])} 為例：</p>'
@@ -6391,6 +6384,166 @@ if BH:
     pages.append(('/tokyo/budget-hotel/', 0.8))
     print(f'   東京便宜旅館頁：{len(_bh_all)} 家（查證 {BH["checked"]}，'
           f'{money(_bh_lo["total"])} 起／{_bh_n} 晚）')
+
+# ---------- 訂房比價（跨平台方法論）----------
+PC = (json.load(open('price-check.json', encoding='utf-8'))
+      if os.path.exists('price-check.json') else None)
+if PC:
+    _pc_s = PC['sample']; _pc_d = PC['device']; _pc_r = PC['referral']
+    _PSM = '<br><small style="color:var(--dim)">'
+
+    def _pc_pct(a, b):
+        """桌機→手機的折扣幅度。兩者相同時回傳 0。"""
+        return 0.0 if not a or not b else (a - b) / a * 100
+
+    _pc_gap = [_pc_pct(r['desktop_fc'], r['mobile_fc']) for r in _pc_d['rows']
+               if r.get('genius')]
+    _pc_avg = sum(_pc_gap) / len(_pc_gap)
+    _pc_has = sum(1 for r in _pc_d['rows'] if r.get('genius'))
+    _pc_n = len(_pc_d['rows'])
+
+    _pc_rows = ''
+    for r in _pc_d['rows']:
+        _g = ('<b>有</b>' if r.get('genius') else '無')
+        _nr = (f'{money(r["desktop_nr"])} → <b>{money(r["mobile_nr"])}</b>'
+               if r.get('desktop_nr') else '—')
+        _fc = f'{money(r["desktop_fc"])} → <b>{money(r["mobile_fc"])}</b>'
+        _p = _pc_pct(r['desktop_fc'], r['mobile_fc'])
+        _cls = ' class="win"' if _p > 0.5 else ''
+        _pc_rows += (f'<tr><td><b>{html.escape(r["name"])}</b>{_PSM}'
+                     f'{html.escape(r["area"])}</small></td>'
+                     f'<td>{_g}</td><td>{_nr}</td><td>{_fc}</td>'
+                     f'<td{_cls}><b>{"0" if _p < 0.5 else f"−{_p:.2f}%"}</b></td></tr>')
+
+    _ST = {'有差': 'win', '無差': '', '未測得': 'lose'}
+    _pc_plat = ''.join(
+        f'<tr><td><b>{html.escape(p["name"])}</b></td>'
+        f'<td class="{_ST.get(p["state"], "")}"><b>{html.escape(p["state"])}</b></td>'
+        f'<td>{html.escape(p["detail"])}</td></tr>' for p in PC['platforms']['rows'])
+
+    _CH = PC['channels']
+    _pc_ch_lo = min(r['total'] for r in _CH['rows'])
+    _pc_ch = ''.join(
+        f'<tr><td>{html.escape(r["ch"])}</td><td>{html.escape(r["cancel"])}</td>'
+        f'<td{" class=win" if r["total"] == _pc_ch_lo else ""}><b>{money(r["total"])}</b></td>'
+        f'<td>{html.escape(r.get("note", ""))}</td></tr>'
+        for r in sorted(_CH['rows'], key=lambda r: r['total']))
+
+    _pc_rate = ''.join(
+        f'<tr><td>{html.escape(x["name"])}</td><td><b>{x["pct"]}%</b></td>'
+        f'<td>{html.escape(x["verdict"])}</td></tr>' for x in _pc_r['rates'])
+    _pc_hid = ''.join(f'<li>{html.escape(h)}</li>' for h in _pc_r['hidden_costs'])
+    _pc_ex = _pc_r['example']
+
+    _pc_chk = ''.join(f'<details class="faq"><summary>{html.escape(c["q"])}</summary>'
+                      f'<div>{html.escape(c["a"])}</div></details>' for c in PC['checklist'])
+
+    _pc_faq = [
+     ('訂房用手機真的比較便宜嗎？',
+      f'在 Booking.com 上，有 Genius 折扣標籤的房源會。本站在 {PC["checked"]} 用同一個未登入的'
+      f'瀏覽器、同一分鐘、只改變視窗尺寸，量測 {_pc_n} 間東京飯店：'
+      f'{_pc_has} 間掛有 Genius 標籤的，手機版價格剛好是桌機版除以 1.1，也就是便宜 '
+      f'{_pc_avg:.2f}%；另外 2 間沒有標籤的，兩邊一毛不差。'
+      '所以判斷依據是有沒有 Genius 標籤，不是「手機一定比較便宜」。'),
+     ('其他訂房網也有這種情況嗎？',
+      'Klook 實測同價。Agoda 的手機版在測試瀏覽器上沒有算繪出房價，'
+      'Trip.com 的手機版未登入會被導向登入頁，這兩家本站沒有測到。'
+      '沒有測到不等於沒有差異，如果你在用這兩家，值得自己開 App 比一次。'),
+     ('從返利網點進去訂，會比較划算嗎？',
+      f'要先算門檻，而且比較基準是手機直訂而不是桌機直訂。'
+      f'公式是：{_pc_r["formula"]}。以本站的案例，手機直訂 {money(_pc_ex["mobile_direct"])}、'
+      f'桌機加導購 {money(_pc_ex["desktop_referral"])}，價差 {money(_pc_ex["gap"])}，'
+      f'回饋率要超過 {_pc_ex["threshold_pct"]}% 才追得平。'
+      '再考慮回饋要等行程完成後 70 天、取消就歸零，實務上建議抓門檻的 1.5 倍。'),
+     ('為什麼回饋基數要乘 0.83？',
+      f'{_pc_r["why_083"]}'),
+     ('官網訂房最便宜嗎？',
+      f'{_CH["official_rule"]}'),
+     ('折扣率高就是比較便宜嗎？',
+      '不一定，要看折在稅前還是稅後。本站查到的一個案例：Agoda 幫忙折掉 JCB 的 841 元，'
+      '但服務費 15%、10%、15% 加上稅金 10% 疊起來是房價的 54%，'
+      '總價反而比 Booking 貴 201。比價只能比結帳頁的總金額。'),
+    ]
+    _pc_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                       + html.escape(a) + '</div></details>' for q, a in _pc_faq)
+    _pc_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in _pc_faq]}, ensure_ascii=False)
+
+    write('hotel-price-check/index.html',
+      head(f'訂房比價｜同一間房，手機版比桌機版便宜 {_pc_avg:.1f}%',
+           f'同一間飯店、同一組日期、同一個瀏覽器，只改變視窗尺寸，Booking 的價格就少 '
+           f'{_pc_avg:.2f}%。{_pc_n} 間東京飯店實測，附判斷規則、六個訂房通路的價差對照，'
+           f'以及返利網要多少回饋才划得來的計算公式。',
+           'hotel-price-check/',
+           '<script type="application/ld+json">' + _pc_ld + '</script>')
+      + crumbs([('首頁', '/'), ('訂房比價', None)]) + topnav()
+      + '<h1>同一間房，手機版比桌機版便宜 9%</h1>'
+      + f'<p class="lede">同一間飯店、同一組日期、同一個沒登入的瀏覽器，'
+        f'只是把視窗縮成手機尺寸，價格就少 {_pc_avg:.2f}%。'
+        f'{_pc_n} 間實測，<b>規律精確到可以預測</b>：手機版剛好是桌機版除以 1.1。</p>'
+      + f'<div class="today"><div class="tday">查證於 {PC["checked"]}'
+        f'　·　樣本 {html.escape(_pc_s["dates"])}，{_pc_s["nights"]} 晚單人</div>'
+        f'<div class="tans">有 Genius 標籤的房源，手機版便宜 {_pc_avg:.2f}%；'
+        f'沒有標籤的兩邊同價</div>'
+        f'<div class="tsub">{html.escape(_pc_s["note"])}。'
+        f'本頁的價格是量測當下的快照，用途是呈現差異而非報價。</div></div>'
+      + f'<h2>{_pc_n} 間實測</h2>'
+      + '<div class="tw"><table><thead><tr><th>飯店</th><th>Genius 標籤</th>'
+        '<th>不可退款</th><th>可免費取消</th><th>差</th></tr></thead><tbody>'
+      + _pc_rows + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_pc_d["dropped"])}</p>'
+      + '<div class="tldr"><ul>'
+      + f'<li><b>{html.escape(_pc_d["finding"])}</b></li>'
+        '<li><b>不是四捨五入接近，是完全相等。</b>2,246 ÷ 1.1 ＝ 2,042、'
+        '4,058 ÷ 1.1 ＝ 3,689、7,043 ÷ 1.1 ＝ 6,403，三間都精確命中。</li>'
+        '<li><b>所以判斷依據是標籤，不是裝置。</b>桌機版看到 Genius 或百分比折扣標籤，'
+        '就值得用手機再開一次；沒有標籤的不用白跑。</li>'
+        '</ul></div>'
+      + f'<p class="disc">{html.escape(_pc_d["limits"])}</p>'
+      + '<h2>其他訂房平台呢</h2>'
+      + f'<p class="lede">{html.escape(PC["platforms"]["_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>平台</th><th>結果</th>'
+        '<th>說明</th></tr></thead><tbody>' + _pc_plat + '</tbody></table></div>'
+      + '<h2>同一間房，六個通路的價差</h2>'
+      + f'<p class="lede">{html.escape(_CH["_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>通路</th><th>取消政策</th>'
+        '<th>4 晚總價</th><th>備註</th></tr></thead><tbody>' + _pc_ch
+      + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_CH["official_rule"])}</p>'
+      + '<h2>從返利網點進去，划得來嗎</h2>'
+      + f'<div class="today"><div class="tday">本站狀態：{html.escape(_pc_r["state"])}</div>'
+        f'<div class="tsub">{html.escape(_pc_r["why"])}</div></div>'
+      + '<p class="lede">但門檻可以先算出來。關鍵是：'
+        '<b>比較基準是手機直訂，不是桌機直訂</b>。如果你本來就會用手機訂，'
+        '導購得先補回那 9% 才開始算賺。</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_pc_r["formula"])}</b></li>'
+        f'<li>以本站案例：手機直訂 {money(_pc_ex["mobile_direct"])}、'
+        f'桌機加導購 {money(_pc_ex["desktop_referral"])}，價差 {money(_pc_ex["gap"])}，'
+        f'門檻是 <b>{_pc_ex["threshold_pct"]}%</b>。</li></ul></div>'
+      + '<div class="tw"><table><thead><tr><th>返利方案</th><th>回饋率</th>'
+        '<th>判定</th></tr></thead><tbody>' + _pc_rate + '</tbody></table></div>'
+      + '<p class="lede">還要扣掉三個隱性成本：</p>'
+      + '<div class="tldr"><ul>' + _pc_hid + '</ul></div>'
+      + f'<p class="disc">{html.escape(_pc_r["practical"])}</p>'
+      + '<h2>怎麼比才不會白花錢</h2>' + _pc_chk
+      + cta('hotel', '東京', '東京', '知道怎麼比了，去查你的房價',
+            f'到 {P["hotel"]["brand"]} 看房價，繁體中文、台幣計價', track='price-check')
+      + '<h2>常見問題</h2>' + _pc_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
+        f'<s>8 個區實查比較</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/budget-hotel/")}"><b>🛌 東京便宜旅館</b>'
+        f'<s>共用衛浴的私人房</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
+        f'<s>帳面票價不含託運</s></a></div>'
+      + f'<p class="disc">本頁的所有價格為 {PC["checked"]} 的量測值，僅用於呈現差異，'
+        f'不是報價。訂房網的價格、折扣方案與會員等級隨時調整，'
+        f'請以你自己查到的結帳頁金額為準。</p>'
+      + foot())
+    pages.append(('/hotel-price-check/', 0.9))
+    print(f'   訂房比價頁：{_pc_n} 間實測（查證 {PC["checked"]}，'
+          f'手機版便宜 {_pc_avg:.2f}%）')
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
