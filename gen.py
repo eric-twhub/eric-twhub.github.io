@@ -286,6 +286,65 @@ def compare_line(city_name='', slug=''):
     return (f'<p class="disc">票價僅供參考，建議到 {ls} {where}'
             f'，台灣 OTA 常有旅行社切位票，是國際比價站看不到的貨源。</p>')
 
+def _rate_basis(st):
+    """說明折扣率是怎麼決定的。
+
+    舊版只分「有滿額級距」與「單一費率」兩種，於是 rate 寫成區間、
+    但沒填 steps 的店會被斷言成「單一費率 <max>%」——那是在宣稱一件
+    沒查證的事，而且一律取最高值，方向偏向高估。
+    """
+    if st['steps']:
+        return '該店有滿額級距，未稅金額決定適用哪一檔。'
+    if st.get('cat_tiers'):
+        return ('該店的折扣率依<b>商品類別</b>而不是金額決定，'
+                f'下表以最高的 {st["max"]}% 試算，'
+                '你買的品項是哪一檔要看下面的類別表。')
+    if any(c in st['rate'] for c in '–-~～') or '最高' in st['rate'] or '起' in st['rate']:
+        return (f'該店公告的折扣是「{html.escape(st["rate"])}」，不是固定一個數字。'
+                '本站還沒查清楚分級依據是金額還是商品類別，'
+                f'下表一律以最高的 {st["max"]}% 試算，<b>你實際拿到的可能更低</b>。')
+    return f'該店為單一費率 {st["max"]}%。'
+
+
+def _cat_tiers_block(st):
+    """折扣率依商品類別分級的店，把類別列出來。
+
+    舊版把這種店算繪成「單一費率 <max>%」，那是高估：Bic Camera 的 7% 只給
+    相機家電玩具，藥妝食品是 5%，清酒是 3%。
+    """
+    ct = st.get('cat_tiers')
+    if not ct:
+        return ''
+    rows = ''.join(
+        f'<tr><td class="win"><b>{t["rate"]}%</b></td>'
+        f'<td class="nm">{html.escape(t["items"])}</td></tr>' for t in ct)
+    return ('<h2>折扣率看你買什麼</h2>'
+            '<p class="lede">這家的差別不在金額，在商品類別。'
+            '上面的試算用的是最高那一檔，買別的品項要往下對。</p>'
+            f'<div class="tw narrow"><table><tr><th>折扣</th><th>適用商品</th></tr>'
+            f'{rows}</table></div>')
+
+
+def _exclude_block(st):
+    """明文不適用折扣券的品項。這是最容易讓人算錯預算的一格。"""
+    ex = st.get('exclude_items')
+    if not ex:
+        return ''
+    rows = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(e["cat"])}</b></td>'
+        f'<td class="lose">{html.escape(e["what"])}</td></tr>' for e in ex)
+    out = ('<h2>這些東西只拿得到免稅，折扣券不適用</h2>'
+           '<p class="lede">買這幾類的人最容易把預算算錯：'
+           '以為是免稅加折扣，實際上只有免稅。</p>'
+           f'<div class="tw narrow"><table><tr><th>類別</th><th>不適用的商品</th></tr>'
+           f'{rows}</table></div>')
+    if st.get('exclude_note'):
+        out += f'<p class="disc">{html.escape(st["exclude_note"])}</p>'
+    if st.get('no_stack'):
+        out += f'<p class="disc"><b>另外：</b>{html.escape(st["no_stack"])}</p>'
+    return out
+
+
 GATE_FILTER = ('<div class="bar gatebar"><b>訂票通路</b>'
   '<button class="chip" id="gfAll" onclick="gf(0)">全部平台</button>'
   '<button class="chip" id="gfTw" onclick="gf(1)">只看台灣可訂 / 國際平台</button>'
@@ -3966,6 +4025,9 @@ if os.path.exists('apple.json'):
       + f'<li><b>能退稅才有價差。</b>在家電量販店以免稅價購買時，{cheap_jp} 個組合日本較划算，'
         f'最多可省 {money(top_save)}（{top["name"]} {top["spec"]}）。</li>'
       + '<li><b>但 Apple 直營店已不能退稅</b>（2024/6 起），要免稅得去 Bic Camera、Yodobashi 等量販店。</li>'
+      + '<li><b>量販店的折扣券對 Apple 無效。</b>'
+        'Bic Camera 那張「免稅 10% ＋ 最高 7%」的券，官方 FAQ 明寫 Apple 商品不適用額外折扣，'
+        '只拿得到免稅。把 7% 一起算進預算是常見的算錯。</li>'
       + f'<li><b>配件不值得為它退稅。</b>{len(acc)} 項新配件中有 {acc_tw} 項連退稅後仍是台灣便宜，'
         f'其餘價差也不到 NT$1,000。</li>'
       + '</ul></div>'
@@ -3984,13 +4046,22 @@ if os.path.exists('apple.json'):
       + '<div class="cities">'
       + f'<a class="ct" href="{U("/iphone-cost/")}"><b>📉 iPhone 持有成本試算</b>'
         f'<s>用實際回收行情算每月多少</s></a></div>'
-      + '<h2>買之前要知道的兩件事</h2>'
+      + '<h2>買之前要知道的三件事</h2>'
       + '<h3>1. Apple 直營店已經不能退稅</h3>'
       + '<p class="lede">Apple 日本直營店自 2024 年 6 月起取消對外國旅客的免稅服務。'
         '要拿到免稅價，必須到有 Tax-Free 標示的家電量販店（Bic Camera、Yodobashi Camera 等），'
         '結帳時出示護照。量販店定價未必與 Apple 官網相同，且部分店家收取手續費，請現場確認。</p>'
       + fare_cta('tokyo','要去量販店掃貨？機票現在多少')
-      + '<h3>2. 保固是區域性的</h3>'
+      + '<h3>2. 量販店的折扣券，Apple 用不到</h3>'
+      + f'<p class="lede">Bic Camera 常見的那張「免稅 10% ＋ 最高 7% 折扣」優惠券，'
+        f'官方 FAQ 有一題直接問「iPhone 或 MacBook 等 Apple 產品可以使用這張優惠券嗎？」，'
+        f'答案是<b>不行</b>，只能享有 10% 的免稅價。'
+        f'同樣被排除的還有進口品牌手錶、Grand Seiko、各種遊戲主機與軟體、'
+        f'Meta Quest、DJI、特價品與 Outlet 品。'
+        f'所以本頁的價差算的是<b>免稅價</b>，沒有把那 7% 算進去。'
+        f'細節與各類別的實際折扣列在'
+        f'<a href="{U("/japan-coupon/bic-camera/")}">Bic Camera 折價券那一頁</a>。</p>'
+      + '<h3>3. 保固是區域性的</h3>'
       + '<p class="lede">日本購買的 iPhone 在台灣的 Apple 授權維修中心可能不受理，需寄回日本處理。'
         '省下的幾千元，遇到一次維修就可能不划算。快門聲也一樣要先想清楚：'
         '限制綁在銷售地版本（日本為 J/A），帶出國是否就會靜音各方實測說法不一，'
@@ -5894,9 +5965,9 @@ if os.path.exists('cards.json'):
                 f'<div class="tbuf">{html.escape(st["when"])}</div></div>'
               + '<h2>不同金額省多少</h2>'
               + f'<p class="lede">先扣免稅，券再以未稅金額計算。'
-                + ('該店有滿額級距，未稅金額決定適用哪一檔。' if st['steps'] else
-                   f'該店為單一費率 {st["max"]}%。') + '</p>'
+                + _rate_basis(st) + '</p>'
               + _ex
+              + _cat_tiers_block(st) + _exclude_block(st)
               + f'<p class="disc">實際折扣依商品類別與當期券別而異，以店家公告為準。'
                 f'想連刷卡回饋一起算，可用<a href="{U("/japan-coupon/")}">實付價計算機</a>。</p>'
               + fare_cta('tokyo', '算完省多少，機票呢')
