@@ -122,7 +122,7 @@
     "Agoda、Airbnb、Expedia 等海外訂房平台有授權時間差，建議提前切換並多留幾天"
    ],
    "base": 3.3,
-   "base_note": "海外實體消費小樹點回饋，無上限。依權益等級為 2%（Level 1）／3%（Level 2）／3.3%（Level 3），且需在消費當日於 CUBE App 切到「趣旅行」",
+   "base_note": "海外實體消費小樹點回饋，無上限。依權益等級為 2%（Level 1）／3%（Level 2）／3.3%（Level 3），且需在消費當日於 CUBE App 切到「趣旅行」。另有「固定回饋」方案，切換後至 2026/12/31 止海外實體消費一律 2.5%、不看權益等級：Level 1 的人切過去比趣旅行的 2% 好，Level 2 與 Level 3 則維持趣旅行",
    "tiers": [],
    "reg": "不需登錄，但需於 CUBE App 在消費當日切換至「趣旅行」",
    "reg_race": false,
@@ -131,7 +131,7 @@
    "reg_level": "setup",
    "levels": {
     "label": "權益等級",
-    "note": "等級由持有的商品決定：Level 1 只持卡 2%；Level 2 另需臺幣存款帳戶並登入 CUBE App，3%；Level 3 需為財富管理貴賓，3.3%。集精選方案不分等級統一 2%。",
+    "note": "等級由持有的商品決定：Level 1 只持卡 2%；Level 2 另需臺幣存款帳戶並登入 CUBE App，3%；Level 3 需為財富管理貴賓，3.3%。集精選方案不分等級統一 2%。 另有「固定回饋」方案：切換當日起至 2026/12/31 止，海外實體消費一律 2.5%，不看權益等級。Level 1 只有 2%，切到固定回饋反而比趣旅行高；Level 2（3%）與 Level 3（3.3%）則是趣旅行較好。",
     "options": [
      {
       "key": "l3",
@@ -150,11 +150,27 @@
       "name": "Level 1（只持卡）",
       "base": 2.0,
       "tiers": []
+     },
+     {
+      "key": "fixed",
+      "name": "固定回饋方案（不分等級，限 2026/12/31 前）",
+      "base": 2.5,
+      "tiers": []
      }
     ]
    },
    "src2": "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/product/CUBE_rights/index.html",
-   "src2_name": "國泰世華・CUBE 卡權益分級"
+   "src2_name": "國泰世華・CUBE 卡權益分級",
+   "_2026-09-26_複查": {
+    "查了什麼": "社群流傳 CUBE 卡有「秋日遊」方案 3.5%。",
+    "結論": "查無此方案。官方權益分級頁列出的方案只有玩數位、樂饗購、趣旅行、集精選、固定回饋，整頁沒有 3.5%，最高是 Level 3 趣旅行的 3.3%。本站原本的資料正確，未更動。",
+    "可能的來源": "國泰世華曾有「JCB日本賞」3.5%，但該活動頁（jcbjprewards、japanrewards）現在都回 404，研判已結束。",
+    "來源": [
+     "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/product/CUBE_rights/index.html",
+     "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/product/japancoupons/index.html"
+    ],
+    "順帶查到": "「固定回饋」是我們原本沒有的方案，海外實體 2.5% 不分等級，已補進 levels。"
+   }
   },
   {
    "name": "聯邦吉鶴卡",

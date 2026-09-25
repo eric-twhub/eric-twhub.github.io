@@ -306,6 +306,44 @@ def _rate_basis(st):
     return f'該店為單一費率 {st["max"]}%。'
 
 
+def _visa_block(st):
+    """這家店有沒有被 Visa Select 優選回饋涵蓋。
+
+    Visa Select 是 Visa 台灣自己的平台活動，跟店家發的折價券是兩回事：
+    要先上網註冊報名、綁卡、結帳出示專屬券碼，還要在 15 天內上傳刷卡憑證。
+    能不能跟店家折價券疊，官方頁自己有兩種說法，本站不下結論。
+    """
+    vs = (CP.get('_visa_select') or {})
+    acts = [a for a in (vs.get('活動') or [])
+            if st['slug'] in (a.get('本站已有的店') or [])]
+    if not acts:
+        return ''
+    out = '<h2>這家店另有 Visa 卡的現金回饋活動</h2>'
+    for a in acts:
+        out += (f'<div class="tldr"><ul>'
+                f'<li><b>活動</b>：{html.escape(a["name"])}</li>'
+                f'<li><b>內容</b>：{html.escape(a["內容"])}</li>'
+                f'<li><b>期間</b>：{html.escape(a["期間"])}</li>'
+                + (f'<li><b>除外</b>：{html.escape(a["除外"])}</li>' if a.get('除外') else '')
+                + f'<li><b>官方說明</b>：'
+                  f'<a href="{a["src"]}" target="_blank" rel="nofollow noopener">Visa 台灣活動頁</a></li>'
+                f'</ul></div>')
+    cond = ''.join('<li>' + html.escape(x) + '</li>' for x in (vs.get('_共同門檻') or []))
+    n = len(vs.get('_共同門檻') or [])
+    out += (f'<p class="lede">這個回饋不是自動的，下面 {n} 個條件缺一不可：</p>'
+            f'<ul class="lede">{cond}</ul>')
+    if vs.get('_入帳時程'):
+        out += f'<p class="disc">{html.escape(vs["_入帳時程"])}</p>'
+    st_ = vs.get('_能不能跟店家折價券疊') or {}
+    if st_:
+        out += ('<div class="cmp">'
+                f'<div class="pp"><b>官方說可以疊</b><p>{html.escape(st_["正面寫法"])}</p></div>'
+                f'<div class="pp"><b>官方又說不可以</b><p>{html.escape(st_["反面寫法"])}</p></div>'
+                '</div>'
+                f'<p class="disc">{html.escape(st_["建議"])}</p>')
+    return out
+
+
 def _cat_tiers_block(st):
     """折扣率依商品類別分級的店，把類別列出來。
 
@@ -5967,7 +6005,7 @@ if os.path.exists('cards.json'):
               + f'<p class="lede">先扣免稅，券再以未稅金額計算。'
                 + _rate_basis(st) + '</p>'
               + _ex
-              + _cat_tiers_block(st) + _exclude_block(st)
+              + _cat_tiers_block(st) + _exclude_block(st) + _visa_block(st)
               + f'<p class="disc">實際折扣依商品類別與當期券別而異，以店家公告為準。'
                 f'想連刷卡回饋一起算，可用<a href="{U("/japan-coupon/")}">實付價計算機</a>。</p>'
               + fare_cta('tokyo', '算完省多少，機票呢')
