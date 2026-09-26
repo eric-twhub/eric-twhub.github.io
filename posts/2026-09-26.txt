@@ -8,7 +8,7 @@
 
 　🛫 台灣虎航｜直飛
 　📅 2026-10-26 – 2026-10-29
-　💡 10 月出發的票，每天最便宜的平均要 NT$10,892（25 天有紀錄），這張低 32%
+　💡 10 月出發的票，每天最便宜的平均要 NT$10,801（26 天有紀錄），這張低 31%
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-26-taichung-okinawa/
 　🔍 查證連結（開啟後截圖）：https://tw.trip.com/flights/showfarefirst?dcity=rmq&acity=oka&ddate=2026-10-26&rdate=2026-10-29&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1=oka
@@ -33,7 +33,7 @@
 
 　🛫 飛大阪再轉乘｜山陽新幹線
 　📅 2026-10-10
-　💡 比直飛省 NT$1,577
+　💡 比直飛省 NT$1,768
 　🧮 組成：機票飛大阪 NT$6,992（來回含稅） ＋ 山陽新幹線 NT$2,093×2
 
 　🔗 貼文用連結：https://eric-twhub.github.io/deals/2026-09-26-transfer-osaka-hiroshima/
