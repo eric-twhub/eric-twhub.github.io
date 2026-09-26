@@ -1473,7 +1473,7 @@ if os.path.exists('baggage.json'):
         f'<tr><td><b>{html.escape(f["airline"])}</b></td>'
         f'<td>{"廉航" if f["cls"] == "lcc" else "一般航空"}</td>'
         f'<td>{html.escape(f["note"])}</td>'
-        f'<td><a href="{f["src"]}" rel="nofollow" target="_blank">'
+        f'<td><a href="{f["src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(f["src_name"])}</a></td></tr>' for f in BG['fares'])
 
     # 三個有 FSC 樣本的城市，加上行李之後的實際比較
@@ -1605,7 +1605,7 @@ if os.path.exists('baggage.json'):
       + ''.join(f'<th>{html.escape(c)}</th>' for c in _TG['cols'])
       + '</tr></thead><tbody>' + _tgrows + '</tbody></table></div>'
       + f'<p class="disc">{html.escape(_TG["period"])}　·　'
-        f'資料來源：<a href="{_TG["src"]}" rel="nofollow" target="_blank">'
+        f'資料來源：<a href="{_TG["src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(_TG["src_name"])}</a>，查證於 {BG["checked"]}。'
         f'超重另按每公斤 {money(_TG["over_kg"])} 收取（機場櫃檯費率）。</p>'
       + '<div class="tldr"><ul>'
@@ -1662,7 +1662,7 @@ if os.path.exists('ski.json'):
         return (f'<h3>{html.escape(a["name"])}<span class="tag">{a["code"]}</span></h3>'
                 f'<p class="lede">{html.escape(a["counts"])}。{html.escape(a["side_note"])}。</p>'
                 f'<p class="lede">{html.escape(a["extra"])}</p>'
-                f'<p class="disc">出處：<a href="{a["src"]}" rel="nofollow" target="_blank">'
+                f'<p class="disc">出處：<a href="{a["src"]}" rel="nofollow noopener" target="_blank">'
                 f'{html.escape(a["src_name"])}</a>，查證於 {SK["checked"]}。</p>')
 
     _skcards = ''
@@ -1848,7 +1848,7 @@ if os.path.exists('tigerair-nagoya.json'):
                       + f'。超重每公斤 {money(BAG["tigerair"]["over_kg"])}。</p>'
                       f'<p class="disc">{html.escape(TN["bag_note"])}　·　'
                       f'費率期間 {html.escape(BAG["tigerair"]["period"])}，'
-                      f'出處：<a href="{BAG["ref"]["src"]}" rel="nofollow" target="_blank">'
+                      f'出處：<a href="{BAG["ref"]["src"]}" rel="nofollow noopener" target="_blank">'
                       f'{html.escape(BAG["ref"]["src_name"])}</a>。</p>')
 
     tn_faq = [
@@ -1908,7 +1908,7 @@ if os.path.exists('tigerair-nagoya.json'):
         f'<s>虎航停第 2 航廈，接駁巴士 21:45 收班</s></a></div>'
       + f'<p class="disc">班表隨時可能調整，官方時刻表亦註明「僅供參考、更改不另行通知」。'
         f'本頁查證於 {TN["checked"]}，出發前請以'
-        f'<a href="{TN["src"]}" rel="nofollow" target="_blank">'
+        f'<a href="{TN["src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(TN["src_name"])}</a>為準。</p>'
       + foot())
     pages.append(('/tigerair-nagoya/', 0.7))
@@ -1937,7 +1937,7 @@ if os.path.exists('lasttrain.json'):
             _direct = r.get('direct', r.get('cut') == r.get('dep_wd'))
             _fare = f'{r["fare"]:,} 円' if r.get('fare') else '—'
             _meta = [html.escape(r['revision'])] if r.get('revision') else []
-            _meta.append(f'<a href="{r["src"]}" rel="nofollow" target="_blank">官方時刻表 →</a>')
+            _meta.append(f'<a href="{r["src"]}" rel="nofollow noopener" target="_blank">官方時刻表 →</a>')
             rows += (f'<tr><td><b>{html.escape(r["name"])}</b>'
                      f'{_LSM}{" · ".join(_meta)}</small></td>'
                      f'<td>{_lt_dep(r)}</td>'
@@ -1960,9 +1960,9 @@ if os.path.exists('lasttrain.json'):
                 out += f'<p class="lede">抵達時刻：{html.escape(r["arr"])}。</p>'
             if r.get('fare_note'):
                 out += f'<p class="lede">{html.escape(r["fare_note"])}</p>'
-            out += (f'<p class="disc">出處：<a href="{r["src"]}" rel="nofollow" target="_blank">'
+            out += (f'<p class="disc">出處：<a href="{r["src"]}" rel="nofollow noopener" target="_blank">'
                     f'{html.escape(r["src_name"])}</a>'
-                    + (f'、<a href="{r["src2"]}" rel="nofollow" target="_blank">'
+                    + (f'、<a href="{r["src2"]}" rel="nofollow noopener" target="_blank">'
                        f'{html.escape(r["src2_name"])}</a>' if r.get('src2') else '')
                     + f'，查證於 {LT["checked"]}。</p>')
         return out
@@ -1985,7 +1985,7 @@ if os.path.exists('lasttrain.json'):
                 out += ('<div class="tw"><table><thead><tr><th></th>'
                         '<th>機場發車</th>' + head_ + '</tr></thead><tbody>'
                         + body + '</tbody></table></div>'
-                        f'<p class="disc"><a href="{b["src"]}" rel="nofollow" target="_blank">'
+                        f'<p class="disc"><a href="{b["src"]}" rel="nofollow noopener" target="_blank">'
                         f'官方時刻表 →</a></p>')
                 if b.get('fare'):
                     out += f'<p class="lede">單程 {b["fare"]:,} 円。'
@@ -1997,21 +1997,21 @@ if os.path.exists('lasttrain.json'):
                 out += f'<p class="lede">{html.escape(b["fare_note"])}</p>'
             if b.get('mins_note'):
                 out += f'<p class="lede">{html.escape(b["mins_note"])}</p>'
-            out += (f'<p class="disc">出處：<a href="{b["src"]}" rel="nofollow" target="_blank">'
+            out += (f'<p class="disc">出處：<a href="{b["src"]}" rel="nofollow noopener" target="_blank">'
                     f'{html.escape(b["src_name"])}</a>'
-                    + (f'、<a href="{b["src2"]}" rel="nofollow" target="_blank">'
+                    + (f'、<a href="{b["src2"]}" rel="nofollow noopener" target="_blank">'
                        f'{html.escape(b["src2_name"])}</a>' if b.get('src2') else '')
                     + f'，查證於 {LT["checked"]}。</p>')
         _o = ap.get('bus_other')
         if _o:
             out += (f'<p class="lede">{html.escape(_o["note"])}'
                     + '、'.join(html.escape(x) for x in _o['routes']) + '。'
-                    f'（<a href="{_o["src"]}" rel="nofollow" target="_blank">'
+                    f'（<a href="{_o["src"]}" rel="nofollow noopener" target="_blank">'
                     f'{html.escape(_o["src_name"])}</a>）</p>')
         _t = ap.get('taxi')
         if _t:
             out += (f'<h3>計程車</h3><p class="lede">{html.escape(_t["note"])}</p>'
-                    f'<p class="disc">出處：<a href="{_t["src"]}" rel="nofollow" target="_blank">'
+                    f'<p class="disc">出處：<a href="{_t["src"]}" rel="nofollow noopener" target="_blank">'
                     f'{html.escape(_t["src_name"])}</a>，查證於 {LT["checked"]}。</p>')
         _s = ap.get('stay')
         if _s:
@@ -2045,7 +2045,7 @@ if os.path.exists('lasttrain.json'):
         return (f'<p class="lede">{html.escape(f["note"])}</p>'
                 '<div class="tw narrow"><table><thead><tr>' + head_
                 + '</tr></thead><tbody>' + rows + '</tbody></table></div>'
-                f'<p class="disc">出處：<a href="{f["src"]}" rel="nofollow" target="_blank">'
+                f'<p class="disc">出處：<a href="{f["src"]}" rel="nofollow noopener" target="_blank">'
                 f'{html.escape(f["src_name"])}</a>，查證於 {LT["checked"]}。</p>')
 
     def _lt_notes_extra(ap):
@@ -2053,7 +2053,7 @@ if os.path.exists('lasttrain.json'):
         for n in ap.get('note_blocks', []):
             out += (f'<h3 class="grp">{html.escape(n["title"])}</h3>'
                     f'<p class="lede">{html.escape(n["text"])}</p>'
-                    f'<p class="disc">出處：<a href="{n["src"]}" rel="nofollow" target="_blank">'
+                    f'<p class="disc">出處：<a href="{n["src"]}" rel="nofollow noopener" target="_blank">'
                     f'{html.escape(n["src_name"])}</a>，查證於 {LT["checked"]}。</p>')
         return out
 
@@ -2067,7 +2067,7 @@ if os.path.exists('lasttrain.json'):
                    + '；'.join(html.escape(x) for x in s['late']) + '。'
                    + ('免費。' if s.get('free') else '') + '</p>' if s.get('late') else '')
                 + f'<p class="lede"><b>{html.escape(s["trap"])}</b></p>'
-                f'<p class="disc">出處：<a href="{s["src"]}" rel="nofollow" target="_blank">'
+                f'<p class="disc">出處：<a href="{s["src"]}" rel="nofollow noopener" target="_blank">'
                 f'{html.escape(s["src_name"])}</a>（{html.escape(s["revision"])}），'
                 f'查證於 {LT["checked"]}。</p>')
 
@@ -2214,10 +2214,10 @@ else:
 
 if EG:
     def _eg_src(o, extra=''):
-        s = (f'<p class="disc">{extra}出處：<a href="{o["src"]}" rel="nofollow" target="_blank">'
+        s = (f'<p class="disc">{extra}出處：<a href="{o["src"]}" rel="nofollow noopener" target="_blank">'
              f'{html.escape(o["src_name"])}</a>')
         if o.get('src2'):
-            s += (f'、<a href="{o["src2"]}" rel="nofollow" target="_blank">'
+            s += (f'、<a href="{o["src2"]}" rel="nofollow noopener" target="_blank">'
                   f'{html.escape(o["src2_name"])}</a>')
         return s + f'，查證於 {EG["checked"]}。</p>'
 
@@ -2349,10 +2349,10 @@ if RS2:
     _rsm = '<br><small style="color:var(--dim)">'
 
     def _rs_src(o, label='出處'):
-        s = (f'<p class="disc">{label}：<a href="{o["src"]}" rel="nofollow" target="_blank">'
+        s = (f'<p class="disc">{label}：<a href="{o["src"]}" rel="nofollow noopener" target="_blank">'
              f'{html.escape(o["src_name"])}</a>')
         if o.get('src2'):
-            s += (f'、<a href="{o["src2"]}" rel="nofollow" target="_blank">'
+            s += (f'、<a href="{o["src2"]}" rel="nofollow noopener" target="_blank">'
                   f'{html.escape(o["src2_name"])}</a>')
         return s + f'，查證於 {RS2["checked"]}。</p>'
 
@@ -2482,10 +2482,10 @@ DRV = json.load(open('jp-driving.json', encoding='utf-8')) if os.path.exists('jp
 
 if DRV:
     def _dv_src(o):
-        s = (f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow" target="_blank">'
+        s = (f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow noopener" target="_blank">'
              f'{html.escape(o["src_name"])}</a>')
         if o.get('src2'):
-            s += (f'、<a href="{o["src2"]}" rel="nofollow" target="_blank">'
+            s += (f'、<a href="{o["src2"]}" rel="nofollow noopener" target="_blank">'
                   f'{html.escape(o["src2_name"])}</a>')
         return s + f'，查證於 {DRV["checked"]}。</p>'
 
@@ -2610,7 +2610,7 @@ NOC = json.load(open('rentacar-noc.json', encoding='utf-8')) if os.path.exists('
 
 if NOC:
     def _nc_src(o):
-        return (f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow" target="_blank">'
+        return (f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow noopener" target="_blank">'
                 f'{html.escape(o["src_name"])}</a>，查證於 {NOC["checked"]}。</p>')
 
     _w = NOC['what']
@@ -2628,7 +2628,7 @@ if NOC:
                + '</tbody></table></div>')
 
     _nc_tbl = ''.join(
-        f'<tr><td class="nm"><b><a href="{t["src"]}" rel="nofollow" target="_blank">'
+        f'<tr><td class="nm"><b><a href="{t["src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(t["name"])}</a></b></td>'
         f'<td class="lose"><b>{html.escape(t["noc"])}</b></td>'
         f'<td>{html.escape(t["cdw"])}</td>'
@@ -2739,7 +2739,7 @@ INS = json.load(open('travel-insurance.json', encoding='utf-8')) if os.path.exis
 
 if INS:
     def _in_src(o):
-        return (f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow" target="_blank">'
+        return (f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow noopener" target="_blank">'
                 f'{html.escape(o["src_name"])}</a>，查證於 {INS["checked"]}。</p>')
 
     _in_layers = ''.join(
@@ -3055,7 +3055,7 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
     _ep_mult = round(_ep_un5[0] / _ep_lo[0]) if _ep_un5 else None
 
     _ep_rows = ''.join(
-        f'<tr><td class="nm"><b><a href="{klook(p["url"])}" rel="sponsored nofollow" target="_blank">'
+        f'<tr><td class="nm"><b><a href="{klook(p["url"])}" rel="sponsored nofollow noopener" target="_blank">'
         f'{html.escape(p["name"])}</a></b>'
         f'{_ESM}{len(p["plans"])} 個方案'
         + (f'　·　{p["rating"]} 分（{p["reviews"]:,} 則評價）' if p.get('rating') else '')
@@ -3155,7 +3155,7 @@ function etable(rows,d,per,head){
   var n=EN[b.pi];
   h+='<tr><td class="'+(i===0?'win':'')+'"><b>NT$'+Math.round(b.price/per)+'</b>'
     +(i===0?' <em class="pw">最低</em>':'')+'</td>'
-    +'<td class="nm"><a href="'+n.url+'" rel="sponsored nofollow" target="_blank">'+n.name+'</a></td>'
+    +'<td class="nm"><a href="'+n.url+'" rel="sponsored nofollow noopener" target="_blank">'+n.name+'</a></td>'
     +'<td>'+espec(b)+'</td><td>NT$'+b.price+'</td></tr>';
  });
  return h+'</tbody></table></div>';
@@ -4049,8 +4049,8 @@ if os.path.exists('apple.json'):
         + (f'（中間匯率 {AP["rate"]["jpy_twd_mid"]} 加計約 {round(AP["rate"]["spread"]*100,1)}% 換匯成本）'
            if AP['rate'].get('jpy_twd_mid') else '')
         + f'　·　匯率更新 {AP["rate"]["quoted_at"]}'
-        + f'　·　售價取自 <a href="{AP["price_src"]}" rel="nofollow" target="_blank">'
-          f'Apple 日本</a>／<a href="{AP["price_src_tw"]}" rel="nofollow" target="_blank">'
+        + f'　·　售價取自 <a href="{AP["price_src"]}" rel="nofollow noopener" target="_blank">'
+          f'Apple 日本</a>／<a href="{AP["price_src_tw"]}" rel="nofollow noopener" target="_blank">'
           f'台灣官網</a>，核對於 {AP["price_checked"]}</p>'
       + '<h2>今天的答案</h2>'
       + (f'<div class="today"><div class="tday">{AP["updated"]} · 換算匯率 {RATE}'
@@ -4166,7 +4166,7 @@ if os.path.exists('apple.json'):
             return {'keep': keep, 'cost': twd - keep, 'm': round((twd - keep) / (y * 12))}
 
         _YRS = sorted({_yrs(r['launch']) for r in RS['rows']})
-        _SRC = f'<a href="{RS["src"]}" rel="nofollow" target="_blank">{html.escape(RS["src_name"])}</a>'
+        _SRC = f'<a href="{RS["src"]}" rel="nofollow noopener" target="_blank">{html.escape(RS["src_name"])}</a>'
         TIERS_ALL = [t for t in ('Pro Max', 'Pro', '標準', 'Air') if t in RES]
 
         # 1. 實際折舊表（各機種基本容量）
@@ -4491,10 +4491,10 @@ if os.path.exists('apple.json'):
     # 「這個通路算不算」。分期 0 利率 vs 回饋也沒人算過。
     _ICP = [p for p in AP['products'] if p['cat'] == 'iPhone']
     if _ICP:
-        _SRC_PAY = ('<a href="https://www.apple.com/tw/shop/help/payments" rel="nofollow" '
+        _SRC_PAY = ('<a href="https://www.apple.com/tw/shop/help/payments" rel="nofollow noopener" '
                     'target="_blank">Apple 台灣購物協助・付款與安全性</a>')
         _SRC_CUBE = ('<a href="https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/'
-                     'product/CUBE_rights/index.html" rel="nofollow" target="_blank">'
+                     'product/CUBE_rights/index.html" rel="nofollow noopener" target="_blank">'
                      '國泰世華 CUBE 卡權益分級</a>')
 
         def _even(c, n):
@@ -5163,7 +5163,7 @@ if os.path.exists('cards.json'):
           '</tbody></table></div>'
           f'<p class="disc">卡組織匯率無法事先查詢，此處假設約等於即期中價；'
           f'若實際結算匯率高於中價，信用卡那列會再往上一點。'
-          f'匯率取自 <a href="{_b["src"]}" rel="nofollow" target="_blank">'
+          f'匯率取自 <a href="{_b["src"]}" rel="nofollow noopener" target="_blank">'
           f'{html.escape(_b["src_name"])}</a>，{_b["date"]} 查詢。</p>'
           '<div class="tldr"><ul>'
           f'<li><b>「免 {_fx["typical"]}% 手續費」實際只省下約 {_save_spot:.1f} 個百分點。</b>'
@@ -6048,7 +6048,7 @@ if os.path.exists('cards.json'):
                 f'<s>改成出境後才退稅</s></a></div>'
               + '<h2>常見問題</h2>' + sf_html
               + (f'<p class="disc">領券頁：<a href="{html.escape(st["src"])}" '
-                 f'rel="nofollow" target="_blank">{html.escape(st["src_name"])}</a>，'
+                 f'rel="nofollow noopener" target="_blank">{html.escape(st["src_name"])}</a>，'
                  f'查證於 {CP["checked"]}。</p>' if st.get('src') else '')
               + f'<p class="disc">本頁為公開資訊整理。折扣幅度與券的取得管道查證於 {CP["checked"]}，'
                 f'由店家隨時調整，請以店家當期公告為準。本站不提供折價券本身，'
@@ -6259,13 +6259,13 @@ if HS:
       + f'<tr><td>{_hs_r["example_dep"]}</td><td>飛機起飛</td></tr>'
       + '</tbody></table></div>'
       + f'<p class="disc">報到時間出處：'
-        f'<a href="{_hs_r["checkin_src"]}" rel="nofollow" target="_blank">'
+        f'<a href="{_hs_r["checkin_src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(_hs_r["checkin_src_name"])}</a>；'
         f'{html.escape(_hs_r["checkin_note"])}。'
-        f'首班電車出處：<a href="{_hs_r["first_train"]["src"]}" rel="nofollow" target="_blank">'
+        f'首班電車出處：<a href="{_hs_r["first_train"]["src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(_hs_r["first_train"]["src_name"])}</a>。'
         f'{html.escape(_hs_r["bus"]["note"])}（'
-        f'<a href="{_hs_r["bus"]["src"]}" rel="nofollow" target="_blank">'
+        f'<a href="{_hs_r["bus"]["src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(_hs_r["bus"]["src_name"])}</a>）。以上查證於 {HS["checked"]}，'
         f'出發前請依自己的班機重算一次。</p>'
       + '<h2>最後一晚的選項</h2>'
