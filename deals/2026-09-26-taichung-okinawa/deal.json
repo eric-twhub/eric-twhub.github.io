@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-26-taichung-okinawa",
- "generated": "2026-09-26 14:38",
+ "generated": "2026-09-26 14:43",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -24,10 +24,10 @@
   "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=IT17929986001793007600000090RMQOKA17933079001793309700000090OKARMQ_c22163bf4cbfb1d0fe5e0768c79d253f_19795&search_date=24092026&expected_price_uuid=01a0d547-f08f-8030-2559-86483b569e8c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=7411&marker=775639"
  },
  "reasons": [
-  "10 月出發的票，每天最便宜的平均要 NT$10,801（26 天有紀錄），這張低 31%"
+  "10 月出發的票，每天最便宜的平均要 NT$10,736（25 天有紀錄），這張低 31%"
  ],
- "med": 11563,
- "n_rt": 85,
+ "med": 11558,
+ "n_rt": 84,
  "others": [
   {
    "o": "RMQ",
