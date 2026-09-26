@@ -3002,6 +3002,7 @@ if os.path.exists('japan-rules.json'):
     _dt = JR['departure_tax']
     _lt = JR['lodging_tax']
     _pb = JR['power_bank']
+    _qr = JR.get('quarantine') or {}
     _jr_rate = JPY          # 站上其他頁一律用這個匯率，這裡不要另外算一套
 
     _dt_pts = ''.join(
@@ -3043,6 +3044,43 @@ if os.path.exists('japan-rules.json'):
 
     _jr_un = ''.join('<li><b>' + html.escape(u['what']) + '</b>：'
                      + html.escape(u['why']) + '</li>' for u in JR['unverified'])
+
+    # 肉製品檢疫：兩個方向都做，因為流傳最廣的兩個說法一個過時、一個理由錯了。
+    if _qr:
+        _jr_un += ''.join('<li><b>' + html.escape(u['what']) + '</b>：'
+                          + html.escape(u['why']) + '</li>'
+                          for u in _qr.get('unverified', []))
+
+    _qo = _qr.get('outbound', {})
+    _qi = _qr.get('inbound', {})
+
+    def _qr_myth(m):
+        cls = 'lose' if m['verdict'] == '過時' else 'nm'
+        return (f'<tr><td class="nm"><b>「{html.escape(m["claim"])}」</b></td>'
+                f'<td class="{cls}"><b>{html.escape(m["verdict"])}</b></td>'
+                f'<td><small>{html.escape(m["fact"])}　'
+                f'<a href="{m["src"]}" target="_blank" rel="nofollow noopener">'
+                f'{html.escape(m["src_name"])} →</a></small></td></tr>')
+
+    _qr_myths = (('<div class="tw"><table><tr><th>流傳的說法</th><th>查證結果</th>'
+                  '<th>官方怎麼寫</th></tr>'
+                  + ''.join(_qr_myth(m) for m in _qr['myths']) + '</table></div>')
+                 if _qr else '')
+
+    _qr_cert = ''.join('<li>' + html.escape(x) + '</li>'
+                       for x in _qr.get('outbound', {}).get('need_cert', []))
+
+    def _qr_item(row):
+        nm, mark, note = row
+        cls = {'✅': 'win', '❌': 'lose'}.get(mark, 'nm')
+        return (f'<tr><td class="nm"><b>{html.escape(nm)}</b></td>'
+                f'<td class="{cls}"><b>{mark}</b></td>'
+                f'<td><small>{html.escape(note)}</small></td></tr>')
+
+    _qr_items = (('<div class="tw"><table><tr><th>伴手禮</th><th>帶得了嗎</th>'
+                  '<th>依據</th></tr>'
+                  + ''.join(_qr_item(r) for r in _qr['tw_items']) + '</table></div>')
+                 if _qr else '')
 
     _JR_FN = r"""
 (function(){
@@ -3110,6 +3148,22 @@ if os.path.exists('japan-rules.json'):
      ('行動電源真的不能在飛機上充電嗎？',
       '2026 年 4 月 24 日起不行，而且兩個方向都禁止：不能對行動電源充電，也不能用行動電源對其他裝置充電。'
       '要充手機請用機上的電源。這條在官方文件裡標示為可能依航空法處罰的項目之一。'),
+     ('肉鬆、肉乾可以帶去日本嗎？',
+      '不行。日本動物檢疫所把肉與內臟（不分生鮮、冷藏、冷凍或已加熱調理）、以及以它們為原料的加工品'
+      '都列為要附輸出國政府檢查證明書的品項，牛肉乾、火腿、香腸、培根、肉包都被點名。'
+      '官方明寫「おみやげや個人消費用であっても」同樣適用，沒有數量或自用的豁免。'
+      '你在台灣超市買的肉鬆附不出那張證明書，所以結論就是帶不了。'),
+     ('帶肉去日本真的會罰 100 萬日圓嗎？',
+      '不是 100 萬，是 300 萬。日本 2020 年 7 月 1 日修正家畜傳染病預防法之後，'
+      '罰則是「300万円以下（法人の場合5000万円以下）の罰金又は3年以下の拘禁刑」。'
+      '100 萬日圓是修法前的舊數字，中文旅遊內容至今還在引用。'
+      '另外在機場被查到時，檢疫櫃台會記下你的護照資訊並建檔，惡質者會通報警察。'),
+     ('日本的豬肉製品可以帶回台灣嗎？',
+      '旅客帶不回來，但理由跟你聽到的可能不一樣。台灣 2018 年因古典豬瘟公告暫停日本豬肉輸入，'
+      '那道公告已經在 2022 年 6 月 30 日廢止，之後另訂檢疫條件開放日本加熱豬肉製品輸台，'
+      '所以「日本是疫區」這個說法現在不成立。真正的限制是：肉類與加工肉類（含真空包裝）'
+      '入境要向防檢署申報檢疫，沒有輸出國檢疫證明書就不得輸入，店裡買的伴手禮沒有那張紙。'
+      '經高溫滅菌的罐頭類不在此限。違規可依動物傳染病防治條例第 45 條之 1 處 1 萬至 100 萬元罰鍰。'),
      ('這頁的數字可以直接當預算嗎？',
       '住宿稅可以，它是條例訂的定額或定率，算法固定。但本站只涵蓋自己有城市頁、'
       '台灣旅客最常去的幾個地區，日本有住宿稅的自治體不只這些。'
@@ -3124,7 +3178,8 @@ if os.path.exists('japan-rules.json'):
     jr_title = '日本出境稅漲到 3,000 了嗎？住宿稅四個城市四套算法，一次算給你看'
     jr_desc = ('國際觀光旅客稅 2026/7/1 起由 1,000 日圓調為 3,000 日圓，已經實施，'
                '看的是發券日不是出發日。東京、大阪、京都、沖繩的住宿稅各有各的級距與門檻，'
-               '輸入房價一次比較。另附 2026/4/24 起的行動電源新規。全部引官方原文。')
+               '輸入房價一次比較。另附 2026/4/24 起的行動電源新規，'
+               '以及台日雙向的肉製品檢疫罰則。全部引官方原文。')
 
     write('japan-travel-rules/index.html',
       head(jr_title, jr_desc, 'japan-travel-rules/',
@@ -3171,6 +3226,31 @@ if os.path.exists('japan-rules.json'):
       + f'<p class="disc">{html.escape(_pb["penalty_note"])}　'
         f'<a href="{_pb["src"]}" target="_blank" rel="nofollow noopener">'
         f'{html.escape(_pb["src_name"])} →</a></p>'
+      + (('<h2>肉製品：兩個方向都會被罰，而且流傳的數字是錯的</h2>'
+          + f'<p class="lede">{html.escape(_qr["_為什麼做"])}</p>'
+          + _qr_myths
+          + '<h3>出發前：台灣帶去日本</h3>'
+          + f'<blockquote class="q">{html.escape(_qo["quote"])}'
+            f'<cite><a href="{_qo["src"]}" target="_blank" rel="nofollow noopener">'
+            f'{html.escape(_qo["src_name"])}</a></cite></blockquote>'
+          + f'<p class="lede">{_qo["from"]} 起適用，罰則是 '
+            f'<b>{html.escape(_qo["penalty"])}</b>。要附輸出國政府檢查證明書的品項如下，'
+            f'拿不出證明書就等於帶不了。</p>'
+          + f'<ul class="lede">{_qr_cert}</ul>'
+          + f'<p class="disc">{html.escape(_qo["no_exception"])}'
+            f'{html.escape(_qo["airport"])}</p>'
+          + '<h3>回程：日本帶回台灣</h3>'
+          + f'<p class="lede">{html.escape(_qi["rule"])}依'
+            f'{html.escape(_qi["law"])}，可處 {html.escape(_qi["penalty"])}。</p>'
+          + f'<p class="disc">{html.escape(_qi["asf"])}　'
+            f'<a href="{_qi["src"]}" target="_blank" rel="nofollow noopener">'
+            f'{html.escape(_qi["src_name"])} →</a></p>'
+          + '<h3>常見伴手禮對照</h3>' + _qr_items
+          + f'<p class="disc">{html.escape(_qo["exempt_note"])}</p>'
+          + f'<p class="disc">乳製品：{html.escape(_qo["dairy"])}　'
+            f'<a href="{_qo["dairy_src"]}" target="_blank" rel="nofollow noopener">'
+            f'{html.escape(_qo["dairy_src_name"])} →</a></p>')
+         if _qr else '')
       + '<h2>這頁沒有涵蓋的</h2>'
       + f'<ul class="lede">{_jr_un}</ul>'
       + '<h2>常見問題</h2>' + jr_html
