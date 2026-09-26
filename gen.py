@@ -713,7 +713,7 @@ display:flex;flex-direction:column;gap:6px}
 .tg.lcc{background:color-mix(in srgb,var(--lcc) 15%,transparent);color:var(--lcc)}
 .tg.fsc{background:color-mix(in srgb,var(--fsc) 15%,transparent);color:var(--fsc)}
 .tg.other{background:var(--line);color:var(--dim)}
-.tg.gt{background:color-mix(in srgb,#b45309 16%,transparent);color:#b45309}
+.tg.gt{background:color-mix(in srgb,#b45309 16%,transparent);color:#b45309}.tg.hol{background:color-mix(in srgb,#be123c 15%,transparent);color:#be123c}
 .gate{font-size:.73rem;color:var(--dim);display:flex;align-items:center;gap:6px;flex-wrap:wrap;
 padding-top:6px;border-top:1px dashed var(--line)}
 .gate b{color:var(--fg);font-weight:600}
@@ -1038,6 +1038,68 @@ def good_times(x):
     return dm >= 5 * 60 and a <= 12 * 60 and 18 <= rh <= 23
 
 
+# ---------- 日本連假 ----------
+# 台灣旅客多半不知道日本的國定假日，而連假是日本人自己出遊的日子，
+# 機票與住宿都會跳。標在使用者挑日期的地方才有用，所以做成票價卡上的標籤。
+JPH, JPH_RUN = {}, []
+if os.path.exists('jp-holidays.json'):
+    _jh = json.load(open('jp-holidays.json', encoding='utf-8'))
+    JPH = {h['date']: h for h in _jh['holidays']}
+    JPH_RUN = _jh['runs']
+
+
+def jp_run(d):
+    """這個日期（YYYY-MM-DD）落在哪一段日本連假裡，沒有就回 None"""
+    if not d:
+        return None
+    for r in JPH_RUN:
+        if r['start'] <= d <= r['end']:
+            return r
+    return None
+
+
+def jp_badge(*dates):
+    """票價卡上的連假標籤。出發或回程任一天落在連假就標。"""
+    for d in dates:
+        r = jp_run(d)
+        if r:
+            nm = '、'.join(r['names']) if r['names'] else '週末連休'
+            return (f'<span class="tg hol" title="{html.escape(nm)}">'
+                    f'🗾 日本{r["days"]}連休</span>')
+    return ''
+
+
+def jp_runs_block(n=4, heading='接下來的日本連假'):
+    """列出接下來幾段日本連假。
+
+    台灣旅客挑日期時多半只看自己的假期，不會想到日本那邊也在放假。
+    連假是日本人自己出遊的日子，機票與住宿一起跳，而且住宿的漲幅
+    通常比機票更兇，因為飯店沒辦法像航空公司那樣臨時加班機。
+    """
+    up = [r for r in JPH_RUN if r['end'] >= TODAY][:n]
+    if not up:
+        return ''
+    rows = ''
+    for r in up:
+        nm = '、'.join(r['names']) if r['names'] else '週末連休'
+        d0 = datetime.date.fromisoformat(r['start'])
+        left = (d0 - datetime.date.fromisoformat(TODAY)).days
+        when = ('進行中' if r['start'] <= TODAY else f'還有 {left} 天')
+        rows += (f'<tr><td class="nm"><b>{r["start"][5:]} – {r["end"][5:]}</b>'
+                 f'<br><small>{html.escape(nm)}</small></td>'
+                 f'<td class="lose"><b>{r["days"]} 連休</b></td>'
+                 f'<td class="nm"><small>{when}</small></td></tr>')
+    return (f'<h2>{heading}</h2>'
+            '<p class="lede">日本人自己出遊的日子。這幾天的機票與住宿都會跳，'
+            '而住宿通常漲得比機票兇，因為飯店沒辦法像航空公司那樣臨時加班機。'
+            '避開前後各一天，價差常常就出來了。</p>'
+            '<div class="tw narrow"><table><tr><th>日期</th><th>天數</th><th>距今</th></tr>'
+            + rows + '</table></div>'
+            '<p class="disc">依日本內閣府公開的國定假日資料計算，'
+            '把週六、週日與國定假日視為非上班日，取連續三天以上的區間。'
+            '日本的補假（振替休日）已一併計入。</p>')
+
+
 def fare_card(x,hot=False):
     tag={'lcc':'廉航','fsc':'一般航空'}.get(x['cls'],'其他')
     gt = good_times(x)
@@ -1064,7 +1126,7 @@ def fare_card(x,hot=False):
 <div class="rt"><b>{ORI.get(x['o'],x['o'])}</b><i>→</i><b>{cn}</b>{'<em>超值</em>' if hot else ''}</div>
 <div class="pr">NT${x['price']:,}<span class="{'rtx' if x['rt'] else 'owx'}">{trip}含稅</span></div>
 <div class="mt"><span class="tg {x['cls']}">{tag}</span><span>{html.escape(x['airname'])}</span><span>{stops}</span>{'<span class="tg gt">☀️ 早去晚回</span>' if gt else ''}</div>
-<div class="dt">{dates}</div>{gate_html}{btn}</article>'''
+<div class="dt">{dates} {jp_badge(x["dep"], x.get("ret"))}</div>{gate_html}{btn}</article>'''
 
 def cta(kind, city_name, hotel_city, headline, sub, track='', ci='', co=''):
     """單一情境式 CTA。
@@ -3981,7 +4043,7 @@ write(f'{DEALDIR}/index.html',
   + crumbs([('首頁','/'),('機票特價',None)]) + topnav()
   + f'<h1>機票特價</h1><p class="lede">低於門檻、或明顯低於該航線平常最低價的票，今日共 <b>{len(deals_out)}</b> 則。</p>'
   + f'<p class="upd">更新於 {NOWS}</p><h2>{TODAY} 特價</h2><div class="cities">{items_today}</div>'
-  + past_html + foot())
+  + past_html + jp_runs_block() + foot())
 pages.append((f'/{DEALDIR}/',0.95))
 
 # FB / IG 文案（本地檔，不上傳網站）
@@ -6562,6 +6624,7 @@ if HS:
         f'訂房前請以訂房頁顯示的為準。班機時刻與報到規定以航空公司公告為準。'
         f'表中連到 Trip.com 的按鈕為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，'
         f'不影響你的價格；連到 Booking 的按鈕是查價來源，本站沒有分潤。</p>'
+      + jp_runs_block(4, '住宿會跳價的日子：日本連假')
       + foot())
     pages.append(('/tokyo/hostel/', 0.8))
     print(f'   東京平價住宿頁：{len(HS["areas"])} 區（查證 {HS["checked"]}，'
@@ -6758,6 +6821,7 @@ if BH:
         f'訂房前請以訂房頁顯示的為準。表中連到 Trip.com 的按鈕為聯盟行銷連結，'
         f'透過連結完成訂購時本站可獲得分潤，不影響你的價格；'
         f'連到 Booking 的按鈕是查價來源，本站沒有分潤。</p>'
+      + jp_runs_block(4, '住宿會跳價的日子：日本連假')
       + foot())
     pages.append(('/tokyo/budget-hotel/', 0.8))
     print(f'   東京便宜旅館頁：{len(_bh_all)} 家（查證 {BH["checked"]}，'
@@ -6918,6 +6982,7 @@ if PC:
       + f'<p class="disc">本頁的所有價格為 {PC["checked"]} 的量測值，僅用於呈現差異，'
         f'不是報價。訂房網的價格、折扣方案與會員等級隨時調整，'
         f'請以你自己查到的結帳頁金額為準。</p>'
+      + jp_runs_block(4, '住宿會跳價的日子：日本連假')
       + foot())
     pages.append(('/hotel-price-check/', 0.9))
     print(f'   訂房比價頁：{_pc_n} 間實測（查證 {PC["checked"]}，'
