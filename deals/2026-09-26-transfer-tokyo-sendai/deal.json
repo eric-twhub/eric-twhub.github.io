@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-26-transfer-tokyo-sendai",
- "generated": "2026-09-26 02:45",
+ "generated": "2026-09-26 09:39",
  "kind": "transfer",
  "city": "sendai",
  "via": "tokyo",
@@ -26,19 +26,19 @@
  },
  "fare_rt": true,
  "jpy_text": "約 ¥11,400",
- "twd_one_way": 2321,
- "rate": 0.2036,
- "rate_at": "Fri, 25 Sep 2026",
+ "twd_one_way": 2337,
+ "rate": 0.205,
+ "rate_at": "Sat, 26 Sep 2026",
  "fare_gate": "Farera",
  "tc_alt": {
   "price": 9334,
   "airname": "樂桃航空",
   "dep": "2026-10-30",
-  "total": 13976
+  "total": 14008
  },
  "route": "東京 → 仙台",
  "mode": "東北新幹線",
  "tm": "約 1.5 小時",
- "total": 11580,
- "save": 15821
+ "total": 11612,
+ "save": 15789
 }
