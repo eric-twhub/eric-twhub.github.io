@@ -4994,6 +4994,33 @@ if os.path.exists('apple.json'):
 
     _NCARD = (len(json.load(open('cards.json', encoding='utf-8'))['cards'])
               if os.path.exists('cards.json') else 0)
+    # 退稅手續費的官方立場（資料在 japan-rules.json，這頁比它早產生，自己讀）
+    _RF = {}
+    if os.path.exists('japan-rules.json'):
+        _RF = json.load(open('japan-rules.json', encoding='utf-8')).get('refund_fee') or {}
+
+    def _rf_block():
+        if not _RF:
+            return ''
+        cards = ''.join(
+            '<div class="pp"><b>' + html.escape(i['t']) + '</b>'
+            '<blockquote class="q">' + html.escape(i['zh'])
+            + '<cite>觀光庁 ' + html.escape(i['q']) + '</cite></blockquote>'
+            '<p>' + html.escape(i['so']) + '</p></div>' for i in _RF['items'])
+        obs = _RF.get('_社群實測') or {}
+        out = ('<h2>退回來的不一定是 10%，也不一定是錢</h2>'
+               '<p class="lede">新制最常被問的一題：那 10% 會完整回到我手上嗎？'
+               '官方的答案是「沒有規定」，而這三個字比任何數字都重要。</p>'
+               '<div class="cmp">' + cards + '</div>')
+        if obs:
+            out += ('<p class="disc"><b>社群實測：</b>' + html.escape(obs['note'])
+                    + '　' + html.escape(obs['本站立場']) + '</p>')
+        out += ('<p class="disc">以上引自<a href="' + _RF['src'] + '" target="_blank" '
+                'rel="nofollow noopener">' + html.escape(_RF['src_name']) + '</a>，'
+                '查證於 ' + _RF['checked'] + '。該頁是給免稅店看的問答，'
+                '但問的正是旅客會遇到的事，所以直接引原文。</p>')
+        return out
+
     write('japan-tax-free-2026/index.html',
       head(tf_title, tf_desc, 'japan-tax-free-2026/',
            '<script type="application/ld+json">' + tf_ld + '</script>')
@@ -5030,8 +5057,9 @@ if os.path.exists('apple.json'):
       + '<div class="tw"><table><thead><tr><th>購物金額（稅前）</th>'
         '<th>先墊的消費稅</th><th>約合台幣</th></tr></thead><tbody>'
         + _rows + '</tbody></table></div>'
-      + '<p class="disc">刷卡另有約 1.5% 國外交易手續費；退款金額依店家與退款服務商可能再扣手續費，'
-        '實際入帳以店家說明為準。</p>'
+      + '<p class="disc">刷卡另有約 1.5% 國外交易手續費。'
+        '至於退回來的會不會是完整的 10%，那是另一件事，'
+        '<a href="#refund-fee">下面有官方說法</a>。</p>'
       + fare_cta('tokyo', '趕在改制前去？先看機票多少', before='2026-11-01')
       + '<h2>什麼時候去，適用哪個制度？</h2>'
       + '<p class="lede">制度以<b>購買日</b>為準，不是出境日。10 月 31 日當天買仍是舊制，'
@@ -5040,6 +5068,7 @@ if os.path.exists('apple.json'):
       + fare_cta('osaka', '大阪也有便宜票', '')
       + search_form('查你自己的日期',
                     '上面是近期最低紀錄，選好日期可查目前實際可訂的價格。', 'TPE', 'TYO')
+      + '<span id="refund-fee"></span>' + _rf_block()
       + '<h2>三個容易踩到的地雷</h2>'
       + '<div class="tldr"><ul>'
         '<li><b>整筆交易連坐。</b>官方說明採每筆購買紀錄判定，'
