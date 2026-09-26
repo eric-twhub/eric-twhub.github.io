@@ -928,7 +928,10 @@ def topnav(cur=''):
             + link('/japan-rentacar-noc/', '🚗 租車的 NOC')
             + '<hr><b>出事之前</b>'
             + link('/japan-travel-insurance/', '🛡️ 旅平險怎麼賠')
-            + link('/japan-card-insurance/', '💳 刷卡送的保險賠什麼'))
+            + link('/japan-card-insurance/', '💳 刷卡送的保險賠什麼')
+            + '<hr><b>新制度</b>'
+            + link('/japan-travel-rules/', '📋 出境稅與住宿稅')
+            + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -2895,6 +2898,204 @@ if INS:
         f'請以金管會、保險局與健保署的最新公告為準。</p>'
       + foot())
     pages.append(('/japan-travel-insurance/', 0.7))
+
+# ---------- 去日本的新制度 ----------
+# 做成計算機而不是條文整理：住宿稅四個城市四套算法，
+# 同一個房價在不同城市差好幾倍，用表格講不清楚，輸入數字才看得出來。
+if os.path.exists('japan-rules.json'):
+    JR = json.load(open('japan-rules.json', encoding='utf-8'))
+    _dt = JR['departure_tax']
+    _lt = JR['lodging_tax']
+    _pb = JR['power_bank']
+    _jr_rate = JPY          # 站上其他頁一律用這個匯率，這裡不要另外算一套
+
+    _dt_pts = ''.join(
+        f'<div class="pp"><b>{html.escape(p["t"])}</b><p>{html.escape(p["d"])}</p></div>'
+        for p in _dt['points'])
+
+    def _jr_city_row(c):
+        if c['mode'] == 'rate':
+            r = f'{c["rate"]:g}%'
+            if c.get('cap'):
+                r += f'（上限 ¥{c["cap"]:,}）'
+        else:
+            r = '定額分級'
+        ex = ('無門檻，再便宜都收' if not c.get('exempt_below')
+              else f'未達 ¥{c["exempt_below"]:,} 免稅')
+        st = c['status'] + (f'（{c["from"]} 起）' if c.get('from') else '')
+        return (f'<tr><td class="nm"><b>{html.escape(c["name"])}</b><br>'
+                f'<small>{html.escape(st)}</small></td>'
+                f'<td class="nm">{html.escape(r)}</td>'
+                f'<td class="nm">{html.escape(ex)}</td>'
+                f'<td class="nm"><small>{html.escape(c["applies"])}</small></td></tr>')
+
+    _jr_tbl = ('<div class="tw"><table><tr><th>地區</th><th>稅率</th>'
+               '<th>免稅門檻</th><th>適用設施</th></tr>'
+               + ''.join(_jr_city_row(c) for c in _lt['cities']) + '</table></div>')
+
+    _jr_notes = ''.join(
+        f'<details class="faq"><summary>{html.escape(c["name"])}</summary><div>'
+        f'{html.escape(c["note"])}　'
+        f'<a href="{c["src"]}" target="_blank" rel="nofollow noopener">'
+        f'{html.escape(c["src_name"])} →</a></div></details>'
+        for c in _lt['cities'])
+
+    _pb_rows = ''.join(
+        f'<tr><td class="nm"><b>{r["n"]}. {html.escape(r["t"])}</b>'
+        + (f'<br><small>{html.escape(r["d"])}</small>' if r.get('d') else '')
+        + '</td><td class="' + ('lose"><b>可能罰則</b>' if r['penalty'] else 'nm">請求')
+        + '</td></tr>' for r in _pb['rules'])
+
+    _jr_un = ''.join('<li><b>' + html.escape(u['what']) + '</b>：'
+                     + html.escape(u['why']) + '</li>' for u in JR['unverified'])
+
+    _JR_FN = r"""
+(function(){
+ var $=function(i){return document.getElementById(i)};
+ function tax(c, price){
+  if(c.exempt_below && price < c.exempt_below) return 0;
+  if(c.mode==='rate'){
+   var base=price;
+   if(c.base_cap) base=Math.min(base, c.base_cap);
+   if(c.base_floor) base=Math.floor(base/c.base_floor)*c.base_floor;
+   var t=base*c.rate/100;
+   if(c.cap) t=Math.min(t, c.cap);
+   return Math.floor(t);
+  }
+  var r=0;
+  c.tiers.forEach(function(t){
+   if(price>=t[0] && (t[1]===null || price<t[1])) r=t[2];
+  });
+  return r;
+ }
+ function run(){
+  var p=+$('jrp').value||0, n=+$('jrn').value||0, k=+$('jrk').value||0;
+  var out='<div class="tw"><table><tr><th>地區</th><th>每人每晚</th>'
+        + '<th>' + n + ' 晚 × ' + k + ' 人</th><th>約台幣</th></tr>';
+  JRC.forEach(function(c){
+   var per=tax(c,p), tot=per*n*k;
+   var cls = per===0 ? ' class="win"' : '';
+   out += '<tr><td class="nm"><b>'+c.name+'</b></td>'
+        + '<td'+cls+'>'+(per===0?'免稅':'¥'+per.toLocaleString())+'</td>'
+        + '<td><b>'+(tot===0?'0':'¥'+tot.toLocaleString())+'</b></td>'
+        + '<td>'+(tot===0?'—':'NT$'+Math.round(tot*JRATE).toLocaleString())+'</td></tr>';
+  });
+  out += '</table></div>';
+  $('jrout').innerHTML=out;
+ }
+ ['jrp','jrn','jrk'].forEach(function(i){
+   var e=$(i); if(e){e.addEventListener('input',run); e.addEventListener('change',run);}
+ });
+ run();
+})();
+"""
+    _JRJS = ('<script>var JRC=' + json.dumps(_lt['cities'], ensure_ascii=False)
+             + ';var JRATE=' + str(round(_jr_rate, 6)) + ';'
+             + _JR_FN + '</script>')
+
+    jr_faq = [
+     ('日本出境稅現在到底是 1,000 還是 3,000 日圓？',
+      '2026 年 7 月 1 日起是 3,000 日圓，已經實施。觀光庁的文件寫「日本からの出国１回につき、'
+      '3,000 円（令和８年７月１日以降）」。網路上還有「調漲只是研議中」的說法，那是舊資訊。'
+      '但有過渡條款：2026 年 6 月 30 日之前發券的機票，就算出發日在 7 月之後，仍然適用 1,000 日圓。'),
+     ('出境稅要另外準備現金在機場繳嗎？',
+      '不用。官方寫明由航空公司或船公司「チケット代金に上乗せする等の方法」代收，'
+      '也就是加在票價裡。本站顯示的含稅票價已經包含它。'),
+     ('住宿稅是訂房時付還是現場付？',
+      '看平台。京都市的說明寫「請於住宿的設施現場付款。若已向訂房網站或旅行業者支付住宿稅者，'
+      '則無需再向住宿設施付款」。其他地區作法類似，所以要看你訂房時的明細有沒有列出來。'),
+     ('住宿稅是用房價總額算還是每人每晚？',
+      '每人每晚，而且用的是「純住宿費」，不含餐費與消費稅。所以含早餐的方案要先把早餐價格扣掉再看級距。'
+      '沖繩另外規定課稅基礎要把千位以下捨去，例如純住宿 8,500 日圓先算成 8,000 再乘 2%。'),
+     ('住青年旅館也要繳住宿稅嗎？',
+      '要看地區與時點。東京現行制度只對旅館與飯店課稅，簡易宿所與民泊不課；'
+      '但 2027 年 4 月 1 日起會把簡易宿所與民泊納入，同時免稅門檻提高到未達 13,000 日圓，'
+      '所以一晚幾千日圓的床位實際上仍然免稅。大阪的免稅門檻是未達 5,000 日圓，'
+      '京都則完全沒有門檻，再便宜都要收 200 日圓起。'),
+     ('行動電源真的不能在飛機上充電嗎？',
+      '2026 年 4 月 24 日起不行，而且兩個方向都禁止：不能對行動電源充電，也不能用行動電源對其他裝置充電。'
+      '要充手機請用機上的電源。這條在官方文件裡標示為可能依航空法處罰的項目之一。'),
+     ('這頁的數字可以直接當預算嗎？',
+      '住宿稅可以，它是條例訂的定額或定率，算法固定。但本站只涵蓋自己有城市頁、'
+      '台灣旅客最常去的幾個地區，日本有住宿稅的自治體不只這些。'
+      '實際金額以你入住時該地的最新公告為準。'),
+    ]
+    jr_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in jr_faq)
+    jr_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in jr_faq]}, ensure_ascii=False)
+
+    jr_title = '日本出境稅漲到 3,000 了嗎？住宿稅四個城市四套算法，一次算給你看'
+    jr_desc = ('國際觀光旅客稅 2026/7/1 起由 1,000 日圓調為 3,000 日圓，已經實施，'
+               '看的是發券日不是出發日。東京、大阪、京都、沖繩的住宿稅各有各的級距與門檻，'
+               '輸入房價一次比較。另附 2026/4/24 起的行動電源新規。全部引官方原文。')
+
+    write('japan-travel-rules/index.html',
+      head(jr_title, jr_desc, 'japan-travel-rules/',
+           '<script type="application/ld+json">' + jr_ld + '</script>')
+      + crumbs([('首頁', '/'), ('去日本的新制度', None)]) + topnav()
+      + '<h1>去日本前，這幾條新制真的會動到你的錢</h1>'
+      + f'<p class="lede">{html.escape(JR["_起因"])}</p>'
+      + '<div class="today">'
+        f'<div class="tday">官方文件原文，查證於 {JR["checked"]}</div>'
+        '<div class="tans">出境稅<b>已經</b>是 ¥3,000</div>'
+        '<div class="tsub">2026 年 7 月 1 日起實施，不是研議中。'
+        '¥2,000 的漲幅換算約 NT$400 一個人，一家四口一千六，'
+        '剛好是很多人覺得「怎麼比印象中貴」的那個差額。'
+        '不過它由航空公司加在票價裡代收，本站的含稅票價早就包含了。</div>'
+        '<div class="tbuf">真正要自己準備錢的是<b>住宿稅</b>。'
+        '東京、大阪、京都、沖繩四個地方四套算法，門檻與級距都不一樣，'
+        '而且東京與沖繩的新制還沒上路。下面輸入房價直接比。</div></div>'
+      + '<h2>住宿稅：輸入你的房價</h2>'
+      + '<p class="lede">填「每人每晚的純住宿費」，也就是扣掉早餐與消費稅之後的金額。'
+        '稅是按人按晚算的，不是按房間。</p>'
+      + '<div class="calc"><div class="sf">'
+        '<label>每人每晚純住宿費（日圓）'
+        '<input id="jrp" type="number" min="0" step="500" value="8000"></label>'
+        '<label>住幾晚 <input id="jrn" type="number" min="1" max="30" value="4"></label>'
+        '<label>幾個人 <input id="jrk" type="number" min="1" max="8" value="2"></label>'
+        '</div></div><div id="jrout"></div>'
+      + f'<p class="disc">台幣以中間匯率 {_jr_rate} 換算，不含刷卡手續費。'
+        '住宿稅多數情況在現場收，但訂房網站已代收時不必重複付，'
+        '要看你訂房明細有沒有列出來。</p>'
+      + '<h2>四個地區、五套算法</h2>'
+      + '<p class="lede">東京同時列了現行與 2027 新制，因為那是同一個地方的兩套算法，'
+        '你出發的時間決定適用哪一套。</p>' + _jr_tbl
+      + '<h2>各地的細節與出處</h2>' + _jr_notes
+      + '<h2>出境稅：看的是發券日，不是出發日</h2>'
+      + f'<blockquote class="q">{html.escape(_dt["quote"])}'
+        f'<cite><a href="{_dt["src"]}" target="_blank" rel="nofollow noopener">'
+        f'{html.escape(_dt["src_name"])}</a></cite></blockquote>'
+      + '<div class="cmp">' + _dt_pts + '</div>'
+      + f'<h2>行動電源：{_pb["from"]} 起的新規</h2>'
+      + f'<p class="lede">{html.escape(_pb["_背景"])}'
+        f'官方給旅客的七點說明如下，其中五點違反時可能依航空法處罰。</p>'
+      + '<div class="tw narrow"><table><tr><th>規定</th><th>性質</th></tr>'
+      + _pb_rows + '</table></div>'
+      + f'<p class="disc">{html.escape(_pb["penalty_note"])}　'
+        f'<a href="{_pb["src"]}" target="_blank" rel="nofollow noopener">'
+        f'{html.escape(_pb["src_name"])} →</a></p>'
+      + '<h2>這頁沒有涵蓋的</h2>'
+      + f'<ul class="lede">{_jr_un}</ul>'
+      + '<h2>常見問題</h2>' + jr_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
+        f'<s>改成出境後才退稅</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
+        f'<s>2027 起簡易宿所也課稅</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
+        f'<s>加購時機差一倍</s></a>'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>落地之後還回得去市區嗎</s></a></div>'
+      + f'<p class="disc">本頁整理的是日本官方公告的制度，'
+        f'查證於 {JR["checked"]}。制度會修訂、各自治體也可能新增或調整，'
+        f'出發前請以官方最新公告為準。本站不是稅務或法律顧問。</p>'
+      + _JRJS + foot())
+    pages.append(('/japan-travel-rules/', 0.8))
+    print(f'   去日本的新制度：住宿稅 {len(_lt["cities"])} 套算法、'
+          f'行動電源 {len(_pb["rules"])} 條（查證 {JR["checked"]}）')
+
 
 # ---------- 刷卡送的保險：逐卡對照 ----------
 # 這頁的價值在跨來源對照：十家銀行各自把保額散在不同頁面、不同卡等分組裡，
