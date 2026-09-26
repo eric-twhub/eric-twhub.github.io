@@ -930,6 +930,7 @@ def topnav(cur=''):
             + link('/japan-travel-insurance/', '🛡️ 旅平險怎麼賠')
             + link('/japan-card-insurance/', '💳 刷卡送的保險賠什麼')
             + '<hr><b>新制度</b>'
+            + link('/japan-holiday-calendar/', '📅 三國連假撞期')
             + link('/japan-travel-rules/', '📋 出境稅與住宿稅')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制'))
 
@@ -1041,11 +1042,14 @@ def good_times(x):
 # ---------- 日本連假 ----------
 # 台灣旅客多半不知道日本的國定假日，而連假是日本人自己出遊的日子，
 # 機票與住宿都會跳。標在使用者挑日期的地方才有用，所以做成票價卡上的標籤。
-JPH, JPH_RUN = {}, []
-if os.path.exists('jp-holidays.json'):
-    _jh = json.load(open('jp-holidays.json', encoding='utf-8'))
-    JPH = {h['date']: h for h in _jh['holidays']}
-    JPH_RUN = _jh['runs']
+HOL = {}
+JPH_RUN, TWH_RUN, HOL_OVER, HOL_DAYS = [], [], [], {}
+if os.path.exists('holidays.json'):
+    HOL = json.load(open('holidays.json', encoding='utf-8'))
+    JPH_RUN = HOL['runs']['jp']
+    TWH_RUN = HOL['runs']['tw']
+    HOL_OVER = HOL.get('overlaps') or []
+    HOL_DAYS = {x['d']: x for x in HOL['days']}
 
 
 def jp_run(d):
@@ -1058,14 +1062,30 @@ def jp_run(d):
     return None
 
 
+def _in_run(d, runs):
+    for r in runs:
+        if r['start'] <= d <= r['end']:
+            return r
+    return None
+
+
 def jp_badge(*dates):
-    """票價卡上的連假標籤。出發或回程任一天落在連假就標。"""
+    """票價卡上的連假標籤。
+
+    台日同時放假的那幾天最貴：台灣這邊在搶出去的機位，日本那邊在搶
+    自己國內的住宿。所以兩邊都中的話要標得更明顯。
+    """
     for d in dates:
-        r = jp_run(d)
-        if r:
-            nm = '、'.join(r['names']) if r['names'] else '週末連休'
+        if not d:
+            continue
+        j, t = _in_run(d, JPH_RUN), _in_run(d, TWH_RUN)
+        if j and t:
+            return ('<span class="tg hol" title="台灣與日本同時放連假">'
+                    '🔥 台日連假撞期</span>')
+        if j:
+            nm = '、'.join(j['names']) if j['names'] else '週末連休'
             return (f'<span class="tg hol" title="{html.escape(nm)}">'
-                    f'🗾 日本{r["days"]}連休</span>')
+                    f'🗾 日本{j["days"]}連休</span>')
     return ''
 
 
@@ -3155,6 +3175,191 @@ if os.path.exists('japan-rules.json'):
         f'出發前請以官方最新公告為準。本站不是稅務或法律顧問。</p>'
       + _JRJS + foot())
     pages.append(('/japan-travel-rules/', 0.8))
+
+# ---------- 三國假期日曆 ----------
+# 使用者要的不是「哪天放假」那種查得到的東西，是「那幾天到底貴多少」。
+# 我們手上有每日票價，所以價差用自己的資料算，不用猜的。
+if HOL:
+    _CN = {'jp': '日本', 'tw': '台灣', 'cn': '中國'}
+
+    def _hol_price_gap():
+        """用站上自己的票價資料，算連假出發與平常日出發的價差。
+
+        樣本太少就不給數字。寧可說「資料不足」，也不要用十幾筆算出一個
+        看起來很精確的百分比。
+        """
+        import statistics as _st
+        grp = {'both': [], 'jp': [], 'tw': [], 'none': []}
+        for x in deals:
+            d = x.get('dep')
+            if not d:
+                continue
+            j, t = bool(_in_run(d, JPH_RUN)), bool(_in_run(d, TWH_RUN))
+            k = 'both' if (j and t) else ('jp' if j else ('tw' if t else 'none'))
+            grp[k].append(x['price'])
+        base = grp['none']
+        if len(base) < 30:
+            return None, grp
+        bm = _st.median(base)
+        out = []
+        for k, label in (('both', '台日同時連假'), ('tw', '只有台灣連假'),
+                         ('jp', '只有日本連假')):
+            v = grp[k]
+            if len(v) < 10:
+                out.append((label, len(v), None, None))
+                continue
+            m = _st.median(v)
+            out.append((label, len(v), m, (m - bm) / bm * 100))
+        return (bm, len(base), out), grp
+
+    _hp, _grp = _hol_price_gap()
+    if _hp:
+        _bm, _bn, _rows = _hp
+        _gap_tbl = ('<div class="tw"><table><tr><th>出發日</th><th>樣本</th>'
+                    '<th>中位票價</th><th>價差</th></tr>'
+                    f'<tr><td class="nm"><b>平常日</b></td><td>{_bn} 筆</td>'
+                    f'<td><b>{money(_bm)}</b></td><td class="win">基準</td></tr>')
+        for label, n, m, pct in _rows:
+            if m is None:
+                _gap_tbl += (f'<tr><td class="nm"><b>{label}</b></td>'
+                             f'<td>{n} 筆</td><td colspan="2" class="dimcell">'
+                             f'樣本不足 10 筆，不給數字</td></tr>')
+            else:
+                cls = 'lose' if pct > 0 else 'win'
+                _gap_tbl += (f'<tr><td class="nm"><b>{label}</b></td><td>{n} 筆</td>'
+                             f'<td><b>{money(m)}</b></td>'
+                             f'<td class="{cls}"><b>{pct:+.0f}%</b></td></tr>')
+        _gap_tbl += '</table></div>'
+        _gap_note = (f'<p class="disc">用本站今日抓到的 {len(deals)} 筆票價計算，'
+                     f'依「出發日」分組取中位數。這是今天這批資料的快照，'
+                     f'不是長期統計，明天重算數字會變。'
+                     f'樣本少於 10 筆的分組不給數字。</p>')
+    else:
+        _gap_tbl = ''
+        _gap_note = ('<p class="disc">今天抓到的票價樣本不足以分組計算價差，'
+                     '這一段等資料夠了會自動出現。</p>')
+
+    _ov_rows = ''
+    for o in HOL_OVER:
+        if o['end'] < TODAY:
+            continue
+        who = '＋'.join(_CN[c] for c in o['countries'])
+        nm = '、'.join(o['names'])
+        d0 = datetime.date.fromisoformat(o['start'])
+        left = (d0 - datetime.date.fromisoformat(TODAY)).days
+        _ov_rows += (f'<tr><td class="nm"><b>{o["start"]} – {o["end"]}</b>'
+                     f'<br><small>{html.escape(nm)}</small></td>'
+                     f'<td class="lose"><b>{who}</b></td>'
+                     f'<td class="nm"><small>'
+                     f'{"進行中" if o["start"] <= TODAY else f"還有 {left} 天"}'
+                     f'</small></td></tr>')
+
+    def _runs_tbl(key, n=6):
+        rs = [r for r in HOL['runs'][key] if r['end'] >= TODAY][:n]
+        if not rs:
+            return '<p class="lede">這段期間沒有資料。</p>'
+        rows = ''.join(
+            f'<tr><td class="nm"><b>{r["start"][5:]} – {r["end"][5:]}</b></td>'
+            f'<td><b>{r["days"]} 天</b></td>'
+            f'<td class="nm"><small>'
+            f'{html.escape("、".join(r["names"]) if r["names"] else "純週末")}'
+            f'</small></td></tr>' for r in rs)
+        return ('<div class="tw narrow"><table><tr><th>日期</th><th>天數</th>'
+                '<th>假日</th></tr>' + rows + '</table></div>')
+
+    _src = HOL['_來源網址']
+    _src_rows = ''.join(
+        f'<li><b>{_CN[k]}</b>：{html.escape(HOL["_來源"][_CN[k]])}　'
+        f'<a href="{v}" target="_blank" rel="nofollow noopener">來源 →</a></li>'
+        for k, v in (('jp', _src['日本']), ('tw', _src['台灣']), ('cn', _src['中國'])))
+
+    hc_faq = [
+     ('為什麼要看日本的假期？我又不是日本人',
+      '因為你在跟日本人搶同一批住宿。台灣的連假決定你什麼時候能出發，'
+      '日本的連假決定你到了之後住宿多貴。兩邊撞在一起的那幾天最慘：'
+      '台灣這邊在搶出去的機位，日本那邊在搶自己國內的飯店。'),
+     ('雙十節是不是剛好卡到中國的十一黃金週？',
+      '2026 年不是。中國的國慶連假是 10/1 到 10/7，而且 10/10（週六）在中國是'
+      '調休上班日，這寫在國務院辦公廳的通知裡。真正撞在一起的是台灣與日本：'
+      '台灣 10/9 補假加 10/10 國慶日，日本 10/10 到 10/12 是運動之日三連休。'),
+     ('那 9 月底呢？',
+      '2026 年 9/25 到 9/27 是台灣與中國同時放假（台灣中秋加教師節連到 9/28，'
+      '中國中秋 9/25 到 9/27）。那種重疊影響的是機位，因為兩個市場同時要出國。'),
+     ('避開連假真的有差嗎？',
+      '上面的價差表是用本站今天抓到的票價現算的，不是引用別人的統計。'
+      '要注意那是今天這批資料的快照，樣本不大，明天重算數字會變。'
+      '把它當成量級參考，不要當成精確預測。'),
+     ('日本的補假會算進去嗎？',
+      '會。日本的振替休日在內閣府的 CSV 裡以「休日」名義列出，本站一併計入。'
+      '台灣的補班日與中國的調休上班日也都扣掉了，不會把要上班的週六算成假日。'),
+     ('為什麼 2027 年沒有中國的資料？',
+      '中國的節假日由國務院逐年公布，2027 年的還沒發布。本站不推估，'
+      '所以 2027 的中國欄位一律留空。'),
+    ]
+    hc_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in hc_faq)
+    hc_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in hc_faq]}, ensure_ascii=False)
+
+    hc_title = '日本、台灣、中國的連假撞在一起是哪幾天？附本站票價實算的價差'
+    hc_desc = ('台灣的連假決定你何時出發，日本的連假決定你到了之後住宿多貴。'
+               '本頁把三國的國定假日排在一起，標出重疊的日期，'
+               '並用本站每日抓取的票價資料計算連假出發與平常日出發的實際價差。')
+
+    write('japan-holiday-calendar/index.html',
+      head(hc_title, hc_desc, 'japan-holiday-calendar/',
+           '<script type="application/ld+json">' + hc_ld + '</script>')
+      + crumbs([('首頁', '/'), ('三國連假日曆', None)]) + topnav()
+      + '<h1>哪幾天最好避開？三國的假期排在一起看</h1>'
+      + '<p class="lede">台灣的連假決定你什麼時候能出發，日本的連假決定你到了之後住宿多貴。'
+        '中國的黃金週則是在搶同一批機位。三邊排在一起才看得出來哪幾天真的該避開。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官方資料，查證於 {HOL["checked"]}</div>'
+        '<div class="tans">最貴的不是單一國家的連假，是<b>撞在一起</b>的那幾天</div>'
+        '<div class="tsub">台灣連假時你在搶機位，日本連假時你在跟日本人搶飯店。'
+        '兩邊同時放假就兩件事一起發生，而住宿通常漲得比機票兇，'
+        '因為飯店沒辦法像航空公司那樣臨時加班機。</div>'
+        '<div class="tbuf">一個常見的誤解：以為雙十節會卡到中國十一黃金週。'
+        '2026 年不會，中國的國慶假是 10/1 到 10/7，而且 <b>10/10 在中國是調休上班日</b>。'
+        '真正撞在一起的是台灣與日本。</div></div>'
+      + '<h2>接下來會撞期的日子</h2>'
+      + '<p class="lede">兩個以上國家同時在放連續三天以上的假。'
+        '單純的週六日不算，那不會造成額外的需求高峰。</p>'
+      + ('<div class="tw"><table><tr><th>日期</th><th>哪幾國</th><th>距今</th></tr>'
+         + _ov_rows + '</table></div>' if _ov_rows
+         else '<p class="lede">接下來沒有重疊的連假。</p>')
+      + '<h2>價差實算</h2>'
+      + '<p class="lede">這不是引用別人的統計，是用本站今天抓到的票價，'
+        '依出發日分組取中位數算出來的。</p>'
+      + _gap_tbl + _gap_note
+      + '<h2>各國接下來的連假</h2>'
+      + '<h3>🇯🇵 日本</h3>' + _runs_tbl('jp')
+      + '<h3>🇹🇼 台灣</h3>' + _runs_tbl('tw')
+      + '<h3>🇨🇳 中國</h3>' + _runs_tbl('cn')
+      + f'<p class="disc">{html.escape(HOL["_連假定義"])}'
+        f'{html.escape(HOL["_中國只到2026"])}</p>'
+      + '<h2>資料來源</h2>'
+      + f'<ul class="lede">{_src_rows}</ul>'
+      + '<h2>常見問題</h2>' + hc_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日機票特價</b>'
+        f'<s>票價卡會標出撞期的日子</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
+        f'<s>連假時最先漲的就是這個</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
+        f'<s>同一天的班次也有差</s></a>'
+      + f'<a class="ct" href="{U("/japan-travel-rules/")}"><b>📋 出境稅與住宿稅</b>'
+        f'<s>另外會動到錢的新制</s></a></div>'
+      + '<p class="disc">假日資料引自各國官方公告，查證於 '
+        + HOL['checked'] + '。各國都可能臨時調整，出發前請以官方最新公告為準。'
+        '價差為本站票價快照的計算結果，僅供量級參考。</p>'
+      + foot())
+    pages.append(('/japan-holiday-calendar/', 0.8))
+    print(f'   三國連假日曆：重疊 {len(HOL_OVER)} 段'
+          f'（日 {len(HOL["runs"]["jp"])}／台 {len(HOL["runs"]["tw"])}／'
+          f'中 {len(HOL["runs"]["cn"])} 段連假）')
+
     print(f'   去日本的新制度：住宿稅 {len(_lt["cities"])} 套算法、'
           f'行動電源 {len(_pb["rules"])} 條（查證 {JR["checked"]}）')
 
@@ -6625,6 +6830,9 @@ if HS:
         f'表中連到 Trip.com 的按鈕為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，'
         f'不影響你的價格；連到 Booking 的按鈕是查價來源，本站沒有分潤。</p>'
       + jp_runs_block(4, '住宿會跳價的日子：日本連假')
+      + f'<p class="disc">台灣與日本同時放假的那幾天更兇，'
+        f'<a href="{U("/japan-holiday-calendar/")}">三國連假撞期日曆</a>'
+        f'有完整對照與本站票價實算的價差。</p>'
       + foot())
     pages.append(('/tokyo/hostel/', 0.8))
     print(f'   東京平價住宿頁：{len(HS["areas"])} 區（查證 {HS["checked"]}，'
@@ -6822,6 +7030,9 @@ if BH:
         f'透過連結完成訂購時本站可獲得分潤，不影響你的價格；'
         f'連到 Booking 的按鈕是查價來源，本站沒有分潤。</p>'
       + jp_runs_block(4, '住宿會跳價的日子：日本連假')
+      + f'<p class="disc">台灣與日本同時放假的那幾天更兇，'
+        f'<a href="{U("/japan-holiday-calendar/")}">三國連假撞期日曆</a>'
+        f'有完整對照與本站票價實算的價差。</p>'
       + foot())
     pages.append(('/tokyo/budget-hotel/', 0.8))
     print(f'   東京便宜旅館頁：{len(_bh_all)} 家（查證 {BH["checked"]}，'
@@ -6983,6 +7194,9 @@ if PC:
         f'不是報價。訂房網的價格、折扣方案與會員等級隨時調整，'
         f'請以你自己查到的結帳頁金額為準。</p>'
       + jp_runs_block(4, '住宿會跳價的日子：日本連假')
+      + f'<p class="disc">台灣與日本同時放假的那幾天更兇，'
+        f'<a href="{U("/japan-holiday-calendar/")}">三國連假撞期日曆</a>'
+        f'有完整對照與本站票價實算的價差。</p>'
       + foot())
     pages.append(('/hotel-price-check/', 0.9))
     print(f'   訂房比價頁：{_pc_n} 間實測（查證 {PC["checked"]}，'
