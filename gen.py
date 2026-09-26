@@ -1082,21 +1082,30 @@ def jp_badge(*dates):
         if j and t:
             return ('<span class="tg hol" title="台灣與日本同時放連假">'
                     '🔥 台日連假撞期</span>')
+        if t:
+            nm = '、'.join(t['names']) if t['names'] else '週末'
+            return (f'<span class="tg hol" title="{html.escape(nm)}：'
+                    f'台灣連假，出國的人多，機票最貴">📈 台灣連假</span>')
         if j:
             nm = '、'.join(j['names']) if j['names'] else '週末連休'
-            return (f'<span class="tg hol" title="{html.escape(nm)}">'
-                    f'🗾 日本{j["days"]}連休</span>')
+            return (f'<span class="tg gt" title="{html.escape(nm)}：'
+                    f'日本自己放假，住宿貴但機票未必">🗾 日本連假</span>')
     return ''
 
 
-def jp_runs_block(n=4, heading='接下來的日本連假'):
-    """列出接下來幾段日本連假。
+def jp_runs_block(n=4, heading=None, key='jp'):
+    """列出接下來幾段連假。
 
-    台灣旅客挑日期時多半只看自己的假期，不會想到日本那邊也在放假。
-    連假是日本人自己出遊的日子，機票與住宿一起跳，而且住宿的漲幅
-    通常比機票更兇，因為飯店沒辦法像航空公司那樣臨時加班機。
+    機票與住宿是兩個不同的市場，所以要分開講：
+    機票漲是因為台灣人一起出國，看的是台灣的連假；
+    住宿漲是因為日本人自己也在旅行，看的是日本的連假。
+    本站的票價資料實算也支持這個方向（日本自己連假而台灣上班的日子，
+    機票中位價反而低於平常日）。
     """
-    up = [r for r in JPH_RUN if r['end'] >= TODAY][:n]
+    runs = {'jp': JPH_RUN, 'tw': TWH_RUN}.get(key, JPH_RUN)
+    if heading is None:
+        heading = '接下來的台灣連假' if key == 'tw' else '接下來的日本連假'
+    up = [r for r in runs if r['end'] >= TODAY][:n]
     if not up:
         return ''
     rows = ''
@@ -1109,10 +1118,14 @@ def jp_runs_block(n=4, heading='接下來的日本連假'):
                  f'<br><small>{html.escape(nm)}</small></td>'
                  f'<td class="lose"><b>{r["days"]} 連休</b></td>'
                  f'<td class="nm"><small>{when}</small></td></tr>')
+    lede = ('大家一起出國的日子，機票最貴。本站的票價實算顯示這是機票漲價的主因，'
+            '避開前後各一天，價差常常就出來了。'
+            if key == 'tw' else
+            '日本人自己出遊的日子，住宿會跳。你是在跟他們搶同一批飯店，'
+            '而飯店沒辦法像航空公司那樣臨時加班機。'
+            '這幾天的機票倒未必貴，台灣要上班的話甚至可能更便宜。')
     return (f'<h2>{heading}</h2>'
-            '<p class="lede">日本人自己出遊的日子。這幾天的機票與住宿都會跳，'
-            '而住宿通常漲得比機票兇，因為飯店沒辦法像航空公司那樣臨時加班機。'
-            '避開前後各一天，價差常常就出來了。</p>'
+            f'<p class="lede">{lede}</p>'
             '<div class="tw narrow"><table><tr><th>日期</th><th>天數</th><th>距今</th></tr>'
             + rows + '</table></div>'
             '<p class="disc">依日本內閣府公開的國定假日資料計算，'
@@ -3200,7 +3213,7 @@ if HOL:
         base = grp['none']
         if len(base) < 30:
             return None, grp
-        bm = _st.median(base)
+        bm = round(_st.median(base))
         out = []
         for k, label in (('both', '台日同時連假'), ('tw', '只有台灣連假'),
                          ('jp', '只有日本連假')):
@@ -3208,7 +3221,7 @@ if HOL:
             if len(v) < 10:
                 out.append((label, len(v), None, None))
                 continue
-            m = _st.median(v)
+            m = round(_st.median(v))
             out.append((label, len(v), m, (m - bm) / bm * 100))
         return (bm, len(base), out), grp
 
@@ -3275,9 +3288,10 @@ if HOL:
 
     hc_faq = [
      ('為什麼要看日本的假期？我又不是日本人',
-      '因為你在跟日本人搶同一批住宿。台灣的連假決定你什麼時候能出發，'
-      '日本的連假決定你到了之後住宿多貴。兩邊撞在一起的那幾天最慘：'
-      '台灣這邊在搶出去的機位，日本那邊在搶自己國內的飯店。'),
+      '因為你在跟日本人搶同一批住宿。不過要分清楚：機票的價格主要由台灣的連假決定，'
+      '因為那是台灣人出國的日子；日本的連假影響的是你到了之後的住宿。'
+      '本站用自己的票價資料算過，日本自己放連假而台灣要上班的那些日子，'
+      '機票中位價反而比平常日低。'),
      ('雙十節是不是剛好卡到中國的十一黃金週？',
       '2026 年不是。中國的國慶連假是 10/1 到 10/7，而且 10/10（週六）在中國是'
       '調休上班日，這寫在國務院辦公廳的通知裡。真正撞在一起的是台灣與日本：'
@@ -3316,10 +3330,11 @@ if HOL:
         '中國的黃金週則是在搶同一批機位。三邊排在一起才看得出來哪幾天真的該避開。</p>'
       + '<div class="today">'
         f'<div class="tday">官方資料，查證於 {HOL["checked"]}</div>'
-        '<div class="tans">最貴的不是單一國家的連假，是<b>撞在一起</b>的那幾天</div>'
-        '<div class="tsub">台灣連假時你在搶機位，日本連假時你在跟日本人搶飯店。'
-        '兩邊同時放假就兩件事一起發生，而住宿通常漲得比機票兇，'
-        '因為飯店沒辦法像航空公司那樣臨時加班機。</div>'
+        '<div class="tans"><b>機票看台灣的連假，住宿才看日本的</b></div>'
+        '<div class="tsub">這是兩個不同的市場。機票漲是因為台灣人一起出國，'
+        '跟日本放不放假沒有太大關係；住宿漲是因為日本人自己也在旅行，'
+        '你在跟他們搶同一批飯店。下面的價差是用本站票價現算的，'
+        '結果跟直覺不一樣，數字就擺在那裡。</div>'
         '<div class="tbuf">一個常見的誤解：以為雙十節會卡到中國十一黃金週。'
         '2026 年不會，中國的國慶假是 10/1 到 10/7，而且 <b>10/10 在中國是調休上班日</b>。'
         '真正撞在一起的是台灣與日本。</div></div>'
@@ -3333,6 +3348,20 @@ if HOL:
       + '<p class="lede">這不是引用別人的統計，是用本站今天抓到的票價，'
         '依出發日分組取中位數算出來的。</p>'
       + _gap_tbl + _gap_note
+      + '<div class="cmp">'
+        '<div class="pp"><b>台灣連假才是機票漲價的主因</b>'
+        '<p>票價反映的是台灣這邊的需求。台灣放連假、大家一起出國，'
+        '機位就緊。日本那邊放不放假，對「台灣飛日本」這個航段的供需影響有限。</p></div>'
+        '<div class="pp"><b>日本自己連假時，機票反而可能便宜</b>'
+        '<p>如果那幾天台灣要上班，願意請假出國的人變少，票價就沒有支撐。'
+        '但別高興太早：你省下的機票錢，很可能在住宿上吐回去，'
+        '因為那幾天日本人正在自己國內旅行。</p></div>'
+        '<div class="pp"><b>所以真正該避開的是台灣的連假</b>'
+        '<p>想省機票就避開台灣連假；想省住宿就避開日本連假。'
+        '兩者都避開的日子最便宜，但那通常要請假。</p></div>'
+        '</div>'
+      + '<p class="disc">本站只有機票資料，所以上表算得出來的是機票。'
+        '住宿的漲幅沒有自己的數據可以支撐，因此不給數字，只說明方向。</p>'
       + '<h2>各國接下來的連假</h2>'
       + '<h3>🇯🇵 日本</h3>' + _runs_tbl('jp')
       + '<h3>🇹🇼 台灣</h3>' + _runs_tbl('tw')
@@ -4248,7 +4277,7 @@ write(f'{DEALDIR}/index.html',
   + crumbs([('首頁','/'),('機票特價',None)]) + topnav()
   + f'<h1>機票特價</h1><p class="lede">低於門檻、或明顯低於該航線平常最低價的票，今日共 <b>{len(deals_out)}</b> 則。</p>'
   + f'<p class="upd">更新於 {NOWS}</p><h2>{TODAY} 特價</h2><div class="cities">{items_today}</div>'
-  + past_html + jp_runs_block() + foot())
+  + past_html + jp_runs_block(4, key='tw') + foot())
 pages.append((f'/{DEALDIR}/',0.95))
 
 # FB / IG 文案（本地檔，不上傳網站）
