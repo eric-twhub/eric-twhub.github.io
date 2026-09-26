@@ -840,6 +840,28 @@ DRIVE = ('<script nowprocket data-noptimize="1" data-cfasync="false" '
          's.setAttribute("data-cmp-ab","2");s.src=' + repr(DRIVE_SRC).replace('"',"'") + ';'
          'document.head.appendChild(s);})();</script>')
 
+# 有專屬 og 圖卡的頁面：直接看磁碟上有沒有那張圖。
+# 這樣永遠不會指向不存在的檔案；新頁在第一次建置時先用預設卡，
+# make_og_cards.py 產好之後下一次建置就換成自己的。
+OG_SLUGS = {f[:-4] for f in os.listdir('og')} if os.path.isdir('og') else set()
+
+
+def _og_slug(path):
+    """URL 路徑轉成圖檔名：/japan-esim/ → japan-esim，首頁 → home"""
+    p = (path or '').strip('/')
+    return p.replace('/', '-') if p else 'home'
+
+
+def _og_img(path):
+    """這頁的 og:image 網址。
+
+    只有內容頁會各自產一張（標題不變就不重產）。票價頁的標題天天帶著
+    當日最低價，每天重產只會讓 repo 多出一堆二進位檔，所以一律用預設卡。
+    """
+    s = _og_slug(path)
+    return f'{SITE}{BASE}/og/{s if s in OG_SLUGS else "default"}.png'
+
+
 def head(title,desc,path,extra=''):
     can=f'{SITE}{BASE}/{path}' if path else f'{SITE}{BASE}/'
     return f'''<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
@@ -851,6 +873,9 @@ def head(title,desc,path,extra=''):
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:type" content="website"><meta property="og:url" content="{can}">
+<meta property="og:image" content="{_og_img(path)}">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <style>{CSS}</style>{extra}{DRIVE}</head><body><div class="wrap">'''
 
 def crumbs(items,root='/'):
@@ -1137,6 +1162,7 @@ def write_deal_data(slug, payload):
 
 
 PAGE_HASH = {}          # 產生路徑 → 內容雜湊，給 sitemap 判斷這頁到底有沒有變
+PAGE_META = {}          # 產生路徑 → {title, h1, fare}，給 og 圖卡用
 
 
 def write(path,content):
@@ -1145,6 +1171,14 @@ def write(path,content):
     open(path,'w',encoding='utf-8').write(content)
     if path.endswith('.html'):
         PAGE_HASH[path] = hashlib.sha1(content.encode('utf-8')).hexdigest()[:16]
+        _t = re.search(r'<title>(.*?)</title>', content, re.S)
+        _h = re.search(r'<h1[^>]*>(.*?)</h1>', content, re.S)
+        PAGE_META[path] = {
+            'title': html.unescape(re.sub(r'<[^>]+>', '', _t.group(1))).strip() if _t else '',
+            'h1': html.unescape(re.sub(r'<[^>]+>', '', _h.group(1))).strip() if _h else '',
+            # 帶建置時間戳的是票價頁，內容天天變，不各自產圖卡
+            'fare': bool(re.search(r'更新於 \d{4}-\d{2}-\d{2} \d{2}:\d{2}|票價更新於', content)),
+        }
 
 # ---------- 建構資料 ----------
 deals=load()
@@ -6721,6 +6755,21 @@ urls='\n'.join(f'  <url><loc>{SITE}{U(u)}</loc>'
 print(f'   sitemap：{len(pages)} 個 URL，其中 {_lm_same} 個內容未變、沿用原 lastmod')
 write('sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n'
       f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n')
+# og 圖卡清單：只列內容頁。票價頁的標題每天帶著當日最低價，
+# 每天重產只會讓 repo 一直長出二進位檔，那些統一用預設卡。
+_og_items = []
+for _u, _p in pages:
+    _m = PAGE_META.get(_page_file(_u))
+    if not _m or _m['fare']:
+        continue
+    _og_items.append({'slug': _og_slug(_u), 'url': _u,
+                      'h1': _m['h1'], 'title': _m['title']})
+write('og-manifest.json', json.dumps(
+    {'_說明': 'og 圖卡要產哪些頁。由 gen.py 產生，make_og_cards.py 讀取。',
+     'size': [1200, 630], 'items': _og_items}, ensure_ascii=False, indent=1))
+print(f'   og 圖卡清單：{len(_og_items)} 個內容頁'
+      f'（已有圖 {sum(1 for i in _og_items if i["slug"] in OG_SLUGS)} 張）')
+
 write('robots.txt', f'User-agent: *\nAllow: /\n\nSitemap: {SITE}{BASE}/sitemap.xml\n')
 write('.nojekyll','')
 

@@ -50,6 +50,24 @@ jobs:
       - name: 重新產生網站
         run: python3 gen.py
 
+      - name: 產生社群分享縮圖（og:image）
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk >/dev/null
+          fc-cache -f >/dev/null 2>&1 || true
+          python3 make_og_cards.py
+          # 中文沒算進去會整片豆腐字，用檔案大小粗略檢查有沒有算繪內容
+          for f in og/*.png; do
+            sz=$(wc -c < "$f")
+            if [ "$sz" -lt 12000 ]; then
+              echo "::error::$f 只有 ${sz} bytes，可能是字型缺失導致空白"; exit 1
+            fi
+          done
+          echo "  og 圖卡共 $(ls og/*.png | wc -l) 張，合計 $(du -sh og | cut -f1)"
+          # gen.py 是看磁碟上有沒有圖來決定 og:image 指向哪張，而它跑在產圖之前，
+          # 所以新頁的第一輪會指到預設卡。再跑一次就正確了，gen.py 只要一兩秒。
+          python3 gen.py
+
       - name: 產生圖卡
         # 月曆卡只在早班產出。圖卡會進版控以取得固定網址，每天一次即可，
         # 跑滿三班會讓 git 歷史多出三倍的二進位檔。
