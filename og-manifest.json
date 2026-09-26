@@ -1,0 +1,315 @@
+{
+ "_說明": "og 圖卡要產哪些頁。由 gen.py 產生，make_og_cards.py 讀取。",
+ "size": [
+  1200,
+  630
+ ],
+ "items": [
+  {
+   "slug": "japan-ski-baggage",
+   "url": "/japan-ski-baggage/",
+   "h1": "帶雪具去日本，行李要怎麼算？",
+   "title": "雪具託運規則：台灣飛日本 9 家航空比較（尺寸、單邊長度、事先申請）"
+  },
+  {
+   "slug": "tigerair-nagoya",
+   "url": "/tigerair-nagoya/",
+   "h1": "台灣虎航飛名古屋，班次怎麼看？",
+   "title": "台灣虎航飛名古屋航班｜班次時刻、營運日與換季時間（2026年更新）"
+  },
+  {
+   "slug": "japan-airport-last-train",
+   "url": "/japan-airport-last-train/",
+   "h1": "落地之後，還回得去市區嗎？",
+   "title": "日本機場末班車：七個機場落地後還回得去市區嗎（附官方時刻表）"
+  },
+  {
+   "slug": "japan-esim-native-roaming",
+   "url": "/japan-esim-native-roaming/",
+   "h1": "你買的日本 eSIM，是日本的網路還是繞回香港的？",
+   "title": "日本 eSIM 是原生還是漫遊？會不會變成香港的網路（附 GSMA 規格出處）"
+  },
+  {
+   "slug": "japan-sms-roaming",
+   "url": "/japan-sms-roaming/",
+   "h1": "在日本，收得到台灣的簡訊驗證碼嗎？",
+   "title": "在日本收得到台灣的簡訊驗證碼嗎？2026 年 3 月之後答案變了"
+  },
+  {
+   "slug": "japan-driving-licence",
+   "url": "/japan-driving-licence/",
+   "h1": "台灣駕照能在日本租車嗎？國際駕照不能用",
+   "title": "台灣駕照在日本租車：國際駕照不能用，要辦的是日文譯本"
+  },
+  {
+   "slug": "japan-rentacar-noc",
+   "url": "/japan-rentacar-noc/",
+   "h1": "日本租車：買了免責補償，為什麼還是要賠錢？",
+   "title": "日本租車的 NOC 是什麼？買了免責補償還是要賠 2 萬到 5 萬日圓"
+  },
+  {
+   "slug": "japan-travel-insurance",
+   "url": "/japan-travel-insurance/",
+   "h1": "旅平險，什麼情況才真的會賠？",
+   "title": "旅平險什麼情況才會賠？刷卡送的那份只保飛機上那幾小時"
+  },
+  {
+   "slug": "japan-card-insurance",
+   "url": "/japan-card-insurance/",
+   "h1": "刷卡送的旅平險，你那張卡實際賠什麼？",
+   "title": "刷卡送的旅平險，15 張卡實際賠什麼？受傷看醫生差到 20 倍"
+  },
+  {
+   "slug": "japan-esim",
+   "url": "/japan-esim/",
+   "h1": "日本 eSIM 的「NT$11 起」，起的是什麼？",
+   "title": "日本 eSIM 怎麼選：232 個方案的每日單價比較（含吃到飽的真相）"
+  },
+  {
+   "slug": "deals-2026-09-26-taichung-okinawa",
+   "url": "/deals/2026-09-26-taichung-okinawa/",
+   "h1": "台中飛沖繩 NT$7,411 來回含稅｜台灣虎航 10/26 出發",
+   "title": "台中飛沖繩 NT$7,411 來回含稅｜台灣虎航 10/26 出發"
+  },
+  {
+   "slug": "deals-2026-09-26-transfer-tokyo-sendai",
+   "url": "/deals/2026-09-26-transfer-tokyo-sendai/",
+   "h1": "飛東京轉乘去仙台，比直飛省 NT$15,789",
+   "title": "飛東京轉乘去仙台，比直飛省 NT$15,789"
+  },
+  {
+   "slug": "deals-2026-09-26-transfer-osaka-hiroshima",
+   "url": "/deals/2026-09-26-transfer-osaka-hiroshima/",
+   "h1": "飛大阪轉乘去廣島，比直飛省 NT$1,768",
+   "title": "飛大阪轉乘去廣島，比直飛省 NT$1,768"
+  },
+  {
+   "slug": "apple-japan-price",
+   "url": "/apple-japan-price/",
+   "h1": "日本買 iPhone 比較便宜嗎？",
+   "title": "日本買 iPhone 比較便宜嗎？2026 台日 Apple 價格全表（含退稅試算）"
+  },
+  {
+   "slug": "iphone-cost",
+   "url": "/iphone-cost/",
+   "h1": "iPhone 一個月其實花你多少？",
+   "title": "iPhone 持有成本試算：一個月其實花你多少？（台灣實際二手回收行情）"
+  },
+  {
+   "slug": "iphone-card",
+   "url": "/iphone-card/",
+   "h1": "買 iPhone 刷哪張卡？",
+   "title": "買 iPhone 刷哪張卡？三個讓你拿不到回饋的機制（Apple 官網扣款日、通路認定、分期）"
+  },
+  {
+   "slug": "japan-tax-free-2026",
+   "url": "/japan-tax-free-2026/",
+   "h1": "2026/11/1 起，日本免稅改成「出境後才退錢」",
+   "title": "2026/11/1 日本免稅新制：先付全額、出境後才退稅（懶人包）"
+  },
+  {
+   "slug": "japan-flight-good-times",
+   "url": "/japan-flight-good-times/",
+   "h1": "不浪費假期的日本機票",
+   "title": "早去晚回的日本機票｜不浪費假期的班次，目前 7 組"
+  },
+  {
+   "slug": "japan-credit-card",
+   "url": "/japan-credit-card/",
+   "h1": "旅日信用卡怎麼挑？",
+   "title": "旅日信用卡怎麼挑？2026 下半年 15 張卡回饋與上限整理"
+  },
+  {
+   "slug": "japan-credit-card-esun-kumamon",
+   "url": "/japan-credit-card/esun-kumamon/",
+   "h1": "玉山熊本熊卡　日本回饋怎麼算？",
+   "title": "玉山熊本熊卡日本回饋怎麼算？最高 8.5% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-dbs-eco",
+   "url": "/japan-credit-card/dbs-eco/",
+   "h1": "星展 eco 永續卡　日本回饋怎麼算？",
+   "title": "星展 eco 永續卡日本回饋怎麼算？最高 5.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-taishin-richart",
+   "url": "/japan-credit-card/taishin-richart/",
+   "h1": "台新 Richart 卡　日本回饋怎麼算？",
+   "title": "台新 Richart 卡日本回饋怎麼算？最高 3.3% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-cathay-cube",
+   "url": "/japan-credit-card/cathay-cube/",
+   "h1": "國泰世華 CUBE 卡　日本回饋怎麼算？",
+   "title": "國泰世華 CUBE 卡日本回饋怎麼算？最高 3.3% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-ubot-jiho",
+   "url": "/japan-credit-card/ubot-jiho/",
+   "h1": "聯邦吉鶴卡　日本回饋怎麼算？",
+   "title": "聯邦吉鶴卡日本回饋怎麼算？最高 11.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-fubon-j",
+   "url": "/japan-credit-card/fubon-j/",
+   "h1": "台北富邦 J 卡　日本回饋怎麼算？",
+   "title": "台北富邦 J 卡日本回饋怎麼算？最高 6.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-esun-unicard",
+   "url": "/japan-credit-card/esun-unicard/",
+   "h1": "玉山 Unicard　日本回饋怎麼算？",
+   "title": "玉山 Unicard日本回饋怎麼算？最高 1.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-sinopac-jcb",
+   "url": "/japan-credit-card/sinopac-jcb/",
+   "h1": "永豐現金回饋 JCB 卡　日本回饋怎麼算？",
+   "title": "永豐現金回饋 JCB 卡日本回饋怎麼算？最高 10.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-sinopac-dual",
+   "url": "/japan-credit-card/sinopac-dual/",
+   "h1": "永豐幣倍卡　日本回饋怎麼算？",
+   "title": "永豐幣倍卡日本回饋怎麼算？最高 8.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-ctbc-linepay",
+   "url": "/japan-credit-card/ctbc-linepay/",
+   "h1": "中信 LINE Pay 卡　日本回饋怎麼算？",
+   "title": "中信 LINE Pay 卡日本回饋怎麼算？最高 5.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-ctbc-uniopen",
+   "url": "/japan-credit-card/ctbc-uniopen/",
+   "h1": "中信 uniopen 聯名卡　日本回饋怎麼算？",
+   "title": "中信 uniopen 聯名卡日本回饋怎麼算？最高 11.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-firstbank-ileo",
+   "url": "/japan-credit-card/firstbank-ileo/",
+   "h1": "第一銀行 iLEO 卡　日本回饋怎麼算？",
+   "title": "第一銀行 iLEO 卡日本回饋怎麼算？最高 13.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-sinopac-dawho",
+   "url": "/japan-credit-card/sinopac-dawho/",
+   "h1": "永豐 DAWHO 大戶卡　日本回饋怎麼算？",
+   "title": "永豐 DAWHO 大戶卡日本回饋怎麼算？最高 6.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-dbs-aov",
+   "url": "/japan-credit-card/dbs-aov/",
+   "h1": "星展傳說對決聯名卡　日本回饋怎麼算？",
+   "title": "星展傳說對決聯名卡日本回饋怎麼算？最高 5.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-hsbc-liveplus",
+   "url": "/japan-credit-card/hsbc-liveplus/",
+   "h1": "滙豐 Live+ 現金回饋卡　日本回饋怎麼算？",
+   "title": "滙豐 Live+ 現金回饋卡日本回饋怎麼算？最高 5.88% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-card-calculator",
+   "url": "/japan-card-calculator/",
+   "h1": "日本刷卡回饋計算機",
+   "title": "日本刷卡回饋計算機｜最多三張卡並排比，看回饋差多少、上限卡在哪"
+  },
+  {
+   "slug": "japan-coupon",
+   "url": "/japan-coupon/",
+   "h1": "日本購物折扣怎麼疊才對？",
+   "title": "日本購物折扣怎麼疊？折價券 × 免稅 × 刷卡回饋實付價計算機"
+  },
+  {
+   "slug": "japan-coupon-matsukiyo",
+   "url": "/japan-coupon/matsukiyo/",
+   "h1": "松本清 matsukiyo優惠券怎麼用？",
+   "title": "松本清 matsukiyo優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-sundrug",
+   "url": "/japan-coupon/sundrug/",
+   "h1": "SUNDRUG 尚都樂客優惠券怎麼用？",
+   "title": "SUNDRUG 尚都樂客優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-daikoku",
+   "url": "/japan-coupon/daikoku/",
+   "h1": "大國藥妝 DAIKOKU優惠券怎麼用？",
+   "title": "大國藥妝 DAIKOKU優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-tsuruha",
+   "url": "/japan-coupon/tsuruha/",
+   "h1": "鶴羽藥妝 TSURUHA優惠券怎麼用？",
+   "title": "鶴羽藥妝 TSURUHA優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-sapporo-drug",
+   "url": "/japan-coupon/sapporo-drug/",
+   "h1": "札幌藥妝優惠券怎麼用？",
+   "title": "札幌藥妝優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-bic-camera",
+   "url": "/japan-coupon/bic-camera/",
+   "h1": "Bic Camera優惠券怎麼用？",
+   "title": "Bic Camera優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-edion",
+   "url": "/japan-coupon/edion/",
+   "h1": "愛電王 EDION優惠券怎麼用？",
+   "title": "愛電王 EDION優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-yamada",
+   "url": "/japan-coupon/yamada/",
+   "h1": "YAMADA 山田電機優惠券怎麼用？",
+   "title": "YAMADA 山田電機優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-laox",
+   "url": "/japan-coupon/laox/",
+   "h1": "LAOX優惠券怎麼用？",
+   "title": "LAOX優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-takeya",
+   "url": "/japan-coupon/takeya/",
+   "h1": "多慶屋 TAKEYA優惠券怎麼用？",
+   "title": "多慶屋 TAKEYA優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-don-quijote",
+   "url": "/japan-coupon/don-quijote/",
+   "h1": "唐吉訶德 驚安殿堂優惠券怎麼用？",
+   "title": "唐吉訶德 驚安殿堂優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-alpen",
+   "url": "/japan-coupon/alpen/",
+   "h1": "Alpen 運動用品優惠券怎麼用？",
+   "title": "Alpen 運動用品優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+  },
+  {
+   "slug": "tokyo-hostel",
+   "url": "/tokyo/hostel/",
+   "h1": "東京平價住宿：8 個區實查比較",
+   "title": "東京平價住宿｜8 區實查比較，4 晚 NT$2,258 起"
+  },
+  {
+   "slug": "tokyo-budget-hotel",
+   "url": "/tokyo/budget-hotel/",
+   "h1": "東京便宜旅館：有自己一間房，但衛浴共用",
+   "title": "東京便宜旅館｜共用衛浴的私人房，4 晚 NT$2,097 起"
+  },
+  {
+   "slug": "hotel-price-check",
+   "url": "/hotel-price-check/",
+   "h1": "同一間房，手機版比桌機版便宜 9%",
+   "title": "訂房比價｜同一間房，手機版比桌機版便宜 9.1%"
+  }
+ ]
+}
