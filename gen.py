@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """台日機票速報 — 多頁 SEO 網站產生器"""
-import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics
+import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics, hashlib
 
 CFG=json.load(open('partners.json',encoding='utf-8'))
 W=CFG.get('widgets',{})
@@ -1136,10 +1136,15 @@ def write_deal_data(slug, payload):
                      ensure_ascii=False, indent=1))
 
 
+PAGE_HASH = {}          # 產生路徑 → 內容雜湊，給 sitemap 判斷這頁到底有沒有變
+
+
 def write(path,content):
     d=os.path.dirname(path)
     if d: os.makedirs(d,exist_ok=True)
     open(path,'w',encoding='utf-8').write(content)
+    if path.endswith('.html'):
+        PAGE_HASH[path] = hashlib.sha1(content.encode('utf-8')).hexdigest()[:16]
 
 # ---------- 建構資料 ----------
 deals=load()
@@ -6657,8 +6662,63 @@ if PC:
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
 LASTMOD=LASTMOD[:-2]+':'+LASTMOD[-2:]            # +0800 → +08:00（W3C Datetime 格式）
-urls='\n'.join(f'  <url><loc>{SITE}{U(u)}</loc><lastmod>{LASTMOD}</lastmod>'
-             f'<changefreq>daily</changefreq><priority>{p}</priority></url>' for u,p in pages)
+
+# 逐頁 lastmod：拿這次產生的內容雜湊跟上次比，沒變就沿用舊日期。
+#
+# 之前全站 232 個 URL 共用建置時間，而網站一天重生四次，等於每天四次告訴
+# Google「這 232 頁全都剛更新」。真正改過的頁因此跟兩週沒動的頁長得一樣。
+#
+# 票價頁的價格每天真的會變，雜湊自然會變、日期照樣每天更新，那是正確的。
+# 信用卡頁因為嵌了每日更新的匯率換算，也會每天變，同樣算真的變動。
+_LMF = 'lastmod.json'
+_lm_old = {}
+if os.path.exists(_LMF):
+    try:
+        _lm_old = json.load(open(_LMF, encoding='utf-8')).get('pages') or {}
+    except Exception:
+        _lm_old = {}
+
+def _page_file(u):
+    """URL 轉回剛剛產生的檔案路徑"""
+    return 'index.html' if u == '/' else u.strip('/') + '/index.html'
+
+def _page_hash(u):
+    """取這頁的內容雜湊。
+
+    特價頁是一次性快照、之後不會重產，所以不會出現在 PAGE_HASH 裡。
+    那種情況直接讀磁碟上既有的檔案來算，才不會每次建置都被當成變動。
+    """
+    f = _page_file(u)
+    h = PAGE_HASH.get(f)
+    if h:
+        return h
+    try:
+        return hashlib.sha1(open(f, 'rb').read()).hexdigest()[:16]
+    except OSError:
+        return ''
+
+_lm_new, _lm_same = {}, 0
+for _u, _p in pages:
+    _h = _page_hash(_u)
+    _prev = _lm_old.get(_u) or {}
+    if _h and _prev.get('h') == _h and _prev.get('d'):
+        _lm_new[_u] = {'h': _h, 'd': _prev['d']}     # 內容沒變，沿用原本的日期
+        _lm_same += 1
+    else:
+        _lm_new[_u] = {'h': _h, 'd': LASTMOD}
+
+# 這個檔刻意不放建置時間戳。放了的話它每次都會變，
+# CI 的「無變動就不 commit」判斷會永遠失效，每次建置都多一個空 commit。
+write(_LMF, json.dumps({'_說明': '逐頁 lastmod。h 是該頁內容的 sha1 前 16 碼，'
+                                 'd 是內容最後一次真的改變的時間。'
+                                 '由 gen.py 維護，不要手改，也不要放建置時間戳。',
+                        'pages': _lm_new}, ensure_ascii=False, indent=1))
+
+# changefreq 原本一律寫 daily，內容頁根本不是。與其猜不如不寫，這個欄位本來就不具約束力。
+urls='\n'.join(f'  <url><loc>{SITE}{U(u)}</loc>'
+             f'<lastmod>{_lm_new[u]["d"]}</lastmod>'
+             f'<priority>{p}</priority></url>' for u,p in pages)
+print(f'   sitemap：{len(pages)} 個 URL，其中 {_lm_same} 個內容未變、沿用原 lastmod')
 write('sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n'
       f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\n\nSitemap: {SITE}{BASE}/sitemap.xml\n')
