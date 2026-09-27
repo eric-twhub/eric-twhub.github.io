@@ -3526,7 +3526,7 @@ if os.path.exists('angel63.json'):
                     + ('<span class="tag">Leader</span>' if t['leader'] else '')
                     + '</div>' + handle
                     + '<div class="tgl">' + '　'.join(links)
-                    + ('　' + peek if peek else '') + '</div></div>')
+                    + (('　' + peek) if peek else '') + '</div></div>')
 
         _tl_css = ('<style>'
                    '.tg{display:grid;gap:10px;margin:18px 0;'
@@ -3538,8 +3538,12 @@ if os.path.exists('angel63.json'):
                    '.tgi{font-size:.78rem;color:var(--dim);margin:3px 0 7px;'
                    'word-break:break-all}'
                    '.tgl{font-size:.84rem}'
-                   '.tgp{font:inherit;font-size:.84rem;color:var(--hot);background:none;'
-                   'border:0;padding:0;cursor:pointer;text-decoration:underline}'
+                   # 桌機 hover 就會顯示，按鈕只會讓人以為它會導去別的頁面。
+                   # 只在沒有 hover 的裝置（手機、平板）出現。
+                   '.tgp{display:none;font:inherit;font-size:.84rem;color:var(--hot);'
+                   'background:none;border:0;padding:0;cursor:pointer;'
+                   'text-decoration:underline}'
+                   '@media(hover:none){.tgp{display:inline}}'
                    '.tgd{color:var(--hot)}'
                    '#igpop{position:fixed;z-index:60;width:326px;display:none;'
                    'pointer-events:none;'
