@@ -3889,6 +3889,116 @@ if HOL:
             out.append((label, len(v), m, (m - bm) / bm * 100))
         return (bm, len(base), out), grp
 
+    # ── 請假試算 ────────────────────────────────────────
+    # 社群上這類「請N休M」的攻略都是手打的，會算錯也不會更新。
+    # 我們有官方行事曆的每日資料，直接算，而且可以把每個請假天數都列出來。
+    def _leave_plans(maxL=4):
+        _dd = HOL.get('days') or []
+        if not _dd:
+            return []
+        D = [x['d'] for x in _dd]
+        offd = [bool(x.get('tw_off')) for x in _dd]
+        n = len(D)
+        ix = {d: i for i, d in enumerate(D)}
+        pre = [0] * n
+        suf = [0] * n
+        for i in range(n):
+            pre[i] = pre[i - 1] + 1 if i and offd[i - 1] else 0
+        for i in range(n - 1, -1, -1):
+            suf[i] = suf[i + 1] + 1 if i + 1 < n and offd[i + 1] else 0
+
+        # 國定假日分組，相鄰的併在一起
+        gps = []
+        for x in _dd:
+            nm = x.get('tw')
+            if not nm or nm == '週末':
+                continue
+            i = ix[x['d']]
+            if gps and i - ix[gps[-1]['end']] <= 2:
+                gps[-1]['end'] = x['d']
+                if nm not in gps[-1]['names']:
+                    gps[-1]['names'].append(nm)
+            else:
+                gps.append({'start': x['d'], 'end': x['d'], 'names': [nm]})
+
+        out = []
+        for gp in gps:
+            a, b = ix[gp['start']], ix[gp['end']]
+            s0, e0 = a - pre[a], b + suf[b]
+            if e0 >= n - 1 or s0 <= 0:
+                continue           # 碰到資料邊界，算出來的連休是假的
+            if D[e0] <= TODAY:
+                continue
+            base = e0 - s0 + 1
+            opts = {}
+            for i in range(max(1, a - 9), min(n, b + 10)):
+                if offd[i]:
+                    continue
+                lv = []
+                for j in range(i, min(i + 16, n)):
+                    if not offd[j]:
+                        lv.append(j)
+                    if offd[j]:
+                        continue
+                    L = len(lv)
+                    if L > maxL:
+                        break
+                    ss, ee = i - pre[i], j + suf[j]
+                    if ee < a or ss > b or ee >= n - 1:
+                        continue
+                    tot = ee - ss + 1
+                    if tot <= base:
+                        continue
+                    cur = opts.get(L)
+                    if not cur or tot > cur['tot']:
+                        opts[L] = {'tot': tot, 'from': D[ss], 'to': D[ee],
+                                   'lv': [D[k] for k in lv]}
+            if not opts:
+                continue
+            nms = [x for x in gp['names'] if x != '補假'] or gp['names']
+            out.append({'start': gp['start'], 'end': gp['end'],
+                        'name': '、'.join(nms), 'base': base,
+                        'from': D[s0], 'to': D[e0], 'opts': opts})
+        # 中間卡著週末的兩個假日（例如中秋與教師節）會算出同一段連休，
+        # 那是同一件事，合併成一列，名字接起來
+        merged = []
+        for p in out:
+            if merged and merged[-1]['from'] == p['from'] and merged[-1]['to'] == p['to']:
+                for nm in p['name'].split('、'):
+                    if nm not in merged[-1]['name']:
+                        merged[-1]['name'] += '、' + nm
+                continue
+            merged.append(p)
+        return merged
+
+    _LP = _leave_plans()
+
+    def _md(d):
+        return f'{int(d[5:7])}/{int(d[8:10])}'
+
+    _lp_rows = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(p["name"])}</b>'
+        f'<br><small style="color:var(--dim)">{p["from"][:4]}　'
+        f'{_md(p["from"])}–{_md(p["to"])}</small></td>'
+        f'<td class="nm">{p["base"]} 天</td>'
+        + ''.join(
+            (f'<td class="{"win" if p["opts"].get(L, {}).get("tot", 0) >= p["base"] + L + 2 else "nm"}">'
+             f'<b>{p["opts"][L]["tot"]}</b> 天</td>') if p['opts'].get(L)
+            else '<td class="nm">—</td>'
+            for L in (1, 2, 3, 4))
+        + '</tr>' for p in _LP)
+
+    _lp_detail = ''.join(
+        f'<details class="faq"><summary>{html.escape(p["name"])}'
+        f'（{p["from"][:4]} 年 {_md(p["from"])}–{_md(p["to"])}，'
+        f'本來 {p["base"]} 天）</summary><div><ul>'
+        + ''.join(
+            f'<li><b>請 {L} 天休 {p["opts"][L]["tot"]} 天</b>：'
+            f'請 {"、".join(_md(x) for x in p["opts"][L]["lv"])}，'
+            f'連休 {_md(p["opts"][L]["from"])} 到 {_md(p["opts"][L]["to"])}</li>'
+            for L in sorted(p['opts']))
+        + '</ul></div></details>' for p in _LP)
+
     _hp, _grp = _hol_price_gap()
     if _hp:
         _bm, _bn, _rows = _hp
@@ -4026,6 +4136,21 @@ if HOL:
         '</div>'
       + '<p class="disc">本站只有機票資料，所以上表算得出來的是機票。'
         '住宿的漲幅沒有自己的數據可以支撐，因此不給數字，只說明方向。</p>'
+      + (('<h2>請幾天假，可以連休幾天</h2>'
+          '<p class="lede">用行政院人事行政總處的官方行事曆逐日算出來的，不是手打的表。'
+          '每個假期都把請 1 到 4 天的最佳排法列出來，橫著看就知道多請一天划不划算。</p>'
+          '<div class="tw"><table><tr><th>假期</th><th>本來</th>'
+          '<th>請 1 天</th><th>請 2 天</th><th>請 3 天</th><th>請 4 天</th></tr>'
+          + _lp_rows + '</table></div>'
+          '<p class="disc">「本來」是不請假就有的連休天數，已把週末與補假算進去，'
+          '補班日也扣掉了。格子裡是請了那幾天之後的總連休天數，'
+          '沒有比不請假更長的就顯示「—」。綠色代表那一格特別划算。'
+          '展開下面每一項可以看到要請哪幾天。</p>'
+          '<h3>每個假期要請哪幾天</h3>' + _lp_detail
+          + '<p class="disc">算法：把週六日與國定假日視為非上班日，'
+            '在假期前後各九天的範圍內找出「請 N 個上班日就能連起來」的最長區間。'
+            '資料只到 2027-12-31，跨年那幾段會被截斷，所以不列。</p>')
+         if _LP else '')
       + '<h2>各國接下來的連假</h2>'
       + '<h3>🇯🇵 日本</h3>' + _runs_tbl('jp')
       + '<h3>🇹🇼 台灣</h3>' + _runs_tbl('tw')
