@@ -306,5 +306,567 @@
   ],
   "note": "右欄的場次、取消與年齡條件引自 KKday 商品頁（商品編號 550004），那是平台與供應商的條款，不是店家官網。兩家是不是同一個經營者，本站沒有查證。"
  },
- "plans_note": "上表的「螢光棒」是照官網方案內容列的，只有五個前排系列有，普通座與女子会沒有。但官網只寫內容包含，沒有說是入場時發、要自己領，還是現場借用，訂位頁也完全沒提。有去過的人回報就算坐前排也很少看到有人在用。本站沒有現場資料，所以照官網列，但不保證你一定拿得到或用得上。"
+ "plans_note": "上表的「螢光棒」是照官網方案內容列的，只有五個前排系列有，普通座與女子会沒有。但官網只寫內容包含，沒有說是入場時發、要自己領，還是現場借用，訂位頁也完全沒提。有去過的人回報就算坐前排也很少看到有人在用。本站沒有現場資料，所以照官網列，但不保證你一定拿得到或用得上。",
+ "talents": {
+  "_來源": "https://rokusanangel.jp/talent/",
+  "_查證": "2026-09-27",
+  "_說明": "名單與各自的社群帳號都來自官網的 TALENT 頁與每位的個人頁，本站沒有自行蒐集。官網標註 Leader 的四位排在前面，其餘依官網順序。",
+  "_隱私": "每張卡片下方的 Instagram 區塊是 Instagram 官方的 embed，內容由 Meta 的伺服器提供，載入時 Meta 會知道有人開了這一頁。本站其他頁面一律沒有任何追蹤或第三方元件，這一頁是唯一的例外，因為不透過官方 embed 就沒有合法的方式在站上顯示她們的照片。不想被記錄的話，直接點名字旁邊的連結到 Instagram 看就好。",
+  "_不放圖的原因": "本站不複製也不直接連結 Instagram 的圖片檔。那些照片的著作權屬於本人，而且 Instagram 的圖檔網址會過期，存下來遲早變破圖。",
+  "items": [
+   {
+    "slug": "akanemitani",
+    "name": "美谷 朱音",
+    "leader": true,
+    "ig": "akanemitani0415",
+    "tt": "@akane_mitani1124"
+   },
+   {
+    "slug": "ichigo",
+    "name": "Ichigo",
+    "leader": true,
+    "ig": "ichigo_burlesquetokyo",
+    "tt": ""
+   },
+   {
+    "slug": "minori",
+    "name": "Minori",
+    "leader": true,
+    "ig": "minori_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "sora",
+    "name": "Sora",
+    "leader": true,
+    "ig": "sora_burlesque",
+    "tt": "@sora_burlesque"
+   },
+   {
+    "slug": "ribon",
+    "name": "Ribon",
+    "leader": false,
+    "ig": "ribon_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "siori",
+    "name": "Siori",
+    "leader": false,
+    "ig": "siori_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "minnie",
+    "name": "Minnie",
+    "leader": false,
+    "ig": "minnie_burlesqe",
+    "tt": ""
+   },
+   {
+    "slug": "ibuki",
+    "name": "Ibuki",
+    "leader": false,
+    "ig": "IBUKI_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "amina",
+    "name": "Amina",
+    "leader": false,
+    "ig": "amina_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "choco",
+    "name": "Choco",
+    "leader": false,
+    "ig": "choco_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "futaba",
+    "name": "Futaba",
+    "leader": false,
+    "ig": "futaba_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "puni",
+    "name": "Puni",
+    "leader": false,
+    "ig": "puni_burlesque",
+    "tt": "@puni_burlesque"
+   },
+   {
+    "slug": "tsubaki",
+    "name": "Tsubaki",
+    "leader": false,
+    "ig": "tsubaki_burlesque",
+    "tt": "@tsubaki_burlesque"
+   },
+   {
+    "slug": "mina",
+    "name": "Mina",
+    "leader": false,
+    "ig": "mina_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "hana",
+    "name": "Hana",
+    "leader": false,
+    "ig": "hana_burlesque",
+    "tt": "@hana_burlesque"
+   },
+   {
+    "slug": "mirei",
+    "name": "Mirei",
+    "leader": false,
+    "ig": "mirei_burlesque",
+    "tt": "@mirei_burlesque"
+   },
+   {
+    "slug": "nano",
+    "name": "Nano",
+    "leader": false,
+    "ig": "nano_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "chino",
+    "name": "Chino",
+    "leader": false,
+    "ig": "chino_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "yua",
+    "name": "Yua",
+    "leader": false,
+    "ig": "yua_burlesque",
+    "tt": "@yua_burlesque"
+   },
+   {
+    "slug": "yume",
+    "name": "Yume",
+    "leader": false,
+    "ig": "yume_burlesque",
+    "tt": "@yume_burlesque_"
+   },
+   {
+    "slug": "rumi",
+    "name": "Rumi",
+    "leader": false,
+    "ig": "rumi_burlesque",
+    "tt": "@rumi_burlesque"
+   },
+   {
+    "slug": "ranka",
+    "name": "Ranka",
+    "leader": false,
+    "ig": "ranka_burlesque",
+    "tt": "@ranka_burlesque"
+   },
+   {
+    "slug": "mone",
+    "name": "Mone",
+    "leader": false,
+    "ig": "mone_burlesque",
+    "tt": "@mone_burlesque"
+   },
+   {
+    "slug": "misuzu",
+    "name": "Misuzu",
+    "leader": false,
+    "ig": "misuzu_burlesque",
+    "tt": "@misuzublq"
+   },
+   {
+    "slug": "miu",
+    "name": "Miu",
+    "leader": false,
+    "ig": "miu_burlesque",
+    "tt": "@miu_burlesque"
+   },
+   {
+    "slug": "ebi",
+    "name": "Ebi",
+    "leader": false,
+    "ig": "ebi_burlesque",
+    "tt": "@ebi_burlesque"
+   },
+   {
+    "slug": "urara",
+    "name": "Urara",
+    "leader": false,
+    "ig": "urara_burlesque_",
+    "tt": ""
+   },
+   {
+    "slug": "beru",
+    "name": "Beru",
+    "leader": false,
+    "ig": "beru_burlesque",
+    "tt": "@beru_burlesque"
+   },
+   {
+    "slug": "kirari",
+    "name": "Kirari",
+    "leader": false,
+    "ig": "kirari_burlesque",
+    "tt": "@kirari_burlesque"
+   },
+   {
+    "slug": "yamato",
+    "name": "Yamato",
+    "leader": false,
+    "ig": "yamato_burlesque",
+    "tt": "@yamato_burlesque"
+   },
+   {
+    "slug": "misa",
+    "name": "Misa",
+    "leader": false,
+    "ig": "misa_burlesque_",
+    "tt": "@misa_burlesque_"
+   },
+   {
+    "slug": "riina",
+    "name": "Riina",
+    "leader": false,
+    "ig": "riina_burlesque_",
+    "tt": "@riina_burlesque_"
+   },
+   {
+    "slug": "ruu",
+    "name": "Ruu",
+    "leader": false,
+    "ig": "ruu_burlesque",
+    "tt": "@ruu_burlesque"
+   },
+   {
+    "slug": "selena",
+    "name": "Selena",
+    "leader": false,
+    "ig": "selena_burlesque",
+    "tt": "@selena_blq"
+   },
+   {
+    "slug": "mitsuri",
+    "name": "Mitsuri",
+    "leader": false,
+    "ig": "mitsuri_burlesque",
+    "tt": "@mitsuri_burlesque"
+   },
+   {
+    "slug": "maika",
+    "name": "Maika",
+    "leader": false,
+    "ig": "maika_burlesque",
+    "tt": "@maikasanyazo"
+   },
+   {
+    "slug": "ami",
+    "name": "Ami",
+    "leader": false,
+    "ig": "ami_burlesque",
+    "tt": "@ami_burlesque"
+   },
+   {
+    "slug": "tina",
+    "name": "Tina",
+    "leader": false,
+    "ig": "tina_burlesque_",
+    "tt": ""
+   },
+   {
+    "slug": "aina",
+    "name": "Aina",
+    "leader": false,
+    "ig": "aina_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "anri",
+    "name": "Anri",
+    "leader": false,
+    "ig": "anri_burlesque",
+    "tt": "@anri_burlesque"
+   },
+   {
+    "slug": "nachanmanatsu",
+    "name": "Nachan(Manatsu)",
+    "leader": false,
+    "ig": "nachan_burlesque",
+    "tt": "@nachan_burlesque"
+   },
+   {
+    "slug": "ako",
+    "name": "Ako",
+    "leader": false,
+    "ig": "ako_burlesque",
+    "tt": "@ako_burlesque"
+   },
+   {
+    "slug": "remi",
+    "name": "Remi",
+    "leader": false,
+    "ig": "remi_burlesque",
+    "tt": "@remi_burlesque"
+   },
+   {
+    "slug": "madoka",
+    "name": "Madoka",
+    "leader": false,
+    "ig": "madoka_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "yuka",
+    "name": "Yuka",
+    "leader": false,
+    "ig": "yuka_burlesque",
+    "tt": "@yuka_burlesque"
+   },
+   {
+    "slug": "kanade",
+    "name": "Kanade",
+    "leader": false,
+    "ig": "kanade_burlesque",
+    "tt": "@kanade_burlesque"
+   },
+   {
+    "slug": "konatsu",
+    "name": "Konatsu",
+    "leader": false,
+    "ig": "konatsu_burlesque",
+    "tt": "@konatsu_burlesque"
+   },
+   {
+    "slug": "izumi",
+    "name": "Izumi",
+    "leader": false,
+    "ig": "izumi_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "fuyuka",
+    "name": "Fuyuka",
+    "leader": false,
+    "ig": "fuyuka_burlesque",
+    "tt": "@fuyuka_burlesque"
+   },
+   {
+    "slug": "kana",
+    "name": "Kana",
+    "leader": false,
+    "ig": "kana_burlesque",
+    "tt": "@kana_burlesque"
+   },
+   {
+    "slug": "cookie",
+    "name": "Cookie",
+    "leader": false,
+    "ig": "cookie_burlesque_",
+    "tt": "@cookie_burllesque"
+   },
+   {
+    "slug": "ito",
+    "name": "Ito",
+    "leader": false,
+    "ig": "ito_burlesque",
+    "tt": "@ito_burlesque"
+   },
+   {
+    "slug": "kurumi",
+    "name": "Kurumi",
+    "leader": false,
+    "ig": "kurumi_burlesque",
+    "tt": "@kurumi_burlesque"
+   },
+   {
+    "slug": "mugi",
+    "name": "Mugi",
+    "leader": false,
+    "ig": "mugiburlesque",
+    "tt": "@mugi_burlesque"
+   },
+   {
+    "slug": "azusa",
+    "name": "Azusa",
+    "leader": false,
+    "ig": "azusa_burlesque",
+    "tt": "@azusa_burlesque"
+   },
+   {
+    "slug": "anzu",
+    "name": "Anzu",
+    "leader": false,
+    "ig": "anzu_burlesque",
+    "tt": "@anzu_burlesque"
+   },
+   {
+    "slug": "himika",
+    "name": "Himika",
+    "leader": false,
+    "ig": "himika_burlesque",
+    "tt": "@himika_burlesque"
+   },
+   {
+    "slug": "kanami",
+    "name": "Kanami",
+    "leader": false,
+    "ig": "kanami_burlesque",
+    "tt": "@kanami_burlesque"
+   },
+   {
+    "slug": "riko",
+    "name": "Riko",
+    "leader": false,
+    "ig": "riko_burlesque_",
+    "tt": "@riko_burlesque_"
+   },
+   {
+    "slug": "itsuki",
+    "name": "Itsuki",
+    "leader": false,
+    "ig": "itsuki_blq",
+    "tt": "@itsuki_blq"
+   },
+   {
+    "slug": "karina",
+    "name": "Karina",
+    "leader": false,
+    "ig": "karina_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "maya",
+    "name": "Maya",
+    "leader": false,
+    "ig": "maya_burlesque",
+    "tt": "@maya_burlesque"
+   },
+   {
+    "slug": "ruka",
+    "name": "Ruka",
+    "leader": false,
+    "ig": "ruka_Burlesque_",
+    "tt": "@ruka_Burlesque"
+   },
+   {
+    "slug": "shui",
+    "name": "Shui",
+    "leader": false,
+    "ig": "shui_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "leti",
+    "name": "Leti",
+    "leader": false,
+    "ig": "leti_burlesque",
+    "tt": "@leti63angel"
+   },
+   {
+    "slug": "rai",
+    "name": "Rai",
+    "leader": false,
+    "ig": "rai_burlesque",
+    "tt": "@rai_burlesque"
+   },
+   {
+    "slug": "haruna",
+    "name": "Haruna",
+    "leader": false,
+    "ig": "haruna_blq",
+    "tt": ""
+   },
+   {
+    "slug": "miyuki",
+    "name": "Miyuki",
+    "leader": false,
+    "ig": "miyuki_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "asahi",
+    "name": "Asahi",
+    "leader": false,
+    "ig": "asahi_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "sarara",
+    "name": "Sarara",
+    "leader": false,
+    "ig": "sarara_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "yui",
+    "name": "Yui",
+    "leader": false,
+    "ig": "yui_blq",
+    "tt": ""
+   },
+   {
+    "slug": "rin",
+    "name": "Rin",
+    "leader": false,
+    "ig": "rin_burlesque",
+    "tt": ""
+   },
+   {
+    "slug": "rui",
+    "name": "Rui",
+    "leader": false,
+    "ig": "rui_burlesque_",
+    "tt": ""
+   },
+   {
+    "slug": "niji",
+    "name": "Niji",
+    "leader": false,
+    "ig": "niji_burlesque",
+    "tt": "@niji_burlesque"
+   },
+   {
+    "slug": "kai",
+    "name": "Kai",
+    "leader": false,
+    "ig": "kai_burlesque",
+    "tt": "@kai_burlesque"
+   },
+   {
+    "slug": "koto",
+    "name": "Koto",
+    "leader": false,
+    "ig": "koto_burlesque",
+    "tt": "@koto_burlesque"
+   },
+   {
+    "slug": "kei",
+    "name": "Kei",
+    "leader": false,
+    "ig": "kei_burlesque",
+    "tt": "@kei_burlesque"
+   },
+   {
+    "slug": "tsumugi",
+    "name": "Tsumugi",
+    "leader": false,
+    "ig": "tsumugi_burlesque",
+    "tt": "@tsumugi_burlesque"
+   },
+   {
+    "slug": "maho",
+    "name": "Maho",
+    "leader": false,
+    "ig": "maho_burlesque",
+    "tt": "@maho_burlesque"
+   }
+  ]
+ }
 }

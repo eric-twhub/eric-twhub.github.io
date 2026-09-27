@@ -3409,11 +3409,15 @@ if os.path.exists('angel63.json'):
         f'台幣以中間匯率 {_ag_rate} 換算，每日自動更新。</p>'
       + '<div class="today">'
         f'<div class="tday">官網原文，查證於 {AG["checked"]}　·　{html.escape(AG["age"])}</div>'
-        '<div class="tans">票價之外<b>沒有</b>服務費與消費稅</div>'
-        f'<div class="tsub">官方的特定商取引法揭示頁寫「商品代金以外に必要な費用／送料、消費税等：なし」。'
-        f'{html.escape(AG["fee_note"]["so"])}</div>'
-        '<div class="tbuf">但<b>取消規定要小心</b>：官網有兩個頁面，中間那一段級距寫得不一樣，'
-        '而且特商法頁另外寫了一句「刷卡後取消與未到場不退款」。下面兩個版本都列出來。</div></div>'
+        '<div class="tans">取消最嚴是<b>當天 100%</b>，而且官網兩頁寫得不一樣</div>'
+        '<div class="tsub">預約頁寫「5 天前至 2 天前 50%」，特商法頁寫「3 天前為止 50%」，'
+        '中間那一段對不起來。特商法頁另外還有一句「刷卡付款後的取消與未到場不退款」，'
+        '跟比例級距看起來又是兩回事。訂之前先把行程確定，改期就直接打電話問。</div>'
+        + (f'<div class="tbuf">另外，官網目前列出 <b>{len(AG["talents"]["items"])} 位</b>在籍表演者，'
+           f'每天的陣容與主題都不一樣。'
+           f'<a href="{U("/tokyo/63angel/talents/")}">看有哪些女孩與她們的社群</a>。</div>'
+           if AG.get('talents') else '')
+        + '</div>'
       + '<h2>場次時間</h2>' + _ag_shows
       + f'<p class="disc">{html.escape(AG["shows"]["note"])}</p>'
       + '<h2>座位方案與價格</h2>'
@@ -3491,6 +3495,78 @@ if os.path.exists('angel63.json'):
         '本站與該店沒有合作關係，Klook 連結為分潤連結。</p>'
       + foot())
     pages.append(('/tokyo/63angel/', 0.6))
+
+    # 女孩名單獨立一頁：79 張 IG embed 放在說明頁裡會把那頁壓垮，
+    # 而且看陣容跟看訂位規則是兩種目的。
+    if AG.get('talents'):
+        _TL = AG['talents']
+        _tl_items = sorted(_TL['items'], key=lambda x: (not x['leader'],))
+
+        def _tl_card(t):
+            ig, tt = t.get('ig', ''), t.get('tt', '')
+            links = []
+            if ig:
+                links.append(f'<a href="https://www.instagram.com/{html.escape(ig)}/" '
+                             f'target="_blank" rel="nofollow noopener">Instagram</a>')
+            if tt:
+                links.append(f'<a href="https://www.tiktok.com/{html.escape(tt)}" '
+                             f'target="_blank" rel="nofollow noopener">TikTok</a>')
+            frame = (f'<iframe loading="lazy" class="igf" '
+                     f'src="https://www.instagram.com/{html.escape(ig)}/embed" '
+                     f'title="{html.escape(t["name"])} 的 Instagram" '
+                     f'referrerpolicy="no-referrer" '
+                     f'sandbox="allow-scripts allow-same-origin allow-popups"></iframe>'
+                     if ig else '')
+            return ('<div class="tgc"><div class="tgh"><b>'
+                    + html.escape(t['name']) + '</b>'
+                    + ('<span class="tag">Leader</span>' if t['leader'] else '')
+                    + '</div>' + frame
+                    + '<div class="tgl">' + '　'.join(links) + '</div></div>')
+
+        _tl_css = ('<style>'
+                   '.tg{display:grid;gap:14px;margin:18px 0;'
+                   'grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}'
+                   '.tgc{border:1px solid var(--line);border-radius:10px;overflow:hidden;'
+                   'background:var(--card)}'
+                   '.tgh{padding:9px 12px;border-bottom:1px solid var(--line);'
+                   'display:flex;align-items:center;gap:7px}'
+                   '.igf{width:100%;height:420px;border:0;display:block;background:#fff}'
+                   '.tgl{padding:9px 12px;font-size:.84rem;border-top:1px solid var(--line)}'
+                   '</style>')
+
+        _tl_grid = '<div class="tg">' + ''.join(_tl_card(t) for t in _tl_items) + '</div>'
+
+        tl_title = f'63 ANGEL 有哪些女孩？{len(_tl_items)} 位在籍表演者與社群'
+        tl_desc = (f'六本木 ROKUSAN ANGEL 官網目前列出的 {len(_tl_items)} 位表演者，'
+                   f'含官方標註的 Leader，以及每位的 Instagram 與 TikTok。'
+                   f'名單全部取自官網 TALENT 頁，{_TL["_查證"]} 查證。')
+
+        write('tokyo/63angel/talents/index.html',
+          head(tl_title, tl_desc, 'tokyo/63angel/talents/', _tl_css)
+          + crumbs([('首頁', '/'), ('東京', '/tokyo/'),
+                    ('63 ANGEL', '/tokyo/63angel/'), ('有哪些女孩', None)]) + topnav()
+          + f'<h1>63 ANGEL 有哪些女孩</h1>'
+          + f'<p class="lede">{html.escape(_TL["_說明"])}</p>'
+          + '<div class="today">'
+            f'<div class="tday">名單取自官網 TALENT 頁，查證於 {_TL["_查證"]}</div>'
+            f'<div class="tans">目前在籍 <b>{len(_tl_items)} 位</b></div>'
+            f'<div class="tsub">{html.escape(_TL["_隱私"])}</div></div>'
+          + _tl_grid
+          + f'<p class="disc">{html.escape(_TL["_不放圖的原因"])}'
+            f'　名單與帳號皆引自 <a href="{_TL["_來源"]}" target="_blank" '
+            f'rel="nofollow noopener">ROKUSAN ANGEL 官網・TALENT</a>。'
+            f'在籍成員會異動，以官網為準。</p>'
+          + '<h2>順便看看</h2><div class="cities">'
+          + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 63 ANGEL 訂位</b>'
+            f'<s>座位方案、加購與取消規定</s></a>'
+          + f'<a class="ct" href="{U("/tokyo/")}"><b>✈️ 東京機票</b>'
+            f'<s>各出發地比價，每日更新</s></a>'
+          + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+            f'<s>3 部散場 24:45</s></a>'
+          + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
+            f'<s>散場之後走得回去的價位</s></a></div>'
+          + foot())
+        pages.append(('/tokyo/63angel/talents/', 0.5))
 
 # ---------- JTTP（日本信賴旅客制度） ----------
 # 中文內容一律叫它 JTTP，但官方分類裡 JTTP 只是 A 類（美日互惠）。
