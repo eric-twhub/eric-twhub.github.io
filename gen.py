@@ -403,6 +403,29 @@ GATE_FILTER = ('<div class="bar gatebar"><b>訂票通路</b>'
 TICKETS = json.load(open('tickets.json', encoding='utf-8'))
 
 
+def _ticket_link(it, slug):
+    """依商品所屬平台包分潤連結。
+
+    KKday 的 prod_mid 一律要先對 kkday-1pct.json 驗過；
+    Klook 沒有對應的特殊清單，但費率本身還沒從後台確認，
+    所以文案不承諾費率，只揭露有分潤。
+    """
+    if it.get('provider') == 'klook':
+        return klook(it['url'])
+    return kkday(it['url'], 'ticket', slug)
+
+
+def ticket_cards(items, slug):
+    return ''.join(
+        f'<a class="ct" href="{html.escape(_ticket_link(it, slug))}" target="_blank" '
+        f'rel="nofollow noopener sponsored">'
+        f'<b>{html.escape(it["name"])}</b>'
+        f'<s>{html.escape(it["area"])}'
+        + (f'　·　{html.escape(it["note"])}' if it.get('note') else '')
+        + '</s></a>'
+        for it in items)
+
+
 def ticket_block(slug, name):
     """城市頁的門票區塊。
 
@@ -414,11 +437,7 @@ def ticket_block(slug, name):
     items = (TICKETS.get('cities') or {}).get(slug) or []
     if not items:
         return ''
-    cards = ''.join(
-        f'<a class="ct" href="{kkday(it["url"], "ticket", slug)}" target="_blank" '
-        f'rel="nofollow noopener sponsored">'
-        f'<b>{html.escape(it["name"])}</b><s>{html.escape(it["area"])}</s></a>'
-        for it in items)
+    cards = ticket_cards(items, slug)
     return (f'<h2>{name}熱門景點門票</h2>'
             f'<p class="lede">熱門時段的現場票常常當天就沒了，這幾個都可以先在台灣買好、'
             f'帶著 QR Code 直接入場。</p>'
@@ -3328,6 +3347,14 @@ if os.path.exists('angel63.json'):
         for r in AG['hours_conflict']['rows'])
 
     _ag_kl = ''.join('<li>' + html.escape(x) + '</li>' for x in AG['klook']['points'])
+    _ag_tk = ticket_cards(AG['tickets']['items'], 'tokyo')
+    _ag_vs = ('<div class="tw"><table><tr>'
+              + ''.join(f'<th>{html.escape(h)}</th>' for h in AG['vs']['head'])
+              + '</tr>'
+              + ''.join('<tr><td class="nm"><b>' + html.escape(r[0]) + '</b></td>'
+                        + ''.join(f'<td><small>{html.escape(c)}</small></td>' for c in r[1:])
+                        + '</tr>' for r in AG['vs']['rows'])
+              + '</table></div>')
     _ag_un = ''.join('<li><b>' + html.escape(u['what']) + '</b>：'
                      + html.escape(u['why']) + '</li>' for u in AG['unverified'])
 
@@ -3417,11 +3444,17 @@ if os.path.exists('angel63.json'):
       + '<h2>語言</h2>'
       + f'<p class="lede">{html.escape(AG["lang"]["site"])}</p>'
       + f'<p class="disc">{html.escape(AG["lang"]["shop"])}</p>'
-      + '<h2>也可以從 Klook 訂</h2>'
+      + '<h2>線上訂票</h2>'
+      + f'<p class="lede">{html.escape(AG["tickets"]["_說明"])}</p>'
+      + f'<div class="cities">{_ag_tk}</div>'
+      + f'<p class="disc">{html.escape(AG["tickets"]["_無售價"])}'
+        '　透過這些連結完成購買時本站可獲得分潤，不影響你的價格。'
+        '售價與庫存以各平台頁面為準。</p>'
+      + f'<h3>{html.escape(AG["vs"]["t"])}</h3>' + _ag_vs
+      + f'<p class="disc">{html.escape(AG["vs"]["note"])}</p>'
+      + '<h3>從 Klook 訂 63 ANGEL 的差別</h3>'
       + f'<ul class="lede">{_ag_kl}</ul>'
       + f'<p class="disc">{html.escape(AG["klook"]["no_price"])}</p>'
-      + f'<a class="cta" href="{html.escape(klook(AG["klook"]["url"]))}" '
-        f'target="_blank" rel="sponsored nofollow noopener">到 Klook 看目前票價</a>'
       + '<h2>基本資料</h2>'
       + '<div class="tldr"><ul>'
         f'<li><b>地址</b>：{html.escape(AG["addr"])}</li>'
