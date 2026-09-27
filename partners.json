@@ -93,7 +93,43 @@
    "aid": "136311",
    "adid_default": "1446215",
    "target_default": "https://www.klook.com/zh-TW/search/?query=日本 eSIM 網卡",
-   "tracking_note": "實測 aff_sid 會被 redirect 清空（回傳 aff_sid=），不能用來分頁追蹤。要分辨哪一頁帶來的點擊，得在 Klook 後台另建廣告單元取得不同的 aff_adid，做法同 Trip.com 的 D19828713／D19828818。"
+   "tracking_note": "實測 aff_sid 會被 redirect 清空（回傳 aff_sid=），不能用來分頁追蹤。要分辨哪一頁帶來的點擊，得在 Klook 後台另建廣告單元取得不同的 aff_adid，做法同 Trip.com 的 D19828713／D19828818。",
+   "adids": {
+    "_說明": "Klook 的廣告單元 ID，用來分辨點擊來自站上哪一種版位。在 Klook 後台各開一個單元拿到 ID 之後填進來，留空就退回 adid_default，連結照常可用。",
+    "_為什麼不能用網址參數": "aff_sid 會被 redirect 清空（實測回傳 aff_sid=），所以分頁追蹤只能靠不同的 aff_adid，沒有別的辦法。",
+    "_分組依據": "2026-09-27 掃全站 64 條 Klook 連結的實際目標分出來的，不是憑感覺切。",
+    "esim_cta": {
+     "id": "",
+     "n": 37,
+     "what": "各頁的 eSIM CTA，目標是搜尋「日本 eSIM 網卡」"
+    },
+    "esim_page": {
+     "id": "",
+     "n": 10,
+     "what": "/japan-esim/ 比較頁上的指定商品連結"
+    },
+    "coupon": {
+     "id": "",
+     "n": 9,
+     "what": "信用卡各卡頁的 Klook 優惠碼區塊，目標是搜尋「日本」"
+    },
+    "transfer": {
+     "id": "",
+     "n": 7,
+     "what": "/japan-airport-last-train/ 的機場接送"
+    },
+    "ticket": {
+     "id": "",
+     "n": 1,
+     "what": "門票與演出，目前只有 63 ANGEL"
+    },
+    "fallback": {
+     "id": "",
+     "n": 0,
+     "what": "其他自動補上的 Klook 連結，正常情況不會有"
+    }
+   },
+   "_要比什麼": "最值得比的是 esim_cta 對 esim_page：前者是同一個搜尋連結重複 37 次散在各頁，後者是比較頁上 10 條指定商品。兩邊的點擊數一比，就知道「做深的專頁」與「到處放的 CTA」哪個真的有用。這個答案會決定之後要多做專頁還是多鋪版位。"
   },
   "transport": {
    "brand": "Trip.com",

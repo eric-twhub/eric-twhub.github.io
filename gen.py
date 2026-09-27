@@ -148,18 +148,33 @@ except Exception:
     NOW=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8)))
 NOWS=NOW.strftime('%Y-%m-%d %H:%M'); TODAY=NOW.strftime('%Y-%m-%d')
 
-def klook(target, adid=None):
+def _klook_adid(group=None):
+    """把版位代號換成 Klook 的廣告單元 ID。
+
+    partners.json 的 esim.adids 裡每個代號一個 ID。還沒去後台開單元、
+    ID 留空的時候退回 adid_default，連結照常可用，只是併在一起算。
+    """
+    p = P.get('esim') or {}
+    if group:
+        row = (p.get('adids') or {}).get(group)
+        if isinstance(row, dict) and row.get('id'):
+            return str(row['id'])
+    return str(p.get('adid_default', ''))
+
+
+def klook(target, group=None):
     """把任何 Klook 網址包成分潤連結。
 
     格式是 affiliate.klook.com/redirect?aid=..&aff_adid=..&k_site=<encoded>。
     實測 aff_sid 會被 redirect 清空，所以要分辨哪一頁帶來的點擊，
-    得在 Klook 後台另開廣告單元拿不同的 aff_adid，不能靠 query 參數。
+    只能在 Klook 後台另開廣告單元拿不同的 aff_adid，不能靠 query 參數。
+    group 是站上的版位代號，對應 partners.json 的 esim.adids。
     """
     p = P.get('esim') or {}
     t = p.get('template', '')
     if not t or t.startswith('TODO'):
         return target
-    return (t.replace('{adid}', str(adid or p.get('adid_default', '')))
+    return (t.replace('{adid}', _klook_adid(group))
              .replace('{k}', urllib.parse.quote(target, safe='')))
 
 
@@ -190,7 +205,7 @@ def _monetise(u, s1='', s2=''):
     if 'kkday.com' in u:
         return kkday(u, s1, s2)
     if 'klook.com' in u:
-        return klook(u)
+        return klook(u, 'fallback')
     return u
 
 
@@ -200,7 +215,7 @@ def plink(kind,city='',**kw):
     # 跟其他夥伴「把參數填進網址」的形式不同，單獨處理
     if kind == 'esim' and '{k}' in t:
         tgt = p.get('target_default') or p['fallback']
-        return klook(tgt, kw.get('adid'))
+        return klook(tgt, kw.get('adid') or 'esim_cta')
     u=t if t and not t.startswith('TODO') else p['fallback']
     # Trip.com 的飯店列表要數字城市 ID，沒有對應 ID 的城市就退回關鍵字連結，
     # 否則會產生一個指向錯誤城市（或整個掉回首頁）的連結
@@ -411,7 +426,7 @@ def _ticket_link(it, slug):
     所以文案不承諾費率，只揭露有分潤。
     """
     if it.get('provider') == 'klook':
-        return klook(it['url'])
+        return klook(it['url'], 'ticket')
     return kkday(it['url'], 'ticket', slug)
 
 
@@ -2182,7 +2197,7 @@ if os.path.exists('lasttrain.json'):
         t = ap.get('transfer')
         if not t:
             return ''
-        return (f'<a class="cta" href="{klook(t["url"])}" target="_blank" '
+        return (f'<a class="cta" href="{klook(t["url"], "transfer")}" target="_blank" '
                 f'rel="nofollow noopener sponsored">'
                 f'<span class="ci">🚕</span><span class="ct">'
                 f'<b>{html.escape(t["headline"])}</b>'
@@ -4223,7 +4238,7 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
         for _q in _p['plans']:
             _pjs.append([_i, _MODE[_q['mode']], _q['days'],
                          _q['gb'] or 0, _q['price']])
-    _pnames = [{'id': p['id'], 'name': p['name'], 'url': klook(p['url']),
+    _pnames = [{'id': p['id'], 'name': p['name'], 'url': klook(p['url'], 'esim_page'),
                 'clue': p['profile_clue'], 'w': p['clue_weight'],
                 'hot': bool(p.get('hotspot')),
                 'rating': p.get('rating'), 'reviews': p.get('reviews')} for p in EP]
@@ -4235,7 +4250,7 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
     _ep_mult = round(_ep_un5[0] / _ep_lo[0]) if _ep_un5 else None
 
     _ep_rows = ''.join(
-        f'<tr><td class="nm"><b><a href="{klook(p["url"])}" rel="sponsored nofollow noopener" target="_blank">'
+        f'<tr><td class="nm"><b><a href="{klook(p["url"], "esim_page")}" rel="sponsored nofollow noopener" target="_blank">'
         f'{html.escape(p["name"])}</a></b>'
         f'{_ESM}{len(p["plans"])} 個方案'
         + (f'　·　{p["rating"]} 分（{p["reviews"]:,} 則評價）' if p.get('rating') else '')
@@ -6584,7 +6599,7 @@ if os.path.exists('cards.json'):
                   f'每組另有適用商品限制與帳號使用次數上限，'
                   f'實際折抵以 Klook 結帳頁為準。查證於 {KC["checked"]}。</p>'
                 + '<div class="plinks">'
-                + f'<a class="plink" href="{html.escape(klook(KC["shop_url"]))}" '
+                + f'<a class="plink" href="{html.escape(klook(KC["shop_url"], "coupon"))}" '
                   f'target="_blank" rel="nofollow noopener sponsored">'
                   f'🎟️ 到 Klook 逛日本行程</a></div>')
 
