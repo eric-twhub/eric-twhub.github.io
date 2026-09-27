@@ -3503,17 +3503,21 @@ if os.path.exists('angel63.json'):
         _tl_items = sorted(_TL['items'], key=lambda x: (not x['leader'],))
 
         def _tl_card(t):
-            ig, tt = t.get('ig', ''), t.get('tt', '')
+            # ig_ok=False 的是官網列了但帳號已經不存在的，不放連結也不給浮層
+            ig = t.get('ig', '') if t.get('ig_ok') else ''
+            xh = t.get('x', '')
             links = []
             if ig:
                 links.append(f'<a href="https://www.instagram.com/{html.escape(ig)}/" '
                              f'target="_blank" rel="nofollow noopener">Instagram</a>')
-            if tt:
-                links.append(f'<a href="https://www.tiktok.com/{html.escape(tt)}" '
-                             f'target="_blank" rel="nofollow noopener">TikTok</a>')
+            if xh:
+                links.append(f'<a href="https://x.com/{html.escape(xh)}" '
+                             f'target="_blank" rel="nofollow noopener">X</a>')
             # 一次只載入一個 embed：整頁同時放 79 個會被 Instagram 限流，
             # 只有第一個出得來。改成滑鼠移上（或手機點一下）才在浮層裡載入。
-            handle = (f'<div class="tgi">@{html.escape(ig)}</div>' if ig else '')
+            handle = (f'<div class="tgi">@{html.escape(ig)}</div>' if ig
+                      else ('<div class="tgi tgd">官網列的 Instagram 已失效</div>'
+                            if t.get('ig') else ''))
             peek = (f'<button type="button" class="tgp" data-ig="{html.escape(ig)}" '
                     f'data-nm="{html.escape(t["name"])}">看照片</button>' if ig else '')
             return ('<div class="tgc"' + (f' data-ig="{html.escape(ig)}"' if ig else '')
@@ -3536,10 +3540,13 @@ if os.path.exists('angel63.json'):
                    '.tgl{font-size:.84rem}'
                    '.tgp{font:inherit;font-size:.84rem;color:var(--hot);background:none;'
                    'border:0;padding:0;cursor:pointer;text-decoration:underline}'
+                   '.tgd{color:var(--hot)}'
                    '#igpop{position:fixed;z-index:60;width:326px;display:none;'
+                   'pointer-events:none;'
                    'border:1px solid var(--line);border-radius:12px;overflow:hidden;'
                    'background:#fff;box-shadow:0 10px 34px rgba(0,0,0,.20)}'
                    '#igpop.on{display:block}'
+                   '#igpop.pin{pointer-events:auto}'
                    '#igpop .ph{font-size:.8rem;padding:7px 11px;background:var(--card);'
                    'border-bottom:1px solid var(--line);display:flex;'
                    'justify-content:space-between;align-items:center;gap:8px}'
@@ -3577,6 +3584,7 @@ if os.path.exists('angel63.json'):
   pop.classList.add('on'); place(el);
  }
  function hide(){ if(pinned) return; hideT=setTimeout(function(){ pop.classList.remove('on'); },180); }
+ function setPin(v){ pinned=v; pop.classList.toggle('pin', v); }
 
  document.querySelectorAll('.tgc[data-ig]').forEach(function(c){
   var ig=c.getAttribute('data-ig'), nm=(c.querySelector('.tgh b')||{}).textContent||'';
@@ -3586,18 +3594,18 @@ if os.path.exists('angel63.json'):
   c.addEventListener('mouseleave',function(){ clearTimeout(timer); hide(); });
   var b=c.querySelector('.tgp');
   if(b) b.addEventListener('click',function(e){
-    e.preventDefault(); e.stopPropagation(); pinned=false; show(c,ig,nm); pinned=true;
+    e.preventDefault(); e.stopPropagation(); setPin(false); show(c,ig,nm); setPin(true);
   });
  });
  pop.addEventListener('mouseenter',function(){ clearTimeout(hideT); });
  pop.addEventListener('mouseleave',function(){ hide(); });
- xb.addEventListener('click',function(){ pinned=false; pop.classList.remove('on'); });
+ xb.addEventListener('click',function(){ setPin(false); pop.classList.remove('on'); });
  document.addEventListener('click',function(e){
   if(pinned && !pop.contains(e.target) && !e.target.closest('.tgc')){
-    pinned=false; pop.classList.remove('on');
+    setPin(false); pop.classList.remove('on');
   }
  });
- addEventListener('keydown',function(e){ if(e.key==='Escape'){ pinned=false; pop.classList.remove('on'); } });
+ addEventListener('keydown',function(e){ if(e.key==='Escape'){ setPin(false); pop.classList.remove('on'); } });
 })();
 </script>"""
 
@@ -3617,6 +3625,8 @@ if os.path.exists('angel63.json'):
             f'<div class="tans">目前在籍 <b>{len(_tl_items)} 位</b></div>'
             f'<div class="tsub">{html.escape(_TL["_沒有照片的原因"])}</div></div>'
           + _tl_grid + _tl_js
+          + (f'<p class="disc">{html.escape(_TL["_帳號查證"])}</p>'
+             if _TL.get('_帳號查證') else '')
           + (f'<p class="disc">{html.escape(_TL["_實測"])}</p>' if _TL.get('_實測') else '')
           + f'<p class="disc">名單與帳號皆引自 <a href="{_TL["_來源"]}" target="_blank" '
             f'rel="nofollow noopener">ROKUSAN ANGEL 官網・TALENT</a>。'
