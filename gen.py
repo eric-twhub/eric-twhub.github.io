@@ -1543,6 +1543,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'（{HS_NIGHTS} 晚 {money(HS_MIN)} 起，附各家的弱點與櫃檯開門時間）；'
                      f'不想睡床位的話，另有'
                      f'<a href="{U("/tokyo/budget-hotel/")}">共用衛浴的私人房</a>。</p>')
+        if slug == 'tokyo' and os.path.exists('angel63.json'):
+            body += (f'<p class="lede">晚上想找點事做？'
+                     f'<a href="{U("/tokyo/63angel/")}">六本木 63 ANGEL 的座位方案與取消規定</a>'
+                     f'（官網原文整理，取消規定官方兩頁寫得不一樣，未滿 20 歲不得入場）。</p>')
     body+=faq_block(name,fs,codes)
     body+=klook_tours(slug,name)
     # 門票走 KKday 不走 Trip.com：Trip.com 的門票與演出只有 1.5%，
@@ -2322,6 +2326,8 @@ if os.path.exists('lasttrain.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
         f'<s>清晨班機的最後一晚怎麼睡</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 六本木 63 ANGEL</b>'
+        f'<s>3 部散場 24:45，電車早就沒了</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
         f'<s>便宜的班次時段通常很差</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a>'
@@ -3274,6 +3280,178 @@ if os.path.exists('japan-rules.json'):
         f'出發前請以官方最新公告為準。本站不是稅務或法律顧問。</p>'
       + _JRJS + foot())
     pages.append(('/japan-travel-rules/', 0.8))
+
+# ---------- 六本木 ROKUSAN ANGEL（63 ANGEL） ----------
+# 台灣人去得多，但中文整理多半只抄方案名稱與價格。
+# 真正會讓人吃虧的是取消規定，而官網自己兩頁寫得不一樣，所以那段單獨做。
+if os.path.exists('angel63.json'):
+    AG = json.load(open('angel63.json', encoding='utf-8'))
+    _ag_rate = JPY
+
+    def _ag_tw(y):
+        return f'NT${round(y * _ag_rate):,}'
+
+    _ag_shows = ('<div class="tw narrow"><table><tr>'
+                 + ''.join(f'<th>{html.escape(h)}</th>' for h in AG['shows']['head'])
+                 + '</tr>'
+                 + ''.join('<tr><td class="nm"><b>' + html.escape(r[0]) + '</b></td>'
+                           + ''.join(f'<td class="nm">{html.escape(c)}</td>' for c in r[1:])
+                           + '</tr>' for r in AG['shows']['rows'])
+                 + '</table></div>')
+
+    _ag_plans = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(p["n"])}</b></td>'
+        f'<td class="win"><b>¥{p["p"]:,}</b>'
+        f'<br><small style="color:var(--dim)">約 {_ag_tw(p["p"])}</small></td>'
+        f'<td>{html.escape(p["d"])}</td>'
+        f'<td class="nm"><small>{html.escape(p["seat"])}</small></td>'
+        + (f'<td><small>{html.escape(p["c"])}</small></td>' if p.get('c')
+           else '<td><small>　</small></td>')
+        + '</tr>' for p in sorted(AG['plans'], key=lambda x: x['p']))
+
+    _ag_vip = ''.join('<li>' + html.escape(x) + '</li>' for x in AG['vip']['points'])
+    _ag_opt = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(o[0])}</b></td>'
+        f'<td class="nm">＋¥{o[1]:,}</td>'
+        f'<td><small>{html.escape(o[2]) if o[2] else "　"}</small></td></tr>'
+        for o in AG['options'])
+
+    _ag_cancel = ''.join(
+        f'<tr><td class="nm"><small>{html.escape(r[0])}</small></td>'
+        f'<td>{html.escape(r[1])}</td>'
+        f'<td class="lose"><b>{html.escape(r[2])}</b></td></tr>'
+        for r in AG['cancel']['rows'])
+
+    _ag_hours = ''.join(
+        f'<tr><td class="nm"><small>{html.escape(r[0])}</small></td>'
+        f'<td class="nm">{html.escape(r[1])}</td></tr>'
+        for r in AG['hours_conflict']['rows'])
+
+    _ag_kl = ''.join('<li>' + html.escape(x) + '</li>' for x in AG['klook']['points'])
+    _ag_un = ''.join('<li><b>' + html.escape(u['what']) + '</b>：'
+                     + html.escape(u['why']) + '</li>' for u in AG['unverified'])
+
+    ag_faq = [
+     ('63 ANGEL 一個人可以去嗎？',
+      '可以。官網寫明除了團體客之外，單獨前往、情侶與女性客人也很多。'
+      '未滿 20 歲不得入場，這是官網每一頁都掛著的一行。'),
+     ('最便宜的方案是哪個？',
+      '公開方案裡最便宜的是女子会プラン 3,000 円，但條件很嚴：限女性成行，'
+      '同行只要有一名男性就不適用，而且只限普通座、排除卡司活動日與週五週六，只有 1 部場次。'
+      '一般情況下的最低是普通座 8,500 円，含一杯飲料。'),
+     ('票價之外還要付服務費或席料嗎？',
+      '依官方的特定商取引法揭示頁，「商品代金以外に必要な費用／送料、消費税等」寫的是「なし」，'
+      '也就是沒有。六本木一帶不少店會另收チャージ，這家在官方揭示上寫的是沒有。'
+      '不過飲料續杯、香檳與加購項目當然要另外算。'),
+     ('可以指定座位嗎？',
+      '看方案。普通座與女子会プラン不能指定。ど迫力、超ど迫力、プレミアム 與前方確定席可以指定，'
+      '但要先註冊會員。VIP 沙發席網路根本訂不到，只能打電話。'),
+     ('取消要付多少錢？',
+      '這題官網自己兩頁寫得不一樣。預約頁寫 6 天前 30%、5 天前至 2 天前 50%、前一天與當天 100%；'
+      '特商法頁寫 6 天前 30%、3 天前為止 50%、前一天與當天 100%。'
+      '特商法頁另外還寫「刷卡付款申請之後的取消以及未到場不退款」。'
+      '中間那一段對不起來，本站不替它選一個版本，要改期就直接打電話問。'),
+     ('店裡可以拍照嗎？',
+      '官網公告禁止的是「低角度」的拍照與錄影，不是全面禁止，但店內另有公告的禁止事項與攝影指引。'
+      '不聽從店員勸導可能被請離場，而且餐飲費不退，惡質者永久謝絕入店。'),
+     ('不會日文可以嗎？',
+      '官網自述店內備有英語、韓語、中文的菜單。官網本身右下角也能切繁中，'
+      '但那是掛 Google 翻譯的外掛，不是官方中文版，金額與取消規定這種地方建議切回日文再確認一次。'),
+     ('官網訂還是 Klook 訂？',
+      '本站不給結論。Klook 的價格由前端算繪抓不到穩定數值，而且兩邊的方案內容不完全對應，沒辦法直接比。'
+      'Klook 的差別是附贈原創周邊、提前付款當天出示憑證，以及頁面標示遲到超過 15 分鐘'
+      '可能無法安排指定座位且不退款。官網的好處是方案最齊全，VIP 與加購都在那邊。'),
+    ]
+    ag_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in ag_faq)
+    ag_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in ag_faq]}, ensure_ascii=False)
+
+    ag_title = '63 ANGEL 訂位攻略：座位方案、加購與取消規定'
+    ag_desc = ('六本木 ROKUSAN ANGEL（原バーレスク東京）的座位方案從 3,000 到 18,750 円，'
+               '全部引官網原文並換算台幣。官方揭示寫明票價之外沒有服務費與消費稅。'
+               '取消規定官網兩頁寫得不一樣，本頁把兩個版本並列。未滿 20 歲不得入場。')
+
+    write('tokyo/63angel/index.html',
+      head(ag_title, ag_desc, 'tokyo/63angel/',
+           '<script type="application/ld+json">' + ag_ld + '</script>')
+      + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('63 ANGEL', None)]) + topnav()
+      + '<h1>63 ANGEL 訂位前要知道的幾件事</h1>'
+      + f'<p class="lede">{html.escape(AG["_說明"])}'
+        f'台幣以中間匯率 {_ag_rate} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網原文，查證於 {AG["checked"]}　·　{html.escape(AG["age"])}</div>'
+        '<div class="tans">票價之外<b>沒有</b>服務費與消費稅</div>'
+        f'<div class="tsub">官方的特定商取引法揭示頁寫「商品代金以外に必要な費用／送料、消費税等：なし」。'
+        f'{html.escape(AG["fee_note"]["so"])}</div>'
+        '<div class="tbuf">但<b>取消規定要小心</b>：官網有兩個頁面，中間那一段級距寫得不一樣，'
+        '而且特商法頁另外寫了一句「刷卡後取消與未到場不退款」。下面兩個版本都列出來。</div></div>'
+      + '<h2>場次時間</h2>' + _ag_shows
+      + f'<p class="disc">{html.escape(AG["shows"]["note"])}</p>'
+      + '<h2>座位方案與價格</h2>'
+      + '<div class="tw"><table><tr><th>方案</th><th>價格</th><th>內容</th>'
+        '<th>指定座位</th><th>條件</th></tr>' + _ag_plans + '</table></div>'
+      + f'<p class="disc">{html.escape(AG["limited"]["note"])}</p>'
+      + f'<h2>VIP 沙發席：¥{AG["vip"]["p"]:,}{html.escape(AG["vip"]["unit"])}</h2>'
+      + f'<blockquote class="q">{html.escape(AG["vip"]["quote"])}'
+        f'<cite><a href="{AG["system"]}" target="_blank" rel="nofollow noopener">'
+        f'ROKUSAN ANGEL 官網・System</a></cite></blockquote>'
+      + f'<ul class="lede">{_ag_vip}</ul>'
+      + '<h2>加購</h2>'
+      + '<div class="tw narrow"><table><tr><th>項目</th><th>加價</th><th>說明</th></tr>'
+        + _ag_opt + '</table></div>'
+      + f'<h2>{html.escape(AG["cancel"]["t"])}</h2>'
+      + '<div class="tw narrow"><table><tr><th>出處</th><th>時間點</th><th>取消費</th></tr>'
+        + _ag_cancel + '</table></div>'
+      + f'<blockquote class="q">{html.escape(AG["cancel"]["extra_quote"])}'
+        f'<cite><a href="{AG["tokutei"]}" target="_blank" rel="nofollow noopener">'
+        f'ROKUSAN ANGEL 官網・特定商取引法に基づく表示</a></cite></blockquote>'
+      + f'<p class="lede">{html.escape(AG["cancel"]["extra_zh"])}</p>'
+      + f'<p class="lede"><b>{html.escape(AG["cancel"]["so"])}</b></p>'
+      + '<h2>店內規定</h2>'
+      + f'<blockquote class="q">{html.escape(AG["rules"]["photo_quote"])}'
+        f'<cite><a href="{AG["site"]}" target="_blank" rel="nofollow noopener">'
+        f'ROKUSAN ANGEL 官網・店内撮影の禁止事項</a></cite></blockquote>'
+      + f'<p class="lede">{html.escape(AG["rules"]["photo_zh"])}</p>'
+      + '<h2>語言</h2>'
+      + f'<p class="lede">{html.escape(AG["lang"]["site"])}</p>'
+      + f'<p class="disc">{html.escape(AG["lang"]["shop"])}</p>'
+      + '<h2>也可以從 Klook 訂</h2>'
+      + f'<ul class="lede">{_ag_kl}</ul>'
+      + f'<p class="disc">{html.escape(AG["klook"]["no_price"])}</p>'
+      + f'<a class="cta" href="{html.escape(klook(AG["klook"]["url"]))}" '
+        f'target="_blank" rel="sponsored nofollow noopener">到 Klook 看目前票價</a>'
+      + '<h2>基本資料</h2>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>地址</b>：{html.escape(AG["addr"])}</li>'
+        f'<li><b>電話</b>：{html.escape(AG["tel"])}　{html.escape(AG["tel_note"])}</li>'
+        f'<li><b>年齡</b>：{html.escape(AG["age"])}</li>'
+        f'<li><b>營運公司</b>：{html.escape(AG["operator"])}</li>'
+        f'<li><b>付款</b>：{html.escape(AG["fee_note"]["pay"])}'
+        f'　{html.escape(AG["fee_note"]["range"])}</li>'
+        '</ul></div>'
+      + f'<h3>{html.escape(AG["hours_conflict"]["t"])}</h3>'
+      + '<div class="tw narrow"><table><tr><th>出處</th><th>寫的時間</th></tr>'
+        + _ag_hours + '</table></div>'
+      + f'<p class="disc">{html.escape(AG["hours_conflict"]["so"])}</p>'
+      + '<h2>這頁沒有涵蓋的</h2>'
+      + f'<ul class="lede">{_ag_un}</ul>'
+      + '<h2>常見問題</h2>' + ag_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>✈️ 東京機票</b>'
+        f'<s>各出發地比價，每日更新</s></a>'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>3 部散場已經是隔天凌晨</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
+        f'<s>散場之後走得回去的價位</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
+        f'<s>刷日幣的國外交易手續費</s></a></div>'
+      + f'<p class="disc">本頁整理的是官網公告的方案與規定，查證於 {AG["checked"]}。'
+        '價格與場次會調整，期間限定的優惠更常換，出發前請以官網最新公告為準。'
+        '本站與該店沒有合作關係，Klook 連結為分潤連結。</p>'
+      + foot())
+    pages.append(('/tokyo/63angel/', 0.6))
 
 # ---------- JTTP（日本信賴旅客制度） ----------
 # 中文內容一律叫它 JTTP，但官方分類裡 JTTP 只是 A 類（美日互惠）。
