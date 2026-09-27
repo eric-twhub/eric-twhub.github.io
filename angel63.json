@@ -189,7 +189,11 @@
  "rules": {
   "photo_quote": "ローアングルからの、写真・動画の撮影を、禁止とさせていただきます。当店スタッフからの注意を聞き入れていただけない場合、退店していただく場合がございます。その際、ご飲食代の返金はいたしませんので、予めご了承ください。",
   "photo_zh": "官網禁止的是「低角度」的拍照與錄影。不聽從店員勸導可能被請離場，而且餐飲費不退。惡質者會被永久謝絕入店。店內另有公告的禁止事項，以及舞台裝置與表演者攝影的指引。",
-  "age": "未滿 20 歲不得入場。"
+  "age": "未滿 20 歲不得入場。",
+  "src": "https://rokusanangel.jp/#multiCollapseExample1",
+  "src_name": "ROKUSAN ANGEL 官網首頁・店内撮影の禁止事項（首頁下方的摺疊區塊）",
+  "guideline": "https://rokusanangel.jp/wp/wp-content/uploads/2024/08/guide-line.png",
+  "guideline_name": "舞台装置及びキャストの写真ないし動画撮影についてのガイドライン（官網 PNG）"
  },
  "lang": {
   "site": "官網右下角可以切成英文、簡體中文、繁體中文、韓文，但那是掛 Google 翻譯的外掛（按鈕呼叫 setTranslateLang，頁面載入 translate.googleapis.com），不是另外做的中文版。金額與取消規定這種地方，建議切回日文原文再確認一次。",
