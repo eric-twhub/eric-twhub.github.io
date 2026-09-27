@@ -13,28 +13,28 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,896（26 天有紀錄），這張低 32%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,754（26 天有紀錄），這張低 31%"
   ],
-  "med": 11578,
+  "med": 11289,
   "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=IT17929986001793007600000090RMQOKA17933079001793309700000090OKARMQ_c22163bf4cbfb1d0fe5e0768c79d253f_19795&search_date=24092026&expected_price_uuid=01a0d547-f08f-8030-2559-86483b569e8c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=7411&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 9144,
-   "hi": 13373,
-   "days": 30
+   "lo": 7950,
+   "hi": 12654,
+   "days": 29
   },
   "mbase": {
-   "avg": 10896,
+   "avg": 10754,
    "days": 26,
    "month": 10
   },
   "rank": 1,
-  "n": 83
+  "n": 84
  },
  {
   "slug": "2026-09-27-transfer-tokyo-sendai",
-  "title": "飛東京轉乘去仙台，比直飛省 NT$15,564",
+  "title": "飛東京轉乘去仙台，比直飛省 NT$4,538",
   "o": "台灣",
   "c": "仙台",
   "via": "東京",
@@ -50,16 +50,16 @@
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$15,564"
+   "比直飛省 NT$4,538"
   ],
-  "med": 27401,
+  "med": 16375,
   "url": "https://www.aviasales.com/search/TPE2910NRT02111?t=GK17932782001793292900000185TPENRT17936082001793620200000260NRTTPE_bb37dba64cca3d2ec2306d950e2d1530_19072&search_date=26092026&expected_price_uuid=01a0dde5-e895-8030-26e9-20c584036f91&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LtC78molq2C0y_W9GzXgCg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7171&marker=775639",
   "hotelcity": "仙台",
   "cslug": "sendai"
  },
  {
   "slug": "2026-09-27-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$2,291",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$919",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
@@ -75,9 +75,9 @@
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$2,291"
+   "比直飛省 NT$919"
   ],
-  "med": 13461,
+  "med": 12089,
   "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=MM17916564001791669600000160TPEKIX17920773001792085400000195KIXTPE_f4ddd9d7bd68536a2a4f84a4d2270db7_18499&search_date=20092026&expected_price_uuid=01a0c082-508a-8030-275a-58e4c73e4bdd&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ufyAv-JlkdV1BcRs4BRzjQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6992&marker=775639",
   "hotelcity": "廣島",
   "cslug": "hiroshima"
