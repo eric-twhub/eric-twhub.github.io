@@ -3511,26 +3511,95 @@ if os.path.exists('angel63.json'):
             if tt:
                 links.append(f'<a href="https://www.tiktok.com/{html.escape(tt)}" '
                              f'target="_blank" rel="nofollow noopener">TikTok</a>')
-            # IG 官方 embed 實測不算繪（請求 200、畫面空白），撤掉不留空框
+            # 一次只載入一個 embed：整頁同時放 79 個會被 Instagram 限流，
+            # 只有第一個出得來。改成滑鼠移上（或手機點一下）才在浮層裡載入。
             handle = (f'<div class="tgi">@{html.escape(ig)}</div>' if ig else '')
-            return ('<div class="tgc"><div class="tgh"><b>'
+            peek = (f'<button type="button" class="tgp" data-ig="{html.escape(ig)}" '
+                    f'data-nm="{html.escape(t["name"])}">看照片</button>' if ig else '')
+            return ('<div class="tgc"' + (f' data-ig="{html.escape(ig)}"' if ig else '')
+                    + '><div class="tgh"><b>'
                     + html.escape(t['name']) + '</b>'
                     + ('<span class="tag">Leader</span>' if t['leader'] else '')
                     + '</div>' + handle
-                    + '<div class="tgl">' + '　'.join(links) + '</div></div>')
+                    + '<div class="tgl">' + '　'.join(links)
+                    + ('　' + peek if peek else '') + '</div></div>')
 
         _tl_css = ('<style>'
                    '.tg{display:grid;gap:10px;margin:18px 0;'
                    'grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}'
                    '.tgc{border:1px solid var(--line);border-radius:10px;'
-                   'background:var(--card);padding:11px 13px}'
+                   'background:var(--card);padding:11px 13px;transition:border-color .12s}'
+                   '.tgc:hover{border-color:var(--hot)}'
                    '.tgh{display:flex;align-items:center;gap:7px}'
                    '.tgi{font-size:.78rem;color:var(--dim);margin:3px 0 7px;'
                    'word-break:break-all}'
                    '.tgl{font-size:.84rem}'
+                   '.tgp{font:inherit;font-size:.84rem;color:var(--hot);background:none;'
+                   'border:0;padding:0;cursor:pointer;text-decoration:underline}'
+                   '#igpop{position:fixed;z-index:60;width:326px;display:none;'
+                   'border:1px solid var(--line);border-radius:12px;overflow:hidden;'
+                   'background:#fff;box-shadow:0 10px 34px rgba(0,0,0,.20)}'
+                   '#igpop.on{display:block}'
+                   '#igpop .ph{font-size:.8rem;padding:7px 11px;background:var(--card);'
+                   'border-bottom:1px solid var(--line);display:flex;'
+                   'justify-content:space-between;align-items:center;gap:8px}'
+                   '#igpop .ph b{color:var(--ink)}'
+                   '#igpop button{font:inherit;font-size:.8rem;background:none;border:0;'
+                   'cursor:pointer;color:var(--dim)}'
+                   '#igpop iframe{width:100%;height:392px;border:0;display:block;background:#fff}'
+                   '@media(max-width:620px){#igpop{width:min(326px,92vw)}}'
                    '</style>')
 
         _tl_grid = '<div class="tg">' + ''.join(_tl_card(t) for t in _tl_items) + '</div>'
+
+        # 浮層 + 一次一個的載入邏輯。沒有 JS 時整頁仍然是可用的連結清單。
+        _tl_js = r"""<script>
+(function(){
+ var pop=document.createElement('div'); pop.id='igpop';
+ pop.innerHTML='<div class="ph"><b></b><button type="button" aria-label="關閉">✕</button></div>'
+             + '<iframe title="Instagram" loading="lazy"></iframe>';
+ document.body.appendChild(pop);
+ var ttl=pop.querySelector('b'), fr=pop.querySelector('iframe'),
+     xb=pop.querySelector('button'), cur='', timer=null, hideT=null, pinned=false;
+
+ function place(el){
+  var r=el.getBoundingClientRect(), w=pop.offsetWidth||326, h=pop.offsetHeight||430;
+  var x=r.right+10; if(x+w>innerWidth-8) x=r.left-w-10;
+  if(x<8) x=Math.max(8,(innerWidth-w)/2);
+  var y=r.top; if(y+h>innerHeight-8) y=innerHeight-h-8; if(y<8) y=8;
+  pop.style.left=Math.round(x)+'px'; pop.style.top=Math.round(y)+'px';
+ }
+ function show(el,ig,nm){
+  if(!ig) return;
+  clearTimeout(hideT);
+  if(cur!==ig){ cur=ig; ttl.textContent=nm+'  @'+ig;
+    fr.src='https://www.instagram.com/'+encodeURIComponent(ig)+'/embed'; }
+  pop.classList.add('on'); place(el);
+ }
+ function hide(){ if(pinned) return; hideT=setTimeout(function(){ pop.classList.remove('on'); },180); }
+
+ document.querySelectorAll('.tgc[data-ig]').forEach(function(c){
+  var ig=c.getAttribute('data-ig'), nm=(c.querySelector('.tgh b')||{}).textContent||'';
+  c.addEventListener('mouseenter',function(){
+   clearTimeout(timer); timer=setTimeout(function(){ show(c,ig,nm); },260);
+  });
+  c.addEventListener('mouseleave',function(){ clearTimeout(timer); hide(); });
+  var b=c.querySelector('.tgp');
+  if(b) b.addEventListener('click',function(e){
+    e.preventDefault(); e.stopPropagation(); pinned=false; show(c,ig,nm); pinned=true;
+  });
+ });
+ pop.addEventListener('mouseenter',function(){ clearTimeout(hideT); });
+ pop.addEventListener('mouseleave',function(){ hide(); });
+ xb.addEventListener('click',function(){ pinned=false; pop.classList.remove('on'); });
+ document.addEventListener('click',function(e){
+  if(pinned && !pop.contains(e.target) && !e.target.closest('.tgc')){
+    pinned=false; pop.classList.remove('on');
+  }
+ });
+ addEventListener('keydown',function(e){ if(e.key==='Escape'){ pinned=false; pop.classList.remove('on'); } });
+})();
+</script>"""
 
         tl_title = f'63 ANGEL 有哪些女孩？{len(_tl_items)} 位在籍表演者與社群'
         tl_desc = (f'六本木 ROKUSAN ANGEL 官網目前列出的 {len(_tl_items)} 位表演者，'
@@ -3547,7 +3616,7 @@ if os.path.exists('angel63.json'):
             f'<div class="tday">名單取自官網 TALENT 頁，查證於 {_TL["_查證"]}</div>'
             f'<div class="tans">目前在籍 <b>{len(_tl_items)} 位</b></div>'
             f'<div class="tsub">{html.escape(_TL["_沒有照片的原因"])}</div></div>'
-          + _tl_grid
+          + _tl_grid + _tl_js
           + f'<p class="disc">名單與帳號皆引自 <a href="{_TL["_來源"]}" target="_blank" '
             f'rel="nofollow noopener">ROKUSAN ANGEL 官網・TALENT</a>。'
             f'在籍成員會異動，以官網為準。</p>'
