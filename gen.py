@@ -3617,6 +3617,7 @@ if os.path.exists('angel63.json'):
             f'<div class="tans">目前在籍 <b>{len(_tl_items)} 位</b></div>'
             f'<div class="tsub">{html.escape(_TL["_沒有照片的原因"])}</div></div>'
           + _tl_grid + _tl_js
+          + (f'<p class="disc">{html.escape(_TL["_實測"])}</p>' if _TL.get('_實測') else '')
           + f'<p class="disc">名單與帳號皆引自 <a href="{_TL["_來源"]}" target="_blank" '
             f'rel="nofollow noopener">ROKUSAN ANGEL 官網・TALENT</a>。'
             f'在籍成員會異動，以官網為準。</p>'
