@@ -3419,6 +3419,8 @@ if os.path.exists('angel63.json'):
       + '<h2>座位方案與價格</h2>'
       + '<div class="tw"><table><tr><th>方案</th><th>價格</th><th>內容</th>'
         '<th>指定座位</th><th>條件</th></tr>' + _ag_plans + '</table></div>'
+      + (f'<p class="disc">{html.escape(AG["plans_note"])}</p>'
+         if AG.get('plans_note') else '')
       + f'<p class="disc">{html.escape(AG["limited"]["note"])}</p>'
       + f'<h2>VIP 沙發席：¥{AG["vip"]["p"]:,}{html.escape(AG["vip"]["unit"])}</h2>'
       + f'<blockquote class="q">{html.escape(AG["vip"]["quote"])}'
