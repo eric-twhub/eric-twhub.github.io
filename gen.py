@@ -3511,27 +3511,23 @@ if os.path.exists('angel63.json'):
             if tt:
                 links.append(f'<a href="https://www.tiktok.com/{html.escape(tt)}" '
                              f'target="_blank" rel="nofollow noopener">TikTok</a>')
-            frame = (f'<iframe loading="lazy" class="igf" '
-                     f'src="https://www.instagram.com/{html.escape(ig)}/embed" '
-                     f'title="{html.escape(t["name"])} 的 Instagram" '
-                     f'referrerpolicy="no-referrer" '
-                     f'sandbox="allow-scripts allow-same-origin allow-popups"></iframe>'
-                     if ig else '')
+            # IG 官方 embed 實測不算繪（請求 200、畫面空白），撤掉不留空框
+            handle = (f'<div class="tgi">@{html.escape(ig)}</div>' if ig else '')
             return ('<div class="tgc"><div class="tgh"><b>'
                     + html.escape(t['name']) + '</b>'
                     + ('<span class="tag">Leader</span>' if t['leader'] else '')
-                    + '</div>' + frame
+                    + '</div>' + handle
                     + '<div class="tgl">' + '　'.join(links) + '</div></div>')
 
         _tl_css = ('<style>'
-                   '.tg{display:grid;gap:14px;margin:18px 0;'
-                   'grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}'
-                   '.tgc{border:1px solid var(--line);border-radius:10px;overflow:hidden;'
-                   'background:var(--card)}'
-                   '.tgh{padding:9px 12px;border-bottom:1px solid var(--line);'
-                   'display:flex;align-items:center;gap:7px}'
-                   '.igf{width:100%;height:420px;border:0;display:block;background:#fff}'
-                   '.tgl{padding:9px 12px;font-size:.84rem;border-top:1px solid var(--line)}'
+                   '.tg{display:grid;gap:10px;margin:18px 0;'
+                   'grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}'
+                   '.tgc{border:1px solid var(--line);border-radius:10px;'
+                   'background:var(--card);padding:11px 13px}'
+                   '.tgh{display:flex;align-items:center;gap:7px}'
+                   '.tgi{font-size:.78rem;color:var(--dim);margin:3px 0 7px;'
+                   'word-break:break-all}'
+                   '.tgl{font-size:.84rem}'
                    '</style>')
 
         _tl_grid = '<div class="tg">' + ''.join(_tl_card(t) for t in _tl_items) + '</div>'
@@ -3550,10 +3546,9 @@ if os.path.exists('angel63.json'):
           + '<div class="today">'
             f'<div class="tday">名單取自官網 TALENT 頁，查證於 {_TL["_查證"]}</div>'
             f'<div class="tans">目前在籍 <b>{len(_tl_items)} 位</b></div>'
-            f'<div class="tsub">{html.escape(_TL["_隱私"])}</div></div>'
+            f'<div class="tsub">{html.escape(_TL["_沒有照片的原因"])}</div></div>'
           + _tl_grid
-          + f'<p class="disc">{html.escape(_TL["_不放圖的原因"])}'
-            f'　名單與帳號皆引自 <a href="{_TL["_來源"]}" target="_blank" '
+          + f'<p class="disc">名單與帳號皆引自 <a href="{_TL["_來源"]}" target="_blank" '
             f'rel="nofollow noopener">ROKUSAN ANGEL 官網・TALENT</a>。'
             f'在籍成員會異動，以官網為準。</p>'
           + '<h2>順便看看</h2><div class="cities">'
