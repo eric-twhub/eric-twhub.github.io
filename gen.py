@@ -293,6 +293,9 @@ def _rate_basis(st):
     但沒填 steps 的店會被斷言成「單一費率 <max>%」。那是在宣稱一件
     沒查證的事，而且一律取最高值，方向偏向高估。
     """
+    # 折扣依據既不是金額也不是類別時（例如綁日期），由資料檔自己講
+    if st.get('basis'):
+        return st['basis']
     if st['steps']:
         return '該店有滿額級距，未稅金額決定適用哪一檔。'
     if st.get('cat_tiers'):
@@ -3437,6 +3440,11 @@ if os.path.exists('jttp.json'):
         f'{html.escape(_tx["src_name"])}</a></cite></blockquote>'
       + f'<p class="lede"><b>{html.escape(_tx["so"])}</b></p>'
       + f'<p class="disc">{html.escape(_tx["caveat"])}</p>'
+      + ((f'<details class="faq"><summary>{html.escape(_tx["store_gap"]["t"])}</summary>'
+          f'<div>{html.escape(_tx["store_gap"]["zh"])}　'
+          f'<a href="{_tx["store_gap"]["src"]}" target="_blank" rel="nofollow noopener">'
+          f'{html.escape(_tx["store_gap"]["src_name"])} →</a></div></details>')
+         if _tx.get('store_gap') else '')
       + '<h2>會被拒絕的情況</h2>'
       + f'<ul class="lede">{_tt_rej}</ul>'
       + '<h2>這頁沒有涵蓋的</h2>'
@@ -5576,6 +5584,15 @@ if os.path.exists('apple.json'):
                '<p class="lede">新制最常被問的一題：那 10% 會完整回到我手上嗎？'
                '官方的答案是「沒有規定」，而這三個字比任何數字都重要。</p>'
                '<div class="cmp">' + cards + '</div>')
+        ex = _RF.get('_店家實例') or {}
+        if ex:
+            out += ('<h3>已經有店家把手續費寫出來了</h3>'
+                    '<blockquote class="q">' + html.escape(ex['quote'])
+                    + '<cite><a href="' + ex['src'] + '" target="_blank" '
+                    'rel="nofollow noopener">' + html.escape(ex['src_name'])
+                    + '</a></cite></blockquote>'
+                    '<p class="lede">' + html.escape(ex['zh']) + '</p>'
+                    '<p class="lede"><b>' + html.escape(ex['so']) + '</b></p>')
         if obs:
             out += ('<p class="disc"><b>社群實測：</b>' + html.escape(obs['note'])
                     + '　' + html.escape(obs['本站立場']) + '</p>')
@@ -6539,6 +6556,7 @@ if os.path.exists('cards.json'):
         'app': '券發在店家官方 App 內，沒有網頁版',
         # 別寫死「店家官網」。山田是自家網域，Alpen 是平台，由 form_note 交代
         'image': '以靜態券圖提供，注意事項通常另寫在圖外',
+        'counter': '不是電子券，要到店內櫃台憑護照換紙本券',
     }
     if os.path.exists('coupons.json'):
         CP = json.load(open('coupons.json', encoding='utf-8'))
@@ -6557,14 +6575,31 @@ if os.path.exists('cards.json'):
         _ropts = '<option value="">全部類別</option>' + ''.join(
             f'<option value="{html.escape(c)}">{html.escape(c)}</option>' for c in _cats)
 
+        def _cp_dead(st):
+            return bool(st.get('expires')) and st['expires'] < TODAY
+
+        def _cp_exp(st):
+            # 三態：標了期限、標了但已過期、發券頁根本沒標
+            if st.get('expires'):
+                if _cp_dead(st):
+                    return (f'<td class="lose"><b>⚠ 已過期</b>{SMALL}'
+                            f'{html.escape(st["expires"])}</small></td>')
+                return f'<td class="nm">{html.escape(st["expires"])}</td>'
+            u = st.get('src_updated')
+            return ('<td class="nm"><small>未標示'
+                    + (f'<br>發券頁更新 {html.escape(u)}' if u else '')
+                    + '</small></td>')
+
         _srows = ''.join(
             f'<tr><td><a href="{U("/japan-coupon/"+st["slug"]+"/")}">'
             f'<b>{html.escape(st["name"])}</b></a>{SMALL}{html.escape(st["jp"])}</small></td>'
             f'<td>{html.escape(st["cat"])}</td>'
             f'<td class="win"><b>{html.escape(st["rate"])}</b></td>'
             f'<td>{html.escape(st["tiers"])}</td>'
-            f'<td>{html.escape(st["tax_min"])}</td></tr>'
-            for st in sorted(CP['stores'], key=lambda x: (x['cat'], -x['max'])))
+            f'<td>{html.escape(st["tax_min"])}</td>'
+            + _cp_exp(st) + '</tr>'
+            for st in sorted(CP['stores'],
+                             key=lambda x: (_cp_dead(x), x['cat'], -x['max'])))
 
         _rankjs = _SJS + ("""
 <script>
@@ -6730,7 +6765,7 @@ if os.path.exists('cards.json'):
           + '<p class="lede">以下是各店常見的券折扣級距。券的版本與期限經常更換，'
             '出發前一週再確認一次最準。本頁整理的是幅度，不提供券本身。</p>'
           + '<div class="tw"><table><thead><tr><th>店家</th><th>類別</th><th>常見折扣</th>'
-            '<th>級距與條件</th><th>免稅／用券門檻</th></tr></thead><tbody>'
+            '<th>級距與條件</th><th>免稅／用券門檻</th><th>期限</th></tr></thead><tbody>'
             + _srows + '</tbody></table></div>'
           + '<div class="cities">'
           + ''.join(f'<a class="ct" href="{U("/japan-coupon/"+st["slug"]+"/")}">'
@@ -6840,6 +6875,9 @@ if os.path.exists('cards.json'):
               + f'<p class="lede">先扣免稅，券再以未稅金額計算。'
                 + _rate_basis(st) + '</p>'
               + _ex
+              # 折扣不是看金額的店，上面那張表預設「你買的東西適用」，要把前提講明
+              + (f'<p class="disc" style="color:var(--hot)"><b>⚠ 上表的前提</b>：'
+                 f'{html.escape(st["calc_caveat"])}</p>' if st.get('calc_caveat') else '')
               + _cat_tiers_block(st) + _exclude_block(st) + _visa_block(st)
               + f'<p class="disc">實際折扣依商品類別與當期券別而異，以店家公告為準。'
                 f'想連刷卡回饋一起算，可用<a href="{U("/japan-coupon/")}">實付價計算機</a>。</p>'
