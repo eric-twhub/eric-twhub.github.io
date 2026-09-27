@@ -3291,14 +3291,31 @@ if os.path.exists('jttp.json'):
         f'<div class="pp"><b>{f[0]}. {html.escape(f[1])}</b>'
         f'<p>{html.escape(f[2])}</p></div>' for f in TT['flow'])
 
+    _MK = TT.get('marks', {})
+
+    def _tt_mk(m):
+        if not m:
+            return '<td class="nm"><small>　</small></td>'
+        cls = 'lose' if m == '印' else 'nm'
+        return f'<td class="{cls}"><small>{html.escape(_MK.get(m, m))}</small></td>'
+
+    def _tt_cells(r):
+        return (f'<td>{html.escape(r[0])}</td>'
+                f'<td class="nm"><small>{html.escape(r[1])}</small></td>'
+                + _tt_mk(r[2] if len(r) > 2 else ''))
+
     _tt_places = ''
     for grp, rows in TT['places'].items():
         _tt_places += (f'<tr><td class="nm" rowspan="{len(rows)}"><b>{html.escape(grp)}</b></td>'
-                       + f'<td>{html.escape(rows[0][0])}</td>'
-                       + f'<td class="nm"><small>{html.escape(rows[0][1])}</small></td></tr>'
-                       + ''.join(f'<tr><td>{html.escape(r[0])}</td>'
-                                 f'<td class="nm"><small>{html.escape(r[1])}</small></td></tr>'
-                                 for r in rows[1:]))
+                       + _tt_cells(rows[0]) + '</tr>'
+                       + ''.join('<tr>' + _tt_cells(r) + '</tr>' for r in rows[1:]))
+
+    _tt_notes = ''.join(
+        f'<details class="faq"><summary>{html.escape(n["t"])}'
+        + (f'（{html.escape(_MK.get(n["m"], n["m"]))}）' if n.get('m') else '')
+        + f'</summary><div>{html.escape(n["zh"])}'
+        f'<blockquote class="q">{html.escape(n["jp"])}</blockquote></div></details>'
+        for n in TT.get('notes', []))
 
     _tt_rej = ''.join('<li>' + html.escape(x) + '</li>' for x in TT['reject'])
     _tt_un = ''.join('<li><b>' + html.escape(u['what']) + '</b>：'
@@ -3318,6 +3335,18 @@ if os.path.exists('jttp.json'):
       '不行。一次審查是線上的，但二次審查必須本人到日本國內的指定登錄場所出示正本，'
       '而且官方明寫申請當天不會有結果，領卡要擇日再到場一次。'
       '不過機場的出境審查場也算指定場所，所以實務上可以在回程當天順便辦，不必為了它多飛一趟。'),
+     ('櫃台幾點開？假日有休息嗎？',
+      '要看是哪一種櫃台。成田第 1、第 2 航廈的航廈櫃台是 8:00 到 16:00，羽田第 3 航廈是 8:00 到 17:00，'
+      '關西第 1 航廈 4 樓是 9:00 到 16:00、第 2 航廈 1 樓是 8:00 到 16:00，這幾個官方沒有加註休假日。'
+      '中部機場第 1 航廈 3 樓是 8:30 到 11:30，而且和東京、名古屋、大阪三個入管局一樣，'
+      '官方註明「土・日・祝日、１２月２９日～１月３日を除く」，也就是六日與國定假日不受理。'
+      '至於各機場的出境審查場櫃台，官方寫的是「出国審査場開設中は常時可」，出境審查開放時間內都可以。'),
+     ('出境審查場那個櫃台有什麼條件？',
+      '兩個。第一，沒有帶手續所需的收入印紙就不能辦，官方原文是'
+      '「出国審査場では、手続に必要な収入印紙をお持ちでない方の登録手続はできません」。'
+      '第二，那個位置在管制區內，要先在航空公司完成報到、通過安檢之後才過得去，'
+      '而且辦完登錄手續就回不到一般區域。所以它適合排在回程當天，不適合臨時起意。'
+      '官方另外提醒登錄可能花時間，要預留充裕時間。'),
      ('哪些機場可以用？',
       '自動化閘門只設在成田、羽田、中部、關西四個機場。'
       '飛福岡、新千歲、那霸、仙台這些地方，入境時這張卡幫不上忙。'
@@ -3367,7 +3396,8 @@ if os.path.exists('jttp.json'):
         '這張卡在入境時幫不上忙。辦之前先想一下你平常都飛哪裡。</div>'
         f'<div class="tbuf">另外兩件：手續費 <b>¥{_tf["amount"]:,}</b> 用收入印紙繳，'
         f'{_tf["note"]}效期三年或護照到期孰早。'
-        '而且要在日本本地到場兩次才拿得到卡，好消息是回程在出境審查場就能辦。</div></div>'
+        '而且要在日本本地到場兩次才拿得到卡。回程當天在機場的出境審查場就能辦，'
+        '但印紙要自己先買好，沒帶就辦不了。</div></div>'
       + '<h2>先講名字：你要申請的可能不是 JTTP</h2>'
       + f'<p class="lede">{html.escape(TT["_命名"])}</p>'
       + '<h2>官方的十一個登錄要件</h2>'
@@ -3388,9 +3418,10 @@ if os.path.exists('jttp.json'):
       + '<div class="cmp">' + _tt_flow + '</div>'
       + f'<p class="disc">官方原文：{html.escape(TT["flow_quote"])}</p>'
       + '<h2>二次審查與領卡的地點</h2>'
-      + f'<p class="lede">{html.escape(TT["places_note"])}</p>'
-      + '<div class="tw"><table><tr><th>地點</th><th>櫃台</th><th>時間</th></tr>'
-        + _tt_places + '</table></div>'
+      + f'<p class="lede">{TT["places_note"]}</p>'
+      + '<div class="tw"><table><tr><th>地點</th><th>櫃台</th><th>受理時間</th>'
+        '<th>注意</th></tr>' + _tt_places + '</table></div>'
+      + _tt_notes
       + f'<p class="disc"><a href="{TT["places_src"]}" target="_blank" rel="nofollow noopener">'
         f'出入國在留管理廳・指定登録場所一覧 →</a></p>'
       + '<h2>拿到卡之後，護照就不蓋章了</h2>'
