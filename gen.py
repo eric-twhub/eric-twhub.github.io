@@ -932,6 +932,7 @@ def topnav(cur=''):
             + '<hr><b>新制度</b>'
             + link('/japan-holiday-calendar/', '📅 三國連假撞期')
             + link('/japan-travel-rules/', '📋 出境稅與住宿稅')
+            + link('/japan-jttp/', '🛂 JTTP 快速通關')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
@@ -3261,6 +3262,8 @@ if os.path.exists('japan-rules.json'):
         f'<s>2027 起簡易宿所也課稅</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
         f'<s>加購時機差一倍</s></a>'
+      + f'<a class="ct" href="{U("/japan-jttp/")}"><b>🛂 JTTP 快速通關</b>'
+        f'<s>四個機場才用得到</s></a>'
       + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
         f'<s>落地之後還回得去市區嗎</s></a></div>'
       + f'<p class="disc">本頁整理的是日本官方公告的制度，'
@@ -3268,6 +3271,160 @@ if os.path.exists('japan-rules.json'):
         f'出發前請以官方最新公告為準。本站不是稅務或法律顧問。</p>'
       + _JRJS + foot())
     pages.append(('/japan-travel-rules/', 0.8))
+
+# ---------- JTTP（日本信賴旅客制度） ----------
+# 中文內容一律叫它 JTTP，但官方分類裡 JTTP 只是 A 類（美日互惠）。
+# 台灣護照走的是 D 類居多，所以頁面先把名字講清楚再講流程。
+if os.path.exists('jttp.json'):
+    TT = json.load(open('jttp.json', encoding='utf-8'))
+    _tf, _tg, _tx = TT['fee'], TT['gates'], TT['taxfree']
+
+    _tt_cats = ''.join(
+        f'<tr><td class="nm"><b>{c[0]}</b></td>'
+        f'<td class="nm">{html.escape(c[1])}</td>'
+        f'<td class="nm">{html.escape(c[2])}</td>'
+        f'<td><small>{html.escape(c[3])}</small></td></tr>'
+        for c in TT['cats'])
+
+    _tt_docs = ''.join('<li>' + html.escape(x) + '</li>' for x in TT['catD']['docs'])
+    _tt_flow = ''.join(
+        f'<div class="pp"><b>{f[0]}. {html.escape(f[1])}</b>'
+        f'<p>{html.escape(f[2])}</p></div>' for f in TT['flow'])
+
+    _tt_places = ''
+    for grp, rows in TT['places'].items():
+        _tt_places += (f'<tr><td class="nm" rowspan="{len(rows)}"><b>{html.escape(grp)}</b></td>'
+                       + f'<td>{html.escape(rows[0][0])}</td>'
+                       + f'<td class="nm"><small>{html.escape(rows[0][1])}</small></td></tr>'
+                       + ''.join(f'<tr><td>{html.escape(r[0])}</td>'
+                                 f'<td class="nm"><small>{html.escape(r[1])}</small></td></tr>'
+                                 for r in rows[1:]))
+
+    _tt_rej = ''.join('<li>' + html.escape(x) + '</li>' for x in TT['reject'])
+    _tt_un = ''.join('<li><b>' + html.escape(u['what']) + '</b>：'
+                     + html.escape(u['why']) + '</li>' for u in TT['unverified'])
+
+    tt_faq = [
+     ('JTTP 和 TTP 是同一個東西嗎？',
+      '中文內容講的 JTTP，指的通常是整個制度。但在日本官方的分類裡，JTTP 專指第 1 號，'
+      '也就是美日互惠那一類，前提是已經登錄美國 CBP 的 Global Entry，台灣護照不適用。'
+      '制度本身叫トラスティド・トラベラー・プログラム（TTP），發給你的東西叫「特定登録者カード」。'
+      '官方把登錄要件編成 1 至 11 號，台灣旅客走的多半是第 9 號，'
+      '也就是持白金級以上信用卡、且登錄前一年內入境日本兩次以上。'),
+     ('要多少錢？',
+      '「特定登録者カード」的發行手續費是 4,000 日圓，2025 年 4 月 1 日起由原本的 2,200 日圓調漲。'
+      '用收入印紙繳，官方寫明目前不收信用卡。補發不收這筆。'),
+     ('可以在台灣辦完嗎？',
+      '不行。一次審查是線上的，但二次審查必須本人到日本國內的指定登錄場所出示正本，'
+      '而且官方明寫申請當天不會有結果，領卡要擇日再到場一次。'
+      '不過機場的出境審查場也算指定場所，所以實務上可以在回程當天順便辦，不必為了它多飛一趟。'),
+     ('哪些機場可以用？',
+      '自動化閘門只設在成田、羽田、中部、關西四個機場。'
+      '飛福岡、新千歲、那霸、仙台這些地方，入境時這張卡幫不上忙。'
+      '辦之前先想一下你平常都飛哪裡。'),
+     ('拿了卡之後護照就不會有入境章了嗎？',
+      '對。官方寫明使用自動化閘門入境時，入境紀錄會記在「特定登録者カード」上，護照不蓋上陸許可證印，'
+      '出境也一樣不蓋。需要章的人要在通關當下向職員提出，事後補不了，'
+      '真的需要出入境紀錄只能向出入國在留管理廳提個人情報開示請求。'),
+     ('沒有入境章會不會買不了免稅品？',
+      '會，除非你同時出示卡片。國稅庁的 Q&A 問 4 寫得很清楚：護照上沒有上陸許可證印、'
+      '因此無法確認非居住者身分時，店家不能賣你免稅品；但使用這個制度入境的人，'
+      '卡片上會記載在留資格與上陸年月日，所以出示護照加上特定登録者カード 就可以免稅販售。'
+      '結帳時兩張一起拿出來。要注意這份 Q&A 是 2018 年版，'
+      '2026/11/1 免稅改成出境退稅之後有沒有改版，本站還沒查到。'),
+     ('效期多久？',
+      '自交付日起算三年，或護照效期屆滿日，兩者取較早的那個。'
+      '所以如果你的護照剩不到三年，這張卡也跟著縮短。'),
+     ('台灣的哪幾張卡算白金級以上？',
+      '官方沒有給各國卡別對照表，規定的是國際品牌授權的卡片等級，而且法人卡不可以。'
+      '台灣的中文卡名不等於國際品牌等級，同一個「白金」在不同發卡行可能對到不同層級，'
+      '要問你的發卡行。接受的品牌是 VISA、Mastercard、American Express、Diners Club、'
+      'Discover、JCB 與銀聯。'),
+    ]
+    tt_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in tt_faq)
+    tt_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in tt_faq]}, ensure_ascii=False)
+
+    tt_title = 'JTTP 申請前先看：台灣人走哪一類，只有四個機場能用'
+    tt_desc = ('日本信賴旅客制度全部引官方原文。中文講的 JTTP 在官方分類裡只是美日互惠的第 1 號，'
+               '台灣護照多半走第 9 號（白金卡加一年內入境兩次）。手續費 4,000 日圓、效期三年、'
+               '要到日本跑兩趟，而且自動化閘門只設在成田羽田中部關西。'
+               '另附沒有入境章時怎麼買免稅品。')
+
+    write('japan-jttp/index.html',
+      head(tt_title, tt_desc, 'japan-jttp/',
+           '<script type="application/ld+json">' + tt_ld + '</script>')
+      + crumbs([('首頁', '/'), ('JTTP 快速通關', None)]) + topnav()
+      + '<h1>JTTP 申請前，先確認這三件事</h1>'
+      + '<p class="lede">這頁只整理日本出入國在留管理廳與國稅庁的官方公告，'
+        '不採用部落格的申請心得。心得會過期，條文不會。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官方文件原文，查證於 {TT["checked"]}</div>'
+        '<div class="tans">自動化閘門只有<b>四個機場</b></div>'
+        '<div class="tsub">成田、羽田、中部、關西。飛福岡、新千歲、那霸、仙台的話，'
+        '這張卡在入境時幫不上忙。辦之前先想一下你平常都飛哪裡。</div>'
+        f'<div class="tbuf">另外兩件：手續費 <b>¥{_tf["amount"]:,}</b> 用收入印紙繳，'
+        f'{_tf["note"]}效期三年或護照到期孰早。'
+        '而且要在日本本地到場兩次才拿得到卡，好消息是回程在出境審查場就能辦。</div></div>'
+      + '<h2>先講名字：你要申請的可能不是 JTTP</h2>'
+      + f'<p class="lede">{html.escape(TT["_命名"])}</p>'
+      + '<h2>官方的十一個登錄要件</h2>'
+      + '<div class="tw"><table><tr><th>官方編號</th><th>對象</th><th>入境次數</th>'
+        '<th>說明</th></tr>' + _tt_cats + '</table></div>'
+      + f'<p class="disc">{html.escape(TT["_cats_note"])}　'
+        f'<a href="{TT["src_outline"]}" target="_blank" rel="nofollow noopener">'
+        f'{html.escape(TT["src_outline_name"])} →</a></p>'
+      + '<h2>第 9 號：持白金級以上信用卡</h2>'
+      + f'<blockquote class="q">{html.escape(TT["catD"]["card_quote"])}'
+        f'<cite>出入國在留管理廳・登錄要件</cite></blockquote>'
+      + f'<p class="lede">條件是 {html.escape(TT["catD"]["entries"])}，'
+        f'加上一張國際品牌授權、白金級以上的個人信用卡。{html.escape(TT["catD"]["corp"])}'
+        f'接受的品牌：{html.escape("、".join(TT["catD"]["brands"]))}。</p>'
+      + '<p class="lede">要準備的東西：</p>'
+      + f'<ul class="lede">{_tt_docs}</ul>'
+      + '<h2>申請流程</h2>'
+      + '<div class="cmp">' + _tt_flow + '</div>'
+      + f'<p class="disc">官方原文：{html.escape(TT["flow_quote"])}</p>'
+      + '<h2>二次審查與領卡的地點</h2>'
+      + f'<p class="lede">{html.escape(TT["places_note"])}</p>'
+      + '<div class="tw"><table><tr><th>地點</th><th>櫃台</th><th>時間</th></tr>'
+        + _tt_places + '</table></div>'
+      + f'<p class="disc"><a href="{TT["places_src"]}" target="_blank" rel="nofollow noopener">'
+        f'出入國在留管理廳・指定登録場所一覧 →</a></p>'
+      + '<h2>拿到卡之後，護照就不蓋章了</h2>'
+      + f'<blockquote class="q">{html.escape(_tg["stamp_quote"])}'
+        f'<cite><a href="{_tg["src"]}" target="_blank" rel="nofollow noopener">'
+        f'{html.escape(_tg["src_name"])}</a></cite></blockquote>'
+      + f'<p class="lede">{html.escape(_tg["stamp_out"])}</p>'
+      + f'<p class="disc">{html.escape(_tg["warn"])}</p>'
+      + '<h3>這件事會影響免稅購物</h3>'
+      + f'<p class="lede">{html.escape(_tx["zh"])}</p>'
+      + f'<blockquote class="q">{html.escape(_tx["quote"])}'
+        f'<cite><a href="{_tx["src"]}" target="_blank" rel="nofollow noopener">'
+        f'{html.escape(_tx["src_name"])}</a></cite></blockquote>'
+      + f'<p class="lede"><b>{html.escape(_tx["so"])}</b></p>'
+      + f'<p class="disc">{html.escape(_tx["caveat"])}</p>'
+      + '<h2>會被拒絕的情況</h2>'
+      + f'<ul class="lede">{_tt_rej}</ul>'
+      + '<h2>這頁沒有涵蓋的</h2>'
+      + f'<ul class="lede">{_tt_un}</ul>'
+      + '<h2>常見問題</h2>' + tt_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
+        f'<s>沒有入境章就要出示卡片</s></a>'
+      + f'<a class="ct" href="{U("/japan-travel-rules/")}"><b>📋 出境稅與住宿稅</b>'
+        f'<s>還有肉品檢疫的罰則</s></a>'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>快速通關之後還要趕車</s></a>'
+      + f'<a class="ct" href="{U("/japan-card-insurance/")}"><b>💳 刷卡送的保險</b>'
+        f'<s>白金卡通常也有這個</s></a></div>'
+      + f'<p class="disc">本頁整理的是日本官方公告的制度，查證於 {TT["checked"]}。'
+        '制度會修訂，手續費與指定場所也可能調整，出發前請以官方最新公告為準。'
+        '本站不是簽證或法律顧問，也不代辦。</p>'
+      + foot())
+    pages.append(('/japan-jttp/', 0.7))
 
 # ---------- 三國假期日曆 ----------
 # 使用者要的不是「哪天放假」那種查得到的東西，是「那幾天到底貴多少」。
@@ -5462,6 +5619,8 @@ if os.path.exists('apple.json'):
         f'<s>台日價格全表，每日更新匯率</s></a>'
       + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 新制之後回饋會變多嗎</b>'
         f'<s>刷含稅價，{_NCARD} 張卡的實際差額</s></a>'
+      + f'<a class="ct" href="{U("/japan-jttp/")}"><b>🛂 JTTP 快速通關</b>'
+        f'<s>沒有入境章就買不了免稅品</s></a>'
       + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>台灣飛日本，每日更新</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>各出發地比價</s></a></div>'
       + '<p class="disc">本頁依日本觀光廳「消費稅免稅店」網站、全國免稅店協會「リファンド方式」'
