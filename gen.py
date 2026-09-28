@@ -3811,6 +3811,25 @@ if os.path.exists('tokyo-picks.json'):
                     f'rel="nofollow noopener">'
                     + ('官方網站' if st.get('official') else '參考來源')
                     + ' →</a></p>')
+        # 歇業的店如果同品牌還有別家，直接把替代選項列出來，
+        # 不然讀者看到「已歇業」就只能自己重查。店型不同要講清楚：
+        # 迴轉壽司是坐著吃、立食是站著吃，不是同一件事。
+        alt = ''
+        if st.get('alt'):
+            a = st['alt']
+            alt = ('<div class="tpa">'
+                   f'<b>{html.escape(a["t"])}</b>'
+                   f'<p>{html.escape(a["body"])}</p>'
+                   '<ul>' + ''.join(
+                       f'<li><span class="tpat">{html.escape(r[0])}</span>'
+                       f'<b>{html.escape(r[1])}</b>'
+                       f'<br><small>{html.escape(r[2])}</small></li>'
+                       for r in a['list']) + '</ul>'
+                   f'<p class="disc">{html.escape(a["note"])}'
+                   f'　<a href="{a["src"]}" target="_blank" rel="nofollow noopener">'
+                   f'{html.escape(a["src_name"])} →</a>，查證於 {a["checked"]}。</p>'
+                   '</div>')
+
         award = ''
         if st.get('award'):
             award = ('<p class="win"><b>🏆 ' + html.escape(st['award']) + '</b>'
@@ -3824,7 +3843,25 @@ if os.path.exists('tokyo-picks.json'):
                 + award
                 + ('<ul>' + ''.join(info) + '</ul>' if info else '')
                 + (f'<p class="tpn">{html.escape(st["note"])}</p>' if st.get('note') else '')
-                + quote + ours + site + '</div>')
+                + alt + quote + ours + site + '</div>')
+
+    _tp_alt_css = ('<style>'
+                   '.tpa{border:1px solid var(--line);border-left:4px solid #2f8f4f;'
+                   'border-radius:10px;background:var(--soft);padding:14px 16px;margin:12px 0}'
+                   '.tpa>b{display:block;font-size:.95rem;color:#2f8f4f;margin-bottom:6px}'
+                   '.tpa p{margin:6px 0;font-size:.88rem;line-height:1.8}'
+                   '.tpa ul{list-style:none;margin:10px 0 6px;padding:0;display:grid;'
+                   'grid-template-columns:1fr 1fr;gap:8px}'
+                   '.tpa li{margin:0;padding:9px 11px;background:var(--card);'
+                   'border:1px solid var(--line);border-radius:8px;font-size:.86rem}'
+                   '.tpa li b{display:inline}'
+                   '.tpa small{color:var(--dim);font-size:.8rem;line-height:1.6;'
+                   'display:inline-block;margin-top:3px}'
+                   '.tpat{display:inline-block;font-size:.72rem;padding:1px 6px;'
+                   'border-radius:999px;background:var(--line);color:var(--dim);'
+                   'margin-right:6px;vertical-align:1px}'
+                   '@media(max-width:600px){.tpa ul{grid-template-columns:1fr}}'
+                   '</style>')
 
     _tp_idx_css = ('<style>'
                    '.tpx{margin:16px 0 26px}'
@@ -3892,12 +3929,54 @@ if os.path.exists('tokyo-picks.json'):
         f'<td><small>{html.escape(c)}</small></td></tr>'
         for a, b, c in TP['corrections'])
 
+    # 分享圖卡。整份清單做成 4:5 的輪播圖，社群發文直接用，
+    # 圖是 make_picks_cards.py 從同一份 tokyo-picks.json 產的，改資料就重跑那支。
+    _TP_CARD = [
+     ('01', '封面', '46 家店與查證數字'),
+     ('02', '肉 ①', '壽喜燒、燒肉、鐵板燒 10 家'),
+     ('03', '肉 ②', '炸豬排、漢堡排、牛舌、牛排 9 家'),
+     ('04', '麵與披薩', '拉麵、煮干、拿坡里 7 家'),
+     ('05', '海鮮與甜點', '壽司、鰻魚、海鮮丼、蛋糕 8 家'),
+     ('06', '購物與文具', '紙品、畫材、角色商品 5 家'),
+     ('07', '景點與其他', '錢湯、劇場、樂園、酒吧 7 家'),
+     ('08', '留言說的跟查到的', '九則回查的結果'),
+    ]
+    _tp_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份清單做成八張 1080×1350 的圖，'
+      '存下來或轉發都可以，不用註明出處。點圖看原尺寸。</p>'
+      '<style>'
+      '.tpk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.tpk a{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;'
+      'background:var(--card);text-decoration:none}'
+      '.tpk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.tpk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.tpk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.tpk{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="tpk">'
+      + ''.join(
+          f'<a href="{U("/tokyo/worth-flying-for/cards/tokyo-46-" + i + ".png")}" '
+          f'target="_blank">'
+          f'<img src="{U("/tokyo/worth-flying-for/cards/tokyo-46-" + i + ".png")}" '
+          f'alt="東京值得再飛一次的店，第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _TP_CARD)
+      + '</div>'
+      + '<p class="disc">圖上的店名、分類與地名都是從本頁同一份資料產生的，'
+        '沒有另外手打，所以不會和上面的清單對不上。'
+        '照片一律沒有放進圖裡，那些著作權屬於拍的人。</p>')
+
     _tp_un = ''.join(
         f'<li><b>{html.escape(u["t"])}</b>（{u["likes"]} 讚）：{html.escape(u["why"])}</li>'
         for u in TP['unsolved'])
 
     _tp_n = len(TP['stores'])
     _tp_src_n = sum(1 for x in TP['stores'] if x.get('src'))
+    _tp_bad = sum(1 for _, _, c in TP['corrections'] if '成立' not in c)
     _tp_off = sum(1 for x in TP['stores'] if x.get('official'))
 
     tp_faq = [
@@ -3913,7 +3992,8 @@ if os.path.exists('tokyo-picks.json'):
      ('留言推薦的店會不會已經倒了？',
       '會。根室花まる 銀座店就是，官網公告 2026 年 9 月 23 日結束營業，原因是大樓易主。'
       '那則留言本身沒錯，寫的時候店還在。這就是為什麼每家都要回查，'
-      '照抄留言串會把一家不存在的店推給你。'),
+      '而且查到歇業還不算完：這個品牌在東京還有八家，'
+      '本頁把它們列在那張卡片裡，並標出哪兩家跟銀座店一樣是坐著吃的迴轉壽司。'),
      ('互動數字代表什麼？',
       '讚數是有多少人認同，分享數比較接近「我要存起來去吃」。'
       '兩者不一定同方向，例如宇奈とと 的讚是 945 但分享有 1,197，分享多於讚。'
@@ -3948,16 +4028,19 @@ if os.path.exists('tokyo-picks.json'):
         '<div class="tsub">留言串會告訴你哪家好吃，但不會告訴你它星期幾休、'
         '要不要預約，或者它其實已經收了。這頁把每一家的官方資料查出來補上。</div>'
         '<div class="tbuf"><b>其中一家已經歇業</b>：根室花まる 銀座店在 2026 年 9 月 23 日結束營業。'
-        '留言寫的時候店還在，照抄就會推薦到一家不存在的店。</div></div>'
+        '留言寫的時候店還在，同品牌在東京還有八家，下面那張卡片列出來了。</div></div>'
       + f'<p class="disc">{html.escape(TP["_引用原則"])}</p>'
       + _tp_idx
+      + _tp_alt_css
       + _tp_body
       + '<h2>留言說的，跟查到的</h2>'
-      + '<p class="lede">上面這些店裡，有九家的留言寫法跟實際對不上。'
-        '不是留言的人記錯，多半是口語簡稱或店名只出現在照片裡。'
+      + f'<p class="lede">上面這些店裡，有九則留言的寫法值得逐則回查：'
+        f'{_tp_bad} 則跟實際對不上，一則反而證實了留言（淺草那家「140 年老店」確實是 140 年）。'
+        '對不上的多半不是留言的人記錯，而是口語簡稱，或店名只出現在照片裡。'
         '但如果照抄，讀者就會查不到或走錯地方。</p>'
       + '<div class="tw"><table><tr><th>留言裡寫的</th><th>實際是</th><th>差在哪</th></tr>'
       + _tp_corr + '</table></div>'
+      + _tp_cards
       + (('<h2>這頁是網友推的，不是專業評選</h2>'
           f'<p class="lede">{html.escape(TP["award"]["why"])}</p>'
           '<div class="tw narrow"><table>'
