@@ -2077,6 +2077,45 @@ if os.path.exists('ski-ticket.json'):
     # 雪場門戶的即時票價。票買了還是要飛過去。
     _ST_CITY = [('sapporo', '札幌'), ('sendai', '仙台'), ('tokyo', '東京'),
                 ('nagoya', '名古屋'), ('aomori', '青森'), ('akita', '秋田')]
+    # 分享圖卡。和本頁同一份 ski-ticket.json，由 make_ski_cards.py 產生。
+    # 気象庁 2026-10-20 修正寒候期予報 之後要連同資料一起更新再重跑。
+    _SK_CARD = [
+     ('01', '早鳥最多 44% off，但退不掉', '24 個雪場與關鍵數字'),
+     ('02', '四個常見誤解', '綁的是雪場不是日期'),
+     ('03', '共通券換到的是選擇權', '三張共通券比較'),
+     ('04', '截止日對上預報更新日', '哪幾批等得到新資訊'),
+     ('05', '本州日本海側降雪偏少 50%', '気象庁 寒候期予報'),
+     ('06', '10 月底前截止的 8 個', '先看快沒的'),
+     ('07', '北海道正好買不到早鳥票', '最保險的區域折扣最少'),
+     ('08', '三個通路，門檻差很多', '台灣人從哪買'),
+    ]
+    _sk_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      '點圖看原尺寸。</p>'
+      '<style>'
+      '.skk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.skk a{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;'
+      'background:var(--card);text-decoration:none}'
+      '.skk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.skk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.skk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.skk{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="skk">'
+      + ''.join(
+          f'<a href="{U("/japan-ski-lift-ticket/cards/ski-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-ski-lift-ticket/cards/ski-" + i + ".png")}" '
+          f'alt="雪票早鳥圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _SK_CARD)
+      + '</div>'
+      + f'<p class="disc">圖上的價格、折扣、截止日與降雪機率都是從這一頁同一份資料產生的，'
+        f'沒有另外手打。気象庁 會在 {_J["next_rev"]} 修正寒候期予報，屆時會連同圖一起更新。</p>')
+
     _stfare = ''
     for _s, _n in _ST_CITY:
         _f = by_city.get(_s) or []
@@ -2223,6 +2262,7 @@ if os.path.exists('ski-ticket.json'):
         f'出處：<a href="{ST["tickets_src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(ST["tickets_src_name"])}</a>，查證於 {ST["checked"]}。'
         f'售完即止，本表不代表現在還買得到。</p>'
+      + _sk_cards
 
       + f'<h2>{html.escape(ST["gap"]["t"])}</h2>'
       + f'<p class="lede">{html.escape(ST["gap"]["body"])}</p>'
@@ -5843,7 +5883,9 @@ def _card_stamp_warn():
             ('make_picks_cards', 'tokyo-picks.json',
              'tokyo/worth-flying-for/cards', '東京美食'),
             ('make_creditcard_cards', 'cards.json',
-             'japan-credit-card/cards', '旅日信用卡')):
+             'japan-credit-card/cards', '旅日信用卡'),
+            ('make_ski_cards', 'ski-ticket.json',
+             'japan-ski-lift-ticket/cards', '雪票早鳥')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
