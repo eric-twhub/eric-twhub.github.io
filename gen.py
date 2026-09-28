@@ -3542,7 +3542,8 @@ if os.path.exists('angel63.json'):
         f'<td class="nm">{html.escape(r[1])}</td></tr>'
         for r in AG['hours_conflict']['rows'])
 
-    _ag_kl = ''.join('<li>' + html.escape(x) + '</li>' for x in AG['klook']['points'])
+    _agk = AG['klook']
+    _ag_kl = ''.join('<li>' + html.escape(x) + '</li>' for x in _agk['points'])
     _ag_tk = ticket_cards(AG['tickets']['items'], 'tokyo')
     _ag_vs = ('<div class="tw"><table><tr>'
               + ''.join(f'<th>{html.escape(h)}</th>' for h in AG['vs']['head'])
@@ -3581,9 +3582,11 @@ if os.path.exists('angel63.json'):
       '官網自述店內備有英語、韓語、中文的菜單。官網本身右下角也能切繁中，'
       '但那是掛 Google 翻譯的外掛，不是官方中文版，金額與取消規定這種地方建議切回日文再確認一次。'),
      ('官網訂還是 Klook 訂？',
-      '本站不給結論。Klook 的價格由前端算繪抓不到穩定數值，而且兩邊的方案內容不完全對應，沒辦法直接比。'
-      'Klook 的差別是附贈原創周邊、提前付款當天出示憑證，以及頁面標示遲到超過 15 分鐘'
-      '可能無法安排指定座位且不退款。官網的好處是方案最齊全，VIP 與加購都在那邊。'),
+      '同一種座位是 Klook 便宜。2026-09-28 查到 Klook 自由席起價 NT$1,454，'
+      '官網最接近的普通座是 ¥8,500，換算約 NT$1,743，Klook 便宜約 17%，而且附贈原創周邊。'
+      '但 Klook 只賣自由席與 VIP 兩種方案，想坐前排的 ど迫力 系列只能在官網訂；'
+      '全場最便宜的女子会プラン ¥3,000（約 NT$615）Klook 也沒有。'
+      '另外 Klook 明寫座位當天現場安排、不接受指定，官網的迫力系列可以指定但要註冊會員。'),
     ]
     ag_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in ag_faq)
@@ -3660,7 +3663,16 @@ if os.path.exists('angel63.json'):
       + f'<p class="disc">{html.escape(AG["vs"]["note"])}</p>'
       + '<h3>從 Klook 訂 63 ANGEL 的差別</h3>'
       + f'<ul class="lede">{_ag_kl}</ul>'
-      + f'<p class="disc">{html.escape(AG["klook"]["no_price"])}</p>'
+      + ((f'<h3>{html.escape(_agk["compare"]["t"])}</h3>'
+          '<div class="tw narrow"><table>'
+          + ''.join('<tr><td class="nm"><b>' + html.escape(r[0]) + '</b></td>'
+                    + f'<td>{html.escape(r[1])}</td>'
+                    + f'<td class="win"><b>{html.escape(r[2])}</b></td></tr>'
+                    for r in _agk['compare']['rows'])
+          + '</table></div>'
+          f'<p class="lede">{html.escape(_agk["compare"]["so"])}</p>'
+          f'<p class="disc">{html.escape(_agk["compare"]["caveat"])}</p>')
+         if _agk.get('compare') else '')
       + '<h2>基本資料</h2>'
       + '<div class="tldr"><ul>'
         f'<li><b>地址</b>：{html.escape(AG["addr"])}</li>'
