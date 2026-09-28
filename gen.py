@@ -4857,6 +4857,33 @@ if HOL:
         _gap_note = ('<p class="disc">今天抓到的票價樣本不足以分組計算價差，'
                      '這一段等資料夠了會自動出現。</p>')
 
+    # 「只有日本連假」那一格的方向每天都可能翻過來（本站 2026-09-28 就從 -7% 變成 +4%），
+    # 所以敘述由當天算出來的數字決定，不要寫死「反而比較便宜」。
+    _jp_pct = None
+    if _hp:
+        _jp_pct = next((p for l, n, m, p in _hp[2] if l == '只有日本連假' and p is not None),
+                       None)
+    if _jp_pct is None:
+        _jp_only_pp = ('<div class="pp"><b>只有日本放假的日子，樣本還不夠</b>'
+                       '<p>今天抓到的票價裡，這一類的出發日不滿 10 筆，不給數字。</p></div>')
+    elif _jp_pct <= -3:
+        _jp_only_pp = ('<div class="pp"><b>日本自己連假時，機票反而便宜</b>'
+                       f'<p>今天的資料是 {_jp_pct:+.0f}%。那幾天台灣要上班，'
+                       '願意請假出國的人變少，票價就沒有支撐。'
+                       '但別高興太早：省下的機票錢很可能在住宿上吐回去，'
+                       '因為那幾天日本人正在自己國內旅行。</p></div>')
+    elif _jp_pct < 8:
+        _jp_only_pp = ('<div class="pp"><b>只有日本放假，對機票的影響小得多</b>'
+                       f'<p>今天的資料是 {_jp_pct:+.0f}%，'
+                       '遠小於台灣連假那一格。那幾天台灣要上班，'
+                       '願意請假出國的人變少，機票就少了推力。'
+                       '但住宿是另一回事：那幾天日本人正在自己國內旅行。</p></div>')
+    else:
+        _jp_only_pp = ('<div class="pp"><b>日本連假也會推高機票，只是幅度較小</b>'
+                       f'<p>今天的資料是 {_jp_pct:+.0f}%。'
+                       '它推不動台灣這邊的出國需求，但會推高住宿，'
+                       '而且日本國內線與新幹線也會跟著緊。</p></div>')
+
     # 把算好的結果存成資料檔給 make_holiday_cards.py 用。
     # 請假試算是八十幾行的邏輯，票價價差又要有當日的 scan 資料才算得出來，
     # 兩樣在圖卡腳本裡重寫一次一定會漂移，所以由這裡輸出唯一一份。
@@ -4870,6 +4897,45 @@ if HOL:
                   'rows': [{'label': l, 'n': n, 'median': m, 'pct': p}
                            for l, n, m, p in _hp[2]]} if _hp else None),
     }, ensure_ascii=False, indent=1))
+
+    # 分享圖卡。資料來自上面那個 cards-data.json，由 make_holiday_cards.py 產生。
+    _HC_CARD = [
+     ('01', '該避開的是台灣的連假', '三國行事曆與關鍵數字'),
+     ('02', '台灣飛日本，連假貴多少', '當日票價快照'),
+     ('03', '接下來會撞期的日子', '兩國以上同時放長假'),
+     ('04', '只請 1 天，能休幾天', '依多出來的天數排序'),
+     ('05', '完整排法 ①', '請 1 到 4 天的最佳解'),
+     ('06', '完整排法 ②', '2027 下半年'),
+     ('07', '日本接下來的連假', '影響的是住宿不是機票'),
+     ('08', '台灣接下來的連假', '機票漲價的主因'),
+    ]
+    _hc_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      '點圖看原尺寸。</p>'
+      '<style>'
+      '.hck{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.hck a{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;'
+      'background:var(--card);text-decoration:none}'
+      '.hck img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.hck b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.hck s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.hck{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="hck">'
+      + ''.join(
+          f'<a href="{U("/japan-holiday-calendar/cards/hol-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-holiday-calendar/cards/hol-" + i + ".png")}" '
+          f'alt="三國連假圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _HC_CARD)
+      + '</div>'
+      + '<p class="disc">行事曆與請假排法都是從這一頁同一份計算產生的。'
+        '第 2 張的票價是產生當下的單日快照，和上表的即時數字可能不同，'
+        '圖上有標產生時間。</p>')
 
     _ov_rows = ''
     for o in HOL_OVER:
@@ -4909,8 +4975,9 @@ if HOL:
      ('為什麼要看日本的假期？我又不是日本人',
       '因為你在跟日本人搶同一批住宿。不過要分清楚：機票的價格主要由台灣的連假決定，'
       '因為那是台灣人出國的日子；日本的連假影響的是你到了之後的住宿。'
-      '本站用自己的票價資料算過，日本自己放連假而台灣要上班的那些日子，'
-      '機票中位價反而比平常日低。'),
+      '上面那張價差表每天用當日票價重算，'
+      '「只有日本連假」那一格通常遠低於「只有台灣連假」，'
+      '但它是正是負會隨當天的資料變動，以表上的數字為準。'),
      ('雙十節是不是剛好卡到中國的十一黃金週？',
       '2026 年不是。中國的國慶連假是 10/1 到 10/7，而且 10/10（週六）在中國是'
       '調休上班日，這寫在國務院辦公廳的通知裡。真正撞在一起的是台灣與日本：'
@@ -4971,16 +5038,14 @@ if HOL:
         '<div class="pp"><b>台灣連假才是機票漲價的主因</b>'
         '<p>票價反映的是台灣這邊的需求。台灣放連假、大家一起出國，'
         '機位就緊。日本那邊放不放假，對「台灣飛日本」這個航段的供需影響有限。</p></div>'
-        '<div class="pp"><b>日本自己連假時，機票反而可能便宜</b>'
-        '<p>如果那幾天台灣要上班，願意請假出國的人變少，票價就沒有支撐。'
-        '但別高興太早：你省下的機票錢，很可能在住宿上吐回去，'
-        '因為那幾天日本人正在自己國內旅行。</p></div>'
-        '<div class="pp"><b>所以真正該避開的是台灣的連假</b>'
+        + _jp_only_pp
+        + '<div class="pp"><b>所以真正該避開的是台灣的連假</b>'
         '<p>想省機票就避開台灣連假；想省住宿就避開日本連假。'
         '兩者都避開的日子最便宜，但那通常要請假。</p></div>'
         '</div>'
       + '<p class="disc">本站只有機票資料，所以上表算得出來的是機票。'
         '住宿的漲幅沒有自己的數據可以支撐，因此不給數字，只說明方向。</p>'
+      + _hc_cards
       + (('<h2>請幾天假，可以連休幾天</h2>'
           '<p class="lede">用行政院人事行政總處的官方行事曆逐日算出來的，不是手打的表。'
           '每個假期都把請 1 到 4 天的最佳排法列出來，橫著看就知道多請一天划不划算。</p>'
@@ -5899,7 +5964,9 @@ def _card_stamp_warn():
             ('make_creditcard_cards', 'cards.json',
              'japan-credit-card/cards', '旅日信用卡'),
             ('make_ski_cards', 'ski-ticket.json',
-             'japan-ski-lift-ticket/cards', '雪票早鳥')):
+             'japan-ski-lift-ticket/cards', '雪票早鳥'),
+            ('make_holiday_cards', 'japan-holiday-calendar/cards-data.json',
+             'japan-holiday-calendar/cards', '三國連假')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
