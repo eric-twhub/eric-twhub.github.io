@@ -3370,8 +3370,14 @@ if os.path.exists('tokyo-picks.json'):
                     f'rel="nofollow noopener">'
                     + ('官方網站' if st.get('official') else '參考來源')
                     + ' →</a></p>')
+        award = ''
+        if st.get('award'):
+            award = ('<p class="win"><b>🏆 ' + html.escape(st['award']) + '</b>'
+                     + (f'　<a href="{st["award_url"]}" target="_blank" '
+                        f'rel="nofollow noopener">名單 →</a>' if st.get('award_url') else '')
+                     + '</p>')
         return ('<div class="pp' + (' lose' if dead else '') + '">' + head
-                + f'<p>{html.escape(st["cat"])}</p>'
+                + f'<p>{html.escape(st["cat"])}</p>' + award
                 + ('<ul class="lede">' + ''.join(info) + '</ul>' if info else '')
                 + (f'<p class="disc">{html.escape(st["note"])}</p>' if st.get('note') else '')
                 + quote + site + '</div>')
@@ -3452,6 +3458,22 @@ if os.path.exists('tokyo-picks.json'):
       + _tp_corr + '</table></div>'
       + f'<p class="disc">{html.escape(TP["_引用原則"])}</p>'
       + _tp_body
+      + (('<h2>這頁是網友推的，不是專業評選</h2>'
+          f'<p class="lede">{html.escape(TP["award"]["why"])}</p>'
+          '<div class="tw narrow"><table>'
+          f'<tr><td class="nm"><b>評選</b></td><td>{html.escape(TP["award"]["name"])}'
+          f'（{html.escape(TP["award"]["by"])}）</td></tr>'
+          f'<tr><td class="nm"><b>方法</b></td><td>{html.escape(TP["award"]["how"])}</td></tr>'
+          f'<tr><td class="nm"><b>結果</b></td><td>{html.escape(TP["award"]["result"])}</td></tr>'
+          f'<tr><td class="nm"><b>各城市</b></td><td>{html.escape(TP["award"]["cities"])}</td></tr>'
+          f'<tr><td class="nm"><b>最高</b></td><td>{html.escape(TP["award"]["top"])}</td></tr>'
+          '</table></div>'
+          f'<p class="lede"><b>{html.escape(TP["award"]["overlap"])}</b></p>'
+          f'<p class="disc">查證於 {TP["award"]["checked"]}　'
+          f'<a href="{TP["award"]["url"]}" target="_blank" rel="nofollow noopener">'
+          f'{html.escape(TP["award"]["by"])}・{html.escape(TP["award"]["name"])} 完整名單 →</a>'
+          '　本站沒有轉載該名單，只指出兩份清單的差異。</p>')
+         if TP.get('award') else '')
       + '<h2>這幾則沒解開</h2>'
       + '<p class="lede">有人推薦但線索不足，查不到是哪一家，本站不硬湊。</p>'
       + f'<ul class="lede">{_tp_un}</ul>'
