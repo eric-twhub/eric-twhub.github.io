@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-28-taichung-okinawa",
- "generated": "2026-09-28 02:07",
+ "generated": "2026-09-28 09:41",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -24,10 +24,10 @@
   "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=IT17929986001793007600000090RMQOKA17933079001793309700000090OKARMQ_c22163bf4cbfb1d0fe5e0768c79d253f_19795&search_date=24092026&expected_price_uuid=01a0d547-f08f-8030-2559-86483b569e8c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=7411&marker=775639"
  },
  "reasons": [
-  "10 月出發的票，每天最便宜的平均要 NT$10,754（26 天有紀錄），這張低 31%"
+  "10 月出發的票，每天最便宜的平均要 NT$10,718（26 天有紀錄），這張低 31%"
  ],
- "med": 11289,
- "n_rt": 84,
+ "med": 11306,
+ "n_rt": 83,
  "others": [
   {
    "o": "RMQ",
@@ -53,7 +53,7 @@
    "air": "LJ",
    "airname": "真航空",
    "cls": "lcc",
-   "price": 7950,
+   "price": 7948,
    "dep": "2026-09-28",
    "ret": "2026-10-01",
    "dept": "16:00",
@@ -63,7 +63,7 @@
    "dur": 1115,
    "dur_to": 265,
    "gate": "Trip.com",
-   "url": "https://www.aviasales.com/search/RMQ2809OKA01101?t=LJ17906112001790676300001025RMQPUSOKA17908830001790884800000090OKARMQ_253751c38fd667492333ef284952383c_21145&search_date=27092026&expected_price_uuid=01a0e101-8c4c-8030-eb56-aaeb95fda515&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=k8m_W5d9IWFmJiF6aCR6jQ&expected_price_source=share&expected_price_currency=twd&expected_price=7950&marker=775639"
+   "url": "https://www.aviasales.com/search/RMQ2809OKA01101?t=LJ17906112001790676300001025RMQPUSOKA17908830001790884800000090OKARMQ_253751c38fd667492333ef284952383c_21145&search_date=27092026&expected_price_uuid=01a0e101-8c4c-8030-eb56-aaeb95fda515&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=k8m_W5d9IWFmJiF6aCR6jQ&expected_price_source=share&expected_price_currency=twd&expected_price=7948&marker=775639"
   },
   {
    "o": "RMQ",
@@ -71,7 +71,7 @@
    "air": "LJ",
    "airname": "真航空",
    "cls": "lcc",
-   "price": 8278,
+   "price": 8264,
    "dep": "2026-10-10",
    "ret": "2026-10-13",
    "dept": "17:30",
@@ -81,7 +81,7 @@
    "dur": 1145,
    "dur_to": 305,
    "gate": "Trip.com",
-   "url": "https://www.aviasales.com/search/RMQ1010OKA13101?t=LJ17916534001791720300001055RMQICNOKA17919180001791919800000090OKARMQ_a178ed2fe6a428e6e9929e7b96665d1e_22187&search_date=25092026&expected_price_uuid=01a0d68c-ba04-8030-6b7a-218cb36a5851&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=5zIcaambnU45iDUFAFpvyQ&expected_price_source=share&expected_price_currency=twd&expected_price=8278&marker=775639"
+   "url": "https://www.aviasales.com/search/RMQ1010OKA13101?t=LJ17916534001791720300001055RMQICNOKA17919180001791919800000090OKARMQ_a178ed2fe6a428e6e9929e7b96665d1e_22005&search_date=28092026&expected_price_uuid=01a0e59c-41ea-8030-2614-43e92ebd79ba&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=5zIcaambnU45iDUFAFpvyQ&expected_price_source=share&expected_price_currency=twd&expected_price=8264&marker=775639"
   }
  ]
 }
