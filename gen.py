@@ -3617,6 +3617,44 @@ if os.path.exists('japan-rules.json'):
                '輸入房價一次比較。另附 2026/4/24 起的行動電源新規，'
                '以及台日雙向的肉製品檢疫罰則。全部引官方原文。')
 
+    # 分享圖卡。和本頁同一份 japan-rules.json，由 make_rules_cards.py 產生。
+    _RL_CARD = [
+     ('01', '四條新制，都會動到你的錢包', '出境稅、住宿稅、電源、檢疫'),
+     ('02', '出境稅 ¥1,000 → ¥3,000', '看的是發券日不是出發日'),
+     ('03', '住宿稅怎麼算', '四個地區五套算法'),
+     ('04', '住宿稅實算', '同樣房價各地差很多'),
+     ('05', '行動電源的七條新規', '哪幾條違反有罰則'),
+     ('06', '肉製品：流傳的數字是錯的', '100 萬是六年前的舊數字'),
+     ('07', '這些帶不帶得了', '肉鬆、肉乾、泡麵肉包'),
+     ('08', '還沒查的三件', '這頁的範圍'),
+    ]
+    _rl_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      '點圖看原尺寸。</p>'
+      '<style>'
+      '.rlk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.rlk a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.rlk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.rlk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.rlk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.rlk{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="rlk">'
+      + ''.join(
+          f'<a href="{U("/japan-travel-rules/cards/rule-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-travel-rules/cards/rule-" + i + ".png")}" '
+          f'alt="日本新制圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _RL_CARD)
+      + '</div>'
+      + f'<p class="disc">圖上的稅率、級距與罰則都是從這一頁同一份資料產生的，'
+        f'沒有另外手打，每一條都讀官方原文，查證於 {JR["checked"]}。</p>')
+
     write('japan-travel-rules/index.html',
       head(jr_title, jr_desc, 'japan-travel-rules/',
            '<script type="application/ld+json">' + jr_ld + '</script>')
@@ -3649,6 +3687,7 @@ if os.path.exists('japan-rules.json'):
       + '<p class="lede">東京同時列了現行與 2027 新制，因為那是同一個地方的兩套算法，'
         '你出發的時間決定適用哪一套。</p>' + _jr_tbl
       + '<h2>各地的細節與出處</h2>' + _jr_notes
+      + _rl_cards
       + '<h2>出境稅：看的是發券日，不是出發日</h2>'
       + f'<blockquote class="q">{html.escape(_dt["quote"])}'
         f'<cite><a href="{_dt["src"]}" target="_blank" rel="nofollow noopener">'
@@ -6013,7 +6052,9 @@ def _card_stamp_warn():
             ('make_apple_cards', 'apple.json',
              'apple-japan-price/cards', '台日 Apple 價差'),
             ('make_skibag_cards', 'ski.json',
-             'japan-ski-baggage/cards', '雪具託運')):
+             'japan-ski-baggage/cards', '雪具託運'),
+            ('make_rules_cards', 'japan-rules.json',
+             'japan-travel-rules/cards', '日本新制')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
