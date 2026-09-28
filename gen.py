@@ -3341,6 +3341,32 @@ if os.path.exists('tokyo-picks.json'):
                 bits.append(f'{lbl} {_tp_num(sc[k])}')
         return '　·　'.join(bits)
 
+    def _tp_map(st):
+        """用店名加地址組 Google Maps 搜尋網址。
+
+        不用 place ID：那個要另外查，而且店家搬遷後會失效。
+        搜尋網址是官方支援的格式，店名對得上就找得到。
+        """
+        ad = (st.get('addr') or '')
+        # 地址欄偶爾寫成「六本木店：…；另有東久留米店」，只取第一段
+        for sep in ('；', ';'):
+            ad = ad.split(sep)[0]
+        if '：' in ad:
+            ad = ad.split('：', 1)[1]
+        ad = ad.strip()
+        if not ad:
+            return ''
+        # 地址在本站是繁體寫法，日本的地圖對不準，查詢字串換回日文漢字
+        JP = {'惠比壽': '恵比寿', '丸之內': '丸の内', '內幸町': '内幸町',
+              '大樓': 'ビル', '淺草': '浅草', '豐島': '豊島', '澀谷': '渋谷',
+              '藏前': '蔵前', '區': '区', '壽': '寿', '濱': '浜', '鹽': '塩'}
+        # 長的先換，否則「大樓」會被「樓」先吃掉
+        for k in sorted(JP, key=len, reverse=True):
+            ad = ad.replace(k, JP[k])
+        q = (st.get('jp') or st['n']) + ' ' + ad
+        return ('https://www.google.com/maps/search/?api=1&query='
+                + urllib.parse.quote(q, safe=''))
+
     def _tp_row(st):
         sc = st.get('src') or {}
         # 官方資料：只列有查到的欄位，沒查到就不擠
@@ -3349,7 +3375,13 @@ if os.path.exists('tokyo-picks.json'):
                        ('access', '交通'), ('price', '價位'), ('tel', '電話'),
                        ('since', '創業'), ('opened', '開幕')):
             if st.get(k):
-                info.append(f'<li><b>{lbl}</b>：{html.escape(str(st[k]))}</li>')
+                extra = ''
+                if k == 'addr':
+                    mu = _tp_map(st)
+                    if mu:
+                        extra = (f'　<a href="{mu}" target="_blank" '
+                                 f'rel="nofollow noopener">📍 地圖</a>')
+                info.append(f'<li><b>{lbl}</b>：{html.escape(str(st[k]))}{extra}</li>')
         dead = st.get('status') == '已結束營業'
         head = (f'<b>{html.escape(st["n"])}</b>'
                 + (f'<br><small style="color:var(--dim)">{html.escape(st["jp"])}</small>'
@@ -3451,13 +3483,14 @@ if os.path.exists('tokyo-picks.json'):
         '要不要預約，或者它其實已經收了。這頁把每一家的官方資料查出來補上。</div>'
         '<div class="tbuf"><b>其中一家已經歇業</b>：根室花まる 銀座店在 2026 年 9 月 23 日結束營業。'
         '留言寫的時候店還在，照抄就會推薦到一家不存在的店。</div></div>'
+      + f'<p class="disc">{html.escape(TP["_引用原則"])}</p>'
+      + _tp_body
       + '<h2>留言說的，跟查到的</h2>'
-      + '<p class="lede">這幾則不是留言的人記錯，多半是口語簡稱或店名只在照片裡。'
+      + '<p class="lede">上面這些店裡，有九家的留言寫法跟實際對不上。'
+        '不是留言的人記錯，多半是口語簡稱或店名只出現在照片裡。'
         '但如果照抄，讀者就會查不到或走錯地方。</p>'
       + '<div class="tw"><table><tr><th>留言裡寫的</th><th>實際是</th><th>差在哪</th></tr>'
       + _tp_corr + '</table></div>'
-      + f'<p class="disc">{html.escape(TP["_引用原則"])}</p>'
-      + _tp_body
       + (('<h2>這頁是網友推的，不是專業評選</h2>'
           f'<p class="lede">{html.escape(TP["award"]["why"])}</p>'
           '<div class="tw narrow"><table>'
