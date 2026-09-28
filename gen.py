@@ -5557,6 +5557,45 @@ document.addEventListener('DOMContentLoaded',function(){
                '這頁把 Klook 上五個日本 eSIM 商品、232 個方案的價格拆成每日單價，'
                '輸入天數與每日用量就排序。另外說明總流量型為什麼天數幾乎不加價。')
 
+    # 分享圖卡。和本頁同一份 esim.json，由 make_esim_cards.py 產生。
+    _ES_CARD = [
+     ('01', '「NT$11 起」，起的是什麼', '五個商品與關鍵數字'),
+     ('02', '5 天吃到飽，價差多少', '同樣需求才比得出來'),
+     ('03', '評價要連樣本數一起看', '95% 信賴區間'),
+     ('04', '逐頁查完才知道的三件事', '降速、退款、相容性'),
+     ('05', '降速到多少只有一家寫', '五個商品的基本資料'),
+     ('06', '原生還是漫遊是兩個問題', 'HR 漫遊與 MVNO'),
+     ('07', '啟用之後自己驗一次', '三十秒查 IP 出口'),
+     ('08', '沒有一個商品全贏', '這頁的範圍'),
+    ]
+    _es_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      '點圖看原尺寸。</p>'
+      '<style>'
+      '.esk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.esk a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.esk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.esk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.esk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.esk{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="esk">'
+      + ''.join(
+          f'<a href="{U("/japan-esim/cards/esim-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-esim/cards/esim-" + i + ".png")}" '
+          f'alt="日本 eSIM 圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _ES_CARD)
+      + '</div>'
+      + f'<p class="disc">圖上的價格、評價區間與條款都是從這一頁同一份資料產生的，'
+        f'沒有另外手打，逐頁查證於 {_ES["checked"]}。'
+        f'Klook 的價格與方案隨時可能調整，下單前以商品頁為準。</p>')
+
     write('japan-esim/index.html',
       head(ep_title, ep_desc, 'japan-esim/',
            '<script type="application/ld+json">' + ep_ld + '</script>')
@@ -5600,6 +5639,7 @@ document.addEventListener('DOMContentLoaded',function(){
         f'<a href="{U("/japan-sms-roaming/")}">整理在這一頁</a>。'
         f'「未載」代表商品頁上找不到，不是「沒有」，查不到就不猜。</p>'
       + '<h2>逐頁查完才知道的三件事</h2>' + _ep_obs
+      + _es_cards
       + '<h2>三個容易誤解的地方</h2>'
       + f'<h3>1. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][0])}</h3>'
         f'<p class="lede">這是唯一一件買之前查不到、但影響整趟網路體驗的事。'
@@ -6054,7 +6094,9 @@ def _card_stamp_warn():
             ('make_skibag_cards', 'ski.json',
              'japan-ski-baggage/cards', '雪具託運'),
             ('make_rules_cards', 'japan-rules.json',
-             'japan-travel-rules/cards', '日本新制')):
+             'japan-travel-rules/cards', '日本新制'),
+            ('make_esim_cards', 'esim.json',
+             'japan-esim/cards', '日本 eSIM')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
