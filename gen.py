@@ -2088,11 +2088,13 @@ if os.path.exists('ski-ticket.json'):
      ('06', '10 月底前截止的 8 個', '先看快沒的'),
      ('07', '北海道正好買不到早鳥票', '最保險的區域折扣最少'),
      ('08', '三個通路，門檻差很多', '台灣人從哪買'),
+     ('09', '11 月底到 12 月中截止的', '等得到 10/20 的預報修正'),
+     ('10', '12 月中以後截止的', '連降雪量預報都等得到'),
     ]
     _sk_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
-      '點圖看原尺寸。</p>'
+      '<p class="lede">同一份資料做成十張圖，24 個雪場依截止日分成三張，'
+      '存下來或轉發都可以，不用註明出處。點圖看原尺寸。</p>'
       '<style>'
       '.skk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.skk a{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;'

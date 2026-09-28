@@ -83,6 +83,7 @@ h1 em{font-style:normal;color:#c2410c}
 .c2{flex:0 0 140px;text-align:right;font-size:24px;color:#63605c;
  font-variant-numeric:tabular-nums;white-space:nowrap}
 .c2.soon{color:#c4563a;font-weight:700}
+.c2 small{display:block;font-size:18px;color:#8a847c;margin-top:2px}
 /* 誤解卡 */
 .myth{padding:12px 0;border-bottom:1px solid #e5e3de}
 .myth:last-child{border-bottom:0}
@@ -158,7 +159,7 @@ def off(t):
 
 
 def build(d, today):
-    n = 8
+    n = 10
     tk = d['tickets']
     J = d['jma']
     fnote = f'票價與截止日查證於 {d["checked"]}，售完即提前結束'
@@ -248,24 +249,39 @@ def build(d, today):
     out.append(('ski-05.png', page(inner)))
 
     # ── 6 快截止的 ──
-    urgent = sorted([t for t in tk if t['cut'] <= '2026-10-31'],
-                    key=lambda t: (t['cut'], -off(t)))
-    rows = ('<div class="hd"><div class="num"></div><div class="nm">雪場</div>'
-            '<div class="c1">早鳥價</div><div class="c2">截止</div></div>')
-    for j, t in enumerate(urgent, 1):
-        rows += (f'<div class="row"><div class="num">{j:02}</div>'
-                 f'<div class="nm">{E(t["n"])}<s>{E(t["pref"])}・原價 ¥{t["was"]:,}</s></div>'
-                 f'<div class="c1">¥{t["now"]:,}<small>{off(t)}% off</small></div>'
-                 f'<div class="c2{" soon" if t["cut"] == soon else ""}">'
-                 f'{t["cut"][5:].replace("-", "/")}</div></div>')
-    inner = ('<div class="kick">先看快沒的</div>'
-             f'<h1>10 月底前截止的<em> {len(urgent)} 個</em></h1>'
-             f'<div class="sub">紅色那批在 {soon[5:].replace("-", "/")} 結束，'
-             f'只剩 {days} 天，而且等不到 {J["next_rev"]} 的預報修正。</div>'
-             f'<div class="legend">其餘 {len(tk) - len(urgent)} 個雪場賣到 12 月中之後，'
-             '可以等預報更新再決定。</div>'
-             f'<div class="list">{rows}</div>' + foot(6, n, fnote))
-    out.append(('ski-06.png', page(inner)))
+    # 24 個雪場依截止日切成三張，每張八個。之前只放前八個，
+    # 其餘十六個完全沒上卡片，那是為了湊八張砍掉的，不是資料沒有。
+    by_cut = sorted(tk, key=lambda t: (t['cut'], -off(t)))
+    BATCH = [
+        (6, '10 月底前截止的', by_cut[:8],
+         f'紅色那批在 {soon[5:].replace("-", "/")} 結束，只剩 {days} 天，'
+         f'而且等不到 {J["next_rev"]} 的預報修正。'),
+        (9, '11 月底到 12 月中截止的', by_cut[8:16],
+         f'這批決定前等得到 {J["next_rev"]} 的預報修正。'),
+        (10, '12 月中以後截止的', by_cut[16:],
+         '這批連 11/15 之後才開始納入降雪量的 3 か月予報 都等得到。'),
+    ]
+    for idx, title, items, sub in BATCH:
+        rows = ('<div class="hd"><div class="num"></div><div class="nm">雪場</div>'
+                '<div class="c1">早鳥價</div><div class="c2">截止</div></div>')
+        for j, t in enumerate(items, 1):
+            rows += (f'<div class="row"><div class="num">{j:02}</div>'
+                     f'<div class="nm">{E(t["n"])}'
+                     f'<s>{E(t["pref"])}・原價 ¥{t["was"]:,}</s></div>'
+                     f'<div class="c1">¥{t["now"]:,}<small>{off(t)}% off</small></div>'
+                     f'<div class="c2{" soon" if t["cut"] == soon else ""}">'
+                     f'{t["cut"][5:].replace("-", "/")}'
+                     # 跨年的那幾張只印月日會被當成今年，年份不同就標出來
+                     + (f'<small>{t["cut"][:4]}</small>'
+                        if t['cut'][:4] != soon[:4] else '')
+                     + '</div></div>')
+        inner = ('<div class="kick">依截止日排</div>'
+                 f'<h1>{title}<em> {len(items)} 個</em></h1>'
+                 f'<div class="sub">{sub}</div>'
+                 f'<div class="legend">{len(tk)} 個雪場分成三張，這是其中一張。'
+                 '售完即提前結束，本表不代表現在還買得到。</div>'
+                 f'<div class="list">{rows}</div>' + foot(idx, n, fnote))
+        out.append((f'ski-{idx:02}.png', page(inner)))
 
     # ── 7 北海道的缺口 ──
     g = d['gap']
