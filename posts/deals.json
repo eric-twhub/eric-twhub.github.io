@@ -13,19 +13,19 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,685（27 天有紀錄），這張低 31%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,684（27 天有紀錄），這張低 31%"
   ],
   "med": 11288,
   "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=IT17929986001793007600000090RMQOKA17933079001793309700000090OKARMQ_c22163bf4cbfb1d0fe5e0768c79d253f_19795&search_date=24092026&expected_price_uuid=01a0d547-f08f-8030-2559-86483b569e8c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=7411&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 7761,
+   "lo": 7758,
    "hi": 12654,
    "days": 29
   },
   "mbase": {
-   "avg": 10685,
+   "avg": 10684,
    "days": 27,
    "month": 10
   },
@@ -34,13 +34,13 @@
  },
  {
   "slug": "2026-09-28-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$2,338",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$2,372",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
-  "price": 11123,
+  "price": 11089,
   "air": "飛大阪再轉乘",
-  "fl_price": 6935,
+  "fl_price": 6901,
   "fl_rt": true,
   "fl_to": "大阪",
   "tr_twd": 2094,
@@ -50,10 +50,10 @@
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$2,338"
+   "比直飛省 NT$2,372"
   ],
   "med": 13461,
-  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=SL17916561001791669600000165TPEKIX17920710001792077600000170KIXTPE_d98d47da03dbb044f61828de00a04f41_18421&search_date=28092026&expected_price_uuid=01a0e73d-26f6-8030-660c-26a02811513e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=v6Uf5C-FFXcR6N2M_kMEaA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6935&marker=775639",
+  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=MM17916561001791669600000165TPEKIX17920506001792058100000185KIXTPE_1b4c599b3c54d28c32d16b83e64729d6_18337&search_date=28092026&expected_price_uuid=01a0e7e2-5148-8030-6a8d-0ce76b90c562&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=FFGZYgrbkltanVMqNNYxUQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6901&marker=775639",
   "hotelcity": "廣島",
   "cslug": "hiroshima"
  },
