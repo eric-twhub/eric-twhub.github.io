@@ -3367,6 +3367,8 @@ if os.path.exists('tokyo-picks.json'):
         return ('https://www.google.com/maps/search/?api=1&query='
                 + urllib.parse.quote(q, safe=''))
 
+    _TP_ID = {id(x): f's{i + 1:02d}' for i, x in enumerate(TP['stores'])}
+
     def _tp_row(st):
         sc = st.get('src') or {}
         # 官方資料：只列有查到的欄位，沒查到就不擠
@@ -3408,11 +3410,41 @@ if os.path.exists('tokyo-picks.json'):
                      + (f'　<a href="{st["award_url"]}" target="_blank" '
                         f'rel="nofollow noopener">名單 →</a>' if st.get('award_url') else '')
                      + '</p>')
-        return ('<div class="pp' + (' lose' if dead else '') + '">' + head
+        return (f'<div class="pp{" lose" if dead else ""}" '
+                f'id="{_TP_ID[id(st)]}">' + head
                 + f'<p>{html.escape(st["cat"])}</p>' + award
                 + ('<ul class="lede">' + ''.join(info) + '</ul>' if info else '')
                 + (f'<p class="disc">{html.escape(st["note"])}</p>' if st.get('note') else '')
                 + quote + site + '</div>')
+
+    _tp_idx_css = ('<style>'
+                   '.tpx{margin:16px 0 26px}'
+                   '.tpx h3{font-size:.82rem;letter-spacing:.08em;color:var(--dim);'
+                   'margin:14px 0 6px;font-weight:700}'
+                   '.tpx ul{list-style:none;margin:0;padding:0;display:flex;'
+                   'flex-wrap:wrap;gap:6px}'
+                   '.tpx li{margin:0}'
+                   '.tpx a{display:inline-block;font-size:.86rem;padding:4px 10px;'
+                   'border:1px solid var(--line);border-radius:999px;'
+                   'background:var(--card);text-decoration:none}'
+                   '.tpx a:hover{border-color:var(--hot)}'
+                   '.tpx a.dead{text-decoration:line-through;color:var(--dim)}'
+                   '.pp[id]{scroll-margin-top:78px}'
+                   '</style>')
+
+    _tp_idx = _tp_idx_css + '<div class="tpx">'
+    for grp in TP['_分組']:
+        rows = [x for x in TP['stores'] if x.get('grp') == grp]
+        if not rows:
+            continue
+        rows.sort(key=lambda x: -((x.get('src') or {}).get('likes') or 0))
+        _tp_idx += (f'<h3>{html.escape(grp)}　{len(rows)}</h3><ul>'
+                    + ''.join(
+                        f'<li><a href="#{_TP_ID[id(x)]}"'
+                        + (' class="dead"' if x.get('status') == '已結束營業' else '')
+                        + f'>{html.escape(x["n"])}</a></li>' for x in rows)
+                    + '</ul>')
+    _tp_idx += '</div>'
 
     _tp_body = ''
     for grp in TP['_分組']:
@@ -3484,6 +3516,7 @@ if os.path.exists('tokyo-picks.json'):
         '<div class="tbuf"><b>其中一家已經歇業</b>：根室花まる 銀座店在 2026 年 9 月 23 日結束營業。'
         '留言寫的時候店還在，照抄就會推薦到一家不存在的店。</div></div>'
       + f'<p class="disc">{html.escape(TP["_引用原則"])}</p>'
+      + _tp_idx
       + _tp_body
       + '<h2>留言說的，跟查到的</h2>'
       + '<p class="lede">上面這些店裡，有九家的留言寫法跟實際對不上。'
