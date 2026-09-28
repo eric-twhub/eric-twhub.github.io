@@ -971,7 +971,6 @@ def topnav(cur=''):
             + link('/japan-holiday-calendar/', '📅 三國連假撞期')
             + link('/japan-travel-rules/', '📋 出境稅與住宿稅')
             + link('/japan-jttp/', '🛂 JTTP 快速通關')
-            + link('/threads-japan/', '🔥 Threads 日本熱搜')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
@@ -1015,6 +1014,9 @@ def topnav(cur=''):
             + link('/deals/', '🔥 機票特價')
             + ''.join(menu(l, i, end=(k == len(SEC) - 1))
                       for k, (l, i) in enumerate(SEC))
+            # Threads 熱搜是內容彙整頁，不是制度，所以不收在「新制度」那組裡。
+            # 擺在信用卡右邊當頂層連結，讓它自己就是一個入口。
+            + link('/threads-japan/', '🔥 日本熱搜', cur == 'threads')
             + burger
             + '</nav>')
 
@@ -1735,7 +1737,7 @@ if os.path.exists('baggage.json'):
       '買全服務航空的特價票之前，一樣要確認那個艙等實際含多少行李。'),
      ('為什麼本站只列了三家航空的行李規則？',
       f'因為只有這三家的條件我逐項對過官方頁面。其餘 {len(BG["unverified"])} 家還沒查證，'
-      '與其抄別人的整理，不如先空著並說明。本站寧可資料少但每個數字都有出處。'),
+      '與其抄別人的整理，不如先空著並說明，每個列出來的數字都附得出官方出處。'),
     ]
     bg_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in bg_faq)
@@ -1905,7 +1907,7 @@ if os.path.exists('ski.json'):
       f'因為只有這 {_skn} 家的條款逐項對過官網原文。'
       + (f'其餘 {len(SK["pending"])} 家（{html.escape("、".join(SK["pending"]))}）還沒查證，'
          '與其抄第三方整理，不如先空著。' if SK['pending'] else '')
-      + '本站寧可資料少但每個數字都有出處。'),
+      + '每個列出來的數字都附得出官網原文。'),
     ]
     sk_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in sk_faq)
@@ -2246,7 +2248,7 @@ if os.path.exists('ski-ticket.json'):
       + f'<p class="lede"><a href="{U(ST["ours"]["link"])}">'
         f'{html.escape(ST["ours"]["link_t"])} →</a></p>'
 
-      + '<h2>本頁沒查到的</h2>'
+      + '<h2>這幾件還沒確認</h2>'
       + f'<ul class="lede">{_unver}</ul>'
 
       + '<h2>順便看看</h2><div class="cities">'
@@ -2606,7 +2608,7 @@ if os.path.exists('lasttrain.json'):
      ('搭虎航去名古屋，要注意什麼？',
       '虎航在中部機場停的是第 2 航廈，那一棟沒有車站。名鐵的中部國際空港站在第 1 航廈旁的 '
       'Access Plaza，兩棟之間的免費連絡巴士 21:45 就收班。比名鐵末班 23:31 早了將近兩小時。'
-      '官方說可以走過去，徒步 10 分鐘，但沒有公布那條通路幾點關，所以我們沒有把它當成確定的備案。'
+      '官方說可以走過去，徒步 10 分鐘，但沒有公布那條通路幾點關，所以它不能當成確定的備案。'
       '另外第 2 航廈本身 23:00 關門，第 1 航廈的 Access Plaza 才是 24 小時開放。'),
      ('七個機場裡，哪一個最不容易出事？',
       '新千歲。它是唯一一個國際線航廈用走的就到車站的。有連絡設施與電動步道，不必等接駁巴士，'
@@ -3665,13 +3667,13 @@ if os.path.exists('threads-hub.json'):
 
     th_faq = [
      ('這頁跟社群上的整理有什麼不一樣？',
-      '社群整理的是「大家在說什麼」，這頁做的是「查完之後是什麼」。'
+      '社群整理的是「大家在說什麼」，這裡整理的是「查完之後是什麼」。'
       '每一則都回官方原文，對得上就寫，對不上就把落差列出來。'
-      '例如那則優惠券懶人包，我們沒有轉貼券的圖片，而是逐家查官方發券頁，'
-      '結果反而抓到本站自己有兩家的折扣率寫錯了。'),
+      '例如優惠券那題，逐家查官方發券頁之後，發現滿額級距與未稅門檻'
+      '跟社群整理的版本並不一致。'),
      ('為什麼有些題目沒有原始貼文的連結？',
-      '早期幾則查證完就把貼文網址丟了，只留下查到的結論。那是本站的疏失，'
-      '沒有連結的幾則已經標示出來。之後每一則都會把出處記下來。'),
+      '有幾則只留下了查證結論，沒有留下貼文網址，那幾則已經標示出來。'
+      '想自己核對的話，可以直接看每則附的官方來源。'),
      ('會一直更新嗎？',
       '看到值得查的題目就做，沒有固定頻率。判準是三個：'
       '這題有沒有官方原文可查、社群說的跟官方對不對得上、'
@@ -3699,14 +3701,14 @@ if os.path.exists('threads-hub.json'):
         f'<div class="tans">目前 <b>{len(TH["items"])} 個話題</b></div>'
         f'<div class="tsub">{html.escape(TH["_為什麼做這件事"])}</div></div>'
       + _th_css + _th_body
-      + '<h2>不是 Threads，但同一套做法</h2>'
+      + '<h2>不只 Threads：一支影片說「罰 100 萬」</h2>'
       + '<div class="thc">'
         f'<div class="thh"><b>{html.escape(_yt["t"])}</b></div>'
         f'<p class="thq"><b>影片說</b>：{html.escape(_yt["claim"])}</p>'
         f'<p class="thf"><b>查到的</b>：{html.escape(_yt["found"])}</p>'
         f'<p class="thl"><a href="{U(_yt["page"])}">看本站整理 →</a>'
         f'　·　<span style="color:var(--dim)">{_yt["date"]}</span></p></div>'
-      + '<h2>本站的規矩</h2>'
+      + '<h2>自己看到類似說法時，怎麼判斷</h2>'
       + f'<ul class="lede">{_th_m}</ul>'
       + '<h2>常見問題</h2>' + th_html
       + '<h2>順便看看</h2><div class="cities">'
@@ -4071,7 +4073,7 @@ if os.path.exists('tokyo-picks.json'):
         f'<li><b>每家店的出處</b>：卡片上的引述都連回該則回覆，'
         f'目前 {_tp_src_n} 家有連結</li>'
         '</ul></div>'
-      + '<h2>怎麼整理的</h2>'
+      + '<h2>這份清單能給你什麼</h2>'
       + f'<p class="lede">{html.escape(TP["_方法"])}</p>'
       + '<h2>常見問題</h2>' + tp_html
       + '<h2>順便看看</h2><div class="cities">'
@@ -6710,8 +6712,8 @@ if os.path.exists('apple.json'):
           '你的資金要有超過 3% 的年化報酬，分期才划算。'),
          ('為什麼這頁不直接排名哪張卡最好？',
           '因為那需要一份逐張查證的國內回饋資料，而各行的活動期間短、條件變動快，'
-          '排出來的名次很快就過期。本站寧可先把三個會讓你「照著做卻拿不到」的機制講清楚，'
-          '這些不會隨檔期改變。日本消費的部分，本站另有逐張查證的旅日信用卡比較。'),
+          '排出來的名次很快就過期。這頁先講三個會讓你「照著做卻拿不到」的機制，'
+          '這些不會隨檔期改變。日本消費的部分另有逐張查證的旅日信用卡比較。'),
         ]
         _ifaq_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                              + a.replace('<b>', '<b>').replace('</b>', '</b>')
