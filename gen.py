@@ -1922,6 +1922,44 @@ if os.path.exists('ski.json'):
                '託運規定逐條對照，附官網出處。重點不是重量，日航 737 的單邊上限只有 79 公分，'
                '虎航與星宇 A321neo 是 100 公分，市售雪板袋多半 150 公分以上。')
 
+    # 分享圖卡。和本頁同一份 ski.json，由 make_skibag_cards.py 產生。
+    _BG_CARD = [
+     ('01', '卡住你的是單邊長度', '九家航空與關鍵數字'),
+     ('02', '單邊上限 vs 板袋', '條沒過虛線就放不進去'),
+     ('03', '廉價航空 4 家', '尺寸與重量門檻'),
+     ('04', '一般航空 5 家', '多半計入免費額度'),
+     ('05', '三個會讓你多付錢的地方', '塞雪衣、分開裝、長度'),
+     ('06', '哪幾家要先打電話', '沒先問被拒載不退票錢'),
+     ('07', '費用怎麼算', '哪兩家是尺寸另外收'),
+     ('08', '還有 5 家沒查', '這頁的範圍'),
+    ]
+    _bg_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      '點圖看原尺寸。</p>'
+      '<style>'
+      '.bgk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.bgk a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.bgk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.bgk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.bgk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.bgk{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="bgk">'
+      + ''.join(
+          f'<a href="{U("/japan-ski-baggage/cards/bag-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-ski-baggage/cards/bag-" + i + ".png")}" '
+          f'alt="雪具託運圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _BG_CARD)
+      + '</div>'
+      + f'<p class="disc">圖上的尺寸、重量與申請規定都是從這一頁同一份資料產生的，'
+        f'沒有另外手打，條款查證於 {SK["checked"]}。</p>')
+
     write('japan-ski-baggage/index.html',
       head(sk_title, sk_desc, 'japan-ski-baggage/',
            '<script type="application/ld+json">' + sk_ld + '</script>')
@@ -1950,6 +1988,7 @@ if os.path.exists('ski.json'):
         '捷星日本不看總尺寸，只看單邊有沒有超過 100 公分。'
         '超過門檻不代表一定不能帶，多數是「需事先申請、且限貨艙可裝載時受理」，'
         '但沒先問而現場被拒載，機票錢不會退。</p>'
+      + _bg_cards
       + '<h2>三個會讓你多付錢的地方</h2>' + _sktraps
       + '<h2>各家的完整規定</h2>' + _skcards
       + (('<h2>雪場航點的機票</h2>'
@@ -5972,7 +6011,9 @@ def _card_stamp_warn():
             ('make_coupon_cards', 'coupons.json',
              'japan-coupon/cards', '購物折扣券'),
             ('make_apple_cards', 'apple.json',
-             'apple-japan-price/cards', '台日 Apple 價差')):
+             'apple-japan-price/cards', '台日 Apple 價差'),
+            ('make_skibag_cards', 'ski.json',
+             'japan-ski-baggage/cards', '雪具託運')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
