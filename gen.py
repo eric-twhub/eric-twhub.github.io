@@ -3398,6 +3398,11 @@ if os.path.exists('tokyo-picks.json'):
                         else f'@{html.escape(sc.get("who", ""))}')
                      + (('　' + _tp_stats(sc)) if _tp_stats(sc) else '')
                      + '</cite></blockquote>')
+        ours = ''
+        if st.get('ours'):
+            ours = (f'<p class="win"><b>→ <a href="{U(st["ours"])}">'
+                    + html.escape(st.get('ours_t') or '本站另有專頁')
+                    + '</a></b></p>')
         site = ''
         if st.get('site'):
             site = (f'<p class="disc"><a href="{st["site"]}" target="_blank" '
@@ -3410,12 +3415,14 @@ if os.path.exists('tokyo-picks.json'):
                      + (f'　<a href="{st["award_url"]}" target="_blank" '
                         f'rel="nofollow noopener">名單 →</a>' if st.get('award_url') else '')
                      + '</p>')
-        return (f'<div class="pp{" lose" if dead else ""}" '
-                f'id="{_TP_ID[id(st)]}">' + head
-                + f'<p>{html.escape(st["cat"])}</p>' + award
-                + ('<ul class="lede">' + ''.join(info) + '</ul>' if info else '')
-                + (f'<p class="disc">{html.escape(st["note"])}</p>' if st.get('note') else '')
-                + quote + site + '</div>')
+        return (f'<div class="tpc{" dead" if dead else ""}" '
+                f'id="{_TP_ID[id(st)]}">'
+                + '<div class="tph">' + head
+                + f'<span class="tpcat">{html.escape(st["cat"])}</span></div>'
+                + award
+                + ('<ul>' + ''.join(info) + '</ul>' if info else '')
+                + (f'<p class="tpn">{html.escape(st["note"])}</p>' if st.get('note') else '')
+                + quote + ours + site + '</div>')
 
     _tp_idx_css = ('<style>'
                    '.tpx{margin:16px 0 26px}'
@@ -3429,7 +3436,29 @@ if os.path.exists('tokyo-picks.json'):
                    'background:var(--card);text-decoration:none}'
                    '.tpx a:hover{border-color:var(--hot)}'
                    '.tpx a.dead{text-decoration:line-through;color:var(--dim)}'
-                   '.pp[id]{scroll-margin-top:78px}'
+                   '.tpg{display:grid;gap:14px;margin:14px 0 30px;'
+                   'grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}'
+                   '.tpc{border:1px solid var(--line);border-left:4px solid var(--acc);'
+                   'border-radius:10px;background:var(--card);padding:15px 17px;'
+                   'scroll-margin-top:78px}'
+                   '.tpc.dead{border-left-color:var(--dim);opacity:.72}'
+                   '.tph{display:flex;align-items:baseline;justify-content:space-between;'
+                   'gap:10px;flex-wrap:wrap}'
+                   '.tph b{font-size:1.04rem;line-height:1.35}'
+                   '.tpcat{font-size:.74rem;color:var(--dim);border:1px solid var(--line);'
+                   'border-radius:5px;padding:1px 7px;white-space:nowrap}'
+                   '.tpc ul{list-style:none;margin:10px 0 0;padding:0;font-size:.86rem;'
+                   'line-height:1.75}'
+                   '.tpc ul li{margin:0}'
+                   '.tpc ul b{color:var(--dim);font-weight:600;margin-right:2px}'
+                   '.tpn{font-size:.82rem;color:var(--dim);margin:9px 0 0;line-height:1.7}'
+                   '.tpc blockquote{margin:12px 0 0;padding:9px 12px;border:0;'
+                   'border-left:2px solid var(--line);background:transparent;font-size:.88rem}'
+                   '.tpc blockquote cite{display:block;margin-top:5px;font-size:.76rem;'
+                   'color:var(--dim);font-style:normal}'
+                   '.tpc .win{font-size:.85rem;margin:9px 0 0}'
+                   '.tpc>p.disc{margin:10px 0 0}'
+                   '@media(max-width:620px){.tpg{grid-template-columns:1fr}}'
                    '</style>')
 
     _tp_idx = _tp_idx_css + '<div class="tpx">'
@@ -3453,7 +3482,7 @@ if os.path.exists('tokyo-picks.json'):
             continue
         rows.sort(key=lambda x: -((x.get('src') or {}).get('likes') or 0))
         _tp_body += (f'<h2>{html.escape(grp)}（{len(rows)} 家）</h2>'
-                     '<div class="cmp">' + ''.join(_tp_row(x) for x in rows) + '</div>')
+                     '<div class="tpg">' + ''.join(_tp_row(x) for x in rows) + '</div>')
 
     _tp_corr = ''.join(
         f'<tr><td class="nm"><small>{html.escape(a)}</small></td>'
