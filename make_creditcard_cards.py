@@ -12,7 +12,7 @@
 用法：python3 make_creditcard_cards.py
 輸出：japan-credit-card/cards/jp-card-01.png … -08.png
 """
-import json, os, re, sys, shutil, subprocess, tempfile
+import json, os, re, sys, shutil, subprocess, tempfile, hashlib
 import html as htm
 
 W, H = 1080, 1350
@@ -25,6 +25,17 @@ DEMO_JPY = 50000
 LADDER = (10000, 30000, 50000, 100000, 200000)
 # 判斷這一層是不是只有新戶拿得到
 NEW = re.compile(r'新戶|核卡')
+
+
+def fingerprint(CD):
+    """圖卡真正用到的欄位的指紋。用途同 make_picks_cards.fingerprint。"""
+    pay = [[c.get(k) for k in ('name', 'plan', 'base', 'total', 'reg_level')]
+           + [[t['label'], t['rate'], t['cap'], t['scope'], t.get('cond', '')]
+              for t in c['tiers']]
+           for c in CD['cards']]
+    pay.append([CD['fx_fee']['typical'], CD['checked']])
+    return hashlib.sha1(json.dumps(pay, ensure_ascii=False,
+                                   sort_keys=True).encode('utf-8')).hexdigest()[:12]
 
 
 def _chrome():
@@ -364,6 +375,7 @@ def main():
                            capture_output=True, timeout=90)
             if not os.path.exists(png):
                 sys.exit(f'{name} 沒有產生出來')
+    open(os.path.join(OUT, 'stamp.txt'), 'w').write(fingerprint(CD))
     print(f'完成 {len(cards)} 張，輸出到 {OUT}/')
 
 

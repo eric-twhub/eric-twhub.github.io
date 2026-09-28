@@ -15,7 +15,7 @@ og 圖卡是每頁一張、給社群預覽用的；這一組是把整份清單�
 用法：python3 make_picks_cards.py
 輸出：tokyo/worth-flying-for/cards/tokyo-46-01.png … -08.png
 """
-import json, os, re, sys, shutil, subprocess, tempfile
+import json, os, re, sys, shutil, subprocess, tempfile, hashlib
 import html as htm
 
 W, H = 1080, 1350
@@ -36,6 +36,23 @@ def _chrome():
         if p:
             return p
     sys.exit('找不到 Chrome，請設定 CHROME 環境變數')
+
+
+def fingerprint(d):
+    """圖卡真正用到的欄位的指紋。
+
+    圖卡不掛在每日 workflow 上，所以改了 tokyo-picks.json 卻忘了重跑，
+    線上的圖就會和頁面對不上（2026-09-28 就這樣讓第 8 張停在舊的更正說法）。
+    gen.py 建置時會比對這個指紋，對不上就在輸出裡提醒。
+    只涵蓋圖卡會算繪的欄位，改到其他欄位不會誤報。
+    """
+    pay = [[s.get(k) for k in ('n', 'cat', 'grp', 'addr', 'status')] + [likes(s)]
+           for s in d['stores']]
+    pay += [list(c) for c in d['corrections']]
+    pay.append([d['source'].get('views'), d['source'].get('replies')])
+    pay.append([s.get('official') and 1 or 0 for s in d['stores']])
+    return hashlib.sha1(json.dumps(pay, ensure_ascii=False,
+                                   sort_keys=True).encode('utf-8')).hexdigest()[:12]
 
 
 def likes(s):
@@ -265,6 +282,7 @@ def main():
                            capture_output=True, timeout=90)
             if not os.path.exists(png):
                 sys.exit(f'{name} 沒有產生出來')
+    open(os.path.join(OUT, 'stamp.txt'), 'w').write(fingerprint(d))
     print(f'完成 {len(cards)} 張，輸出到 {OUT}/')
 
 

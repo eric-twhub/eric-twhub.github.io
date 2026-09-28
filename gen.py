@@ -5831,6 +5831,32 @@ for d in deals_out:
 items_today=''.join(_it)
 
 # 往期貼文：掃描 deals/ 既有目錄，讓貼文累積而非每天覆蓋
+def _card_stamp_warn():
+    """圖卡不在每日 workflow 裡重產，資料改了很容易忘記重跑。
+
+    每支產生器會把「圖卡用到的欄位」的指紋寫進 cards/.stamp，
+    這裡重算一次比對，對不上就在建置輸出裡喊一聲。
+    只提醒不中斷：票價每天要照常更新，不該因為圖卡沒重跑就整站不產生。
+    """
+    import importlib
+    for mod_name, src_json, outdir, label in (
+            ('make_picks_cards', 'tokyo-picks.json',
+             'tokyo/worth-flying-for/cards', '東京美食'),
+            ('make_creditcard_cards', 'cards.json',
+             'japan-credit-card/cards', '旅日信用卡')):
+        stamp = os.path.join(outdir, 'stamp.txt')
+        if not (os.path.exists(src_json) and os.path.exists(stamp)):
+            continue
+        try:
+            mod = importlib.import_module(mod_name)
+            now = mod.fingerprint(json.load(open(src_json, encoding='utf-8')))
+        except Exception as e:
+            print(f'   圖卡指紋檢查略過（{label}）：{e}')
+            continue
+        if open(stamp).read().strip() != now:
+            print(f'   ⚠ {label}圖卡比資料舊了，請重跑 python3 {mod_name}.py')
+
+
 import glob as _glob
 _today_slugs={d['slug'] for d in deals_out}
 _past=[]
@@ -8991,6 +9017,8 @@ write('og-manifest.json', json.dumps(
      'size': [1200, 630], 'items': _og_items}, ensure_ascii=False, indent=1))
 print(f'   og 圖卡清單：{len(_og_items)} 個內容頁'
       f'（已有圖 {sum(1 for i in _og_items if i["slug"] in OG_SLUGS)} 張）')
+
+_card_stamp_warn()
 
 write('robots.txt', f'User-agent: *\nAllow: /\n\nSitemap: {SITE}{BASE}/sitemap.xml\n')
 write('.nojekyll','')
