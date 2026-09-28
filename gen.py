@@ -9071,6 +9071,14 @@ if PC:
     _pc_hid = ''.join(f'<li>{html.escape(h)}</li>' for h in _pc_r['hidden_costs'])
     _pc_ex = _pc_r['example']
 
+    _pc_mech = _pc_r['mechanism']
+    _SG = {'有差 9.09%': 'win', '無差': ''}
+    _pc_stab = ''.join(
+        f'<tr><td>{html.escape(r["date"])}</td><td>{html.escape(r["plan"])}</td>'
+        f'<td>{money(r["desktop"])}</td><td>{money(r["mobile"])}</td>'
+        f'<td class="{_SG.get(r["gap"], "")}"><b>{html.escape(r["gap"])}</b></td></tr>'
+        for r in _pc_d['stability']['rows'])
+
     _pc_chk = ''.join(f'<details class="faq"><summary>{html.escape(c["q"])}</summary>'
                       f'<div>{html.escape(c["a"])}</div></details>' for c in PC['checklist'])
 
@@ -9088,9 +9096,16 @@ if PC:
      ('從返利網點進去訂，會比較划算嗎？',
       f'要先算門檻，而且比較基準是手機直訂而不是桌機直訂。'
       f'公式是：{_pc_r["formula"]}。以本站的案例，手機直訂 {money(_pc_ex["mobile_direct"])}、'
-      f'桌機加導購 {money(_pc_ex["desktop_referral"])}，價差 {money(_pc_ex["gap"])}，'
-      f'回饋率要超過 {_pc_ex["threshold_pct"]}% 才追得平。'
+      f'手機加導購 {money(_pc_ex["mobile_referral"])}，價差 {money(_pc_ex["gap"])}，'
+      f'回饋率要超過 {_pc_ex["threshold_pct"]}% 才追得平。而且這個門檻跟房價多少無關，'
+      f'它是 9.09% 除以 83% 的結果，結構上就固定在 11% 附近。'
       '再考慮回饋要等行程完成後 70 天、取消就歸零，實務上建議抓門檻的 1.5 倍。'),
+     ('Booking.com 有優惠碼可以用嗎？',
+      '台灣這邊幾乎沒有「輸入一組碼就打折」這種東西。信用卡的 Booking 優惠是走發卡行的'
+      '活動頁，回饋形式多半是 Booking Wallet 旅遊點數，不能換現金，只能拿來訂下一次的房，'
+      '而且要退房之後才發。更要注意的是那些活動連結帶著聯盟參數，'
+      f'本站實測同一間房會從 {money(_pc_mech["no_aid"])} 變成 {money(_pc_mech["with_aid"])}。'
+      '拿確定的價差去換延後入帳又只能在平台內花掉的點數，多數情況不划算。'),
      ('為什麼回饋基數要乘 0.83？',
       f'{_pc_r["why_083"]}'),
      ('官網訂房最便宜嗎？',
@@ -9117,7 +9132,8 @@ if PC:
       + '<h1>同一間房，手機版比桌機版便宜 9%</h1>'
       + f'<p class="lede">同一間飯店、同一組日期、同一個沒登入的瀏覽器，'
         f'只是把視窗縮成手機尺寸，價格就少 {_pc_avg:.2f}%。'
-        f'{_pc_n} 間實測，<b>規律精確到可以預測</b>：手機版剛好是桌機版除以 1.1。</p>'
+        f'{_pc_n} 間實測，手機版剛好是桌機版除以 1.1。'
+        f'但這個價差是逐一房價方案出現的，<b>而且會消失</b>，所以每次都要兩邊都量。</p>'
       + f'<div class="today"><div class="tday">查證於 {PC["checked"]}'
         f'　·　樣本 {html.escape(_pc_s["dates"])}，{_pc_s["nights"]} 晚單人</div>'
         f'<div class="tans">有 Genius 標籤的房源，手機版便宜 {_pc_avg:.2f}%；'
@@ -9133,10 +9149,17 @@ if PC:
       + f'<li><b>{html.escape(_pc_d["finding"])}</b></li>'
         '<li><b>不是四捨五入接近，是完全相等。</b>2,246 ÷ 1.1 ＝ 2,042、'
         '4,058 ÷ 1.1 ＝ 3,689、7,043 ÷ 1.1 ＝ 6,403，三間都精確命中。</li>'
-        '<li><b>所以判斷依據是標籤，不是裝置。</b>桌機版看到 Genius 或百分比折扣標籤，'
-        '就值得用手機再開一次；沒有標籤的不用白跑。</li>'
+        '<li><b>但標籤只能判斷「值不值得多開一次手機」，不能判斷「你現在拿到的是不是手機價」。</b>'
+        + html.escape(_pc_d['stability']['label_caveat']) + '</li>'
         '</ul></div>'
       + f'<p class="disc">{html.escape(_pc_d["limits"])}</p>'
+      + '<h2>這個價差會消失</h2>'
+      + f'<p class="lede">{html.escape(_pc_d["stability"]["_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>量測日</th><th>房價方案</th>'
+        '<th>桌機</th><th>手機</th><th>價差</th></tr></thead><tbody>'
+      + _pc_stab + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li>{html.escape(_pc_d["stability"]["reading"])}</li>'
+        f'</ul></div>'
       + '<h2>其他訂房平台呢</h2>'
       + f'<p class="lede">{html.escape(PC["platforms"]["_說明"])}</p>'
       + '<div class="tw"><table><thead><tr><th>平台</th><th>結果</th>'
@@ -9150,13 +9173,31 @@ if PC:
       + '<h2>從返利網點進去，划得來嗎</h2>'
       + f'<div class="today"><div class="tday">本站狀態：{html.escape(_pc_r["state"])}</div>'
         f'<div class="tsub">{html.escape(_pc_r["why"])}</div></div>'
-      + '<p class="lede">但門檻可以先算出來。關鍵是：'
-        '<b>比較基準是手機直訂，不是桌機直訂</b>。如果你本來就會用手機訂，'
-        '導購得先補回那 9% 才開始算賺。</p>'
+      + '<h3>導購連結會改價，這件事測出來了</h3>'
+      + f'<p class="lede">{html.escape(_pc_mech["_說明"])}'
+        f'測的是{html.escape(_pc_mech["hotel"])}。</p>'
+      + '<div class="tw"><table><thead><tr><th>進入方式</th><th>4 晚總價</th>'
+        '<th>多付</th></tr></thead><tbody>'
+      + f'<tr><td>直接搜尋，網址不帶 aid</td>'
+        f'<td class="win"><b>{money(_pc_mech["no_aid"])}</b></td><td>—</td></tr>'
+      + f'<tr><td>從卡片活動頁進入，網址帶 aid</td>'
+        f'<td><b>{money(_pc_mech["with_aid"])}</b></td>'
+        f'<td class="lose"><b>＋{money(_pc_mech["gap"])}</b></td></tr>'
+      + '</tbody></table></div>'
+      + f'<div class="tldr"><ul>'
+        f'<li><b>{html.escape(_pc_mech["ratio"])}</b>　{html.escape(_pc_mech["reading"])}</li>'
+        f'<li>{html.escape(_pc_mech["reward_offered"])}</li></ul></div>'
+      + f'<p class="disc">資料來源：'
+        f'<a href="{html.escape(_pc_mech["src"])}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_pc_mech["src_name"])}</a></p>'
+      + '<h3>那要多少回饋才追得平</h3>'
+      + '<p class="lede">關鍵是：<b>比較基準是手機直訂，不是桌機直訂</b>。'
+        '如果你本來就會用手機訂，導購得先補回那 9% 才開始算賺。</p>'
       + f'<div class="tldr"><ul><li><b>{html.escape(_pc_r["formula"])}</b></li>'
         f'<li>以本站案例：手機直訂 {money(_pc_ex["mobile_direct"])}、'
-        f'桌機加導購 {money(_pc_ex["desktop_referral"])}，價差 {money(_pc_ex["gap"])}，'
-        f'門檻是 <b>{_pc_ex["threshold_pct"]}%</b>。</li></ul></div>'
+        f'手機加導購 {money(_pc_ex["mobile_referral"])}，價差 {money(_pc_ex["gap"])}，'
+        f'門檻是 <b>{_pc_ex["threshold_pct"]}%</b>。</li>'
+        f'<li>{html.escape(_pc_r["threshold_note"])}</li></ul></div>'
       + '<div class="tw"><table><thead><tr><th>返利方案</th><th>回饋率</th>'
         '<th>判定</th></tr></thead><tbody>' + _pc_rate + '</tbody></table></div>'
       + '<p class="lede">還要扣掉三個隱性成本：</p>'
