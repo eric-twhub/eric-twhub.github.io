@@ -4030,6 +4030,7 @@ if os.path.exists('tokyo-picks.json'):
         '<div class="tbuf"><b>其中一家已經歇業</b>：根室花まる 銀座店在 2026 年 9 月 23 日結束營業。'
         '留言寫的時候店還在，同品牌在東京還有八家，下面那張卡片列出來了。</div></div>'
       + f'<p class="disc">{html.escape(TP["_引用原則"])}</p>'
+      + _tp_cards
       + _tp_idx
       + _tp_alt_css
       + _tp_body
@@ -4040,7 +4041,6 @@ if os.path.exists('tokyo-picks.json'):
         '但如果照抄，讀者就會查不到或走錯地方。</p>'
       + '<div class="tw"><table><tr><th>留言裡寫的</th><th>實際是</th><th>差在哪</th></tr>'
       + _tp_corr + '</table></div>'
-      + _tp_cards
       + (('<h2>這頁是網友推的，不是專業評選</h2>'
           f'<p class="lede">{html.escape(TP["award"]["why"])}</p>'
           '<div class="tw narrow"><table>'
