@@ -1,0 +1,925 @@
+{
+ "_說明": "資料來源是 Threads 上一則「東京有沒有一家店，是你願意為了它再飛一次？」的討論串。本站把回覆裡提到的店家抽出來，每一家都回查官方資料，社群留言只當線索不當來源。",
+ "checked": "2026-09-28",
+ "source": {
+  "post": "https://www.threads.com/@casestw.3/post/DcjZ787E8Yu",
+  "author": "casestw.3",
+  "views": "420 萬次瀏覽",
+  "replies": 7697,
+  "scraped": "本站讀取其中約 950 則（依熱門排序），解析出 602 則有內容的回覆"
+ },
+ "_引用原則": "每家最多引一到兩句短句，標註發文帳號並連回原文。不整段轉載、不轉貼任何照片。互動數字（讚／留言／轉發／分享）是擷取當下的值，之後會變。",
+ "corrections": [
+  [
+   "融化漢堡排「福吉」",
+   "とろけるハンバーグ「福よし」",
+   "留言把漢字寫錯了"
+  ],
+  [
+   "上野「壽湯」",
+   "東上野「寿湯」",
+   "正式名稱不同，而且最近的車站是稻荷町不是上野"
+  ],
+  [
+   "ステーキライスとカレーの店",
+   "センタービーフ 秋葉原店",
+   "招牌那行是副標，品牌名是 Center Beef"
+  ],
+  [
+   "淺草壽喜燒 140 年老店",
+   "米久本店",
+   "1886 年創業，2026 剛好 140 年，留言的說法成立"
+  ],
+  [
+   "日本橋とんかつ（暖簾上的「一」）",
+   "日本橋とんかつ 一 HAJIME",
+   "暖簾小字是 HAJIME"
+  ],
+  [
+   "「今半、入鹿」",
+   "入鹿TOKYO 是拉麵店",
+   "與壽喜燒的今半是兩件事，本站原本也分錯過"
+  ],
+  [
+   "秋葉原唐吉八樓",
+   "AKB48 劇場",
+   "那層樓就是劇場"
+  ],
+  [
+   "根室花まる 銀座店",
+   "已於 2026/9/23 結束營業",
+   "官網公告，大樓易主。照抄留言就會推薦一家不存在的店"
+  ],
+  [
+   "とんかつ田的岩中豚",
+   "是每月更換的品牌豬之一",
+   "不是常態供應，碰不碰得到看當月"
+  ]
+ ],
+ "stores": [
+  {
+   "n": "米久本店",
+   "jp": "米久本店（よねきゅうほんてん）",
+   "cat": "壽喜燒",
+   "addr": "東京都台東區淺草 2-17-10",
+   "open": "12:00–21:00（L.O. 20:00）",
+   "close": "週三",
+   "tel": "03-3841-6416",
+   "since": "1886 年（明治 19 年）",
+   "official": false,
+   "note": "2026 年正好 140 年，留言說的「140 年老店」成立。",
+   "src": {
+    "url": "https://www.threads.com/@dogmeow_cake/post/DcqVm6Jkodw",
+    "who": "dogmeow_cake",
+    "likes": 1490,
+    "comments": 49,
+    "reposts": 41,
+    "shares": 968,
+    "quote": "絕對是淺草這間壽喜燒140年老店，是很傳統那種，很貴但超級好吃"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "燒肉 あぶる 池袋店",
+   "jp": "焼肉 あぶる。池袋店",
+   "cat": "燒肉",
+   "addr": "東京都豐島區池袋 1-1-5 村田大樓 1F",
+   "open": "午餐 11:30–14:30（L.O.14:00）／晚餐 17:00–23:00（L.O.22:30）",
+   "close": "基本無休，年初與教育訓練可能臨時公休",
+   "tel": "050-5484-8886",
+   "price": "午餐約 ¥1,000–2,000／晚餐約 ¥5,000–6,000",
+   "site": "https://yakinikuabull.com/ikebukuro-store/",
+   "official": true,
+   "src": {
+    "url": "https://www.threads.com/@qb881226/post/DcoTqcGgbV5",
+    "who": "qb881226",
+    "likes": 7284,
+    "comments": 53,
+    "reposts": 278,
+    "shares": 4464,
+    "quote": "閉眼點隨便都好吃，不知道他們怎麼做到的，牛骨湯也都好好喝"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "pizza marumo",
+   "jp": "ピッツァ マルモ",
+   "cat": "披薩",
+   "addr": "〒150-0022 東京都澀谷區惠比壽南 1-11-13 惠比壽 Verso 大樓 1F",
+   "open": "週四至週二 午餐 11:30–15:00（L.O.14:30）／晚餐 17:00–23:00（L.O.22:00）",
+   "close": "週三",
+   "tel": "03-6683-1973",
+   "access": "惠比壽站西口步行約 4 分",
+   "site": "https://pizza-marumo.com/",
+   "official": true,
+   "src": {
+    "url": "https://www.threads.com/@yuhikiro/post/DdnAH6bktdx",
+    "who": "yuhikiro",
+    "likes": 7227,
+    "comments": 44,
+    "reposts": 404,
+    "shares": 4905,
+    "quote": "對披薩沒有愛的我可以直接吃完一整個"
+   },
+   "grp": "披薩"
+  },
+  {
+   "n": "センタービーフ 秋葉原店",
+   "jp": "ステーキライスとカレーの店 センタービーフ 秋葉原店",
+   "cat": "牛排丼與咖哩",
+   "addr": "〒101-0025 東京都千代田區神田佐久間町 2-12 きりや大樓 1F",
+   "open": "平日 11:00–15:00／17:30–22:00；六日與假日 11:00–22:00",
+   "tel": "03-5829-6499",
+   "official": false,
+   "note": "招牌上的「ステーキライスとカレーの店」是副標，品牌名是センタービーフ。2024/2/16 開幕，本店在橫濱關內。",
+   "src": {
+    "url": "https://www.threads.com/@damosenpai/post/Dc2MnW8D3Wx",
+    "who": "damosenpai",
+    "likes": 4484,
+    "comments": 59,
+    "reposts": 144,
+    "shares": 2289,
+    "quote": "在秋葉原，爽是真的爽"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "日本橋とんかつ 一 HAJIME",
+   "jp": "日本橋とんかつ 一（はじめ）",
+   "cat": "炸豬排",
+   "addr": "東京都中央區日本橋，三越前站 A4 出口步行約 2 分，COREDO 室町 2 附近",
+   "site": "https://tonkatsu-hajime.com/",
+   "official": true,
+   "note": "2022/5/26 開幕，只有吧台 10 席。另有「はなれ HANARE」分店。",
+   "grp": "肉"
+  },
+  {
+   "n": "宇奈とと 淺草店",
+   "jp": "名代 宇奈とと 浅草店",
+   "cat": "鰻魚飯",
+   "addr": "東京都台東區花川戶 1-5-2",
+   "open": "11:00–21:00",
+   "close": "無休",
+   "tel": "03-3842-6969",
+   "access": "淺草站步行 2 分",
+   "price": "鰻重特上／大盛 ¥2,090、三昧套餐（雙份）¥2,000、肝吸 ¥190",
+   "site": "https://www.unatoto.com/shop/asakusa/",
+   "official": true,
+   "note": "是連鎖店，留言說的「約台幣 500 一份套餐」與特上價位相符。",
+   "src": {
+    "url": "https://www.threads.com/@unhappyyao__/post/Dc0Wa2LkRHr",
+    "who": "unhappyyao__",
+    "likes": 945,
+    "comments": 39,
+    "reposts": 51,
+    "shares": 1197,
+    "quote": "淺草雷門附近，很大很好吃，大約500元就有一整份套餐"
+   },
+   "grp": "海鮮"
+  },
+  {
+   "n": "牛スター 上野店",
+   "jp": "焼肉 牛スター 上野店",
+   "cat": "和牛燒肉",
+   "addr": "東京都台東區東上野 2-15-6 東上野 Ayutthaya 大樓",
+   "open": "11:00–15:00／17:00–23:00",
+   "tel": "03-3834-2215",
+   "access": "上野站 3 號出口步行約 2 分",
+   "price": "午餐 里肌定食 ¥1,000、特盛定食 ¥2,000；另有吃到飽四種方案",
+   "site": "https://gyu-star.owst.jp/",
+   "official": true,
+   "note": "主打岩手牛。留言說「中午台幣 400 左右」與特盛定食 ¥2,000 相符；地址與照片上的東上野 2-15 一致。",
+   "src": {
+    "url": "https://www.threads.com/@ts02955581/post/Dc0fgwhkqdy",
+    "who": "ts02955581",
+    "likes": 793,
+    "comments": 4,
+    "reposts": 28,
+    "shares": 521,
+    "quote": "上野幾個婆婆經營的隱藏燒肉店，中午只要台幣400元左右，肉一大盤"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "海老丸拉麵",
+   "jp": "海老丸らーめん",
+   "cat": "龍蝦拉麵",
+   "addr": "〒101-0065 東京都千代田區西神田 2-1-13 十勝大樓 1F",
+   "access": "JR 水道橋站與地鐵神保町站之間，白山通沿線",
+   "site": "https://ebimaru.com/",
+   "official": true,
+   "note": "招牌是 100% 加拿大龍蝦熬的濃湯拉麵，主廚有法式料理背景。營業時間搜尋結果未取得，待補。",
+   "src": {
+    "url": "https://www.threads.com/@7shuojj/post/Dc0jiHLk7PK",
+    "who": "7shuojj",
+    "likes": 836,
+    "comments": 23,
+    "reposts": 26,
+    "shares": 558,
+    "quote": "神保町站 Ebimaru Ramen 龍蝦拉麵好吃死"
+   },
+   "grp": "麵"
+  },
+  {
+   "n": "東京燒肉いのうえ 銀座店",
+   "jp": "東京焼肉いのうえ 銀座店",
+   "cat": "燒肉",
+   "addr": "東京都中央區銀座 1-6-6",
+   "open": "平日 11:00–15:00／17:00–23:00（L.O.22:00）；六日與假日 11:00–23:00（L.O.22:00）",
+   "close": "年中無休",
+   "tel": "050-5593-4065",
+   "access": "地鐵銀座一丁目站步行 1 分",
+   "official": false,
+   "grp": "肉"
+  },
+  {
+   "n": "とろけるハンバーグ福よし 淺草藏前",
+   "jp": "とろけるハンバーグ福よし 浅草蔵前",
+   "cat": "漢堡排",
+   "addr": "東京都台東區壽 1-6-7",
+   "open": "週一至週四 11:00–15:00／17:00–22:00",
+   "tel": "03-5246-3929",
+   "access": "藏前站步行 3 分",
+   "site": "https://fukuyoshi-official.com/",
+   "official": true,
+   "note": "留言寫「福吉」，正式名稱是「福よし」。不使用麵粉蛋奶等黏著劑，用國產牛與黑毛和牛。",
+   "grp": "肉"
+  },
+  {
+   "n": "極味や 澀谷 PARCO 店",
+   "jp": "極味や 渋谷パルコ店",
+   "cat": "漢堡排",
+   "addr": "東京都澀谷區宇田川町 15-1 澀谷 PARCO B1F",
+   "open": "平日 11:30–23:00（L.O.22:00）／六日與假日 11:00–22:30（L.O.21:30）",
+   "close": "依澀谷 PARCO 營業日",
+   "tel": "03-5422-3122",
+   "site": "https://www.kiwamiya.com/",
+   "official": true,
+   "note": "福岡起家，自己在鐵板上煎的漢堡排。",
+   "src": {
+    "url": "https://www.threads.com/@cgy_1031/post/DdoDV8_kQGt",
+    "who": "cgy_1031",
+    "likes": 14,
+    "comments": 3,
+    "reposts": 6,
+    "quote": "師傅會在你面前幫你做漢堡肉，然後幫你煎一半，剩下自己邊吃邊煎"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "ちんや 淺草本店",
+   "jp": "すき焼 ちんや 浅草本店",
+   "cat": "壽喜燒",
+   "addr": "東京都台東區花川戶 2-16-1",
+   "open": "週一至週五 11:00–15:00／16:30–21:30；六日與假日 11:30–21:00",
+   "since": "1880 年（明治 13 年）創業，1903 年起專做壽喜燒",
+   "site": "https://chinya.co.jp/",
+   "official": true,
+   "note": "2021 年 8 月休業，2022 年 3 月 18 日在淺草新址重新開幕，地點與舊店不同。與米久本店是兩家不同的淺草壽喜燒老店。",
+   "src": {
+    "url": "https://www.threads.com/@jameschen_1212/post/DdDNI6ektF1",
+    "who": "jameschen_1212",
+    "quote": "一則列了五家的清單型回覆"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "銀座とんかつ斉藤",
+   "jp": "銀座 とんかつ 斉藤",
+   "cat": "炸豬排",
+   "addr": "東京都中央區銀座 7-14-14 銀座 7 大樓 B1",
+   "open": "週一至週六 11:30–15:00（L.O.14:30）／17:30–22:00（L.O.21:00）",
+   "close": "週日",
+   "tel": "090-3426-3110",
+   "site": "https://www.instagram.com/ginzatonkatsusaito/",
+   "official": true,
+   "note": "官方資訊以 Instagram 為主，營運公司為株式会社beets。",
+   "src": {
+    "url": "https://www.threads.com/@jeffc_819/post/DdnPjMOnXBH",
+    "who": "jeffc_819",
+    "likes": 13,
+    "comments": 2,
+    "quote": "吃完後無法面對台灣的豬排"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "銀座うかい亭",
+   "jp": "銀座うかい亭 UKAI-TEI Ginza",
+   "cat": "鐵板燒",
+   "addr": "〒104-0061 東京都中央區銀座 5-15-8 時事通信大樓 1F",
+   "open": "平日 12:00–16:00（13:30 L.O.）／17:00–21:30（19:30 L.O.）；六與假日 11:30 開始",
+   "tel": "03-3544-5252",
+   "site": "https://www.ukai.co.jp/ginza/",
+   "official": true,
+   "note": "留言說是 2017 年安倍請川普吃的那家，本站未查證該說法，僅記錄店家本身資訊。公休日需看官網公告。",
+   "src": {
+    "url": "https://www.threads.com/@hsuhsuehyu/post/DdnDCkvE-lp",
+    "who": "hsuhsuehyu",
+    "quote": "2017年安倍請川普吃的那家，日劇 Doctor-X 取景地"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "道玄坂教會 The Church",
+   "jp": "道玄坂教会 The Church",
+   "cat": "DJ 酒吧",
+   "addr": "東京都澀谷區道玄坂 2-16-5 Central 協立大樓 1F",
+   "open": "20:00–05:00，年中無休",
+   "access": "澀谷站 A0 出口步行約 2 分",
+   "site": "https://dogenzaka-church.com/",
+   "official": true,
+   "note": "不是真的教堂，是以教堂為概念的 DJ 酒吧，二樓另有「天井裏 m」。",
+   "src": {
+    "url": "https://www.threads.com/@blastbh_/post/Dc-VJChEy2X",
+    "who": "blastbh_",
+    "likes": 1224,
+    "comments": 8,
+    "reposts": 49,
+    "shares": 212,
+    "quote": "道玄阪教堂"
+   },
+   "grp": "景點與其他"
+  },
+  {
+   "n": "ちいかわらんど TOKYO Station",
+   "jp": "ちいかわらんど TOKYO Station",
+   "cat": "角色商品店",
+   "addr": "〒100-0005 東京都千代田區丸之內 1-9-1 東京車站一番街 東京角色街（八重洲北口地下 1 樓）",
+   "open": "10:00–20:30",
+   "close": "無休",
+   "tel": "03-6665-9911",
+   "site": "https://chiikawa-info.jp/chiikawaland/tokyo/",
+   "official": true,
+   "note": "全串第二高的推薦。ちいかわらんど 有多家分店，這是東京車站的常設店。旺季可能需要整理券。",
+   "src": {
+    "url": "https://www.threads.com/@stellaxu0204/post/DdA1BYoEw-8",
+    "who": "stellaxu0204",
+    "likes": 710,
+    "comments": 3,
+    "reposts": 37,
+    "quote": "吉伊卡哇樂園"
+   },
+   "grp": "購物與文具"
+  },
+  {
+   "n": "東京迪士尼海洋",
+   "jp": "東京ディズニーシー",
+   "cat": "主題樂園",
+   "addr": "千葉縣浦安市舞濱",
+   "site": "https://www.tokyodisneyresort.jp/",
+   "official": true,
+   "note": "原留言只寫「肯定是這間 我直接每年都去」，照片是 25 週年的水上秀。2001 年開幕，2026 年為 25 週年。營業時間每日不同，以官網為準。",
+   "src": {
+    "url": "https://www.threads.com/@s.umyy__/post/Dc0SO2zFHT7",
+    "who": "s.umyy__",
+    "likes": 1538,
+    "comments": 7,
+    "reposts": 53,
+    "quote": "肯定是這間，我直接每年都去"
+   },
+   "grp": "景點與其他"
+  },
+  {
+   "n": "牛たん炭焼 利久 LUMINE EST 新宿店",
+   "jp": "牛たん炭焼 利久 ルミネエスト新宿店",
+   "cat": "牛舌",
+   "addr": "東京都新宿區新宿 3-38-1 LUMINE EST 7F",
+   "open": "週一至週五 11:00–21:00（L.O.20:30）；六日與假日 11:00–22:00（L.O.21:30）",
+   "close": "依 LUMINE EST 不定休",
+   "tel": "03-5312-6211",
+   "access": "新宿站步行 3 分",
+   "site": "https://corp.rikyu-gyutan.co.jp/",
+   "official": true,
+   "note": "仙台起家的連鎖店，留言說「新宿百貨公司都有」，這是其中一家。",
+   "src": {
+    "url": "https://www.threads.com/@jameschen_1212/post/DdDNI6ektF1",
+    "who": "jameschen_1212",
+    "quote": "一則列了五家的清單型回覆"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "Pâtisserie TEN&",
+   "jp": "Pâtisserie TEN& 日比谷okuroji店",
+   "cat": "泡芙",
+   "addr": "東京都千代田區內幸町 1-7-1 HIBIYA OKUROJI",
+   "open": "12:00–16:30／17:00–20:00",
+   "close": "週三",
+   "price": "泡芙 香草 ¥830、巧克力 ¥990（含稅）",
+   "official": false,
+   "note": "舊名 Patisserie PAROLA，主廚 Alexis Parola 為法國人。留言說的「改名 TEN&」屬實。",
+   "src": {
+    "url": "https://www.threads.com/@jameschen_1212/post/DdDNI6ektF1",
+    "who": "jameschen_1212",
+    "quote": "一則列了五家的清單型回覆"
+   },
+   "grp": "甜點與咖啡"
+  },
+  {
+   "n": "めし処 夏の家",
+   "jp": "めし処 夏の家（なつのや）",
+   "cat": "炸豬排與定食",
+   "addr": "東京都台東區淺草 2 丁目，花屋敷通旁",
+   "site": "https://natsunoya.client.jp/",
+   "official": true,
+   "note": "炸豬排兼定食店，有早餐時段。詳細地址與營業時間本次未取得，待補。",
+   "src": {
+    "url": "https://www.threads.com/@jameschen_1212/post/DdDNI6ektF1",
+    "who": "jameschen_1212",
+    "quote": "一則列了五家的清單型回覆"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "DEPOT",
+   "jp": "DEPOT（デポ）",
+   "cat": "咖啡與甜點",
+   "addr": "東京都千代田區丸之內 1-9-1 東京車站 B1 GRANSTA 東京，北地下自由通路沿線、GRANSTA 地下北口改札旁（在改札外）",
+   "open": "07:00–22:00",
+   "tel": "03-6551-2411",
+   "site": "https://www.gransta.jp/mall/gransta_tokyo/depot/",
+   "official": true,
+   "note": "招牌是布丁與東京拿坡里義大利麵，假日常售完。",
+   "src": {
+    "url": "https://www.threads.com/@jameschen_1212/post/DdDNI6ektF1",
+    "who": "jameschen_1212",
+    "quote": "一則列了五家的清單型回覆"
+   },
+   "grp": "甜點與咖啡"
+  },
+  {
+   "n": "No.4",
+   "jp": "No.4",
+   "cat": "麵包坊與法式吐司",
+   "addr": "東京都千代田區四番町 5-9",
+   "open": "08:00–21:00（L.O.20:30）",
+   "tel": "03-3234-4440",
+   "access": "JR 市谷站步行 4 分、地鐵麴町站步行 3 分",
+   "site": "https://www.tysons.jp/no4/",
+   "official": true,
+   "note": "留言說「要小排隊，排隊時有地方坐，店內麵包也好吃」，與店家型態相符。",
+   "src": {
+    "url": "https://www.threads.com/@syx11_23/post/Dc0Te6IkRgS",
+    "who": "syx11_23",
+    "likes": 497,
+    "comments": 4,
+    "reposts": 13,
+    "shares": 239,
+    "quote": "店名是NO.4但他在我這是NO.1"
+   },
+   "grp": "甜點與咖啡"
+  },
+  {
+   "n": "根室花まる 銀座店",
+   "jp": "回転寿司 根室花まる 銀座店",
+   "cat": "迴轉壽司",
+   "addr": "東京都中央區銀座 5-2-1 Ginza Novo（原東急 Plaza 銀座），10F 迴轉壽司、B2 立食壽司",
+   "site": "https://www.sushi-hanamaru.com/info/details/2026923.html",
+   "official": true,
+   "note": "官網公告 2026/9/23 營業結束，原因是大樓所有權變更。2016 年 3 月開幕，做了十年。留言說的沒錯，這家已經不能去了。",
+   "status": "已結束營業",
+   "closed": "2026-09-23",
+   "src": {
+    "url": "https://www.threads.com/@kevin_c.0509/post/Dc0oEHHjwhd",
+    "who": "kevin_c.0509",
+    "likes": 170,
+    "comments": 8,
+    "reposts": 2,
+    "shares": 223,
+    "quote": "9/23就關門摟，看到要結束營業的消息直接買了機票"
+   },
+   "grp": "海鮮"
+  },
+  {
+   "n": "文房堂 神田本店",
+   "jp": "文房堂 神田本店",
+   "cat": "畫材與文具",
+   "addr": "〒101-0051 東京都千代田區神田神保町 1-21-1",
+   "open": "10:00–18:30（6 樓只到 18:00）",
+   "close": "年中無休，年末年初除外",
+   "tel": "03-3291-3441",
+   "access": "神保町站步行約 4 分",
+   "since": "1887 年（明治 20 年）",
+   "site": "http://www.bumpodo.co.jp/",
+   "official": true,
+   "note": "大正時代日本第一家製造販售油畫顏料的店。店內另有藝廊與咖啡。",
+   "grp": "購物與文具"
+  },
+  {
+   "n": "寿湯（東上野）",
+   "jp": "寿湯",
+   "cat": "錢湯",
+   "addr": "〒110-0015 東京都台東區東上野 5-4-17",
+   "open": "11:00–25:30（最後入場 25:05）",
+   "close": "每月第三個週四、1/1、1/2",
+   "tel": "03-3844-8886",
+   "access": "地鐵銀座線稻荷町站步行 2 分",
+   "price": "成人 ¥550、小學生 ¥200",
+   "official": false,
+   "note": "留言寫「上野壽湯」，正式名稱是「寿湯」，位置在東上野，最近的車站是稻荷町不是上野。有露天風呂與三溫暖。",
+   "grp": "景點與其他"
+  },
+  {
+   "n": "Paper message 吉祥寺店",
+   "jp": "Paper message 吉祥寺店",
+   "cat": "紙製品與文具",
+   "addr": "〒180-0004 東京都武藏野市吉祥寺本町 4-1-3 村上大樓",
+   "open": "11:00–19:00",
+   "close": "不定休",
+   "tel": "0422-27-1854",
+   "site": "https://www.papermessage.jp/",
+   "official": true,
+   "note": "由高知的印刷公司經營，專做紙品與印刷服務。",
+   "src": {
+    "url": "https://www.threads.com/@miartist_studio/post/Dcx1Bs4H6Tj",
+    "who": "miartist_studio",
+    "likes": 101,
+    "comments": 1,
+    "reposts": 1,
+    "shares": 23,
+    "quote": "吉祥寺那邊我都想再逛，超多漂亮文具跟選物店"
+   },
+   "grp": "購物與文具"
+  },
+  {
+   "n": "入鹿TOKYO",
+   "jp": "入鹿TOKYO（IRUCA-Tokyo-）",
+   "cat": "拉麵",
+   "addr": "六本木店：東京都港區六本木 4-12-12 穗高大樓 1F；另有東久留米店",
+   "tel": "03-5786-0029（六本木店）",
+   "official": false,
+   "note": "留言只寫「入鹿！」，照片是醤油拉麵配雲吞、招牌有 TOKYO 字樣。有兩家分店，照片是哪一家尚未確認。營業時間未取得。",
+   "src": {
+    "url": "https://www.threads.com/@laizhan_0211/post/Ddp5MdkiYia",
+    "who": "laizhan_0211",
+    "quote": "入鹿"
+   },
+   "grp": "麵"
+  },
+  {
+   "n": "黑毛和牛與高湯 日本橋いちり",
+   "jp": "黒毛和牛とお出汁 日本橋いちり",
+   "cat": "壽喜燒",
+   "addr": "〒103-0022 東京都中央區日本橋室町 1-11-16 East 室町大樓 1F",
+   "open": "11:00–15:00／17:00–21:00",
+   "close": "週日",
+   "price": "上套餐 ¥1,690、特上 ¥2,280（含稅）",
+   "official": false,
+   "note": "官方 X 帳號名稱直接標註「現在不接受預約」，與留言說的「無法預約只能現場排」一致。用 A4 到 A5 等級黑毛和牛母牛。",
+   "grp": "肉"
+  },
+  {
+   "n": "RistoPizza by Napoli sta ca 麻布台之丘店",
+   "jp": "RistoPizza by Napoli sta ca 麻布台ヒルズ店",
+   "cat": "拿坡里披薩",
+   "addr": "東京都港區麻布台 1-3-1 麻布台之丘 Tower Plaza 3F",
+   "open": "11:30–15:00／18:00–22:30（L.O. 依星期不同，21:30 至 22:00）",
+   "close": "週一（若週一為假日則改週二）",
+   "tel": "03-6441-3327",
+   "site": "https://napolistaca.jp/ristopizza/restaurant.html",
+   "official": true,
+   "note": "留言稱「麻布台亞洲第一 pizza」，該說法本站未查證，僅記錄店家資訊。",
+   "src": {
+    "url": "https://www.threads.com/@weian.li/post/Dck3LD_EfOI",
+    "who": "weian.li",
+    "likes": 25,
+    "comments": 1,
+    "reposts": 8,
+    "quote": "麻布台亞洲第一pizza"
+   },
+   "grp": "披薩"
+  },
+  {
+   "n": "HARBS",
+   "jp": "HARBS（ハーブス）",
+   "cat": "蛋糕與咖啡",
+   "addr": "東京多家分店（COREDO 日本橋、東京 Midtown、澀谷 Hikarie ShinQs 等）",
+   "open": "以 COREDO 日本橋為例 11:00–20:00（L.O.19:30），各店不同",
+   "since": "1981 年名古屋創業",
+   "site": "https://www.harbs.co.jp/shop_kanto/",
+   "official": true,
+   "note": "留言推的是水果千層（ミルクレープ）。這是連鎖店，分店多，營業時間各店不同，出發前看官網分店頁。",
+   "src": {
+    "url": "https://www.threads.com/@dodoo8686/post/Dck4d_mEkH5",
+    "who": "dodoo8686",
+    "likes": 85,
+    "comments": 2,
+    "quote": "Harbs水果千層"
+   },
+   "grp": "甜點與咖啡"
+  },
+  {
+   "n": "鮨 尚充",
+   "jp": "鮨 尚充（しょうじゅ）",
+   "cat": "壽司與海膽",
+   "addr": "東京都目黑區青葉台 1-28-2 EXA 1F（中目黑）",
+   "open": "18:00–24:00",
+   "close": "週日（若週一為假日則休）",
+   "official": false,
+   "note": "以海膽握壽司的多種比較聞名，店主為安田尚充。留言說「海膽愛好者必去」與店家定位相符。",
+   "src": {
+    "url": "https://www.threads.com/@aespa_k1117/post/Dc1PG9ummIx",
+    "who": "aespa_k1117",
+    "likes": 76,
+    "comments": 1,
+    "reposts": 37,
+    "quote": "海膽愛好者必去"
+   },
+   "grp": "海鮮"
+  },
+  {
+   "n": "淺草今半 國際通本店",
+   "jp": "浅草今半 国際通り本店",
+   "cat": "壽喜燒",
+   "addr": "東京都台東區西淺草 3-1-12",
+   "open": "11:30–21:30（L.O.20:30）",
+   "close": "年中無休",
+   "tel": "03-3841-1114",
+   "since": "1895 年（明治 28 年）",
+   "site": "https://www.asakusaimahan.co.jp/kokusai",
+   "official": true,
+   "note": "留言只寫「今半」並說「有點鹹」。要注意「今半」有數個不同系統（淺草今半、人形町今半、今半本店），本站列的是淺草今半國際通本店，留言指哪一家未確認。",
+   "grp": "肉"
+  },
+  {
+   "n": "海の幸 翔",
+   "jp": "海の幸 翔",
+   "cat": "海鮮丼",
+   "addr": "東京都千代田區神田東松下町 12 宮川大樓東棟 1F",
+   "open": "11:30 起，另有晚間時段",
+   "close": "週六、週日與假日",
+   "access": "岩本町站 A5 出口步行 2 分、神田站步行 3 分",
+   "official": false,
+   "note": "每天早上進貨的本鮪海鮮丼專門店，位在神田辦公區。",
+   "src": {
+    "url": "https://www.threads.com/@1ggfood/post/DcppUgPAX3K",
+    "who": "1ggfood",
+    "quote": "上次吃到神田站海の幸翔 蠻喜歡的"
+   },
+   "grp": "海鮮"
+  },
+  {
+   "n": "拉麵長山",
+   "jp": "ラーメン長山",
+   "cat": "拉麵",
+   "addr": "東京都台東區根岸 1-3-21",
+   "open": "週二至週六 11:00–23:50；週日 11:00–22:00",
+   "close": "週一",
+   "access": "鶯谷站南口步行 1 分",
+   "site": "https://x.com/ramen_nagayama",
+   "official": true,
+   "note": "雞豚骨濃湯，麵與白飯大碗免費。位置與留言說的「鶯谷站南口」完全一致。",
+   "src": {
+    "url": "https://www.threads.com/@taiyaki_yukimiya/post/DdkOXG8k1f-",
+    "who": "taiyaki_yukimiya",
+    "likes": 59,
+    "comments": 6,
+    "reposts": 23,
+    "quote": "鶯谷站南口斜坡下來的一家拉麵店，好吃到下次還來"
+   },
+   "grp": "麵"
+  },
+  {
+   "n": "NIBOSHIMANIA",
+   "jp": "NIBOSHIMANIA（ニボシマニア）",
+   "cat": "煮干拉麵",
+   "addr": "東京都大田區西蒲田 8-2-1 西蒲田 Sky Heights 108",
+   "open": "週二至週六 11:00–15:00／18:00–21:00（L.O.20:30）；週日只有 11:00–15:00",
+   "close": "週一",
+   "access": "JR 蒲田站西口步行 3 分",
+   "site": "https://www.instagram.com/mania_niboshi100/",
+   "official": true,
+   "note": "2022/9/17 開幕，只有吧台 11 席，不接受預約。",
+   "src": {
+    "url": "https://www.threads.com/@ramen.chen_1412/post/Ddl-owjHzPH",
+    "who": "ramen.chen_1412",
+    "likes": 133,
+    "comments": 3,
+    "reposts": 4,
+    "shares": 101,
+    "quote": "打算以後的每一次東京自由行，都要去吃"
+   },
+   "grp": "麵"
+  },
+  {
+   "n": "1 Hotel Tokyo",
+   "cat": "飯店",
+   "addr": "東京都港區赤坂 2-17-22 東京 World Gate 赤坂／赤坂 Trust Tower 38–43 樓",
+   "tel": "03-6441-3040",
+   "opened": "2026-03-05",
+   "rooms": "211 間",
+   "site": "https://www.1hotels.com/tokyo",
+   "official": true,
+   "note": "美國永續奢華飯店品牌 1 Hotels 進軍日本的第一家。",
+   "src": {
+    "url": "https://www.threads.com/@xienko/post/DcnY8xcE-IR",
+    "who": "xienko",
+    "likes": 121,
+    "comments": 1,
+    "reposts": 1,
+    "shares": 16,
+    "quote": "超棒的飯店"
+   },
+   "grp": "景點與其他"
+  },
+  {
+   "n": "SHOGUN BURGER",
+   "jp": "SHOGUN BURGER（ショーグンバーガー）",
+   "cat": "和牛漢堡",
+   "addr": "新宿總本店：東京都新宿區歌舞伎町 1-15-12 Piatto 大樓 1F；另有東急歌舞伎町 Tower、麻布台之丘、町田、澀谷等分店",
+   "tel": "03-5273-4829（新宿總本店）",
+   "site": "https://shogun-burger.com/store",
+   "official": true,
+   "note": "由經營 35 年的燒肉店「焼肉ハウス大将軍」創立，2022 年日本漢堡錦標賽冠軍。",
+   "src": {
+    "url": "https://www.threads.com/@florencetsaifu/post/DdntLFWgaZk",
+    "who": "florencetsaifu",
+    "quote": "之前是阿夫利，現在新增了 Shogun burger，和牛漢堡"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "AFURI 阿夫利",
+   "jp": "AFURI（阿夫利）",
+   "cat": "柚子鹽拉麵",
+   "addr": "惠比壽店：東京都澀谷區惠比壽 1-1-7 117 大樓 1F；另有多家分店",
+   "open": "惠比壽店 11:00–翌 05:00",
+   "tel": "03-5795-0750（惠比壽店）",
+   "site": "https://afuri.com/findus/",
+   "official": true,
+   "note": "2001 年起家，招牌是柚子鹽拉麵。惠比壽店只收電子支付。",
+   "src": {
+    "url": "https://www.threads.com/@florencetsaifu/post/DdntLFWgaZk",
+    "who": "florencetsaifu",
+    "quote": "之前是阿夫利，現在新增了 Shogun burger，和牛漢堡"
+   },
+   "grp": "麵"
+  },
+  {
+   "n": "三麗鷗彩虹樂園",
+   "jp": "サンリオピューロランド",
+   "cat": "主題樂園",
+   "addr": "東京都多摩市落合 1-31",
+   "open": "10:00–17:00，每日不同，以官網行事曆為準",
+   "tel": "042-339-1111（09:30–17:00）",
+   "access": "多摩中心站步行約 5 分",
+   "site": "https://www.puroland.jp/",
+   "official": true,
+   "note": "日本第一座室內型主題樂園。",
+   "src": {
+    "url": "https://www.threads.com/@asa_yuqi_417923/post/Ddn3wKtIPRR",
+    "who": "asa_yuqi_417923",
+    "quote": "東京迪士尼、三麗鷗彩虹樂園"
+   },
+   "grp": "景點與其他"
+  },
+  {
+   "n": "Laforet 原宿",
+   "jp": "ラフォーレ原宿",
+   "cat": "百貨",
+   "addr": "東京都澀谷區神宮前 1-11-6",
+   "open": "11:00–20:00（不同來源有 11:00–21:00 的說法，以官網為準）",
+   "close": "無休（2 月與 8 月可能有臨時休館）",
+   "tel": "03-3475-0411",
+   "access": "JR 原宿站表參道口步行 5 分、明治神宮前站 5 號出口步行 1 分",
+   "site": "https://www.laforet.ne.jp/",
+   "official": true,
+   "src": {
+    "url": "https://www.threads.com/@tokino_rina/post/Dc8xuSlGRYJ",
+    "who": "tokino_rina",
+    "quote": "衣服都好好看"
+   },
+   "grp": "購物與文具"
+  },
+  {
+   "n": "PAPIER LABO.",
+   "jp": "PAPIER LABO.（パピエラボ）",
+   "cat": "紙品與文具選物",
+   "addr": "東京都澀谷區神宮前 1-1-1 #106",
+   "open": "11:00–19:00",
+   "close": "週一",
+   "tel": "03-5411-1696",
+   "access": "JR 原宿站步行 8 分、北參道站步行 9 分",
+   "site": "http://papierlabo.com/",
+   "official": true,
+   "note": "互動數排全串第七（2,764 讚、844 分享），前三輪都沒撈到。專做紙與紙相關製品，也有活版印刷訂製。",
+   "src": {
+    "url": "https://www.threads.com/@tsumuzii/post/DcxnkxeEeKT",
+    "who": "tsumuzii",
+    "likes": 2764,
+    "comments": 11,
+    "reposts": 163,
+    "shares": 844,
+    "quote": "很讚的紙品選物店，小小一間不大，東西種類繁雜但逛起來不會有壓力，店員人也很好"
+   },
+   "grp": "購物與文具"
+  },
+  {
+   "n": "焼肉 スタミナ苑",
+   "jp": "焼肉 スタミナ苑",
+   "cat": "燒肉",
+   "addr": "東京都足立區鹿濱 3-13-4",
+   "open": "平日 16:00–22:30；六日與假日 15:00–22:30（L.O.21:30）",
+   "close": "每週二、三",
+   "tel": "03-3897-0416",
+   "site": "https://sutaminaen.com/",
+   "official": true,
+   "note": "官方明講不接受任何預約，全部現場排。留言說「從牛舌、內臟、牛排每一樣都處理得很好，牛尾湯很好喝，價位很合理」。位置在足立區鹿濱，離市中心遠，要專程去。",
+   "src": {
+    "url": "https://www.threads.com/@hugo_soon/post/Ddoj6Bqk1yu",
+    "who": "hugo_soon",
+    "quote": "從牛舌、內臟、牛排每一樣都處理得很好，牛尾湯很好喝，價位很合理"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "とんかつ 田 東陽町店",
+   "jp": "とんかつ田 東陽町店",
+   "cat": "炸豬排",
+   "addr": "〒135-0016 東京都江東區東陽 3-27-25",
+   "open": "11:00–22:00（L.O.21:30）；午餐 11:00–15:00、晚餐 17:00–21:30",
+   "close": "無休",
+   "tel": "03-5634-8660",
+   "official": false,
+   "note": "連鎖店。除了常態豬肉，另有每月更換的品牌豬，產地遍及全國。留言說的「有岩中豚的時候一定要試」指的就是這個月替制度，不是常態供應。",
+   "src": {
+    "url": "https://www.threads.com/@awesomoney/post/Ddqff1kmWlS",
+    "who": "awesomoney",
+    "quote": "雖然是連鎖店，但如果有岩中豚的時候一定要試一試"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "人形町今半 本店",
+   "jp": "人形町今半 本店",
+   "cat": "壽喜燒與鐵板燒",
+   "addr": "東京都中央區日本橋人形町 2-9-12",
+   "open": "料理 L.O. 21:00",
+   "tel": "03-3666-7006",
+   "since": "1895 年（明治 28 年）於東京本所創業為牛鍋屋，1952 年遷至現址，1956 年獨立",
+   "site": "https://restaurant.imahan.com/honten/",
+   "official": true,
+   "note": "1 樓鐵板燒牛排、2 樓壽喜燒與涮涮鍋。與淺草今半是不同系統，留言明確寫「人形町今半」的是這一家。",
+   "src": {
+    "url": "https://www.threads.com/@c0nniewon9/post/Ddp6Hy0kgTL",
+    "who": "c0nniewon9",
+    "quote": "人形町今半 sukiyaki!!!"
+   },
+   "grp": "肉"
+  },
+  {
+   "n": "AKB48 劇場",
+   "jp": "AKB48劇場",
+   "cat": "劇場",
+   "addr": "東京都千代田區外神田 4-3-3 唐吉訶德秋葉原店 8F",
+   "access": "JR 秋葉原站電氣街口步行 5 分",
+   "opened": "2005-12-08",
+   "site": "https://www.akb48.co.jp/theater",
+   "official": true,
+   "note": "留言只寫「秋葉原唐吉八樓」，那層樓就是 AKB48 劇場。",
+   "src": {
+    "url": "https://www.threads.com/@john_linsh0119/post/Dc1MR8xCYO4",
+    "who": "john_linsh0119",
+    "likes": 518,
+    "comments": 6,
+    "reposts": 2,
+    "shares": 62,
+    "quote": "秋葉原唐吉八樓"
+   },
+   "grp": "景點與其他"
+  }
+ ],
+ "unsolved": [
+  {
+   "t": "RED BAR",
+   "likes": 185,
+   "why": "東京叫這名字的店不只一家，留言沒給地區"
+  },
+  {
+   "t": "燕九郎",
+   "likes": 129,
+   "why": "可能是店名、表演者或角色，線索不足"
+  },
+  {
+   "t": "清澄白河的某間咖啡廳",
+   "likes": 101,
+   "why": "留言只寫「這間咖啡廳」，japanuts 是發文者的帳號不是店名"
+  },
+  {
+   "t": "池袋的螃蟹店",
+   "likes": 56,
+   "why": "池袋有蟹まみれ TOKYO 與かにざんまい 兩家名字接近的，無法斷定"
+  }
+ ],
+ "_方法": "抓取方式：登入後讀取該貼文，分頁必須停在前景（在背景時瀏覽器判定為隱藏，Threads 不會載入更多）。有些店名只出現在照片的招牌上，那幾家是放大照片判讀的。高留言數的回覆會展開看討論，常有人追問店名。每家查到官方網站或權威來源後才列入，查不到的就不列。",
+ "_分組": [
+  "肉",
+  "麵",
+  "海鮮",
+  "披薩",
+  "甜點與咖啡",
+  "購物與文具",
+  "景點與其他"
+ ]
+}

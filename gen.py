@@ -1577,6 +1577,11 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'（{HS_NIGHTS} 晚 {money(HS_MIN)} 起，附各家的弱點與櫃檯開門時間）；'
                      f'不想睡床位的話，另有'
                      f'<a href="{U("/tokyo/budget-hotel/")}">共用衛浴的私人房</a>。</p>')
+        if slug == 'tokyo' and os.path.exists('tokyo-picks.json'):
+            body += (f'<p class="lede">吃的呢？'
+                     f'<a href="{U("/tokyo/worth-flying-for/")}">東京值得為它再飛一次的 45 家店</a>'
+                     f'（Threads 上七千多則回覆挑出來的，每家都查過官方地址與公休，'
+                     f'其中一家已經歇業）。</p>')
         if slug == 'tokyo' and os.path.exists('angel63.json'):
             body += (f'<p class="lede">晚上想找點事做？'
                      f'<a href="{U("/tokyo/63angel/")}">六本木 63 ANGEL 的座位方案與取消規定</a>'
@@ -2362,6 +2367,8 @@ if os.path.exists('lasttrain.json'):
         f'<s>清晨班機的最後一晚怎麼睡</s></a>'
       + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 六本木 63 ANGEL</b>'
         f'<s>3 部散場 24:45，電車早就沒了</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/worth-flying-for/")}"><b>🍽️ 值得再飛一次的店</b>'
+        f'<s>45 家，含營業時間與公休</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
         f'<s>便宜的班次時段通常很差</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a>'
@@ -3314,6 +3321,157 @@ if os.path.exists('japan-rules.json'):
         f'出發前請以官方最新公告為準。本站不是稅務或法律顧問。</p>'
       + _JRJS + foot())
     pages.append(('/japan-travel-rules/', 0.8))
+
+# ---------- 東京：值得為它再飛一次的店 ----------
+# 來源是一則七千多則回覆的 Threads 討論串。社群留言只當線索，
+# 每家都回查官方資料，所以這頁能做到留言串做不到的事：
+# 指出哪些留言寫錯了、哪一家已經歇業。
+if os.path.exists('tokyo-picks.json'):
+    TP = json.load(open('tokyo-picks.json', encoding='utf-8'))
+    _tp_src = TP['source']
+
+    def _tp_num(x):
+        return f'{x:,}' if isinstance(x, int) else html.escape(str(x))
+
+    def _tp_stats(sc):
+        bits = []
+        for k, lbl in (('likes', '讚'), ('comments', '留言'),
+                       ('reposts', '轉發'), ('shares', '分享')):
+            if sc.get(k):
+                bits.append(f'{lbl} {_tp_num(sc[k])}')
+        return '　·　'.join(bits)
+
+    def _tp_row(st):
+        sc = st.get('src') or {}
+        # 官方資料：只列有查到的欄位，沒查到就不擠
+        info = []
+        for k, lbl in (('addr', '地址'), ('open', '營業'), ('close', '公休'),
+                       ('access', '交通'), ('price', '價位'), ('tel', '電話'),
+                       ('since', '創業'), ('opened', '開幕')):
+            if st.get(k):
+                info.append(f'<li><b>{lbl}</b>：{html.escape(str(st[k]))}</li>')
+        dead = st.get('status') == '已結束營業'
+        head = (f'<b>{html.escape(st["n"])}</b>'
+                + (f'<br><small style="color:var(--dim)">{html.escape(st["jp"])}</small>'
+                   if st.get('jp') and st['jp'] != st['n'] else '')
+                + ('<span class="tag">已歇業</span>' if dead else ''))
+        quote = ''
+        if sc.get('quote'):
+            quote = ('<blockquote class="q">' + html.escape(sc['quote'])
+                     + '<cite>'
+                     + (f'<a href="{sc["url"]}" target="_blank" rel="nofollow noopener">'
+                        f'@{html.escape(sc["who"])}</a>' if sc.get('url')
+                        else f'@{html.escape(sc.get("who", ""))}')
+                     + (('　' + _tp_stats(sc)) if _tp_stats(sc) else '')
+                     + '</cite></blockquote>')
+        site = ''
+        if st.get('site'):
+            site = (f'<p class="disc"><a href="{st["site"]}" target="_blank" '
+                    f'rel="nofollow noopener">'
+                    + ('官方網站' if st.get('official') else '參考來源')
+                    + ' →</a></p>')
+        return ('<div class="pp' + (' lose' if dead else '') + '">' + head
+                + f'<p>{html.escape(st["cat"])}</p>'
+                + ('<ul class="lede">' + ''.join(info) + '</ul>' if info else '')
+                + (f'<p class="disc">{html.escape(st["note"])}</p>' if st.get('note') else '')
+                + quote + site + '</div>')
+
+    _tp_body = ''
+    for grp in TP['_分組']:
+        rows = [x for x in TP['stores'] if x.get('grp') == grp]
+        if not rows:
+            continue
+        rows.sort(key=lambda x: -((x.get('src') or {}).get('likes') or 0))
+        _tp_body += (f'<h2>{html.escape(grp)}（{len(rows)} 家）</h2>'
+                     '<div class="cmp">' + ''.join(_tp_row(x) for x in rows) + '</div>')
+
+    _tp_corr = ''.join(
+        f'<tr><td class="nm"><small>{html.escape(a)}</small></td>'
+        f'<td class="win"><b>{html.escape(b)}</b></td>'
+        f'<td><small>{html.escape(c)}</small></td></tr>'
+        for a, b, c in TP['corrections'])
+
+    _tp_un = ''.join(
+        f'<li><b>{html.escape(u["t"])}</b>（{u["likes"]} 讚）：{html.escape(u["why"])}</li>'
+        for u in TP['unsolved'])
+
+    _tp_n = len(TP['stores'])
+    _tp_src_n = sum(1 for x in TP['stores'] if x.get('src'))
+    _tp_off = sum(1 for x in TP['stores'] if x.get('official'))
+
+    tp_faq = [
+     ('這些店是誰推薦的？',
+      f'來自 Threads 上一則「東京有沒有一家店，是你願意為了它再飛一次？」的討論串，'
+      f'{_tp_src["views"]}、{_tp_src["replies"]:,} 則回覆。本站讀取其中約 950 則，'
+      f'把提到店名的抽出來，每一家再回查官方資料。留言只是線索，不是來源。'),
+     ('為什麼有些店的留言沒寫店名？',
+      '因為店名在照片的招牌上。像「在秋葉原 爽是真的爽」那則有四千多個讚，'
+      '文字完全沒提店名，是放大照片看招牌才知道是センタービーフ。'
+      '上野那家「婆婆經營的隱藏燒肉店」也一樣，招牌上寫著牛スター 與地址。'),
+     ('留言推薦的店會不會已經倒了？',
+      '會。根室花まる 銀座店就是，官網公告 2026 年 9 月 23 日結束營業，原因是大樓易主。'
+      '那則留言本身沒錯，寫的時候店還在。這就是為什麼每家都要回查，'
+      '照抄留言串會把一家不存在的店推給你。'),
+     ('互動數字代表什麼？',
+      '讚數是有多少人認同，分享數比較接近「我要存起來去吃」。'
+      '兩者不一定同方向，例如宇奈とと 的讚是 945 但分享有 1,197，分享多於讚。'
+      '數字是擷取當下的值，之後會變。'),
+     ('為什麼不放照片？',
+      '那些照片的著作權屬於拍的人，本站不轉貼。每家只引一到兩句短句並連回原文，'
+      '想看照片請點連結到原始留言。'),
+    ]
+    tp_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in tp_faq)
+    tp_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in tp_faq]}, ensure_ascii=False)
+
+    tp_title = f'東京值得為它再飛一次的 {_tp_n} 家店（每家都查過官方資料）'
+    tp_desc = (f'Threads 上 {_tp_src["replies"]:,} 則回覆的討論串，本站抽出 {_tp_n} 家店，'
+               f'每一家回查官方地址、營業時間與公休，{_tp_off} 家找到官網。'
+               f'其中一家已經歇業，多則留言把店名寫錯，本頁一併標出來。')
+
+    write('tokyo/worth-flying-for/index.html',
+      head(tp_title, tp_desc, 'tokyo/worth-flying-for/',
+           '<script type="application/ld+json">' + tp_ld + '</script>')
+      + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('值得再飛一次的店', None)]) + topnav()
+      + '<h1>東京有哪家店，值得你為它再飛一次</h1>'
+      + f'<p class="lede">{html.escape(TP["_說明"])}</p>'
+      + '<div class="today">'
+        f'<div class="tday">查證於 {TP["checked"]}　·　'
+        f'來源：{html.escape(_tp_src["views"])}、{_tp_src["replies"]:,} 則回覆的討論串</div>'
+        f'<div class="tans">{_tp_n} 家店，其中 <b>{_tp_off} 家</b>找得到官方網站</div>'
+        '<div class="tsub">留言串會告訴你哪家好吃，但不會告訴你它星期幾休、'
+        '要不要預約，或者它其實已經收了。這頁把每一家的官方資料查出來補上。</div>'
+        '<div class="tbuf"><b>其中一家已經歇業</b>：根室花まる 銀座店在 2026 年 9 月 23 日結束營業。'
+        '留言寫的時候店還在，照抄就會推薦到一家不存在的店。</div></div>'
+      + '<h2>留言說的，跟查到的</h2>'
+      + '<p class="lede">這幾則不是留言的人記錯，多半是口語簡稱或店名只在照片裡。'
+        '但如果照抄，讀者就會查不到或走錯地方。</p>'
+      + '<div class="tw"><table><tr><th>留言裡寫的</th><th>實際是</th><th>差在哪</th></tr>'
+      + _tp_corr + '</table></div>'
+      + f'<p class="disc">{html.escape(TP["_引用原則"])}</p>'
+      + _tp_body
+      + '<h2>這幾則沒解開</h2>'
+      + '<p class="lede">有人推薦但線索不足，查不到是哪一家，本站不硬湊。</p>'
+      + f'<ul class="lede">{_tp_un}</ul>'
+      + '<h2>怎麼整理的</h2>'
+      + f'<p class="lede">{html.escape(TP["_方法"])}</p>'
+      + '<h2>常見問題</h2>' + tp_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>✈️ 東京機票</b>'
+        f'<s>各出發地比價，每日更新</s></a>'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 哪幾天去最貴</b>'
+        f'<s>台灣連假出發貴 28%</s></a>'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>吃完還回得去嗎</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
+        f'<s>省下來的錢拿去吃</s></a></div>'
+      + f'<p class="disc">店家資訊查證於 {TP["checked"]}，營業時間與公休會變動，'
+        '出發前請以各店官方公告為準。本站與這些店家沒有合作關係，'
+        '也沒有從這一頁的任何連結取得分潤。</p>'
+      + foot())
+    pages.append(('/tokyo/worth-flying-for/', 0.7))
 
 # ---------- 六本木 ROKUSAN ANGEL（63 ANGEL） ----------
 # 台灣人去得多，但中文整理多半只抄方案名稱與價格。
