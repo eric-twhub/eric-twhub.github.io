@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-28-transfer-osaka-hiroshima",
- "generated": "2026-09-28 17:09",
+ "generated": "2026-09-28 18:08",
  "kind": "transfer",
  "city": "hiroshima",
  "via": "osaka",
@@ -12,7 +12,7 @@
   "air": "MM",
   "airname": "樂桃航空",
   "cls": "lcc",
-  "price": 6929,
+  "price": 6925,
   "dep": "2026-10-10",
   "ret": "2026-10-15",
   "dept": "18:15",
@@ -22,7 +22,7 @@
   "dur": 335,
   "dur_to": 165,
   "gate": "Farera",
-  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=SL17916561001791669600000165TPEKIX17920710001792077600000170KIXTPE_d98d47da03dbb044f61828de00a04f41_18421&search_date=28092026&expected_price_uuid=01a0e73d-26f6-8030-660c-26a02811513e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=v6Uf5C-FFXcR6N2M_kMEaA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6929&marker=775639"
+  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=SL17916561001791669600000165TPEKIX17920710001792077600000170KIXTPE_d98d47da03dbb044f61828de00a04f41_18421&search_date=28092026&expected_price_uuid=01a0e73d-26f6-8030-660c-26a02811513e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=v6Uf5C-FFXcR6N2M_kMEaA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6925&marker=775639"
  },
  "fare_rt": true,
  "jpy_text": "¥10,210",
@@ -39,6 +39,6 @@
  "route": "新大阪 → 廣島",
  "mode": "山陽新幹線",
  "tm": "約 1.5 小時",
- "total": 11117,
- "save": 2344
+ "total": 11113,
+ "save": 2348
 }
