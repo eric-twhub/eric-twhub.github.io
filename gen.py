@@ -4857,6 +4857,20 @@ if HOL:
         _gap_note = ('<p class="disc">今天抓到的票價樣本不足以分組計算價差，'
                      '這一段等資料夠了會自動出現。</p>')
 
+    # 把算好的結果存成資料檔給 make_holiday_cards.py 用。
+    # 請假試算是八十幾行的邏輯，票價價差又要有當日的 scan 資料才算得出來，
+    # 兩樣在圖卡腳本裡重寫一次一定會漂移，所以由這裡輸出唯一一份。
+    write('japan-holiday-calendar/cards-data.json', json.dumps({
+        'generated': NOWS,
+        'checked': HOL['checked'],
+        'leave': _LP,
+        'overlaps': HOL_OVER,
+        'runs': HOL['runs'],
+        'fare': ({'base_median': _hp[0], 'base_n': _hp[1],
+                  'rows': [{'label': l, 'n': n, 'median': m, 'pct': p}
+                           for l, n, m, p in _hp[2]]} if _hp else None),
+    }, ensure_ascii=False, indent=1))
+
     _ov_rows = ''
     for o in HOL_OVER:
         if o['end'] < TODAY:
