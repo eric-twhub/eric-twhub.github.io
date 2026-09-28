@@ -951,7 +951,8 @@ def topnav(cur=''):
     kinds = (link('/japan-flight-good-times/', '☀️ 早去晚回')
              + link('/deals/', '🔥 今日特價')
             + link('/japan-flight-baggage/', '🧳 廉航行李費')
-            + link('/japan-ski-baggage/', '🎿 雪具託運'))
+            + link('/japan-ski-baggage/', '🎿 雪具託運')
+            + link('/japan-ski-lift-ticket/', '🎟️ 雪票早鳥'))
 
     # 訂完票之後才會看的東西。同一層放太多會找不到，所以分兩組小標。
     trip = (link('/hotel-price-check/', '🏨 訂房比價')
@@ -1955,6 +1956,8 @@ if os.path.exists('ski.json'):
           + fare_cta('sapporo', '札幌現在多少錢')) if _skfare else '')
       + '<h2>常見問題</h2>' + sk_html
       + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-ski-lift-ticket/")}"><b>🎟️ 雪票早鳥</b>'
+        f'<s>折扣、截止日與気象庁 的降雪預報</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
         f'<s>加購行李的費率與時機</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
@@ -1966,6 +1969,302 @@ if os.path.exists('ski.json'):
         f'出發前請以航空公司官網為準。雪具能否託運最終以航空公司現場判定為準。</p>'
       + foot())
     pages.append(('/japan-ski-baggage/', 0.7))
+
+# ---------- 雪票早鳥 ----------
+# 社群在傳「早鳥票年年漲、越早買越好」，但沒人把兩件事放在一起：
+# 早鳥票的截止日，和気象庁 預報更新的日期。這一頁做的就是那張時間表。
+# 另外糾正一個普遍的誤解：早鳥票綁的是雪場，不是日期。
+if os.path.exists('ski-ticket.json'):
+    ST = json.load(open('ski-ticket.json', encoding='utf-8'))
+    _SM3 = '<br><small style="color:var(--dim)">'
+    _J = ST['jma']
+
+    def _pct(lo, mid, hi):
+        """三態機率條。偏少的那一段用暖色，因為這一頁在講的是缺雪風險。"""
+        return ('<span class="stb">'
+                f'<i style="width:{lo}%;background:#e07a3f">{lo}</i>'
+                f'<i style="width:{mid}%;background:var(--line);color:var(--fg)">{mid}</i>'
+                f'<i style="width:{hi}%;background:#3f7ae0">{hi}</i></span>')
+
+    _snowrows = ''.join(
+        f'<tr><td><b>{html.escape(r[0])}</b>{_SM3}{html.escape(r[1])}</small></td>'
+        f'<td>{_pct(r[2], r[3], r[4])}</td>'
+        f'<td>{html.escape(r[5])}</td></tr>'
+        for r in _J['snow'])
+
+    _temprows = ''.join(
+        f'<tr><td><b>{html.escape(r[0])}</b>'
+        + (f'{_SM3}{html.escape(r[1])}</small>' if r[1] else '')
+        + f'</td><td>{_pct(r[2], r[3], r[4])}</td></tr>'
+        for r in _J['temp'])
+
+    # 時間表。截止日與預報更新日交錯排，這是本頁的重點。
+    _KIND = {'jma': ('預報', '#3f7ae0'), 'cut': ('截止', '#e07a3f'),
+             'use': ('生效', 'var(--dim)')}
+    _calrows = ''
+    for c in ST['calendar']:
+        _lbl, _col = _KIND[c['k']]
+        _calrows += (f'<div class="stc"><div class="stcd" style="color:{_col}">'
+                     f'<b>{c["d"]}</b>{_SM3}{_lbl}</small></div>'
+                     f'<div class="stcb"><b>{html.escape(c["w"])}</b>'
+                     f'<span>{html.escape(c["note"])}</span></div></div>')
+
+    _FORM3 = {'p': '只有紙本', 'e': '只有電子票', 'pe': '紙本或電子票'}
+    _tkrows = ''
+    _cut_prev = None
+    for t in ST['tickets']:
+        _off = round((t['was'] - t['now']) / t['was'] * 100)
+        if t['cut'] != _cut_prev:
+            _tkrows += (f'<tr class="stgrp"><th colspan="5">{t["cut"]} 截止</th></tr>')
+            _cut_prev = t['cut']
+        _tkrows += (f'<tr><td><b>{html.escape(t["n"])}</b>{_SM3}'
+                    f'{html.escape(t["jp"])}・{html.escape(t["pref"])}</small></td>'
+                    f'<td><b>¥{t["now"]:,}</b>{_SM3}原價 ¥{t["was"]:,}</small></td>'
+                    f'<td class="{"win" if _off >= 35 else ""}"><b>{_off}%</b> OFF</td>'
+                    f'<td>{_FORM3[t["form"]]}</td>'
+                    f'<td>{html.escape(t["note"]) if t["note"] else "—"}</td></tr>')
+
+    _mythrows = ''.join(
+        f'<h3>{i}. 「{html.escape(m["q"])}」</h3>'
+        f'<p class="lede">{m["a"]}</p>'
+        f'<p class="disc">出處：<a href="{m["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(m["src_name"])}</a>，查證於 {ST["checked"]}。</p>'
+        for i, m in enumerate(ST['myths'], 1))
+
+    _cmrows = ''.join(
+        '<div class="stk">'
+        f'<h3>{html.escape(c["n"])}<span class="tag">{html.escape(c["who"])}</span></h3>'
+        f'<table class="stkt"><tbody>'
+        f'<tr><th>價格</th><td><b>{html.escape(c["price"])}</b></td></tr>'
+        f'<tr><th>截止</th><td>{html.escape(c["cut"])}</td></tr>'
+        f'<tr><th>有效期間</th><td>{html.escape(c["valid"])}</td></tr>'
+        f'<tr><th>怎麼選雪場</th><td>{html.escape(c["pick"])}</td></tr>'
+        f'<tr><th>能不能取消</th><td>{html.escape(c["cancel"])}</td></tr>'
+        f'<tr><th>涵蓋雪場</th><td>{html.escape(c["resorts"])}</td></tr>'
+        f'</tbody></table>'
+        f'<p class="lede">{c["note"]}</p>'
+        f'<p class="disc"><a href="{c["src"]}" rel="nofollow noopener" target="_blank">'
+        f'商品頁 →</a></p></div>'
+        for c in ST['common'])
+
+    _chrows = ''.join(
+        '<div class="stk">'
+        f'<h3>{html.escape(c["n"])}<span class="tag">{html.escape(c["lang"])}</span></h3>'
+        f'<table class="stkt"><tbody>'
+        f'<tr><th>計價幣別</th><td>{html.escape(c["cur"])}</td></tr>'
+        f'<tr><th>付款</th><td>{html.escape(c["pay"])}</td></tr>'
+        f'<tr><th>怎麼拿到票</th><td>{html.escape(c["deliver"])}</td></tr>'
+        + (f'<tr><th>額外條件</th><td>{html.escape(c["need"])}</td></tr>'
+           if c['need'] != '—' else '')
+        + f'<tr><th>取消</th><td>{html.escape(c["cancel"])}</td></tr>'
+        f'<tr><th class="stok">好處</th><td>{html.escape(c["good"])}</td></tr>'
+        f'<tr><th class="stng">代價</th><td>{html.escape(c["bad"])}</td></tr>'
+        f'</tbody></table>'
+        f'<p class="disc"><a href="{c["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(c["n"])} →</a></p></div>'
+        for c in ST['channels'])
+
+    _rulerows = ''.join(
+        f'<h3>{html.escape(r["t"])}</h3><p class="lede">{html.escape(r["b"])}</p>'
+        for r in ST['rules'])
+
+    _unver = ''.join('<li>' + html.escape(x) + '</li>' for x in ST['unverified'])
+
+    # 雪場門戶的即時票價。票買了還是要飛過去。
+    _ST_CITY = [('sapporo', '札幌'), ('sendai', '仙台'), ('tokyo', '東京'),
+                ('nagoya', '名古屋'), ('aomori', '青森'), ('akita', '秋田')]
+    _stfare = ''
+    for _s, _n in _ST_CITY:
+        _f = by_city.get(_s) or []
+        if not _f:
+            continue
+        _b = best(_f, True) or best(_f, False)
+        _stfare += (f'<tr><td><a href="{U("/"+_s+"/")}"><b>{_n}</b></a></td>'
+                    f'<td><b>{money(_b["price"])}</b>{_SM3}'
+                    f'{html.escape(_b["airname"])}・{"來回" if _b["rt"] else "單程"}含稅</small></td>'
+                    f'<td>{_b["dep"]}</td></tr>')
+
+    _st_css = ('<style>'
+      '.stb{display:flex;height:22px;border-radius:4px;overflow:hidden;min-width:140px;'
+      'font-size:.72rem;line-height:22px;text-align:center}'
+      '.stb i{font-style:normal;color:#fff;flex:0 0 auto}'
+      '.stc{display:flex;gap:14px;padding:12px 0;border-top:1px solid var(--line)}'
+      '.stc:first-child{border-top:0}'
+      '.stcd{flex:0 0 96px;font-size:.85rem}'
+      '.stcb{flex:1 1 auto}.stcb b{display:block;margin-bottom:4px}'
+      '.stcb span{font-size:.88rem;line-height:1.8;color:var(--dim)}'
+      '.stk{border:1px solid var(--line);border-radius:10px;background:var(--card);'
+      'padding:16px 18px;margin:14px 0}'
+      '.stk h3{margin:0 0 10px}'
+      '.stkt{width:100%;border-collapse:collapse;font-size:.88rem;margin:0 0 10px}'
+      '.stkt th{text-align:left;vertical-align:top;white-space:nowrap;padding:6px 12px 6px 0;'
+      'color:var(--dim);font-weight:600;width:7.5em}'
+      '.stkt td{vertical-align:top;padding:6px 0;line-height:1.8}'
+      '.stok{color:#2f8f4f!important}.stng{color:#c4563a!important}'
+      '.stgrp th{background:var(--card);color:var(--dim);font-size:.82rem;'
+      'text-align:left;font-weight:600}'
+      '@media(max-width:600px){.stcd{flex:0 0 78px;font-size:.78rem}'
+      '.stkt th{width:5.6em;font-size:.82rem}}'
+      '</style>')
+
+    st_faq = [
+     ('早鳥票會綁定使用日期嗎？',
+      '多數不會。以舞子スノーリゾート的早割 1day パス為例，商品頁寫「利用期間：2026-27シーズン有効」、'
+      '「利用不可日：なし」，整季任何一天都能用。你鎖定的是雪場不是日期。'
+      '但有例外：軽井沢スノーパーク 把票分成平日、土日祝、特定日三種價錢，買了不能改券種。'
+      '富士見パノラマ 也有一張賣到 2027 年 2 月底的套票，折扣只有 8%。'),
+     ('買了沒去，可以退嗎？',
+      '不能。SURF&SNOW 的規約寫，訂購當天 23:59 前跟事務局說可以取消，'
+      '過了這個時間「理由の如何を問わず」不受理取替、變更與取消，數量和券種也不能改。'
+      '完美行的部分單場票標示「免費取消」，但那張 22 座雪場共通券明確寫不能取消。'
+      '要保留彈性，就挑標示免費取消的商品，不要指望事後溝通。'),
+     ('雪場因為雪不夠而沒開，票怎麼辦？',
+      '風險在你身上。商品頁自己寫「リフト券はスキー場の営業期間・営業時間を保証するものでは'
+      'ございません」，並要買家先同意「天候・積雪等によるスキー場の営業期間が縮小」的情況。'
+      '這一點今年特別值得留意：気象庁 9 月 18 日的寒候期予報 給東・西日本日本海側的'
+      '「降雪量偏少」機率是 50%。'),
+     ('那今年到底該不該買早鳥票？',
+      '本站不給該不該的答案，只給時間差。9 月 30 日截止的那五個雪場，你必須在 10 月 20 日'
+      '気象庁 修正寒候期予報 之前決定，等不到新資訊。12 月中才截止的那一批，決定前等得到'
+      '10 月 20 日的修正，也等得到 11 月 15 日之後才開始納入降雪量的 3 か月予報。'
+      '折扣幅度差不多的情況下，截止日晚的雪場對你比較有利。'),
+     ('聖嬰現象是不是代表今年一定沒雪？',
+      '不是，而且要分清楚兩份文件。気象庁 的エルニーニョ監視速報 說 8 月監視海域水溫距平 +3.4℃、'
+      '是 1949 年以來八月最高，並說入冬持續的機率 100%。但那份速報沒有講今年日本會暖，'
+      '它對八月的日本天候寫的是「特徴は明瞭に見られなかった」。'
+      '講冬天的是另一份寒候期予報：東・西日本日本海側 降雪量偏少 50%、平年並 30%、偏多 20%。'
+      '偏少 50% 的另一面，是平年並或偏多合計 50%。'),
+     ('台灣人買得到嗎？',
+      '買得到，但要挑電子票。SURF&SNOW 的紙本走ヤマト運輸、運費寫「全国一律660円」，'
+      '而且 9 到 11 月下的單要等到 10 月下旬以後才出貨；電子票（スマリフ）免運費，'
+      '從會員頁發券，不需要日本地址，但要先註冊會員、確認手機是對應機種，現場還得到窗口認證。'
+      '完美行有完整繁體中文站、可切台幣，門檻最低。'
+      'Klook 與 KKday 賣的多半是「纜車票＋接駁」或「纜車票＋租借」的套裝，不是裸的早鳥票。'),
+     ('為什麼北海道的雪場那麼少？',
+      '因為這兩個通路現在幾乎沒有。SURF&SNOW 的道北、道東、道央・道南三個分區都顯示'
+      '「現在販売しておりません」，青森與秋田也一樣；完美行的北海道單場早鳥只有'
+      '札幌近郊的 Canmore Ski Village，富良野要買 22 場共通券才拿得到。'
+      '這件事和預報放在一起看有點諷刺：北日本日本海側是唯一沒有偏向少雪的分區，'
+      '卻正好是最買不到早鳥票的地方。北海道大雪場自己官網的早鳥票本頁沒有逐一查。'),
+    ]
+    st_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in st_faq)
+    st_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in st_faq]}, ensure_ascii=False)
+
+    _st_n = len(ST['tickets'])
+    _st_max = max(round((t['was'] - t['now']) / t['was'] * 100) for t in ST['tickets'])
+    _st_930 = [t['n'] for t in ST['tickets'] if t['cut'] == '2026-09-30']
+
+    st_title = (f'日本雪票早鳥 {ST["season"]}：{_st_n} 個雪場的折扣與截止日，'
+                f'對上気象庁 的降雪預報')
+    st_desc = ('SURF&SNOW 與完美行的 2026-27 早割リフト券逐項整理，附原價、折扣、截止日與退票規則。'
+               '早鳥票綁的是雪場不是日期，但訂購當天過後一律不能退。'
+               '気象庁 9/18 寒候期予報：東・西日本日本海側降雪量偏少的機率 50%。')
+
+    write('japan-ski-lift-ticket/index.html',
+      head(st_title, st_desc, 'japan-ski-lift-ticket/',
+           '<script type="application/ld+json">' + st_ld + '</script>')
+      + crumbs([('首頁', '/'), ('雪票早鳥與降雪預報', None)]) + topnav()
+      + '<h1>雪票早鳥便宜多少，什麼時候截止，退不退得掉</h1>'
+      + f'<p class="lede">{html.escape(ST["intro"])}</p>'
+      + _st_css
+      + f'<div class="today"><div class="tday">{_st_n} 個雪場的票價與截止日逐項抄自商品頁，'
+        f'查證於 {ST["checked"]}</div>'
+        f'<div class="tans">早鳥票綁的是<b>雪場</b>，不是日期</div>'
+        f'<div class="tsub">舞子スノーリゾート 的早割券商品頁寫「利用期間：2026-27シーズン有効」、'
+        f'「利用不可日：なし」。整季任何一天都能用，連特定日都沒排除。'
+        f'所以它的風險不是行程被綁死，而是你押了一個雪場，'
+        f'而商品頁同時寫明「リフト券はスキー場の営業期間・営業時間を保証するものではございません」。</div>'
+        f'<div class="tbuf">成人票最深的折扣是 <b>{_st_max}%</b> OFF，'
+        f'但訂購當天 23:59 過後「理由の如何を問わず」不受理取消。'
+        f'而気象庁 9 月 18 日的寒候期予報 給東・西日本日本海側的「降雪量偏少」機率是 '
+        f'<b>50%</b>，北日本日本海側是 40% 對 40%。'
+        f'最近的一道截止日是 <b>2026-09-30</b>，那天結束的有 {len(_st_930)} 個雪場。</div></div>'
+
+      + '<h2>先把四個誤解拆掉</h2>' + _mythrows
+
+      + '<h2>截止日對上預報更新日</h2>'
+      + f'<p class="lede">{html.escape(ST["calendar_conc"])}</p>'
+      + '<div class="stk" style="padding:6px 18px">' + _calrows + '</div>'
+
+      + f'<h2>{html.escape(_J["title"])}</h2>'
+      + f'<p class="lede">気象庁 於 {_J["issued"]} 發布。以下是官方原始的機率分布，'
+        f'左邊橘色是<b>偏少</b>、中間灰色是<b>平年並</b>、右邊藍色是<b>偏多</b>，單位為百分比。</p>'
+      + f'<h3>{html.escape(_J["snow_head"])}</h3>'
+      + '<div class="tw"><table><thead><tr><th>地區</th>'
+        '<th>偏少 · 平年並 · 偏多</th><th>怎麼讀</th></tr></thead><tbody>'
+      + _snowrows + '</tbody></table></div>'
+      + f'<h3>{html.escape(_J["temp_head"])}</h3>'
+      + '<div class="tw"><table><thead><tr><th>地區</th>'
+        '<th>偏低 · 平年並 · 偏高</th></tr></thead><tbody>'
+      + _temprows + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(_J["weather"])}</p>'
+      + f'<p class="lede">{html.escape(_J["caveat"])}</p>'
+      + f'<p class="disc">出處：<a href="{_J["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_J["src_name"])}</a>。{html.escape(_J["next_rev_note"])}</p>'
+
+      + f'<h2>{html.escape(ST["nino"]["t"])}</h2>'
+      + ''.join(f'<h3>{html.escape(s[0])}</h3><p class="lede">{html.escape(s[1])}</p>'
+                for s in ST['nino']['said'])
+      + f'<h3>它沒有說的</h3><p class="lede">{ST["nino"]["not_said"]}</p>'
+      + f'<p class="disc">出處：<a href="{ST["nino"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(ST["nino"]["src_name"])}</a>，查證於 {ST["checked"]}。</p>'
+
+      + f'<h2>{_st_n} 個雪場的早鳥價</h2>'
+      + '<div class="tw"><table><thead><tr><th>雪場</th><th>早鳥價</th><th>折扣</th>'
+        '<th>票種</th><th>備註</th></tr></thead><tbody>' + _tkrows + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(ST["tickets_note"])}折扣 35% 以上標成綠色。'
+        f'出處：<a href="{ST["tickets_src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(ST["tickets_src_name"])}</a>，查證於 {ST["checked"]}。'
+        f'售完即止，本表不代表現在還買得到。</p>'
+
+      + f'<h2>{html.escape(ST["gap"]["t"])}</h2>'
+      + f'<p class="lede">{html.escape(ST["gap"]["body"])}</p>'
+      + f'<p class="lede">{html.escape(ST["gap"]["conc"])}</p>'
+
+      + '<h2>把「去哪個雪場」的決定往後延</h2>'
+      + '<p class="lede">共通券讓你先付錢、到現場再選雪場。但它換到的是選擇權，不是退票權，'
+        '而且價格是照涵蓋範圍裡的高價雪場訂的。</p>'
+      + _cmrows
+
+      + '<h2>台灣人從哪裡買</h2>' + _chrows
+
+      + '<h2>買之前還要知道的四條</h2>' + _rulerows
+
+      + (('<h2>雪場門戶的機票</h2>'
+          '<p class="lede">票買了還是得飛過去。以下是本站紀錄中，台灣飛這幾個城市的最低價。</p>'
+          '<div class="tw"><table><thead><tr><th>航點</th><th>本站最低紀錄</th><th>出發日</th>'
+          '</tr></thead><tbody>' + _stfare + '</tbody></table></div>'
+          + fare_cta('sapporo', '札幌現在多少錢')) if _stfare else '')
+
+      + '<h2>常見問題</h2>' + st_html
+
+      + f'<h2>{html.escape(ST["ours"]["t"])}</h2>'
+      + f'<p class="lede">{html.escape(ST["ours"]["b"])}</p>'
+      + f'<p class="lede"><a href="{U(ST["ours"]["link"])}">'
+        f'{html.escape(ST["ours"]["link_t"])} →</a></p>'
+
+      + '<h2>本頁沒查到的</h2>'
+      + f'<ul class="lede">{_unver}</ul>'
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-ski-baggage/")}"><b>🎿 雪具託運</b>'
+        f'<s>九家航空，門檻最低只有 79 公分</s></a>'
+      + f'<a class="ct" href="{U("/threads-japan/")}"><b>🔥 Threads 日本熱搜</b>'
+        f'<s>社群話題查證後的版本</s></a>'
+      + f'<a class="ct" href="{U("/sapporo/")}"><b>札幌機票</b>'
+        f'<s>北海道雪場門戶</s></a>'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 三國連假撞期</b>'
+        f'<s>雪季的連假怎麼避</s></a></div>'
+      + f'<p class="disc">本頁的票價、折扣與截止日查證於 {ST["checked"]}，'
+        f'早鳥票售完即提前結束，購買前請以商品頁為準。'
+        f'気象庁 的寒候期予報 會在 {_J["next_rev"]} 配合 10 月的 3 か月予報 重新檢討，'
+        f'本頁屆時會重新對過。本站與文中任何售票通路沒有合作關係，本頁沒有分潤連結。'
+        f'{html.escape(ST["_方法"])}</p>'
+      + foot())
+    pages.append(('/japan-ski-lift-ticket/', 0.7))
 
 # ---------- 航空公司 × 航線的班表頁 ----------
 # GSC 顯示「虎航名古屋航班」這類「航空公司＋航線」的字有曝光，而城市頁答不了
