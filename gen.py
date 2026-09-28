@@ -3500,7 +3500,8 @@ if os.path.exists('tokyo-picks.json'):
 
     tp_faq = [
      ('這些店是誰推薦的？',
-      f'來自 Threads 上一則「東京有沒有一家店，是你願意為了它再飛一次？」的討論串，'
+      f'來自 Threads 上 @{_tp_src["author"]} 的一則貼文「東京有沒有一家店，'
+      f'是你願意為了它再飛一次？」，'
       f'{_tp_src["views"]}、{_tp_src["replies"]:,} 則回覆。本站讀取其中約 950 則，'
       f'把提到店名的抽出來，每一家再回查官方資料。留言只是線索，不是來源。'),
      ('為什麼有些店的留言沒寫店名？',
@@ -3537,8 +3538,10 @@ if os.path.exists('tokyo-picks.json'):
       + '<h1>東京有哪家店，值得你為它再飛一次</h1>'
       + f'<p class="lede">{html.escape(TP["_說明"])}</p>'
       + '<div class="today">'
-        f'<div class="tday">查證於 {TP["checked"]}　·　'
-        f'來源：{html.escape(_tp_src["views"])}、{_tp_src["replies"]:,} 則回覆的討論串</div>'
+        f'<div class="tday">查證於 {TP["checked"]}　·　來源：'
+        f'<a href="{_tp_src["post"]}" target="_blank" rel="nofollow noopener">'
+        f'@{html.escape(_tp_src["author"])} 的討論串</a>'
+        f'（{html.escape(_tp_src["views"])}、{_tp_src["replies"]:,} 則回覆）</div>'
         f'<div class="tans">{_tp_n} 家店，其中 <b>{_tp_off} 家</b>找得到官方網站</div>'
         '<div class="tsub">留言串會告訴你哪家好吃，但不會告訴你它星期幾休、'
         '要不要預約，或者它其實已經收了。這頁把每一家的官方資料查出來補上。</div>'
@@ -3572,6 +3575,17 @@ if os.path.exists('tokyo-picks.json'):
       + '<h2>這幾則沒解開</h2>'
       + '<p class="lede">有人推薦但線索不足，查不到是哪一家，本站不硬湊。</p>'
       + f'<ul class="lede">{_tp_un}</ul>'
+      + '<h2>資料出處</h2>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>原始貼文</b>：<a href="{_tp_src["post"]}" target="_blank" '
+        f'rel="nofollow noopener">「東京有沒有一家店 是你願意為了它再飛一次？」'
+        f'／@{html.escape(_tp_src["author"])}</a></li>'
+        f'<li><b>規模</b>：{html.escape(_tp_src["views"])}、'
+        f'{_tp_src["replies"]:,} 則回覆</li>'
+        f'<li><b>本站取用</b>：{html.escape(_tp_src["scraped"])}</li>'
+        f'<li><b>每家店的出處</b>：卡片上的引述都連回該則回覆，'
+        f'目前 {_tp_src_n} 家有連結</li>'
+        '</ul></div>'
       + '<h2>怎麼整理的</h2>'
       + f'<p class="lede">{html.escape(TP["_方法"])}</p>'
       + '<h2>常見問題</h2>' + tp_html
