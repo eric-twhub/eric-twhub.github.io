@@ -797,6 +797,8 @@ blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem
 .tw table{min-width:640px;font-size:.84rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
 .tw td.win{color:var(--lcc);font-weight:700}
+/* 數字比左欄低、而且低的原因是條件限制時，用暖色標出來 */
+.tw td.warn{color:var(--acc);font-weight:700}
 /* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
 .tw td.nm{white-space:normal;line-height:1.55;min-width:150px;max-width:290px}
 .tw td.dimcell{color:var(--dim);opacity:.55}
@@ -7150,6 +7152,21 @@ if os.path.exists('cards.json'):
     def _maxrate(c, mode):
         return c['base'] + (0 if mode == 'base' else sum(t['rate'] for t in _tiers(c, mode)))
 
+    # 有幾張卡的帳面數字把「新戶加碼」也算進去了，那是核卡後一段期間內的一次性優惠。
+    # 已經持卡的人看到的其實是另一個數字，所以另外算一欄。
+    _NEWBIE = re.compile(r'新戶|核卡')
+
+    def _is_newbie(t):
+        return bool(_NEWBIE.search(t['label'] + t.get('cond', '')))
+
+    def _oldrate(c, mode='shop'):
+        """扣掉新戶加碼之後的最高回饋，也就是老客戶實際適用的帳面值。"""
+        return round(c['base'] + sum(t['rate'] for t in _tiers(c, mode)
+                                     if not _is_newbie(t)), 2)
+
+    def _newbie_tier(c, mode='shop'):
+        return next((t for t in _tiers(c, mode) if _is_newbie(t)), None)
+
     def _hit(c, mode):
         """加碼達上限所需的台幣帳單金額（取最先觸頂的那層）"""
         ts = [t for t in _tiers(c, mode) if t['cap']]
@@ -7223,6 +7240,8 @@ if os.path.exists('cards.json'):
     for c in sorted(CD['cards'], key=lambda x: -x['total']):
         hit = _hit(c, 'shop')
         tr = _maxrate(c, 'transit') if _tiers(c, 'transit') else 0
+        _old = _oldrate(c)
+        _nb = _newbie_tier(c)
         _crows += (f'<tr><td><a href="{U("/japan-credit-card/"+c["slug"]+"/")}">'
                    f'<b>{html.escape(c["name"])}</b></a>{SMALL}{html.escape(c["plan"])}'
                    + ('　⚠ ' + html.escape(c['reg_short'])
@@ -7231,9 +7250,16 @@ if os.path.exists('cards.json'):
                    f'<td><b>{c["total"]}%</b>{SMALL}基本 {c["base"]}%'
                    + (f' ＋ {len(_tiers(c,"shop"))} 層加碼' if _tiers(c, 'shop') else '')
                    + '</small></td>'
-                   f'<td>{(money(hit) + SMALL + "超過只剩 " + str(c["base"]) + "%</small>") if hit else "無加碼上限"}</td>'
+                   + (f'<td class="warn"><b>{_old:g}%</b>{SMALL}'
+                      f'扣掉新戶加碼 {_nb["rate"]:g}%</small></td>'
+                      if _nb else f'<td><b>{_old:g}%</b>{SMALL}與左欄相同</small></td>')
+                   + f'<td>{(money(hit) + SMALL + "超過只剩 " + str(c["base"]) + "%</small>") if hit else "無加碼上限"}</td>'
                    f'<td>{(str(tr) + "%") if tr else "—"}</td>'
                    f'<td>{html.escape(c["period"])}</td></tr>')
+
+    _nbcards = [c for c in CD['cards'] if _newbie_tier(c)]
+    _nbn = len(_nbcards)
+    _nbmax = max(_nbcards, key=lambda c: c['total'] - _oldrate(c)) if _nbcards else None
 
     # ── 選卡介面（日幣輸入）──
     _pjs = _CJS + ("""
@@ -7457,16 +7483,24 @@ if os.path.exists('cards.json'):
         f'<div class="tans">帳面最高是 {html.escape(_best["name"])} 的 {_best["total"]}%，'
         f'但那是 {len(_tiers(_best,"shop"))} 層加碼全部同時成立的數字</div>'
         f'<div class="tsub">每層各有條件與上限，一般人不會全部符合。'
-        f'實際能拿多少，要看你刷多少、刷在哪裡。</div>'
+        f'實際能拿多少，要看你刷多少、刷在哪裡。'
+        + (f'光是其中一層就是<b>新戶加碼</b>，'
+           f'已經持有這張卡的人只有 {_oldrate(_best):g}%。'
+           if _newbie_tier(_best) else '')
+        + '</div>'
         + (f'<div class="tbuf">另外有 {len(_race)} 張卡的加碼需要<b>搶限量登錄</b>'
            f'（{html.escape("、".join(_race))}），沒登錄到就只有基本回饋。</div>' if _race else '')
         + '</div>'
       + f'<h2>{len(CD["cards"])} 張卡的條件比較</h2>'
       + '<div class="tw"><table><thead><tr><th>卡片</th><th>實體消費最高</th>'
-        '<th>加碼刷到多少到頂</th><th>交通卡儲值</th><th>活動期間</th>'
+        '<th>老客戶</th><th>加碼刷到多少到頂</th><th>交通卡儲值</th><th>活動期間</th>'
         '</tr></thead><tbody>' + _crows + '</tbody></table></div>'
-      + '<p class="disc">「實體消費最高」為該卡所有實體消費加碼同時成立時的合計值。'
-        '實際回饋依權益等級、通路與交易方式而異。</p>'
+      + ('<p class="disc">「實體消費最高」為該卡所有實體消費加碼同時成立時的合計值，'
+         + (f'其中 {_nbn} 張把新戶加碼也算了進去。新戶加碼是核卡後一段期間內的一次性優惠，'
+            f'已經持有該卡的人適用的是「老客戶」那一欄，差距最大的是'
+            f'{html.escape(_nbmax["name"])}（{_nbmax["total"]:g}% 對 {_oldrate(_nbmax):g}%）。'
+            if _nbmax else '')
+         + '實際回饋依權益等級、通路與交易方式而異。</p>')
       + _cc_cards
       + _picker
       + fare_cta('tokyo', '卡選好了，機票呢')
