@@ -2715,6 +2715,43 @@ if os.path.exists('lasttrain.json'):
                '逐班對過官方時刻表。成田最後一班直達市區的是 23:03 的 Skyliner；關西 JR 末班只到'
                '日根野；福岡與中部真正卡住人的是航廈間的接駁巴士，不是電車。每一列都附官方連結。')
 
+    # 分享圖卡。由 make_lasttrain_cards.py 產生。
+    _LT_CARD = [
+     ('01', '問題不在落地時間，在末班車', '七個機場與關鍵數字'),
+     ('02', '七個機場的末班車', '最後一班進市區的'),
+     ('03', '落地到上車要留多久', '怎麼用這張表'),
+     ('04', '各機場的實際狀況 ①', '羽田、成田、關西'),
+     ('05', '各機場的實際狀況 ②', '福岡、中部'),
+     ('06', '各機場的實際狀況 ③', '新千歲、那霸'),
+     ('07', '電車來不及還有深夜巴士', '七條夜間路線'),
+     ('08', '還沒查到的項目', '這頁的範圍'),
+    ]
+    _lt_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      '點圖看原尺寸。</p>'
+      '<style>'
+      '.ltk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.ltk a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.ltk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.ltk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.ltk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.ltk{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="ltk">'
+      + ''.join(
+          f'<a href="{U("/japan-airport-last-train/cards/lt-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-airport-last-train/cards/lt-" + i + ".png")}" '
+          f'alt="圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _LT_CARD)
+      + '</div>'
+      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+
     write('japan-airport-last-train/index.html',
       head(lt_title, lt_desc, 'japan-airport-last-train/',
            '<script type="application/ld+json">' + lt_ld + '</script>')
@@ -2739,6 +2776,7 @@ if os.path.exists('lasttrain.json'):
         f'中部最早，虎航停的第 2 航廈沒有車站，連絡巴士 <b>21:45</b> 就收班，'
         f'比名鐵末班早了一小時四十六分。這三個機場，決定你回不回得去的是接駁車，不是電車。'
         f'新千歲與那霸則不必。國際線落地後走館內通道就到車站。</div></div>'
+      + _lt_cards
       + '<h2>怎麼用這張表</h2>'
       + f'<ol class="lede">{_lt_steps}</ol>'
       + f'<p class="disc">{html.escape(LT["rule"]["note"])}</p>'
@@ -4732,6 +4770,43 @@ if os.path.exists('jttp.json'):
                '要到日本跑兩趟，而且自動化閘門只設在成田羽田中部關西。'
                '另附沒有入境章時怎麼買免稅品。')
 
+    # 分享圖卡。由 make_jttp_cards.py 產生。
+    _JT_CARD = [
+     ('01', '你要申請的可能不是 JTTP', '四類要件與費用'),
+     ('02', '十一個要件，併成四類', '台灣人走第 9 號'),
+     ('03', '第 9 號：白金卡', '品牌、次數、文件'),
+     ('04', '流程四步，要到場兩次', '當天拿不到卡'),
+     ('05', '15 個櫃台，時間差很多', '六個要自備印紙'),
+     ('06', '拿到卡之後護照不蓋章', '自動化閘門只有四個機場'),
+     ('07', '沒有入境章，免稅怎麼買', '國稅庁 問 4'),
+     ('08', '官方沒有公告審查要多久', '會被拒絕與還沒查的'),
+    ]
+    _jttp_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      '點圖看原尺寸。</p>'
+      '<style>'
+      '.jttpk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.jttpk a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.jttpk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.jttpk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.jttpk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.jttpk{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="jttpk">'
+      + ''.join(
+          f'<a href="{U("/japan-jttp/cards/jttp-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-jttp/cards/jttp-" + i + ".png")}" '
+          f'alt="圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _JT_CARD)
+      + '</div>'
+      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+
     write('japan-jttp/index.html',
       head(tt_title, tt_desc, 'japan-jttp/',
            '<script type="application/ld+json">' + tt_ld + '</script>')
@@ -4765,6 +4840,7 @@ if os.path.exists('jttp.json'):
         f'接受的品牌：{html.escape("、".join(TT["catD"]["brands"]))}。</p>'
       + '<p class="lede">要準備的東西：</p>'
       + f'<ul class="lede">{_tt_docs}</ul>'
+      + _jttp_cards
       + '<h2>申請流程</h2>'
       + '<div class="cmp">' + _tt_flow + '</div>'
       + f'<p class="disc">官方原文：{html.escape(TT["flow_quote"])}</p>'
@@ -6145,7 +6221,11 @@ def _card_stamp_warn():
             ('make_rules_cards', 'japan-rules.json',
              'japan-travel-rules/cards', '日本新制'),
             ('make_esim_cards', 'esim.json',
-             'japan-esim/cards', '日本 eSIM')):
+             'japan-esim/cards', '日本 eSIM'),
+            ('make_jttp_cards', 'jttp.json',
+             'japan-jttp/cards', 'JTTP'),
+            ('make_lasttrain_cards', 'lasttrain.json',
+             'japan-airport-last-train/cards', '機場末班車')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
