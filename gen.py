@@ -5970,7 +5970,9 @@ def _card_stamp_warn():
             ('make_holiday_cards', 'japan-holiday-calendar/cards-data.json',
              'japan-holiday-calendar/cards', '三國連假'),
             ('make_coupon_cards', 'coupons.json',
-             'japan-coupon/cards', '購物折扣券')):
+             'japan-coupon/cards', '購物折扣券'),
+            ('make_apple_cards', 'apple.json',
+             'apple-japan-price/cards', '台日 Apple 價差')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
@@ -6301,6 +6303,45 @@ if os.path.exists('apple.json'):
       '結果僅供比較用，請以你的發卡行公告為準。</p>' + _cjs)
     _APPLE_CALC = calcblock
 
+    # 分享圖卡。和本頁同一份 apple.json，由 make_apple_cards.py 產生。
+    # 匯率天天變，圖上印了匯率與核對日；定價或機種變動時才需要重跑。
+    _AP_CARD = [
+     ('01', '日本買比較便宜，但別忘了報關', '21 個品項與關鍵數字'),
+     ('02', 'iPhone 價差 ①', 'Duo 與 Pro Max'),
+     ('03', 'iPhone 價差 ②', 'Pro 與 Air'),
+     ('04', 'Watch 與 AirPods', '配件的價差小很多'),
+     ('05', '15 個品項超過入境免稅額', '補完稅還省多少'),
+     ('06', '日圓要升值多少才翻盤', '臨界匯率'),
+     ('07', '台灣的回饋夠高就翻過來', '刷卡回饋的門檻'),
+     ('08', '買之前要知道的', '直營店不能退稅、保固、回收價'),
+    ]
+    _ap_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      '點圖看原尺寸。</p>'
+      '<style>'
+      '.apk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.apk a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.apk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.apk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.apk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.apk{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="apk">'
+      + ''.join(
+          f'<a href="{U("/apple-japan-price/cards/ap-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/apple-japan-price/cards/ap-" + i + ".png")}" '
+          f'alt="台日 Apple 價差圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _AP_CARD)
+      + '</div>'
+      + '<p class="disc">圖上的價格與換算都是從這一頁同一份資料產生的，沒有另外手打。'
+        '匯率每天變動，圖上印的是產生當下的匯率，上表才是今天的數字。</p>')
+
     write('apple-japan-price/index.html',
       head(title,desc,'apple-japan-price/','<script type="application/ld+json">'+faq_ld+'</script>')
       + crumbs([('首頁','/'),('日本買 iPhone 價差比較',None)]) + topnav()
@@ -6343,6 +6384,7 @@ if os.path.exists('apple.json'):
       + '<h2>台日價格全表</h2>'
       + '<p class="lede">「退稅後」為日本含稅價扣除 10% 消費稅後換算之約當金額，'
         '實際免稅價與手續費依店家而異。</p>' + tables
+      + _ap_cards
       + dtable
       + betable
       + _APPLE_CALC
