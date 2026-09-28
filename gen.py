@@ -3219,6 +3219,41 @@ if DRV:
                '譯本在任一監理站 100 元、一小時就好。另外兩個官方點名但少有人講的陷阱：'
                '台灣小客車駕照開不了 10 人座，以及入境章可能留在舊護照上。')
 
+    # 分享圖卡。由 make_*_cards.py 產生，骨架見 cardkit.py。
+    _DLC_CARD = [
+     ('01', '國際駕照在日本不能用', '要帶的是譯本'),
+     ('02', '要帶的三樣', '缺一樣就租不到'),
+     ('03', '兩個當場租不到車的細節', '10 人座與舊護照'),
+     ('04', '入境後 1 年內', '超過是無照駕駛'),
+     ('05', '譯本怎麼辦', '三種辦法'),
+     ('06', '不用每次去都重辦', '換照才要'),
+    ]
+    _dlg_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
+      '不用註明出處。點圖看原尺寸。</p>'
+      '<style>'
+      '.dlg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.dlg a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.dlg img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.dlg b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.dlg s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.dlg{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="dlg">'
+      + ''.join(
+          f'<a href="{U("/japan-driving-licence/cards/dl-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-driving-licence/cards/dl-" + i + ".png")}" '
+          f'alt="圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _DLC_CARD)
+      + '</div>'
+      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+
     write('japan-driving-licence/index.html',
       head(dv_title, dv_desc, 'japan-driving-licence/',
            '<script type="application/ld+json">' + dv_ld + '</script>')
@@ -3238,6 +3273,7 @@ if DRV:
       + f'<div class="tldr"><ul>{_dv_bring}</ul></div>'
       + '<h2>兩個會讓你當場開不了車的細節</h2>' + _dv_traps
       + _dv_period + _dv_apply + _dv_forgot
+      + _dlg_cards
       + '<h2>其他要知道的</h2>' + _dv_notes
       + '<h2>這頁查不到的部分</h2>'
       + f'<ul class="lede">{_dv_un}</ul>'
@@ -3342,6 +3378,41 @@ if NOC:
                '而且免責補償不含它。官方原文寫「汚損」也算，不用撞車，把車弄髒到需要清潔就會產生。'
                '這頁對照豐田、日本租車、ORIX 三家的金額與免除方案。')
 
+    # 分享圖卡。由 make_*_cards.py 產生，骨架見 cardkit.py。
+    _NOCC_CARD = [
+     ('01', '買了免責補償不等於不用賠', 'NOC 是什麼'),
+     ('02', '它跟修車費是兩回事', '官方原文'),
+     ('03', 'NOC 要賠多少', '三種情況'),
+     ('04', '三家業者的免除方案', '價格與內容'),
+     ('05', '加購划算的機率門檻是 14%', '算給你看'),
+     ('06', '沒報警可能整個不賠', '其他容易漏掉的'),
+    ]
+    _nocg_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
+      '不用註明出處。點圖看原尺寸。</p>'
+      '<style>'
+      '.nocg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.nocg a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.nocg img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.nocg b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.nocg s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.nocg{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="nocg">'
+      + ''.join(
+          f'<a href="{U("/japan-rentacar-noc/cards/noc-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-rentacar-noc/cards/noc-" + i + ".png")}" '
+          f'alt="圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _NOCC_CARD)
+      + '</div>'
+      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+
     write('japan-rentacar-noc/index.html',
       head(nc_title, nc_desc, 'japan-rentacar-noc/',
            '<script type="application/ld+json">' + nc_ld + '</script>')
@@ -3367,6 +3438,7 @@ if NOC:
         '豐田是在免責補償上加 550 円，ORIX 的安心 Pack 是 660 円／24 小時，'
         '日本租車的 Full Support 則是 2,200 円／日起（內容也比較多）。</p>'
       + _nc_math + _nc_ex
+      + _nocg_cards
       + '<h2>其他容易漏掉的</h2>' + _nc_notes
       + '<h2>這頁查不到的部分</h2>'
       + f'<ul class="lede">{_nc_un}</ul>'
@@ -3478,6 +3550,41 @@ if INS:
                '主約全程有效但只賠意外造成的失能或死亡，生病不賠；醫療費要靠附約。'
                '本頁引金管會示範條款、保險局消費手冊與健保署核退上限原文說明。')
 
+    # 分享圖卡。由 make_*_cards.py 產生，骨架見 cardkit.py。
+    _INSC_CARD = [
+     ('01', '旅平險其實是三種東西', '賠的情況不同'),
+     ('02', '只有主約是全程', '三層分別保什麼'),
+     ('03', '9 種情況對照', '誰賠誰不賠'),
+     ('04', '不便險看的是門檻', '四項的理賠條件'),
+     ('05', '健保也會退一點', '海外核退上限'),
+     ('06', '這頁不是保險建議', '範圍與免責'),
+    ]
+    _insg_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
+      '不用註明出處。點圖看原尺寸。</p>'
+      '<style>'
+      '.insg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.insg a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.insg img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.insg b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.insg s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.insg{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="insg">'
+      + ''.join(
+          f'<a href="{U("/japan-travel-insurance/cards/ins-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-travel-insurance/cards/ins-" + i + ".png")}" '
+          f'alt="圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _INSC_CARD)
+      + '</div>'
+      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+
     write('japan-travel-insurance/index.html',
       head(in_title, in_desc, 'japan-travel-insurance/',
            '<script type="application/ld+json">' + in_ld + '</script>')
@@ -3497,6 +3604,7 @@ if INS:
       + '<h2>「旅平險」其實是三層</h2>' + _in_layers
       + f'<h2>{html.escape(_mx["title"])}</h2>' + _in_mx
       + _in_ic + _in_nhi
+      + _insg_cards
       + '<h2>這頁查不到的部分</h2>'
       + f'<ul class="lede">{_in_un}</ul>'
       + '<h2>常見問題</h2>' + in_html
@@ -5394,6 +5502,43 @@ if os.path.exists('card-insurance.json'):
                '傷害醫療從 100 萬到 0 都有；三張卡完全沒有醫療給付。'
                '另附十家共通的生效條件與兩個少有人知的折扣條款，全部引官網原文。')
 
+    # 分享圖卡。由 make_*_cards.py 產生，骨架見 cardkit.py。
+    _CIC_CARD = [
+     ('01', '重點不是保額，是它賠不賠', '15 張卡'),
+     ('02', '有不便險的卡 ①', '延誤、行李、取消'),
+     ('03', '有不便險的卡 ②', '同一組欄位'),
+     ('04', '沒有旅行不便險的卡', '刷了也沒有'),
+     ('05', '保險生效的條件 ①', '十家一致'),
+     ('06', '保險生效的條件 ②', '刷退就失效'),
+     ('07', '兩條共通條款', '非健保七成、五小時'),
+     ('08', '還沒查到的', '這頁的範圍'),
+    ]
+    _cig_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成 8 張圖，存下來或轉發都可以，'
+      '不用註明出處。點圖看原尺寸。</p>'
+      '<style>'
+      '.cig{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.cig a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.cig img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.cig b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.cig s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.cig{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="cig">'
+      + ''.join(
+          f'<a href="{U("/japan-card-insurance/cards/ci-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-card-insurance/cards/ci-" + i + ".png")}" '
+          f'alt="圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _CIC_CARD)
+      + '</div>'
+      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+
     write('japan-card-insurance/index.html',
       head(ci_title, ci_desc, 'japan-card-insurance/',
            '<script type="application/ld+json">' + ci_ld + '</script>')
@@ -5430,6 +5575,7 @@ if os.path.exists('card-insurance.json'):
       + '<h2>生效條件：這些做錯了，保額多少都沒意義</h2>'
       + '<p class="lede">十家的門檻幾乎一致，而且是條款寫死的，不是可以商量的。</p>'
       + _ci_cond
+      + _cig_cards
       + '<h2>所以你實際需要的是什麼</h2>'
       + '<p class="lede">刷卡送的那份，定位是「搭機期間的高額身故失能」加「班機與行李的不便補償」。'
         '它不是醫療保險，把它當醫療保險用會在最需要的時候落空。</p>'
@@ -5692,10 +5838,11 @@ document.addEventListener('DOMContentLoaded',function(){
      ('06', '原生還是漫遊是兩個問題', 'HR 漫遊與 MVNO'),
      ('07', '啟用之後自己驗一次', '三十秒查 IP 出口'),
      ('08', '沒有一個商品全贏', '這頁的範圍'),
+     ('09', '兩個查得到官方文件的案例', 'Saily 與 Sakura Mobile'),
     ]
     _es_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      '<p class="lede">同一份資料做成九張圖，存下來或轉發都可以，不用註明出處。'
       '點圖看原尺寸。</p>'
       '<style>'
       '.esk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -6225,7 +6372,21 @@ def _card_stamp_warn():
             ('make_jttp_cards', 'jttp.json',
              'japan-jttp/cards', 'JTTP'),
             ('make_lasttrain_cards', 'lasttrain.json',
-             'japan-airport-last-train/cards', '機場末班車')):
+             'japan-airport-last-train/cards', '機場末班車'),
+            ('make_noc_cards', 'rentacar-noc.json',
+             'japan-rentacar-noc/cards', '租車 NOC'),
+            ('make_driving_cards', 'jp-driving.json',
+             'japan-driving-licence/cards', '駕照日文譯本'),
+            ('make_insurance_cards', 'travel-insurance.json',
+             'japan-travel-insurance/cards', '旅平險'),
+            ('make_cardins_cards', 'card-insurance.json',
+             'japan-card-insurance/cards', '刷卡送的保險'),
+            ('make_pricecheck_cards', 'price-check.json',
+             'hotel-price-check/cards', '訂房比價'),
+            ('make_hostel_cards', 'hostels.json',
+             'tokyo/hostel/cards', '東京平價住宿'),
+            ('make_resale_cards', 'resale.json',
+             'iphone-cost/cards', 'iPhone 持有成本')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
@@ -6964,6 +7125,41 @@ if os.path.exists('apple.json'):
                   '算出真實殘值率，再把新機價格攤成每月成本。'
                   'Pro 與 Pro Max 用兩年，每月成本相差不到 NT$100。')
 
+        # 分享圖卡。由 make_*_cards.py 產生，骨架見 cardkit.py。
+        _RSC_CARD = [
+         ('01', '台日價差幾千，回收價差更多', '持有成本'),
+         ('02', '保值率前段', '回收 ÷ 上市價'),
+         ('03', '保值率後段', '同一組算法'),
+         ('04', '每月實際花多少', '攤成月成本'),
+         ('05', '舊機反而漲價', '2026-09-10'),
+         ('06', '比標價不夠', '這頁怎麼用'),
+        ]
+        _rsg_cards = (
+          '<h2>整理成圖片</h2>'
+          '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
+          '不用註明出處。點圖看原尺寸。</p>'
+          '<style>'
+          '.rsg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+          '.rsg a{display:block;border:1px solid var(--line);border-radius:10px;'
+          'overflow:hidden;background:var(--card);text-decoration:none}'
+          '.rsg img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+          'object-fit:cover;object-position:top}'
+          '.rsg b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+          '.rsg s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+          'text-decoration:none;line-height:1.5}'
+          '@media(max-width:720px){.rsg{grid-template-columns:repeat(2,1fr)}}'
+          '</style>'
+          '<div class="rsg">'
+          + ''.join(
+              f'<a href="{U("/iphone-cost/cards/rs-" + i + ".png")}" target="_blank">'
+              f'<img src="{U("/iphone-cost/cards/rs-" + i + ".png")}" '
+              f'alt="圖卡第 {i} 張：{html.escape(t)}" '
+              f'width="1080" height="1350" loading="lazy">'
+              f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+              for i, t, sub in _RSC_CARD)
+          + '</div>'
+          + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+
         write('iphone-cost/index.html',
           head(_ktitle, _kdesc, 'iphone-cost/',
                '<script type="application/ld+json">' + _kfaq_ld + '</script>')
@@ -7017,7 +7213,8 @@ if os.path.exists('apple.json'):
           + '<div class="tw"><table><thead><tr><th>機型</th><th>已滿</th>'
             '<th>當年多付</th><th>回收多拿</th><th>加價殘值率</th><th>整機殘值率</th>'
             '</tr></thead><tbody>' + _crows + '</tbody></table></div>'
-          + '<h2>在售新機的每月成本</h2>'
+          + _rsg_cards
+      + '<h2>在售新機的每月成本</h2>'
           + '<p class="lede">用上面的實際殘值率，把目前在架上的 iPhone 攤成每月成本。'
             '數字是「買價減掉估計回收價，再除以月數」。同一機型的各容量套用同一個殘值率，'
             '但由上一節可知大容量實際上掉得更兇，所以大容量那幾列是偏樂觀的估計。</p>'
@@ -8965,6 +9162,42 @@ if HS:
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
         for q, a in _hs_faq]}, ensure_ascii=False)
 
+    # 分享圖卡。由 make_*_cards.py 產生，骨架見 cardkit.py。
+    _HSC_CARD = [
+     ('01', '便宜的區跟貴的區差的不只是錢', '八個區'),
+     ('02', '八個區的價格與評分', '每區一個代表'),
+     ('03', '低分不是樣本不足', '便宜有便宜的理由'),
+     ('04', '同一家兩個平台差很多', '評分落差'),
+     ('05', '櫃檯幾點開', '清晨落地最在意'),
+     ('06', '每一家都有弱點', '從細項評分挖出來'),
+     ('07', '清晨的班機訂不了市區', '最後一晚'),
+    ]
+    _hsg_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成 7 張圖，存下來或轉發都可以，'
+      '不用註明出處。點圖看原尺寸。</p>'
+      '<style>'
+      '.hsg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.hsg a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.hsg img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.hsg b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.hsg s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.hsg{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="hsg">'
+      + ''.join(
+          f'<a href="{U("/tokyo/hostel/cards/hs-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/tokyo/hostel/cards/hs-" + i + ".png")}" '
+          f'alt="圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _HSC_CARD)
+      + '</div>'
+      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+
     write('tokyo/hostel/index.html',
       head(f'東京平價住宿｜{len(HS["areas"])} 區實查比較，{_hs_n} 晚 {money(_hs_lo["total"])} 起',
            f'東京 8 個區的平價住宿實查：膠囊、床位房與共用衛浴私人房的真實價格與評分，'
@@ -9003,6 +9236,7 @@ if HS:
       + f'<p class="lede">{html.escape(_DK["_說明"])}</p>'
       + '<div class="tw"><table><thead><tr><th>住宿</th><th>櫃檯／入住</th>'
         '<th>備註</th></tr></thead><tbody>' + _hs_desk + '</tbody></table></div>'
+      + _hsg_cards
       + '<h2>每一家的弱點</h2>'
       + f'<p class="lede">{html.escape(_WK["_說明"])}</p>'
       + '<div class="tldr"><ul>' + _hs_weak + '</ul></div>'
@@ -9374,6 +9608,42 @@ if PC:
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
         for q, a in _pc_faq]}, ensure_ascii=False)
 
+    # 分享圖卡。由 make_*_cards.py 產生，骨架見 cardkit.py。
+    _PCC_CARD = [
+     ('01', '換個裝置價格就不一樣', '實測結果'),
+     ('02', '手機版便宜 9.09%', 'Booking 同房對照'),
+     ('03', '四個通路測下來', '不是每家都這樣'),
+     ('04', '比結帳頁的總價', '六個通路'),
+     ('05', '比價這件事有利益衝突', '本站的處理'),
+     ('06', '訂之前的檢查點 ①', '七條'),
+     ('07', '訂之前的檢查點 ②', '續前'),
+    ]
+    _pcg_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成 7 張圖，存下來或轉發都可以，'
+      '不用註明出處。點圖看原尺寸。</p>'
+      '<style>'
+      '.pcg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.pcg a{display:block;border:1px solid var(--line);border-radius:10px;'
+      'overflow:hidden;background:var(--card);text-decoration:none}'
+      '.pcg img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.pcg b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.pcg s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.pcg{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="pcg">'
+      + ''.join(
+          f'<a href="{U("/hotel-price-check/cards/pc-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/hotel-price-check/cards/pc-" + i + ".png")}" '
+          f'alt="圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _PCC_CARD)
+      + '</div>'
+      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+
     write('hotel-price-check/index.html',
       head(f'訂房比價｜同一間房，手機版比桌機版便宜 {_pc_avg:.1f}%',
            f'同一間飯店、同一組日期、同一個瀏覽器，只改變視窗尺寸，Booking 的價格就少 '
@@ -9456,6 +9726,7 @@ if PC:
       + '<p class="lede">還要扣掉三個隱性成本：</p>'
       + '<div class="tldr"><ul>' + _pc_hid + '</ul></div>'
       + f'<p class="disc">{html.escape(_pc_r["practical"])}</p>'
+      + _pcg_cards
       + '<h2>怎麼比才不會白花錢</h2>' + _pc_chk
       + cta('hotel', '東京', '東京', '知道怎麼比了，去查你的房價',
             f'到 {P["hotel"]["brand"]} 看房價，繁體中文、台幣計價', track='price-check')

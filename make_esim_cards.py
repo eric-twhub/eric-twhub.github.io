@@ -27,7 +27,10 @@ def fingerprint(d):
     pay.append([[x['name'], x['rating'], x['reviews'], x['ci']]
                 for x in d['_評價分析']['items']])
     pay.append([[x['what'], x['detail']] for x in d['_觀察_條款差異']['items']])
-    pay.append([d['checked']])
+    vc = d['profile_guide'].get('verified_cases') or {}
+    pay.append([[r['name'], r.get('profile'), r.get('verify')]
+                for r in vc.get('rows', [])])
+    pay.append([d['checked'], vc.get('checked')])
     return hashlib.sha1(json.dumps(pay, ensure_ascii=False,
                                    sort_keys=True).encode('utf-8')).hexdigest()[:12]
 
@@ -90,6 +93,9 @@ h1 em{font-style:normal;color:#c2410c}
 .blk b{display:block;font-size:29px;font-weight:700;margin-bottom:7px}
 .blk b i{font-style:normal;color:#c2410c;margin-right:10px}
 .blk s{display:block;text-decoration:none;font-size:23px;color:#3f3b37;line-height:1.7}
+.tag{display:inline-block;font-size:19px;padding:2px 10px;border-radius:999px;
+ background:#e5e3de;color:#63605c;margin-left:10px;vertical-align:4px;font-weight:600}
+.tag.bad{background:#f3ded6;color:#a8442a}
 .foot{flex:0 0 auto;padding:24px 0 42px;border-top:3px solid #1a1a1a;
  display:flex;justify-content:space-between;align-items:flex-end;margin-top:18px}
 .foot b{font-size:28px;font-weight:800;display:block}
@@ -129,7 +135,7 @@ def short(name):
 
 
 def build(d):
-    n = 8
+    n = 9
     ps = d['products']
     fnote = f'五個商品逐頁查證於 {d["checked"]}'
     out = []
@@ -298,12 +304,34 @@ def build(d):
     inner = ('<div class="kick">這頁的範圍</div>'
              '<h1>沒有一個商品<br><em>在所有項目都贏</em></h1>'
              f'<div class="list">{rows}'
-             f'<div class="blk"><b>還沒查證的：原生還是漫遊</b>'
+             f'<div class="blk"><b>這五個商品的原生／漫遊仍未查證</b>'
              f'<s>{noprof} 個商品的 profile 欄位都還是空的。'
              '那要實機插卡、查 IP 出口才知道，光看商品頁判斷不了。'
-             '卡片上寫「未查證」，不是寫「漫遊」。</s></div>'
+             '寫「未查證」，不寫「漫遊」。另外兩個查得到官方文件的案例見下一張。</s></div>'
              '</div>' + foot(8, n, fnote))
     out.append(('esim-08.png', page(inner)))
+
+    # ── 9 查得到官方文件的兩個案例 ──
+    vc = d['profile_guide'].get('verified_cases')
+    if vc:
+        VD = {'roaming': ('漫遊', 'bad'), 'native': ('原生', 'ok')}
+        rows = ''
+        for r in vc['rows']:
+            lab, cls = VD.get(r.get('profile'), ('仍未判定', 'z'))
+            ev = '；'.join(f'［{e["strength"]}］{e["what"]}' for e in r['evidence'][:3])
+            rows += (f'<div class="blk"><b>{E(r["name"])}'
+                     f'<span class="tag {"bad" if cls == "bad" else ""}">{E(lab)}</span></b>'
+                     f'<s><b style="display:inline">發行方</b>　'
+                     f'{E(str(r.get("issuer_region"))[:52])}<br>'
+                     f'<b style="display:inline">依據</b>　{E(ev)}<br>'
+                     f'{E(str(r.get("verify") or ""))}</s></div>')
+        inner = ('<div class="kick">只收查得到官方文件的</div>'
+                 '<h1>兩個案例，<em>結論不一樣</em></h1>'
+                 f'<div class="sub">{E(vc["_說明"])}</div>'
+                 '<div class="legend">證據分硬、中、軟三級。'
+                 '硬證據是官方文件或法人登記，軟證據是使用者回報，不單獨當結論。</div>'
+                 f'<div class="list">{rows}</div>' + foot(9, n, fnote))
+        out.append(('esim-09.png', page(inner)))
     return out
 
 
