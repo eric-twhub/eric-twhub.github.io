@@ -38,6 +38,11 @@ def _chrome():
     sys.exit('找不到 Chrome，請設定 CHROME 環境變數')
 
 
+def likes(s):
+    """原貼文那則留言的讚數。沒擷取到就是 0，用來排序時墊底，但不印成 0。"""
+    return (s.get('src') or {}).get('likes') or 0
+
+
 def area(s):
     """從地址抽一個看得懂的地名。町名比行政區好認（淺草 > 台東區）。"""
     a = s.get('addr') or ''
@@ -76,8 +81,13 @@ h1 em{font-style:normal;color:#c2410c}
 .row:last-child{border-bottom:0}
 .num{flex:0 0 48px;font-size:25px;font-weight:700;color:#c2410c;font-variant-numeric:tabular-nums}
 .nm{flex:1 1 auto;font-size:34px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
-.mt{flex:0 0 auto;font-size:24px;color:#63605c;white-space:nowrap;padding-left:14px;
+.mt{flex:0 0 auto;font-size:23px;color:#63605c;white-space:nowrap;padding-left:14px;
  text-align:right;line-height:1.3}
+.lk{flex:0 0 132px;font-size:25px;font-weight:700;color:#c2410c;text-align:right;
+ white-space:nowrap;font-variant-numeric:tabular-nums;line-height:1.3}
+.lk small{font-size:19px;font-weight:500;color:#63605c;margin-left:3px}
+.lk.non{color:#b4afa8;font-weight:500}
+.legend{font-size:22px;color:#63605c;margin-top:10px;line-height:1.6}
 .dead .nm{text-decoration:line-through;text-decoration-thickness:2px;color:#c4563a}
 .dead .mt{color:#c4563a}
 .foot{flex:0 0 auto;padding:26px 0 44px;border-top:3px solid #1a1a1a;
@@ -143,6 +153,7 @@ def build(d):
     src = d['source']
     off = sum(1 for x in S if x.get('official'))
     bad = sum(1 for _, _, c in d['corrections'] if '成立' not in c)
+    withlikes = sum(1 for x in S if likes(x))
     out = []
 
     cover = ('<div class="kick">Threads 查證系列</div>'
@@ -154,23 +165,33 @@ def build(d):
              f'<div><b>{len(S)}</b><span>家店<br>整理出來</span></div>'
              f'<div><b>{off}</b><span>家找到<br>官方網站</span></div>'
              f'<div><b>{bad}</b><span>處留言<br>要修正</span></div></div>'
-             '<div class="note">其中一家在整理期間就已經歇業了。'
-             '同品牌在東京還有八家，但只有兩家跟它一樣是坐著吃的迴轉壽司。</div>'
+             '<div class="note">排序依原貼文的讚數，不是本站評的。'
+             f'{len(S)} 家裡有 {withlikes} 家擷取得到讚數，其餘標「—」。</div>'
              + foot(1, n))
     out.append(('tokyo-46-01.png', page(cover, 'cover')))
 
     for i, (t, sub, items) in enumerate(groups, 2):
+        # 和網頁同一個排序鍵：原貼文的讚數由多到少。沒有擷取到讚數的排在後面，
+        # 維持原序。不要補 0，那等於宣稱它得了 0 個讚。
+        items = sorted(items, key=lambda x: -likes(x))
         rows = ''
         for j, s in enumerate(items, 1):
             dead = s.get('status')
             meta = E(dead) if dead else E(s['cat']) + ' · ' + E(area(s))
+            lk = likes(s)
+            lkh = (f'<div class="lk">{lk:,}<small>讚</small></div>' if lk
+                   else '<div class="lk non">—</div>')
             rows += (f'<div class="row{" dead" if dead else ""}">'
                      f'<div class="num">{j:02}</div>'
                      f'<div class="nm">{E(s["n"])}</div>'
-                     f'<div class="mt">{meta}</div></div>')
+                     f'<div class="mt">{meta}</div>{lkh}</div>')
+        got = sum(1 for x in items if likes(x))
         inner = ('<div class="kick">東京 · 值得再飛一次</div>'
                  f'<h1>{E(t)}<em> {len(items)}</em></h1>'
                  f'<div class="sub">{E(sub)}</div>'
+                 f'<div class="legend">依原貼文的讚數排序。'
+                 f'這 {len(items)} 家裡有 {got} 家擷取得到讚數，'
+                 f'其餘標「—」，不是零讚，是沒有數字。</div>'
                  f'<div class="list">{rows}</div>' + foot(i, n))
         out.append((f'tokyo-46-{i:02}.png', page(inner)))
 
