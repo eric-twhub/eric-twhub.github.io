@@ -5966,7 +5966,9 @@ def _card_stamp_warn():
             ('make_ski_cards', 'ski-ticket.json',
              'japan-ski-lift-ticket/cards', '雪票早鳥'),
             ('make_holiday_cards', 'japan-holiday-calendar/cards-data.json',
-             'japan-holiday-calendar/cards', '三國連假')):
+             'japan-holiday-calendar/cards', '三國連假'),
+            ('make_coupon_cards', 'coupons.json',
+             'japan-coupon/cards', '購物折扣券')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
@@ -8100,6 +8102,45 @@ if os.path.exists('cards.json'):
         _ropts = '<option value="">全部類別</option>' + ''.join(
             f'<option value="{html.escape(c)}">{html.escape(c)}</option>' for c in _cats)
 
+        # 分享圖卡。和本頁同一份 coupons.json，由 make_coupon_cards.py 產生。
+        _CP_CARD = [
+         ('01', '免稅 10% ＋ 券 8% 不是 18%', '14 家與關鍵數字'),
+         ('02', '免稅、券、刷卡要照順序疊', '含稅 ¥10,000 的實算'),
+         ('03', '14 家常見店家 ①', '依券的最高折扣'),
+         ('04', '14 家常見店家 ②', '含已過期的'),
+         ('05', '有滿額級距的幾家', '什麼時候值得湊'),
+         ('06', '三個常犯的錯', '最容易少拿到折扣的'),
+         ('07', '券長什麼樣', '有些不能先截圖'),
+         ('08', '11/1 免稅新制', '改成出境後才退'),
+        ]
+        _cp_cards = (
+          '<h2>整理成圖片</h2>'
+          '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+          '點圖看原尺寸。</p>'
+          '<style>'
+          '.cpk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+          '.cpk a{display:block;border:1px solid var(--line);border-radius:10px;'
+          'overflow:hidden;background:var(--card);text-decoration:none}'
+          '.cpk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+          'object-fit:cover;object-position:top}'
+          '.cpk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+          '.cpk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+          'text-decoration:none;line-height:1.5}'
+          '@media(max-width:720px){.cpk{grid-template-columns:repeat(2,1fr)}}'
+          '</style>'
+          '<div class="cpk">'
+          + ''.join(
+              f'<a href="{U("/japan-coupon/cards/cp-" + i + ".png")}" target="_blank">'
+              f'<img src="{U("/japan-coupon/cards/cp-" + i + ".png")}" '
+              f'alt="日本折扣券圖卡第 {i} 張：{html.escape(t)}" '
+              f'width="1080" height="1350" loading="lazy">'
+              f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+              for i, t, sub in _CP_CARD)
+          + '</div>'
+          + '<p class="disc">圖上的折扣、門檻與有效期都是從這一頁同一份資料產生的，'
+            '沒有另外手打。試算用的是條件寫得最清楚的那一家，'
+            '不用官方頁沒公布分級依據的最高值。</p>')
+
         def _cp_dead(st):
             return bool(st.get('expires')) and st['expires'] < TODAY
 
@@ -8298,6 +8339,7 @@ if os.path.exists('cards.json'):
                     f'{html.escape(st["jp"])}</s><u>{html.escape(st["rate"])}</u></a>'
                     for st in sorted(CP['stores'], key=lambda x: -x['max']))
           + '</div>'
+          + _cp_cards
           + '<h2>三個常犯的錯</h2><div class="tldr"><ul>'
             '<li><b>把百分比直接相加。</b>免稅 10% 加券 7% 不等於 17%。'
             '券是以免稅後的金額計算，實際約 15.4%。</li>'
