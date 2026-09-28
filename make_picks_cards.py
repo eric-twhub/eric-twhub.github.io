@@ -88,6 +88,11 @@ h1 em{font-style:normal;color:#c2410c}
 .lk small{font-size:19px;font-weight:500;color:#63605c;margin-left:3px}
 .lk.non{color:#b4afa8;font-weight:500}
 .legend{font-size:22px;color:#63605c;margin-top:10px;line-height:1.6}
+.sep{display:flex;align-items:center;gap:14px;padding:14px 0 6px;font-size:21px;
+ color:#8a847c;white-space:nowrap}
+.sep::after{content:"";flex:1 1 auto;height:1px;background:#e5e3de}
+.row.nor .nm{font-weight:600}
+.row.nor .lk{flex-basis:0;padding:0}
 .dead .nm{text-decoration:line-through;text-decoration-thickness:2px;color:#c4563a}
 .dead .mt{color:#c4563a}
 .foot{flex:0 0 auto;padding:26px 0 44px;border-top:3px solid #1a1a1a;
@@ -165,33 +170,42 @@ def build(d):
              f'<div><b>{len(S)}</b><span>家店<br>整理出來</span></div>'
              f'<div><b>{off}</b><span>家找到<br>官方網站</span></div>'
              f'<div><b>{bad}</b><span>處留言<br>要修正</span></div></div>'
-             '<div class="note">排序依原貼文的讚數，不是本站評的。'
-             f'{len(S)} 家裡有 {withlikes} 家擷取得到讚數，其餘標「—」。</div>'
+             '<div class="note">編號依原貼文的讚數，不是本站評的。'
+             f'{len(S)} 家裡只有 {withlikes} 家擷取得到讚數，只有那 {withlikes} 家有名次。</div>'
              + foot(1, n))
     out.append(('tokyo-46-01.png', page(cover, 'cover')))
 
     for i, (t, sub, items) in enumerate(groups, 2):
         # 和網頁同一個排序鍵：原貼文的讚數由多到少。沒有擷取到讚數的排在後面，
         # 維持原序。不要補 0，那等於宣稱它得了 0 個讚。
-        items = sorted(items, key=lambda x: -likes(x))
+        # 只有擷取得到讚數的才給名次。其餘的不編號也不標「—」：
+        # 它們沒有參加這個排名，不是排在最後面。
+        ranked = sorted([x for x in items if likes(x)], key=lambda x: -likes(x))
+        rest = [x for x in items if not likes(x)]
         rows = ''
-        for j, s in enumerate(items, 1):
-            dead = s.get('status')
-            meta = E(dead) if dead else E(s['cat']) + ' · ' + E(area(s))
-            lk = likes(s)
-            lkh = (f'<div class="lk">{lk:,}<small>讚</small></div>' if lk
-                   else '<div class="lk non">—</div>')
+        for j, st in enumerate(ranked, 1):
+            dead = st.get('status')
+            meta = E(dead) if dead else E(st['cat']) + ' · ' + E(area(st))
             rows += (f'<div class="row{" dead" if dead else ""}">'
                      f'<div class="num">{j:02}</div>'
-                     f'<div class="nm">{E(s["n"])}</div>'
-                     f'<div class="mt">{meta}</div>{lkh}</div>')
-        got = sum(1 for x in items if likes(x))
+                     f'<div class="nm">{E(st["n"])}</div>'
+                     f'<div class="mt">{meta}</div>'
+                     f'<div class="lk">{likes(st):,}<small>讚</small></div></div>')
+        if rest:
+            rows += (f'<div class="sep">另外 {len(rest)} 家，沒有擷取到讚數</div>')
+            for st in rest:
+                dead = st.get('status')
+                meta = E(dead) if dead else E(st['cat']) + ' · ' + E(area(st))
+                rows += (f'<div class="row nor{" dead" if dead else ""}">'
+                         f'<div class="num"></div>'
+                         f'<div class="nm">{E(st["n"])}</div>'
+                         f'<div class="mt">{meta}</div>'
+                         f'<div class="lk"></div></div>')
         inner = ('<div class="kick">東京 · 值得再飛一次</div>'
                  f'<h1>{E(t)}<em> {len(items)}</em></h1>'
                  f'<div class="sub">{E(sub)}</div>'
-                 f'<div class="legend">依原貼文的讚數排序。'
-                 f'這 {len(items)} 家裡有 {got} 家擷取得到讚數，'
-                 f'其餘標「—」，不是零讚，是沒有數字。</div>'
+                 f'<div class="legend">編號是原貼文那則留言的讚數名次。'
+                 f'沒有編號的不是墊底，是我們沒有擷取到它的互動數字。</div>'
                  f'<div class="list">{rows}</div>' + foot(i, n))
         out.append((f'tokyo-46-{i:02}.png', page(inner)))
 
@@ -217,7 +231,7 @@ def check(chrome, tmp, name, src):
         '</body>',
         '<script>document.title=JSON.stringify((()=>{'
         'const f=document.querySelector(".foot").getBoundingClientRect().top;'
-        'const it=[...document.querySelectorAll(".row,.fix,.note,.stat")];'
+        'const it=[...document.querySelectorAll(".row,.fix,.note,.stat,.sep")];'
         'const b=it.length?Math.max(...it.map(e=>e.getBoundingClientRect().bottom)):0;'
         'return{gap:Math.round(f-b)}})())</script></body>'))
     r = subprocess.run([chrome, '--headless', '--disable-gpu', '--dump-dom',
