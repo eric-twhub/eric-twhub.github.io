@@ -7179,6 +7179,45 @@ if os.path.exists('cards.json'):
 
     _mopts = ''.join(f'<option value="{k}">{v}</option>' for k, v in MODES)
 
+    # 分享圖卡。和比較表同一份 cards.json，由 make_creditcard_cards.py 產生，
+    # 條件變動時重跑那支。
+    _CC_CARD = [
+     ('01', '帳面最高 13%，實際刷下去不是', '15 張卡與關鍵數字'),
+     ('02', '實拿排行 ①', '依刷 ¥50,000 實際拿到多少'),
+     ('03', '實拿排行 ②', '同一把尺的後段'),
+     ('04', '帳面裡算進的新戶加碼', '三張卡扣掉之後剩多少'),
+     ('05', '刷多少決定該用哪張', '金額越大，有效回饋率越低'),
+     ('06', '哪幾張要先登錄', '搶限量、要登錄、App 切換'),
+     ('07', '交通卡儲值也有加碼的', 'Suica、PASMO、ICOCA'),
+     ('08', '怎麼真的拿到這些回饋', '五個最常卡住的地方'),
+    ]
+    _cc_cards = (
+      '<h2>整理成圖片</h2>'
+      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      '點圖看原尺寸。</p>'
+      '<style>'
+      '.cck{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+      '.cck a{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;'
+      'background:var(--card);text-decoration:none}'
+      '.cck img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+      'object-fit:cover;object-position:top}'
+      '.cck b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+      '.cck s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+      'text-decoration:none;line-height:1.5}'
+      '@media(max-width:720px){.cck{grid-template-columns:repeat(2,1fr)}}'
+      '</style>'
+      '<div class="cck">'
+      + ''.join(
+          f'<a href="{U("/japan-credit-card/cards/jp-card-" + i + ".png")}" target="_blank">'
+          f'<img src="{U("/japan-credit-card/cards/jp-card-" + i + ".png")}" '
+          f'alt="旅日信用卡圖卡第 {i} 張：{html.escape(t)}" '
+          f'width="1080" height="1350" loading="lazy">'
+          f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
+          for i, t, sub in _CC_CARD)
+      + '</div>'
+      + '<p class="disc">圖上的回饋率、實拿金額與加碼上限都是從這一頁同一份資料算出來的，'
+        '沒有另外手打。試算用的匯率與國外交易手續費標在最後一張。</p>')
+
     # ── 比較表 ──
     _crows = ''
     for c in sorted(CD['cards'], key=lambda x: -x['total']):
@@ -7428,6 +7467,7 @@ if os.path.exists('cards.json'):
         '</tr></thead><tbody>' + _crows + '</tbody></table></div>'
       + '<p class="disc">「實體消費最高」為該卡所有實體消費加碼同時成立時的合計值。'
         '實際回饋依權益等級、通路與交易方式而異。</p>'
+      + _cc_cards
       + _picker
       + fare_cta('tokyo', '卡選好了，機票呢')
       + '<h2>怎麼確實拿到這些回饋</h2>'
