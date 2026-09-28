@@ -970,6 +970,7 @@ def topnav(cur=''):
             + link('/japan-holiday-calendar/', '📅 三國連假撞期')
             + link('/japan-travel-rules/', '📋 出境稅與住宿稅')
             + link('/japan-jttp/', '🛂 JTTP 快速通關')
+            + link('/threads-japan/', '🔥 Threads 日本熱搜')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制'))
 
     shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
@@ -3321,6 +3322,108 @@ if os.path.exists('japan-rules.json'):
         f'出發前請以官方最新公告為準。本站不是稅務或法律顧問。</p>'
       + _JRJS + foot())
     pages.append(('/japan-travel-rules/', 0.8))
+
+# ---------- Threads 日本熱搜（分類頁） ----------
+# 把從社群話題查出來的內容收在一起。價值不在「社群在紅什麼」，
+# 在於每一則都回查過官方，而且落差都寫出來了。
+if os.path.exists('threads-hub.json'):
+    TH = json.load(open('threads-hub.json', encoding='utf-8'))
+
+    def _th_card(it, i):
+        src = ''
+        if it.get('post'):
+            src = (f'<a href="{it["post"]}" target="_blank" rel="nofollow noopener">'
+                   f'原始貼文 @{html.escape(it["who"])} →</a>')
+        elif it.get('note'):
+            src = f'<span style="color:var(--dim)">{html.escape(it["note"])}</span>'
+        return ('<div class="thc">'
+                + f'<div class="thh"><b>{html.escape(it["t"])}</b>'
+                + (f'<span class="tpcat">{html.escape(it["scale"])}</span>'
+                   if it.get('scale') else '')
+                + '</div>'
+                + f'<p class="thq"><b>貼文說</b>：{html.escape(it["claim"])}</p>'
+                + f'<p class="thf"><b>查到的</b>：{html.escape(it["found"])}</p>'
+                + '<p class="thl">'
+                + f'<a href="{U(it["page"])}">看本站整理 →</a>'
+                + (('　·　' + src) if src else '')
+                + f'　·　<span style="color:var(--dim)">{it["date"]}</span></p>'
+                + '</div>')
+
+    _th_body = ''.join(_th_card(x, i) for i, x in enumerate(TH['items']))
+    _th_m = ''.join('<li>' + html.escape(x) + '</li>' for x in TH['_方法'])
+    _yt = TH['_不是Threads但同一套做法']
+
+    _th_css = ('<style>'
+               '.thc{border:1px solid var(--line);border-left:4px solid var(--acc);'
+               'border-radius:10px;background:var(--card);padding:16px 18px;margin:12px 0}'
+               '.thh{display:flex;align-items:baseline;justify-content:space-between;'
+               'gap:10px;flex-wrap:wrap;margin-bottom:8px}'
+               '.thh b{font-size:1.05rem}'
+               '.thq,.thf{margin:7px 0;font-size:.9rem;line-height:1.8}'
+               '.thq b,.thf b{color:var(--dim);font-weight:600}'
+               '.thl{margin:11px 0 0;font-size:.85rem}'
+               '</style>')
+
+    th_faq = [
+     ('這頁跟社群上的整理有什麼不一樣？',
+      '社群整理的是「大家在說什麼」，這頁做的是「查完之後是什麼」。'
+      '每一則都回官方原文，對得上就寫，對不上就把落差列出來。'
+      '例如那則優惠券懶人包，我們沒有轉貼券的圖片，而是逐家查官方發券頁，'
+      '結果反而抓到本站自己有兩家的折扣率寫錯了。'),
+     ('為什麼有些題目沒有原始貼文的連結？',
+      '早期幾則查證完就把貼文網址丟了，只留下查到的結論。那是本站的疏失，'
+      '沒有連結的幾則已經標示出來。之後每一則都會把出處記下來。'),
+     ('會一直更新嗎？',
+      '看到值得查的題目就做，沒有固定頻率。判準是三個：'
+      '這題有沒有官方原文可查、社群說的跟官方對不對得上、'
+      '以及本站能不能加上社群給不了的東西（例如自己的票價資料、營業時間、公休）。'),
+    ]
+    th_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in th_faq)
+    th_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in th_faq]}, ensure_ascii=False)
+
+    th_title = f'Threads 日本熱搜：{len(TH["items"])} 個話題，每則都查過官方'
+    th_desc = ('Threads 上的日本旅遊話題，本站查證後的版本。'
+               '貼文是線索不是來源，每則回查官方原文，對不上的落差都寫出來。'
+               '包含東京值得再飛的店、2027 連假請假、退稅手續費、出境稅、eSIM 條款。')
+
+    write('threads-japan/index.html',
+      head(th_title, th_desc, 'threads-japan/', th_ld and
+           '<script type="application/ld+json">' + th_ld + '</script>')
+      + crumbs([('首頁', '/'), ('Threads 日本熱搜', None)]) + topnav()
+      + '<h1>Threads 上的日本旅遊話題，查過之後是這樣</h1>'
+      + f'<p class="lede">{html.escape(TH["_說明"])}</p>'
+      + '<div class="today">'
+        f'<div class="tday">更新於 {TH["checked"]}</div>'
+        f'<div class="tans">目前 <b>{len(TH["items"])} 個話題</b></div>'
+        f'<div class="tsub">{html.escape(TH["_為什麼做這件事"])}</div></div>'
+      + _th_css + _th_body
+      + '<h2>不是 Threads，但同一套做法</h2>'
+      + '<div class="thc">'
+        f'<div class="thh"><b>{html.escape(_yt["t"])}</b></div>'
+        f'<p class="thq"><b>影片說</b>：{html.escape(_yt["claim"])}</p>'
+        f'<p class="thf"><b>查到的</b>：{html.escape(_yt["found"])}</p>'
+        f'<p class="thl"><a href="{U(_yt["page"])}">看本站整理 →</a>'
+        f'　·　<span style="color:var(--dim)">{_yt["date"]}</span></p></div>'
+      + '<h2>本站的規矩</h2>'
+      + f'<ul class="lede">{_th_m}</ul>'
+      + '<h2>常見問題</h2>' + th_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/worth-flying-for/")}"><b>🍽️ 東京 46 家店</b>'
+        f'<s>七千多則回覆挑出來的</s></a>'
+      + f'<a class="ct" href="{U("/japan-travel-rules/")}"><b>📋 去日本的新制度</b>'
+        f'<s>出境稅、住宿稅、肉品檢疫</s></a>'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 三國連假撞期</b>'
+        f'<s>含請假試算</s></a>'
+      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b>'
+        f'<s>台灣飛日本，每日更新</s></a></div>'
+      + f'<p class="disc">本頁整理的是本站查證過的社群話題，查證日期各題不同，'
+        f'頁面更新於 {TH["checked"]}。原始貼文的內容與互動數會變動，'
+        '引用的說法以查證當下為準。</p>'
+      + foot())
+    pages.append(('/threads-japan/', 0.7))
 
 # ---------- 東京：值得為它再飛一次的店 ----------
 # 來源是一則七千多則回覆的 Threads 討論串。社群留言只當線索，
