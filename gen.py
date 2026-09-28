@@ -2829,6 +2829,47 @@ if EG:
                         + f'<p class="lede">{html.escape(s["means"])}</p>'
                         for s in _hc['steps']))
 
+    # 把判斷規則實際套用在具體商品上。強度用顏色表示證據等級，不是好壞
+    _VC = EG.get('verified_cases')
+    _eg_vc = ''
+    if _VC:
+        _SW = {'硬': 'win', '中': '', '軟': 'lose'}
+
+        def _vc_case(r):
+            _pf = r.get('profile')
+            _badge = {'roaming': '漫遊', 'native': '原生'}.get(_pf, '尚未判定')
+            _ev = ''.join(
+                f'<tr><td><b>{html.escape(e["what"])}</b></td>'
+                f'<td class="{_SW.get(e["strength"], "")}"><b>{html.escape(e["strength"])}</b></td>'
+                f'<td>{html.escape(e["detail"])}'
+                f'<br><small><a href="{html.escape(e["src"])}" rel="nofollow noopener" '
+                f'target="_blank">{html.escape(e["src_name"])}</a></small></td></tr>'
+                for e in sorted(r['evidence'], key=lambda e: e['rank']))
+            _tail = ''
+            if r.get('irony'):
+                _tail += f'<p class="disc">{html.escape(r["irony"])}</p>'
+            if r.get('why_still_null'):
+                _tail += ('<div class="tldr"><ul><li><b>為什麼 profile 還是留白</b><br>'
+                          + html.escape(r['why_still_null']) + '</li></ul></div>')
+            return (f'<h3>{html.escape(r["name"])}</h3>'
+                    f'<div class="today"><div class="tday">本站判定：{_badge}'
+                    f'　·　依據：{html.escape(r["verify"])}</div>'
+                    f'<div class="tans">{html.escape(r["verdict"])}</div>'
+                    f'<div class="tsub">發行方：{html.escape(r["issuer_region"])}</div>'
+                    f'<div class="tbuf">掛的網路：{html.escape(r["carrier"])}</div></div>'
+                    '<div class="tw"><table><thead><tr><th>證據</th><th>強度</th>'
+                    '<th>說明與出處</th></tr></thead><tbody>' + _ev + '</tbody></table></div>'
+                    + _tail)
+
+        _eg_vc = ('<h2>兩個實際套用的例子</h2>'
+                  f'<p class="lede">{html.escape(_VC["_說明"])}</p>'
+                  + ''.join(_vc_case(r) for r in _VC['rows'])
+                  + '<div class="tldr"><ul><li><b>最便宜的判斷方法</b><br>'
+                  + html.escape(_VC['asymmetry']) + '</li></ul></div>'
+                  + f'<p class="disc">本節查證於 {_VC["checked"]}。'
+                    '業者的條款、商品頁寫法與合作電信商都可能變動，'
+                    '看到這頁跟你當下看到的商品頁不一致，以商品頁為準。</p>')
+
     _im = EG['impact']
     _eg_im = (f'<h2>{html.escape(_im["title"])}</h2><ul class="lede">'
               + ''.join(f'<li>{html.escape(x)}</li>' for x in _im['items']) + '</ul>')
@@ -2855,9 +2896,16 @@ if EG:
      ('IP 不在日本，實際會怎樣？',
       '最常遇到的是只對日本開放的網站與串流內容看不了，部分日本網銀、政府與購票網站也會擋海外 IP，另外延遲會高一些。'
       '但這一欄沒有絕對的好壞。如果你本來就想在日本用台灣的服務，IP 不在日本反而方便。'),
-     ('為什麼這頁沒有列出哪個商品是原生、哪個是漫遊？',
-      '因為查不到。商品頁多半不寫，而這件事沒有可靠的第三方資料可抄。'
-      '本站的作法是只在官方明載或供應商回覆時才填，其餘留白。所以先把判斷方法寫清楚，讓你自己驗。'),
+     ('為什麼這頁只列了兩個商品是原生還是漫遊？',
+      '因為只有這兩個查得到官方文件。商品頁多半不寫這件事，而且沒有可靠的第三方資料可抄。'
+      '本站的作法是只在官方明載或法人登記查得到時才寫，其餘留白，不用評論或心得去補。'
+      '目前判定完成的是 Saily（漫遊，依據它自己的安裝說明要求開啟數據漫遊）；'
+      'Sakura Mobile 查到發行方是日本法人，但 IP 出口仍未查證，所以還是留白。'
+      '其餘商品請照本頁的判斷規則與三十秒實測自己驗。'),
+     ('有沒有最快的判斷方法？',
+      '有，而且買之前就能用：去看商品頁的安裝步驟，有沒有叫你開啟數據漫遊。'
+      '原生的日本門號在自己的母網上，不需要開漫遊。要你開漫遊的，就是漫遊 profile。'
+      '這一條不需要技術知識，也不用等到啟用之後。'),
     ]
     eg_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in eg_faq)
@@ -2885,7 +2933,7 @@ if EG:
         f'<div class="tbuf">而「用到一半變慢」通常是另一回事，吃到飽超量降速、'
         f'MVNO 尖峰降速，或多 IMSI 產品切換到<b>另一家日本電信商</b>。'
         f'最後那種是在日本國內換，不會讓 IP 跑到香港。</div></div>'
-      + _eg_l1 + _eg_l2 + _eg_sd + _eg_bb + _eg_hc + _eg_im
+      + _eg_l1 + _eg_l2 + _eg_sd + _eg_bb + _eg_vc + _eg_hc + _eg_im
       + '<h2>這頁還查不到的部分</h2>'
       + '<p class="lede">寧可留白也不要寫成結論：</p>'
       + f'<ul class="lede">{_eg_un}</ul>'
@@ -2900,8 +2948,9 @@ if EG:
       + f'<a class="ct" href="{U("/japan-sms-roaming/")}"><b>✉️ 台灣門號收簡訊</b>'
         f'<s>關掉漫遊就收不到驗證碼</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a></div>'
-      + '<p class="disc">本頁解釋的是規格層面的機制，不是任何特定商品的判定。'
-        '各家 eSIM 實際採用哪種路由，請以供應商的正式回覆或你自己啟用後的實測為準。</p>'
+      + '<p class="disc">本頁的主體是規格層面的機制。上面那兩個商品的判定，'
+        '依據限於各該業者自己的官方文件與法人登記，並非實機測試，也不適用於其他商品。'
+        '各家 eSIM 實際採用哪種路由，仍請以供應商的正式回覆或你自己啟用後的實測為準。</p>'
       + foot())
     pages.append(('/japan-esim-native-roaming/', 0.7))
 
