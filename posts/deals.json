@@ -34,13 +34,13 @@
  },
  {
   "slug": "2026-09-28-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$2,375",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$2,185",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
-  "price": 11086,
+  "price": 11276,
   "air": "飛大阪再轉乘",
-  "fl_price": 6898,
+  "fl_price": 7088,
   "fl_rt": true,
   "fl_to": "大阪",
   "tr_twd": 2094,
@@ -50,10 +50,10 @@
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$2,375"
+   "比直飛省 NT$2,185"
   ],
   "med": 13461,
-  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=MM17916561001791669600000165TPEKIX17920506001792058100000185KIXTPE_1b4c599b3c54d28c32d16b83e64729d6_18337&search_date=28092026&expected_price_uuid=01a0e7e2-5148-8030-6a8d-0ce76b90c562&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=FFGZYgrbkltanVMqNNYxUQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6898&marker=775639",
+  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=D717916468001791660600000170TPEKIX17920977001792105500000190KIXTPE_7d76f88f74753be63096538c931c11a5_18844&search_date=28092026&expected_price_uuid=01a0e887-7e9e-8030-6f9c-ddc6f9715f85&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=TXp5D73dVx0YClWP1MT8hQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7088&marker=775639",
   "hotelcity": "廣島",
   "cslug": "hiroshima"
  },
