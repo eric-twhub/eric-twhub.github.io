@@ -8102,6 +8102,37 @@ if os.path.exists('cards.json'):
         _ropts = '<option value="">全部類別</option>' + ''.join(
             f'<option value="{html.escape(c)}">{html.escape(c)}</option>' for c in _cats)
 
+        # 查證留下的兩份紀錄。折扣率會變，抄來的整理不會跟著變，
+        # 所以把「改掉了什麼」與「哪些查不到」都寫出來，讀者才判斷得了可信度。
+        _fixed = CP.get('_已解決') or []
+        _pend = CP.get('_待複查') or []
+        _fix_block = (
+          ('<h2>查證後改掉的 ' + str(len(_fixed)) + ' 筆</h2>'
+           + f'<p class="lede">{html.escape(CP.get("_已解決說明", ""))}</p>'
+           + '<div class="tw"><table><tr><th>店家</th><th>原本寫的</th>'
+             '<th>查到的</th><th>改於</th></tr>'
+           + ''.join(
+               f'<tr><td class="nm"><b>{html.escape(x["store"])}</b></td>'
+               f'<td class="lose">{html.escape(x["was"])}</td>'
+               f'<td class="win">{html.escape(x["now"])}</td>'
+               f'<td class="nm"><small>{html.escape(x["on"])}</small></td></tr>'
+               for x in _fixed)
+           + '</table></div>') if _fixed else '')
+
+        _no = [x for x in _pend if not x.get('listed')]
+        _soft = [x for x in _pend if x.get('listed')]
+        _pend_block = (
+          ('<h2>查不到官方發券頁的，與條件沒公布的</h2>'
+           + f'<p class="lede">{html.escape(CP.get("_待複查說明", ""))}</p>'
+           + '<div class="tldr"><ul>'
+           + ''.join(
+               f'<li><b>{html.escape(x["store"])}</b>'
+               + ('（已列入，但條件不明）' if x.get('listed') else '（沒有列入）')
+               + '：' + html.escape(x['why']) + '</li>' for x in (_no + _soft))
+           + '</ul></div>'
+           + f'<p class="disc">上表的 {len(CP["stores"])} 家都找得到官方或官方合作平台的'
+             f'發券頁，沒找到的就不列，不用第三方整理補上去。</p>') if _pend else '')
+
         # 分享圖卡。和本頁同一份 coupons.json，由 make_coupon_cards.py 產生。
         _CP_CARD = [
          ('01', '免稅 10% ＋ 券 8% 不是 18%', '14 家與關鍵數字'),
@@ -8112,10 +8143,12 @@ if os.path.exists('cards.json'):
          ('06', '三個常犯的錯', '最容易少拿到折扣的'),
          ('07', '券長什麼樣', '有些不能先截圖'),
          ('08', '11/1 免稅新制', '改成出境後才退'),
+         ('09', '查證後改掉的 3 筆', '原本寫錯的折扣率'),
+         ('10', '查不到官方發券頁的', '哪些數字站得住'),
         ]
         _cp_cards = (
           '<h2>整理成圖片</h2>'
-          '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+          '<p class="lede">同一份資料做成十張圖，存下來或轉發都可以，不用註明出處。'
           '點圖看原尺寸。</p>'
           '<style>'
           '.cpk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -8339,6 +8372,8 @@ if os.path.exists('cards.json'):
                     f'{html.escape(st["jp"])}</s><u>{html.escape(st["rate"])}</u></a>'
                     for st in sorted(CP['stores'], key=lambda x: -x['max']))
           + '</div>'
+          + _fix_block
+          + _pend_block
           + _cp_cards
           + '<h2>三個常犯的錯</h2><div class="tldr"><ul>'
             '<li><b>把百分比直接相加。</b>免稅 10% 加券 7% 不等於 17%。'
