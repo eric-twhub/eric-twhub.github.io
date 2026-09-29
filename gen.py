@@ -4476,6 +4476,31 @@ if SH:
     _sh_no = [x for x in _sh_all if x.get('state') == 'none']
     _sh_brand = SH['lists'][1]
 
+    def _sh_map(x):
+        """地圖連結。有官方地址就用店名加地址，沒有就只用店名去搜。
+
+        沒有地址的那幾家標成「用店名搜」，因為搜出來的不一定是那一家，
+        讀者要自己認一下。
+        """
+        ad = x.get('address') or ''
+        # 店名跟留言寫的不一樣的那幾家，地圖要用實際的店名去搜，
+        # 不然搜品牌名照樣找不到，那正是這一頁在講的事。
+        nm = x.get('map_name') or x['name']
+        # 有地址時才把區名拿掉，地址已經定位了。沒地址時留著，
+        # 不然「Supreme 原宿店」會變成搜「Supreme」，東京四家分不出來。
+        if ad:
+            for t in (' 澀谷', ' 中目黑', ' 原宿店', ' 原宿'):
+                nm = nm.replace(t, '')
+        else:
+            # 沒地址就只能用店名搜，繁體區名日本地圖對不準
+            for k, v in (('澀谷', '渋谷'), ('中目黑', '中目黒'), ('南青山', '南青山')):
+                nm = nm.replace(k, v)
+        q = (nm + ' ' + ad).strip()
+        u = ('https://www.google.com/maps/search/?api=1&query='
+             + urllib.parse.quote(q, safe=''))
+        return (f'<a href="{u}" target="_blank" rel="nofollow noopener">'
+                + ('地圖 →' if ad else '用店名搜 →') + '</a>')
+
     def _sh_src(x):
         return (f'　<a href="{x["src"]}" target="_blank" rel="nofollow noopener">'
                 f'{html.escape(x["src_name"])} →</a>' if x.get('src') else '')
@@ -4489,8 +4514,15 @@ if SH:
         + (f'<b>{html.escape(x["address"])}</b>' if x.get('address') else '—')
         + (f'<br><small style="color:var(--dim)">{html.escape(x["hours"])}</small>'
            if x.get('hours') else '')
+        + (('<br><b style="color:var(--acc)">'
+            + html.escape(x['also']['name']) + '</b>'
+            '<br><small>' + html.escape(x['also']['address'])
+            + '<br>' + html.escape(x['also']['hours'])
+            + f'　{x["also"]["opened"]} 開幕</small>')
+           if x.get('also') else '')
         + '</td>'
-        f'<td class="nm"><small>{html.escape(x["check_note"])}{_sh_src(x)}</small></td>'
+        f'<td class="nm"><small>{html.escape(x["check_note"])}{_sh_src(x)}</small>'
+        f'<br><small>{_sh_map(x)}</small></td>'
         '</tr>' for x in _sh_fix)
 
     _sh_ok_rows = ''.join(
@@ -4498,12 +4530,13 @@ if SH:
         f'<td class="nm">' + (html.escape(x["address"]) if x.get('address') else '—')
         + (f'<br><small style="color:var(--dim)">{html.escape(x["hours"])}</small>'
            if x.get('hours') else '') + '</td>'
-        f'<td class="nm"><small>{html.escape(x["check_note"])}{_sh_src(x)}</small></td>'
+        f'<td class="nm"><small>{html.escape(x["check_note"])}{_sh_src(x)}</small>'
+        f'<br><small>{_sh_map(x)}</small></td>'
         '</tr>' for x in _sh_ok)
 
     _sh_no_rows = ''.join(
-        f'<li><b>{html.escape(x["name"])}</b>　{html.escape(x["check_note"])}</li>'
-        for x in _sh_no)
+        f'<li><b>{html.escape(x["name"])}</b>　{html.escape(x["check_note"])}'
+        f'　{_sh_map(x)}</li>' for x in _sh_no)
 
     _sh_area = {}
     for x in _sh_all:
@@ -4521,6 +4554,30 @@ if SH:
         for a, v in sorted(_sh_area.items(), key=lambda kv: -len(kv[1])))
 
     _sh_brands = '、'.join(html.escape(b['name']) for b in _sh_brand['items'])
+
+    # 社群上有沒有講到店裡的事。多數店沒有，寫出來讓讀者知道邊界在哪。
+    _SO = SH.get('social')
+    _SS = {'有': 'win', '有內容但用不上': '', '查無結果': 'dimcell'}
+    _sh_social = ''
+    if _SO:
+        _rows = ''.join(
+            f'<tr><td class="nm"><b>{html.escape(r["q"])}</b></td>'
+            f'<td class="{_SS.get(r["state"], "")}"><b>{html.escape(r["state"])}</b></td>'
+            f'<td class="nm">'
+            + (f'<small>{html.escape(r["what"])}</small>' if r['what'] else '—')
+            + (f'<br><small style="color:var(--acc)">{html.escape(r["note"])}</small>'
+               if r.get('note') else '')
+            + '</td></tr>' for r in _SO['rows'])
+        _sh_social = (
+          '<h2>社群上查得到什麼</h2>'
+          f'<p class="lede">{html.escape(_SO["_說明"])}</p>'
+          '<div class="tw"><table><tr><th>搜尋詞</th><th>結果</th>'
+          '<th>查到什麼</th></tr>' + _rows + '</table></div>'
+          f'<div class="tldr"><ul><li><b>{html.escape(_SO["_結論"])}</b></li>'
+          f'<li>{html.escape(_SO["_順帶查到的"])}</li></ul></div>'
+          f'<p class="disc">{html.escape(_SO["_方法"])}'
+          f'查證於 {_SO["checked"]}。社群說法是線索不是規則，'
+          '會變也可能只是個別經驗，以官方當期公告為準。</p>')
 
     # 分享圖卡。張數與標題由 make_shops_cards.py 隨資料產生。
     _shi = 'tokyo/street-fashion/cards/index.json'
@@ -4629,6 +4686,7 @@ if SH:
          + '、'.join(html.escape(x['name']) for x in _sh_moved)
          + '。行政區是渋谷区沒錯，但要走的是原宿或明治神宮前站。</p>'
          if _sh_moved else '')
+      + _sh_social
       + '<h2>那串沒有人回答的：美食</h2>'
       + '<p class="lede">原 PO 問了燒肉、拉麵、海鮮，'
         '六十九則留言沒有一則回美食，全部在回潮牌。'

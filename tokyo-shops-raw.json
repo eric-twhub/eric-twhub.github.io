@@ -41,11 +41,17 @@
      "state": "fix",
      "address": "東京都渋谷区神宮前1-11-6 ラフォーレ原宿 1F",
      "hours": "11:00–20:00",
-     "check_note": "現有的叫 HUMAN MADE HARAJUKU，開在 Laforet 原宿 1F，不是路面店。另外官方公告新旗艦店 HUMAN MADE TOKYO 在神宮前6-25-10，預計 2026 年 8 到 9 月開幕，官方沒有再公告實際開幕日，去之前先確認開了沒。",
-     "src": "https://humanmade.co.jp/news/x3u213jbx3m/",
-     "src_name": "HUMAN MADE 官方新聞稿",
+     "check_note": "留言寫「HUMAN MADE 原宿」，但現在原宿有兩家。舊的叫 HUMAN MADE HARAJUKU，開在 Laforet 原宿 1F，不是路面店；品牌史上最大的旗艦店 HUMAN MADE TOKYO 已於 2026/9/26 開幕，在神宮前6-25-10，三層樓 595 平方公尺，平日 11:00 到 19:00、六日與假日到 20:00。要去大的那家就是後者。",
+     "src": "https://prtimes.jp/main/html/rd/p/000000018.000113892.html",
+     "src_name": "HUMAN MADE 官方開幕新聞稿",
      "area_real": "原宿",
-     "area_moved": false
+     "area_moved": false,
+     "also": {
+      "name": "HUMAN MADE TOKYO（旗艦店）",
+      "address": "東京都渋谷区神宮前6-25-10",
+      "hours": "平日 11:00–19:00／六日與假日 11:00–20:00",
+      "opened": "2026-09-26"
+     }
     },
     {
      "name": "STUDIOUS 原宿",
@@ -167,7 +173,8 @@
      "src": "https://wackomaria.co.jp/paradisetokyo",
      "src_name": "WACKO MARIA 官方店舖頁",
      "area_real": "中目黑",
-     "area_moved": false
+     "area_moved": false,
+     "map_name": "PARADISE TOKYO"
     },
     {
      "name": "Visvim 中目黑",
@@ -180,7 +187,8 @@
      "src": "https://www.visvim.tv/jp/stockist_visvim/",
      "src_name": "visvim 官方 stockist",
      "area_real": "中目黑",
-     "area_moved": false
+     "area_moved": false,
+     "map_name": "VISVIM GENERAL STORE"
     },
     {
      "name": "nonnative 中目黑",
@@ -321,5 +329,44 @@
  },
  "_這一輪查了什麼": "只查 benny.58888 那份 16 家「有指名分店」的清單。wang.trip 那份是品牌不是店址，零散留言多數也只有品牌名，沒有分店就沒有東西可以回查，所以這一輪不碰。",
  "_重新分區": "留言把 ballaholic 與 Kiko Kostadinov 歸在澀谷，兩家的地址都在神宮前。行政區是渋谷区沒錯，但要走的是原宿或明治神宮前，不是澀谷站。按實際位置重排是原宿 8 家、澀谷 4 家、中目黑 3 家、南青山 1 家。",
- "_互動擷取時間": "2026-09-29"
+ "_互動擷取時間": "2026-09-29",
+ "social": {
+  "_說明": "為了看「社群上對這些店有沒有講什麼實用的」，掃了 Threads。結論是多數店查不到可用的內容，只有一個例外，寫出來讓你知道這一項的邊界在哪。",
+  "checked": "2026-09-29",
+  "_方法": "Threads 免登入的搜尋，單一關鍵字，每次等六秒再讀。複合詞會查無結果，所以用品牌名或單詞。",
+  "rows": [
+   {
+    "q": "HUMANMADE",
+    "state": "有",
+    "what": "整串都在講商品與搶購。有用的是入店方式：有人寫「我抽到 1:30 入場，樓下是有整理券排隊的一堆人」，另有日文貼文寫抽選中籤才進得去、買到旗艦店限定 T 恤。發售日的入店可能要抽選或排整理券，不是走進去就好。",
+    "note": "這是社群說法不是官方規定。品牌的開幕新聞稿沒有寫抽選，要去之前看官方社群當期公告。"
+   },
+   {
+    "q": "visvim",
+    "state": "有內容但用不上",
+    "what": "查得到不少貼文，但幾乎全是收藏、穿搭與品牌理念，沒有人講店裡的事。",
+    "note": ""
+   },
+   {
+    "q": "中目黑選物店",
+    "state": "查無結果",
+    "what": "",
+    "note": ""
+   },
+   {
+    "q": "原宿潮牌",
+    "state": "查無結果",
+    "what": "",
+    "note": ""
+   },
+   {
+    "q": "Supreme原宿",
+    "state": "查無結果",
+    "what": "",
+    "note": ""
+   }
+  ],
+  "_結論": "社群上找得到的是商品熱度，不是店家資訊。真正影響行程的入店方式只有 HUMAN MADE 查得到，而且那還是社群說法。其餘的營業時間與地址還是得看官方頁面，上面那幾張表就是。",
+  "_順帶查到的": "從 HUMAN MADE 那組貼文回查官方新聞稿，才發現旗艦店 HUMAN MADE TOKYO 已經在 2026/9/26 開幕。本頁先前寫「去之前先確認開了沒」，現在可以寫確定的日期了。"
+ }
 }
