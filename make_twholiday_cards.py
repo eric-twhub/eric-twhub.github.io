@@ -391,6 +391,28 @@ def _bygroup(m, cal):
     return out
 
 
+def _jp_of(m):
+    """這個月日本的假日，連休幾天一起算出來。
+
+    台灣沒有假期的月份，格子上剩下的就是日本那幾天，而那正是住宿會
+    跳價的日子。只寫「台灣這個月沒有國定假日」等於把這張的重點丟掉。
+    """
+    ds = m['days']
+    idx = {c['d']: i for i, c in enumerate(ds)}
+    out = []
+    for c in ds:
+        if not c['jp']:
+            continue
+        i = idx[c['d']]
+        a = b = i
+        while a - 1 >= 0 and ds[a - 1]['jp_off']:
+            a -= 1
+        while b + 1 < len(ds) and ds[b + 1]['jp_off']:
+            b += 1
+        out.append((c['jp'], f'{int(c["d"][5:7])}/{int(c["d"][8:10])}', b - a + 1))
+    return out
+
+
 def _month_sub(m, cal):
     """圖庫底下那一行：這個月要注意什麼"""
     gs = _bygroup(m, cal)
@@ -399,8 +421,10 @@ def _month_sub(m, cal):
     hol = [c['tw'] for c in m['days'] if c['tw']]
     if hol:
         return '、'.join(dict.fromkeys(hol))[:24]
-    jp = [c['jp'] for c in m['days'] if c['jp']]
-    return ('日本 ' + '、'.join(jp[:2])) if jp else '這個月沒有國定假日'
+    jp = _jp_of(m)
+    return ('台灣無假日，日本 '
+            + '、'.join(f'{d} {n}' for n, d, _k in jp[:2])) if jp \
+        else '三國這個月都沒有國定假日'
 
 
 def _month(m, cal, d):
@@ -416,7 +440,13 @@ def _month(m, cal, d):
         sub = ('台灣這個月放：'
                + '、'.join(dict.fromkeys(c['tw'] for c in hol)) + '。')
     else:
+        jp = _jp_of(m)
         sub = '台灣這個月沒有國定假日。'
+        if jp:
+            sub += ('日本有 '
+                    + '、'.join(f'{d} {n}' + (f'（{k} 連休）' if k >= 3 else '')
+                                for n, d, k in jp)
+                    + '，那幾天當地的住宿會緊。')
     if not cal.get('cn_open'):
         sub += f'中國 {_Y[0]} 年的節假日還沒公布，格子裡不會有中國的標記。'
 

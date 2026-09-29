@@ -5590,6 +5590,7 @@ if HOL:
                     'jp': x.get('jp'), 'cn': x.get('cn'),
                     'run': d in runset,
                     'off': bool(x.get('tw_off')),
+                    'jp_off': bool(x.get('jp_off')),
                     'makeup': bool(not x.get('tw_off') and x['w'] >= 5),
                     'leave': leave.get(d, [None])[0],
                 })
