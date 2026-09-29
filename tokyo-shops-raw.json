@@ -21,7 +21,7 @@
      "area": "南青山",
      "verified": false,
      "state": "none",
-     "check_note": "查不到官方分店頁。搜尋結果出現的是第三方整理的「CHROME HEARTS HARAJUKU」，跟留言寫的南青山對不上，去之前自己確認一次。",
+     "check_note": "找不到官方分店頁。搜尋結果出現的是第三方整理的「CHROME HEARTS HARAJUKU」，跟留言寫的南青山對不上，去之前自己確認一次。",
      "area_real": "南青山",
      "area_moved": false
     },
@@ -41,7 +41,7 @@
      "state": "fix",
      "address": "東京都渋谷区神宮前1-11-6 ラフォーレ原宿 1F",
      "hours": "11:00–20:00",
-     "check_note": "現有的叫 HUMAN MADE HARAJUKU，開在 Laforet 原宿 1F，不是路面店。另外官方公告新旗艦店 HUMAN MADE TOKYO 在神宮前6-25-10，預計 2026 年 8 到 9 月開幕，本站查不到實際開幕的公告，去之前先確認開了沒。",
+     "check_note": "現有的叫 HUMAN MADE HARAJUKU，開在 Laforet 原宿 1F，不是路面店。另外官方公告新旗艦店 HUMAN MADE TOKYO 在神宮前6-25-10，預計 2026 年 8 到 9 月開幕，官方沒有再公告實際開幕日，去之前先確認開了沒。",
      "src": "https://humanmade.co.jp/news/x3u213jbx3m/",
      "src_name": "HUMAN MADE 官方新聞稿",
      "area_real": "原宿",
@@ -100,7 +100,7 @@
      "area": "澀谷",
      "verified": false,
      "state": "none",
-     "check_note": "查不到官方頁，兩輪搜尋都沒有結果。不代表不存在，但本站不寫成有。",
+     "check_note": "找不到官方分店頁，地址與營業時間沒有官方來源可以對。",
      "area_real": "澀谷",
      "area_moved": false
     },
@@ -109,7 +109,7 @@
      "area": "澀谷",
      "verified": false,
      "state": "none",
-     "check_note": "BEAMS 在澀谷有數家不同業態的店，留言沒指明是哪一家，本站不替它選。",
+     "check_note": "BEAMS 在澀谷有數家不同業態的店，留言沒指明是哪一家，這裡不替它選。",
      "area_real": "澀谷",
      "area_moved": false
     },
@@ -140,7 +140,7 @@
      "area": "澀谷",
      "verified": false,
      "state": "none",
-     "check_note": "本站這次沒查到官方分店頁。",
+     "check_note": "找不到官方分店頁。",
      "area_real": "澀谷",
      "area_moved": false
     },
@@ -313,11 +313,11 @@
  "_原 PO 問但沒人回的": "燒肉、拉麵、海鮮。整串 69 則留言沒有一則回美食，全部都在回潮牌。",
  "_登入牆": "免登入只讀得到前面這些，頁面下方寫「登入即可查看更多回覆」，69 則留言沒有全部抓到。",
  "checked": "2026-09-29",
- "_三態": "none 是「本站查不到官方頁」，不是「這家店不存在」。查不到就寫查不到，不要算繪成沒有。",
+ "_三態": "none 是「找不到官方分店頁」，不是「這家店不存在」。沒有官方來源就不寫成確定。",
  "_查證結果": {
   "ok": "查到官方或官方等級來源，跟留言寫的一致",
   "fix": "店在，但店名、樓層或區域跟留言寫的不一樣，照留言走會找錯地方",
-  "none": "本站查不到官方頁，不代表不存在"
+  "none": "找不到官方分店頁，不代表店不存在"
  },
  "_這一輪查了什麼": "只查 benny.58888 那份 16 家「有指名分店」的清單。wang.trip 那份是品牌不是店址，零散留言多數也只有品牌名，沒有分店就沒有東西可以回查，所以這一輪不碰。",
  "_重新分區": "留言把 ballaholic 與 Kiko Kostadinov 歸在澀谷，兩家的地址都在神宮前。行政區是渋谷区沒錯，但要走的是原宿或明治神宮前，不是澀谷站。按實際位置重排是原宿 8 家、澀谷 4 家、中目黑 3 家、南青山 1 家。",
