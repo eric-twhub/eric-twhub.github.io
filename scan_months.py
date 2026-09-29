@@ -77,7 +77,8 @@ by = {}
 for r in rows:
     by.setdefault(r['m'], []).append(r['price'])
 out = {'generated': datetime.datetime.now().strftime('%Y-%m-%d %H:%M'),
-       'origin': ORIGIN, 'dests': [c for c, _ in MAIN], 'min_n': MIN_N,
+       'origin': ORIGIN, 'dests': [c for c, _ in MAIN],
+       'dest_names': [n for _, n in MAIN], 'min_n': MIN_N,
        'months': {m: {'n': len(v), 'median': round(statistics.median(v)),
                       'low': min(v), 'enough': len(v) >= MIN_N}
                   for m, v in sorted(by.items())}}

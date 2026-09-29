@@ -495,17 +495,12 @@ def _month(m, cal, d):
 
     fa = m.get('fare') or {}
     _fd = ((cal.get('fare_src') or {}).get('generated') or '')[:10]
+    fare = ''
     if fa.get('enough'):
         fare = (f'<b>NT${fa["median"]:,}</b>'
-                f'<span>台北出發的中位來回票價，{fa["n"]} 筆樣本<br>'
+                f'<span>台北出發的中位來回票價<br>'
                 f'最低 NT${fa["low"]:,}'
-                + (f'・{_fd} 抓取' if _fd else '') + '</span>')
-    elif fa.get('n'):
-        fare = ('<b class="z">樣本太少</b>'
-                f'<span>這個月只查到 {fa["n"]} 筆，不夠算出有意義的價格</span>')
-    else:
-        fare = ('<b class="z">還沒開賣</b>'
-                '<span>航空公司還沒放出這個月的機位，所以查不到價格</span>')
+                + (f'・{_fd} 查的' if _fd else '') + '</span>')
     # 圖卡只放第一句。完整說明留在頁面上，全部塞進來會撞到頁尾，
     # 而第一句本來就是「為什麼是這個月」的那一句。
     areas = ''.join(
@@ -532,10 +527,11 @@ def _month(m, cal, d):
             + '<div class="cwd">'
             + ''.join(f'<div>{w}</div>' for w in '一二三四五六日')
             + '</div><div class="cgrid">' + cells + '</div></div>'
-            + '<div class="mbot">'
-            + f'<div class="mfare">{fare}</div>'
-            + (f'<div class="marea">{areas}</div>' if areas else '')
-            + '</div>' + fest)
+            + (('<div class="mbot">'
+                + (f'<div class="mfare">{fare}</div>' if fare else '')
+                + (f'<div class="marea">{areas}</div>' if areas else '')
+                + '</div>') if (fare or areas) else '')
+            + fest)
 
 
 def payload(d):

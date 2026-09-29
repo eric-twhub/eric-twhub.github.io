@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-29 18:21",
+ "generated": "2026-09-29 19:56",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -1265,7 +1265,7 @@
     ],
     "fare": {
      "n": 15,
-     "median": 8448,
+     "median": 8434,
      "low": 6006,
      "enough": true
     },
@@ -1676,8 +1676,8 @@
      }
     ],
     "fare": {
-     "n": 17,
-     "median": 11847,
+     "n": 18,
+     "median": 11856,
      "low": 5920,
      "enough": true
     },
@@ -2052,10 +2052,10 @@
      }
     ],
     "fare": {
-     "n": 8,
-     "median": 15471,
+     "n": 7,
+     "median": 15249,
      "low": 10095,
-     "enough": true
+     "enough": false
     },
     "areas": [
      {
@@ -6174,13 +6174,13 @@
   "fare_src": {
    "origin": "TPE",
    "dests": [
-    "TYO",
-    "OSA",
-    "CTS",
-    "FUK",
-    "OKA"
+    "東京",
+    "大阪",
+    "札幌",
+    "福岡",
+    "沖繩"
    ],
-   "generated": "2026-09-29 10:21"
+   "generated": "2026-09-29 17:02"
   },
   "last": "2027-12-31",
   "extra": [

@@ -1492,7 +1492,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
         if len(oris)>1:
             intro+=f'{"、".join(ORI[o] for o in oris)} 都有航班。'
     else:
-        intro+=f'目前沒有抓到台灣飛{name}的票價，可以點下方查目前的即時價格。'
+        intro+=f'點下方可以查台灣飛{name}今天的即時價格與班次。'
     intro+='</p>'
 
     # 卡片是按價格排序只取前 12 張，廉航一定洗版，全服務航空一張都擠不進來。
@@ -5433,8 +5433,7 @@ if HOL:
                      f'樣本少於 10 筆的分組不給數字。</p>')
     else:
         _gap_tbl = ''
-        _gap_note = ('<p class="disc">今天抓到的票價樣本不足以分組計算價差，'
-                     '這一段等資料夠了會自動出現。</p>')
+        _gap_note = ''
 
     # 「只有日本連假」那一格的方向每天都可能翻過來（本站 2026-09-28 就從 -7% 變成 +4%），
     # 所以敘述由當天算出來的數字決定，不要寫死「反而比較便宜」。
@@ -5443,8 +5442,7 @@ if HOL:
         _jp_pct = next((p for l, n, m, p in _hp[2] if l == '只有日本連假' and p is not None),
                        None)
     if _jp_pct is None:
-        _jp_only_pp = ('<div class="pp"><b>只有日本放假的日子，樣本還不夠</b>'
-                       '<p>今天抓到的票價裡，這一類的出發日不滿 10 筆，不給數字。</p></div>')
+        _jp_only_pp = ''
     elif _jp_pct <= -3:
         _jp_only_pp = ('<div class="pp"><b>日本自己連假時，機票反而便宜</b>'
                        f'<p>今天的資料是 {_jp_pct:+.0f}%。那幾天台灣要上班，'
@@ -5623,7 +5621,7 @@ if HOL:
         '兩者都避開的日子最便宜，但那通常要請假。</p></div>'
         '</div>'
       + '<p class="disc">本站只有機票資料，所以上表算得出來的是機票。'
-        '住宿的漲幅沒有自己的數據可以支撐，因此不給數字，只說明方向。</p>'
+        '住宿的漲幅本站沒有數據，所以只說方向不給數字。</p>'
       + _hc_cards
       + (('<h2>請幾天假，可以連休幾天</h2>'
           '<p class="lede">用行政院人事行政總處的官方行事曆逐日算出來的，不是手打的表。'
@@ -5824,7 +5822,7 @@ if HOL:
                 'areas': ((MG or {}).get('months') or {}).get(_mn) or []})
         return {'months': months, 'cn_open': cn_open,
                 'fare_src': {'origin': MF.get('origin'),
-                             'dests': MF.get('dests'),
+                             'dests': MF.get('dest_names') or MF.get('dests'),
                              'generated': MF.get('generated')} if MF else None,
                 'last': max(d for d in days if d[:4] == ys),
                 'extra': sorted({d[:7] for d in days if d[:4] != ys}),
@@ -5902,13 +5900,10 @@ if HOL:
             _fa = _m.get('fare') or {}
             if _fa.get('enough'):
                 _fc = (f'<td class="nm"><b>{money(_fa["median"])}</b>'
-                       f'<br><small style="color:var(--dim)">中位價・'
-                       f'{_fa["n"]} 筆<br>最低 {money(_fa["low"])}</small></td>')
-            elif _fa.get('n'):
-                _fc = (f'<td class="dimcell"><small>只查到 {_fa["n"]} 筆<br>'
-                       f'不夠算</small></td>')
+                       f'<br><small style="color:var(--dim)">中位價<br>'
+                       f'最低 {money(_fa["low"])}</small></td>')
             else:
-                _fc = '<td class="dimcell"><small>還沒開賣</small></td>'
+                _fc = '<td class="dimcell">—</td>'
             _ac = ''.join(
                 f'<div style="padding:4px 0"><a href="{U("/" + a["area"] + "/")}">'
                 f'<b>{html.escape(a["name"])}</b></a>　'
@@ -5938,10 +5933,9 @@ if HOL:
               '<th>三個地區</th><th>當地大型活動</th></tr>'
               + _mg_rows + '</table></div>'
               + (f'<p class="disc">票價是台北出發到'
-                 f'{"、".join(_fs.get("dests") or [])}五個航點的來回含稅中位價，'
-                 f'抓取於 {_fs.get("generated") or "—"}。'
-                 '遠月寫「還沒開賣」是因為航空公司還沒放出那個月的機位，'
-                 '不是那個月沒有航班。票價每天變動，這是抓取當下的快照。</p>'
+                 f'{"、".join(_fs.get("dests") or [])} 五個航點的來回含稅中位價，'
+                 f'查於 {(_fs.get("generated") or "")[:10]}，'
+                 '每天都會變動。空白的月份是那幾天的機位還沒開賣。</p>'
                  if _fs.get('generated') else '')
               + f'<p class="disc">{html.escape(MG["_不是保證"])}</p>')
 
