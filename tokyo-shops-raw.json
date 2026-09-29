@@ -1,0 +1,74 @@
+{
+ "_說明": "Threads 那串「東京男生必逛」留言裡被推薦的店，原樣抓下來。這是線索不是來源：店名、分店、營業狀態都還沒回查，不要直接上站。",
+ "_來源貼文": "https://www.threads.com/@st.243_raymi/post/DdwX9pukznv",
+ "_貼文互動": "432 讚・69 留言・43 轉發・416 分享（2026-09-29 擷取當下）",
+ "grabbed": "2026-09-29",
+ "_未查證": "全部條目都是 verified:false。要用的話得逐家查官方頁面或 Google 地圖：現在還在不在、分店對不對、地址有沒有搬。上一次做東京美食就是這樣抓到一家已歇業。",
+ "_沒有收的": [
+  "arvanndch：留言區的個人帳號自薦，依既有規則不列入。",
+  "goodxssss：導流到自己部落格的留言，不列入。",
+  "1313_rutai：推薦 YouTube 頻道（東京情報猿、那個矮子），不是店家。"
+ ],
+ "lists": [
+  {
+   "by": "benny.58888",
+   "engagement": "145 讚・4 留言・15 轉發・164 分享",
+   "kind": "潮牌與選物店",
+   "note": "整串裡最完整的一份，按區分好。",
+   "items": [
+    {"name": "Chrome Hearts 南青山旗艦店", "area": "南青山", "verified": false},
+    {"name": "Supreme 原宿店", "area": "原宿", "verified": false},
+    {"name": "HUMAN MADE 原宿", "area": "原宿", "verified": false},
+    {"name": "STUDIOUS 原宿", "area": "原宿", "verified": false},
+    {"name": "GR8", "area": "原宿（Laforet 原宿內）", "verified": false},
+    {"name": "NUBIAN 原宿", "area": "原宿", "verified": false},
+    {"name": "UNION TOKYO 原宿", "area": "原宿", "verified": false},
+    {"name": "MAIDENS SHOP", "area": "澀谷", "verified": false},
+    {"name": "BEAMS 澀谷", "area": "澀谷", "verified": false},
+    {"name": "ballaholic 澀谷", "area": "澀谷", "verified": false},
+    {"name": "Stussy 澀谷", "area": "澀谷", "verified": false},
+    {"name": "FREAK'S STORE 澀谷", "area": "澀谷", "verified": false},
+    {"name": "Kiko Kostadinov 澀谷", "area": "澀谷", "verified": false},
+    {"name": "WACKO MARIA 中目黑", "area": "中目黑", "verified": false},
+    {"name": "Visvim 中目黑", "area": "中目黑", "verified": false},
+    {"name": "nonnative 中目黑", "area": "中目黑", "verified": false}
+   ]
+  },
+  {
+   "by": "wang.trip",
+   "engagement": "148 讚・16 留言・48 轉發・391 分享",
+   "kind": "日本服飾品牌（不是特定分店）",
+   "note": "原貼文標題是「別再只逛 GU、UNIQLO」。這是品牌清單不是店址，要做的話得自己補分店。",
+   "items": [
+    {"name": "RAGEBLUE", "verified": false},
+    {"name": "niko and...", "verified": false},
+    {"name": "graniph", "verified": false},
+    {"name": "BEAMS", "verified": false},
+    {"name": "FREAK'S STORE", "verified": false},
+    {"name": "Snow Peak", "verified": false},
+    {"name": "mont-bell", "verified": false},
+    {"name": "THE NORTH FACE（日版）", "verified": false}
+   ]
+  },
+  {
+   "by": "零散留言",
+   "engagement": "各 1 到 5 讚",
+   "kind": "單則推薦",
+   "items": [
+    {"name": "nonnative", "by": "is_chencc", "note": "跟上面那份第 16 項重複", "verified": false},
+    {"name": "Bape", "by": "yifan526", "verified": false},
+    {"name": "Stussy", "by": "yifan526", "note": "重複", "verified": false},
+    {"name": "BEAMS Japan", "by": "yifan526", "note": "留言寫「beans japan」，應為 BEAMS JAPAN", "verified": false},
+    {"name": "LB★NATION（Lbwk）", "by": "yifan526", "note": "改裝車品牌 Liberty Walk，不是服飾", "verified": false},
+    {"name": "Mizuno 神宮外苑", "by": "sanichi_yo", "verified": false}
+   ]
+  }
+ ],
+ "_沒有具體店名的": [
+  "liao_jtf：電器街（指秋葉原，沒指名店家）",
+  "a13579167a：澀谷、新宿",
+  "wangry001：問他要看什麼 3C，原 PO 回「遊戲機或手機配件」，串到這裡沒有下文"
+ ],
+ "_原 PO 問但沒人回的": "燒肉、拉麵、海鮮。整串 69 則留言沒有一則回美食，全部都在回潮牌。",
+ "_登入牆": "免登入只讀得到前面這些，頁面下方寫「登入即可查看更多回覆」，69 則留言沒有全部抓到。"
+}
