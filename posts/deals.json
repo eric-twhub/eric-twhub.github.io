@@ -33,6 +33,31 @@
   "n": 83
  },
  {
+  "slug": "2026-09-29-transfer-osaka-hiroshima",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$2,180",
+  "o": "台灣",
+  "c": "廣島",
+  "via": "大阪",
+  "price": 11281,
+  "air": "飛大阪再轉乘",
+  "fl_price": 7089,
+  "fl_rt": true,
+  "fl_to": "大阪",
+  "tr_twd": 2096,
+  "tr_mode": "山陽新幹線",
+  "dep": "2026-10-10",
+  "ret": "",
+  "stops": "山陽新幹線",
+  "cls": "transfer",
+  "reasons": [
+   "比直飛省 NT$2,180"
+  ],
+  "med": 13461,
+  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=D717916468001791660600000170TPEKIX17920977001792105500000190KIXTPE_7d76f88f74753be63096538c931c11a5_18844&search_date=28092026&expected_price_uuid=01a0e887-7e9e-8030-6f9c-ddc6f9715f85&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=TXp5D73dVx0YClWP1MT8hQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7089&marker=775639",
+  "hotelcity": "廣島",
+  "cslug": "hiroshima"
+ },
+ {
   "slug": "2026-09-29-transfer-fukuoka-nagasaki",
   "title": "飛福岡轉乘去長崎，比直飛省 NT$5,502",
   "o": "台灣",
