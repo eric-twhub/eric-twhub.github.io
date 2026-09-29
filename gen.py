@@ -803,6 +803,21 @@ blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem
 /* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
 .tw td.nm{white-space:normal;line-height:1.55;min-width:150px;max-width:290px}
 .tw td.dimcell{color:var(--dim);opacity:.55}
+/* 頁內書籤：每頁的 h2 自動收成一排，讓人直接跳到要看的那一段 */
+.toc{margin:16px 0 6px;padding:11px 14px 12px;background:var(--soft);
+border:1px solid var(--line);border-radius:12px}
+.toc>b{display:block;font-size:.76rem;color:var(--dim);font-weight:600;
+margin-bottom:8px;letter-spacing:.02em}
+.toc>div{display:flex;flex-wrap:wrap;gap:7px}
+.toc a{font-size:.82rem;line-height:1.4;color:var(--fg);background:var(--card);
+border:1px solid var(--line);border-radius:999px;padding:5px 11px;
+text-decoration:none;white-space:nowrap}
+.toc a:hover{color:var(--acc);border-color:var(--acc)}
+@media(max-width:560px){.toc a{font-size:.78rem;padding:4px 9px}}
+/* 導覽列是 sticky，跳過去要留出它的高度，不然標題會被蓋住 */
+html{scroll-behavior:smooth}
+h2[id],h3[id]{scroll-margin-top:72px}
+
 /* 月曆：標出放假、建議請假，三國的假日名稱直接寫在格子裡 */
 .cal{margin:14px 0}
 .calm{margin:0 0 20px}
@@ -1359,9 +1374,55 @@ PAGE_HASH = {}          # 產生路徑 → 內容雜湊，給 sitemap 判斷這�
 PAGE_META = {}          # 產生路徑 → {title, h1, fare}，給 og 圖卡用
 
 
+_TOC_RE = re.compile(r'<h2(?![^>]*\bclass=)([^>]*)>(.*?)</h2>', re.S)
+
+
+def _toc(content):
+    """把頁面裡的 h2 收成一排書籤，插在第一個 h2 前面。
+
+    id 用標題文字的雜湊，不用序號：序號會因為插入新段落而整排位移，
+    分享出去的連結就失效了。標題不改，連結就一直有效。
+
+    只有三段以上才做。一兩段的頁面加了反而多一層東西要看。
+    """
+    hs = list(_TOC_RE.finditer(content))
+    if len(hs) < 3:
+        return content
+    out, seen, last = [], set(), 0
+    items = []
+    for m in hs:
+        attrs, inner = m.group(1), m.group(2)
+        txt = html.unescape(re.sub(r'<[^>]+>', '', inner)).strip()
+        if not txt:
+            continue
+        if 'id=' in attrs:                     # 已經有 id 的沿用
+            hid = re.search(r'id="([^"]+)"', attrs).group(1)
+        else:
+            hid = 'h-' + hashlib.sha1(txt.encode('utf-8')).hexdigest()[:6]
+            n, base = 2, hid
+            while hid in seen:
+                hid = f'{base}-{n}'; n += 1
+            out.append((m.start(), m.end(),
+                        f'<h2 id="{hid}"{attrs}>{inner}</h2>'))
+        seen.add(hid)
+        items.append((hid, txt))
+    if len(items) < 3:
+        return content
+    # 由後往前換，才不會動到還沒處理的位置
+    for s, e, rep_ in reversed(out):
+        content = content[:s] + rep_ + content[e:]
+    toc = ('<div class="toc"><b>這一頁有</b><div>'
+           + ''.join(f'<a href="#{i}">{html.escape(t)}</a>' for i, t in items)
+           + '</div></div>')
+    first = content.find('<h2')
+    return content[:first] + toc + content[first:] if first > 0 else content
+
+
 def write(path,content):
     d=os.path.dirname(path)
     if d: os.makedirs(d,exist_ok=True)
+    if path.endswith('.html'):
+        content = _toc(content)
     open(path,'w',encoding='utf-8').write(content)
     if path.endswith('.html'):
         PAGE_HASH[path] = hashlib.sha1(content.encode('utf-8')).hexdigest()[:16]
