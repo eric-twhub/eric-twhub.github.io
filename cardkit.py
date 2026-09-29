@@ -117,9 +117,11 @@ def _check(ch, tmp, name, src):
         'const L=document.querySelector(".list");'
         'const over=L?L.scrollHeight-L.clientHeight:0;'
         'const f=document.querySelector(".foot").getBoundingClientRect().top;'
-        'let kids=L?[...L.children]:[];'
-        'if(!kids.length){kids=[...document.querySelector(".card").children]'
-        '.filter(e=>!e.classList.contains("foot"));}'
+        # .list 以外的自訂區塊（例如放在 .list 後面的 .stat）也要量。
+        # 只看 .list 的子元素，那種區塊撞到頁尾時量不出來。
+        'let kids=[...document.querySelector(".card").children]'
+        '.filter(e=>!e.classList.contains("foot")&&!e.classList.contains("list"));'
+        'if(L)kids=kids.concat([...L.children]);'
         'const b=kids.length?Math.max(...kids.map(e=>e.getBoundingClientRect().bottom)):0;'
         'return{gap:over>0?-over:Math.round(f-b)}})())</script></body>'))
     r = subprocess.run([ch, '--headless', '--disable-gpu', '--dump-dom',

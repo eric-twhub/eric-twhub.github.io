@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """台日機票速報 — 多頁 SEO 網站產生器"""
 import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics, hashlib
+import glob
 
 CFG=json.load(open('partners.json',encoding='utf-8'))
 W=CFG.get('widgets',{})
@@ -5629,6 +5630,43 @@ if HOL:
                     and f['start'][:4] == ys and f['end'] >= TODAY)
         n_past = f_past.count('<tr>')
 
+        # 張數與標題由 make_twholiday_cards.py 隨資料產生，這裡照著排。
+        _cki = f'taiwan-holiday-{ys}/cards/index.json'
+        _ck = (json.load(open(_cki, encoding='utf-8'))
+               if os.path.exists(_cki) else [])
+        _ck = [c for c in _ck
+               if os.path.exists(f'taiwan-holiday-{ys}/cards/{c["file"]}')]
+        _tw_cards = ''
+        if _ck:
+            _tw_cards = (
+              '<h2>整理成圖片</h2>'
+              f'<p class="lede">同一份資料做成 {len(_ck)} 張圖，'
+              '存下來或轉發都可以，不用註明出處。點圖看原尺寸。</p>'
+              '<style>'
+              '.twk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+              '.twk a{display:block;border:1px solid var(--line);border-radius:10px;'
+              'overflow:hidden;background:var(--card);text-decoration:none}'
+              '.twk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+              'object-fit:cover;object-position:top}'
+              '.twk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+              '.twk s{display:block;padding:0 10px 10px;font-size:.76rem;'
+              'color:var(--dim);text-decoration:none;line-height:1.5}'
+              '@media(max-width:720px){.twk{grid-template-columns:repeat(2,1fr)}}'
+              '</style><div class="twk">'
+              + ''.join(
+                  f'<a href="{U(f"/taiwan-holiday-{ys}/cards/" + c["file"])}" '
+                  f'target="_blank">'
+                  f'<img src="{U(f"/taiwan-holiday-{ys}/cards/" + c["file"])}" '
+                  f'alt="{ys} 年請假攻略圖卡第 {i} 張：{html.escape(c["title"])}" '
+                  f'width="1080" height="1350" loading="lazy">'
+                  f'<b>{html.escape(c["title"])}</b>'
+                  f'<s>{html.escape(c["sub"])}</s></a>'
+                  for i, c in enumerate(_ck, 1))
+              + '</div>'
+              + '<p class="disc">圖上的連假、請假排法與祭典日期，'
+                '都是從這一頁同一份計算產生的。圖卡不掛在每日更新上，'
+                '資料改了會在建置時提醒重跑。</p>')
+
         title = (f'{ys} 年台灣連假請假攻略：請 1 天休幾天，'
                  f'順便看日本中國同期放不放假')
         desc = (f'{ys} 年台灣的國定假日與連假，逐段算出請 1 到 4 天的最佳排法。'
@@ -5636,6 +5674,37 @@ if HOL:
                 f'以及日本當地的大型祭典，因為那會同時吃掉住宿與交通。')
 
         other = 2027 if Y == 2026 else 2026
+
+        _cd_runs = []
+        for r in twr:
+            s, e = r['start'], r['end']
+            _cd_runs.append({
+                'names': r['names'], 'start': s, 'end': e, 'days': r['days'],
+                'jp': [{'names': x['names'], 'start': x['start'], 'end': x['end'],
+                        'overlap': n} for x, n in _ovl_runs('jp', s, e)],
+                'cn': (None if not cn_open else
+                       [{'names': x['names'], 'start': x['start'], 'end': x['end'],
+                         'overlap': n} for x, n in _ovl_runs('cn', s, e)]),
+                'fest': [{'name': f['name'], 'city': f['city'],
+                          'est': f['conf_y'] == 'est'}
+                         for f in fy if f['start'] and f['start'] <= e
+                         and f['end'] >= s]})
+        write(f'taiwan-holiday-{ys}/cards-data.json', json.dumps({
+            'generated': NOWS, 'year': ys,
+            'checked': HOL['checked'],
+            'fest_checked': FEST['checked'] if FEST else None,
+            'partial': len(twr) != len(twr_all),
+            'n_runs_all': len(twr_all),
+            'runs': _cd_runs,
+            'leave': lp,
+            'fest': [{'name': f['name'], 'jp': f['jp'], 'city': f['city'],
+                      'start': f['start'], 'end': f['end'], 'conf': f['conf_y'],
+                      'why': (f['est_zh'] if f['conf_y'] == 'est' and f.get('est_zh')
+                              else f['rule_zh']),
+                      'note': f['note'], 'past': f['end'] < TODAY}
+                     for f in fy if f['start'] and f['start'][:4] == ys],
+            'fest_missing': [f['name'] for f in fy if not f['start']],
+        }, ensure_ascii=False, indent=1))
 
         # 常見問題。年度相關的那幾題由當年的資料生成，不寫死。
         _hit = [(r, _ovl_runs('jp', r['start'], r['end'])) for r in twr]
@@ -5772,6 +5841,7 @@ if HOL:
               + '。沒有資料就不列，不用往年日期直接套。</p>') if f_miss else '')
           + (f'<p class="disc">{html.escape(FEST["_為什麼不全部推估"])}</p>'
              if FEST else '')
+          + _tw_cards
           + '<h2>常見問題</h2>' + faq_html
           + '<h2>資料來源</h2>'
           + f'<ul class="lede">{_src_rows}'
@@ -6786,7 +6856,11 @@ def _card_stamp_warn():
             ('make_hostel_cards', 'hostels.json',
              'tokyo/hostel/cards', '東京平價住宿'),
             ('make_resale_cards', 'resale.json',
-             'iphone-cost/cards', 'iPhone 持有成本')):
+             'iphone-cost/cards', 'iPhone 持有成本'),
+            ('make_twholiday_cards', 'taiwan-holiday-2026/cards-data.json',
+             'taiwan-holiday-2026/cards', '2026 請假攻略'),
+            ('make_twholiday_cards', 'taiwan-holiday-2027/cards-data.json',
+             'taiwan-holiday-2027/cards', '2027 請假攻略')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
