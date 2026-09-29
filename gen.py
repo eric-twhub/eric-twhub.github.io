@@ -6860,7 +6860,9 @@ def _card_stamp_warn():
             ('make_twholiday_cards', 'taiwan-holiday-2026/cards-data.json',
              'taiwan-holiday-2026/cards', '2026 請假攻略'),
             ('make_twholiday_cards', 'taiwan-holiday-2027/cards-data.json',
-             'taiwan-holiday-2027/cards', '2027 請假攻略')):
+             'taiwan-holiday-2027/cards', '2027 請假攻略'),
+            ('make_budgethotel_cards', 'budget-hotels.json',
+             'tokyo/budget-hotel/cards', '東京便宜旅館')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
@@ -9828,6 +9830,40 @@ if BH:
                    key=lambda r: (r['score'], r.get('reviews') or 0))
     _bh_save = _bh_bm['total'] - _bh_best['total']
 
+    # 分享圖卡。張數與標題由 make_budgethotel_cards.py 隨資料產生。
+    _bhi = 'tokyo/budget-hotel/cards/index.json'
+    _bhk = [c for c in (json.load(open(_bhi, encoding='utf-8'))
+                        if os.path.exists(_bhi) else [])
+            if os.path.exists('tokyo/budget-hotel/cards/' + c['file'])]
+    _bh_cards = ''
+    if _bhk:
+        _bh_cards = (
+          '<h2>整理成圖片</h2>'
+          f'<p class="lede">同一份資料做成 {len(_bhk)} 張圖，'
+          '存下來或轉發都可以，不用註明出處。點圖看原尺寸。</p>'
+          '<style>'
+          '.bhk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+          '.bhk a{display:block;border:1px solid var(--line);border-radius:10px;'
+          'overflow:hidden;background:var(--card);text-decoration:none}'
+          '.bhk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+          'object-fit:cover;object-position:top}'
+          '.bhk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+          '.bhk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+          'text-decoration:none;line-height:1.5}'
+          '@media(max-width:720px){.bhk{grid-template-columns:repeat(2,1fr)}}'
+          '</style><div class="bhk">'
+          + ''.join(
+              f'<a href="{U("/tokyo/budget-hotel/cards/" + c["file"])}" target="_blank">'
+              f'<img src="{U("/tokyo/budget-hotel/cards/" + c["file"])}" '
+              f'alt="東京便宜旅館圖卡第 {i} 張：{html.escape(c["title"])}" '
+              f'width="1080" height="1350" loading="lazy">'
+              f'<b>{html.escape(c["title"])}</b>'
+              f'<s>{html.escape(c["sub"])}</s></a>'
+              for i, c in enumerate(_bhk, 1))
+          + '</div>'
+          + f'<p class="disc">圖上的房價與評分是 {BH["checked"]} 查價當天的快照，'
+            '跟上表同一份資料。房價每天變動，資料更新時會在建置中提醒重產圖卡。</p>')
+
     _bh_crows = ''
     for r in sorted(_bh_cl['rows'], key=lambda r: r['total']):
         _w = (f'{_BSM}⚠️ {html.escape(r["warn"])}</small>' if r.get('warn') else '')
@@ -9956,6 +9992,7 @@ if BH:
         f'<th>{_bh_n} 晚</th><th>說明</th><th>　</th></tr></thead><tbody>'
       + _bh_orows + '</tbody></table></div>'
       + '<h2>訂之前確認三件事</h2>' + _bh_chk
+      + _bh_cards
       + (f'<a class="cta" href="{html.escape(_bh_list)}" target="_blank" '
          f'rel="nofollow noopener sponsored"><span class="ci">{P["hotel"]["icon"]}</span>'
          f'<span class="ct"><b>自己看東京的完整住宿清單</b>'
