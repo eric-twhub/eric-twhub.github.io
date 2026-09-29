@@ -1445,7 +1445,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
         if len(oris)>1:
             intro+=f'{"、".join(ORI[o] for o in oris)} 都有航班。'
     else:
-        intro+=f'目前快取中沒有台灣飛{name}的票價，可點下方查詢即時價格。'
+        intro+=f'目前沒有抓到台灣飛{name}的票價，可以點下方查目前的即時價格。'
     intro+='</p>'
 
     # 卡片是按價格排序只取前 12 張，廉航一定洗版，全服務航空一張都擠不進來。
@@ -1962,8 +1962,8 @@ if os.path.exists('ski.json'):
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _BG_CARD)
       + '</div>'
-      + f'<p class="disc">圖上的尺寸、重量與申請規定都是從這一頁同一份資料產生的，'
-        f'沒有另外手打，條款查證於 {SK["checked"]}。</p>')
+      + f'<p class="disc">圖上的尺寸、重量與申請規定跟這一頁的表格一樣，'
+        f'條款查證於 {SK["checked"]}。</p>')
 
     write('japan-ski-baggage/index.html',
       head(sk_title, sk_desc, 'japan-ski-baggage/',
@@ -2159,8 +2159,8 @@ if os.path.exists('ski-ticket.json'):
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _SK_CARD)
       + '</div>'
-      + f'<p class="disc">圖上的價格、折扣、截止日與降雪機率都是從這一頁同一份資料產生的，'
-        f'沒有另外手打。気象庁 會在 {_J["next_rev"]} 修正寒候期予報，屆時會連同圖一起更新。</p>')
+      + f'<p class="disc">圖上的價格、折扣、截止日與降雪機率跟這一頁的表格一樣。'
+        f'気象庁 會在 {_J["next_rev"]} 修正寒候期予報，屆時圖會一起更新。</p>')
 
     _stfare = ''
     for _s, _n in _ST_CITY:
@@ -2755,7 +2755,7 @@ if os.path.exists('lasttrain.json'):
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _LT_CARD)
       + '</div>'
-      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+      + '<p class="disc">圖上的數字跟這一頁的表格一樣。</p>')
 
     write('japan-airport-last-train/index.html',
       head(lt_title, lt_desc, 'japan-airport-last-train/',
@@ -2892,7 +2892,7 @@ if EG:
             if r.get('irony'):
                 _tail += f'<p class="disc">{html.escape(r["irony"])}</p>'
             if r.get('why_still_null'):
-                _tail += ('<div class="tldr"><ul><li><b>為什麼 profile 還是留白</b><br>'
+                _tail += ('<div class="tldr"><ul><li><b>為什麼還是判不出來</b><br>'
                           + html.escape(r['why_still_null']) + '</li></ul></div>')
             return (f'<h3>{html.escape(r["name"])}</h3>'
                     f'<div class="today"><div class="tday">本站判定：{_badge}'
@@ -2941,10 +2941,11 @@ if EG:
       '但這一欄沒有絕對的好壞。如果你本來就想在日本用台灣的服務，IP 不在日本反而方便。'),
      ('為什麼這頁只列了兩個商品是原生還是漫遊？',
       '因為只有這兩個查得到官方文件。商品頁多半不寫這件事，而且沒有可靠的第三方資料可抄。'
-      '本站的作法是只在官方明載或法人登記查得到時才寫，其餘留白，不用評論或心得去補。'
-      '目前判定完成的是 Saily（漫遊，依據它自己的安裝說明要求開啟數據漫遊）；'
-      'Sakura Mobile 查到發行方是日本法人，但 IP 出口仍未查證，所以還是留白。'
-      '其餘商品請照本頁的判斷規則與三十秒實測自己驗。'),
+'只有官方文件或法人登記查得到的才寫，'
+      '查不到的就是查不到，不用評論或心得去補。'
+      '目前查得出來的是 Saily（漫遊，依據它自己的安裝說明要求開啟數據漫遊）；'
+      'Sakura Mobile 查到發行方是日本法人，但 IP 從哪裡出去仍然查不到。'
+      '其餘商品照這頁的判斷規則與三十秒實測自己驗就可以。'),
      ('有沒有最快的判斷方法？',
       '有，而且買之前就能用：去看商品頁的安裝步驟，有沒有叫你開啟數據漫遊。'
       '原生的日本門號在自己的母網上，不需要開漫遊。要你開漫遊的，就是漫遊 profile。'
@@ -2978,7 +2979,7 @@ if EG:
         f'最後那種是在日本國內換，不會讓 IP 跑到香港。</div></div>'
       + _eg_l1 + _eg_l2 + _eg_sd + _eg_bb + _eg_vc + _eg_hc + _eg_im
       + '<h2>這頁還查不到的部分</h2>'
-      + '<p class="lede">寧可留白也不要寫成結論：</p>'
+      + '<p class="lede">以下這幾項找不到可引用的官方說法，所以不寫成結論：</p>'
       + f'<ul class="lede">{_eg_un}</ul>'
       + '<h2>常見問題</h2>' + eg_html
       + cta('esim', '日本', '東京', '看看有哪些日本 eSIM 方案',
@@ -3257,7 +3258,7 @@ if DRV:
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _DLC_CARD)
       + '</div>'
-      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+      + '<p class="disc">圖上的數字跟這一頁的表格一樣。</p>')
 
     write('japan-driving-licence/index.html',
       head(dv_title, dv_desc, 'japan-driving-licence/',
@@ -3416,7 +3417,7 @@ if NOC:
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _NOCC_CARD)
       + '</div>'
-      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+      + '<p class="disc">圖上的數字跟這一頁的表格一樣。</p>')
 
     write('japan-rentacar-noc/index.html',
       head(nc_title, nc_desc, 'japan-rentacar-noc/',
@@ -3588,7 +3589,7 @@ if INS:
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _INSC_CARD)
       + '</div>'
-      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+      + '<p class="disc">圖上的數字跟這一頁的表格一樣。</p>')
 
     write('japan-travel-insurance/index.html',
       head(in_title, in_desc, 'japan-travel-insurance/',
@@ -3852,8 +3853,8 @@ if os.path.exists('japan-rules.json'):
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _RL_CARD)
       + '</div>'
-      + f'<p class="disc">圖上的稅率、級距與罰則都是從這一頁同一份資料產生的，'
-        f'沒有另外手打，每一條都讀官方原文，查證於 {JR["checked"]}。</p>')
+      + f'<p class="disc">圖上的稅率、級距與罰則跟這一頁的表格一樣，'
+        f'每一條都引官方原文，查證於 {JR["checked"]}。</p>')
 
     write('japan-travel-rules/index.html',
       head(jr_title, jr_desc, 'japan-travel-rules/',
@@ -3994,8 +3995,8 @@ if os.path.exists('threads-hub.json'):
       '例如優惠券那題，逐家查官方發券頁之後，發現滿額級距與未稅門檻'
       '跟社群整理的版本並不一致。'),
      ('為什麼有些題目沒有原始貼文的連結？',
-      '有幾則只留下了查證結論，沒有留下貼文網址，那幾則已經標示出來。'
-      '想自己核對的話，可以直接看每則附的官方來源。'),
+      '有幾則只留下查證結論，沒有留下貼文網址，所以那幾則沒有連結。'
+      '想自己核對的話，每一則都附了官方來源，可以直接從那裡查。'),
      ('會一直更新嗎？',
       '看到值得查的題目就做，沒有固定頻率。判準是三個：'
       '這題有沒有官方原文可查、社群說的跟官方對不對得上、'
@@ -4290,8 +4291,7 @@ if os.path.exists('tokyo-picks.json'):
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _TP_CARD)
       + '</div>'
-      + '<p class="disc">圖上的店名、分類與地名都是從本頁同一份資料產生的，'
-        '沒有另外手打，所以不會和上面的清單對不上。'
+      + '<p class="disc">圖上的店名、分類與地名跟這一頁的清單一樣。'
         '照片一律沒有放進圖裡，那些著作權屬於拍的人。</p>')
 
     _tp_un = ''.join(
@@ -4918,7 +4918,7 @@ if os.path.exists('jttp.json'):
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _JT_CARD)
       + '</div>'
-      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+      + '<p class="disc">圖上的數字跟這一頁的表格一樣。</p>')
 
     write('japan-jttp/index.html',
       head(tt_title, tt_desc, 'japan-jttp/',
@@ -5260,7 +5260,7 @@ if HOL:
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _HC_CARD)
       + '</div>'
-      + '<p class="disc">行事曆與請假排法都是從這一頁同一份計算產生的。'
+      + '<p class="disc">圖上的行事曆與請假排法跟這一頁一樣。'
         '第 2 張的票價是產生當下的單日快照，和上表的即時數字可能不同，'
         '圖上有標產生時間。</p>')
 
@@ -5317,11 +5317,11 @@ if HOL:
       '要注意那是今天這批資料的快照，樣本不大，明天重算數字會變。'
       '把它當成量級參考，不要當成精確預測。'),
      ('日本的補假會算進去嗎？',
-      '會。日本的振替休日在內閣府的 CSV 裡以「休日」名義列出，本站一併計入。'
+      '會。日本的振替休日在內閣府的公開假日資料裡就列為休日，本站一併計入。'
       '台灣的補班日與中國的調休上班日也都扣掉了，不會把要上班的週六算成假日。'),
      ('為什麼 2027 年沒有中國的資料？',
-      '中國的節假日由國務院逐年公布，2027 年的還沒發布。本站不推估，'
-      '所以 2027 的中國欄位一律留空。'),
+      '中國的節假日由國務院逐年公布，2027 年的還沒發布。'
+      '沒有公布的本站不推估，所以 2027 年的中國那一欄是空的。'),
     ]
     hc_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in hc_faq)
@@ -5663,9 +5663,8 @@ if HOL:
                   f'<s>{html.escape(c["sub"])}</s></a>'
                   for i, c in enumerate(_ck, 1))
               + '</div>'
-              + '<p class="disc">圖上的連假、請假排法與祭典日期，'
-                '都是從這一頁同一份計算產生的。圖卡不掛在每日更新上，'
-                '資料改了會在建置時提醒重跑。</p>')
+              + '<p class="disc">圖上的連假、請假排法與祭典日期跟這一頁一樣，'
+                f'行事曆查證於 {HOL["checked"]}。</p>')
 
         title = (f'{ys} 年台灣連假請假攻略：請 1 天休幾天，'
                  f'順便看日本中國同期放不放假')
@@ -5717,7 +5716,7 @@ if HOL:
           '不是手打的，補班日也已經扣掉，不會把要上班的週六算成假日。'),
          ('補班日有算進去嗎？',
           '有。台灣的補班日在官方行事曆裡是上班日，本站照算。'
-          '日本的振替休日在內閣府的 CSV 裡以「休日」名義列出，也一併計入。'),
+          '日本的振替休日在內閣府的公開假日資料裡就列為休日，也一併計入。'),
          ('為什麼要看日本有沒有放假？',
           '因為那決定你到了之後住宿多貴。機票的價格主要由台灣的連假決定，'
           '那是台灣人出國的日子；日本放假時是日本人在自己國內旅行，'
@@ -6007,7 +6006,7 @@ if os.path.exists('card-insurance.json'):
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _CIC_CARD)
       + '</div>'
-      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+      + '<p class="disc">圖上的數字跟這一頁的表格一樣。</p>')
 
     write('japan-card-insurance/index.html',
       head(ci_title, ci_desc, 'japan-card-insurance/',
@@ -6334,8 +6333,8 @@ document.addEventListener('DOMContentLoaded',function(){
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _ES_CARD)
       + '</div>'
-      + f'<p class="disc">圖上的價格、評價區間與條款都是從這一頁同一份資料產生的，'
-        f'沒有另外手打，逐頁查證於 {_ES["checked"]}。'
+      + f'<p class="disc">圖上的價格、評價區間與條款跟這一頁的表格一樣，'
+        f'逐頁查證於 {_ES["checked"]}。'
         f'Klook 的價格與方案隨時可能調整，下單前以商品頁為準。</p>')
 
     write('japan-esim/index.html',
@@ -6385,11 +6384,11 @@ document.addEventListener('DOMContentLoaded',function(){
       + '<h2>三個容易誤解的地方</h2>'
       + f'<h3>1. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][0])}</h3>'
         f'<p class="lede">這是唯一一件買之前查不到、但影響整趟網路體驗的事。'
-        f'本站五個商品的 profile 欄全部留白，因為商品頁都沒寫。'
+        f'這五個商品的商品頁都沒寫是原生還是漫遊，所以表上那一欄是空的。'
         f'<a href="{U("/japan-esim-native-roaming/")}">判斷方法在這裡</a>。</p>'
       + f'<h3>2. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][1])}</h3>'
         f'<p class="lede">五個商品裡只有一家把降速後的數字寫出來，上面的條款對照表有。'
-        f'其餘四家都留白。不是「沒有降速」，是頁面上找不到。'
+        f'其餘四家沒寫。那不代表「沒有降速」，是頁面上找不到。'
         f'買吃到飽之前，這是最該問客服的一題。</p>'
       + f'<h3>3. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][2])}</h3>'
         f'<p class="lede">效期從裝置第一次連上當地網路才起算，不是購買日，'
@@ -7229,7 +7228,7 @@ if os.path.exists('apple.json'):
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _AP_CARD)
       + '</div>'
-      + '<p class="disc">圖上的價格與換算都是從這一頁同一份資料產生的，沒有另外手打。'
+      + '<p class="disc">圖上的價格與換算跟這一頁的表格一樣。'
         '匯率每天變動，圖上印的是產生當下的匯率，上表才是今天的數字。</p>')
 
     write('apple-japan-price/index.html',
@@ -7634,7 +7633,7 @@ if os.path.exists('apple.json'):
               f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
               for i, t, sub in _RSC_CARD)
           + '</div>'
-          + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+          + '<p class="disc">圖上的數字跟這一頁的表格一樣。</p>')
 
         write('iphone-cost/index.html',
           head(_ktitle, _kdesc, 'iphone-cost/',
@@ -8209,7 +8208,7 @@ if _GT:
       + '<div class="tw"><table><thead><tr><th>航線</th><th>價格</th>'
         '<th>去程</th><th>回程</th><th>　</th></tr></thead><tbody>'
       + _rows + '</tbody></table></div>'
-      + '<p class="disc">價格為單人來回含稅，取自近期快取紀錄，實際票價請點擊查詢。</p>'
+      + '<p class="disc">價格為單人來回含稅，是本站近期抓到的紀錄，實際票價請點擊查詢。</p>'
       + search_form('查你自己的日期', '選好日期就能看到當天實際可訂的班次與時間。', 'TPE', 'TYO')
       + '<h2>為什麼值得多付這筆</h2><div class="tldr"><ul>'
         '<li><b>第一天不再報廢。</b>傍晚 17:15 出發的班次，落地已近午夜，'
@@ -8353,8 +8352,8 @@ if os.path.exists('cards.json'):
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _CC_CARD)
       + '</div>'
-      + '<p class="disc">圖上的回饋率、實拿金額與加碼上限都是從這一頁同一份資料算出來的，'
-        '沒有另外手打。試算用的匯率與國外交易手續費標在最後一張。</p>')
+      + '<p class="disc">圖上的回饋率、實拿金額與加碼上限跟這一頁的表格一樣，'
+        '試算用的匯率與國外交易手續費標在最後一張。</p>')
 
     # ── 比較表 ──
     _crows = ''
@@ -9072,22 +9071,10 @@ if os.path.exists('cards.json'):
         _ropts = '<option value="">全部類別</option>' + ''.join(
             f'<option value="{html.escape(c)}">{html.escape(c)}</option>' for c in _cats)
 
-        # 查證留下的兩份紀錄。折扣率會變，抄來的整理不會跟著變，
-        # 所以把「改掉了什麼」與「哪些查不到」都寫出來，讀者才判斷得了可信度。
-        _fixed = CP.get('_已解決') or []
+        # 讀者要的是「哪些數字站得住」，不是本站的更正紀錄。
+        # _已解決 留在 coupons.json 供下次回查對照，頁面上不列。
         _pend = CP.get('_待複查') or []
-        _fix_block = (
-          ('<h2>查證後改掉的 ' + str(len(_fixed)) + ' 筆</h2>'
-           + f'<p class="lede">{html.escape(CP.get("_已解決說明", ""))}</p>'
-           + '<div class="tw"><table><tr><th>店家</th><th>原本寫的</th>'
-             '<th>查到的</th><th>改於</th></tr>'
-           + ''.join(
-               f'<tr><td class="nm"><b>{html.escape(x["store"])}</b></td>'
-               f'<td class="lose">{html.escape(x["was"])}</td>'
-               f'<td class="win">{html.escape(x["now"])}</td>'
-               f'<td class="nm"><small>{html.escape(x["on"])}</small></td></tr>'
-               for x in _fixed)
-           + '</table></div>') if _fixed else '')
+        _fix_block = ''
 
         _no = [x for x in _pend if not x.get('listed')]
         _soft = [x for x in _pend if x.get('listed')]
@@ -9113,12 +9100,11 @@ if os.path.exists('cards.json'):
          ('06', '三個常犯的錯', '最容易少拿到折扣的'),
          ('07', '券長什麼樣', '有些不能先截圖'),
          ('08', '11/1 免稅新制', '改成出境後才退'),
-         ('09', '查證後改掉的 3 筆', '原本寫錯的折扣率'),
-         ('10', '查不到官方發券頁的', '哪些數字站得住'),
+         ('09', '查不到官方發券頁的', '哪些數字站得住'),
         ]
         _cp_cards = (
           '<h2>整理成圖片</h2>'
-          '<p class="lede">同一份資料做成十張圖，存下來或轉發都可以，不用註明出處。'
+          '<p class="lede">同一份資料做成九張圖，存下來或轉發都可以，不用註明出處。'
           '點圖看原尺寸。</p>'
           '<style>'
           '.cpk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -9140,8 +9126,8 @@ if os.path.exists('cards.json'):
               f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
               for i, t, sub in _CP_CARD)
           + '</div>'
-          + '<p class="disc">圖上的折扣、門檻與有效期都是從這一頁同一份資料產生的，'
-            '沒有另外手打。試算用的是條件寫得最清楚的那一家，'
+          + '<p class="disc">圖上的折扣、門檻與有效期跟這一頁的表格一樣。'
+            '試算用的是條件寫得最清楚的那一家，'
             '不用官方頁沒公布分級依據的最高值。</p>')
 
         def _cp_dead(st):
@@ -9672,7 +9658,7 @@ if HS:
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _HSC_CARD)
       + '</div>'
-      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+      + '<p class="disc">圖上的數字跟這一頁的表格一樣。</p>')
 
     write('tokyo/hostel/index.html',
       head(f'東京平價住宿｜{len(HS["areas"])} 區實查比較，{_hs_n} 晚 {money(_hs_lo["total"])} 起',
@@ -9861,8 +9847,9 @@ if BH:
               f'<s>{html.escape(c["sub"])}</s></a>'
               for i, c in enumerate(_bhk, 1))
           + '</div>'
-          + f'<p class="disc">圖上的房價與評分是 {BH["checked"]} 查價當天的快照，'
-            '跟上表同一份資料。房價每天變動，資料更新時會在建置中提醒重產圖卡。</p>')
+          + f'<p class="disc">圖上的房價與評分跟上表一樣，'
+            f'是 {BH["checked"]} 查價當天的快照。房價每天變動，'
+            '訂房前請以訂房頁顯示的為準。</p>')
 
     _bh_crows = ''
     for r in sorted(_bh_cl['rows'], key=lambda r: r['total']):
@@ -10096,8 +10083,8 @@ if PC:
       f'{_pc_avg:.2f}%；另外 2 間沒有標籤的，兩邊一毛不差。'
       '所以判斷依據是有沒有 Genius 標籤，不是「手機一定比較便宜」。'),
      ('其他訂房網也有這種情況嗎？',
-      'Klook 實測同價。Agoda 的手機版在測試瀏覽器上沒有算繪出房價，'
-      'Trip.com 的手機版未登入會被導向登入頁，這兩家本站沒有測到。'
+      'Klook 實測同價。Agoda 的手機版在本站的測試環境上沒有顯示房價，'
+      'Trip.com 的手機版未登入會被導向登入頁，這兩家沒有測到結果。'
       '沒有測到不等於沒有差異，如果你在用這兩家，值得自己開 App 比一次。'),
      ('從返利網點進去訂，會比較划算嗎？',
       f'要先算門檻，而且比較基準是手機直訂而不是桌機直訂。'
@@ -10164,7 +10151,7 @@ if PC:
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _PCC_CARD)
       + '</div>'
-      + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
+      + '<p class="disc">圖上的數字跟這一頁的表格一樣。</p>')
 
     write('hotel-price-check/index.html',
       head(f'Booking 訂房比價｜同一間房，手機版比桌機版便宜 {_pc_avg:.1f}%',

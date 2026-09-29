@@ -131,7 +131,7 @@ def yen(v):
 
 
 def build(d, today):
-    n = 10
+    n = 9
     sts = d['stores']
     fnote = f'發券頁逐家查證於 {d["checked"]}'
     out = []
@@ -283,21 +283,7 @@ def build(d, today):
              '</div>' + foot(8, n, fnote))
     out.append(('cp-08.png', page(inner)))
 
-    # ── 9 查證後改掉的 ──
-    fixed = d.get('_已解決') or []
-    rows = ''.join(
-        f'<div class="blk"><b>{E(x["store"])}'
-        f'<span class="tag">{E(x["on"])} 改</span></b>'
-        f'<s><b style="display:inline;color:#c4563a">原本寫</b>　{E(x["was"])}<br>'
-        f'<b style="display:inline;color:#2f8f4f">查到的</b>　{E(x["now"])}</s></div>'
-        for x in fixed)
-    inner = ('<div class="kick">折扣率會變，抄來的整理不會</div>'
-             f'<h1>查證後<em>改掉的 {len(fixed)} 筆</em></h1>'
-             '<div class="sub">這三家原本的數字是錯的，回查官方發券頁之後改掉。</div>'
-             f'<div class="list">{rows}</div>' + foot(9, n, fnote))
-    out.append(('cp-09.png', page(inner)))
-
-    # ── 10 查不到的與條件不明的 ──
+    # ── 9 查不到的與條件不明的 ──
     pend = d.get('_待複查') or []
     no = [x for x in pend if not x.get('listed')]
     soft = [x for x in pend if x.get('listed')]
@@ -311,8 +297,8 @@ def build(d, today):
              f'<div class="sub">社群整理常出現，但找不到官方的旅客折扣頁，'
              f'所以沒有列進上面那 {len(d["stores"])} 家。'
              + (f'另有 {len(soft)} 家列了，但條件沒公布。' if soft else '') + '</div>'
-             f'<div class="list">{rows}</div>' + foot(10, n, fnote))
-    out.append(('cp-10.png', page(inner)))
+             f'<div class="list">{rows}</div>' + foot(9, n, fnote))
+    out.append(('cp-09.png', page(inner)))
     return out
 
 
