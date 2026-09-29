@@ -305,7 +305,7 @@ def build(d):
              '<h1>沒有一個商品<br><em>在所有項目都贏</em></h1>'
              f'<div class="list">{rows}'
              f'<div class="blk"><b>這五個商品的原生／漫遊仍未查證</b>'
-             f'<s>{noprof} 個商品的 profile 欄位都還是空的。'
+             f'<s>這 {noprof} 個商品的商品頁都沒寫是原生還是漫遊。'
              '那要實機插卡、查 IP 出口才知道，光看商品頁判斷不了。'
              '寫「未查證」，不寫「漫遊」。另外兩個查得到官方文件的案例見下一張。</s></div>'
              '</div>' + foot(8, n, fnote))

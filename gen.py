@@ -320,7 +320,7 @@ def _rate_basis(st):
                 '你買的品項是哪一檔要看下面的類別表。')
     if any(c in st['rate'] for c in '–-~～') or '最高' in st['rate'] or '起' in st['rate']:
         return (f'該店公告的折扣是「{html.escape(st["rate"])}」，不是固定一個數字。'
-                '本站還沒查清楚分級依據是金額還是商品類別，'
+                '官方頁沒有寫分級依據是金額還是商品類別，'
                 f'下表一律以最高的 {st["max"]}% 試算，<b>你實際拿到的可能更低</b>。')
     return f'該店為單一費率 {st["max"]}%。'
 
@@ -1486,7 +1486,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
                           f'{money(_tc_best["price"])}</b>'
                           f'（{_tc_best["airname"]}，{_tc_best["dep"]} 出發）。')
             else:
-                intro += (f'<b>本站目前沒有 Trip.com 的{pt}紀錄可以對照</b>，'
+                intro += (f'<b>目前沒有 Trip.com 的{pt}紀錄可以對照</b>，'
                           f'點下方按鈕可查當日實際票價。')
         if lccs: intro+=f'飛{name}的廉價航空有 {"、".join(lccs[:4])}。'
         if len(oris)>1:
@@ -1858,7 +1858,7 @@ if os.path.exists('baggage.json'):
       + '<div class="tw"><table><thead><tr><th>航空公司</th><th>類型</th>'
         '<th>託運行李</th><th>來源</th></tr></thead><tbody>' + _farerows + '</tbody></table></div>'
       + f'<p class="disc">其餘 {len(BG["unverified"])} 家飛台日的航空'
-        f'（{html.escape("、".join(BG["unverified"][:6]))} 等）本站尚未查證，'
+        f'（{html.escape("、".join(BG["unverified"][:6]))} 等）還沒逐項對過官方頁，'
         f'所以不列。與其抄第三方整理，不如先空著。</p>'
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
@@ -4429,7 +4429,7 @@ if os.path.exists('tokyo-picks.json'):
           '　本站沒有轉載該名單，只指出兩份清單的差異。</p>')
          if TP.get('award') else '')
       + '<h2>這幾則沒解開</h2>'
-      + '<p class="lede">有人推薦但線索不足，查不到是哪一家，本站不硬湊。</p>'
+      + '<p class="lede">有人推薦但線索不足，查不到是哪一家，所以沒有列進去。</p>'
       + f'<ul class="lede">{_tp_un}</ul>'
       + '<h2>資料出處</h2>'
       + '<div class="tldr"><ul>'
@@ -5114,7 +5114,7 @@ if os.path.exists('jttp.json'):
       '因此無法確認非居住者身分時，店家不能賣你免稅品；但使用這個制度入境的人，'
       '卡片上會記載在留資格與上陸年月日，所以出示護照加上特定登録者カード 就可以免稅販售。'
       '結帳時兩張一起拿出來。要注意這份 Q&A 是 2018 年版，'
-      '2026/11/1 免稅改成出境退稅之後有沒有改版，本站還沒查到。'),
+      '2026/11/1 免稅改成出境退稅之後有沒有改版，官方頁面上看不出來。'),
      ('效期多久？',
       '自交付日起算三年，或護照效期屆滿日，兩者取較早的那個。'
       '所以如果你的護照剩不到三年，這張卡也跟著縮短。'),
@@ -6208,7 +6208,7 @@ if HOL:
           '那是台灣人出國的日子；日本放假時是日本人在自己國內旅行，'
           '你在跟他們搶同一批飯店與新幹線座位。兩個高峰不一定重疊。'),
          ('祭典那一欄寫「推估」是什麼意思？',
-          '代表主辦單位還沒公布那一年的日期，表上的是本站照往年日期或慣例推的。'
+          '代表主辦單位還沒公布那一年的日期，表上的是照往年日期或慣例推的。'
           '推估的依據寫在同一列。要訂機票請等官方公布，不要照推估的日期下訂。'
           '官方寫明「每年同一天」的祭典標的是「每年固定」，那一類可以直接排。'),
         ]
@@ -6305,7 +6305,7 @@ if HOL:
           + '<p class="lede">這些日子當地的住宿與交通會一起被吃掉，'
             '而且很多是台灣人排假時不會想到的。'
             '最後一欄寫明每個日期是怎麼來的：官方寫明每年同一天的、'
-            '該年度已經公布的、還是本站照往年推估的。</p>'
+            '該年度已經公布的、還是照往年推估的。</p>'
           + ('<div class="tw"><table><tr><th>日期</th><th>祭典</th><th>地點</th>'
              '<th>日期怎麼來的</th><th>說明與出處</th></tr>'
              + f_rows + '</table></div>' if f_rows
@@ -6322,7 +6322,7 @@ if HOL:
              '<tr><th>日期</th><th>祭典</th><th>地點</th>'
              '<th>日期怎麼來的</th><th>說明與出處</th></tr>'
              + f_past + '</table></div></div></details>' if f_past else '')
-          + (('<p class="disc">下面這些本站有收，但 ' + ys + ' 年的日期還沒有依據可以推：'
+          + (('<p class="disc">下面這幾個，' + ys + ' 年的日期還沒有依據可以推：'
               + '、'.join(html.escape(f['name']) for f in f_miss)
               + '。沒有資料就不列，不用往年日期直接套。</p>') if f_miss else '')
           + (f'<p class="disc">{html.escape(FEST["_為什麼不全部推估"])}</p>'
@@ -7244,7 +7244,7 @@ for cslug in CITY:
                             if _t2 < own else '，就不比直飛便宜了。') + '</p>')
             else:
                 _disc = (f'<p class="disc">飛{aname}的這筆 {money(ab["price"])} 來自 '
-                         f'{html.escape(_gn)}，台灣讀者較陌生；本站目前沒有 Trip.com 的'
+                         f'{html.escape(_gn)}，台灣讀者較陌生；目前沒有 Trip.com 的'
                          f'{_ablbl}紀錄可以對照，實際票價請點連結確認。</p>')
         desc=(f'直飛{cname}最低 {money(own)}，改飛{aname}（{money(ab["price"])} {_ablbl}）'
               f'再搭{mode}（{tm}），總計約 {money(total_v)}，省下 {money(own-total_v)}。')
@@ -9006,7 +9006,7 @@ if os.path.exists('cards.json'):
           '<th>換匯依據</th><th>資料來源</th></tr></thead><tbody>'
           + _mp_rows + '</tbody></table></div>'
           f'<p class="disc">查證於 {MP["checked"]}。'
-          '標示「第三方整理」者本站尚未逐項比對發卡行或電支業者的官方公告，'
+          '標示「第三方整理」者還沒逐項比對發卡行或電支業者的官方公告，'
           '各家可綁的付款來源與檔期回饋變動很快，出發前請以業者當期公告為準。</p>'
           '<h3>所以怎麼選</h3>'
           '<div class="tldr"><ul>'
@@ -10572,7 +10572,7 @@ if PC:
       f'{_pc_avg:.2f}%；另外 2 間沒有標籤的，兩邊一毛不差。'
       '所以判斷依據是有沒有 Genius 標籤，不是「手機一定比較便宜」。'),
      ('其他訂房網也有這種情況嗎？',
-      'Klook 實測同價。Agoda 的手機版在本站的測試環境上沒有顯示房價，'
+      'Klook 實測同價。Agoda 的手機版沒有顯示出房價，'
       'Trip.com 的手機版未登入會被導向登入頁，這兩家沒有測到結果。'
       '沒有測到不等於沒有差異，如果你在用這兩家，值得自己開 App 比一次。'),
      ('從返利網點進去訂，會比較划算嗎？',
@@ -10610,7 +10610,7 @@ if PC:
      ('03', '手機版便宜 9.09%', 'Booking 同房對照'),
      ('04', '四個通路測下來', '不是每家都這樣'),
      ('05', '比結帳頁的總價', '六個通路'),
-     ('06', '比價這件事有利益衝突', '本站的處理'),
+     ('06', '比價這件事有利益衝突', '這一頁怎麼處理'),
      ('07', '訂之前的檢查點 ①', '七條'),
      ('08', '訂之前的檢查點 ②', '續前'),
     ]
@@ -10702,7 +10702,7 @@ if PC:
       + '</tbody></table></div>'
       + f'<p class="disc">{html.escape(_CH["official_rule"])}</p>'
       + '<h2>從返利網點進去，划得來嗎</h2>'
-      + f'<div class="today"><div class="tday">本站狀態：{html.escape(_pc_r["state"])}</div>'
+      + f'<div class="today"><div class="tday">{html.escape(_pc_r["state"])}</div>'
         f'<div class="tsub">{html.escape(_pc_r["why"])}</div></div>'
       + '<h3>導購連結會改價，這件事測出來了</h3>'
       + f'<p class="lede">{html.escape(_pc_mech["_說明"])}'

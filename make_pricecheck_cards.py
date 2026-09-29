@@ -115,7 +115,7 @@ def build(d):
     pend.append((inner, ''))
 
     rf = d['referral']
-    inner = ('<div class="kick">為什麼本站不直接說哪家最便宜</div>'
+    inner = ('<div class="kick">為什麼不直接說哪家最便宜</div>'
              '<h1>比價這件事<br><em>有利益衝突</em></h1>'
              f'<div class="sub">{E(rf["_說明"])}</div>'
              '<div class="list">'

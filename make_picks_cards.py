@@ -181,13 +181,13 @@ def build(d):
     cover = ('<div class="kick">Threads 查證系列</div>'
              f'<h1>東京，值得為它<br><em>再飛一次</em>的 {len(S)} 家店</h1>'
              f'<div class="sub">一則 {E(src["views"])}、{src["replies"]:,} 則回覆的討論串。<br>'
-             '本站沒有照抄留言，每家都回查了官方資料。</div>'
+             '每一家都回查過官方資料，不是照抄留言。</div>'
              '<div class="stat">'
              '<div><b>602</b><span>則有內容的<br>回覆解析</span></div>'
              f'<div><b>{len(S)}</b><span>家店<br>整理出來</span></div>'
              f'<div><b>{off}</b><span>家找到<br>官方網站</span></div>'
              f'<div><b>{bad}</b><span>處留言<br>要修正</span></div></div>'
-             '<div class="note">編號依原貼文的讚數，不是本站評的。'
+             '<div class="note">編號依原貼文的讚數，不是評比。'
              f'{len(S)} 家裡只有 {withlikes} 家擷取得到讚數，只有那 {withlikes} 家有名次。</div>'
              + foot(1, n))
     out.append(('tokyo-46-01.png', page(cover, 'cover')))
@@ -222,7 +222,7 @@ def build(d):
                  f'<h1>{E(t)}<em> {len(items)}</em></h1>'
                  f'<div class="sub">{E(sub)}</div>'
                  f'<div class="legend">編號是原貼文那則留言的讚數名次。'
-                 f'沒有編號的不是墊底，是我們沒有擷取到它的互動數字。</div>'
+                 f'沒有編號的不是墊底，是那則留言看不到互動數字。</div>'
                  f'<div class="list">{rows}</div>' + foot(i, n))
         out.append((f'tokyo-46-{i:02}.png', page(inner)))
 

@@ -237,7 +237,7 @@ def build(d):
     uv = ''.join(f'<div class="row"><div class="no">?</div>'
                  f'<div class="nm">{E(u["what"])}<s>{E(u["why"])}</s></div></div>'
                  for u in d['unverified'][:3])
-    inner = ('<div class="kick">會被拒絕，與還沒查到的</div>'
+    inner = ('<div class="kick">會被拒絕，與官方沒寫明的</div>'
              '<h1>官方沒有公告<em>審查要多久</em></h1>'
              '<div class="sub">社群回報一次審查約兩個月，那是個別經驗不是規則，'
              '這裡不寫成數字。</div>'

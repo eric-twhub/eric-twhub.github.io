@@ -204,7 +204,7 @@ def build(d):
     for a in air:
         if not best_rail(a):
             rows += (f'<div class="row"><div class="nm">{E(a["name"])}'
-                     '<s>沒有軌道運輸，或本站還沒查到</s></div>'
+                     '<s>沒有直達市區的軌道運輸</s></div>'
                      '<div class="t none">見下</div></div>')
     inner = ('<div class="kick">最後一班能直接進市區的車</div>'
              '<h1>七個機場的<em>末班車</em></h1>'

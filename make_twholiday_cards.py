@@ -298,7 +298,7 @@ def build(d):
             f'<h1>接下來 {len(take)} 個假期，<br><em>各自最划算的排法</em></h1>'
             f'<div class="sub">這幾段一路排到 {_rng(_last, _last)}。'
             '每個假期只列最划算的那一種：一天換到最多天的那個排法。'
-            '再後面的在本站頁面上有完整的表。</div>'
+            '再後面的完整表格在網站上。</div>'
             f'<div class="list">{rows}</div>', '',
             f'接下來 {len(take)} 個假期的排法', '由近到遠，附要請哪幾天')
 
@@ -318,7 +318,7 @@ def build(d):
         add('<div class="kick">住宿與交通會一起被吃掉</div>'
             '<h1>日本接下來的<br><em>祭典與花火</em></h1>'
             + '<div class="legend">日期右下角寫明是官方定死的、該年度已公布的，'
-              '還是本站照往年推估的。</div>'
+              '還是照往年推估的。</div>'
             + (f'<div class="legend">第 {k + 1} 組，共 {n} 組</div>'
                if n > 1 else '')
             + f'<div class="list">{rows}</div>', '',
@@ -340,7 +340,7 @@ def build(d):
         add('<div class="kick">哪些日期可以直接排</div>'
             '<h1>標「推估」的，<br><em>不要照著訂機票</em></h1>'
             '<div class="sub">官方寫明每年同一天的可以直接排。'
-            '主辦單位還沒公布那一年日期的，本站標成推估，依據寫在下面。</div>'
+            '主辦單位還沒公布那一年日期的標成推估，依據寫在下面。</div>'
             f'<div class="list">{rows}</div>'
             '<div class="stat">'
             f'<div><b>{n_fx}</b><span>個每年固定<br>可以直接排</span></div>'
