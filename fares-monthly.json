@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-29 10:21",
+ "generated": "2026-09-29 11:59",
  "origin": "TPE",
  "dests": [
   "TYO",
@@ -7,6 +7,13 @@
   "CTS",
   "FUK",
   "OKA"
+ ],
+ "dest_names": [
+  "東京",
+  "大阪",
+  "札幌",
+  "福岡",
+  "沖繩"
  ],
  "min_n": 8,
  "months": {
@@ -17,26 +24,26 @@
    "enough": false
   },
   "2026-10": {
-   "n": 30,
-   "median": 7982,
+   "n": 31,
+   "median": 7994,
    "low": 5318,
    "enough": true
   },
   "2026-11": {
-   "n": 29,
-   "median": 8882,
+   "n": 27,
+   "median": 9079,
    "low": 4701,
    "enough": true
   },
   "2026-12": {
    "n": 15,
-   "median": 8448,
+   "median": 8441,
    "low": 6006,
    "enough": true
   },
   "2027-01": {
    "n": 17,
-   "median": 11847,
+   "median": 11838,
    "low": 5920,
    "enough": true
   },
@@ -70,12 +77,5 @@
    "low": 7581,
    "enough": false
   }
- },
- "dest_names": [
-  "東京",
-  "大阪",
-  "札幌",
-  "福岡",
-  "沖繩"
- ]
+ }
 }

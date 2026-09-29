@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-29-transfer-osaka-hiroshima",
- "generated": "2026-09-29 18:21",
+ "generated": "2026-09-29 19:59",
  "kind": "transfer",
  "city": "hiroshima",
  "via": "osaka",
@@ -30,7 +30,12 @@
  "rate": 0.2053,
  "rate_at": "Tue, 29 Sep 2026",
  "fare_gate": "Farera",
- "tc_alt": null,
+ "tc_alt": {
+  "price": 14478,
+  "airname": "星宇航空",
+  "dep": "2026-10-02",
+  "total": 18670
+ },
  "route": "新大阪 → 廣島",
  "mode": "山陽新幹線",
  "tm": "約 1.5 小時",
