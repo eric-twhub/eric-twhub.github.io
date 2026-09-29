@@ -1008,7 +1008,8 @@ def topnav(cur=''):
             + link('/japan-jttp/', '🛂 JTTP 快速通關')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制'))
 
-    shop = (link('/japan-coupon/', '🏷️ 購物折扣總覽')
+    shop = (link('/tokyo/street-fashion/', '👕 東京潮牌選物店')
+            + link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
             + link('/apple-japan-price/', '🍎 台日 Apple 價差')
             + link('/iphone-cost/', '📉 iPhone 持有成本')
@@ -4451,6 +4452,8 @@ if os.path.exists('tokyo-picks.json'):
         f'<s>台灣連假出發貴 28%</s></a>'
       + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
         f'<s>吃完還回得去嗎</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/street-fashion/")}"><b>👕 東京潮牌選物店</b>'
+        f'<s>同一種清單，逐家回查過</s></a>'
       + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
         f'<s>省下來的錢拿去吃</s></a></div>'
       + f'<p class="disc">店家資訊查證於 {TP["checked"]}，營業時間與公休會變動，'
@@ -4459,6 +4462,175 @@ if os.path.exists('tokyo-picks.json'):
         '（站上共用的導覽與程式碼含有其他頁面在用的分潤連結，這一頁不會用到。）</p>'
       + foot())
     pages.append(('/tokyo/worth-flying-for/', 0.7))
+
+# ---------- 東京潮牌與選物店：社群清單的回查 ----------
+# 這頁的價值不在「推薦十六家店」，那種清單網路上幾百份，AI 摘要也答得完。
+# 價值在「那份被分享一百多次的清單，有幾家跟實際對不上」：
+# 店名不是那樣叫、樓層沒寫、歸錯區走冤枉路。這是回查才生得出來的東西。
+SH = (json.load(open('tokyo-shops-raw.json', encoding='utf-8'))
+      if os.path.exists('tokyo-shops-raw.json') else None)
+if SH:
+    _sh_all = SH['lists'][0]['items']
+    _sh_fix = [x for x in _sh_all if x.get('state') == 'fix']
+    _sh_ok = [x for x in _sh_all if x.get('state') == 'ok']
+    _sh_no = [x for x in _sh_all if x.get('state') == 'none']
+    _sh_brand = SH['lists'][1]
+
+    def _sh_src(x):
+        return (f'　<a href="{x["src"]}" target="_blank" rel="nofollow noopener">'
+                f'{html.escape(x["src_name"])} →</a>' if x.get('src') else '')
+
+    _sh_fix_rows = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(x["name"])}</b>'
+        + (f'<br><small style="color:var(--acc)">留言歸在'
+           f'{html.escape(x["area"].split("（")[0])}</small>'
+           if x.get('area_moved') else '')
+        + '</td><td class="nm">'
+        + (f'<b>{html.escape(x["address"])}</b>' if x.get('address') else '—')
+        + (f'<br><small style="color:var(--dim)">{html.escape(x["hours"])}</small>'
+           if x.get('hours') else '')
+        + '</td>'
+        f'<td class="nm"><small>{html.escape(x["check_note"])}{_sh_src(x)}</small></td>'
+        '</tr>' for x in _sh_fix)
+
+    _sh_ok_rows = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(x["name"])}</b></td>'
+        f'<td class="nm">' + (html.escape(x["address"]) if x.get('address') else '—')
+        + (f'<br><small style="color:var(--dim)">{html.escape(x["hours"])}</small>'
+           if x.get('hours') else '') + '</td>'
+        f'<td class="nm"><small>{html.escape(x["check_note"])}{_sh_src(x)}</small></td>'
+        '</tr>' for x in _sh_ok)
+
+    _sh_no_rows = ''.join(
+        f'<li><b>{html.escape(x["name"])}</b>　{html.escape(x["check_note"])}</li>'
+        for x in _sh_no)
+
+    _sh_area = {}
+    for x in _sh_all:
+        _sh_area.setdefault(x.get('area_real') or '未分區', []).append(x)
+    _sh_moved = [x for x in _sh_all if x.get('area_moved')]
+    _sh_area_html = ''.join(
+        f'<div class="pp"><b>{html.escape(a)}　{len(v)} 家</b><p>'
+        + '、'.join(
+            html.escape(x['name'].replace(' 澀谷', '').replace(' 中目黑', '')
+                        .replace(' 原宿店', '').replace(' 原宿', ''))
+            + ('（留言歸在' + html.escape(x['area'].split('（')[0]) + '）'
+               if x.get('area_moved') else '')
+            for x in v)
+        + '</p></div>'
+        for a, v in sorted(_sh_area.items(), key=lambda kv: -len(kv[1])))
+
+    _sh_brands = '、'.join(html.escape(b['name']) for b in _sh_brand['items'])
+
+    sh_faq = [
+     ('這頁是推薦清單嗎？',
+      '不是。這是把 Threads 上一份被分享一百多次的東京潮牌清單，逐家回查官方頁面之後的結果。'
+      f'十六家裡有 {len(_sh_fix)} 家的店名、樓層或區域跟留言寫的不一樣，'
+      f'{len(_sh_no)} 家本站查不到官方頁。哪家好逛不是這頁要回答的。'),
+     ('為什麼有幾家寫「查不到」？',
+      '查不到是指本站找不到該分店的官方頁面，不是說那家店不存在。'
+      '本站的作法是查得到官方來源才寫成確定，查不到就寫查不到，不用第三方整理來補。'),
+     ('ballaholic 跟 Kiko Kostadinov 到底在澀谷還是原宿？',
+      '兩家的地址都在神宮前，行政區確實是渋谷区，所以留言寫澀谷不算錯。'
+      '但要走的是原宿或明治神宮前站，不是澀谷站。'
+      '照留言的分區排行程，會在同一天裡多走一趟。'),
+     ('WACKO MARIA 在地圖上找不到？',
+      '因為旗艦店的名字是 PARADISE TOKYO，不叫 WACKO MARIA。'
+      '地址在目黒区東山 2-3-2，靠中目黑。搜店名才找得到。'),
+     ('那份清單有回答美食嗎？',
+      '沒有。原 PO 問了燒肉、拉麵、海鮮，六十九則留言沒有一則回美食，全部在回潮牌。'
+      '本站另外整理過四十六家東京餐廳，每一家都回查過官方營業時間與公休。'),
+     ('十一月之後去買東西，有什麼不一樣？',
+      '免稅的拿法變了。10/31 之前結帳直接扣 10%，當場就是免稅價；'
+      '11/1 起要先付含稅全額，出境經海關確認後才由店家退還，'
+      '而且購買日起九十天內要完成確認。對要掃貨的人，差的是現金流。'),
+    ]
+    sh_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in sh_faq)
+    sh_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in sh_faq]}, ensure_ascii=False)
+
+    sh_title = (f'東京潮牌選物店：社群那份 {len(_sh_all)} 家清單，'
+                f'逐家回查後有 {len(_sh_fix)} 家對不上')
+    sh_desc = ('Threads 上一份被分享一百多次的東京潮牌店清單，本站逐家回查官方頁面。'
+               f'{len(_sh_fix)} 家的店名、樓層或區域跟留言寫的不一樣，'
+               f'{len(_sh_no)} 家查不到官方頁。附實際地址、營業時間與按位置重排的分區。')
+
+    write('tokyo/street-fashion/index.html',
+      head(sh_title, sh_desc, 'tokyo/street-fashion/',
+           '<script type="application/ld+json">' + sh_ld + '</script>')
+      + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('潮牌與選物店', None)]) + topnav()
+      + '<h1>那份東京潮牌清單，逐家查完是這樣</h1>'
+      + '<p class="lede">Threads 上有人問東京男生必逛，最紅的一則回覆列了十六家店、'
+        '被分享一百多次。這頁不重寫那份清單，而是把每一家的官方資料查出來，'
+        '標出哪幾家跟留言寫的對不上。</p>'
+      + '<div class="today">'
+        f'<div class="tday">查證於 {SH["checked"]}　·　來源：'
+        f'<a href="{SH["_來源貼文"]}" target="_blank" rel="nofollow noopener">'
+        f'Threads 討論串</a>（{html.escape(SH["_貼文互動"])}，'
+        f'{SH["_互動擷取時間"]} 擷取）</div>'
+        f'<div class="tans">{len(_sh_all)} 家裡 <b>{len(_sh_fix)} 家</b>'
+        f'的店名、樓層或區域跟留言寫的不一樣</div>'
+        '<div class="tsub">清單型貼文不會寫店名的正式寫法、櫃位在幾樓，'
+        '也不會告訴你那家其實要走另一個車站。照著抄會找錯地方。</div>'
+        f'<div class="tbuf"><b>最容易踩的一個</b>：WACKO MARIA 的旗艦店叫 '
+        'PARADISE TOKYO，地圖上搜品牌名找不到。</div></div>'
+      + f'<h2>要修正的 {len(_sh_fix)} 家</h2>'
+      + '<p class="lede">店都還在，但照留言寫的去找會出問題。</p>'
+      + '<div class="tw"><table><tr><th>店</th><th>實際地址</th>'
+        '<th>差在哪</th></tr>' + _sh_fix_rows + '</table></div>'
+      + f'<h2>對得上的 {len(_sh_ok)} 家</h2>'
+      + '<div class="tw"><table><tr><th>店</th><th>地址</th><th>補充</th></tr>'
+      + _sh_ok_rows + '</table></div>'
+      + f'<h2>本站查不到官方頁的 {len(_sh_no)} 家</h2>'
+      + '<p class="lede">查不到是指找不到該分店的官方頁面，不是說那家店不存在。'
+        '查得到官方來源才寫成確定，其餘不用第三方整理來補。</p>'
+      + f'<ul class="lede">{_sh_no_rows}</ul>'
+      + '<h2>按實際位置重排</h2>'
+      + f'<p class="lede">{html.escape(SH["_重新分區"])}</p>'
+      + f'<div class="cmp">{_sh_area_html}</div>'
+      + (f'<p class="disc">移動的是 '
+         + '、'.join(html.escape(x['name']) for x in _sh_moved)
+         + '。行政區是渋谷区沒錯，但要走的是原宿或明治神宮前站。</p>'
+         if _sh_moved else '')
+      + '<h2>那串沒有人回答的：美食</h2>'
+      + '<p class="lede">原 PO 問了燒肉、拉麵、海鮮，'
+        '六十九則留言沒有一則回美食，全部在回潮牌。'
+        '本站另外整理過四十六家東京餐廳，每一家都回查過官方營業時間與公休，'
+        '其中一家在留言寫完之後已經歇業。</p>'
+      + f'<div class="cities"><a class="ct" href="{U("/tokyo/worth-flying-for/")}">'
+        f'<b>🍜 東京美食清單</b><s>46 家，逐家查過營業時間與公休</s></a></div>'
+      + '<h2>什麼時候去，比逛哪幾家更影響花費</h2>'
+      + '<p class="lede">日本的免稅在 2026/11/1 改制。10/31 之前結帳直接扣 10%，'
+        '當場就是免稅價；11/1 起要先付含稅全額，出境經海關確認後才由店家退還，'
+        '購買日起九十天內要完成確認。要掃貨的話，差的是現金流。</p>'
+      + f'<div class="cities"><a class="ct" href="{U("/japan-tax-free-2026/")}">'
+        f'<b>🧾 11/1 免稅新制</b><s>先墊多少、怎麼退、九十天的期限</s></a>'
+        f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 購物折扣券</b>'
+        f'<s>14 家店，有標能不能疊加免稅</s></a></div>'
+      + '<h2>這份清單裡的品牌</h2>'
+      + '<p class="lede">同一串另一則回覆列了八個日本服飾品牌：'
+        f'{_sh_brands}。那是品牌不是分店，沒有地址就沒有東西可以回查，'
+        '本站這一輪不列入上面的統計。</p>'
+      + '<h2>常見問題</h2>' + sh_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/threads-japan/")}"><b>🔥 Threads 日本熱搜</b>'
+        f'<s>其他查過的社群說法</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b>'
+        f'<s>今天查到的價格</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/budget-hotel/")}"><b>🛏️ 東京便宜旅館</b>'
+        f'<s>共用衛浴的私人房</s></a>'
+      + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 台日 Apple 價差</b>'
+        f'<s>3C 在日本買划不划算</s></a></div>'
+      + f'<p class="disc">店家資料查證於 {SH["checked"]}，'
+        '引自各品牌或百貨的官方頁面，逐項標在表上。'
+        '店家會搬遷、改時間或結束營業，出發前請以官方公告為準。'
+        '本站與文中店家沒有合作關係，也不收錄留言區的商家自薦。</p>'
+      + foot())
+    pages.append(('/tokyo/street-fashion/', 0.7))
+    print(f'   東京潮牌選物店：{len(_sh_all)} 家（修正 {len(_sh_fix)}、'
+          f'相符 {len(_sh_ok)}、查不到 {len(_sh_no)}）')
 
 # ---------- 六本木 ROKUSAN ANGEL（63 ANGEL） ----------
 # 台灣人去得多，但中文整理多半只抄方案名稱與價格。
