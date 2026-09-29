@@ -4522,6 +4522,39 @@ if SH:
 
     _sh_brands = '、'.join(html.escape(b['name']) for b in _sh_brand['items'])
 
+    # 分享圖卡。張數與標題由 make_shops_cards.py 隨資料產生。
+    _shi = 'tokyo/street-fashion/cards/index.json'
+    _shk = [c for c in (json.load(open(_shi, encoding='utf-8'))
+                        if os.path.exists(_shi) else [])
+            if os.path.exists('tokyo/street-fashion/cards/' + c['file'])]
+    _sh_cards = ''
+    if _shk:
+        _sh_cards = (
+          '<h2>整理成圖片</h2>'
+          f'<p class="lede">同一份資料做成 {len(_shk)} 張圖，存下來或轉發都可以，'
+          '不用註明出處。點圖看原尺寸。</p>'
+          '<style>'
+          '.sfk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+          '.sfk a{display:block;border:1px solid var(--line);border-radius:10px;'
+          'overflow:hidden;background:var(--card);text-decoration:none}'
+          '.sfk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+          'object-fit:cover;object-position:top}'
+          '.sfk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+          '.sfk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+          'text-decoration:none;line-height:1.5}'
+          '@media(max-width:720px){.sfk{grid-template-columns:repeat(2,1fr)}}'
+          '</style><div class="sfk">'
+          + ''.join(
+              f'<a href="{U("/tokyo/street-fashion/cards/" + c["file"])}" target="_blank">'
+              f'<img src="{U("/tokyo/street-fashion/cards/" + c["file"])}" '
+              f'alt="東京潮牌選物店圖卡第 {i} 張：{html.escape(c["title"])}" '
+              f'width="1080" height="1350" loading="lazy">'
+              f'<b>{html.escape(c["title"])}</b>'
+              f'<s>{html.escape(c["sub"])}</s></a>' for i, c in enumerate(_shk, 1))
+          + '</div>'
+          + f'<p class="disc">圖上的地址與營業時間跟這一頁的表格一樣，'
+            f'查證於 {SH["checked"]}。</p>')
+
     sh_faq = [
      ('這頁是推薦清單嗎？',
       '不是。這是把 Threads 上一份被分享一百多次的東京潮牌清單，逐家回查官方頁面之後的結果。'
@@ -4587,6 +4620,7 @@ if SH:
       + '<p class="lede">查不到是指找不到該分店的官方頁面，不是說那家店不存在。'
         '查得到官方來源才寫成確定，其餘不用第三方整理來補。</p>'
       + f'<ul class="lede">{_sh_no_rows}</ul>'
+      + _sh_cards
       + '<h2>按實際位置重排</h2>'
       + f'<p class="lede">{html.escape(SH["_重新分區"])}</p>'
       + f'<div class="cmp">{_sh_area_html}</div>'
@@ -7319,7 +7353,9 @@ def _card_stamp_warn():
             ('make_twholiday_cards', 'taiwan-holiday-2027/cards-data.json',
              'taiwan-holiday-2027/cards', '2027 請假攻略'),
             ('make_budgethotel_cards', 'budget-hotels.json',
-             'tokyo/budget-hotel/cards', '東京便宜旅館')):
+             'tokyo/budget-hotel/cards', '東京便宜旅館'),
+            ('make_shops_cards', 'tokyo-shops-raw.json',
+             'tokyo/street-fashion/cards', '東京潮牌選物店')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
