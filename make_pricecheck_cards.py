@@ -8,26 +8,45 @@ import cardkit as K
 
 E, page, foot = K.E, K.page, K.foot
 OUT = 'hotel-price-check/cards'
-N = 7
 
 
 def build(d):
     fn = f'同日同房型的對照實測，查證於 {d["checked"]}'
     dev, plat, ch, ck = d['device'], d['platforms'], d['channels'], d['checklist']
     sm = d['sample']
-    out = []
+    pend = []
+    _g = [(1 - r['mobile_fc'] / r['desktop_fc']) * 100
+          for r in dev['rows'] if r.get('genius')]
+    avg = sum(_g) / len(_g)
 
     cover = ('<div class="kick">訂房比價</div>'
-             '<h1>換個裝置，<br><em>價格就不一樣</em></h1>'
-             f'<div class="sub">{E(dev["finding"])}</div>'
+             '<h1>Booking 換個裝置，<br><em>價格就不一樣</em></h1>'
+             '<div class="sub">同一間飯店、同一組日期、同一個沒登入的瀏覽器，'
+             f'只是把視窗縮成手機尺寸，價格就少 {avg:.2f}%。'
+             '但不是每一間都這樣，怎麼判斷看下一張。</div>'
              '<div class="stat">'
              f'<div><b>{len(plat["rows"])}</b><span>個通路<br>同日同房型</span></div>'
              f'<div><b>{len(dev["rows"])}</b><span>組裝置<br>對照實測</span></div>'
              f'<div><b>{sm["nights"]}</b><span>晚<br>{E(str(sm["city"]))}</span></div>'
              f'<div><b>{len(ck)}</b><span>個檢查點<br>訂之前跑一次</span></div></div>'
-             f'<div class="note">{E(sm["note"])}</div>'
-             + foot(1, N, fn))
-    out.append(('pc-01.png', page(cover, 'cover')))
+             f'<div class="note">{E(sm["note"])}</div>')
+    pend.append((cover, 'cover'))
+
+    # 整組圖卡的判斷規則都建立在那個標籤上，讀者不一定知道那是什麼，
+    # 而圖卡會被單獨轉發，不能指望他看過頁面。
+    g = d.get('genius')
+    if g:
+        pend.append((
+            '<div class="kick">先說那個標籤是什麼</div>'
+            '<h1>Genius 是 Booking 的<br><em>常客計畫</em></h1>'
+            f'<div class="sub">{E(g["what"])}</div>'
+            '<div class="list">'
+            f'<div class="blk"><b><i>·</i>標籤長什麼樣</b><s>{E(g["where"])}</s></div>'
+            f'<div class="blk"><b><i>·</i>要登入才看得到嗎</b>'
+            f'<s>{E(g["nologin"])}</s></div>'
+            f'<div class="blk"><b><i>·</i>官方頁面寫的</b>'
+            f'<s>{E(g["quote"])}　（{E(g["src_name"])}）</s></div>'
+            '</div>', ''))
 
     # 裝置價差：Booking 同房型的桌機 vs 手機
     rows = ('<div class="hd"><div class="nm">旅館</div>'
@@ -59,8 +78,8 @@ def build(d):
              '<div class="legend">優先列不可退款方案的每晚房價，'
              '沒有的改列免費取消方案（列上有標）。'
              '同一間房兩種方案不一定有同樣的差，所以兩邊都要量。</div>'
-             f'<div class="list">{rows}</div>' + foot(2, N, fn))
-    out.append(('pc-02.png', page(inner)))
+             f'<div class="list">{rows}</div>')
+    pend.append((inner, ''))
 
     # 哪些通路有裝置價差
     ST = {'有差': ('ok', '有差'), '無差': ('z', '沒有差'), '未測得': ('z', '未測得')}
@@ -75,8 +94,8 @@ def build(d):
              f'<div class="sub">{E(plat["_說明"])}</div>'
              '<div class="legend">「未測得」是這個瀏覽器抓不到價格，'
              '不是代表沒有價差。要自己開 App 再比一次。</div>'
-             f'<div class="list">{rows}</div>' + foot(3, N, fn))
-    out.append(('pc-03.png', page(inner)))
+             f'<div class="list">{rows}</div>')
+    pend.append((inner, ''))
 
     # 同一間房在各通路的總價
     rows = ('<div class="hd"><div class="nm">通路與退改</div>'
@@ -92,8 +111,8 @@ def build(d):
              f'<div class="sub">{E(str(ch["hotel"]))}。'
              '房價看起來便宜的，加完服務費與稅不一定還便宜。</div>'
              f'<div class="legend">{E(str(ch.get("official_rule") or ""))}</div>'
-             f'<div class="list">{rows}</div>' + foot(4, N, fn))
-    out.append(('pc-04.png', page(inner)))
+             f'<div class="list">{rows}</div>')
+    pend.append((inner, ''))
 
     rf = d['referral']
     inner = ('<div class="kick">為什麼本站不直接說哪家最便宜</div>'
@@ -105,8 +124,8 @@ def build(d):
              + (f'<div class="blk"><b><i>·</i>隱藏成本</b>'
                 f'<s>{E(str(rf["hidden_costs"]))}</s></div>'
                 if rf.get('hidden_costs') else '')
-             + '</div>' + foot(5, N, fn))
-    out.append(('pc-05.png', page(inner)))
+             + '</div>')
+    pend.append((inner, ''))
 
     # checklist 每條都是 {q, a}，說明都不短，拆成兩張
     for j, part in enumerate((ck[:4], ck[4:]), 0):
@@ -116,9 +135,12 @@ def build(d):
             for i, c in enumerate(part, 1 + j * 4))
         inner = ('<div class="kick">訂之前跑一次</div>'
                  f'<h1>{len(ck)} 個<em>檢查點 {"①" if j == 0 else "②"}</em></h1>'
-                 + f'<div class="list">{rows}</div>' + foot(6 + j, N, fn))
-        out.append((f'pc-0{6 + j}.png', page(inner)))
-    return out
+                 + f'<div class="list">{rows}</div>')
+        pend.append((inner, ''))
+
+    n = len(pend)
+    return [(f'pc-{i:02d}.png', page(inner + foot(i, n, fn), cls))
+            for i, (inner, cls) in enumerate(pend, 1)]
 
 
 # 指紋要讓 gen.py import 得到才有用。原本寫成 K.run() 裡的 lambda，
@@ -126,7 +148,8 @@ def build(d):
 def payload(d):
     """圖卡真正用到的欄位。改了這些才需要重跑，其他欄位變動不算。"""
     return [d['platforms']['rows'], d['device']['rows'],
-            d['channels']['rows'], d['checklist'], d['checked']]
+            d['channels']['rows'], d['checklist'], d['checked'],
+            d.get('genius')]
 
 
 def fingerprint(d):

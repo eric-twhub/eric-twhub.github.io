@@ -10024,6 +10024,7 @@ PC = (json.load(open('price-check.json', encoding='utf-8'))
       if os.path.exists('price-check.json') else None)
 if PC:
     _pc_s = PC['sample']; _pc_d = PC['device']; _pc_r = PC['referral']
+    _pc_g = PC.get('genius')
     _PSM = '<br><small style="color:var(--dim)">'
 
     def _pc_pct(a, b):
@@ -10081,6 +10082,13 @@ if PC:
                       f'<div>{html.escape(c["a"])}</div></details>' for c in PC['checklist'])
 
     _pc_faq = [
+     ('Genius 是什麼？要付費嗎？',
+      ('不用付費。Genius 是 Booking.com 自己的常客計畫：註冊免費帳號就是 1 級，'
+       '住宿享 10% 折扣；兩年內訂滿 5 筆升 2 級，折扣 10–15%；滿 15 筆升 3 級，'
+       '折扣 10–20%。折扣不含稅費與其他費用。有參加的房源會在價格旁邊掛一個標籤，'
+       '寫著「已計入 10% 的 Genius 折扣」之類的字樣，不用登入也看得到。'
+       '本頁的判斷規則就是看這個標籤在不在。')
+      if PC.get('genius') else '見本頁說明。'),
      ('訂房用手機真的比較便宜嗎？',
       f'在 Booking.com 上，有 Genius 折扣標籤的房源會。本站在 {PC["checked"]} 用同一個未登入的'
       f'瀏覽器、同一分鐘、只改變視窗尺寸，量測 {_pc_n} 間東京飯店：'
@@ -10121,17 +10129,20 @@ if PC:
 
     # 分享圖卡。由 make_*_cards.py 產生，骨架見 cardkit.py。
     _PCC_CARD = [
-     ('01', '換個裝置價格就不一樣', '實測結果'),
-     ('02', '手機版便宜 9.09%', 'Booking 同房對照'),
-     ('03', '四個通路測下來', '不是每家都這樣'),
-     ('04', '比結帳頁的總價', '六個通路'),
-     ('05', '比價這件事有利益衝突', '本站的處理'),
-     ('06', '訂之前的檢查點 ①', '七條'),
-     ('07', '訂之前的檢查點 ②', '續前'),
+     ('01', 'Booking 換個裝置價格就不一樣', '實測結果'),
+     ('02', 'Genius 是 Booking 的常客計畫', '整頁的判斷規則靠這個標籤'),
+     ('03', '手機版便宜 9.09%', 'Booking 同房對照'),
+     ('04', '四個通路測下來', '不是每家都這樣'),
+     ('05', '比結帳頁的總價', '六個通路'),
+     ('06', '比價這件事有利益衝突', '本站的處理'),
+     ('07', '訂之前的檢查點 ①', '七條'),
+     ('08', '訂之前的檢查點 ②', '續前'),
     ]
+    _PCC_CARD = [c for c in _PCC_CARD
+                 if os.path.exists(f'hotel-price-check/cards/pc-{c[0]}.png')]
     _pcg_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成 7 張圖，存下來或轉發都可以，'
+      f'<p class="lede">同一份資料做成 {len(_PCC_CARD)} 張圖，存下來或轉發都可以，'
       '不用註明出處。點圖看原尺寸。</p>'
       '<style>'
       '.pcg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -10156,24 +10167,34 @@ if PC:
       + '<p class="disc">圖上的數字都是從這一頁同一份資料產生的，沒有另外手打。</p>')
 
     write('hotel-price-check/index.html',
-      head(f'訂房比價｜同一間房，手機版比桌機版便宜 {_pc_avg:.1f}%',
+      head(f'Booking 訂房比價｜同一間房，手機版比桌機版便宜 {_pc_avg:.1f}%',
            f'同一間飯店、同一組日期、同一個瀏覽器，只改變視窗尺寸，Booking 的價格就少 '
            f'{_pc_avg:.2f}%。{_pc_n} 間東京飯店實測，附判斷規則、六個訂房通路的價差對照，'
            f'以及返利網要多少回饋才划得來的計算公式。',
            'hotel-price-check/',
            '<script type="application/ld+json">' + _pc_ld + '</script>')
       + crumbs([('首頁', '/'), ('訂房比價', None)]) + topnav()
-      + '<h1>同一間房，手機版比桌機版便宜 9%</h1>'
-      + f'<p class="lede">同一間飯店、同一組日期、同一個沒登入的瀏覽器，'
-        f'只是把視窗縮成手機尺寸，價格就少 {_pc_avg:.2f}%。'
+      + f'<h1>Booking 同一間房，手機版比桌機版便宜 {_pc_avg:.0f}%</h1>'
+      + f'<p class="lede">在 <b>Booking.com</b> 上，同一間飯店、同一組日期、'
+        f'同一個沒登入的瀏覽器，只是把視窗縮成手機尺寸，價格就少 {_pc_avg:.2f}%。'
         f'{_pc_n} 間實測，手機版剛好是桌機版除以 1.1。'
-        f'但這個價差是逐一房價方案出現的，<b>而且會消失</b>，所以每次都要兩邊都量。</p>'
+        f'但這個價差是逐一房價方案出現的，<b>而且會消失</b>，所以每次都要兩邊都量。'
+        f'其他訂房平台的結果不一樣，'
+        f'往下有 {len(PC["platforms"]["rows"])} 個平台的對照。</p>'
       + f'<div class="today"><div class="tday">查證於 {PC["checked"]}'
         f'　·　樣本 {html.escape(_pc_s["dates"])}，{_pc_s["nights"]} 晚單人</div>'
-        f'<div class="tans">有 Genius 標籤的房源，手機版便宜 {_pc_avg:.2f}%；'
-        f'沒有標籤的兩邊同價</div>'
+        f'<div class="tans">Booking 上掛著折扣標籤的房源，'
+        f'手機版便宜 {_pc_avg:.2f}%；沒有標籤的兩邊同價</div>'
         f'<div class="tsub">{html.escape(_pc_s["note"])}。'
         f'本頁的價格是量測當下的快照，用途是呈現差異而非報價。</div></div>'
+      + (('<h2>先說那個標籤是什麼</h2>'
+          f'<p class="lede">{html.escape(_pc_g["what"])}</p>'
+          f'<p class="lede">{html.escape(_pc_g["where"])}'
+          f'<b>{html.escape(_pc_g["nologin"])}</b></p>'
+          f'<blockquote class="q">{html.escape(_pc_g["quote"])}'
+          f'<cite><a href="{_pc_g["src"]}" target="_blank" rel="nofollow noopener">'
+          f'{html.escape(_pc_g["src_name"])}</a></cite></blockquote>')
+         if _pc_g else '')
       + f'<h2>{_pc_n} 間實測</h2>'
       + '<div class="tw"><table><thead><tr><th>飯店</th><th>Genius 標籤</th>'
         '<th>不可退款</th><th>可免費取消</th><th>差</th></tr></thead><tbody>'
