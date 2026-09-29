@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-29-taichung-okinawa",
- "generated": "2026-09-29 20:07",
+ "generated": "2026-09-29 21:06",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -24,9 +24,9 @@
   "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=IT17929986001793007600000090RMQOKA17933079001793309700000090OKARMQ_c22163bf4cbfb1d0fe5e0768c79d253f_19795&search_date=24092026&expected_price_uuid=01a0d547-f08f-8030-2559-86483b569e8c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=7411&marker=775639"
  },
  "reasons": [
-  "10 月出發的票，每天最便宜的平均要 NT$10,511（28 天有紀錄），這張低 29%"
+  "10 月出發的票，每天最便宜的平均要 NT$10,508（28 天有紀錄），這張低 29%"
  ],
- "med": 11121,
+ "med": 11116,
  "n_rt": 82,
  "others": [
   {
@@ -35,7 +35,7 @@
    "air": "LJ",
    "airname": "真航空",
    "cls": "lcc",
-   "price": 7561,
+   "price": 7549,
    "dep": "2026-10-06",
    "ret": "2026-10-13",
    "dept": "17:30",
@@ -45,7 +45,7 @@
    "dur": 1145,
    "dur_to": 305,
    "gate": "City.Travel",
-   "url": "https://www.aviasales.com/search/RMQ0610OKA13101?t=LJ17913078001791374700001055RMQICNOKA17919180001791919800000090OKARMQ_13d964d8b2ff5eb213b54f1cd75d2bba_20055&search_date=29092026&expected_price_uuid=01a0ebc7-5da9-8030-a828-c083d2d000c6&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=dnN4-VdEaButjZYH1JsdBQ&expected_price_source=share&expected_price_currency=twd&expected_price=7561&marker=775639"
+   "url": "https://www.aviasales.com/search/RMQ0610OKA13101?t=LJ17913078001791374700001055RMQICNOKA17919180001791919800000090OKARMQ_13d964d8b2ff5eb213b54f1cd75d2bba_20055&search_date=29092026&expected_price_uuid=01a0ebc7-5da9-8030-a828-c083d2d000c6&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=dnN4-VdEaButjZYH1JsdBQ&expected_price_source=share&expected_price_currency=twd&expected_price=7549&marker=775639"
   },
   {
    "o": "RMQ",
@@ -71,7 +71,7 @@
    "air": "JX",
    "airname": "星宇航空",
    "cls": "fsc",
-   "price": 8933,
+   "price": 8919,
    "dep": "2026-09-30",
    "ret": "2026-10-07",
    "dept": "16:40",
@@ -81,7 +81,7 @@
    "dur": 190,
    "dur_to": 90,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/RMQ3009OKA07101?t=JX17907864001790795400000090RMQOKA17913915001791393900000100OKARMQ_709b4cf912b13e11960db5ed75782ef5_23695&search_date=29092026&expected_price_uuid=01a0ebc7-b204-8030-a7da-8580337b8dcb&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=a2vRJElkjdwnMTSclvtyXQ&expected_price_source=share&expected_price_currency=twd&expected_price=8933&marker=775639"
+   "url": "https://www.aviasales.com/search/RMQ3009OKA07101?t=JX17907864001790795400000090RMQOKA17913915001791393900000100OKARMQ_709b4cf912b13e11960db5ed75782ef5_23695&search_date=29092026&expected_price_uuid=01a0ebc7-b204-8030-a7da-8580337b8dcb&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=a2vRJElkjdwnMTSclvtyXQ&expected_price_source=share&expected_price_currency=twd&expected_price=8919&marker=775639"
   }
  ]
 }
