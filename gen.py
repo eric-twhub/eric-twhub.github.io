@@ -803,6 +803,34 @@ blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem
 /* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
 .tw td.nm{white-space:normal;line-height:1.55;min-width:150px;max-width:290px}
 .tw td.dimcell{color:var(--dim);opacity:.55}
+/* 月曆：標出放假、建議請假，三國的假日名稱直接寫在格子裡 */
+.cal{margin:14px 0}
+.calm{margin:0 0 20px}
+.calm>b{display:block;font-size:1rem;margin:0 0 6px}
+.calg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.calg>.wd{font-size:.72rem;color:var(--dim);text-align:center;padding:1px 0 3px}
+.cd{min-height:64px;border:1px solid var(--line);border-radius:6px;padding:3px 4px;
+background:var(--card);font-size:.62rem;line-height:1.4;overflow:hidden}
+.cd.pad{border:0;background:none;min-height:0}
+.cd>i{display:block;font-style:normal;font-weight:700;font-size:.78rem;color:var(--dim)}
+.cd s{display:block;text-decoration:none;white-space:normal;word-break:break-all}
+.cd.we{background:#efeeea}
+.cd.hol{background:#fdecea;border-color:#f3c2b8}
+.cd.hol>i{color:var(--hot)}
+.cd.lv{background:#fff4e6;border-color:var(--acc);border-width:2px;padding:2px 3px}
+.cd.lv>i{color:var(--acc)}
+.cd.mk{background:#eef6fb;border-color:#b9d8ea}
+.cd.gone{opacity:.42}
+.cd .tag{display:inline-block;font-size:.58rem;font-weight:700;color:#fff;
+background:var(--acc);border-radius:3px;padding:0 3px;margin-top:1px}
+.callg{display:flex;flex-wrap:wrap;gap:8px 14px;margin:8px 0 14px;font-size:.78rem;
+color:var(--dim)}
+.callg span{display:flex;align-items:center;gap:5px}
+.callg u{display:inline-block;width:14px;height:14px;border-radius:4px;
+border:1px solid var(--line)}
+@media(max-width:560px){.cd{min-height:56px;font-size:.55rem;padding:2px 2px}
+.cd>i{font-size:.7rem}}
+
 /* 欄位少的表格不要被 min-width 逼出橫向捲動 */
 .tw.narrow table{min-width:0}
 /* 回饋計算機的並排比較表 */
@@ -5503,6 +5531,122 @@ if HOL:
              'announced': ('官方已公布', 'win'),
              'est': ('推估', 'warn')}
 
+
+    # 格子裡放不下全名，只有這兩個要縮。縮寫只用在月曆上，表格仍用全名。
+    _CAL_SHORT = {'臺灣光復暨金門古寧頭大捷紀念日': '光復節',
+                  '孔子誕辰紀念日/教師節': '教師節'}
+
+    def _calendar(ys, lp):
+        """一年的月曆。標出台灣放假、建議請假、補班，
+        三國的假日名稱用文字寫在格子裡。
+
+        建議請假取每個假期最划算的那一種排法，跟圖卡同一套規則，
+        否則同一頁會出現兩組不一樣的建議。
+        """
+        allday = {x['d']: x for x in HOL['days']}
+        # 連假中間的週六日也要跟著上色，不然 10/9 粉、10/10 粉、10/11 灰，
+        # 一段連假會被切成兩塊，看不出那是連著的。
+        runset = set()
+        for r in HOL['runs']['tw']:
+            a = datetime.date.fromisoformat(r['start'])
+            for k in range(r['days']):
+                runset.add((a + datetime.timedelta(days=k)).isoformat())
+        days = {d: x for d, x in allday.items() if d[:4] == ys}
+        if not days:
+            return ''
+        leave, edge = {}, set()
+        for p in lp:
+            best, cand = None, []
+            for L in (1, 2, 3, 4):
+                o = p['opts'].get(L)
+                if o and o['tot'] > p['base']:
+                    cand.append(((o['tot'] - p['base']) / L, -L, o))
+            span = []
+            if cand:
+                best = max(cand)[2]
+                for dd in best['lv']:
+                    leave[dd] = (p['name'], best['tot'])
+                span = [best['from'], best['to']]
+            # 跨年的假期兩頭都要畫得到：元旦要請的是前一年十二月底那幾天，
+            # 行憲紀念日那段連休則是一路休到隔年一月初。
+            # 只畫本年度會變成「標了請假卻看不到換到什麼」。
+            edge.update(d[:7] for d in (list(leave) + span) if d and d[:4] != ys)
+        for ym in edge:
+            for d, x in allday.items():
+                if d[:7] == ym:
+                    days.setdefault(d, x)
+        cn_open = any(x.get('cn_off') is not None
+                      for d, x in days.items() if d[:4] == ys)
+        last = max(d for d in days if d[:4] == ys)
+        out = ''
+        extra = sorted({d[:7] for d in days if d[:4] != ys})
+        for ym in sorted({d[:7] for d in days}):
+            md = [d for d in sorted(days) if d[:7] == ym]
+            if md[-1] < TODAY:
+                continue
+            cells = ''
+            lead = datetime.date.fromisoformat(md[0]).weekday()
+            cells += '<div class="cd pad"></div>' * lead
+            for d in md:
+                x = days[d]
+                dn = int(d[8:10])
+                cls = []
+                tw = x.get('tw')
+                if d in leave:
+                    cls.append('lv')
+                elif d in runset or (x.get('tw_off') and tw and tw != '週末'):
+                    cls.append('hol')
+                elif x.get('tw_off'):
+                    cls.append('we')
+                elif x['w'] >= 5:
+                    cls.append('mk')          # 週末卻要上班：補班日
+                if d < TODAY:
+                    cls.append('gone')
+                txt = ''
+                if tw and tw != '週末':
+                    txt += f'<s>🇹🇼 {html.escape(_CAL_SHORT.get(tw, tw))}</s>'
+                elif not x.get('tw_off') and x['w'] >= 5:
+                    txt += '<s>🇹🇼 補班</s>'
+                if x.get('jp'):
+                    txt += f'<s>🇯🇵 {html.escape(x["jp"])}</s>'
+                if x.get('cn'):
+                    txt += f'<s>🇨🇳 {html.escape(x["cn"])}</s>'
+                if d in leave:
+                    txt += (f'<span class="tag">請假</span>')
+                cells += (f'<div class="cd {" ".join(cls)}">'
+                          f'<i>{dn}</i>{txt}</div>')
+            tail = (7 - (lead + len(md)) % 7) % 7
+            cells += '<div class="cd pad"></div>' * tail
+            out += (f'<div class="calm"><b>{int(ym[:4])} 年 {int(ym[5:7])} 月</b>'
+                    '<div class="calg">'
+                    + ''.join(f'<div class="wd">{w}</div>' for w in '一二三四五六日')
+                    + cells + '</div></div>')
+        if not out:
+            return ''
+        lg = ('<div class="callg">'
+              '<span><u style="background:#fdecea;border-color:#f3c2b8"></u>'
+              '台灣連假（含中間的週末）</span>'
+              '<span><u style="background:#fff4e6;border-color:var(--acc);'
+              'border-width:2px"></u>建議請假</span>'
+              '<span><u style="background:#efeeea"></u>週末</span>'
+              '<span><u style="background:#eef6fb;border-color:#b9d8ea"></u>補班日</span>'
+              '<span>🇹🇼 台灣　🇯🇵 日本　🇨🇳 中國</span></div>')
+        note = ('<p class="disc">'
+                + (f'另外畫了 {"、".join(f"{int(e[:4])} 年 {int(e[5:7])} 月" for e in extra)}，'
+                   '因為跨年的那段假期，要請的日子與換到的連休不在同一年，'
+                   '只畫本年度會看不到全貌。' if extra else '')
+                + '「建議請假」是每個假期最划算的那一種排法，'
+                '跟上面那張表的綠色格子是同一套算法。'
+                '格子裡的名稱是各國官方行事曆上的假日名，'
+                '台灣有兩個名字太長，月曆上縮寫成光復節與教師節。'
+                + ('' if cn_open else
+                   f'中國的 {ys} 年節假日國務院還沒公布，所以月曆上沒有中國的標記。')
+                + f'資料只到 {last}，之後的不列。</p>')
+        return (f'<h2>{ys} 年月曆</h2>'
+                '<p class="lede">哪幾天放假、哪幾天請了最划算，直接標在日期上。'
+                '三國的假日名稱都寫在格子裡，出發前掃一眼就知道那幾天日本或中國'
+                '是不是也在放假。</p>' + lg + '<div class="cal">' + out + '</div>' + note)
+
     def _tw_year_page(Y):
         ys = str(Y)
         twr = [r for r in HOL['runs']['tw']
@@ -5832,6 +5976,7 @@ if HOL:
                 '官方行事曆只到 2027-12-31，跨年被截斷的那幾段不列，'
                 '因為算出來的連休會是假的。</p>')
              if lp else '')
+          + _calendar(ys, lp)
           + '<h2>日本重要祭典與花火</h2>'
           + '<p class="lede">這些日子當地的住宿與交通會一起被吃掉，'
             '而且很多是台灣人排假時不會想到的。'
