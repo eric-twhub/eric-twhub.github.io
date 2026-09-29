@@ -1,0 +1,232 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="google-site-verification" content="lL18Diq98hRIL65-BKEiZ-mhQ2DNyf0WYwRpRBiT-Rk">
+<title>2026 年台灣連假請假攻略：請 1 天休幾天，順便看日本中國同期放不放假</title>
+<meta name="description" content="2026 年台灣的國定假日與連假，逐段算出請 1 到 4 天的最佳排法。同一張表上標出日本與中國那幾天有沒有連假，以及日本當地的大型祭典，因為那會同時吃掉住宿與交通。">
+<link rel="canonical" href="https://eric-twhub.github.io/taiwan-holiday-2026/">
+<meta property="og:title" content="2026 年台灣連假請假攻略：請 1 天休幾天，順便看日本中國同期放不放假">
+<meta property="og:description" content="2026 年台灣的國定假日與連假，逐段算出請 1 到 4 天的最佳排法。同一張表上標出日本與中國那幾天有沒有連假，以及日本當地的大型祭典，因為那會同時吃掉住宿與交通。">
+<meta property="og:type" content="website"><meta property="og:url" content="https://eric-twhub.github.io/taiwan-holiday-2026/">
+<meta property="og:image" content="https://eric-twhub.github.io/og/taiwan-holiday-2026.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>*{box-sizing:border-box}
+/* 固定淺色主題：color-scheme 讓下拉選單與日期選擇器等原生元件也維持淺色，
+   否則使用者系統為深色模式時表單控制項會變黑，與頁面不一致 */
+:root{color-scheme:light;
+--bg:#f7f7f5;--card:#fff;--fg:#1a1a1a;--dim:#63605c;--line:#e5e3de;--acc:#c2410c;
+--hot:#dc2626;--lcc:#0f766e;--fsc:#4f46e5;--soft:#faf9f7}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 72px}
+a{color:var(--acc)}
+.crumb{font-size:.8rem;color:var(--dim);padding:16px 0 0}
+.crumb a{color:var(--dim);text-decoration:none}.crumb a:hover{color:var(--acc)}
+h1{font-size:1.95rem;margin:14px 0 8px;letter-spacing:-.025em;line-height:1.3}
+.lede{color:var(--dim);font-size:.95rem;margin:0 0 4px}
+.upd{color:var(--dim);font-size:.78rem;margin:6px 0 0}
+nav.top{position:sticky;top:0;z-index:30;background:var(--bg);padding:9px 0;margin-top:14px;
+border-bottom:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+nav.top>a{color:var(--dim);text-decoration:none;font-size:.86rem;white-space:nowrap;
+font-weight:500;padding:6px 10px;border-radius:7px}
+nav.top>a:hover,nav.top>a.cur{color:var(--acc);background:var(--soft)}
+/* 用 details 做下拉：不需 JS，鍵盤可操作，手機上也不會因 hover 失效 */
+/* 寬螢幕：面板錨在自己的項目下方，點哪個就在哪個下面展開 */
+nav.top details{position:relative}
+nav.top summary{list-style:none;cursor:pointer;font-size:.86rem;font-weight:500;color:var(--dim);
+padding:6px 10px;border-radius:7px;white-space:nowrap;user-select:none}
+nav.top summary::-webkit-details-marker{display:none}
+nav.top summary::after{content:"▾";margin-left:5px;font-size:.7rem;opacity:.6}
+nav.top summary:hover,nav.top details[open]>summary{color:var(--acc);background:var(--soft)}
+nav.top details[open]>summary::after{content:"▴"}
+/* 一律絕對定位：若改 static，展開時會把同列其他項目擠開、版面錯位 */
+/* 最右邊的分類往左展開，否則視窗接近斷點時面板會凸出畫面右緣 */
+nav.top>details.end>.dd{left:auto;right:0}
+.dd{position:absolute;top:calc(100% + 6px);left:0;min-width:220px;
+max-width:min(340px,calc(100vw - 32px));max-height:70vh;overflow-y:auto;
+background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px;
+box-shadow:0 10px 28px rgba(0,0,0,.14);display:flex;flex-direction:column;gap:1px;z-index:40}
+.dd a{display:block;padding:8px 11px;border-radius:7px;color:var(--fg);text-decoration:none;
+font-size:.87rem;white-space:nowrap}
+.dd a:hover{background:var(--soft);color:var(--acc)}
+.dd a.cur{color:var(--acc);font-weight:600}
+.dd b{display:block;padding:9px 11px 4px;font-size:.72rem;color:var(--dim);font-weight:600;
+letter-spacing:.05em}
+.dd hr{border:0;border-top:1px solid var(--line);margin:5px 0}
+/* 窄螢幕導覽列會換行，面板錨在各自的項目上時很容易被推出畫面左右緣；
+   改為錨定導覽列本身（position:sticky 已建立定位脈絡）並撐滿整列 */
+@media(max-width:767px){
+ nav.top details{position:static}
+ .dd{left:0;right:0;max-width:none;top:calc(100% + 4px)}
+ .dd a{white-space:normal}
+}
+/* 漢堡選單：只在窄螢幕出現，同時把四個分類的下拉收起來 */
+nav.top>details.burger{display:none}
+@media(max-width:767px){
+ nav.top>details.burger{display:block}
+ nav.top>details:not(.burger){display:none}
+}
+/* 漢堡面板內的分類標題 */
+.dd>details>summary{list-style:none;cursor:pointer;user-select:none;
+font-size:.9rem;font-weight:600;color:var(--fg);padding:10px 11px;border-radius:7px;
+display:flex;justify-content:space-between;align-items:center}
+.dd>details>summary::-webkit-details-marker{display:none}
+.dd>details>summary::after{content:"▾";font-size:.7rem;color:var(--dim)}
+.dd>details[open]>summary,.dd>details>summary:hover{color:var(--acc);background:var(--soft)}
+.dd>details[open]>summary::after{content:"▴"}
+/* 就地展開的子清單，沿用 .dd 的排版但不再是浮動面板 */
+.sub{display:flex;flex-direction:column;gap:1px;padding:1px 0 8px 12px}
+.sub a{display:block;padding:8px 11px;border-radius:7px;color:var(--fg);
+text-decoration:none;font-size:.86rem}
+.sub a:hover{background:var(--soft);color:var(--acc)}
+.sub a.cur{color:var(--acc);font-weight:600}
+.sub b{display:block;padding:9px 11px 4px;font-size:.72rem;color:var(--dim);
+font-weight:600;letter-spacing:.05em}
+.sub hr{border:0;border-top:1px solid var(--line);margin:5px 0}
+
+h2{font-size:1.28rem;margin:40px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--acc)}
+h3{font-size:1.02rem;margin:26px 0 8px}
+h3.grp{font-size:.78rem;letter-spacing:.12em;color:var(--dim);font-weight:700;margin:34px 0 0;text-transform:uppercase}
+h3 .tag{font-size:.7rem;font-weight:600;color:var(--dim);margin-left:7px;border:1px solid var(--line);border-radius:5px;padding:1px 5px;vertical-align:middle}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px;margin-top:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 14px;
+display:flex;flex-direction:column;gap:6px}
+.card.hot{border-color:var(--hot)}
+.rt{display:flex;align-items:center;gap:6px;font-size:.96rem;flex-wrap:wrap}
+.rt i{color:var(--dim);font-style:normal}
+.rt em{background:var(--hot);color:#fff;font-size:.66rem;padding:2px 6px;border-radius:4px;font-style:normal;font-weight:700}
+.pr{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.pr span{font-size:.68rem;font-weight:600;margin-left:6px;padding:2px 6px;border-radius:4px}
+.pr .rtx{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc)}
+.pr .owx{background:var(--line);color:var(--dim)}
+.mt{display:flex;gap:6px;flex-wrap:wrap;font-size:.78rem;color:var(--dim)}
+.tg{padding:1px 6px;border-radius:4px;font-size:.69rem;font-weight:600}
+.tg.lcc{background:color-mix(in srgb,var(--lcc) 15%,transparent);color:var(--lcc)}
+.tg.fsc{background:color-mix(in srgb,var(--fsc) 15%,transparent);color:var(--fsc)}
+.tg.other{background:var(--line);color:var(--dim)}
+.tg.gt{background:color-mix(in srgb,#b45309 16%,transparent);color:#b45309}.tg.hol{background:color-mix(in srgb,#be123c 15%,transparent);color:#be123c}
+.gate{font-size:.73rem;color:var(--dim);display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+padding-top:6px;border-top:1px dashed var(--line)}
+.gate b{color:var(--fg);font-weight:600}
+.gate span{padding:1px 6px;border-radius:4px;font-size:.66rem;font-weight:600}
+.gate.ga span{background:color-mix(in srgb,var(--lcc) 18%,transparent);color:var(--lcc)}
+.gate.gb span{background:var(--line);color:var(--dim)}
+.gate.gc span{background:color-mix(in srgb,var(--hot) 14%,transparent);color:var(--hot)}
+.dt{font-size:.81rem;color:var(--dim);font-variant-numeric:tabular-nums}
+.btn{margin-top:auto;display:block;text-align:center;background:var(--acc);color:#fff;
+text-decoration:none;padding:7px;border-radius:7px;font-size:.83rem;font-weight:600}
+.cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:9px;margin-top:12px}
+.ct{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;
+padding:12px 13px;text-decoration:none;color:var(--fg)}
+.ct:hover{border-color:var(--acc)}
+.ct b{display:block;font-size:1rem}
+.ct s{display:block;font-size:.74rem;color:var(--dim);text-decoration:none;margin-top:1px}
+.ct u{display:block;font-size:.95rem;color:var(--acc);text-decoration:none;font-weight:700;margin-top:6px}
+.ct u small{font-weight:400;font-size:.7rem;color:var(--dim)}
+.plinks{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.plink{flex:1 1 190px;text-align:center;border:1px solid var(--line);background:var(--card);
+color:var(--fg);text-decoration:none;padding:11px 13px;border-radius:9px;font-size:.88rem;font-weight:600}
+.plink:hover{border-color:var(--acc);color:var(--acc)}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-weight:600;font-size:.79rem}
+td b{color:var(--acc)}
+.today{background:linear-gradient(180deg,#fff,var(--soft));border:1px solid var(--line);
+ border-top:4px solid var(--acc);border-radius:12px;padding:19px 22px;margin-top:14px}
+.tday{font-size:.79rem;color:var(--dim);letter-spacing:.04em;font-weight:600}
+.tans{font-size:1.3rem;font-weight:800;line-height:1.42;margin-top:8px;letter-spacing:-.02em}
+.tsub{font-size:.93rem;color:var(--dim);line-height:1.7;margin-top:10px}
+.tbuf{font-size:.93rem;line-height:1.7;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.tbuf b{color:var(--acc)}
+.tldr{background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--acc);
+border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
+.tldr ul{margin:0;padding-left:2px}
+.tldr li{margin-bottom:9px;font-size:.94rem;line-height:1.75}
+.tldr li:last-child{margin-bottom:0}
+/* 規格／官方原文的引用塊：原文照抄，cite 放出處或中譯 */
+blockquote.q{margin:14px 0;padding:12px 16px;background:var(--card);
+border-left:3px solid var(--acc);border-radius:0 8px 8px 0;font-size:.9rem;line-height:1.75}
+blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem;color:var(--dim)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
+.tw table{min-width:640px;font-size:.84rem}
+.tw th,.tw td{white-space:nowrap;padding:9px 11px}
+.tw td.win{color:var(--lcc);font-weight:700}
+/* 數字比左欄低、而且低的原因是條件限制時，用暖色標出來 */
+.tw td.warn{color:var(--acc);font-weight:700}
+/* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
+.tw td.nm{white-space:normal;line-height:1.55;min-width:150px;max-width:290px}
+.tw td.dimcell{color:var(--dim);opacity:.55}
+/* 欄位少的表格不要被 min-width 逼出橫向捲動 */
+.tw.narrow table{min-width:0}
+/* 回饋計算機的並排比較表 */
+.cmp{width:100%;border-collapse:collapse}
+.cmp th,.cmp td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;
+ white-space:nowrap;vertical-align:baseline}
+.cmp th:first-child,.cmp td:first-child{text-align:left;color:var(--dim);font-weight:600}
+.cmp thead th{font-weight:700;border-bottom:2px solid var(--line);color:var(--fg)}
+.cmp thead th a{text-decoration:none}
+.cmp b{font-variant-numeric:tabular-nums;font-size:1.06rem}
+.tw td .pw,.cmp .pw{background:var(--acc);color:#fff;font-size:.68rem;padding:1px 6px;border-radius:4px;
+ font-weight:700;margin-right:5px;vertical-align:middle}
+.cmp .pc{font-style:normal;color:var(--hot)}
+.cmp .pp{font-style:normal;font-size:.76rem;color:var(--dim);font-weight:600;margin-left:6px}
+.tw td.lose{color:var(--acc);font-weight:700}
+.tw td.win b,.tw td.lose b{color:inherit}
+.cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
+background:var(--card);border:1px solid var(--line);border-radius:12px;
+text-decoration:none;color:var(--fg)}
+.cta:hover{border-color:var(--acc)}
+.cta .ci{font-size:1.5rem;flex:0 0 auto}
+.cta .ct{flex:1;display:flex;flex-direction:column;gap:2px}
+.cta .ct b{font-size:.98rem;font-weight:700}
+.cta .ct s{text-decoration:none;font-size:.82rem;color:var(--dim)}
+.cta .ca{color:var(--acc);font-weight:700;font-size:1.1rem;flex:0 0 auto}
+.cta .ca.pr{font-size:1.42rem;letter-spacing:-.03em;line-height:1.15;text-align:right}
+.cta .ca.pr small{display:block;font-size:.66rem;font-weight:600;color:var(--dim);letter-spacing:0}
+details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
+margin-top:8px;padding:0}
+details.faq summary{cursor:pointer;padding:13px 15px;font-weight:600;font-size:.95rem;
+list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"＋";color:var(--acc);font-weight:700;flex:0 0 auto}
+details.faq[open] summary::after{content:"－"}
+details.faq summary:hover{color:var(--acc)}
+details.faq>div{padding:0 15px 14px;font-size:.9rem;color:var(--dim);line-height:1.8}
+.sf{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:12px;
+padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.sf label{display:flex;flex-direction:column;gap:5px;font-size:.78rem;color:var(--dim);flex:1 1 150px}
+.sf select,.sf input{font:inherit;font-size:.92rem;padding:9px 10px;border-radius:8px;
+border:1px solid var(--line);background:var(--card);color:var(--fg);width:100%}
+.sf button{font:inherit;font-weight:700;font-size:.92rem;padding:10px 22px;border:0;
+border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
+.sf button:hover{opacity:.9}
+@media(max-width:520px){.sf label{flex:1 1 100%}.sf button{width:100%}}
+.calc{margin-top:12px;padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.calc .sf{margin-top:0;padding:0;background:none;border:0}
+.calc .klv{margin-top:5px;font-size:.82rem}
+.cmp thead th .pp{display:block;margin:2px 0 0;font-weight:600}
+.cres{margin-top:14px;padding:16px 18px;background:var(--card);border:1px solid var(--line);
+ border-radius:10px}
+.cres .cl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+ padding:7px 0;font-size:.95rem;border-bottom:1px dashed var(--line)}
+.cres .cl:last-of-type{border-bottom:0}
+.cres .cl b{font-size:1.16rem;font-variant-numeric:tabular-nums}
+.cres .cl .pw{background:var(--acc);color:#fff;font-size:.7rem;padding:1px 7px;border-radius:4px;
+ font-weight:700;margin-right:4px}
+.cres .cl .pc{font-style:normal;font-size:.72rem;color:var(--hot);margin-left:8px}
+.cres .cl .pp{font-style:normal;font-size:.78rem;color:var(--dim);font-weight:600;margin-left:8px}
+.cres .cv{margin-top:12px;padding-top:12px;border-top:2px solid var(--line);
+ font-size:1.12rem;font-weight:800;line-height:1.5}
+.cres .cv.jp{color:var(--lcc)}.cres .cv.tw{color:var(--acc)}
+.widget{margin:12px 0 0;min-height:60px}
+.widget iframe{max-width:100%;border:0}
+.gatebar{margin:16px 0 0;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
+.disc{font-size:.76rem;color:var(--dim);margin:8px 0 0;line-height:1.6}
+.note{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:.79rem;color:var(--dim);line-height:1.85}
+.note a{color:var(--dim)}
+@media(max-width:520px){h1{font-size:1.5rem}.grid{grid-template-columns:1fr}}</style><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "請 1 天休 N 天的數字是怎麼算出來的？", "acceptedAnswer": {"@type": "Answer", "text": "把週六日與國定假日視為非上班日，在每個假期前後各九天的範圍內，窮舉「請 N 個上班日」的所有排法，取連休最長的那一種。資料來自行政院人事行政總處的政府行政機關辦公日曆表，不是手打的，補班日也已經扣掉，不會把要上班的週六算成假日。"}}, {"@type": "Question", "name": "補班日有算進去嗎？", "acceptedAnswer": {"@type": "Answer", "text": "有。台灣的補班日在官方行事曆裡是上班日，本站照算。日本的振替休日在內閣府的 CSV 裡以「休日」名義列出，也一併計入。"}}, {"@type": "Question", "name": "為什麼要看日本有沒有放假？", "acceptedAnswer": {"@type": "Answer", "text": "因為那決定你到了之後住宿多貴。機票的價格主要由台灣的連假決定，那是台灣人出國的日子；日本放假時是日本人在自己國內旅行，你在跟他們搶同一批飯店與新幹線座位。兩個高峰不一定重疊。"}}, {"@type": "Question", "name": "祭典那一欄寫「推估」是什麼意思？", "acceptedAnswer": {"@type": "Answer", "text": "代表主辦單位還沒公布那一年的日期，表上的是本站照往年日期或慣例推的。推估的依據寫在同一列。要訂機票請等官方公布，不要照推估的日期下訂。官方寫明「每年同一天」的祭典標的是「每年固定」，那一類可以直接排。"}}, {"@type": "Question", "name": "中國的假期會影響台灣飛日本的機票嗎？", "acceptedAnswer": {"@type": "Answer", "text": "會影響機位，不是直接影響台灣這邊的票價。中國的黃金週期間，飛日本的航線整體都很滿，能加的班次也被吃掉。上表標出中國同期有沒有連假就是為了這個。"}}, {"@type": "Question", "name": "2026 年有哪一段是台日同時放假的？", "acceptedAnswer": {"@type": "Answer", "text": "補假、國慶日（10/9（五） – 10/11（日））跟日本的運動之日（10/10（六） – 10/12（一））重疊 2 天。那種日子機票與住宿會一起被推上去，是最該避開的一類。完整的重疊清單在三國連假日曆那一頁。"}}]}</script><script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2">(function(){var s=document.createElement("script");s.async=1;s.setAttribute("data-cmp-ab","2");s.src='https://tpembars.com/NTcyMTY4.js?t=572168';document.head.appendChild(s);})();</script></head><body><div class="wrap"><div class="crumb"><a href="/">首頁</a> › <a href="/japan-holiday-calendar/">三國連假日曆</a> › <span>2026 年請假攻略</span></div><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首頁", "item": "https://eric-twhub.github.io/"}, {"@type": "ListItem", "position": 2, "name": "三國連假日曆", "item": "https://eric-twhub.github.io/japan-holiday-calendar/"}, {"@type": "ListItem", "position": 3, "name": "2026 年請假攻略", "item": null}]}</script><nav class="top"><a href="/" class=cur>首頁</a><a href="/deals/">🔥 機票特價</a><details name="topnav"><summary>✈️ 航班地區</summary><div class="dd"><b>日本地區</b><a href="/okinawa-islands/">沖繩・離島</a><a href="/kyushu/">九州</a><a href="/kansai/">關西</a><a href="/kanto/">關東</a><a href="/chubu/">中部・北陸</a><a href="/hokkaido/">北海道</a><a href="/tohoku/">東北</a><a href="/chugoku/">中國</a><a href="/shikoku/">四國</a><hr><b>台灣出發地</b><a href="/taipei/">從台北出發</a><a href="/taichung/">從台中出發</a><a href="/kaohsiung/">從高雄出發</a><a href="/tainan/">從台南出發</a></div></details><details name="topnav"><summary>🕐 航班類型</summary><div class="dd"><a href="/japan-flight-good-times/">☀️ 早去晚回</a><a href="/deals/">🔥 今日特價</a><a href="/japan-flight-baggage/">🧳 廉航行李費</a><a href="/japan-ski-baggage/">🎿 雪具託運</a><a href="/japan-ski-lift-ticket/">🎟️ 雪票早鳥</a></div></details><details name="topnav"><summary>🧭 行前準備</summary><div class="dd"><b>挑日期</b><a href="/taiwan-holiday-2026/">📅 2026 請假攻略</a><a href="/taiwan-holiday-2027/">📅 2027 請假攻略</a><a href="/japan-holiday-calendar/">📅 三國連假撞期</a><hr><b>訂房與交通</b><a href="/hotel-price-check/">🏨 訂房比價</a><a href="/japan-airport-last-train/">🚉 機場末班車</a><hr><b>上網與門號</b><a href="/japan-esim/">📱 日本 eSIM 比較</a><a href="/japan-esim-native-roaming/">📱 原生還是漫遊</a><a href="/japan-sms-roaming/">✉️ 台灣門號收簡訊</a><hr><b>租車自駕</b><a href="/japan-driving-licence/">🚗 駕照日文譯本</a><a href="/japan-rentacar-noc/">🚗 租車的 NOC</a><hr><b>出事之前</b><a href="/japan-travel-insurance/">🛡️ 旅平險怎麼賠</a><a href="/japan-card-insurance/">💳 刷卡送的保險賠什麼</a><hr><b>新制度</b><a href="/japan-travel-rules/">📋 出境稅與住宿稅</a><a href="/japan-jttp/">🛂 JTTP 快速通關</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a></div></details><details name="topnav"><summary>🛍️ 旅日購物</summary><div class="dd"><a href="/japan-coupon/">🏷️ 購物折扣總覽</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a><a href="/apple-japan-price/">🍎 台日 Apple 價差</a><a href="/iphone-cost/">📉 iPhone 持有成本</a><a href="/iphone-card/">💰 買 iPhone 刷哪張卡</a><hr><b>各店折扣</b><a href="/japan-coupon/matsukiyo/">松本清 matsukiyo</a><a href="/japan-coupon/sundrug/">SUNDRUG 尚都樂客</a><a href="/japan-coupon/daikoku/">大國藥妝 DAIKOKU</a><a href="/japan-coupon/tsuruha/">鶴羽藥妝 TSURUHA</a><a href="/japan-coupon/sapporo-drug/">札幌藥妝</a><a href="/japan-coupon/bic-camera/">Bic Camera</a></div></details><details name="topnav" class=end><summary>💳 旅日信用卡</summary><div class="dd"><a href="/japan-credit-card/">💳 15 張卡比較</a><a href="/japan-card-calculator/">🧮 回饋計算機</a><hr><b>熱門卡片</b><a href="/japan-credit-card/firstbank-ileo/">第一銀行 iLEO 卡</a><a href="/japan-credit-card/ubot-jiho/">聯邦吉鶴卡</a><a href="/japan-credit-card/ctbc-uniopen/">中信 uniopen 聯名卡</a><a href="/japan-credit-card/sinopac-jcb/">永豐現金回饋 JCB 卡</a><a href="/japan-credit-card/esun-kumamon/">玉山熊本熊卡</a><a href="/japan-credit-card/sinopac-dual/">永豐幣倍卡</a></div></details><a href="/threads-japan/">🔥 日本熱搜</a><details class="burger"><summary>☰ 選單</summary><div class="dd"><details name="burgernav"><summary>✈️ 航班地區</summary><div class="sub"><b>日本地區</b><a href="/okinawa-islands/">沖繩・離島</a><a href="/kyushu/">九州</a><a href="/kansai/">關西</a><a href="/kanto/">關東</a><a href="/chubu/">中部・北陸</a><a href="/hokkaido/">北海道</a><a href="/tohoku/">東北</a><a href="/chugoku/">中國</a><a href="/shikoku/">四國</a><hr><b>台灣出發地</b><a href="/taipei/">從台北出發</a><a href="/taichung/">從台中出發</a><a href="/kaohsiung/">從高雄出發</a><a href="/tainan/">從台南出發</a></div></details><details name="burgernav"><summary>🕐 航班類型</summary><div class="sub"><a href="/japan-flight-good-times/">☀️ 早去晚回</a><a href="/deals/">🔥 今日特價</a><a href="/japan-flight-baggage/">🧳 廉航行李費</a><a href="/japan-ski-baggage/">🎿 雪具託運</a><a href="/japan-ski-lift-ticket/">🎟️ 雪票早鳥</a></div></details><details name="burgernav"><summary>🧭 行前準備</summary><div class="sub"><b>挑日期</b><a href="/taiwan-holiday-2026/">📅 2026 請假攻略</a><a href="/taiwan-holiday-2027/">📅 2027 請假攻略</a><a href="/japan-holiday-calendar/">📅 三國連假撞期</a><hr><b>訂房與交通</b><a href="/hotel-price-check/">🏨 訂房比價</a><a href="/japan-airport-last-train/">🚉 機場末班車</a><hr><b>上網與門號</b><a href="/japan-esim/">📱 日本 eSIM 比較</a><a href="/japan-esim-native-roaming/">📱 原生還是漫遊</a><a href="/japan-sms-roaming/">✉️ 台灣門號收簡訊</a><hr><b>租車自駕</b><a href="/japan-driving-licence/">🚗 駕照日文譯本</a><a href="/japan-rentacar-noc/">🚗 租車的 NOC</a><hr><b>出事之前</b><a href="/japan-travel-insurance/">🛡️ 旅平險怎麼賠</a><a href="/japan-card-insurance/">💳 刷卡送的保險賠什麼</a><hr><b>新制度</b><a href="/japan-travel-rules/">📋 出境稅與住宿稅</a><a href="/japan-jttp/">🛂 JTTP 快速通關</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a></div></details><details name="burgernav"><summary>🛍️ 旅日購物</summary><div class="sub"><a href="/japan-coupon/">🏷️ 購物折扣總覽</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a><a href="/apple-japan-price/">🍎 台日 Apple 價差</a><a href="/iphone-cost/">📉 iPhone 持有成本</a><a href="/iphone-card/">💰 買 iPhone 刷哪張卡</a><hr><b>各店折扣</b><a href="/japan-coupon/matsukiyo/">松本清 matsukiyo</a><a href="/japan-coupon/sundrug/">SUNDRUG 尚都樂客</a><a href="/japan-coupon/daikoku/">大國藥妝 DAIKOKU</a><a href="/japan-coupon/tsuruha/">鶴羽藥妝 TSURUHA</a><a href="/japan-coupon/sapporo-drug/">札幌藥妝</a><a href="/japan-coupon/bic-camera/">Bic Camera</a></div></details><details name="burgernav"><summary>💳 旅日信用卡</summary><div class="sub"><a href="/japan-credit-card/">💳 15 張卡比較</a><a href="/japan-card-calculator/">🧮 回饋計算機</a><hr><b>熱門卡片</b><a href="/japan-credit-card/firstbank-ileo/">第一銀行 iLEO 卡</a><a href="/japan-credit-card/ubot-jiho/">聯邦吉鶴卡</a><a href="/japan-credit-card/ctbc-uniopen/">中信 uniopen 聯名卡</a><a href="/japan-credit-card/sinopac-jcb/">永豐現金回饋 JCB 卡</a><a href="/japan-credit-card/esun-kumamon/">玉山熊本熊卡</a><a href="/japan-credit-card/sinopac-dual/">永豐幣倍卡</a></div></details></div></details></nav><h1>2026 年台灣連假：請幾天假，可以連休幾天</h1><p class="lede">請假排法是用行政院人事行政總處的官方行事曆逐日算出來的，不是手打的表，補班日也扣掉了。同一張表上一併標出日本與中國那幾天放不放假，還有日本當地的大型活動，因為決定住宿貴不貴的是那個，不是台灣的行事曆。</p><div class="today"><div class="tday">官方行事曆，查證於 2026-09-26</div><div class="tans"><b>國慶日請 1 天，可以連休 4 天</b></div><div class="tsub">不請假是 3 天。請 10/8（四） 這 1 天，連休變成 10/8（四） – 10/11（日） 共 4 天，多賺 1 天。這是 2026 年剩下的假期裡請一天換到最多天的一筆。</div><div class="tbuf">要分清楚兩件事：<b>機票貴是因為台灣放假</b>，那是台灣人一起出國；<b>住宿貴是因為日本放假或當地有祭典</b>，那是你在跟日本人搶同一批房間。兩個高峰不一定重疊。<br><br>這幾段台灣放假時，日本那邊也不會空：補假、國慶日（10/9（五） – 10/11（日））碰上日本也在連假＋長崎宮日節。機票與住宿會一起被推上去，是最該避開的一類。</div></div><h2>2026 年的連假，日本與中國同期在做什麼</h2><p class="lede">今年已經過去的假期不列。2026 年整年共 4 段連假，還沒到的有 3 段。</p><div class="tw"><table><tr><th>台灣連假</th><th>天數</th><th>🇯🇵 日本同期</th><th>🇨🇳 中國同期</th><th>日本當地活動</th></tr><tr><td class="nm"><b>補假、國慶日</b><br><small style="color:var(--dim)">10/9（五） – 10/11（日）</small></td><td><b>3 天</b></td><td class="lose nm"><b>有</b><br><small style="color:var(--dim);font-weight:400">運動之日 10/10（六） – 10/12（一），重疊 2 天</small></td><td class="dimcell">無</td><td class="nm"><small>長崎宮日節（長崎）</small></td></tr><tr><td class="nm"><b>臺灣光復暨金門古寧頭大捷紀念日、補假</b><br><small style="color:var(--dim)">10/24（六） – 10/26（一）</small></td><td><b>3 天</b></td><td class="dimcell">無</td><td class="dimcell">無</td><td class="dimcell">—</td></tr><tr><td class="nm"><b>行憲紀念日</b><br><small style="color:var(--dim)">12/25（五） – 12/27（日）</small></td><td><b>3 天</b></td><td class="dimcell">無</td><td class="dimcell">無</td><td class="dimcell">—</td></tr></table></div><p class="disc">「無」是指那幾天該國沒有連續三天以上的假期，不是指完全沒有放假日。單純的週六日不算，那不會造成額外的需求高峰。</p><h2>請幾天假，可以連休幾天</h2><p class="lede">橫著看就知道多請一天划不划算。綠色那一格代表多請的那一天換到兩天以上的連休，也就是值得多請的那一格；沒有標色的代表多請一天就只多休一天。</p><div class="tw"><table><tr><th>假期</th><th>不請假</th><th>請 1 天</th><th>請 2 天</th><th>請 3 天</th><th>請 4 天</th></tr><tr><td class="nm"><b>國慶日</b><br><small style="color:var(--dim)">10/9（五） – 10/11（日）</small></td><td class="nm">3 天</td><td class="nm"><b>4</b> 天</td><td class="nm"><b>5</b> 天</td><td class="nm"><b>6</b> 天</td><td class="win"><b>9</b> 天</td></tr><tr><td class="nm"><b>臺灣光復暨金門古寧頭大捷紀念日</b><br><small style="color:var(--dim)">10/24（六） – 10/26（一）</small></td><td class="nm">3 天</td><td class="nm"><b>4</b> 天</td><td class="nm"><b>5</b> 天</td><td class="nm"><b>6</b> 天</td><td class="win"><b>9</b> 天</td></tr><tr><td class="nm"><b>行憲紀念日</b><br><small style="color:var(--dim)">12/25（五） – 12/27（日）</small></td><td class="nm">3 天</td><td class="nm"><b>4</b> 天</td><td class="nm"><b>5</b> 天</td><td class="nm"><b>6</b> 天</td><td class="win"><b>10</b> 天</td></tr></table></div><p class="disc">「不請假」是原本就有的連休天數，週末與補假都算進去了，補班日也扣掉了。格子裡是請了那幾天之後的總連休天數，沒有比不請假更長的就顯示「—」。</p><h3>每一段要請哪幾天</h3><details class="faq"><summary>國慶日（10/9（五） – 10/11（日），不請假是 3 天）</summary><div><ul><li><b>請 1 天休 4 天</b>：請 10/8（四），連休 10/8（四） – 10/11（日）</li><li><b>請 2 天休 5 天</b>：請 10/7（三）、10/8（四），連休 10/7（三） – 10/11（日）</li><li><b>請 3 天休 6 天</b>：請 10/6（二）、10/7（三）、10/8（四），連休 10/6（二） – 10/11（日）</li><li><b>請 4 天休 9 天</b>：請 10/5（一）、10/6（二）、10/7（三）、10/8（四），連休 10/3（六） – 10/11（日）</li></ul></div></details><details class="faq"><summary>臺灣光復暨金門古寧頭大捷紀念日（10/24（六） – 10/26（一），不請假是 3 天）</summary><div><ul><li><b>請 1 天休 4 天</b>：請 10/23（五），連休 10/23（五） – 10/26（一）</li><li><b>請 2 天休 5 天</b>：請 10/22（四）、10/23（五），連休 10/22（四） – 10/26（一）</li><li><b>請 3 天休 6 天</b>：請 10/21（三）、10/22（四）、10/23（五），連休 10/21（三） – 10/26（一）</li><li><b>請 4 天休 9 天</b>：請 10/27（二）、10/28（三）、10/29（四）、10/30（五），連休 10/24（六） – 11/1（日）</li></ul></div></details><details class="faq"><summary>行憲紀念日（12/25（五） – 12/27（日），不請假是 3 天）</summary><div><ul><li><b>請 1 天休 4 天</b>：請 12/24（四），連休 12/24（四） – 12/27（日）</li><li><b>請 2 天休 5 天</b>：請 12/23（三）、12/24（四），連休 12/23（三） – 12/27（日）</li><li><b>請 3 天休 6 天</b>：請 12/22（二）、12/23（三）、12/24（四），連休 12/22（二） – 12/27（日）</li><li><b>請 4 天休 10 天</b>：請 12/28（一）、12/29（二）、12/30（三）、12/31（四），連休 12/25（五） – 1/3（日）</li></ul></div></details><p class="disc">算法：把週六日與國定假日視為非上班日，在假期前後各九天的範圍內，找出「請 N 個上班日就能連起來」的最長區間。官方行事曆只到 2027-12-31，跨年被截斷的那幾段不列，因為算出來的連休會是假的。</p><h2>日本重要祭典與花火</h2><p class="lede">這些日子當地的住宿與交通會一起被吃掉，而且很多是台灣人排假時不會想到的。最後一欄寫明每個日期是怎麼來的：官方寫明每年同一天的、該年度已經公布的、還是本站照往年推估的。</p><div class="tw"><table><tr><th>日期</th><th>祭典</th><th>地點</th><th>日期怎麼來的</th><th>說明與出處</th></tr><tr><td class="nm"><b>10/7（三） – 10/9（五）</b><br><small style="color:var(--dim)">還有 8 天</small></td><td class="nm"><b>長崎宮日節</b><br><small style="color:var(--dim)">長崎くんち</small></td><td class="nm">長崎</td><td class="win"><b>每年固定</b></td><td class="nm"><small>固定 10 月 7 日到 9 日，每年同日。<br>諏訪神社的秋季大祭，國家重要無形民俗文化財。　<a href="https://nagasaki-kunchi.com/" target="_blank" rel="nofollow noopener">長崎傳統藝能振興會 →</a></small></td></tr><tr><td class="nm"><b>10/22（四）</b><br><small style="color:var(--dim)">還有 23 天</small></td><td class="nm"><b>時代祭</b><br><small style="color:var(--dim)">時代祭</small></td><td class="nm">京都</td><td class="win"><b>每年固定</b></td><td class="nm"><small>固定 10 月 22 日。<br>京都三大祭之一。遇天候不佳會順延。　<a href="https://ja.kyoto.travel/" target="_blank" rel="nofollow noopener">京都市官方 京都観光Navi →</a></small></td></tr><tr><td class="nm"><b>10/22（四）</b><br><small style="color:var(--dim)">還有 23 天</small></td><td class="nm"><b>鞍馬火祭</b><br><small style="color:var(--dim)">鞍馬の火祭</small></td><td class="nm">京都・鞍馬</td><td class="win"><b>每年固定</b></td><td class="nm"><small>固定 10 月 22 日，跟時代祭同一天。<br>白天看時代祭、晚上看鞍馬火祭是同一天的排法。鞍馬那條叡山電車當晚會嚴重擁擠並實施管制。　<a href="https://ja.kyoto.travel/event/single.php?event_id=4978" target="_blank" rel="nofollow noopener">京都市官方 京都観光Navi →</a></small></td></tr><tr><td class="nm"><b>11/2（一） – 11/4（三）</b><br><small style="color:var(--dim)">還有 34 天</small></td><td class="nm"><b>唐津宮日節</b><br><small style="color:var(--dim)">唐津くんち</small></td><td class="nm">佐賀・唐津</td><td class="win"><b>每年固定</b></td><td class="nm"><small>唐津市官方寫明 11 月 2 日、3 日、4 日。<br>聯合國教科文組織無形文化遺產。11/3 是日本的文化之日，本來就是假日。　<a href="https://www.city.karatsu.lg.jp/page/4344.html" target="_blank" rel="nofollow noopener">唐津市 觀光課 →</a></small></td></tr><tr><td class="nm"><b>12/2（三） – 12/3（四）</b><br><small style="color:var(--dim)">還有 64 天</small></td><td class="nm"><b>秩父夜祭</b><br><small style="color:var(--dim)">秩父夜祭</small></td><td class="nm">埼玉・秩父</td><td class="win"><b>每年固定</b></td><td class="nm"><small>固定 12 月 2 日宵宮、3 日大祭。<br>日本三大曳山祭之一，冬天放花火。從東京當天往返得到，所以池袋往秩父的列車當晚會非常擠。　<a href="https://www.chichibuji.gr.jp/event/yomatsuri/" target="_blank" rel="nofollow noopener">秩父觀光協會 →</a></small></td></tr></table></div><details class="faq"><summary>2026 年已經結束的 10 項</summary><div><div class="tw"><table><tr><th>日期</th><th>祭典</th><th>地點</th><th>日期怎麼來的</th><th>說明與出處</th></tr><tr><td class="nm"><b>4/10（五） – 5/5（二）</b><br><small style="color:var(--dim)">今年已結束</small></td><td class="nm"><b>弘前櫻花祭</b><br><small style="color:var(--dim)">弘前さくらまつり</small></td><td class="nm">青森・弘前公園</td><td class="win"><b>官方已公布</b></td><td class="nm"><small>跟著開花期調整，每年由弘前市公布。2026 年因為花期提早，開幕日往前挪了七天。<br>尾端固定咬住日本黃金週，那段期間本來住宿就貴。　<a href="https://www.hirosakipark.jp/sakura/" target="_blank" rel="nofollow noopener">弘前公園 官方櫻花情報 →</a></small></td></tr><tr><td class="nm"><b>7/1（三） – 7/31（五）</b><br><small style="color:var(--dim)">今年已結束</small></td><td class="nm"><b>祇園祭</b><br><small style="color:var(--dim)">祇園祭</small></td><td class="nm">京都</td><td class="win"><b>每年固定</b></td><td class="nm"><small>整個 7 月（7/1 到 7/31）都是祭期，兩次山鉾巡行固定在 7/17（前祭）與 7/24（後祭）。<br>7/17 前祭山鉾巡行、7/24 後祭山鉾巡行<br>巡行前一晚的宵山（7/14–16、7/21–23）人潮不會比巡行當天少。　<a href="https://www.yasaka-jinja.or.jp/event/gion02/" target="_blank" rel="nofollow noopener">八坂神社・祇園祭の行事 →</a></small></td></tr><tr><td class="nm"><b>7/24（五） – 7/25（六）</b><br><small style="color:var(--dim)">今年已結束</small></td><td class="nm"><b>天神祭</b><br><small style="color:var(--dim)">天神祭</small></td><td class="nm">大阪</td><td class="win"><b>每年固定</b></td><td class="nm"><small>官方寫明 7 月 24 日宵宮、25 日本宮，花火在 25 日晚上。<br>跟京都祇園祭的後祭巡行同一天（7/24），關西那兩天住宿會一起緊。　<a href="https://osakatemmangu.or.jp/" target="_blank" rel="nofollow noopener">大阪天満宮 官方網站 →</a></small></td></tr><tr><td class="nm"><b>7/25（六）</b><br><small style="color:var(--dim)">今年已結束</small></td><td class="nm"><b>隅田川花火大會</b><br><small style="color:var(--dim)">隅田川花火大会</small></td><td class="nm">東京</td><td class="win"><b>官方已公布</b></td><td class="nm"><small>官方沒有寫「每年某月某日」這種規則，日期逐年公布。近年慣例落在 7 月最後一個週六。<br>遇雨可能順延或中止，這點官方每年都會另外公告。　<a href="https://www.sumidagawa-hanabi.com/" target="_blank" rel="nofollow noopener">隅田川花火大会 官方網站 →</a></small></td></tr><tr><td class="nm"><b>8/2（日） – 8/3（一）</b><br><small style="color:var(--dim)">今年已結束</small></td><td class="nm"><b>長岡祭大花火大會</b><br><small style="color:var(--dim)">長岡まつり大花火大会</small></td><td class="nm">新潟・長岡</td><td class="win"><b>每年固定</b></td><td class="nm"><small>官方寫明「毎年8月2日・3日に開催」，不因星期調整。<br>日本三大花火之一。長岡市內住宿很早就滿，多數人從新潟市或東京當天往返。　<a href="https://nagaokamatsuri.com/" target="_blank" rel="nofollow noopener">長岡花火 官方網站 →</a></small></td></tr><tr><td class="nm"><b>8/2（日） – 8/7（五）</b><br><small style="color:var(--dim)">今年已結束</small></td><td class="nm"><b>青森睡魔祭</b><br><small style="color:var(--dim)">青森ねぶた祭</small></td><td class="nm">青森</td><td class="win"><b>每年固定</b></td><td class="nm"><small>官方寫明「毎年 8月2日から7日」。<br>跟長岡花火頭兩天完全重疊，兩個都想看要分年。　<a href="https://www.nebuta.jp/" target="_blank" rel="nofollow noopener">青森ねぶた祭 官方網站 →</a></small></td></tr><tr><td class="nm"><b>8/5（三）</b><br><small style="color:var(--dim)">今年已結束</small></td><td class="nm"><b>河口湖湖上祭</b><br><small style="color:var(--dim)">河口湖湖上祭</small></td><td class="nm">山梨・富士河口湖町</td><td class="win"><b>每年固定</b></td><td class="nm"><small>固定 8 月 5 日。<br>約一萬發。離東京近，當天河口湖一帶的交通與住宿都會被吃掉。　<a href="https://www.fujisan.ne.jp/" target="_blank" rel="nofollow noopener">富士河口湖町 觀光情報 →</a></small></td></tr><tr><td class="nm"><b>8/6（四） – 8/8（六）</b><br><small style="color:var(--dim)">今年已結束</small></td><td class="nm"><b>仙台七夕祭</b><br><small style="color:var(--dim)">仙台七夕まつり</small></td><td class="nm">宮城・仙台</td><td class="win"><b>每年固定</b></td><td class="nm"><small>固定 8 月 6 日到 8 日（中曆七夕）。<br>前一晚（8/5）有花火祭。　<a href="https://www.sendaitanabata.com/" target="_blank" rel="nofollow noopener">仙台七夕まつり 官方網站 →</a></small></td></tr><tr><td class="nm"><b>8/9（日） – 8/12（三）</b><br><small style="color:var(--dim)">今年已結束</small></td><td class="nm"><b>高知夜來祭</b><br><small style="color:var(--dim)">よさこい祭り</small></td><td class="nm">高知</td><td class="win"><b>每年固定</b></td><td class="nm"><small>固定 8 月 9 日前夜祭、10 日與 11 日本祭、12 日後夜祭。<br>跟德島阿波舞只差一天，四國那週整片住宿都會緊。　<a href="https://www.attaka.or.jp/yosakoi/" target="_blank" rel="nofollow noopener">高知市觀光協會 →</a></small></td></tr><tr><td class="nm"><b>8/11（二） – 8/15（六）</b><br><small style="color:var(--dim)">今年已結束</small></td><td class="nm"><b>阿波舞</b><br><small style="color:var(--dim)">阿波おどり</small></td><td class="nm">德島</td><td class="win"><b>每年固定</b></td><td class="nm"><small>德島市官方寫明「毎年8月11日から15日まで」。<br>尾端咬住日本的お盆（盂蘭盆），那是日本人自己返鄉與旅行的高峰。　<a href="https://www.awaodori-kaikan.jp/" target="_blank" rel="nofollow noopener">德島市阿波舞相關官方資訊 →</a></small></td></tr></table></div></div></details><p class="disc">下面這些本站有收，但 2026 年的日期還沒有依據可以推：神戶光之祭典、札幌雪祭。沒有資料就不列，不用往年日期直接套。</p><p class="disc">日期會動的祭典（櫻花、花火的週末排法）如果照往年寫死，讀者會照著訂機票。標不確定比給一個好看的數字重要。</p><h2>常見問題</h2><details class="faq"><summary>請 1 天休 N 天的數字是怎麼算出來的？</summary><div>把週六日與國定假日視為非上班日，在每個假期前後各九天的範圍內，窮舉「請 N 個上班日」的所有排法，取連休最長的那一種。資料來自行政院人事行政總處的政府行政機關辦公日曆表，不是手打的，補班日也已經扣掉，不會把要上班的週六算成假日。</div></details><details class="faq"><summary>補班日有算進去嗎？</summary><div>有。台灣的補班日在官方行事曆裡是上班日，本站照算。日本的振替休日在內閣府的 CSV 裡以「休日」名義列出，也一併計入。</div></details><details class="faq"><summary>為什麼要看日本有沒有放假？</summary><div>因為那決定你到了之後住宿多貴。機票的價格主要由台灣的連假決定，那是台灣人出國的日子；日本放假時是日本人在自己國內旅行，你在跟他們搶同一批飯店與新幹線座位。兩個高峰不一定重疊。</div></details><details class="faq"><summary>祭典那一欄寫「推估」是什麼意思？</summary><div>代表主辦單位還沒公布那一年的日期，表上的是本站照往年日期或慣例推的。推估的依據寫在同一列。要訂機票請等官方公布，不要照推估的日期下訂。官方寫明「每年同一天」的祭典標的是「每年固定」，那一類可以直接排。</div></details><details class="faq"><summary>中國的假期會影響台灣飛日本的機票嗎？</summary><div>會影響機位，不是直接影響台灣這邊的票價。中國的黃金週期間，飛日本的航線整體都很滿，能加的班次也被吃掉。上表標出中國同期有沒有連假就是為了這個。</div></details><details class="faq"><summary>2026 年有哪一段是台日同時放假的？</summary><div>補假、國慶日（10/9（五） – 10/11（日））跟日本的運動之日（10/10（六） – 10/12（一））重疊 2 天。那種日子機票與住宿會一起被推上去，是最該避開的一類。完整的重疊清單在三國連假日曆那一頁。</div></details><h2>資料來源</h2><ul class="lede"><li><b>日本</b>：內閣府「国民の祝日について」公開 CSV　<a href="https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv" target="_blank" rel="nofollow noopener">來源 →</a></li><li><b>台灣</b>：行政院人事行政總處・政府行政機關辦公日曆表（115、116 年）　<a href="https://data.gov.tw/dataset/14718" target="_blank" rel="nofollow noopener">來源 →</a></li><li><b>中國</b>：國務院辦公廳關於 2026 年部分節假日安排的通知（國辦發明電〔2025〕7 號）　<a href="https://www.gov.cn/zhengce/content/202511/content_7047090.htm" target="_blank" rel="nofollow noopener">來源 →</a></li><li><b>日本祭典</b>：各祭典的主辦單位或當地政府官方頁面，逐項列在上表最後一欄，查證於 2026-09-29。</li></ul><h2>順便看看</h2><div class="cities"><a class="ct" href="/taiwan-holiday-2027/"><b>📅 2027 年版</b><s>同一份算法，換一年</s></a><a class="ct" href="/japan-holiday-calendar/"><b>📅 三國連假撞期</b><s>還附本站票價實算的價差</s></a><a class="ct" href="/deals/"><b>🔥 今日機票特價</b><s>票價卡會標出撞期的日子</s></a><a class="ct" href="/hotel-price-check/"><b>🏨 訂房比價</b><s>連假時最先漲的就是這個</s></a></div><p class="disc">台灣假日引自行政院人事行政總處的政府行政機關辦公日曆表，日本引自內閣府，中國引自國務院辦公廳的通知，查證於 2026-09-26。各國都可能臨時調整，出發前請以官方最新公告為準。祭典日期以各主辦單位當年度公告為準，標為「推估」的尚未公布。</p><p class="note">
+票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
+實際訂購由合作平台完成：機票／住宿／行程與一日遊／交通票／租車／機場接送 Trip.com、景點門票 KKday、網卡與 eSIM Klook。<br>
+本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
+最後更新 2026-09-29 12:13　·　<a href="/">回首頁</a>
+</p></div><script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toLowerCase(),a=f.dep.value,b=f.ret.value,t=b?"rt":"ow",u="https://tw.trip.com/flights/showfarefirst?dcity="+o+"&acity="+d+"&ddate="+a+(b?"&rdate="+b:"")+"&triptype="+t+"&class=y&quantity=1&locale=zh-TW&curr=TWD"+"&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1="+d;window.open(u,"_blank","noopener");return false;}</script><script>(function(){var n=document.querySelector("nav.top");if(!n)return;var d=[].slice.call(n.querySelectorAll(":scope>details"));function shut(x){d.forEach(function(o){if(o!==x)o.open=false})}d.forEach(function(o){o.addEventListener("toggle",function(){if(o.open)shut(o)})});document.addEventListener("click",function(e){if(!n.contains(e.target))shut(null);else if(e.target.closest&&e.target.closest(".dd a"))shut(null)});document.addEventListener("keydown",function(e){if(e.key==="Escape")shut(null)});})();</script></body></html>
