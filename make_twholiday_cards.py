@@ -44,10 +44,37 @@ CSS = """
  margin-top:8px;line-height:1.6}
 .rn s em{font-style:normal;color:#c2410c;font-weight:700}
 .rn s.q{color:#b4afa8}
+/* 月曆：一張一個月，格子留大一點才塞得下三國的假日名稱 */
+.cwd{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;
+ font-size:22px;color:#8a847c;padding:0 0 8px;text-align:center}
+.cgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.cell{border:2px solid #e5e3de;border-radius:10px;padding:8px 7px;background:#fff;
+ min-height:118px;overflow:hidden}
+.cell.cl-pad{border:0;background:none;min-height:0}
+.cell b{display:block;font-size:26px;font-weight:800;color:#8a847c;line-height:1.1}
+.cell s{display:block;text-decoration:none;font-size:19px;line-height:1.35;
+ margin-top:5px;word-break:break-all}
+.cell.cl-we{background:#eceae5;border-color:#e0ddd6}
+.cell.cl-hol{background:#fbe3dd;border-color:#eeb6a6}
+.cell.cl-hol b{color:#b3391c}
+.cell.cl-lv{background:#ffedd8;border-color:#c2410c;border-width:3px;padding:7px 6px}
+.cell.cl-lv b{color:#c2410c}
+.cell.cl-mk{background:#e6f0f7;border-color:#b9d8ea}
+.cell u{display:inline-block;text-decoration:none;font-size:18px;font-weight:700;
+ color:#fff;background:#c2410c;border-radius:5px;padding:1px 7px;margin-top:5px}
+.clg{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:20px;color:#63605c;
+ margin-top:14px}
+.clg span{display:flex;align-items:center;gap:7px}
+.clg i{display:inline-block;width:20px;height:20px;border-radius:5px;
+ border:2px solid #e5e3de;font-style:normal}
 """
 
 _WK = '一二三四五六日'
 _Y = ['']          # 這一組圖卡是哪一年，build() 進來時設定
+CAL_LABELS = []
+# 月曆格子放不下全名，只有這兩個要縮
+_CARD_SHORT = {'臺灣光復暨金門古寧頭大捷紀念日': '光復節',
+               '孔子誕辰紀念日/教師節': '教師節'}
 
 
 def _d(x):
@@ -123,6 +150,7 @@ def build(d):
     out = []
     pend = []          # 先收 inner，最後才知道總張數 N，頁碼要對
     LABELS.clear()     # 圖庫的標題由這裡輸出，gen.py 讀 index.json，不各寫一份
+    CAL_LABELS.clear()
 
     def add(inner, cls='', label='', sub=''):
         pend.append((inner, cls))
@@ -309,13 +337,133 @@ def build(d):
     for i, (inner, cls) in enumerate(pend, 1):
         out.append((f'tw-{i:02d}.png',
                     page(inner + foot(i, N, fn), cls, CSS)))
+
+    # ── 月曆：一張一個月 ──
+    # 一張塞十二個月的話格子只剩三十幾 px，寫不下假日名稱。
+    # 一個月一張，格子放大到 118px 高，三國的名稱才擺得進去。
+    cal = d.get('cal') or {}
+    ms = cal.get('months') or []
+    for k, m in enumerate(ms, 1):
+        out.append((f'cal-{m["ym"]}.png',
+                    page(_month(m, cal, d) + foot(k, len(ms), fn), '', CSS)))
+        CAL_LABELS.append({
+            'file': f'cal-{m["ym"]}.png',
+            'title': f'{int(m["ym"][:4])} 年 {int(m["ym"][5:7])} 月',
+            'sub': _month_sub(m, cal)})
     return out
+
+
+def _runs_of(ds):
+    """連續的日期併成一段，10/12、10/13、10/14、10/15 太長了"""
+    out = []
+    for x in ds:
+        t = _dt.date.fromisoformat(x)
+        if out and (t - _dt.date.fromisoformat(out[-1][-1])).days == 1:
+            out[-1].append(x)
+        else:
+            out.append([x])
+    def md(x):
+        return f'{int(x[5:7])}/{int(x[8:10])}'
+    return '、'.join(md(g[0]) if len(g) == 1
+                    else f'{md(g[0])}–{int(g[-1][8:10])}'
+                    for g in out)
+
+
+def _bygroup(m, cal):
+    """這個月的建議請假，依假期分組。
+
+    十月同時有國慶日與光復節兩段，全部併成一句會變成「國慶日：請八天」，
+    那是把兩個假期的排法接在一起，不是任何一個假期真的要請八天。
+    """
+    g, order = {}, []
+    for c in m['days']:
+        if not c['leave']:
+            continue
+        if c['leave'] not in g:
+            g[c['leave']] = []
+            order.append(c['leave'])
+        g[c['leave']].append(c['d'])
+    out = []
+    for nm in order:
+        ds = g[nm]
+        tot = (cal.get('leave') or {}).get(ds[0], {}).get('tot')
+        out.append((_CARD_SHORT.get(nm, nm), ds, tot))
+    return out
+
+
+def _month_sub(m, cal):
+    """圖庫底下那一行：這個月要注意什麼"""
+    gs = _bygroup(m, cal)
+    if gs:
+        return '　'.join(f'{nm} 請 {len(ds)} 天休 {tot} 天' for nm, ds, tot in gs)
+    hol = [c['tw'] for c in m['days'] if c['tw']]
+    if hol:
+        return '、'.join(dict.fromkeys(hol))[:24]
+    jp = [c['jp'] for c in m['days'] if c['jp']]
+    return ('日本 ' + '、'.join(jp[:2])) if jp else '這個月沒有國定假日'
+
+
+def _month(m, cal, d):
+    ym = m['ym']
+    y, mo = int(ym[:4]), int(ym[5:7])
+    gs = _bygroup(m, cal)
+    hol = [c for c in m['days'] if c['tw']]
+    if gs:
+        sub = ('；'.join(
+            f'{nm} 請 {_runs_of(ds)} 這 {len(ds)} 天，連休 {tot} 天'
+            for nm, ds, tot in gs) + '。橘框就是要請的那幾格。')
+    elif hol:
+        sub = ('台灣這個月放：'
+               + '、'.join(dict.fromkeys(c['tw'] for c in hol)) + '。')
+    else:
+        sub = '台灣這個月沒有國定假日。'
+    if not cal.get('cn_open'):
+        sub += f'中國 {_Y[0]} 年的節假日還沒公布，格子裡不會有中國的標記。'
+
+    lead = _dt.date(y, mo, int(m['days'][0]['d'][8:10])).weekday()
+    cells = '<div class="cell cl-pad"></div>' * lead
+    for c in m['days']:
+        cls = ''
+        if c['leave']:
+            cls = 'cl-lv'
+        elif c['run'] or (c['off'] and c['tw']):
+            cls = 'cl-hol'
+        elif c['off']:
+            cls = 'cl-we'
+        elif c['makeup']:
+            cls = 'cl-mk'
+        txt = ''
+        if c['tw']:
+            txt += f'<s>🇹🇼 {E(_CARD_SHORT.get(c["tw"], c["tw"]))}</s>'
+        elif c['makeup']:
+            txt += '<s>🇹🇼 補班</s>'
+        if c['jp']:
+            txt += f'<s>🇯🇵 {E(c["jp"])}</s>'
+        if c['cn']:
+            txt += f'<s>🇨🇳 {E(c["cn"])}</s>'
+        if c['leave']:
+            txt += '<u>請假</u>'
+        cells += f'<div class="cell {cls}"><b>{int(c["d"][8:10])}</b>{txt}</div>'
+    tail = (7 - (lead + len(m['days'])) % 7) % 7
+    cells += '<div class="cell cl-pad"></div>' * tail
+    return (f'<div class="kick">{y} 年台灣連假月曆</div>'
+            f'<h1>{mo} 月</h1>'
+            f'<div class="sub">{E(sub)}</div>'
+            '<div class="clg">'
+            '<span><i style="background:#fbe3dd;border-color:#eeb6a6"></i>台灣連假</span>'
+            '<span><i style="background:#ffedd8;border-color:#c2410c"></i>建議請假</span>'
+            '<span><i style="background:#eceae5;border-color:#e0ddd6"></i>週末</span>'
+            '<span>🇹🇼 台灣　🇯🇵 日本　🇨🇳 中國</span></div>'
+            '<div class="list" style="margin-top:18px">'
+            + '<div class="cwd">'
+            + ''.join(f'<div>{w}</div>' for w in '一二三四五六日')
+            + '</div><div class="cgrid">' + cells + '</div></div>')
 
 
 def payload(d):
     """圖卡真正用到的欄位。generated 是每次建置都會變的時間戳，不能算進去。"""
     return [d['year'], d['checked'], d['fest_checked'], d['partial'],
-            d['runs'], d['leave'], d['fest'], d['fest_missing']]
+            d['runs'], d['leave'], d['fest'], d['fest_missing'], d.get('cal')]
 
 
 def fingerprint(d):
@@ -334,3 +482,5 @@ if __name__ == '__main__':
             json.dump([dict(x, file=f'tw-{i:02d}.png')
                        for i, x in enumerate(LABELS, 1)],
                       f, ensure_ascii=False, indent=1)
+        with open(f'{out}/cal-index.json', 'w', encoding='utf-8') as f:
+            json.dump(list(CAL_LABELS), f, ensure_ascii=False, indent=1)

@@ -5536,12 +5536,11 @@ if HOL:
     _CAL_SHORT = {'臺灣光復暨金門古寧頭大捷紀念日': '光復節',
                   '孔子誕辰紀念日/教師節': '教師節'}
 
-    def _calendar(ys, lp):
-        """一年的月曆。標出台灣放假、建議請假、補班，
-        三國的假日名稱用文字寫在格子裡。
+    def _cal_data(ys, lp):
+        """月曆要標什麼：哪幾天放假、哪幾天建議請假、三國各自的假日名。
 
-        建議請假取每個假期最划算的那一種排法，跟圖卡同一套規則，
-        否則同一頁會出現兩組不一樣的建議。
+        建議請假取每個假期最划算的那一種排法，跟圖卡同一套規則。
+        頁面與圖卡都讀這一份，不然同一天在兩邊會有不一樣的建議。
         """
         allday = {x['d']: x for x in HOL['days']}
         # 連假中間的週六日也要跟著上色，不然 10/9 粉、10/10 粉、10/11 灰，
@@ -5553,7 +5552,7 @@ if HOL:
                 runset.add((a + datetime.timedelta(days=k)).isoformat())
         days = {d: x for d, x in allday.items() if d[:4] == ys}
         if not days:
-            return ''
+            return None
         leave, edge = {}, set()
         for p in lp:
             best, cand = None, []
@@ -5577,44 +5576,67 @@ if HOL:
                     days.setdefault(d, x)
         cn_open = any(x.get('cn_off') is not None
                       for d, x in days.items() if d[:4] == ys)
-        last = max(d for d in days if d[:4] == ys)
-        out = ''
-        extra = sorted({d[:7] for d in days if d[:4] != ys})
+        months = []
         for ym in sorted({d[:7] for d in days}):
             md = [d for d in sorted(days) if d[:7] == ym]
             if md[-1] < TODAY:
                 continue
+            cells = []
+            for d in md:
+                x = days[d]
+                cells.append({
+                    'd': d, 'w': x['w'],
+                    'tw': x.get('tw') if x.get('tw') != '週末' else None,
+                    'jp': x.get('jp'), 'cn': x.get('cn'),
+                    'run': d in runset,
+                    'off': bool(x.get('tw_off')),
+                    'makeup': bool(not x.get('tw_off') and x['w'] >= 5),
+                    'leave': leave.get(d, [None])[0],
+                })
+            months.append({'ym': ym, 'days': cells})
+        return {'months': months, 'cn_open': cn_open,
+                'last': max(d for d in days if d[:4] == ys),
+                'extra': sorted({d[:7] for d in days if d[:4] != ys}),
+                'leave': {d: {'name': v[0], 'tot': v[1]} for d, v in leave.items()}}
+
+    def _calendar(ys, lp):
+        cd = _cal_data(ys, lp)
+        if not cd:
+            return ''
+        cn_open, last, extra = cd['cn_open'], cd['last'], cd['extra']
+        out = ''
+        for _m in cd['months']:
+            ym = _m['ym']
+            md = [c['d'] for c in _m['days']]
             cells = ''
             lead = datetime.date.fromisoformat(md[0]).weekday()
             cells += '<div class="cd pad"></div>' * lead
-            for d in md:
-                x = days[d]
-                dn = int(d[8:10])
+            for c in _m['days']:
+                d = c['d']
                 cls = []
-                tw = x.get('tw')
-                if d in leave:
+                if c['leave']:
                     cls.append('lv')
-                elif d in runset or (x.get('tw_off') and tw and tw != '週末'):
+                elif c['run'] or (c['off'] and c['tw']):
                     cls.append('hol')
-                elif x.get('tw_off'):
+                elif c['off']:
                     cls.append('we')
-                elif x['w'] >= 5:
+                elif c['makeup']:
                     cls.append('mk')          # 週末卻要上班：補班日
                 if d < TODAY:
                     cls.append('gone')
                 txt = ''
-                if tw and tw != '週末':
-                    txt += f'<s>🇹🇼 {html.escape(_CAL_SHORT.get(tw, tw))}</s>'
-                elif not x.get('tw_off') and x['w'] >= 5:
+                if c['tw']:
+                    txt += f'<s>🇹🇼 {html.escape(_CAL_SHORT.get(c["tw"], c["tw"]))}</s>'
+                elif c['makeup']:
                     txt += '<s>🇹🇼 補班</s>'
-                if x.get('jp'):
-                    txt += f'<s>🇯🇵 {html.escape(x["jp"])}</s>'
-                if x.get('cn'):
-                    txt += f'<s>🇨🇳 {html.escape(x["cn"])}</s>'
-                if d in leave:
-                    txt += (f'<span class="tag">請假</span>')
+                if c['jp']:
+                    txt += f'<s>🇯🇵 {html.escape(c["jp"])}</s>'
+                if c['cn']:
+                    txt += f'<s>🇨🇳 {html.escape(c["cn"])}</s>'
+                if c['leave']:
+                    txt += '<span class="tag">請假</span>'
                 cells += (f'<div class="cd {" ".join(cls)}">'
-                          f'<i>{dn}</i>{txt}</div>')
+                          f'<i>{int(d[8:10])}</i>{txt}</div>')
             tail = (7 - (lead + len(md)) % 7) % 7
             cells += '<div class="cd pad"></div>' * tail
             out += (f'<div class="calm"><b>{int(ym[:4])} 年 {int(ym[5:7])} 月</b>'
@@ -5828,6 +5850,30 @@ if HOL:
               + '<p class="disc">圖上的連假、請假排法與祭典日期跟這一頁一樣，'
                 f'行事曆查證於 {HOL["checked"]}。</p>')
 
+        # 月曆一張一個月。十二個月擠進一張的話，格子只剩三十幾 px，
+        # 寫不下三國的假日名稱，所以分開成另一組。
+        _cli = f'taiwan-holiday-{ys}/cards/cal-index.json'
+        _clk = [c for c in (json.load(open(_cli, encoding='utf-8'))
+                            if os.path.exists(_cli) else [])
+                if os.path.exists(f'taiwan-holiday-{ys}/cards/{c["file"]}')]
+        _cal_cards = ''
+        if _clk:
+            _cal_cards = (
+              '<h3>月曆圖卡</h3>'
+              f'<p class="lede">上面那份月曆做成 {len(_clk)} 張圖，一張一個月，'
+              '格子放大到寫得下三國的假日名稱。存下來或轉發都可以。</p>'
+              '<div class="twk">'
+              + ''.join(
+                  f'<a href="{U(f"/taiwan-holiday-{ys}/cards/" + c["file"])}" '
+                  f'target="_blank">'
+                  f'<img src="{U(f"/taiwan-holiday-{ys}/cards/" + c["file"])}" '
+                  f'alt="{html.escape(c["title"])}月曆圖卡" '
+                  f'width="1080" height="1350" loading="lazy">'
+                  f'<b>{html.escape(c["title"])}</b>'
+                  f'<s>{html.escape(c["sub"])}</s></a>' for c in _clk)
+              + '</div>')
+        _tw_cards += _cal_cards
+
         title = (f'{ys} 年台灣連假請假攻略：請 1 天休幾天，'
                  f'順便看日本中國同期放不放假')
         desc = (f'{ys} 年台灣的國定假日與連假，逐段算出請 1 到 4 天的最佳排法。'
@@ -5865,6 +5911,7 @@ if HOL:
                       'note': f['note'], 'past': f['end'] < TODAY}
                      for f in fy if f['start'] and f['start'][:4] == ys],
             'fest_missing': [f['name'] for f in fy if not f['start']],
+            'cal': _cal_data(ys, lp),
         }, ensure_ascii=False, indent=1))
 
         # 常見問題。年度相關的那幾題由當年的資料生成，不寫死。
