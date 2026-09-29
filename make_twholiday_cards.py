@@ -80,6 +80,12 @@ def _short(a, b):
     return x if a == b else f'{x}–{int(b[5:7])}/{int(b[8:10])}'
 
 
+def _eff(g, L):
+    """一天換到幾天。5/3 印成 1.66667 太難看，也不要四捨五入成 1.7；
+    取兩位小數再把多餘的零去掉，1.75 就是 1.75。"""
+    return f'{g / L:.2f}'.rstrip('0').rstrip('.')
+
+
 def _chunk(xs, n):
     """切成每組不超過 n 筆，而且各組盡量一樣多。
 
@@ -217,9 +223,10 @@ def build(d):
             f'第 {k + 1} 組，共 {n} 組' if n > 1 else '請 1 到 4 天的最佳排法')
 
     # ── 最划算的幾段：實際要請哪幾天 ──
-    # 排序看的是效率（每請一天換到幾天），不是總共多賺幾天。
-    # 用總數排的話「請 2 天多賺 4 天」會壓過「請 1 天多賺 3 天」，
-    # 但後者才是更划算的那一種。每個假期只取自己最划算的那一列，
+    # 由近到遠排，先列最快要決定的那幾個。排假是有時效的事：
+    # 九月的假期再划算，一月也還輪不到你煩惱。
+    # 每個假期取自己最划算的那一列（看效率，不是看總共多賺幾天，
+    # 因為「請 2 天多賺 4 天」沒有「請 1 天多賺 3 天」划算），
     # 否則同一個假期會用不同天數佔掉好幾格。
     rank = []
     for p in leave:
@@ -230,22 +237,26 @@ def build(d):
                 cand.append(((o['tot'] - p['base']) / L, -L,
                              o['tot'] - p['base'], L, p, o))
         if cand:
-            rank.append(max(cand))
-    rank.sort(key=lambda x: (-x[0], x[3], -x[2]))
-    if rank:
+            _e, _nl, gain, L, _p, o = max(cand)
+            rank.append((p['start'], gain, L, p, o))
+    rank.sort(key=lambda x: x[0])
+    take = rank[:TOP_RANK]
+    if take:
         rows = ''.join(
             f'<div class="blk"><b><i>{i + 1}</i>請 {L} 天休 {o["tot"]} 天'
-            f'　<span class="tag ok">一天換 {g / L:.6g} 天</span></b>'
+            f'　<span class="tag ok">一天換 {_eff(g, L)} 天</span></b>'
             f'<s>{E(p["name"])}（本來 {p["base"]} 天）。'
             f'請 {_days(o["lv"])}，'
             f'連休 {_rng(o["from"], o["to"])}。</s></div>'
-            for i, (_e, _nl, g, L, p, o) in enumerate(rank[:TOP_RANK]))
-        add('<div class="kick">每請一天，換到幾天</div>'
-            '<h1>最划算的<br><em>幾種排法</em></h1>'
-            '<div class="sub">依效率排序，不是依總天數：請 1 天多賺 3 天，'
-            '比請 2 天多賺 4 天划算。每個假期只列最划算的那一種。</div>'
+            for i, (_d0, g, L, p, o) in enumerate(take))
+        _last = take[-1][4]['to']
+        add('<div class="kick">由近到遠，先看要先決定的</div>'
+            f'<h1>接下來 {len(take)} 個假期，<br><em>各自最划算的排法</em></h1>'
+            f'<div class="sub">這幾段一路排到 {_rng(_last, _last)}。'
+            '每個假期只列最划算的那一種：一天換到最多天的那個排法。'
+            '再後面的在本站頁面上有完整的表。</div>'
             f'<div class="list">{rows}</div>', '',
-            '最划算的幾種排法', '依效率排序，附要請哪幾天')
+            f'接下來 {len(take)} 個假期的排法', '由近到遠，附要請哪幾天')
 
     # ── 祭典 ──
     for k, grp in enumerate(_chunk(up, PER_FEST)):
