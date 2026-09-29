@@ -156,6 +156,34 @@ blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem
 /* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
 .tw td.nm{white-space:normal;line-height:1.55;min-width:150px;max-width:290px}
 .tw td.dimcell{color:var(--dim);opacity:.55}
+/* 月曆：標出放假、建議請假，三國的假日名稱直接寫在格子裡 */
+.cal{margin:14px 0}
+.calm{margin:0 0 20px}
+.calm>b{display:block;font-size:1rem;margin:0 0 6px}
+.calg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.calg>.wd{font-size:.72rem;color:var(--dim);text-align:center;padding:1px 0 3px}
+.cd{min-height:64px;border:1px solid var(--line);border-radius:6px;padding:3px 4px;
+background:var(--card);font-size:.62rem;line-height:1.4;overflow:hidden}
+.cd.pad{border:0;background:none;min-height:0}
+.cd>i{display:block;font-style:normal;font-weight:700;font-size:.78rem;color:var(--dim)}
+.cd s{display:block;text-decoration:none;white-space:normal;word-break:break-all}
+.cd.we{background:#efeeea}
+.cd.hol{background:#fdecea;border-color:#f3c2b8}
+.cd.hol>i{color:var(--hot)}
+.cd.lv{background:#fff4e6;border-color:var(--acc);border-width:2px;padding:2px 3px}
+.cd.lv>i{color:var(--acc)}
+.cd.mk{background:#eef6fb;border-color:#b9d8ea}
+.cd.gone{opacity:.42}
+.cd .tag{display:inline-block;font-size:.58rem;font-weight:700;color:#fff;
+background:var(--acc);border-radius:3px;padding:0 3px;margin-top:1px}
+.callg{display:flex;flex-wrap:wrap;gap:8px 14px;margin:8px 0 14px;font-size:.78rem;
+color:var(--dim)}
+.callg span{display:flex;align-items:center;gap:5px}
+.callg u{display:inline-block;width:14px;height:14px;border-radius:4px;
+border:1px solid var(--line)}
+@media(max-width:560px){.cd{min-height:56px;font-size:.55rem;padding:2px 2px}
+.cd>i{font-size:.7rem}}
+
 /* 欄位少的表格不要被 min-width 逼出橫向捲動 */
 .tw.narrow table{min-width:0}
 /* 回饋計算機的並排比較表 */
@@ -363,5 +391,5 @@ border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
 票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
 實際訂購由合作平台完成：機票／住宿／行程與一日遊／交通票／租車／機場接送 Trip.com、景點門票 KKday、網卡與 eSIM Klook。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
-最後更新 2026-09-29 15:41　·　<a href="/">回首頁</a>
+最後更新 2026-09-29 16:19　·　<a href="/">回首頁</a>
 </p></div><script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toLowerCase(),a=f.dep.value,b=f.ret.value,t=b?"rt":"ow",u="https://tw.trip.com/flights/showfarefirst?dcity="+o+"&acity="+d+"&ddate="+a+(b?"&rdate="+b:"")+"&triptype="+t+"&class=y&quantity=1&locale=zh-TW&curr=TWD"+"&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1="+d;window.open(u,"_blank","noopener");return false;}</script><script>(function(){var n=document.querySelector("nav.top");if(!n)return;var d=[].slice.call(n.querySelectorAll(":scope>details"));function shut(x){d.forEach(function(o){if(o!==x)o.open=false})}d.forEach(function(o){o.addEventListener("toggle",function(){if(o.open)shut(o)})});document.addEventListener("click",function(e){if(!n.contains(e.target))shut(null);else if(e.target.closest&&e.target.closest(".dd a"))shut(null)});document.addEventListener("keydown",function(e){if(e.key==="Escape")shut(null)});})();</script></body></html>
