@@ -79,7 +79,17 @@ def build(d):
     return out
 
 
+# 指紋要讓 gen.py import 得到才有用。原本寫成 K.run() 裡的 lambda，
+# 藏在 if __name__ 區塊底下，gen.py 抓不到，圖卡過期的提醒就不會響。
+def payload(d):
+    """圖卡真正用到的欄位。改了這些才需要重跑，其他欄位變動不算。"""
+    return [d['bring'], [t['title'] for t in d['traps']], d['apply']['rows'],
+            d['notes'], d['checked'], d['thesis']]
+
+
+def fingerprint(d):
+    return K.digest(payload(d))
+
+
 if __name__ == '__main__':
-    K.run('jp-driving.json', OUT, build,
-          lambda d: [d['bring'], [t['title'] for t in d['traps']], d['apply']['rows'],
-                     d['notes'], d['checked'], d['thesis']])
+    K.run('jp-driving.json', OUT, build, payload)

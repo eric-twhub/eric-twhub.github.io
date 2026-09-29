@@ -130,7 +130,17 @@ def build(d):
     return out
 
 
+# 指紋要讓 gen.py import 得到才有用。原本寫成 K.run() 裡的 lambda，
+# 藏在 if __name__ 區塊底下，gen.py 抓不到，圖卡過期的提醒就不會響。
+def payload(d):
+    """圖卡真正用到的欄位。改了這些才需要重跑，其他欄位變動不算。"""
+    return [d['comparison'], list(d['_十家共通的生效條件'].items()),
+            d['checked']]
+
+
+def fingerprint(d):
+    return K.digest(payload(d))
+
+
 if __name__ == '__main__':
-    K.run('card-insurance.json', OUT, build,
-          lambda d: [d['comparison'], list(d['_十家共通的生效條件'].items()),
-                     d['checked']])
+    K.run('card-insurance.json', OUT, build, payload)
