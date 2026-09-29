@@ -494,10 +494,12 @@ def _month(m, cal, d):
     cells += '<div class="cell cl-pad"></div>' * tail
 
     fa = m.get('fare') or {}
+    _fd = ((cal.get('fare_src') or {}).get('generated') or '')[:10]
     if fa.get('enough'):
         fare = (f'<b>NT${fa["median"]:,}</b>'
-                f'<span>台北出發的中位來回票價<br>'
-                f'{fa["n"]} 筆樣本，最低 NT${fa["low"]:,}</span>')
+                f'<span>台北出發的中位來回票價，{fa["n"]} 筆樣本<br>'
+                f'最低 NT${fa["low"]:,}'
+                + (f'・{_fd} 抓取' if _fd else '') + '</span>')
     elif fa.get('n'):
         fare = ('<b class="z">樣本太少</b>'
                 f'<span>這個月只查到 {fa["n"]} 筆，不夠算出有意義的價格</span>')
@@ -537,9 +539,20 @@ def _month(m, cal, d):
 
 
 def payload(d):
-    """圖卡真正用到的欄位。generated 是每次建置都會變的時間戳，不能算進去。"""
+    """圖卡真正用到的欄位。
+
+    generated 是每次建置都會變的時間戳，不能算進去。
+    月票價也不算：那是每天重抓的快照，放進指紋的話每天都會喊過期，
+    喊久了就沒有人會理它，真正該重跑的時候也看不出來。
+    圖上的票價因此會跟當日數字有落差，所以卡片上標了抓取日期。
+    """
+    cal = d.get('cal')
+    if cal:
+        cal = dict(cal, months=[{k: v for k, v in m.items() if k != 'fare'}
+                                for m in cal.get('months') or []],
+                   fare_src=None)
     return [d['year'], d['checked'], d['fest_checked'], d['partial'],
-            d['runs'], d['leave'], d['fest'], d['fest_missing'], d.get('cal')]
+            d['runs'], d['leave'], d['fest'], d['fest_missing'], cal]
 
 
 def fingerprint(d):
