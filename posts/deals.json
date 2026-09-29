@@ -13,69 +13,44 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,685（27 天有紀錄），這張低 31%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,691（28 天有紀錄），這張低 31%"
   ],
-  "med": 11288,
+  "med": 11193,
   "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=IT17929986001793007600000090RMQOKA17933079001793309700000090OKARMQ_c22163bf4cbfb1d0fe5e0768c79d253f_19795&search_date=24092026&expected_price_uuid=01a0d547-f08f-8030-2559-86483b569e8c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=7411&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 7762,
-   "hi": 12654,
-   "days": 29
+   "lo": 8282,
+   "hi": 12087,
+   "days": 30
   },
   "mbase": {
-   "avg": 10685,
-   "days": 27,
+   "avg": 10691,
+   "days": 28,
    "month": 10
   },
   "rank": 1,
   "n": 84
  },
  {
-  "slug": "2026-09-29-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$2,178",
-  "o": "台灣",
-  "c": "廣島",
-  "via": "大阪",
-  "price": 11283,
-  "air": "飛大阪再轉乘",
-  "fl_price": 7095,
-  "fl_rt": true,
-  "fl_to": "大阪",
-  "tr_twd": 2094,
-  "tr_mode": "山陽新幹線",
-  "dep": "2026-10-10",
-  "ret": "",
-  "stops": "山陽新幹線",
-  "cls": "transfer",
-  "reasons": [
-   "比直飛省 NT$2,178"
-  ],
-  "med": 13461,
-  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=D717916468001791660600000170TPEKIX17920977001792105500000190KIXTPE_7d76f88f74753be63096538c931c11a5_18844&search_date=28092026&expected_price_uuid=01a0e887-7e9e-8030-6f9c-ddc6f9715f85&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=TXp5D73dVx0YClWP1MT8hQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7095&marker=775639",
-  "hotelcity": "廣島",
-  "cslug": "hiroshima"
- },
- {
   "slug": "2026-09-29-transfer-fukuoka-nagasaki",
-  "title": "飛福岡轉乘去長崎，比直飛省 NT$5,504",
+  "title": "飛福岡轉乘去長崎，比直飛省 NT$5,502",
   "o": "台灣",
   "c": "長崎",
   "via": "福岡",
-  "price": 11296,
+  "price": 11298,
   "air": "飛福岡再轉乘",
   "fl_price": 8852,
   "fl_rt": true,
   "fl_to": "福岡",
-  "tr_twd": 1222,
+  "tr_twd": 1223,
   "tr_mode": "特急接力海鷗＋西九州新幹線",
   "dep": "2026-10-04",
   "ret": "",
   "stops": "特急接力海鷗＋西九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$5,504"
+   "比直飛省 NT$5,502"
   ],
   "med": 16800,
   "url": "https://www.aviasales.com/search/TPE0410FUK06101?t=IT17911149001791127200000145TPEFUK17912841001791289500000150FUKTPE_80dfb33a08ec7b3e7f07890b6a0e93bc_23461&search_date=23092026&expected_price_uuid=01a0cd16-8401-8040-658e-8e894b206d26&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Hamte9g3-pWgvWhkKleZVQ&expected_price_source=share&expected_price_currency=twd&expected_price=8852&marker=775639",
