@@ -624,6 +624,69 @@ NAV_JS = ('<script>(function(){var n=document.querySelector("nav.top");if(!n)ret
           'document.addEventListener("keydown",function(e){'
           'if(e.key==="Escape")shut(null)});})();</script>')
 
+# 圖卡原本是 <a target="_blank"> 另開分頁，看完一張要退回來才能點下一張。
+# 這段把同一個容器裡的圖卡收成一組，點開之後可以左右翻。沒有 JS 時
+# 連結照樣能開，所以不動原本的 href。
+LB_JS = ('<script>(function(){'
+         'var L=[].slice.call(document.querySelectorAll(\'a[href$=".png"]\'))'
+         '.filter(function(a){return a.querySelector("img")});'
+         'if(!L.length)return;'
+         'var gs=[],G=[];'
+         'L.forEach(function(a){var p=a.parentElement,i=gs.indexOf(p);'
+         'if(i<0){i=gs.length;gs.push(p);G.push([])}G[i].push(a);'
+         'a.setAttribute("data-g",i);a.setAttribute("data-i",G[i].length-1)});'
+         'var box,im,tt,nu,pv,nx,cur=[],at=0,back=null;'
+         'function cap(a){var b=a.querySelector("b");'
+         'return b?b.textContent:(a.querySelector("img").getAttribute("alt")||"")}'
+         'function pre(i){if(cur[i]){var x=new Image();x.src=cur[i].href}}'
+         'function show(i){at=i;var a=cur[i];'
+         'im.src=a.href;im.alt=a.querySelector("img").getAttribute("alt")||"";'
+         'tt.textContent=cap(a);nu.textContent=(i+1)+" / "+cur.length;'
+         'pv.disabled=(i===0);nx.disabled=(i===cur.length-1);'
+         # 只有一張時兩個箭頭都按不動，留在畫面上只會讓人一直想點
+         'pv.style.display=nx.style.display=(cur.length<2?"none":"");'
+         'pre(i-1);pre(i+1)}'
+         'function go(d){var i=at+d;if(i>=0&&i<cur.length)show(i)}'
+         'function shut(){box.className="lbx";document.body.style.overflow="";'
+         'im.src="";if(back)back.focus();back=null}'
+         'function build(){box=document.createElement("div");box.className="lbx";'
+         'box.setAttribute("role","dialog");box.setAttribute("aria-modal","true");'
+         'box.setAttribute("aria-label","圖卡");'
+         'box.innerHTML=\'<button class="lbc" aria-label="關閉">\\u00d7</button>\''
+         '+\'<button class="lbp" aria-label="上一張">\\u2039</button>\''
+         '+\'<button class="lbn" aria-label="下一張">\\u203a</button>\''
+         '+\'<figure><img alt=""><figcaption><b></b><span></span>\''
+         '+\'</figcaption></figure>\';'
+         'document.body.appendChild(box);'
+         'im=box.querySelector("img");tt=box.querySelector("figcaption b");'
+         'nu=box.querySelector("figcaption span");pv=box.querySelector(".lbp");'
+         'nx=box.querySelector(".lbn");'
+         'box.querySelector(".lbc").onclick=shut;'
+         'pv.onclick=function(e){e.stopPropagation();go(-1)};'
+         'nx.onclick=function(e){e.stopPropagation();go(1)};'
+         'box.addEventListener("click",function(e){'
+         'if(e.target===box||e.target.tagName==="FIGURE")shut()});'
+         'var sx=null;'
+         'box.addEventListener("touchstart",function(e){sx=e.touches[0].clientX},'
+         '{passive:true});'
+         'box.addEventListener("touchend",function(e){if(sx===null)return;'
+         'var d=e.changedTouches[0].clientX-sx;sx=null;'
+         'if(Math.abs(d)>45)go(d<0?1:-1)},{passive:true});'
+         'document.addEventListener("keydown",function(e){'
+         'if(box.className.indexOf("on")<0)return;'
+         'if(e.key==="Escape")shut();'
+         'else if(e.key==="ArrowLeft")go(-1);'
+         'else if(e.key==="ArrowRight")go(1)})}'
+         'document.addEventListener("click",function(e){'
+         'var a=e.target.closest?e.target.closest(\'a[data-g]\'):null;'
+         'if(!a||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;'
+         'e.preventDefault();if(!box)build();'
+         'back=a;cur=G[+a.getAttribute("data-g")];'
+         'box.className="lbx on";document.body.style.overflow="hidden";'
+         'show(+a.getAttribute("data-i"));'
+         'box.querySelector(".lbc").focus()});})();</script>')
+
+
 def widget_block(kind,title,note,**kw):
     code=(W.get(kind) or '').strip()
     if not code: return ''          # 未設定嵌入碼時整區不顯示，不留空殼
@@ -814,6 +877,34 @@ border:1px solid var(--line);border-radius:999px;padding:5px 11px;
 text-decoration:none;white-space:nowrap}
 .toc a:hover{color:var(--acc);border-color:var(--acc)}
 @media(max-width:560px){.toc a{font-size:.78rem;padding:4px 9px}}
+/* 圖卡燈箱：原本點圖是另開分頁，一次只能看一張，要按上一頁才能看下一張 */
+.lbx{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.93);
+display:none;align-items:center;justify-content:center;padding:46px 16px 0}
+.lbx.on{display:flex}
+.lbx figure{margin:0;max-width:min(96vw,720px);text-align:center}
+.lbx img{max-width:100%;max-height:76vh;width:auto;height:auto;display:block;
+margin:0 auto;border-radius:8px;background:#fff}
+.lbx figcaption{color:#fff;padding:11px 4px 10px;font-size:.88rem;line-height:1.5}
+.lbx figcaption b{display:block;font-weight:600}
+.lbx figcaption span{display:block;color:#a8a8a8;font-size:.78rem;margin-top:4px}
+.lbx button{position:absolute;background:rgba(255,255,255,.13);color:#fff;
+border:0;border-radius:999px;cursor:pointer;line-height:1;font-family:inherit;
+-webkit-tap-highlight-color:transparent}
+.lbx .lbc{top:12px;right:12px;width:38px;height:38px;font-size:1.4rem}
+.lbx .lbp,.lbx .lbn{top:50%;margin-top:-32px;width:44px;height:64px;
+font-size:1.9rem;border-radius:10px}
+.lbx .lbp{left:10px}
+.lbx .lbn{right:10px}
+.lbx button:hover{background:rgba(255,255,255,.27)}
+.lbx button[disabled]{opacity:.22;cursor:default}
+/* 手機把左右鍵移到底下，拇指構得到，也不會壓在圖上 */
+@media(max-width:560px){
+.lbx{padding:42px 8px 0}
+.lbx img{max-height:66vh}
+.lbx figcaption{padding-bottom:58px}
+.lbx .lbp,.lbx .lbn{top:auto;bottom:12px;margin-top:0;width:58px;height:40px;
+font-size:1.5rem}
+}
 /* 導覽列是 sticky，跳過去要留出它的高度，不然標題會被蓋住 */
 html{scroll-behavior:smooth}
 h2[id],h3[id]{scroll-margin-top:72px}
@@ -1096,7 +1187,7 @@ def foot():
 實際訂購由合作平台完成：{_partner_line()}。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
 最後更新 {NOWS}　·　<a href="{U("/")}">回首頁</a>
-</p></div>{SF_JS}{NAV_JS}</body></html>'''
+</p></div>{SF_JS}{NAV_JS}{LB_JS}</body></html>'''
 
 def _hh(t):
     """'HH:MM' → 小時整數；缺值回 None"""
@@ -2049,7 +2140,7 @@ if os.path.exists('ski.json'):
     _bg_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
-      '點圖看原尺寸。</p>'
+      '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.bgk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.bgk a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -2246,7 +2337,7 @@ if os.path.exists('ski-ticket.json'):
     _sk_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成十張圖，24 個雪場依截止日分成三張，'
-      '存下來或轉發都可以，不用註明出處。點圖看原尺寸。</p>'
+      '存下來或轉發都可以，不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.skk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.skk a{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;'
@@ -2842,7 +2933,7 @@ if os.path.exists('lasttrain.json'):
     _lt_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
-      '點圖看原尺寸。</p>'
+      '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.ltk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.ltk a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -3345,7 +3436,7 @@ if DRV:
     _dlg_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
-      '不用註明出處。點圖看原尺寸。</p>'
+      '不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.dlg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.dlg a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -3504,7 +3595,7 @@ if NOC:
     _nocg_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
-      '不用註明出處。點圖看原尺寸。</p>'
+      '不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.nocg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.nocg a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -3676,7 +3767,7 @@ if INS:
     _insg_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
-      '不用註明出處。點圖看原尺寸。</p>'
+      '不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.insg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.insg a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -3940,7 +4031,7 @@ if os.path.exists('japan-rules.json'):
     _rl_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
-      '點圖看原尺寸。</p>'
+      '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.rlk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.rlk a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -4377,7 +4468,7 @@ if os.path.exists('tokyo-picks.json'):
     _tp_cards = (
       '<h2>東京美食清單</h2>'
       '<p class="lede">同一份清單做成八張 1080×1350 的圖，'
-      '存下來或轉發都可以，不用註明出處。點圖看原尺寸。</p>'
+      '存下來或轉發都可以，不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.tpk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.tpk a{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;'
@@ -4650,7 +4741,7 @@ if SH:
         _sh_cards = (
           '<h2>整理成圖片</h2>'
           f'<p class="lede">同一份資料做成 {len(_shk)} 張圖，存下來或轉發都可以，'
-          '不用註明出處。點圖看原尺寸。</p>'
+          '不用註明出處。點圖放大，可以左右翻下一張。</p>'
           '<style>'
           '.sfk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
           '.sfk a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -5269,7 +5360,7 @@ if os.path.exists('jttp.json'):
     _jttp_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
-      '點圖看原尺寸。</p>'
+      '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.jttpk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.jttpk a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -5609,7 +5700,7 @@ if HOL:
     _hc_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
-      '點圖看原尺寸。</p>'
+      '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.hck{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.hck a{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;'
@@ -6221,7 +6312,7 @@ if HOL:
             _tw_cards = (
               '<h2>整理成圖片</h2>'
               f'<p class="lede">同一份資料做成 {len(_ck)} 張圖，'
-              '存下來或轉發都可以，不用註明出處。點圖看原尺寸。</p>'
+              '存下來或轉發都可以，不用註明出處。點圖放大，可以左右翻下一張。</p>'
               '<style>'
               '.twk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
               '.twk a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -6591,7 +6682,7 @@ if os.path.exists('card-insurance.json'):
     _cig_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成 8 張圖，存下來或轉發都可以，'
-      '不用註明出處。點圖看原尺寸。</p>'
+      '不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.cig{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.cig a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -6918,7 +7009,7 @@ document.addEventListener('DOMContentLoaded',function(){
     _es_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成九張圖，存下來或轉發都可以，不用註明出處。'
-      '點圖看原尺寸。</p>'
+      '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.esk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.esk a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -7815,7 +7906,7 @@ if os.path.exists('apple.json'):
     _ap_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
-      '點圖看原尺寸。</p>'
+      '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.apk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.apk a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -8220,7 +8311,7 @@ if os.path.exists('apple.json'):
         _rsg_cards = (
           '<h2>整理成圖片</h2>'
           '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
-          '不用註明出處。點圖看原尺寸。</p>'
+          '不用註明出處。點圖放大，可以左右翻下一張。</p>'
           '<style>'
           '.rsg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
           '.rsg a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -8939,7 +9030,7 @@ if os.path.exists('cards.json'):
     _cc_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
-      '點圖看原尺寸。</p>'
+      '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.cck{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.cck a{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;'
@@ -9713,7 +9804,7 @@ if os.path.exists('cards.json'):
         _cp_cards = (
           '<h2>整理成圖片</h2>'
           '<p class="lede">同一份資料做成九張圖，存下來或轉發都可以，不用註明出處。'
-          '點圖看原尺寸。</p>'
+          '點圖放大，可以左右翻下一張。</p>'
           '<style>'
           '.cpk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
           '.cpk a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -10245,7 +10336,7 @@ if HS:
     _hsg_cards = (
       '<h2>整理成圖片</h2>'
       '<p class="lede">同一份資料做成 7 張圖，存下來或轉發都可以，'
-      '不用註明出處。點圖看原尺寸。</p>'
+      '不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.hsg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.hsg a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -10434,7 +10525,7 @@ if BH:
         _bh_cards = (
           '<h2>整理成圖片</h2>'
           f'<p class="lede">同一份資料做成 {len(_bhk)} 張圖，'
-          '存下來或轉發都可以，不用註明出處。點圖看原尺寸。</p>'
+          '存下來或轉發都可以，不用註明出處。點圖放大，可以左右翻下一張。</p>'
           '<style>'
           '.bhk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
           '.bhk a{display:block;border:1px solid var(--line);border-radius:10px;'
@@ -10738,7 +10829,7 @@ if PC:
     _pcg_cards = (
       '<h2>整理成圖片</h2>'
       f'<p class="lede">同一份資料做成 {len(_PCC_CARD)} 張圖，存下來或轉發都可以，'
-      '不用註明出處。點圖看原尺寸。</p>'
+      '不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.pcg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
       '.pcg a{display:block;border:1px solid var(--line);border-radius:10px;'
