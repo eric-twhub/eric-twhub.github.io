@@ -651,8 +651,21 @@ LB_JS = ('<script>(function(){'
          'pv.style.display=nx.style.display=(cur.length<2?"none":"");'
          'pre(i-1);pre(i+1)}'
          'function go(d){var i=at+d;if(i>=0&&i<cur.length)show(i)}'
-         'function shut(){box.className="lbx";document.body.style.overflow="";'
-         'im.src="";if(back)back.focus();back=null}'
+         # 只設 overflow:hidden 的話，iOS Safari 在燈箱上直向滑動
+         # 還是會把底下的頁面拉走，關掉就不在原來的位置了。
+         'var ky=0;'
+         'function lock(){ky=window.pageYOffset;var b=document.body.style;'
+         'b.position="fixed";b.top=(-ky)+"px";b.left="0";b.width="100%"}'
+         'function unlock(){var b=document.body.style;'
+         'b.position="";b.top="";b.left="";b.width="";'
+         'var h=document.documentElement.style.scrollBehavior;'
+         'document.documentElement.style.scrollBehavior="auto";'
+         'window.scrollTo(0,ky);document.documentElement.style.scrollBehavior=h}'
+         'function shut(){box.className="lbx";unlock();'
+         'im.src="";'
+         # focus() 預設會把元素捲進畫面，那會蓋掉剛還原的捲動位置
+         'if(back)try{back.focus({preventScroll:true})}catch(e){back.focus()}'
+         'back=null}'
          'function build(){box=document.createElement("div");box.className="lbx";'
          'box.setAttribute("role","dialog");box.setAttribute("aria-modal","true");'
          'box.setAttribute("aria-label","圖卡");'
@@ -686,7 +699,7 @@ LB_JS = ('<script>(function(){'
          'if(!a||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;'
          'e.preventDefault();if(!box)build();'
          'back=a;cur=G[+a.getAttribute("data-g")];'
-         'box.className="lbx on";document.body.style.overflow="hidden";'
+         'lock();box.className="lbx on";'
          'show(+a.getAttribute("data-i"));'
          'box.querySelector(".lbc").focus()});})();</script>')
 
@@ -885,6 +898,7 @@ text-decoration:none;white-space:nowrap}
 .lbx{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.93);
 display:none;align-items:center;justify-content:center;padding:46px 16px 0}
 .lbx.on{display:flex}
+.lbx{overscroll-behavior:contain}
 .lbx figure{margin:0;max-width:min(96vw,720px);text-align:center}
 .lbx img{max-width:100%;max-height:76vh;width:auto;height:auto;display:block;
 margin:0 auto;border-radius:8px;background:#fff;transition:opacity .15s}
