@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-29 17:20",
+ "generated": "2026-09-29 18:12",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -1265,7 +1265,7 @@
     ],
     "fare": {
      "n": 15,
-     "median": 8444,
+     "median": 8448,
      "low": 6006,
      "enough": true
     },
@@ -1676,8 +1676,8 @@
      }
     ],
     "fare": {
-     "n": 18,
-     "median": 11864,
+     "n": 17,
+     "median": 11847,
      "low": 5920,
      "enough": true
     },
@@ -2052,10 +2052,10 @@
      }
     ],
     "fare": {
-     "n": 7,
-     "median": 15249,
+     "n": 8,
+     "median": 15471,
      "low": 10095,
-     "enough": false
+     "enough": true
     },
     "areas": [
      {
@@ -6180,7 +6180,7 @@
     "FUK",
     "OKA"
    ],
-   "generated": "2026-09-29 09:20"
+   "generated": "2026-09-29 10:12"
   },
   "last": "2027-12-31",
   "extra": [
