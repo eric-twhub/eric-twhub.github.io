@@ -1095,6 +1095,24 @@ HOL = {}
 JPH_RUN, TWH_RUN, HOL_OVER, HOL_DAYS = [], [], [], {}
 if os.path.exists('holidays.json'):
     HOL = json.load(open('holidays.json', encoding='utf-8'))
+
+    # 官方行事曆寫的是法定名稱，但讀者不是這樣叫它的。
+    # 1/1 的法定名稱是「中華民國開國紀念日」，大家講的是元旦；
+    # 叫它「國慶日」會跟 10/10 撞在一起，所以用元旦。
+    # 原始資料不動，只在顯示時換名字，出處才對得回去。
+    _TW_ALIAS = {'開國紀念日': '元旦'}
+
+    def _tw_name(n):
+        return _TW_ALIAS.get(n, n)
+
+    for _x in HOL['days']:
+        if _x.get('tw'):
+            _x['tw'] = _tw_name(_x['tw'])
+    for _r in HOL['runs']['tw']:
+        _r['names'] = [_tw_name(n) for n in _r['names']]
+    for _o in HOL.get('overlaps') or []:
+        _o['names'] = [_tw_name(n) for n in _o['names']]
+
     JPH_RUN = HOL['runs']['jp']
     TWH_RUN = HOL['runs']['tw']
     HOL_OVER = HOL.get('overlaps') or []
