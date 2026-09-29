@@ -1,5 +1,5 @@
 {
- "_說明": "Threads 那串「東京男生必逛」留言裡被推薦的店，原樣抓下來。這是線索不是來源：店名、分店、營業狀態都還沒回查，不要直接上站。",
+ "_說明": "Threads 那串「東京男生必逛」留言裡被推薦的店，逐家回查之後的版本。state 有三種：ok 查到官方或官方等級來源、fix 店名或區域跟留言寫的不一樣、none 查不到官方頁。",
  "_來源貼文": "https://www.threads.com/@st.243_raymi/post/DdwX9pukznv",
  "_貼文互動": "432 讚・69 留言・43 轉發・416 分享（2026-09-29 擷取當下）",
  "grabbed": "2026-09-29",
@@ -16,22 +16,151 @@
    "kind": "潮牌與選物店",
    "note": "整串裡最完整的一份，按區分好。",
    "items": [
-    {"name": "Chrome Hearts 南青山旗艦店", "area": "南青山", "verified": false},
-    {"name": "Supreme 原宿店", "area": "原宿", "verified": false},
-    {"name": "HUMAN MADE 原宿", "area": "原宿", "verified": false},
-    {"name": "STUDIOUS 原宿", "area": "原宿", "verified": false},
-    {"name": "GR8", "area": "原宿（Laforet 原宿內）", "verified": false},
-    {"name": "NUBIAN 原宿", "area": "原宿", "verified": false},
-    {"name": "UNION TOKYO 原宿", "area": "原宿", "verified": false},
-    {"name": "MAIDENS SHOP", "area": "澀谷", "verified": false},
-    {"name": "BEAMS 澀谷", "area": "澀谷", "verified": false},
-    {"name": "ballaholic 澀谷", "area": "澀谷", "verified": false},
-    {"name": "Stussy 澀谷", "area": "澀谷", "verified": false},
-    {"name": "FREAK'S STORE 澀谷", "area": "澀谷", "verified": false},
-    {"name": "Kiko Kostadinov 澀谷", "area": "澀谷", "verified": false},
-    {"name": "WACKO MARIA 中目黑", "area": "中目黑", "verified": false},
-    {"name": "Visvim 中目黑", "area": "中目黑", "verified": false},
-    {"name": "nonnative 中目黑", "area": "中目黑", "verified": false}
+    {
+     "name": "Chrome Hearts 南青山旗艦店",
+     "area": "南青山",
+     "verified": false,
+     "state": "none",
+     "check_note": "查不到官方分店頁。搜尋結果出現的是第三方整理的「CHROME HEARTS HARAJUKU」，跟留言寫的南青山對不上，去之前自己確認一次。"
+    },
+    {
+     "name": "Supreme 原宿店",
+     "area": "原宿",
+     "verified": true,
+     "state": "ok",
+     "check_note": "Supreme 東京有澀谷、原宿、代官山、銀座四家，原宿店存在。本站沒查到官方單頁地址。"
+    },
+    {
+     "name": "HUMAN MADE 原宿",
+     "area": "原宿",
+     "verified": true,
+     "state": "fix",
+     "address": "東京都渋谷区神宮前1-11-6 ラフォーレ原宿 1F",
+     "hours": "11:00–20:00",
+     "check_note": "現有的叫 HUMAN MADE HARAJUKU，開在 Laforet 原宿 1F，不是路面店。另外官方公告新旗艦店 HUMAN MADE TOKYO 在神宮前6-25-10，預計 2026 年 8 到 9 月開幕，本站查不到實際開幕的公告，去之前先確認開了沒。",
+     "src": "https://humanmade.co.jp/news/x3u213jbx3m/",
+     "src_name": "HUMAN MADE 官方新聞稿"
+    },
+    {
+     "name": "STUDIOUS 原宿",
+     "area": "原宿",
+     "verified": true,
+     "state": "ok",
+     "address": "東京都渋谷区神宮前4-26-32",
+     "hours": "12:00–20:00",
+     "check_note": "官方店舖列表上的名稱是 STUDIOUS 原宿本店。",
+     "src": "https://studious.co.jp/shop/pages/st-storelist.aspx",
+     "src_name": "STUDIOUS 官方店舖一覽"
+    },
+    {
+     "name": "GR8",
+     "area": "原宿（Laforet 原宿內）",
+     "verified": true,
+     "state": "fix",
+     "address": "ラフォーレ原宿 2.5F",
+     "check_note": "在 Laforet 原宿沒錯，但樓層是 2.5F。百貨內的櫃位不好找，先記樓層。",
+     "src": "https://www.laforet.ne.jp/shop_search/shop66",
+     "src_name": "ラフォーレ原宿 官方店舖頁"
+    },
+    {
+     "name": "NUBIAN 原宿",
+     "area": "原宿",
+     "verified": true,
+     "state": "ok",
+     "address": "東京都渋谷区神宮前1-20-2",
+     "hours": "11:00–20:00",
+     "check_note": "官方名稱 NUBIAN HARAJUKU。同品牌在澀谷 PARCO 3F 另有一家。",
+     "src": "https://nubiantokyo.com/pages/store-harajuku",
+     "src_name": "NUBIAN 官方店舖頁"
+    },
+    {
+     "name": "UNION TOKYO 原宿",
+     "area": "原宿",
+     "verified": true,
+     "state": "ok",
+     "address": "東京都渋谷区神宮前2-26-5 1F",
+     "check_note": "在神宮前二丁目，屬於留言說的原宿沒錯。"
+    },
+    {
+     "name": "MAIDENS SHOP",
+     "area": "澀谷",
+     "verified": false,
+     "state": "none",
+     "check_note": "查不到官方頁，兩輪搜尋都沒有結果。不代表不存在，但本站不寫成有。"
+    },
+    {
+     "name": "BEAMS 澀谷",
+     "area": "澀谷",
+     "verified": false,
+     "state": "none",
+     "check_note": "BEAMS 在澀谷有數家不同業態的店，留言沒指明是哪一家，本站不替它選。"
+    },
+    {
+     "name": "ballaholic 澀谷",
+     "area": "澀谷",
+     "verified": true,
+     "state": "fix",
+     "address": "東京都渋谷区神宮前6-23-13 1F",
+     "hours": "12:00–20:00",
+     "check_note": "行政區是渋谷区沒錯，但位置在神宮前，走明治神宮前或原宿比走澀谷站近。把它排進澀谷那一段會多走一趟。"
+    },
+    {
+     "name": "Stussy 澀谷",
+     "area": "澀谷",
+     "verified": true,
+     "state": "ok",
+     "address": "東京都渋谷区神南1-14-5",
+     "hours": "11:00–20:00",
+     "check_note": "這家是真的在澀谷（神南）。另外原宿還有一家 Stüssy 原宿 Chapter，神宮前4-28-2，兩家不同。"
+    },
+    {
+     "name": "FREAK'S STORE 澀谷",
+     "area": "澀谷",
+     "verified": false,
+     "state": "none",
+     "check_note": "本站這次沒查到官方分店頁。"
+    },
+    {
+     "name": "Kiko Kostadinov 澀谷",
+     "area": "澀谷",
+     "verified": true,
+     "state": "fix",
+     "address": "2-32-3 Jingumae, Shibuya-ku Tokyo 150-0001",
+     "check_note": "品牌全球只有倫敦、洛杉磯、東京三家直營店，東京這家在神宮前二丁目。行政區是渋谷区，但位置在原宿一帶，不是澀谷站附近。",
+     "src": "https://kikokostadinov.com/pages/stores",
+     "src_name": "Kiko Kostadinov 官方店舖頁"
+    },
+    {
+     "name": "WACKO MARIA 中目黑",
+     "area": "中目黑",
+     "verified": true,
+     "state": "fix",
+     "address": "1F COM'S FORUM 2-3-2 HIGASHIYAMA MEGURO-KU TOKYO",
+     "hours": "12:00–20:00，公休不定",
+     "check_note": "旗艦店的名字是 PARADISE TOKYO，不叫 WACKO MARIA。地圖上搜品牌名可能找不到，要搜 PARADISE TOKYO。地址在目黒区東山，靠中目黑沒錯。",
+     "src": "https://wackomaria.co.jp/paradisetokyo",
+     "src_name": "WACKO MARIA 官方店舖頁"
+    },
+    {
+     "name": "Visvim 中目黑",
+     "area": "中目黑",
+     "verified": true,
+     "state": "fix",
+     "address": "東京都目黒区青葉台1-22-11",
+     "hours": "11:00–20:00",
+     "check_note": "這家的正式名稱是 VISVIM GENERAL STORE／VISVIM GALLERY，地址在青葉台不是中目黑（走得到，但地圖上不同町名）。另外表參道有 F.I.L. OMOTESANDO（神宮前5-9-17 B1）、GYRE 2F 也有一家。",
+     "src": "https://www.visvim.tv/jp/stockist_visvim/",
+     "src_name": "visvim 官方 stockist"
+    },
+    {
+     "name": "nonnative 中目黑",
+     "area": "中目黑",
+     "verified": true,
+     "state": "fix",
+     "address": "東京都目黒区青葉台1-16-7 朝日橋ビル 2F",
+     "hours": "11:00–19:00",
+     "check_note": "地址在青葉台，跟 visvim 那家同一條線上。營業到 19:00，比其他幾家早一小時關。"
+    }
    ]
   },
   {
@@ -40,14 +169,54 @@
    "kind": "日本服飾品牌（不是特定分店）",
    "note": "原貼文標題是「別再只逛 GU、UNIQLO」。這是品牌清單不是店址，要做的話得自己補分店。",
    "items": [
-    {"name": "RAGEBLUE", "verified": false},
-    {"name": "niko and...", "verified": false},
-    {"name": "graniph", "verified": false},
-    {"name": "BEAMS", "verified": false},
-    {"name": "FREAK'S STORE", "verified": false},
-    {"name": "Snow Peak", "verified": false},
-    {"name": "mont-bell", "verified": false},
-    {"name": "THE NORTH FACE（日版）", "verified": false}
+    {
+     "name": "RAGEBLUE",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "niko and...",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "graniph",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "BEAMS",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "FREAK'S STORE",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "Snow Peak",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "mont-bell",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "THE NORTH FACE（日版）",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    }
    ]
   },
   {
@@ -55,12 +224,52 @@
    "engagement": "各 1 到 5 讚",
    "kind": "單則推薦",
    "items": [
-    {"name": "nonnative", "by": "is_chencc", "note": "跟上面那份第 16 項重複", "verified": false},
-    {"name": "Bape", "by": "yifan526", "verified": false},
-    {"name": "Stussy", "by": "yifan526", "note": "重複", "verified": false},
-    {"name": "BEAMS Japan", "by": "yifan526", "note": "留言寫「beans japan」，應為 BEAMS JAPAN", "verified": false},
-    {"name": "LB★NATION（Lbwk）", "by": "yifan526", "note": "改裝車品牌 Liberty Walk，不是服飾", "verified": false},
-    {"name": "Mizuno 神宮外苑", "by": "sanichi_yo", "verified": false}
+    {
+     "name": "nonnative",
+     "by": "is_chencc",
+     "note": "跟上面那份第 16 項重複",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "Bape",
+     "by": "yifan526",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "Stussy",
+     "by": "yifan526",
+     "note": "重複",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "BEAMS Japan",
+     "by": "yifan526",
+     "note": "留言寫「beans japan」，應為 BEAMS JAPAN",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "LB★NATION（Lbwk）",
+     "by": "yifan526",
+     "note": "改裝車品牌 Liberty Walk，不是服飾",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    },
+    {
+     "name": "Mizuno 神宮外苑",
+     "by": "sanichi_yo",
+     "verified": false,
+     "state": "未查",
+     "check_note": "這一輪沒查。這是品牌不是特定分店，要做的話得先決定查哪一家。"
+    }
    ]
   }
  ],
@@ -70,5 +279,13 @@
   "wangry001：問他要看什麼 3C，原 PO 回「遊戲機或手機配件」，串到這裡沒有下文"
  ],
  "_原 PO 問但沒人回的": "燒肉、拉麵、海鮮。整串 69 則留言沒有一則回美食，全部都在回潮牌。",
- "_登入牆": "免登入只讀得到前面這些，頁面下方寫「登入即可查看更多回覆」，69 則留言沒有全部抓到。"
+ "_登入牆": "免登入只讀得到前面這些，頁面下方寫「登入即可查看更多回覆」，69 則留言沒有全部抓到。",
+ "checked": "2026-09-29",
+ "_三態": "none 是「本站查不到官方頁」，不是「這家店不存在」。查不到就寫查不到，不要算繪成沒有。",
+ "_查證結果": {
+  "ok": "查到官方或官方等級來源，跟留言寫的一致",
+  "fix": "店在，但店名、樓層或區域跟留言寫的不一樣，照留言走會找錯地方",
+  "none": "本站查不到官方頁，不代表不存在"
+ },
+ "_這一輪查了什麼": "只查 benny.58888 那份 16 家「有指名分店」的清單。wang.trip 那份是品牌不是店址，零散留言多數也只有品牌名，沒有分店就沒有東西可以回查，所以這一輪不碰。"
 }
