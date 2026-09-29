@@ -642,8 +642,8 @@ LB_JS = ('<script>(function(){'
          'function show(i){at=i;var a=cur[i];'
          # 換圖時標題馬上就變，但大圖要再下載一次，連續按下一張時
          # 會看到新標題配舊的圖。先淡掉，載好再顯示。
-         'im.style.opacity="0";im.onload=function(){im.style.opacity="1"};'
-         'im.src=a.href;if(im.complete)im.style.opacity="1";'
+         'im.style.opacity="0";im.onload=function(){im.style.opacity="1";place()};'
+         'im.src=a.href;if(im.complete){im.style.opacity="1";place()}'
          'im.alt=a.querySelector("img").getAttribute("alt")||"";'
          'tt.textContent=cap(a);nu.textContent=(i+1)+" / "+cur.length;'
          'pv.disabled=(i===0);nx.disabled=(i===cur.length-1);'
@@ -651,6 +651,14 @@ LB_JS = ('<script>(function(){'
          'pv.style.display=nx.style.display=(cur.length<2?"none":"");'
          'pre(i-1);pre(i+1)}'
          'function go(d){var i=at+d;if(i>=0&&i<cur.length)show(i)}'
+         # 箭頭釘在視窗兩邊的話，寬螢幕上離圖有 390px，滑鼠要跑很遠。
+         # 圖的寬度隨視窗高度變，算不出固定值，載好之後量了再擺。
+         'function place(){var r=im.getBoundingClientRect();if(!r.width)return;'
+         'if(r.left<62||innerWidth-r.right<62){box.classList.add("nb");'
+         'pv.style.left="";nx.style.right="";return}'
+         'box.classList.remove("nb");'
+         'pv.style.left=Math.round(r.left-58)+"px";'
+         'nx.style.right=Math.round(innerWidth-r.right-58)+"px"}'
          # 只設 overflow:hidden 的話，iOS Safari 在燈箱上直向滑動
          # 還是會把底下的頁面拉走，關掉就不在原來的位置了。
          'var ky=0;'
@@ -689,6 +697,7 @@ LB_JS = ('<script>(function(){'
          'box.addEventListener("touchend",function(e){if(sx===null)return;'
          'var d=e.changedTouches[0].clientX-sx;sx=null;'
          'if(Math.abs(d)>45)go(d<0?1:-1)},{passive:true});'
+         'addEventListener("resize",function(){if(box.className.indexOf("on")>=0)place()});'
          'document.addEventListener("keydown",function(e){'
          'if(box.className.indexOf("on")<0)return;'
          'if(e.key==="Escape")shut();'
@@ -915,13 +924,16 @@ font-size:1.9rem;border-radius:10px}
 .lbx .lbn{right:10px}
 .lbx button:hover{background:rgba(255,255,255,.27)}
 .lbx button[disabled]{opacity:.22;cursor:default}
-/* 手機把左右鍵移到底下，拇指構得到，也不會壓在圖上 */
+/* 圖兩側放不下按鈕時（手機、或很窄的視窗）移到底下，拇指構得到，
+   也不會壓在圖上。放不放得下由 JS 量圖的實際寬度決定，掛 nb 這個 class。 */
+.lbx.nb .lbp,.lbx.nb .lbn{top:auto;bottom:12px;margin-top:0;width:58px;
+height:40px;font-size:1.5rem;left:auto;right:auto}
+.lbx.nb .lbp{left:12px}
+.lbx.nb .lbn{right:12px}
+.lbx.nb figcaption{padding-bottom:58px}
 @media(max-width:560px){
 .lbx{padding:42px 8px 0}
 .lbx img{max-height:66vh}
-.lbx figcaption{padding-bottom:58px}
-.lbx .lbp,.lbx .lbn{top:auto;bottom:12px;margin-top:0;width:58px;height:40px;
-font-size:1.5rem}
 }
 /* 導覽列是 sticky，跳過去要留出它的高度，不然標題會被蓋住 */
 html{scroll-behavior:smooth}
