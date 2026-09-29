@@ -640,7 +640,11 @@ LB_JS = ('<script>(function(){'
          'return b?b.textContent:(a.querySelector("img").getAttribute("alt")||"")}'
          'function pre(i){if(cur[i]){var x=new Image();x.src=cur[i].href}}'
          'function show(i){at=i;var a=cur[i];'
-         'im.src=a.href;im.alt=a.querySelector("img").getAttribute("alt")||"";'
+         # 換圖時標題馬上就變，但大圖要再下載一次，連續按下一張時
+         # 會看到新標題配舊的圖。先淡掉，載好再顯示。
+         'im.style.opacity="0";im.onload=function(){im.style.opacity="1"};'
+         'im.src=a.href;if(im.complete)im.style.opacity="1";'
+         'im.alt=a.querySelector("img").getAttribute("alt")||"";'
          'tt.textContent=cap(a);nu.textContent=(i+1)+" / "+cur.length;'
          'pv.disabled=(i===0);nx.disabled=(i===cur.length-1);'
          # 只有一張時兩個箭頭都按不動，留在畫面上只會讓人一直想點
@@ -883,7 +887,7 @@ display:none;align-items:center;justify-content:center;padding:46px 16px 0}
 .lbx.on{display:flex}
 .lbx figure{margin:0;max-width:min(96vw,720px);text-align:center}
 .lbx img{max-width:100%;max-height:76vh;width:auto;height:auto;display:block;
-margin:0 auto;border-radius:8px;background:#fff}
+margin:0 auto;border-radius:8px;background:#fff;transition:opacity .15s}
 .lbx figcaption{color:#fff;padding:11px 4px 10px;font-size:.88rem;line-height:1.5}
 .lbx figcaption b{display:block;font-weight:600}
 .lbx figcaption span{display:block;color:#a8a8a8;font-size:.78rem;margin-top:4px}
