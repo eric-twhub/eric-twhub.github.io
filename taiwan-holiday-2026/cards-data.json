@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-29 16:53",
+ "generated": "2026-09-29 17:10",
  "year": "2026",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -739,6 +739,33 @@
       "makeup": false,
       "leave": null
      }
+    ],
+    "fest": [],
+    "fare": {
+     "n": 2,
+     "median": 7892,
+     "low": 7861,
+     "enough": false
+    },
+    "areas": [
+     {
+      "area": "hokkaido",
+      "name": "北海道",
+      "why": "全日本最早的紅葉。2026 年的預測是大雪山系九月中旬見頃，比京都早了兩個多月。",
+      "anchor": "大雪山系 紅葉見頃 9 月中旬（2026 年預測）",
+      "src": "https://tenki.jp/kouyou/",
+      "src_name": "日本気象協会 tenki.jp 紅葉情報"
+     },
+     {
+      "area": "kanto",
+      "name": "關東",
+      "why": "殘暑還在，但颱風季也還在。九月去東京的好處是暑假結束、人潮退掉，住宿比八月便宜。"
+     },
+     {
+      "area": "okinawa-islands",
+      "name": "沖繩・離島",
+      "why": "海水還溫，遊客比暑假少。要注意的是颱風，九月是沖繩颱風最多的月份之一，行程要留彈性。"
+     }
     ]
    },
    {
@@ -1116,6 +1143,58 @@
       "makeup": false,
       "leave": null
      }
+    ],
+    "fest": [
+     {
+      "name": "長崎宮日節",
+      "city": "長崎",
+      "start": "2026-10-07",
+      "end": "2026-10-09",
+      "est": false
+     },
+     {
+      "name": "時代祭",
+      "city": "京都",
+      "start": "2026-10-22",
+      "end": "2026-10-22",
+      "est": false
+     },
+     {
+      "name": "鞍馬火祭",
+      "city": "京都・鞍馬",
+      "start": "2026-10-22",
+      "end": "2026-10-22",
+      "est": false
+     }
+    ],
+    "fare": {
+     "n": 31,
+     "median": 7994,
+     "low": 5318,
+     "enough": true
+    },
+    "areas": [
+     {
+      "area": "kyushu",
+      "name": "九州",
+      "why": "長崎宮日節固定 10/7 到 10/9，諏訪神社的秋季大祭。十月的九州天氣穩定、颱風季也過了。",
+      "anchor": "長崎くんち 10/7–10/9",
+      "src": "https://nagasaki-kunchi.com/",
+      "src_name": "長崎傳統藝能振興會"
+     },
+     {
+      "area": "kansai",
+      "name": "關西",
+      "why": "時代祭與鞍馬火祭都固定在 10/22，白天看時代祭、晚上看鞍馬火祭是同一天的排法。京都的紅葉還要再等一個月。",
+      "anchor": "時代祭・鞍馬の火祭 10/22",
+      "src": "https://ja.kyoto.travel/",
+      "src_name": "京都市官方 京都観光Navi"
+     },
+     {
+      "area": "tohoku",
+      "name": "東北",
+      "why": "紅葉從東北的山區開始往下走，十月中下旬是奧入瀨與八幡平一帶的時候。"
+     }
     ]
    },
    {
@@ -1480,6 +1559,47 @@
       "jp_off": false,
       "makeup": false,
       "leave": null
+     }
+    ],
+    "fest": [
+     {
+      "name": "唐津宮日節",
+      "city": "佐賀・唐津",
+      "start": "2026-11-02",
+      "end": "2026-11-04",
+      "est": false
+     }
+    ],
+    "fare": {
+     "n": 30,
+     "median": 8978,
+     "low": 4701,
+     "enough": true
+    },
+    "areas": [
+     {
+      "area": "kansai",
+      "name": "關西",
+      "why": "京都紅葉見頃在十一月下旬。這是京都一年裡最擠的兩週，住宿要非常早訂。",
+      "anchor": "京都 紅葉見頃 11 月下旬（2026 年預測）",
+      "src": "https://tenki.jp/kouyou/",
+      "src_name": "日本気象協会 tenki.jp 紅葉情報"
+     },
+     {
+      "area": "kyushu",
+      "name": "九州",
+      "why": "唐津宮日節 11/2 到 11/4，聯合國教科文組織無形文化遺產。11/3 是日本的文化之日，本來就是假日。",
+      "anchor": "唐津くんち 11/2–11/4",
+      "src": "https://www.city.karatsu.lg.jp/page/4344.html",
+      "src_name": "唐津市 觀光課"
+     },
+     {
+      "area": "kanto",
+      "name": "關東",
+      "why": "東京的紅葉比京都晚，2026 年的預測是十一月底。十一月上半的東京是秋高氣爽但還看不到紅葉的空窗。",
+      "anchor": "東京 紅葉見頃 11 月底（2026 年預測）",
+      "src": "https://tenki.jp/kouyou/",
+      "src_name": "日本気象協会 tenki.jp 紅葉情報"
      }
     ]
    },
@@ -1858,6 +1978,41 @@
       "makeup": false,
       "leave": "行憲紀念日"
      }
+    ],
+    "fest": [
+     {
+      "name": "秩父夜祭",
+      "city": "埼玉・秩父",
+      "start": "2026-12-02",
+      "end": "2026-12-03",
+      "est": false
+     }
+    ],
+    "fare": {
+     "n": 15,
+     "median": 8434,
+     "low": 6006,
+     "enough": true
+    },
+    "areas": [
+     {
+      "area": "hokkaido",
+      "name": "北海道",
+      "why": "雪季開始。十二月的雪量還在累積，想要穩的粉雪要等一月，但這個月的雪票與住宿都比一月便宜。"
+     },
+     {
+      "area": "kanto",
+      "name": "關東",
+      "why": "秩父夜祭固定 12/2 與 12/3，日本三大曳山祭之一，冬天放花火。從東京當天往返得到。",
+      "anchor": "秩父夜祭 12/2–12/3",
+      "src": "https://www.chichibuji.gr.jp/event/yomatsuri/",
+      "src_name": "秩父觀光協會"
+     },
+     {
+      "area": "chubu",
+      "name": "中部・北陸",
+      "why": "本州雪場陸續開放，北陸的螃蟹季也在這個月。跨年那幾天全日本都貴，要避開。"
+     }
     ]
    },
    {
@@ -2235,10 +2390,56 @@
       "makeup": false,
       "leave": null
      }
+    ],
+    "fest": [
+     {
+      "name": "神戶光之祭典",
+      "city": "兵庫・神戶",
+      "start": "2027-01-29",
+      "end": "2027-02-07",
+      "est": false
+     }
+    ],
+    "fare": {
+     "n": 18,
+     "median": 11856,
+     "low": 5920,
+     "enough": true
+    },
+    "areas": [
+     {
+      "area": "hokkaido",
+      "name": "北海道",
+      "why": "雪季最穩的一段，粉雪品質全年最好。想滑雪或看流冰的話這個月最保險。"
+     },
+     {
+      "area": "kansai",
+      "name": "關西",
+      "why": "神戶光之祭典在 1 月下旬到 2 月上旬，2027 年是 1/29 到 2/7。冬天的關西人潮比櫻花季鬆很多。",
+      "anchor": "第32回神戸ルミナリエ 2027-01-29 – 02-07",
+      "src": "https://kobe-luminarie.jp/",
+      "src_name": "神戸ルミナリエ 官方網站"
+     },
+     {
+      "area": "okinawa-islands",
+      "name": "沖繩・離島",
+      "why": "台灣人冬天避寒的近距離選擇，一月白天多半在 18 到 21 度。海水太冷不適合下水，是散步與吃東西的季節。"
+     }
     ]
    }
   ],
   "cn_open": true,
+  "fare_src": {
+   "origin": "TPE",
+   "dests": [
+    "TYO",
+    "OSA",
+    "CTS",
+    "FUK",
+    "OKA"
+   ],
+   "generated": "2026-09-29 17:02"
+  },
   "last": "2026-12-31",
   "extra": [
    "2027-01"

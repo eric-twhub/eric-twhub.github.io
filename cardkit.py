@@ -123,7 +123,12 @@ def _check(ch, tmp, name, src):
         '.filter(e=>!e.classList.contains("foot")&&!e.classList.contains("list"));'
         'if(L)kids=kids.concat([...L.children]);'
         'const b=kids.length?Math.max(...kids.map(e=>e.getBoundingClientRect().bottom)):0;'
-        'return{gap:over>0?-over:Math.round(f-b)}})())</script></body>'))
+        # 整疊內容超過卡片高度時，頁尾會被推出 1350px 之外而裁掉。
+        # 只量「最後一塊到頁尾的距離」看不出這種，因為那個距離仍然是正的。
+        'const cb=document.querySelector(".card").getBoundingClientRect();'
+        'const spill=Math.round(document.querySelector(".foot")'
+        '.getBoundingClientRect().bottom-cb.bottom);'
+        'return{gap:spill>0?-spill:(over>0?-over:Math.round(f-b))}})())</script></body>'))
     r = subprocess.run([ch, '--headless', '--disable-gpu', '--dump-dom',
                         '--virtual-time-budget=1500', f'file://{os.path.abspath(probe)}'],
                        capture_output=True, text=True, timeout=60)

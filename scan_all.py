@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import json, os, urllib.request, urllib.parse, urllib.error, time, sys
+import json, os, urllib.request, urllib.parse, urllib.error, time, sys, datetime
 
 def _token():
     """優先讀環境變數（GitHub Actions），本機則回退到 .env"""
@@ -34,7 +34,15 @@ REGIONS = {
             ('SHI','下地島','沖繩')],
 }
 ORIGINS=['TPE','TSA','RMQ','KHH','TNN']
-MONTHS=['2026-09','2026-10']
+# 寫死月份的話，過了那兩個月就再也抓不到票價，而且不會有人發現，
+# 只會看到全站「目前沒有抓到票價」。改成從今天起算的本月與下個月。
+def _months(n=2):
+    t=datetime.date.today().replace(day=1); out=[]
+    for _ in range(n):
+        out.append(t.strftime('%Y-%m'))
+        t=(t.replace(day=28)+datetime.timedelta(days=7)).replace(day=1)
+    return out
+MONTHS=_months(2)
 
 def get(path,**p):
     p['token']=TOK

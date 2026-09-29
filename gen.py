@@ -5476,6 +5476,18 @@ if HOL:
     # 兩件事分散在不同來源，沒有人把它們排在同一張表上。
     FEST = (json.load(open('festivals.json', encoding='utf-8'))
             if os.path.exists('festivals.json') else None)
+    MG = (json.load(open('month-guide.json', encoding='utf-8'))
+          if os.path.exists('month-guide.json') else None)
+    # 逐月票價由 scan_months.py 產生，只抓台北出發的五個主要航點。
+    # 遠月查不到是正常的：航空公司還沒開賣，API 就沒有價格，
+    # 那種月份寧可寫「還沒開賣」也不要推估一個數字出來。
+    MF = {}
+    for _f in ('/tmp/scan_months.json', 'fares-monthly.json'):
+        if os.path.exists(_f):
+            MF = json.load(open(_f, encoding='utf-8'))
+            break
+    if MF:
+        write('fares-monthly.json', json.dumps(MF, ensure_ascii=False, indent=1))
 
     def _fest_year(y):
         """把祭典解析成某一年的日期。
@@ -5594,8 +5606,20 @@ if HOL:
                     'makeup': bool(not x.get('tw_off') and x['w'] >= 5),
                     'leave': leave.get(d, [None])[0],
                 })
-            months.append({'ym': ym, 'days': cells})
+            _mn = str(int(ym[5:7]))
+            _f = [{'name': f['name'], 'city': f['city'],
+                   'start': f['start'], 'end': f['end'],
+                   'est': f['conf_y'] == 'est'}
+                  for f in _fest_year(int(ym[:4]))
+                  if f['start'] and f['start'][:7] == ym]
+            months.append({
+                'ym': ym, 'days': cells, 'fest': _f,
+                'fare': (MF.get('months') or {}).get(ym),
+                'areas': ((MG or {}).get('months') or {}).get(_mn) or []})
         return {'months': months, 'cn_open': cn_open,
+                'fare_src': {'origin': MF.get('origin'),
+                             'dests': MF.get('dests'),
+                             'generated': MF.get('generated')} if MF else None,
                 'last': max(d for d in days if d[:4] == ys),
                 'extra': sorted({d[:7] for d in days if d[:4] != ys}),
                 'leave': {d: {'name': v[0], 'tot': v[1]} for d, v in leave.items()}}
@@ -5665,10 +5689,61 @@ if HOL:
                 + ('' if cn_open else
                    f'中國的 {ys} 年節假日國務院還沒公布，所以月曆上沒有中國的標記。')
                 + f'資料只到 {last}，之後的不列。</p>')
+        # 每個月適合去哪裡：票價、當地大型活動、三個地區。
+        # 這一段跟月曆圖卡讀同一份資料。
+        _mg_rows = ''
+        for _m in cd['months']:
+            _fa = _m.get('fare') or {}
+            if _fa.get('enough'):
+                _fc = (f'<td class="nm"><b>{money(_fa["median"])}</b>'
+                       f'<br><small style="color:var(--dim)">中位價・'
+                       f'{_fa["n"]} 筆<br>最低 {money(_fa["low"])}</small></td>')
+            elif _fa.get('n'):
+                _fc = (f'<td class="dimcell"><small>只查到 {_fa["n"]} 筆<br>'
+                       f'不夠算</small></td>')
+            else:
+                _fc = '<td class="dimcell"><small>還沒開賣</small></td>'
+            _ac = ''.join(
+                f'<div style="padding:4px 0"><a href="{U("/" + a["area"] + "/")}">'
+                f'<b>{html.escape(a["name"])}</b></a>　'
+                f'<small>{html.escape(a["why"])}</small>'
+                + (f'<br><small style="color:var(--dim)">依據：'
+                   f'{html.escape(a["anchor"])}　'
+                   f'<a href="{a["src"]}" target="_blank" rel="nofollow noopener">'
+                   f'{html.escape(a["src_name"])} →</a></small>'
+                   if a.get('anchor') else '')
+                + '</div>' for a in (_m.get('areas') or []))
+            _fe = ('、'.join(
+                f'{html.escape(f["name"])} {_dm(f["start"], f["end"])}'
+                + ('（推估）' if f['est'] else '')
+                for f in _m.get('fest') or []) or '—')
+            _mg_rows += (
+                f'<tr><td class="nm"><b>{int(_m["ym"][:4])} 年 '
+                f'{int(_m["ym"][5:7])} 月</b></td>{_fc}'
+                f'<td class="nm">{_ac or "—"}</td>'
+                f'<td class="nm"><small>{_fe}</small></td></tr>')
+        _mg_block = ''
+        if _mg_rows and MG:
+            _fs = cd.get('fare_src') or {}
+            _mg_block = (
+              '<h2>每個月適合去哪裡</h2>'
+              f'<p class="lede">{html.escape(MG["_怎麼選的"])}</p>'
+              '<div class="tw"><table><tr><th>月份</th><th>台北出發票價</th>'
+              '<th>三個地區</th><th>當地大型活動</th></tr>'
+              + _mg_rows + '</table></div>'
+              + (f'<p class="disc">票價是台北出發到'
+                 f'{"、".join(_fs.get("dests") or [])}五個航點的來回含稅中位價，'
+                 f'抓取於 {_fs.get("generated") or "—"}。'
+                 '遠月寫「還沒開賣」是因為航空公司還沒放出那個月的機位，'
+                 '不是那個月沒有航班。票價每天變動，這是抓取當下的快照。</p>'
+                 if _fs.get('generated') else '')
+              + f'<p class="disc">{html.escape(MG["_不是保證"])}</p>')
+
         return (f'<h2>{ys} 年月曆</h2>'
                 '<p class="lede">哪幾天放假、哪幾天請了最划算，直接標在日期上。'
                 '三國的假日名稱都寫在格子裡，出發前掃一眼就知道那幾天日本或中國'
-                '是不是也在放假。</p>' + lg + '<div class="cal">' + out + '</div>' + note)
+                '是不是也在放假。</p>' + lg + '<div class="cal">' + out + '</div>'
+                + note + _mg_block)
 
     def _tw_year_page(Y):
         ys = str(Y)

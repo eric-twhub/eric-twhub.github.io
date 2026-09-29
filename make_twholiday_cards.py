@@ -49,11 +49,11 @@ CSS = """
  font-size:22px;color:#8a847c;padding:0 0 8px;text-align:center}
 .cgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
 .cell{border:2px solid #e5e3de;border-radius:10px;padding:8px 7px;background:#fff;
- min-height:118px;overflow:hidden}
+ min-height:78px;overflow:hidden}
 .cell.cl-pad{border:0;background:none;min-height:0}
 .cell b{display:block;font-size:26px;font-weight:800;color:#8a847c;line-height:1.1}
-.cell s{display:block;text-decoration:none;font-size:19px;line-height:1.35;
- margin-top:5px;word-break:break-all}
+.cell s{display:block;text-decoration:none;font-size:18px;line-height:1.3;
+ margin-top:4px;word-break:break-all}
 .cell.cl-we{background:#eceae5;border-color:#e0ddd6}
 .cell.cl-hol{background:#fbe3dd;border-color:#eeb6a6}
 .cell.cl-hol b{color:#b3391c}
@@ -62,11 +62,27 @@ CSS = """
 .cell.cl-mk{background:#e6f0f7;border-color:#b9d8ea}
 .cell u{display:inline-block;text-decoration:none;font-size:18px;font-weight:700;
  color:#fff;background:#c2410c;border-radius:5px;padding:1px 7px;margin-top:5px}
-.clg{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:20px;color:#63605c;
- margin-top:14px}
+.clg{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:19px;color:#63605c;
+ margin-top:12px}
 .clg span{display:flex;align-items:center;gap:7px}
 .clg i{display:inline-block;width:20px;height:20px;border-radius:5px;
  border:2px solid #e5e3de;font-style:normal}
+/* 月曆下半：當月票價、祭典、推薦地區 */
+.mbot{display:flex;gap:12px;margin-top:14px}
+.mfare{flex:0 0 244px;background:#fff;border:2px solid #e5e3de;border-radius:14px;
+ padding:13px 16px}
+.mfare b{display:block;font-size:40px;font-weight:800;color:#c2410c;line-height:1.1;
+ font-variant-numeric:tabular-nums}
+.mfare b.z{font-size:26px;color:#8a847c}
+.mfare span{display:block;font-size:19px;color:#63605c;margin-top:7px;line-height:1.5}
+.marea{flex:1 1 auto;background:#fff;border:2px solid #e5e3de;border-radius:14px;
+ padding:9px 16px}
+.marea div{padding:6px 0;border-bottom:1px solid #eceae5}
+.marea div:last-child{border-bottom:0}
+.marea b{font-size:23px;font-weight:800;color:#c2410c;margin-right:9px}
+.marea s{text-decoration:none;font-size:19px;color:#3f3b37;line-height:1.45}
+.mfest{font-size:19px;color:#63605c;margin-top:10px;line-height:1.5}
+.mfest em{font-style:normal;color:#1a1a1a;font-weight:700}
 """
 
 _WK = '一二三四五六日'
@@ -476,6 +492,32 @@ def _month(m, cal, d):
         cells += f'<div class="cell {cls}"><b>{int(c["d"][8:10])}</b>{txt}</div>'
     tail = (7 - (lead + len(m['days'])) % 7) % 7
     cells += '<div class="cell cl-pad"></div>' * tail
+
+    fa = m.get('fare') or {}
+    if fa.get('enough'):
+        fare = (f'<b>NT${fa["median"]:,}</b>'
+                f'<span>台北出發的中位來回票價<br>'
+                f'{fa["n"]} 筆樣本，最低 NT${fa["low"]:,}</span>')
+    elif fa.get('n'):
+        fare = ('<b class="z">樣本太少</b>'
+                f'<span>這個月只查到 {fa["n"]} 筆，不夠算出有意義的價格</span>')
+    else:
+        fare = ('<b class="z">還沒開賣</b>'
+                '<span>航空公司還沒放出這個月的機位，所以查不到價格</span>')
+    # 圖卡只放第一句。完整說明留在頁面上，全部塞進來會撞到頁尾，
+    # 而第一句本來就是「為什麼是這個月」的那一句。
+    areas = ''.join(
+        f'<div><b>{E(a["name"])}</b>'
+        f'<s>{E(a["why"].split("。")[0])}</s></div>'
+        for a in (m.get('areas') or [])[:3])
+    fest = ''
+    if m.get('fest'):
+        fest = ('<div class="mfest">當地大型活動：'
+                + '、'.join(
+                    f'<em>{E(f["name"])}</em> {_short(f["start"], f["end"])}'
+                    + ('（推估）' if f['est'] else '')
+                    for f in m['fest'])
+                + '，那幾天當地住宿會緊。</div>')
     return (f'<div class="kick">{y} 年台灣連假月曆</div>'
             f'<h1>{mo} 月</h1>'
             f'<div class="sub">{E(sub)}</div>'
@@ -484,10 +526,14 @@ def _month(m, cal, d):
             '<span><i style="background:#ffedd8;border-color:#c2410c"></i>建議請假</span>'
             '<span><i style="background:#eceae5;border-color:#e0ddd6"></i>週末</span>'
             '<span>🇹🇼 台灣　🇯🇵 日本　🇨🇳 中國</span></div>'
-            '<div class="list" style="margin-top:18px">'
+            '<div class="list" style="margin-top:16px">'
             + '<div class="cwd">'
             + ''.join(f'<div>{w}</div>' for w in '一二三四五六日')
-            + '</div><div class="cgrid">' + cells + '</div></div>')
+            + '</div><div class="cgrid">' + cells + '</div></div>'
+            + '<div class="mbot">'
+            + f'<div class="mfare">{fare}</div>'
+            + (f'<div class="marea">{areas}</div>' if areas else '')
+            + '</div>' + fest)
 
 
 def payload(d):

@@ -44,6 +44,14 @@ jobs:
             exit 1
           fi
 
+      - name: 抓取逐月票價（月曆用）
+        env:
+          TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
+        # 這是補充資料，抓不到就沿用上一版（gen.py 會回退到 repo 裡的
+        # fares-monthly.json），不該因為它失敗就讓整個票價更新停掉。
+        continue-on-error: true
+        run: python3 scan_months.py
+
       - name: 更新日圓匯率
         run: python3 update_rate.py
 
