@@ -17,9 +17,7 @@ NT$7,411 的沖繩來回機票，不能帶行李箱。
 
 要比，就要比含行李之後的價格。
 
---- 連結回覆（主文發完，回自己一則） ---
 https://eric-twhub.github.io/japan-flight-baggage/
-
 
 ========================================================
 02_shrink.png
@@ -29,17 +27,15 @@ https://eric-twhub.github.io/japan-flight-baggage/
 
 用本站的即時票價實際算（廉航最低 ＋ 來回 20kg 託運 NT$1,900，對照一般航空最低）：
 
-・沖繩　價差 NT$2,416 → NT$516
+・沖繩　價差 NT$2,017 → NT$117
 ・東京　價差 NT$6,978 → NT$5,078
 ・大阪　價差 NT$7,369 → NT$5,469
 
-沖繩縮得最兇，少了 79%。
+沖繩縮得最兇，少了 94%。
 
 廉航還是比較便宜，只是沒有帳面上看起來那麼多。如果你本來就只帶手提行李，那廉航的優勢是完整的；要托運，這筆錢一定要算進去。
 
---- 連結回覆（主文發完，回自己一則） ---
 https://eric-twhub.github.io/japan-flight-baggage/
-
 
 ========================================================
 03_timing.png
@@ -62,10 +58,7 @@ https://eric-twhub.github.io/japan-flight-baggage/
 
 2026/3/29 – 2026/10/24（台灣出發，單人單航段，新台幣）
 出處：台灣虎航官方行李價目表
-
---- 連結回覆（主文發完，回自己一則） ---
 https://eric-twhub.github.io/japan-flight-baggage/
-
 
 ========================================================
 04_fares.png
@@ -83,9 +76,7 @@ https://eric-twhub.github.io/japan-flight-baggage/
 
 本站只列出逐項對過官方頁面的 3 家，其餘 15 家還沒查證就先空著。
 
---- 連結回覆（主文發完，回自己一則） ---
 https://eric-twhub.github.io/japan-flight-baggage/
-
 
 ========================================================
 05_end.png
@@ -108,5 +99,4 @@ https://eric-twhub.github.io/japan-flight-baggage/
 5　全服務航空也要看艙等
 免費件數依訂位艙等而定，促銷票不一定含兩件
 
---- 連結回覆（主文發完，回自己一則） ---
 https://eric-twhub.github.io/japan-flight-baggage/
