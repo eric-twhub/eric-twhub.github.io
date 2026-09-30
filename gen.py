@@ -4266,7 +4266,7 @@ if os.path.exists('threads-hub.json'):
       + '<div class="today">'
         f'<div class="tday">更新於 {TH["checked"]}</div>'
         f'<div class="tans">目前 <b>{len(TH["items"])} 個話題</b></div>'
-        f'<div class="tsub">{html.escape(TH["_為什麼做這件事"])}</div></div>'
+        '</div>'
       + _th_css
       + _th_body
       # 這三段不進書籤：讀者在這頁要跳的是那 11 則，
