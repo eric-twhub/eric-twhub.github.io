@@ -4263,7 +4263,6 @@ if os.path.exists('threads-hub.json'):
            '<script type="application/ld+json">' + th_ld + '</script>')
       + crumbs([('首頁', '/'), ('Threads 日本熱搜', None)]) + topnav()
       + '<h1>Threads 上的日本旅遊話題</h1>'
-      + f'<p class="lede">{html.escape(TH["_說明"])}</p>'
       + '<div class="today">'
         f'<div class="tday">更新於 {TH["checked"]}</div>'
         f'<div class="tans">目前 <b>{len(TH["items"])} 個話題</b></div>'
