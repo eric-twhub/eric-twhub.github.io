@@ -8,7 +8,7 @@
 是工作用的欄位，頁面沒有算繪，圖卡就不放，免得圖上講的和站上對不起來。
 
 用法：python3 make_coupon_cards.py
-輸出：japan-coupon/cards/cp-01.png … -08.png
+輸出：japan-coupon/cards/cp-01.png … -12.png
 """
 import json, os, re, sys, shutil, subprocess, tempfile, hashlib, datetime
 import html as htm
@@ -29,7 +29,8 @@ FORM = {'tap': ('點開條碼', '官方禁止截圖，要現場點開啟用'),
 def fingerprint(d):
     """圖卡真正用到的欄位的指紋。"""
     pay = [[s.get(k) for k in ('name', 'jp', 'cat', 'rate', 'max', 'tax_min',
-                               'form', 'expires', 'tiers')] + [s.get('steps')]
+                               'form', 'expires', 'tiers', 'note', 'combo')]
+           + [s.get('steps'), s.get('watch')]
            for s in d['stores']]
     pay.append([d['checked'], d['order'], d['tax_note']])
     return hashlib.sha1(json.dumps(pay, ensure_ascii=False,
@@ -131,7 +132,7 @@ def yen(v):
 
 
 def build(d, today):
-    n = 9
+    n = 12
     sts = d['stores']
     fnote = f'發券頁逐家查證於 {d["checked"]}'
     out = []
@@ -293,12 +294,89 @@ def build(d, today):
            else '<span class="tag">沒有列入</span>')
         + f'</b><s>{E(x["why"])}</s></div>' for x in (no + soft))
     inner = ('<div class="kick">哪些數字站得住</div>'
-             f'<h1>查不到官方發券頁的 <em>{len(no)} 家</em></h1>'
-             f'<div class="sub">社群整理常出現，但找不到官方的旅客折扣頁，'
+             f'<h1>沒有官方發券頁的 <em>{len(no)} 家</em></h1>'
+             f'<div class="sub">社群整理常出現，但這幾家沒有給旅客的官方折扣頁，'
              f'所以沒有列進上面那 {len(d["stores"])} 家。'
              + (f'另有 {len(soft)} 家列了，但條件沒公布。' if soft else '') + '</div>'
              f'<div class="list">{rows}</div>' + foot(9, n, fnote))
     out.append(('cp-09.png', page(inner)))
+
+    # ── 10 百貨與電器量販 ──
+    # 藥妝那篇已經單獨發過，這組是給百貨與免稅店那篇用的。
+    shop = [s for s in sts if s.get('cat') != '藥妝']
+    shop.sort(key=lambda s: (dead(s), -s['max']))
+    def _min(s):
+        # tax_min 各家寫法不一，欄位窄，只留金額。唐吉訶德那筆講的是用券門檻，
+        # 其餘是免稅門檻，兩種意思不能混在一起不標。
+        t = str(s['tax_min'])
+        amt = re.search(r'¥[\d,]+', t)
+        if not amt:
+            return E(t)
+        return amt.group(0) + ('<small>　用券</small>' if '可用券' in t else '')
+
+    rows = ('<div class="hd"><div class="nm">店家</div>'
+            '<div class="rate">券的折扣</div><div class="exp">未稅門檻</div></div>')
+    for s in shop:
+        # 帳面最高與級距一樣的就不重複印一次
+        sub = '' if str(s['rate']) == f'{s["max"]}%' else f'<small>{E(str(s["rate"]))}</small>'
+        rows += (f'<div class="row"><div class="nm">{E(s["name"])}'
+                 f'<s>{E(s["cat"])}・{E(s["jp"])}</s></div>'
+                 f'<div class="rate">{E(str(s["max"]))}%{sub}</div>'
+                 f'<div class="exp">{_min(s)}</div></div>')
+    inner = ('<div class="kick">藥妝以外的那幾家</div>'
+             f'<h1>百貨與電器量販 <em>{len(shop)} 家</em></h1>'
+             '<div class="sub">免稅跟券是兩件事，這幾家都可以疊。</div>'
+             '<div class="legend">門檻看未稅金額，架上的含稅標價先除以 1.1。'
+             '除了唐吉訶德標「用券」的那筆，其餘是免稅門檻。</div>'
+             f'<div class="list">{rows}</div>' + foot(10, n, fnote))
+    out.append(('cp-10.png', page(inner)))
+
+    # ── 11 大丸那張券 ──
+    dm = next((s for s in sts if s['name'].startswith('大丸')), None)
+    if dm:
+        def _w(kw):
+            # 用關鍵字找，不用索引：coupons.json 的 watch 順序以後可能會變
+            return next((x for x in dm['watch'] if kw in x), '')
+
+        blocks = [('不是電子券，要到櫃台換',
+                   f'{dm["how"]}。{dm["form_note"]}'),
+                  ('只能用在化妝品賣場', _w('化妝品賣場')),
+                  ('這些賣場不適用', _w('不適用')),
+                  ('免稅還要再扣一筆手續費', _w('手續費')),
+                  ('限外國籍', _w('入境未滿'))]
+        rows = ''.join(f'<div class="blk"><b><i>!</i>{E(t)}</b><s>{E(b)}</s></div>'
+                       for t, b in blocks if b)
+        inner = ('<div class="kick">百貨那張最容易白跑</div>'
+                 f'<h1>{E(dm["name"].split()[0])} 的 '
+                 f'<em>{dm["max"]}% 券</em></h1>'
+                 f'<div class="sub">{E(dm["combo"])}。'
+                 '百貨那張看起來只有 5%，但真正會讓人白跑的是下面這幾條。</div>'
+                 f'<div class="list">{rows}</div>' + foot(11, n, fnote))
+        out.append(('cp-11.png', page(inner)))
+
+    # ── 12 逐家的地雷 ──
+    def _w(st, kw):
+        return next((x for x in (st.get('watch') or []) if kw in x), '')
+
+    # 每家挑不重複的兩條。watch 和 note 常講同一件事，直接接起來會變複讀。
+    PICK = [('唐吉訶德', lambda x: [x.get('form_note'), _w(x, '限用一張')]),
+            ('Bic Camera', lambda x: [x.get('note')]),
+            ('LAOX', lambda x: [_w(x, '指定分店'), _w(x, '排除')]),
+            ('愛電王', lambda x: [x.get('note')])]
+    rows = ''
+    for pre, pick in PICK:
+        st = next((x for x in sts if x['name'].startswith(pre)), None)
+        if not st:
+            continue
+        body = '。'.join(t.rstrip('。') for t in pick(st) if t) + '。'
+        rows += (f'<div class="blk"><b><i>!</i>{E(st["name"])}</b>'
+                 f'<s>{E(body)}</s></div>')
+    inner = ('<div class="kick">每一家都有自己的排除條款</div>'
+             '<h1>這四家<em>要先知道</em></h1>'
+             '<div class="sub">折扣率一樣不代表拿得到，'
+             '排除的商品與分店範圍各家不同。</div>'
+             f'<div class="list">{rows}</div>' + foot(12, n, fnote))
+    out.append(('cp-12.png', page(inner)))
     return out
 
 

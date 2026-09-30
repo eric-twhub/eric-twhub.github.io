@@ -7038,7 +7038,7 @@ document.addEventListener('DOMContentLoaded',function(){
     ]
     _es_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成九張圖，存下來或轉發都可以，不用註明出處。'
+      '<p class="lede">同一份資料做成十二張圖，存下來或轉發都可以，不用註明出處。'
       '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.esk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -9812,7 +9812,7 @@ if os.path.exists('cards.json'):
         _no = [x for x in _pend if not x.get('listed')]
         _soft = [x for x in _pend if x.get('listed')]
         _pend_block = (
-          ('<h2>查不到官方發券頁的，與條件沒公布的</h2>'
+          ('<h2>沒有官方發券頁的，與條件沒公布的</h2>'
            + f'<p class="lede">{html.escape(CP.get("_待複查說明", ""))}</p>'
            + '<div class="tldr"><ul>'
            + ''.join(
@@ -9833,7 +9833,10 @@ if os.path.exists('cards.json'):
          ('06', '三個常犯的錯', '最容易少拿到折扣的'),
          ('07', '券長什麼樣', '有些不能先截圖'),
          ('08', '11/1 免稅新制', '改成出境後才退'),
-         ('09', '查不到官方發券頁的', '哪些數字站得住'),
+         ('09', '沒有官方發券頁的', '哪些數字站得住'),
+         ('10', '百貨與電器量販 8 家', '藥妝以外的那幾家'),
+         ('11', '大丸・松坂屋的 5% 券', '百貨那張最容易白跑'),
+         ('12', '這四家要先知道', '各自的排除條款'),
         ]
         _cp_cards = (
           '<h2>整理成圖片</h2>'
