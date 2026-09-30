@@ -4215,7 +4215,6 @@ if os.path.exists('threads-hub.json'):
                     + html.escape(x['t']) + '</a>' for x in TH['items'])
                 + '</div></div>')
     _th_m = ''.join('<li>' + html.escape(x) + '</li>' for x in TH['_方法'])
-    _yt = TH['_不是Threads但同一套做法']
 
     _th_css = ('<style>'
                '.thc{border:1px solid var(--line);border-left:4px solid var(--acc);'
@@ -4266,13 +4265,6 @@ if os.path.exists('threads-hub.json'):
       + _th_css
       + f'<h2>逐則查證的 {len(TH["items"])} 個話題</h2>'
       + _th_jump + _th_body
-      + '<h2>不只 Threads：一支影片說「罰 100 萬」</h2>'
-      + '<div class="thc">'
-        f'<div class="thh"><b>{html.escape(_yt["t"])}</b></div>'
-        f'<p class="thq"><b>影片說</b>：{html.escape(_yt["claim"])}</p>'
-        f'<p class="thf"><b>查到的</b>：{html.escape(_yt["found"])}</p>'
-        f'<p class="thl"><a href="{U(_yt["page"])}">看本站整理 →</a>'
-        f'　·　<span style="color:var(--dim)">{_yt["date"]}</span></p></div>'
       + '<h2>自己看到類似說法時，怎麼判斷</h2>'
       + f'<ul class="lede">{_th_m}</ul>'
       + '<h2>常見問題</h2>' + th_html
