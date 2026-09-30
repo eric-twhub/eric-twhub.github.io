@@ -169,7 +169,7 @@ def main():
  <div><b>雪具託運</b><u style="color:#fb7185">158</u>
   <s>總尺寸上限（公分），運動器材沒放寬</s></div>
 </div>
-<div class="sub">市售雪板袋 150–170 公分。<b>158 是長寬高相加</b>——
+<div class="sub">市售雪板袋 150–170 公分。<b>158 是長寬高相加</b>，
 一片板單邊就吃掉整個額度。</div>
 <div class="swipe">{html.escape(RT)}・{md(SM["dep"])} 出發 7 晚・Trip.com {CK}</div></div>
 <div class="site">{site}</div></body></html>''')
@@ -190,7 +190,7 @@ def main():
 <table><colgroup><col style="width:42%"><col style="width:29%"><col style="width:29%">
 </colgroup><thead><tr><th>期間</th><th>最低</th><th>最高</th></tr></thead>
 <tbody>{trs}</tbody></table>
-<div class="kick">{md(gmin[0])} 的 {money(gmin[1])} 和 {md(gmax[0])} 的 {money(gmax[1])}——
+<div class="kick">{md(gmin[0])} 的 {money(gmin[1])} 和 {md(gmax[0])} 的 {money(gmax[1])}，
 同一條航線同樣 7 晚，差 {money(gmax[1]-gmin[1])}</div>
 <div class="unit">每日價格取自 Trip.com 來回日曆，是該日期組合的最低價，多數含轉機<br>
 價格每天變動，這是 {CK} 的快照，不是保證</div></div>
@@ -263,7 +263,7 @@ def main():
 
 但如果你要帶雪板，這張票可能用不了。
 
-{d0['air']}的託運行李總尺寸上限是 158 公分——注意是**長寬高相加**。市售雪板袋 150–170 公分，光是單邊就吃掉整個額度，而且官網對運動器材沒有另外放寬。
+{d0['air']}的託運行李總尺寸上限是 158 公分（注意是**長寬高相加**）。市售雪板袋 150–170 公分，光是單邊就吃掉整個額度，而且官網對運動器材沒有另外放寬。
 
 同一天含 23 公斤託運、雪具也收得了的是{bagged['air']} {money(bagged['price'])}，差 {money(bagged['price']-d0['price'])}。
 
@@ -275,7 +275,7 @@ def main():
 
 {wl}
 
-最低是 {md(gmin[0])} 的 {money(gmin[1])}，最高是 {md(gmax[0])} 的 {money(gmax[1])}——同一條航線同樣 7 晚，差 {money(gmax[1]-gmin[1])}。
+最低是 {md(gmin[0])} 的 {money(gmin[1])}，最高是 {md(gmax[0])} 的 {money(gmax[1])}。同一條航線同樣 7 晚，差 {money(gmax[1]-gmin[1])}。
 
 聖誕跨年那段沒有便宜的日子，整段都在一萬五以上。想省錢又要有雪，一月中是比較實際的選擇。
 
@@ -284,7 +284,7 @@ def main():
 {L}"""),
      ("03_direct", f"""查機票日曆看到「{money(SM['cheapest']['price'])}」，先別急著開心。
 
-{md(SM['dep'])} 出發、{md(SM['ret'])} 回，日曆上最低的那張是{SM['cheapest']['air']}——{SM['cheapest']['route']}，總時長 {SM['cheapest']['dur']}，{SM['cheapest']['note']}。
+{md(SM['dep'])} 出發、{md(SM['ret'])} 回，日曆上最低的那張是{SM['cheapest']['air']}：{SM['cheapest']['route']}，總時長 {SM['cheapest']['dur']}，{SM['cheapest']['note']}。
 
 真正的直飛最低是{d0['air']} {money(d0['price'])}，{d0['leg']}。
 
@@ -298,7 +298,7 @@ def main():
 
 {rl}
 
-最便宜的直飛（{d0['air']} {money(d0['price'])}）總尺寸只有 158 公分，運動器材沒放寬；最便宜「雪具帶得了又含託運」的是{bagged['air']} {money(bagged['price'])}——差 {money(bagged['price']-d0['price'])}。
+最便宜的直飛（{d0['air']} {money(d0['price'])}）總尺寸只有 158 公分，運動器材沒放寬；最便宜「雪具帶得了又含託運」的是{bagged['air']} {money(bagged['price'])}，差 {money(bagged['price']-d0['price'])}。
 
 這就是雪季訂票最容易踩的坑：比價只比票面，結果選到一張雪板上不去的票。
 

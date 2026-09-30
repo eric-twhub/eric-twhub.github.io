@@ -204,7 +204,7 @@ def main():
 <col style="width:20%"><col style="width:26%"></colgroup>
 <thead><tr><th>航點</th><th>廉航</th><th>＋行李</th><th>一般航空</th><th>價差變化</th>
 </tr></thead><tbody>{trs}</tbody></table>
-<div class="kick">{worst[0]}的價差從 {money(worst[1])} 縮到 {money(worst[2])}——
+<div class="kick">{worst[0]}的價差從 {money(worst[1])} 縮到 {money(worst[2])}，
 少了 {(worst[1]-worst[2])/worst[1]*100:.0f}%</div>
 <div class="unit">行李費以{html.escape(REF["airline"])}公告的 {REF["kg"]}kg 訂票時加購價估算，各航空不同<br>
 票價只取 Trip.com 的紀錄，方便自己對照；其他平台可能更低但台灣讀者未必查得到</div></div>
@@ -225,7 +225,7 @@ def main():
 <col style="width:17%"><col style="width:17%"></colgroup>
 <thead><tr><th>項目</th>''' + ''.join(f'<th>{html.escape(c)}</th>' for c in TG["cols"]) + f'''
 </tr></thead><tbody>{trs}</tbody></table>
-<div class="kick">機場才買只能買 15 公斤，要 {money(rap[4])}——
+<div class="kick">機場才買只能買 15 公斤，要 {money(rap[4])}，
 比訂票時買同樣 15 公斤（{money(r15[1])}）貴了將近一倍</div>
 <div class="unit">{html.escape(TG["period"])}　·　超重另按每公斤 {money(TG["over_kg"])} 收取<br>
 出處：{html.escape(TG["src_name"])}，查證於 {BG["checked"]}</div></div>
@@ -267,7 +267,7 @@ def main():
 
     L = site
     posts = [
-     ("01_cover", f"""{money(l0["price"])} 的{nm0}來回機票——不能帶行李箱。
+     ("01_cover", f"""{money(l0["price"])} 的{nm0}來回機票，不能帶行李箱。
 
 廉航的最低票價不含託運行李，那是「只能帶手提」的價格。
 
@@ -280,7 +280,7 @@ def main():
 要比，就要比含行李之後的價格。
 
 {L}"""),
-     ("02_shrink", f"""「廉航便宜好幾千」——把行李費加回去之後呢？
+     ("02_shrink", f"""「廉航便宜好幾千」，把行李費加回去之後呢？
 
 用本站的即時票價實際算（廉航最低 ＋ 來回 {REF["kg"]}kg 託運 {money(RT)}，對照一般航空最低）：
 
@@ -300,7 +300,7 @@ def main():
 ・打客服專線　{money(r20[3])}
 ・機場櫃檯　只能買 15 公斤，{money(rap[4])}
 
-機場才買 15 公斤要 {money(rap[4])}，訂票時買同樣 15 公斤只要 {money(r15[1])}——貴了將近一倍。
+機場才買 15 公斤要 {money(rap[4])}，訂票時買同樣 15 公斤只要 {money(r15[1])}，貴了將近一倍。
 
 超重更狠：每公斤 {money(TG["over_kg"])}。超個 3 公斤，就超過一整張 {REF["kg"]}kg 行李的錢。
 
@@ -309,7 +309,7 @@ def main():
 {TG["period"]}
 出處：{TG["src_name"]}
 {L}"""),
-     ("04_fares", f"""「買全服務航空就不用擔心行李」——不一定。
+     ("04_fares", f"""「買全服務航空就不用擔心行李」，不一定。
 
 中華航空官網寫明：經濟艙的免費託運件數，依航線與「訂位艙等」而定。最便宜的促銷艙等，和一般經濟艙可能不一樣。
 

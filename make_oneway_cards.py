@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """單程 vs 來回圖卡（1080×1350）。
 
-資料在 oneway.json——台北→福岡，同一組查詢參數，一天一天實查。
+資料在 oneway.json：台北→福岡，同一組查詢參數，一天一天實查。
 每張可單獨發。
 
 用法：python3 make_oneway_cards.py
@@ -176,7 +176,7 @@ def main():
 
     # ── 1 封面：那是單程 ─────────────────────────────────
     shot("01_cover", head_html(COVER) + f'''<div class="mid">
-<div class="q">「直飛含稅<br>{claim:,}」——那是單程</div>
+<div class="q">「直飛含稅<br>{claim:,}」，那是單程</div>
 <div class="a">來回不是乘以二</div>
 <div class="cmp">
  <div><b>你心裡算的來回</b><u>{money(guess)}</u><s>{claim:,} × 2</s></div>
@@ -257,7 +257,7 @@ def main():
     # ── 6 「未稅價」是怎麼把數字講小的 ─────────────────
     AA = D.get("airasia")
     if AA:
-        # 變數不要叫 rows——外層的 rows 是每日票價，後面的文案還要用
+        # 變數不要叫 rows，外層的 rows 是每日票價，後面的文案還要用
         _ar = ''.join(
             f'<div class="r"><div class="l"><b>{html.escape(r["route"])}</b>'
             f'<s>{html.escape(r["air"])}・{html.escape(r["leg"])}<br>'
@@ -270,11 +270,11 @@ def main():
             + '</i></div></div>'
             for r in AA["rows"])
         shot("06_tax", head_html(TAX) + f'''<div class="mid">
-<div class="ttl">「{AA["claim"]:,} 元起」<br>——那是<span style="color:#f472b6">未稅</span>價</div>
+<div class="ttl">「{AA["claim"]:,} 元起」<br>那是<span style="color:#f472b6">未稅</span>價</div>
 <div class="note">亞航秋季促銷。同一天（{md(AA["sample_date"])}）在能真的訂票的地方查到的是：</div>
 {_ar}
 <div class="kick">{html.escape(AA["kicker"])}</div>
-<div class="unit">他附的連結是 Trip.com 的亞航航空公司頁，那頁自己寫「價格包括所有費用」——
+<div class="unit">他附的連結是 Trip.com 的亞航航空公司頁，那頁自己寫「價格包括所有費用」，
 {AA["claim"]:,} 在那個連結上永遠看不到<br>
 查證於 {AA["checked"]}・價格每天變動</div></div>
 <div class="site">{site}</div></body></html>''')
@@ -289,7 +289,7 @@ def main():
 
 那是單程。
 
-貼文附的 Trip.com 連結裡參數是 triptype=0，日曆上只有一個出發日期，沒有回程——連結本身就寫著單程。
+貼文附的 Trip.com 連結裡參數是 triptype=0，日曆上只有一個出發日期，沒有回程，連結本身就寫著單程。
 
 同一條航線、同一個平台、同樣經濟艙，我把接下來半個月一天一天查過：最便宜的來回是 {md(best['dep'])} 出發的 {money(best['rt'])}。
 
@@ -305,12 +305,12 @@ def main():
 
 十五天裡只有 {under2} 天的來回低於單程的兩倍，中位數是 {med:.2f} 倍。
 
-{md(best['dep'])} 是這半個月來回最便宜的一天，{money(best['rt'])}。剛好也是單程最便宜的那天（{money(cheap_ow['ow'])}）——但這是巧合，不是規律，其他日子兩者對不上。
+{md(best['dep'])} 是這半個月來回最便宜的一天，{money(best['rt'])}。剛好也是單程最便宜的那天（{money(cheap_ow['ow'])}），但這是巧合，不是規律，其他日子兩者對不上。
 
 價格每天變動，這是 {CK} 的快照，不是保證。自己查一次最準。
 
 {L}"""),
-     ("03_ratio", f"""「單程 ×2 就是來回」——這個心算猜得準嗎？
+     ("03_ratio", f"""「單程 ×2 就是來回」，這個心算猜得準嗎？
 
 把台北→福岡接下來半個月的十五天全部算成倍數：
 
@@ -371,7 +371,7 @@ def main():
 
 還有一件事：{AA['missing']}
 
-而那則貼文附的 Trip.com 連結，其實不是任何一條航線的搜尋結果，是 Trip.com 的亞航航空公司頁。那一頁自己寫著「價格包括所有費用（含稅金、燃油費、行李費），無任何隱藏費用」——所以 {AA['claim']:,} 這個數字，在他給你的那個連結上永遠看不到。
+而那則貼文附的 Trip.com 連結，其實不是任何一條航線的搜尋結果，是 Trip.com 的亞航航空公司頁。那一頁自己寫著「價格包括所有費用（含稅金、燃油費、行李費），無任何隱藏費用」，所以 {AA['claim']:,} 這個數字，在他給你的那個連結上永遠看不到。
 
 促銷是真的，折扣也是真的。只是「起」跟「未稅」這兩個字，各自把數字講小了一次。
 

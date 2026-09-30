@@ -172,7 +172,7 @@ def main():
 <table><colgroup><col style="width:26%"><col style="width:44%"><col style="width:30%"></colgroup>
 <thead><tr><th>時點</th><th>發生什麼</th><th>對回饋</th></tr></thead>
 <tbody>{rows}</tbody></table>
-<div class="kick">活動寫「9/30 前」指的是請款日——
+<div class="kick">活動寫「9/30 前」指的是請款日。
 iPhone Duo 10 月中才開放預購，出貨更晚，短期活動很可能吃不到</div>
 <div class="unit">出處：Apple 台灣購物協助・付款與安全性</div></div>
 <div class="site">{site}</div></body></html>''')
@@ -192,7 +192,7 @@ iPhone Duo 10 月中才開放預購，出貨更晚，短期活動很可能吃不
 <tbody>{rows}</tbody></table>
 <div class="kick">官方原文：「⋯⋯不含 Apple Store 之交易」</div>
 <div class="unit">看到攻略寫「官網刷某卡有 3.3%」，先去該行的權益說明確認
-Apple Store 在不在認列範圍內——這種細節通常寫在條款的括號裡<br>
+Apple Store 在不在認列範圍內，這種細節通常寫在條款的括號裡<br>
 出處：國泰世華 CUBE 卡權益分級</div></div>
 <div class="site">{site}</div></body></html>''')
 
@@ -211,7 +211,7 @@ Apple Store 在不在認列範圍內——這種細節通常寫在條款的括�
 <thead><tr><th>期數</th><th>分期的價值</th><th>{C_RATE}% 回饋</th>
 <th>要多少報酬才打平</th></tr></thead><tbody>{rows}</tbody></table>
 <div class="kick">24 期要打平 {C_RATE}% 回饋，
-你的錢得有 {even(24):.1f}% 年化報酬——定存拿不到</div>
+你的錢得有 {even(24):.1f}% 年化報酬，定存拿不到</div>
 <div class="unit">分期價值 ≈ 本金 × 年報酬 × (期數＋1) ÷ 24　·　
 打平報酬率 ＝ 24 × 回饋率 ÷ (期數＋1)</div></div>
 <div class="site">{site}</div></body></html>''')
@@ -237,7 +237,7 @@ Apple Store 在不在認列範圍內——這種細節通常寫在條款的括�
 
     L = site
     posts = [
-     ("01_charge", f"""在 Apple 官網下單那天切換信用卡權益——沒有用。
+     ("01_charge", f"""在 Apple 官網下單那天切換信用卡權益，沒有用。
 
 因為 Apple 官網是**出貨才請款**。
 
@@ -250,7 +250,7 @@ Apple Store 在不在認列範圍內——這種細節通常寫在條款的括�
 
 出處：Apple 台灣購物協助・付款與安全性
 完整說明：{L}"""),
-     ("02_timeline", f"""「這個活動 9/30 前刷卡有加碼」——那你得先知道自己哪天被扣款。
+     ("02_timeline", f"""「這個活動 9/30 前刷卡有加碼」，那你得先知道自己哪天被扣款。
 
 Apple 官網實體商品是出貨才向發卡行請款，回饋活動也多以請款日判定。
 
@@ -261,7 +261,7 @@ Apple 官網實體商品是出貨才向發卡行請款，回饋活動也多以�
 iPhone Duo 10 月中才開放預購，出貨更晚。想靠 9 月底到期的活動衝回饋，很可能整個撲空。
 
 {L}"""),
-     ("03_channel", f"""「Apple 官網刷 CUBE 卡有 3.3%」——這句話是錯的。
+     ("03_channel", f"""「Apple 官網刷 CUBE 卡有 3.3%」，這句話是錯的。
 
 國泰世華 CUBE 卡「玩數位」方案的認列範圍，官方權益說明列得很細：App Store、Apple Music、iCloud、Apple TV+、Apple Arcade、Apple One、iTunes 等 Apple 媒體服務的訂閱與購買。
 
@@ -269,11 +269,11 @@ iPhone Duo 10 月中才開放預購，出貨更晚。想靠 9 月底到期的活
 
 在官網或直營店買一支手機，不屬於這個通路。
 
-看到攻略寫「官網刷某卡有 X%」，先去該行的權益說明確認 Apple Store 在不在認列範圍內——這種細節通常寫在條款的括號裡。
+看到攻略寫「官網刷某卡有 X%」，先去該行的權益說明確認 Apple Store 在不在認列範圍內，這種細節通常寫在條款的括號裡。
 
 出處：國泰世華 CUBE 卡權益分級
 {L}"""),
-     ("04_installment", f"""「分期 0 利率跟回饋只能二選一」——那到底該選哪個？
+     ("04_installment", f"""「分期 0 利率跟回饋只能二選一」，那到底該選哪個？
 
 算得出來。0 利率分期的價值，就是你留在手上那筆錢能生的利息。
 

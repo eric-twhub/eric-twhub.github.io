@@ -69,7 +69,7 @@ def card_html(d, site):
     u, mb = d.get("usual"), d.get("mbase")
     if mb and d["price"] < mb["avg"]:
         # 以月份為框架，符合大家規劃行程的方式；基準用「每天最便宜的平均」，
-        # 不用全部票價的平均——後者被冷門日期與轉機貴票拉高，折扣會灌水
+        # 不用全部票價的平均，後者被冷門日期與轉機貴票拉高，折扣會灌水
         off = round((1 - d["price"] / mb["avg"]) * 100)
         blk = (f'<div class="cmp">'
                f'<div class="u"><s>{mb["month"]} 月每天最便宜的平均</s>'
