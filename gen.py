@@ -1496,6 +1496,9 @@ PAGE_META = {}          # 產生路徑 → {title, h1, fare}，給 og 圖卡用
 
 
 _TOC_RE = re.compile(r'<h2(?![^>]*\bclass=)([^>]*)>(.*?)</h2>', re.S)
+# 不是段落標題、但也想進書籤的東西（例如熱搜頁那 11 則），
+# 在元素上標 data-toc="要顯示的字"，位置照文件順序排進同一排。
+_TOC_EXTRA = re.compile(r'<\w+[^>]*\bid="([^"]+)"[^>]*\bdata-toc="([^"]*)"')
 
 
 def _toc(content):
@@ -1507,10 +1510,12 @@ def _toc(content):
     只有三段以上才做。一兩段的頁面加了反而多一層東西要看。
     """
     hs = list(_TOC_RE.finditer(content))
-    if len(hs) < 3:
-        return content
-    out, seen, last = [], set(), 0
-    items = []
+    out, seen = [], set()
+    items = []          # (文件位置, id, 文字)
+    for m in _TOC_EXTRA.finditer(content):
+        if m.group(2).strip():
+            items.append((m.start(), m.group(1), html.unescape(m.group(2)).strip()))
+            seen.add(m.group(1))
     for m in hs:
         attrs, inner = m.group(1), m.group(2)
         txt = html.unescape(re.sub(r'<[^>]+>', '', inner)).strip()
@@ -1526,16 +1531,25 @@ def _toc(content):
             out.append((m.start(), m.end(),
                         f'<h2 id="{hid}"{attrs}>{inner}</h2>'))
         seen.add(hid)
-        items.append((hid, txt))
-    if len(items) < 3:
+        items.append((m.start(), hid, txt))
+    if len(items) < 3:       # 一兩條的頁面加了反而多一層東西要看
         return content
     # 由後往前換，才不會動到還沒處理的位置
     for s, e, rep_ in reversed(out):
         content = content[:s] + rep_ + content[e:]
+    items.sort(key=lambda x: x[0])
     toc = ('<div class="toc"><b>這一頁有</b><div>'
-           + ''.join(f'<a href="#{i}">{html.escape(t)}</a>' for i, t in items)
+           + ''.join(f'<a href="#{i}">{html.escape(t)}</a>' for _, i, t in items)
            + '</div></div>')
+    # 插在第一個 h2 或第一個 data-toc 元素前面，哪個先算哪個：
+    # 有些頁面的主體是一串卡片，第一個段落標題在很後面，
+    # 只看 h2 的話書籤會被推到內容底下。
     first = content.find('<h2')
+    ex = _TOC_EXTRA.search(content)
+    if ex:
+        # 往前退到那個元素的開角括號
+        st = content.rfind('<', 0, ex.start() + 1)
+        first = st if first < 0 else min(first, st)
     return content[:first] + toc + content[first:] if first > 0 else content
 
 
@@ -4192,7 +4206,7 @@ if os.path.exists('threads-hub.json'):
         # 標題給 id，上面那排才跳得過來。用標題文字的雜湊，跟 _toc() 同一套，
         # 之後插入或刪掉話題時舊連結不會跑掉。
         hid = 'tp-' + hashlib.sha1(it['t'].encode('utf-8')).hexdigest()[:6]
-        return (f'<div class="thc" id="{hid}">'
+        return (f'<div class="thc" id="{hid}" data-toc="{html.escape(it["t"])}">'
                 + f'<div class="thh"><b>{html.escape(it["t"])}</b>'
                 + (f'<span class="tpcat">{html.escape(it["scale"])}</span>'
                    if it.get('scale') else '')
@@ -4206,14 +4220,6 @@ if os.path.exists('threads-hub.json'):
                 + '</div>')
 
     _th_body = ''.join(_th_card(x, i) for i, x in enumerate(TH['items']))
-    # 這頁的主體就是這幾則，上面的書籤只會收到 h2，所以在這一段開頭
-    # 再列一次，讀者可以直接跳到想看的那一則。
-    _th_jump = ('<div class="toc tpj"><b>跳到哪一則</b><div>'
-                + ''.join(
-                    '<a href="#tp-'
-                    + hashlib.sha1(x['t'].encode('utf-8')).hexdigest()[:6] + '">'
-                    + html.escape(x['t']) + '</a>' for x in TH['items'])
-                + '</div></div>')
     _th_m = ''.join('<li>' + html.escape(x) + '</li>' for x in TH['_方法'])
 
     _th_css = ('<style>'
@@ -4263,12 +4269,14 @@ if os.path.exists('threads-hub.json'):
         f'<div class="tans">目前 <b>{len(TH["items"])} 個話題</b></div>'
         f'<div class="tsub">{html.escape(TH["_為什麼做這件事"])}</div></div>'
       + _th_css
-      + f'<h2>逐則查證的 {len(TH["items"])} 個話題</h2>'
-      + _th_jump + _th_body
-      + '<h2>自己看到類似說法時，怎麼判斷</h2>'
+      + _th_body
+      # 這三段不進書籤：讀者在這頁要跳的是那 11 則，
+      # 「常見問題」「順便看看」每一頁都有，列出來也分不出是哪一頁。
+      # _TOC_RE 會跳過帶 class 的 h2。
+      + '<h2 class="sec">自己看到類似說法時，怎麼判斷</h2>'
       + f'<ul class="lede">{_th_m}</ul>'
-      + '<h2>常見問題</h2>' + th_html
-      + '<h2>順便看看</h2><div class="cities">'
+      + '<h2 class="sec">常見問題</h2>' + th_html
+      + '<h2 class="sec">順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/tokyo/worth-flying-for/")}"><b>🍽️ 東京 46 家店</b>'
         f'<s>七千多則回覆挑出來的</s></a>'
       + f'<a class="ct" href="{U("/japan-travel-rules/")}"><b>📋 去日本的新制度</b>'
