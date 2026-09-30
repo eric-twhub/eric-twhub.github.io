@@ -98,9 +98,12 @@ jobs:
             python3 make_card_cards.py
             python3 make_ipcard_cards.py
             python3 make_bag_cards.py
+            # 這兩組原本只在本機產過，CI 沒跑，所以改了文案也不會更新。
+            python3 make_oneway_cards.py
+            python3 make_sapporo_cards.py
           fi
           # 中文若沒算進去會整片豆腐字，用檔案大小粗略檢查是否有算繪內容
-          for f in cards/calendar/*.png cards/cost/*.png cards/card/*.png cards/ipcard/*.png cards/bag/*.png; do
+          for f in cards/calendar/*.png cards/cost/*.png cards/card/*.png cards/ipcard/*.png cards/bag/*.png cards/oneway/*.png cards/sapporo/*.png; do
             [ -e "$f" ] || continue
             sz=$(wc -c < "$f")
             echo "  $f  ${sz} bytes"
