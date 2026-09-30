@@ -8,7 +8,7 @@
 是工作用的欄位，頁面沒有算繪，圖卡就不放，免得圖上講的和站上對不起來。
 
 用法：python3 make_coupon_cards.py
-輸出：japan-coupon/cards/cp-01.png … -13.png
+輸出：japan-coupon/cards/cp-01.png … -16.png
 """
 import json, os, re, sys, shutil, subprocess, tempfile, hashlib, datetime
 import html as htm
@@ -29,7 +29,7 @@ FORM = {'tap': ('點開條碼', '官方禁止截圖，要現場點開啟用'),
 def fingerprint(d):
     """圖卡真正用到的欄位的指紋。"""
     pay = [[s.get(k) for k in ('name', 'jp', 'cat', 'rate', 'max', 'tax_min',
-                               'form', 'expires', 'tiers', 'note', 'combo')]
+                               'form', 'expires', 'tiers', 'note', 'combo', 'src')]
            + [s.get('steps'), s.get('watch')]
            for s in d['stores']]
     pay.append([d['checked'], d['order'], d['tax_note']])
@@ -57,6 +57,16 @@ body{width:1080px;height:1350px;overflow:hidden;
  font-family:"Noto Sans CJK TC","Noto Sans TC","PingFang TC","Hiragino Sans",
  "Heiti TC",sans-serif;
  background:#f7f7f5;color:#1a1a1a;-webkit-font-smoothing:antialiased}
+.qrg{display:grid;grid-template-columns:1fr 1fr;gap:20px 26px;margin-top:26px}
+.qrc{background:#fff;border:1px solid #e5e3de;border-radius:16px;padding:18px 20px;
+ display:flex;gap:16px;align-items:center}
+.qrc svg{width:150px;height:150px;flex:0 0 150px;display:block}
+.qrc div{min-width:0}
+.qrc b{display:block;font-size:25px;line-height:1.3;letter-spacing:-.01em}
+.qrc s{display:block;text-decoration:none;color:#63605c;font-size:19px;
+ line-height:1.45;margin-top:5px}
+.qrc u{display:block;text-decoration:none;color:#c2410c;font-weight:700;
+ font-size:27px;margin-top:7px}
 .card{width:1080px;height:1350px;padding:58px 64px 0;display:flex;flex-direction:column;
  background:#f7f7f5}
 .kick{font-size:26px;color:#c2410c;font-weight:700;letter-spacing:.06em;margin-bottom:14px}
@@ -144,7 +154,7 @@ def yen(v):
 
 
 def build(d, today):
-    n = 13
+    n = 16
     sts = d['stores']
     fnote = f'發券頁逐家查證於 {d["checked"]}'
     out = []
@@ -423,7 +433,42 @@ def build(d, today):
              f'<div class="list">{rows}</div>' + foot(12, n, fnote))
     out.append(('cp-12.png', page(inner)))
     out[-2], out[-1] = out[-1], out[-2]   # 12 是排除條款、13 是門檻，頁碼本來就對
+
+    # ── 14-16 掃碼直接到官方發券頁 ──
+    # 券本身在店家的發券頁上，本站不重製券面。圖卡能做的是把人帶到那一頁，
+    # 所以放 QR：存下這張圖，到日本掃一下就開了。
+    try:
+        import segno
+    except ImportError:
+        sys.exit('缺 segno（產 QR 用）：pip3 install --user segno')
+
+    def qr_svg(url):
+        import io as _io
+        buf = _io.BytesIO()
+        segno.make(url, error='m').save(buf, kind='svg', xmldecl=False,
+                                        svgns=True, omitsize=True, border=2,
+                                        dark='#1a1a1a')
+        return buf.getvalue().decode('utf-8')
+
+    GROUPS = [('藥妝', '藥妝', ['藥妝']),
+              ('電器量販', '電器', ['電器']),
+              ('百貨・綜合・運動', '其他', ['百貨', '綜合', '運動'])]
+    for gi, (title, kick, cats) in enumerate(GROUPS):
+        items = [x for x in sts if x['cat'] in cats and x.get('src')]
+        items.sort(key=lambda x: -x['max'])
+        cells = ''.join(
+            f'<div class="qrc">{qr_svg(x["src"])}'
+            f'<div><b>{E(x["name"].split()[0])}</b>'
+            f'<s>{E(x["src_name"])}</s>'
+            f'<u>{E(str(x["rate"]))}</u></div></div>' for x in items)
+        inner = (f'<div class="kick">{E(kick)}・掃碼直接開</div>'
+                 f'<h1>{E(title)} <em>{len(items)} 家</em><br>的官方發券頁</h1>'
+                 '<div class="sub">券在店家自己的發券頁上，掃這裡直接開。'
+                 '結帳前出示，有幾家要當場點開才會啟用。</div>'
+                 f'<div class="qrg">{cells}</div>' + foot(14 + gi, n, fnote))
+        out.append((f'cp-{14 + gi}.png', page(inner)))
     return out
+
 
 
 def check(chrome, tmp, name, src):

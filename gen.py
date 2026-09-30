@@ -7038,7 +7038,7 @@ document.addEventListener('DOMContentLoaded',function(){
     ]
     _es_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成十三張圖，存下來或轉發都可以，不用註明出處。'
+      '<p class="lede">同一份資料做成十六張圖，最後三張掃 QR 可以直接開各店的官方發券頁，存下來或轉發都可以，不用註明出處。'
       '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.esk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -9838,6 +9838,9 @@ if os.path.exists('cards.json'):
          ('11', '大丸・松坂屋的 5% 券', '百貨那張最容易白跑'),
          ('12', '這四家要先知道', '各自的排除條款'),
          ('13', '快到門檻時再拿一件', '差一圓，差幾百圓'),
+         ('14', '藥妝 6 家的發券頁', '掃碼直接開'),
+         ('15', '電器量販 4 家的發券頁', '掃碼直接開'),
+         ('16', '百貨・綜合・運動的發券頁', '掃碼直接開'),
         ]
         _cp_cards = (
           '<h2>整理成圖片</h2>'
@@ -10024,6 +10027,21 @@ if os.path.exists('cards.json'):
             f'合計省約 15.4%。不是 10% ＋ 7% ＝ 17%。</div>'
             f'<div class="tbuf">再疊上刷卡回饋，最高可以壓到原價的 <b>七折出頭</b>。'
             f'下面可以用自己的金額和卡片試算。</div></div>'
+          + '<h2>直接去領券</h2>'
+          + '<p class="lede">每一家的券都在自己的官方發券頁上，下面是逐家的直達連結。'
+            '券要在結帳前出示，有幾家的券要當場點開才會啟用，不能先截圖。</p>'
+          + '<div class="cities">'
+          + ''.join(
+              f'<a class="ct" href="{html.escape(st["src"])}" '
+              f'rel="nofollow noopener" target="_blank">'
+              f'<b>{html.escape(st["name"])} →</b>'
+              f'<s>{html.escape(st.get("src_name", ""))}</s>'
+              f'<u>{html.escape(str(st["rate"]))}</u></a>'
+              for st in sorted(CP['stores'], key=lambda x: -x['max'])
+              if st.get('src'))
+          + '</div>'
+          + '<p class="disc">連到的是各店的官方發券頁或官方合作平台，本站不重製券面、'
+            '不提供券本身，也與這些店家沒有合作關係。券的版本與期限由店家隨時調整。</p>'
           + '<h2>這筆金額，哪家折最多</h2>'
           + '<p class="lede">輸入預計消費的含稅金額，算出各店扣完免稅與券之後的實付價，'
             '由低到高排序。級距不同，金額一變名次就會換人。</p>'
@@ -10054,8 +10072,8 @@ if os.path.exists('cards.json'):
             f'折扣幅度為常見級距，實際以店家當期公告為準。</p>'
           + fare_cta('tokyo', '算完省多少，機票呢')
           + f'<h2>{len(CP["stores"])} 家常見店家的折扣幅度</h2>'
-          + '<p class="lede">以下是各店常見的券折扣級距。券的版本與期限經常更換，'
-            '出發前一週再確認一次最準。本頁整理的是幅度，不提供券本身。</p>'
+          + '<p class="lede">以下是各店常見的券折扣級距，券本身在上面「直接去領券」那一區。'
+            '版本與期限經常更換，出發前一週再確認一次最準。</p>'
           + '<div class="tw"><table><thead><tr><th>店家</th><th>類別</th><th>常見折扣</th>'
             '<th>級距與條件</th><th>免稅／用券門檻</th><th>期限</th></tr></thead><tbody>'
             + _srows + '</tbody></table></div>'
@@ -10202,6 +10220,15 @@ if os.path.exists('cards.json'):
               + (('<h2>同類型的其他店</h2><div class="tw"><table><thead><tr>'
                   '<th>店家</th><th>類別</th><th>常見折扣</th></tr></thead><tbody>'
                   + _oth + '</tbody></table></div>') if _oth else '')
+              + ((f'<h2>去領券</h2>'
+                  f'<p class="lede">券在{html.escape(st["src_name"])}上，'
+                  f'結帳前出示。</p>'
+                  f'<div class="cities"><a class="ct" href="{html.escape(st["src"])}" '
+                  f'rel="nofollow noopener" target="_blank">'
+                  f'<b>{html.escape(st["name"])} 官方發券頁 →</b>'
+                  f'<s>{html.escape(st.get("how", ""))}</s>'
+                  f'<u>{html.escape(str(st["rate"]))}</u></a></div>')
+                 if st.get('src') else '')
               + '<h2>相關頁面</h2><div class="cities">'
               + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 實付價計算機</b>'
                 f'<s>折價券×免稅×刷卡回饋一起算</s></a>'
