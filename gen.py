@@ -4252,7 +4252,9 @@ if os.path.exists('threads-hub.json'):
         f'<div class="tday">更新於 {TH["checked"]}</div>'
         f'<div class="tans">目前 <b>{len(TH["items"])} 個話題</b></div>'
         f'<div class="tsub">{html.escape(TH["_為什麼做這件事"])}</div></div>'
-      + _th_css + _th_body
+      + _th_css
+      + f'<h2>逐則查證的 {len(TH["items"])} 個話題</h2>'
+      + _th_body
       + '<h2>不只 Threads：一支影片說「罰 100 萬」</h2>'
       + '<div class="thc">'
         f'<div class="thh"><b>{html.escape(_yt["t"])}</b></div>'
