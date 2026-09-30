@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-30-taichung-okinawa",
- "generated": "2026-09-30 21:48",
+ "generated": "2026-09-30 22:04",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -26,7 +26,7 @@
  "reasons": [
   "10 月出發的票，每天最便宜的平均要 NT$10,490（29 天有紀錄），這張低 29%"
  ],
- "med": 11211,
+ "med": 11212,
  "n_rt": 82,
  "others": [
   {
@@ -71,7 +71,7 @@
    "air": "JX",
    "airname": "星宇航空",
    "cls": "fsc",
-   "price": 9423,
+   "price": 9424,
    "dep": "2026-10-01",
    "ret": "2026-10-06",
    "dept": "16:40",
@@ -81,7 +81,7 @@
    "dur": 180,
    "dur_to": 90,
    "gate": "Trip.com",
-   "url": "https://www.aviasales.com/search/RMQ0110OKA06101?t=JX17908728001790881800000090RMQOKA17913132001791315000000090OKARMQ_1b05b354583dff6c6fd29b8338675dc4_24757&search_date=30092026&expected_price_uuid=01a0f088-6c61-8030-21d6-862b4e4c7b9c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0JLZ4zQBlenjtyIRNxxCpg&expected_price_source=share&expected_price_currency=twd&expected_price=9423&marker=775639"
+   "url": "https://www.aviasales.com/search/RMQ0110OKA06101?t=JX17908728001790881800000090RMQOKA17913132001791315000000090OKARMQ_1b05b354583dff6c6fd29b8338675dc4_24757&search_date=30092026&expected_price_uuid=01a0f088-6c61-8030-21d6-862b4e4c7b9c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0JLZ4zQBlenjtyIRNxxCpg&expected_price_source=share&expected_price_currency=twd&expected_price=9424&marker=775639"
   }
  ]
 }
