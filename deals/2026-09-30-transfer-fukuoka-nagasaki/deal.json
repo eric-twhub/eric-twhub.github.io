@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-09-30-transfer-fukuoka-nagasaki",
- "generated": "2026-09-30 14:17",
+ "generated": "2026-09-30 21:48",
  "kind": "transfer",
  "city": "nagasaki",
  "via": "fukuoka",
@@ -9,20 +9,20 @@
  "fare": {
   "o": "TPE",
   "d": "FUK",
-  "air": "AK",
-  "airname": "馬來西亞亞航",
+  "air": "TW",
+  "airname": "德威航空",
   "cls": "lcc",
-  "price": 8852,
-  "dep": "2026-10-04",
-  "ret": "2026-10-06",
-  "dept": "11:55",
-  "rett": "10:55",
+  "price": 10436,
+  "dep": "2026-10-22",
+  "ret": "2026-10-27",
+  "dept": "14:25",
+  "rett": "20:45",
   "rt": true,
-  "tr": 0,
-  "dur": 295,
-  "dur_to": 145,
+  "tr": 2,
+  "dur": 2150,
+  "dur_to": 190,
   "gate": "Farera",
-  "url": "https://www.aviasales.com/search/TPE0410FUK06101?t=IT17911149001791127200000145TPEFUK17912841001791289500000150FUKTPE_80dfb33a08ec7b3e7f07890b6a0e93bc_23461&search_date=23092026&expected_price_uuid=01a0cd16-8401-8040-658e-8e894b206d26&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Hamte9g3-pWgvWhkKleZVQ&expected_price_source=share&expected_price_currency=twd&expected_price=8852&marker=775639"
+  "url": "https://www.aviasales.com/search/TPE2210FUK27101?t=TW17926791001792763100001340TPECJUFUK17931339001793178900000810FUKOKATPE_94e1894a8cb3ee4e32cd72791f37789b_27750&search_date=27092026&expected_price_uuid=01a0e31b-1a35-8030-6f93-40ecc295c7cc&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=9Oii2YIwHNQWB2ytxfmLwQ&expected_price_source=share&expected_price_currency=twd&expected_price=10436&marker=775639"
  },
  "fare_rt": true,
  "jpy_text": "¥5,960",
@@ -34,6 +34,6 @@
  "route": "博多 → 長崎",
  "mode": "特急接力海鷗＋西九州新幹線",
  "tm": "約 1 小時 20 分",
- "total": 11300,
- "save": 5500
+ "total": 12884,
+ "save": 3916
 }
