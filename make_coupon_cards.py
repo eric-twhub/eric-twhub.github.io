@@ -8,7 +8,7 @@
 是工作用的欄位，頁面沒有算繪，圖卡就不放，免得圖上講的和站上對不起來。
 
 用法：python3 make_coupon_cards.py
-輸出：japan-coupon/cards/cp-01.png … -12.png
+輸出：japan-coupon/cards/cp-01.png … -13.png
 """
 import json, os, re, sys, shutil, subprocess, tempfile, hashlib, datetime
 import html as htm
@@ -18,7 +18,7 @@ OUT = os.path.join('japan-coupon', 'cards')
 SRC = 'coupons.json'
 E = htm.escape
 TAX = 10          # 日本消費稅，coupons.json 的 order 欄位寫明券以免稅後金額計算
-DEMO = 10000      # 試算用的含稅金額
+DEMO = 30000      # 試算用的含稅金額。太小的話各家實付只差幾十圓，看不出差別
 FORM = {'tap': ('點開條碼', '官方禁止截圖，要現場點開啟用'),
         'live': ('結帳前出示', '出示手機畫面或券面給店員掃'),
         'app': ('官方 App', '要先裝 App 並登入'),
@@ -127,12 +127,24 @@ def foot(i, n, note):
             f'<div class="pg">{i} / {n}</div></div>')
 
 
+def rate_at(s, untaxed):
+    """券的折扣看未稅金額落在哪一級，沒有級距的用單一費率。跟頁面同一套。"""
+    st = s.get('steps')
+    if not st:
+        return s['max']
+    r = 0
+    for amt, pc in st:
+        if untaxed >= amt:
+            r = pc
+    return r
+
+
 def yen(v):
     return f'¥{round(v):,}'
 
 
 def build(d, today):
-    n = 12
+    n = 13
     sts = d['stores']
     fnote = f'發券頁逐家查證於 {d["checked"]}'
     out = []
@@ -154,20 +166,24 @@ def build(d, today):
     naive = TAX + best['max']
 
     # ── 1 封面 ──
+    # 讀者要的是「我這筆會付多少」，不是「這家的券是幾 %」。封面直接給金額。
+    pays = sorted(((untaxed * (1 - rate_at(s, untaxed) / 100), s) for s in live),
+                  key=lambda x: x[0])
+    lo_pay, lo_s = pays[0]
+    hi_pay, hi_s = pays[-1]
     cover = ('<div class="kick">日本購物折扣</div>'
-             f'<h1>免稅 10% ＋ 券 {best["max"]}%<br><em>不是 {naive:g}%</em></h1>'
-             '<div class="sub">券是以免稅後的金額計算，所以兩個百分比不能相加。'
-             f'{len(sts)} 家的發券頁逐家查過。</div>'
+             f'<h1>含稅 {yen(DEMO)} 的東西<br>最低<em>實付 {yen(lo_pay)}</em></h1>'
+             f'<div class="sub">免稅先扣，券再以免稅後的金額計算。同一筆錢，'
+             f'挑對店與挑錯店差 {yen(hi_pay - lo_pay)}。</div>'
              '<div class="stat">'
-             f'<div><b>{len(sts)}</b><span>家店<br>逐家查證</span></div>'
-             f'<div><b>{hi["max"]}%</b><span>帳面最高（{E(hi["name"].split()[0])}）<br>'
-             + ('分級依據未公布' if hi.get('calc_caveat') else '　') + '</span></div>'
-             f'<div><b>{eff:.1f}%</b><span>實際總折扣<br>不是 {naive:g}%</span></div>'
-             f'<div><b>{sum(1 for s in sts if not s.get("expires"))}</b>'
-             '<span>家發券頁<br>沒標有效期</span></div></div>'
-             f'<div class="note">以含稅 {yen(DEMO)}、{E(best["name"].split()[0])} 的 '
-             f'{best["max"]}% 券為例：免稅後約 {yen(untaxed)}，再折 {best["max"]}% 是 '
-             f'{yen(after)}。省下 {yen(DEMO - after)}，等於 {eff:.1f}%。</div>'
+             f'<div><b>{yen(DEMO - lo_pay)}</b><span>最多省下<br>'
+             f'{E(lo_s["name"].split()[0])}</span></div>'
+             f'<div><b>{lo_pay / DEMO * 10:.1f} 折</b><span>相當於<br>原價的</span></div>'
+             f'<div><b>{yen(hi_pay - lo_pay)}</b><span>選錯店<br>多付的</span></div>'
+             f'<div><b>{len(sts)}</b><span>家店<br>逐家查證</span></div></div>'
+             f'<div class="note">兩個百分比不能相加。免稅 {TAX}% 加券 {best["max"]}% '
+             f'不是 {naive:g}%：免稅後約 {yen(untaxed)}，再折 {best["max"]}% 是 '
+             f'{yen(after)}，實際等於 {eff:.1f}%。</div>'
              + foot(1, n, fnote))
     out.append(('cp-01.png', page(cover, 'cover')))
 
@@ -314,20 +330,21 @@ def build(d, today):
             return E(t)
         return amt.group(0) + ('<small>　用券</small>' if '可用券' in t else '')
 
+    shop.sort(key=lambda s: (dead(s), untaxed * (1 - rate_at(s, untaxed) / 100)))
     rows = ('<div class="hd"><div class="nm">店家</div>'
-            '<div class="rate">券的折扣</div><div class="exp">未稅門檻</div></div>')
+            '<div class="rate">實付</div><div class="exp">省下</div></div>')
     for s in shop:
-        # 帳面最高與級距一樣的就不重複印一次
-        sub = '' if str(s['rate']) == f'{s["max"]}%' else f'<small>{E(str(s["rate"]))}</small>'
+        r = rate_at(s, untaxed)
+        pay = untaxed * (1 - r / 100)
         rows += (f'<div class="row"><div class="nm">{E(s["name"])}'
-                 f'<s>{E(s["cat"])}・{E(s["jp"])}</s></div>'
-                 f'<div class="rate">{E(str(s["max"]))}%{sub}</div>'
-                 f'<div class="exp">{_min(s)}</div></div>')
+                 f'<s>{E(s["cat"])}・這筆適用 {r}%</s></div>'
+                 f'<div class="rate">{yen(pay)}</div>'
+                 f'<div class="exp">{yen(DEMO - pay)}</div></div>')
     inner = ('<div class="kick">藥妝以外的那幾家</div>'
-             f'<h1>百貨與電器量販 <em>{len(shop)} 家</em></h1>'
-             '<div class="sub">免稅跟券是兩件事，這幾家都可以疊。</div>'
-             '<div class="legend">門檻看未稅金額，架上的含稅標價先除以 1.1。'
-             '除了唐吉訶德標「用券」的那筆，其餘是免稅門檻。</div>'
+             f'<h1>同一筆 {yen(DEMO)}，<em>實付多少</em></h1>'
+             '<div class="sub">免稅每家都是 10%，差的全在券。</div>'
+             f'<div class="legend">券的級距看未稅金額，含稅標價要先除以 1.1。'
+             f'這裡以含稅 {yen(DEMO)}、未稅約 {yen(untaxed)} 試算。</div>'
              f'<div class="list">{rows}</div>' + foot(10, n, fnote))
     out.append(('cp-10.png', page(inner)))
 
@@ -371,12 +388,41 @@ def build(d, today):
         body = '。'.join(t.rstrip('。') for t in pick(st) if t) + '。'
         rows += (f'<div class="blk"><b><i>!</i>{E(st["name"])}</b>'
                  f'<s>{E(body)}</s></div>')
+    # ── 13 級距門檻 ──
+    cliff = []
+    for st in sts:
+        steps = st.get('steps') or []
+        for i in range(1, len(steps)):
+            amt, pc = steps[i]
+            prev = steps[i - 1][1]
+            below = (amt - 1) * (1 - prev / 100)
+            at = amt * (1 - pc / 100)
+            if at < below:
+                cliff.append((below - at, st, amt, prev, pc, below, at))
+    # 級距一樣的併成一列：松本清與 SUNDRUG 的表完全相同，分開列只是重複
+    grp = {}
+    for g, st, amt, p, c, b, a in cliff:
+        grp.setdefault((amt, p, c), [g, [], b, a])[1].append(st['name'].split()[0])
+    rows = ''.join(
+        f'<div class="blk"><b>{E("、".join(v[1]))}'
+        f'<span class="tag">未稅 {yen(k[0])}</span></b>'
+        f'<s>{yen(k[0] - 1)} 實付 {yen(v[2])}，{yen(k[0])} 實付 {yen(v[3])}。'
+        f'多 1 圓少付 {yen(v[0])}，折扣 {k[1]}% 跳 {k[2]}%。</s></div>'
+        for k, v in sorted(grp.items(), key=lambda x: -x[1][0]))
+    inner = ('<div class="kick">差一圓，差幾百圓</div>'
+             '<h1>快到門檻時<br><em>再拿一件</em></h1>'
+             '<div class="sub">券的級距看未稅金額。停在門檻下面一圓，'
+             '整筆都少一級的折扣。</div>'
+             f'<div class="list">{rows}</div>' + foot(13, n, fnote))
+    out.append(('cp-13.png', page(inner)))
+
     inner = ('<div class="kick">每一家都有自己的排除條款</div>'
              '<h1>這四家<em>要先知道</em></h1>'
              '<div class="sub">折扣率一樣不代表拿得到，'
              '排除的商品與分店範圍各家不同。</div>'
              f'<div class="list">{rows}</div>' + foot(12, n, fnote))
     out.append(('cp-12.png', page(inner)))
+    out[-2], out[-1] = out[-1], out[-2]   # 12 是排除條款、13 是門檻，頁碼本來就對
     return out
 
 
