@@ -15,7 +15,7 @@
   "reasons": [
    "10 月出發的票，每天最便宜的平均要 NT$10,489（29 天有紀錄），這張低 29%"
   ],
-  "med": 11208,
+  "med": 11209,
   "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=IT17929986001793007600000090RMQOKA17933079001793309700000090OKARMQ_c22163bf4cbfb1d0fe5e0768c79d253f_19795&search_date=24092026&expected_price_uuid=01a0d547-f08f-8030-2559-86483b569e8c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=7411&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -34,13 +34,13 @@
  },
  {
   "slug": "2026-10-01-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$2,256",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$2,254",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
-  "price": 11205,
+  "price": 11207,
   "air": "飛大阪再轉乘",
-  "fl_price": 7009,
+  "fl_price": 7011,
   "fl_rt": true,
   "fl_to": "大阪",
   "tr_twd": 2098,
@@ -50,10 +50,10 @@
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$2,256"
+   "比直飛省 NT$2,254"
   ],
   "med": 13461,
-  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=GK17916564001791669600000160TPEKIX17920776001792084800000180KIXTPE_e71df73e58d90cb313acbd91efacfc48_18343&search_date=30092026&expected_price_uuid=01a0f36a-2855-8030-e8d3-779435533589&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=-CTSp_7DuU4uJKiPwyFCqQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7009&marker=775639",
+  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=GK17916564001791669600000160TPEKIX17920776001792084800000180KIXTPE_e71df73e58d90cb313acbd91efacfc48_18343&search_date=30092026&expected_price_uuid=01a0f36a-2855-8030-e8d3-779435533589&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=-CTSp_7DuU4uJKiPwyFCqQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7011&marker=775639",
   "hotelcity": "廣島",
   "cslug": "hiroshima"
  },
