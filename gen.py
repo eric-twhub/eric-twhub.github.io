@@ -7639,7 +7639,9 @@ json.dump(deals_out, open('posts/deals.json','w',encoding='utf-8'),
           ensure_ascii=False, indent=1)     # 供 make_cards.py 產生 IG 圖卡
 lines=[f'台日機票速報 {TODAY} — 共 {len(deals_out)} 則\n'+'='*52,
        '⚠️ 發文前務必點「查證連結」確認價格仍在，並截圖存證。',
-       '   票價變動快，昨日的好票今天常已失效；對不上就不要發。\n'+'='*52+'\n']
+       '   票價變動快，昨日的好票今天常已失效；對不上就不要發。',
+       '⚠️ 主文不要放連結。標籤以上是主文，發完之後回自己一則放連結。',
+       '   帶網址的貼文觸及會不會被壓還沒有數字，但把連結挪開沒有損失。\n'+'='*52+'\n']
 for d in deals_out:
     tag={'lcc':'廉航','fsc':'一般航空','transfer':'轉乘方案'}.get(d['cls'],'')
     _lbl='總計' if d['cls']=='transfer' else '來回含稅'
@@ -7664,11 +7666,13 @@ for d in deals_out:
 　📅 {_dates}
 　💡 {d['reasons'][0]}{_mix}
 
-　🔗 貼文用連結：{_url}
-　🔍 查證連結（開啟後截圖）：{_verify}
-
 #日本機票 #{d['c']}機票 #{d['o']}出發 #便宜機票 #日本自由行
 #機票特價 #{tag} #省錢旅遊 #小資旅行 #日本旅遊
+
+　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
+　　 {_url}
+　🔍 查證用，發文前自己開，不要貼出去：
+　　 {_verify}
 {'-'*52}""")
 open('posts/%s.txt'%TODAY,'w',encoding='utf-8').write('\n'.join(lines))
 
