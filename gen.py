@@ -937,7 +937,7 @@ height:40px;font-size:1.5rem;left:auto;right:auto}
 }
 /* 導覽列是 sticky，跳過去要留出它的高度，不然標題會被蓋住 */
 html{scroll-behavior:smooth}
-h2[id],h3[id]{scroll-margin-top:72px}
+h2[id],h3[id],.thc[id]{scroll-margin-top:72px}
 
 /* 月曆：標出放假、建議請假，三國的假日名稱直接寫在格子裡 */
 .cal{margin:14px 0}
@@ -4189,7 +4189,10 @@ if os.path.exists('threads-hub.json'):
                    f'原始貼文 @{html.escape(it["who"])} →</a>')
         elif it.get('note'):
             src = f'<span style="color:var(--dim)">{html.escape(it["note"])}</span>'
-        return ('<div class="thc">'
+        # 標題給 id，上面那排才跳得過來。用標題文字的雜湊，跟 _toc() 同一套，
+        # 之後插入或刪掉話題時舊連結不會跑掉。
+        hid = 'tp-' + hashlib.sha1(it['t'].encode('utf-8')).hexdigest()[:6]
+        return (f'<div class="thc" id="{hid}">'
                 + f'<div class="thh"><b>{html.escape(it["t"])}</b>'
                 + (f'<span class="tpcat">{html.escape(it["scale"])}</span>'
                    if it.get('scale') else '')
@@ -4203,6 +4206,14 @@ if os.path.exists('threads-hub.json'):
                 + '</div>')
 
     _th_body = ''.join(_th_card(x, i) for i, x in enumerate(TH['items']))
+    # 這頁的主體就是這幾則，上面的書籤只會收到 h2，所以在這一段開頭
+    # 再列一次，讀者可以直接跳到想看的那一則。
+    _th_jump = ('<div class="toc tpj"><b>跳到哪一則</b><div>'
+                + ''.join(
+                    '<a href="#tp-'
+                    + hashlib.sha1(x['t'].encode('utf-8')).hexdigest()[:6] + '">'
+                    + html.escape(x['t']) + '</a>' for x in TH['items'])
+                + '</div></div>')
     _th_m = ''.join('<li>' + html.escape(x) + '</li>' for x in TH['_方法'])
     _yt = TH['_不是Threads但同一套做法']
 
@@ -4254,7 +4265,7 @@ if os.path.exists('threads-hub.json'):
         f'<div class="tsub">{html.escape(TH["_為什麼做這件事"])}</div></div>'
       + _th_css
       + f'<h2>逐則查證的 {len(TH["items"])} 個話題</h2>'
-      + _th_body
+      + _th_jump + _th_body
       + '<h2>不只 Threads：一支影片說「罰 100 萬」</h2>'
       + '<div class="thc">'
         f'<div class="thh"><b>{html.escape(_yt["t"])}</b></div>'
