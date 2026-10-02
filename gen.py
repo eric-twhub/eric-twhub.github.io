@@ -4367,17 +4367,22 @@ if os.path.exists('threads-hub.json'):
         # 標題給 id，上面那排才跳得過來。用標題文字的雜湊，跟 _toc() 同一套，
         # 之後插入或刪掉話題時舊連結不會跑掉。
         hid = 'tp-' + hashlib.sha1(it['t'].encode('utf-8')).hexdigest()[:6]
+        # 標題本身就是連結。原本只有底下一行小字的「看本站整理 →」，
+        # 讀者看完一則想往下讀時要先找那行字。
+        ttl = html.escape(it['t'])
+        if it.get('page'):
+            ttl = f'<a href="{U(it["page"])}">{ttl} →</a>'
         return (f'<div class="thc" id="{hid}" data-toc="{html.escape(it["t"])}">'
-                + f'<div class="thh"><b>{html.escape(it["t"])}</b>'
+                + f'<div class="thh"><b>{ttl}</b>'
                 + (f'<span class="tpcat">{html.escape(it["scale"])}</span>'
                    if it.get('scale') else '')
                 + '</div>'
                 + f'<p class="thq"><b>貼文說</b>：{html.escape(it["claim"])}</p>'
                 + f'<p class="thf"><b>查到的</b>：{html.escape(it["found"])}</p>'
                 + '<p class="thl">'
-                + f'<a href="{U(it["page"])}">看本站整理 →</a>'
-                + (('　·　' + src) if src else '')
-                + f'　·　<span style="color:var(--dim)">{it["date"]}</span></p>'
+                + (src if src else '')
+                + ('　·　' if src else '')
+                + f'<span style="color:var(--dim)">{it["date"]}</span></p>'
                 + '</div>')
 
     _th_body = ''.join(_th_card(x, i) for i, x in enumerate(TH['items']))
@@ -4389,6 +4394,8 @@ if os.path.exists('threads-hub.json'):
                '.thh{display:flex;align-items:baseline;justify-content:space-between;'
                'gap:10px;flex-wrap:wrap;margin-bottom:8px}'
                '.thh b{font-size:1.05rem}'
+               '.thh a{color:var(--acc);text-decoration:none}'
+               '.thh a:hover{text-decoration:underline}'
                '.thq,.thf{margin:7px 0;font-size:.9rem;line-height:1.8}'
                '.thq b,.thf b{color:var(--dim);font-weight:600}'
                '.thl{margin:11px 0 0;font-size:.85rem}'
