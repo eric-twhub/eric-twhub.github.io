@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-02-transfer-fukuoka-nagasaki",
- "generated": "2026-10-02 02:10",
+ "generated": "2026-10-02 09:43",
  "kind": "transfer",
  "city": "nagasaki",
  "via": "fukuoka",
@@ -26,14 +26,14 @@
  },
  "fare_rt": true,
  "jpy_text": "¥5,960",
- "twd_one_way": 1226,
- "rate": 0.2058,
- "rate_at": "Thu, 01 Oct 2026",
+ "twd_one_way": 1224,
+ "rate": 0.2054,
+ "rate_at": "Fri, 02 Oct 2026",
  "fare_gate": "Flightnetwork",
  "tc_alt": null,
  "route": "博多 → 長崎",
  "mode": "特急接力海鷗＋西九州新幹線",
  "tm": "約 1 小時 20 分",
- "total": 11621,
- "save": 5179
+ "total": 11617,
+ "save": 5183
 }
