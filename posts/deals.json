@@ -13,24 +13,49 @@
   "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,794（30 天有紀錄），這張低 23%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,779（30 天有紀錄），這張低 23%"
   ],
-  "med": 11600,
+  "med": 11586,
   "url": "https://www.aviasales.com/search/RMQ1010OKA13101?t=LJ17916534001791720300001055RMQICNOKA17919180001791919800000090OKARMQ_a178ed2fe6a428e6e9929e7b96665d1e_22005&search_date=28092026&expected_price_uuid=01a0e59c-41ea-8030-2614-43e92ebd79ba&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=5zIcaambnU45iDUFAFpvyQ&expected_price_source=share&expected_price_currency=twd&expected_price=8282&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 8877,
-   "hi": 12831,
+   "hi": 12819,
    "days": 39
   },
   "mbase": {
-   "avg": 10794,
+   "avg": 10779,
    "days": 30,
    "month": 10
   },
   "rank": 3,
-  "n": 100
+  "n": 101
+ },
+ {
+  "slug": "2026-10-02-transfer-tokyo-sendai",
+  "title": "飛東京轉乘去仙台，比直飛省 NT$13,164",
+  "o": "台灣",
+  "c": "仙台",
+  "via": "東京",
+  "price": 11028,
+  "air": "飛東京再轉乘",
+  "fl_price": 6346,
+  "fl_rt": true,
+  "fl_to": "東京",
+  "tr_twd": 2341,
+  "tr_mode": "東北新幹線",
+  "dep": "2026-10-29",
+  "ret": "",
+  "stops": "東北新幹線",
+  "cls": "transfer",
+  "reasons": [
+   "比直飛省 NT$13,164"
+  ],
+  "med": 24192,
+  "url": "https://www.aviasales.com/search/TPE2910NRT12111?t=MM17932782001793292900000185TPENRT17945211001794533100000260NRTTPE_5763d765085a255859a57dddfdeb9d2a_16878&search_date=26092026&expected_price_uuid=01a0de0a-085c-8030-ed5b-86ba166f2631&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=TEe2d0SSIgzMTkzJKtooYg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6346&marker=775639",
+  "hotelcity": "仙台",
+  "cslug": "sendai"
  },
  {
   "slug": "2026-10-02-transfer-osaka-hiroshima",
