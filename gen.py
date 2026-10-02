@@ -1078,6 +1078,10 @@ def head(title,desc,path,extra=''):
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <link rel="canonical" href="{can}">
+<link rel="icon" href="{U("/favicon.svg")}" type="image/svg+xml">
+<link rel="icon" href="{U("/favicon.ico")}" sizes="32x32">
+<link rel="apple-touch-icon" href="{U("/apple-touch-icon.png")}">
+<meta name="theme-color" content="#c2410c">
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:type" content="website"><meta property="og:url" content="{can}">
@@ -4934,7 +4938,7 @@ if SH:
         f'<s>其他查過的社群說法</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b>'
         f'<s>今天查到的價格</s></a>'
-      + f'<a class="ct" href="{U("/tokyo/budget-hotel/")}"><b>🛏️ 東京便宜旅館</b>'
+      + f'<a class="ct" href="{U("/tokyo/budget-hotel/")}"><b>🛌 東京便宜旅館</b>'
         f'<s>共用衛浴的私人房</s></a>'
       + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 台日 Apple 價差</b>'
         f'<s>3C 在日本買划不划算</s></a></div>'
