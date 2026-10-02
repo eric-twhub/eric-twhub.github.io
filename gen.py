@@ -5082,6 +5082,16 @@ if os.path.exists('angel63.json'):
       + f'<p class="disc">{html.escape(AG["tickets"]["_無售價"])}'
         '　透過這些連結完成購買時本站可獲得分潤，不影響你的價格。'
         '售價與庫存以各平台頁面為準。</p>'
+      # 最便宜的女子会プラン 與可以指定座位的迫力系列只有官網賣，
+      # 這一段卻只給得出兩個有分潤的平台，等於把那些方案藏起來。
+      + '<div class="cities">'
+        f'<a class="ct" href="{html.escape(AG["booking"])}" '
+        f'rel="nofollow noopener" target="_blank">'
+        f'<b>{html.escape(AG["name"])} 官網訂位</b>'
+        f'<s>日文介面・要註冊會員　·　本站沒有分潤</s>'
+        f'<u>方案最齊</u></a></div>'
+      + '<p class="disc">Klook 只賣自由席與 VIP 兩種，'
+        '最便宜的女子会プラン 與可以指定座位的迫力系列只有官網有。</p>'
       + f'<h3>{html.escape(AG["vs"]["t"])}</h3>' + _ag_vs
       + f'<p class="disc">{html.escape(AG["vs"]["note"])}</p>'
       + '<h3>從 Klook 訂 63 ANGEL 的差別</h3>'
@@ -5104,6 +5114,12 @@ if os.path.exists('angel63.json'):
         f'<li><b>營運公司</b>：{html.escape(AG["operator"])}</li>'
         f'<li><b>付款</b>：{html.escape(AG["fee_note"]["pay"])}'
         f'　{html.escape(AG["fee_note"]["range"])}</li>'
+        # 全頁一直在引用官網，卻沒有一個連結讓人直接過去。訂票區只有兩個
+        # 有分潤的平台，官網自己的訂位頁反而找不到。
+        f'<li><b>官網</b>：<a href="{html.escape(AG["site"])}" '
+        f'rel="nofollow noopener" target="_blank">{html.escape(AG["name"])} 官方網站 →</a>'
+        f'　·　<a href="{html.escape(AG["booking"])}" '
+        f'rel="nofollow noopener" target="_blank">官網線上訂位 →</a></li>'
         '</ul></div>'
       + f'<h3>{html.escape(AG["hours_conflict"]["t"])}</h3>'
       + '<div class="tw narrow"><table><tr><th>出處</th><th>寫的時間</th></tr>'
@@ -6637,11 +6653,19 @@ if os.path.exists('card-insurance.json'):
         cls = ' class="win"' if v >= 1000000 else ''
         return '<td' + cls + '><b>' + f'{v // 10000:,}' + ' 萬</b></td>'
 
+    # 整頁都在引用各行的官方條款，卻沒有一個連結過得去。
+    # 銀行名稱直接連到該行的條款頁，讀者要自己核對時不必再去搜。
+    _ci_src = {b['name']: b for b in CI['banks'].values() if b.get('src')}
+
     _ci_rows = ''
     for r in CI['comparison']:
         nm = html.escape(r['name']) + (
             '<sup>†</sup>' if r.get('note') else '')
-        sub = '<small>' + html.escape(r['bank']) + '</small>'
+        _b = _ci_src.get(r['bank'])
+        sub = ('<small><a href="' + html.escape(_b['src']) + '" '
+               'rel="nofollow noopener" target="_blank">'
+               + html.escape(r['bank']) + ' 條款 →</a></small>') if _b else (
+              '<small>' + html.escape(r['bank']) + '</small>')
         if r.get('unknown'):
             _ci_rows += ('<tr><td class="nm"><b>' + nm + '</b><br>' + sub + '</td>'
                          '<td colspan="6" class="dimcell">發卡行沒有公布這張卡的卡等</td></tr>')
