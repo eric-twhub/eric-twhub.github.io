@@ -148,6 +148,10 @@ try:                                   # 一律以台北時間為準（CI 執行
 except Exception:
     NOW=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8)))
 NOWS=NOW.strftime('%Y-%m-%d %H:%M'); TODAY=NOW.strftime('%Y-%m-%d')
+# 東京值得再飛一次那頁的家數。好幾頁的「順便看看」要標它，寫死過一次
+# 就對不上了：那個標籤卡在 45，資料早就是 46。
+_TP_N = (len(json.load(open('tokyo-picks.json', encoding='utf-8'))['stores'])
+         if os.path.exists('tokyo-picks.json') else 0)
 
 def _klook_adid(group=None):
     """把版位代號換成 Klook 的廣告單元 ID。
@@ -3070,7 +3074,7 @@ if os.path.exists('lasttrain.json'):
       + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 六本木 63 ANGEL</b>'
         f'<s>3 部散場 24:45，電車早就沒了</s></a>'
       + f'<a class="ct" href="{U("/tokyo/worth-flying-for/")}"><b>🍽️ 值得再飛一次的店</b>'
-        f'<s>45 家，含營業時間與公休</s></a>'
+        f'<s>{_TP_N} 家，含營業時間與公休</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
         f'<s>便宜的班次時段通常很差</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a>'
@@ -5884,7 +5888,7 @@ if HOL:
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
         for q, a in hc_faq]}, ensure_ascii=False)
 
-    hc_title = '日本、台灣、中國的連假撞在一起是哪幾天？附本站票價實算的價差'
+    hc_title = '日本、台灣、中國的連假撞在一起是哪幾天？附實際票價算出來的價差'
     hc_desc = ('台灣的連假決定你何時出發，日本的連假決定你到了之後住宿多貴。'
                '本頁把三國的國定假日排在一起，標出重疊的日期，'
                '並用本站每日抓取的票價資料計算連假出發與平常日出發的實際價差。')
@@ -5960,7 +5964,8 @@ if HOL:
       + f'<a class="ct" href="{U("/taiwan-holiday-2026/")}"><b>📅 2026 請假攻略</b>'
         f'<s>剩下的連假，附日本當地活動</s></a>'
       + f'<a class="ct" href="{U("/taiwan-holiday-2027/")}"><b>📅 2027 請假攻略</b>'
-        f'<s>整年 12 段連假逐段算</s></a>'
+        f'<s>整年 {sum(1 for _r in HOL["runs"]["tw"] if _r["start"][:4] == "2027")} '
+        f'段連假逐段算</s></a>'
       + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日機票特價</b>'
         f'<s>票價卡會標出撞期的日子</s></a>'
       + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
@@ -6643,7 +6648,7 @@ if HOL:
           + f'<a class="ct" href="{U(f"/taiwan-holiday-{other}/")}">'
             f'<b>📅 {other} 年版</b><s>同一份算法，換一年</s></a>'
           + f'<a class="ct" href="{U("/japan-holiday-calendar/")}">'
-            f'<b>📅 三國連假撞期</b><s>還附本站票價實算的價差</s></a>'
+            f'<b>📅 三國連假撞期</b><s>附實際票價算出來的價差</s></a>'
           + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日機票特價</b>'
             f'<s>票價卡會標出撞期的日子</s></a>'
           + f'<a class="ct" href="{U("/hotel-price-check/")}"><b>🏨 訂房比價</b>'
@@ -10610,7 +10615,7 @@ if HS:
       + jp_runs_block(4, '住宿會跳價的日子：日本連假')
       + f'<p class="disc">台灣與日本同時放假的那幾天更兇，'
         f'<a href="{U("/japan-holiday-calendar/")}">三國連假撞期日曆</a>'
-        f'有完整對照與本站票價實算的價差。</p>'
+        f'有完整對照與實際票價算出來的價差。</p>'
       + foot())
     pages.append(('/tokyo/hostel/', 0.8))
     print(f'   東京平價住宿頁：{len(HS["areas"])} 區（查證 {HS["checked"]}，'
@@ -10854,7 +10859,7 @@ if BH:
       + jp_runs_block(4, '住宿會跳價的日子：日本連假')
       + f'<p class="disc">台灣與日本同時放假的那幾天更兇，'
         f'<a href="{U("/japan-holiday-calendar/")}">三國連假撞期日曆</a>'
-        f'有完整對照與本站票價實算的價差。</p>'
+        f'有完整對照與實際票價算出來的價差。</p>'
       + foot())
     pages.append(('/tokyo/budget-hotel/', 0.8))
     print(f'   東京便宜旅館頁：{len(_bh_all)} 家（查證 {BH["checked"]}，'
@@ -11117,7 +11122,7 @@ if PC:
       + jp_runs_block(4, '住宿會跳價的日子：日本連假')
       + f'<p class="disc">台灣與日本同時放假的那幾天更兇，'
         f'<a href="{U("/japan-holiday-calendar/")}">三國連假撞期日曆</a>'
-        f'有完整對照與本站票價實算的價差。</p>'
+        f'有完整對照與實際票價算出來的價差。</p>'
       + foot())
     pages.append(('/hotel-price-check/', 0.9))
     print(f'   訂房比價頁：{_pc_n} 間實測（查證 {PC["checked"]}，'
