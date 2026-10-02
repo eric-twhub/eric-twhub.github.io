@@ -1,6 +1,6 @@
 [
  {
-  "slug": "2026-10-02-taichung-okinawa",
+  "slug": "2026-10-03-taichung-okinawa",
   "title": "台中飛沖繩 NT$8,282 來回含稅｜真航空 10/10 出發",
   "o": "台中",
   "c": "沖繩",
@@ -20,7 +20,7 @@
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 8546,
+   "lo": 8545,
    "hi": 11833,
    "days": 36
   },
@@ -33,7 +33,7 @@
   "n": 102
  },
  {
-  "slug": "2026-10-02-transfer-osaka-hiroshima",
+  "slug": "2026-10-03-transfer-osaka-hiroshima",
   "title": "飛大阪轉乘去廣島，比直飛省 NT$5,965",
   "o": "台灣",
   "c": "廣島",
@@ -58,7 +58,7 @@
   "cslug": "hiroshima"
  },
  {
-  "slug": "2026-10-02-transfer-fukuoka-nagasaki",
+  "slug": "2026-10-03-transfer-fukuoka-nagasaki",
   "title": "飛福岡轉乘去長崎，比直飛省 NT$5,183",
   "o": "台灣",
   "c": "長崎",
