@@ -1212,11 +1212,15 @@ def _partner_line():
 
 
 def foot():
+    """頁尾的兩段聲明不是每一頁都成立：沒有票價的頁面不該說資料來自
+    Aviasales，沒有分潤連結的頁面也不該說「本站連結為聯盟行銷連結」，
+    那會把入管廳、銀行條款那些官方連結講成分潤連結。用註解標起來，
+    由 write() 看那一頁實際有什麼再決定留不留。"""
     return f'''<p class="note">
-票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
-實際訂購由合作平台完成：{_partner_line()}。<br>
+<!--f-->票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
+<!--/f--><!--a-->實際訂購由合作平台完成：{_partner_line()}。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
-最後更新 {NOWS}　·　<a href="{U("/")}">回首頁</a>
+<!--/a-->最後更新 {NOWS}　·　<a href="{U("/")}">回首頁</a>
 </p></div>{SF_JS}{NAV_JS}{LB_JS}</body></html>'''
 
 def _hh(t):
@@ -1553,11 +1557,36 @@ def _toc(content):
     return content[:first] + toc + content[first:] if first > 0 else content
 
 
+_AFF_RE = re.compile(r'affiliate\.klook|affclkr|trip\.com|kkday\.com'
+                     r'|booking\.com|agoda\.com|sfGo\(')
+
+
+def _trim_note(content):
+    """頁尾那兩段聲明，只留這一頁真的用得上的。
+
+    判斷看的是這一頁正文實際有什麼，不是靠呼叫端自己宣告，
+    所以不會因為某頁改版就跟著說謊。
+    """
+    i = content.find('<p class="note">')
+    if i < 0 or '<!--f-->' not in content:
+        return content
+    body = content[:i]
+    if 'NT$' not in body:                      # 這頁沒有任何票價
+        a, b = content.index('<!--f-->'), content.index('<!--/f-->') + 9
+        content = content[:a] + content[b:]
+    if not _AFF_RE.search(body):               # 這頁沒有任何分潤路徑
+        a, b = content.index('<!--a-->'), content.index('<!--/a-->') + 9
+        content = content[:a] + '這一頁沒有分潤連結。<br>\n' + content[b:]
+    return (content.replace('<!--f-->', '').replace('<!--/f-->', '')
+                   .replace('<!--a-->', '').replace('<!--/a-->', ''))
+
+
 def write(path,content):
     d=os.path.dirname(path)
     if d: os.makedirs(d,exist_ok=True)
     if path.endswith('.html'):
         content = _toc(content)
+        content = _trim_note(content)
     open(path,'w',encoding='utf-8').write(content)
     if path.endswith('.html'):
         PAGE_HASH[path] = hashlib.sha1(content.encode('utf-8')).hexdigest()[:16]
