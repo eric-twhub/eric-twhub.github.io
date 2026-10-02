@@ -4137,6 +4137,11 @@ if os.path.exists('japan-rules.json'):
         f'<cite><a href="{_dt["src"]}" target="_blank" rel="nofollow noopener">'
         f'{html.escape(_dt["src_name"])}</a></cite></blockquote>'
       + '<div class="cmp">' + _dt_pts + '</div>'
+      # 稅額調整那份公告也是觀光庁的，一樣是 PDF，之前沒給出去
+      + ((f'<p class="disc">稅額調整的公告另有一份：'
+          f'<a href="{_dt["src2"]}" target="_blank" rel="nofollow noopener">'
+          f'{html.escape(_dt["src2_name"])}（PDF）→</a></p>')
+         if _dt.get('src2') else '')
       + f'<h2>行動電源：{_pb["from"]} 起的新規</h2>'
       + f'<p class="lede">{html.escape(_pb["_背景"])}'
         f'官方給旅客的七點說明如下，其中五點違反時可能依航空法處罰。</p>'
@@ -5517,6 +5522,18 @@ if os.path.exists('jttp.json'):
         f'<s>快速通關之後還要趕車</s></a>'
       + f'<a class="ct" href="{U("/japan-card-insurance/")}"><b>💳 刷卡送的保險</b>'
         f'<s>白金卡通常也有這個</s></a></div>'
+      # 整頁都在講官方怎麼規定，制度頁與官方 FAQ 的網址本來就在 jttp.json 裡，
+      # 只是沒有算繪。讀者要自己查最新公告時要給得出入口。
+      + '<h2>官方頁面</h2>'
+      + '<div class="cities">'
+        f'<a class="ct" href="{TT["src_index"]}" rel="nofollow noopener" '
+        f'target="_blank"><b>入管廳・制度主頁 →</b>'
+        f'<s>申請資格、手續費與受理窗口的公告</s></a>'
+        f'<a class="ct" href="{TT["src_faq"]}" rel="nofollow noopener" '
+        f'target="_blank"><b>入管廳・官方 FAQ →</b><s>日文，問答形式</s></a>'
+        f'<a class="ct" href="{TT["src_outline"]}" rel="nofollow noopener" '
+        f'target="_blank"><b>入管廳・制度概要 →</b>'
+        f'<s>{html.escape(TT["src_outline_name"].split("・")[-1])}</s></a></div>'
       + f'<p class="disc">本頁整理的是日本官方公告的制度，查證於 {TT["checked"]}。'
         '制度會修訂，手續費與指定場所也可能調整，出發前請以官方最新公告為準。'
         '本站不是簽證或法律顧問，也不代辦。</p>'
@@ -6662,10 +6679,17 @@ if os.path.exists('card-insurance.json'):
         nm = html.escape(r['name']) + (
             '<sup>†</sup>' if r.get('note') else '')
         _b = _ci_src.get(r['bank'])
-        sub = ('<small><a href="' + html.escape(_b['src']) + '" '
-               'rel="nofollow noopener" target="_blank">'
-               + html.escape(r['bank']) + ' 條款 →</a></small>') if _b else (
-              '<small>' + html.escape(r['bank']) + '</small>')
+        if _b:
+            # 台新與中信把旅平險與不便險放在兩頁，只給一條連結的話，
+            # 想查班機延誤的人會落在旅平險那一頁。
+            _ln = ('<a href="' + html.escape(_b['src']) + '" rel="nofollow noopener" '
+                   'target="_blank">' + html.escape(r['bank']) + ' 條款 →</a>')
+            if _b.get('src_incon'):
+                _ln += ('　·　<a href="' + html.escape(_b['src_incon']) + '" '
+                        'rel="nofollow noopener" target="_blank">不便險另一頁 →</a>')
+            sub = '<small>' + _ln + '</small>'
+        else:
+            sub = '<small>' + html.escape(r['bank']) + '</small>'
         if r.get('unknown'):
             _ci_rows += ('<tr><td class="nm"><b>' + nm + '</b><br>' + sub + '</td>'
                          '<td colspan="6" class="dimcell">發卡行沒有公布這張卡的卡等</td></tr>')
@@ -9254,7 +9278,10 @@ if os.path.exists('cards.json'):
           '<p class="lede">電支的換匯是以銀行牌告<b>賣出價</b>計算，本身就含價差；'
           '信用卡則是以卡片組織匯率結算後再加手續費。'
           f'把兩邊都換算成「相對即期中價的成本」才比得出來，'
-          f'以 {_b["date"]} 臺灣銀行牌告為例（即期中價 {_mid:.4f}）：</p>'
+          f'以 {_b["date"]} '
+          f'<a href="{html.escape(_b["src"])}" rel="nofollow noopener" '
+          f'target="_blank">{html.escape(_b["src_name"])}</a>'
+          f'為例（即期中價 {_mid:.4f}）：</p>'
           '<div class="tw"><table><thead><tr><th>付款方式</th><th>換匯依據</th>'
           '<th>今日匯率</th><th>相對中價的成本</th></tr></thead><tbody>'
           f'<tr><td><b>電支（用即期賣出價）</b></td><td>即期賣出</td>'
@@ -10680,8 +10707,16 @@ if BH:
         for r in _bh_cl['rows'] if r.get('weak'))
 
     _OF = BH['official']
+    # 這一段告訴讀者官網比較便宜、而且折扣只給官網直訂，卻沒給官網的連結。
+    # 網址在同一份資料的 cluster.rows 裡，用飯店名對起來。
+    _bh_off_url = {r['name']: r['official_url']
+                   for r in _bh_cl['rows'] if r.get('official_url')}
     _bh_of = ''.join(
-        f'<tr><td>{html.escape(r["name"])}</td>'
+        f'<tr><td>{html.escape(r["name"])}'
+        + ((f'{_BSM}<a href="{html.escape(_bh_off_url[r["name"]])}" '
+            f'rel="nofollow noopener" target="_blank">官網 →</a></small>')
+           if _bh_off_url.get(r['name']) else '')
+        + '</td>'
         f'<td><b>{html.escape(r["verdict"])}</b></td>'
         f'<td>{html.escape(r["detail"])}'
         + (f'{_BSM}⚠️ {html.escape(r["catch"])}</small>' if r.get('catch') else '')
