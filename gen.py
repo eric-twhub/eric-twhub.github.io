@@ -1144,6 +1144,7 @@ def topnav(cur=''):
             + '<hr><b>租車自駕</b>'
             + link('/japan-driving-licence/', '🚗 駕照日文譯本')
             + link('/japan-rentacar-noc/', '🚗 租車的 NOC')
+            + link('/japan-driving-habits/', '🚗 開車習慣差在哪')
             + '<hr><b>出事之前</b>'
             + link('/japan-travel-insurance/', '🛡️ 旅平險怎麼賠')
             + link('/japan-card-insurance/', '💳 刷卡送的保險賠什麼')
@@ -3569,6 +3570,8 @@ if DRV:
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/okinawa/")}"><b>沖繩機票</b>'
         f'<s>沒車幾乎玩不了的地方</s></a>'
+      + f'<a class="ct" href="{U("/japan-driving-habits/")}"><b>🚗 開車習慣差在哪</b>'
+        f'<s>哪幾條有罰則，罰多少</s></a>'
       + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
         f'<s>不開車的話，幾點以前要到車站</s></a>'
       + f'<a class="ct" href="{U("/japan-sms-roaming/")}"><b>✉️ 台灣門號收簡訊</b>'
@@ -3580,6 +3583,120 @@ if DRV:
         f'各租車公司現場可能另有要求（信用卡、最低駕齡等），以業者條款為準。</p>'
       + foot())
     pages.append(('/japan-driving-licence/', 0.7))
+
+# ---------- 台日開車習慣差異 ----------
+# 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
+# 分成「法規」與「只是習慣」兩類：被開罰單的是前者。
+DH = json.load(open('driving-habits.json', encoding='utf-8')) if os.path.exists('driving-habits.json') else None
+
+if DH:
+    _dh_law = [x for x in DH['items'] if x['kind'] == 'law']
+    _dh_cus = [x for x in DH['items'] if x['kind'] == 'custom']
+
+    def _dh_card(x):
+        h = (f'<div class="thc"><div class="thh"><b>{html.escape(x["t"])}</b>'
+             + (f'<span class="tpcat">{x["fine"]:,} 円</span>' if x.get('fine') else '')
+             + '</div>')
+        h += f'<p class="thq"><b>台灣</b>：{html.escape(x["tw"])}</p>'
+        h += f'<p class="thf"><b>日本</b>：{html.escape(x["jp"])}</p>'
+        if x.get('nums'):
+            h += ('<div class="tw narrow"><table><tr><th>動作</th><th>要提前多久</th></tr>'
+                  + ''.join(f'<tr><td class="nm">{html.escape(a)}</td>'
+                            f'<td class="nm"><b>{html.escape(b)}</b></td></tr>'
+                            for a, b in x['nums']) + '</table></div>')
+        if x.get('quote'):
+            h += (f'<blockquote class="q">{html.escape(x["quote"])}'
+                  f'<cite>{html.escape(x["art"])}</cite></blockquote>')
+        if x.get('verified'):
+            h += f'<p class="thq"><b>查了什麼</b>：{html.escape(x["verified"])}</p>'
+        if x.get('fine'):
+            h += (f'<p class="thl">違反的話是<b>{html.escape(x["fine_name"])}</b>，'
+                  f'普通車反則金 {x["fine"]:,} 円')
+            if x.get('fine2'):
+                h += f'；高速公路上是{html.escape(x["fine2_name"])}，{x["fine2"]:,} 円'
+            h += '。</p>'
+        elif x.get('art') and not x.get('quote'):
+            h += f'<p class="thl">依據：{html.escape(x["art"])}</p>'
+        if x.get('note'):
+            h += f'<p class="disc">{html.escape(x["note"])}</p>'
+        return h + '</div>'
+
+    dh_faq = [
+     ('這些罰款觀光客也會被開嗎？',
+      '會。反則金是現場或事後繳的行政罰，不看駕照是哪裡發的。租來的車由租車公司收到通知之後找你，'
+      '有些業者還會另外收手續費。'),
+     ('反則金的金額為什麼跟我查到的不一樣？',
+      f'金額依車種分級，這頁寫的是普通車。大型車較高、二輪車與原付較低，'
+      f'完整級距在{DH["order"]["name"]} 別表第六。'),
+     ('只是習慣的那幾條，不做會怎樣？',
+      '不會怎樣。它們沒有條文也沒有罰則，寫出來是因為不知道的話在當地會顯得突兀，'
+      '或是會誤以為對方在對你表達什麼。'),
+    ]
+    dh_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in dh_faq)
+    dh_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in dh_faq]}, ensure_ascii=False)
+
+    _dh_max = max(x['fine'] for x in DH['items'] if x.get('fine'))
+
+    write('japan-driving-habits/index.html',
+      head('在日本開車跟台灣差在哪？哪幾條是法規、罰多少',
+           f'台灣與日本開車的 {len(DH["items"])} 個差異，逐項對照道路交通法原文。'
+           f'{len(_dh_law)} 條是法規並列出反則金，{len(_dh_cus)} 條只是習慣。'
+           '含喇叭、方向燈提前距離、車距、超車道與隧道的規定。',
+           'japan-driving-habits/',
+           '<script type="application/ld+json">' + dh_ld + '</script>')
+      + crumbs([('首頁', '/'), ('日本自駕・開車習慣', None)]) + topnav()
+      + '<h1>在日本開車，哪些是法規，哪些只是習慣</h1>'
+      + '<div class="today">'
+        f'<div class="tday">法令原文查證於 {DH["checked"]}</div>'
+        f'<div class="tans">{len(_dh_law)} 條有罰則，{len(_dh_cus)} 條沒有</div>'
+        f'<div class="tsub">被開單的是前面那幾條。喇叭亂按 3,000 円，'
+        f'方向燈沒提前打、車距太近、一直占著超車道都是 6,000 円。</div></div>'
+      + f'<h2>有條文也有罰則的 {len(_dh_law)} 條</h2>'
+      + '<p class="lede">金額是普通車的反則金。每一條都附日文原文與條號，'
+        '要自己核對的話下面有法令全文的連結。</p>'
+      + ''.join(_dh_card(x) for x in _dh_law)
+      + f'<h2>只是習慣的 {len(_dh_cus)} 條</h2>'
+      + '<p class="lede">這幾條在日本很常見，但法規裡沒有。不做不會被罰，'
+        '知道了比較不會誤會對方的意思。</p>'
+      + ''.join(_dh_card(x) for x in _dh_cus)
+      + '<h2>上路之前還有兩件事</h2>'
+      + '<div class="cities">'
+      + ''.join(f'<a class="ct" href="{U(b["page"])}"><b>{html.escape(b["t"])}</b>'
+                f'<s>{html.escape(b["d"])}</s></a>' for b in DH['before'])
+      + '</div>'
+      + cta('car', '日本', '東京', '規矩看完了，車還沒訂',
+            f'到 {P["car"]["brand"]} 比較日本的租車方案', track='habits')
+      + '<h2>這頁查不到的部分</h2>'
+      + '<ul class="lede">'
+      + ''.join(f'<li><b>{html.escape(u["what"])}</b>：{html.escape(u["why"])}</li>'
+                for u in DH['unverified']) + '</ul>'
+      + '<h2>法令原文</h2>'
+      + '<div class="cities">'
+        f'<a class="ct" href="{DH["law"]["url"]}" rel="nofollow noopener" target="_blank">'
+        f'<b>{html.escape(DH["law"]["name"])} →</b>'
+        f'<s>{html.escape(DH["law"]["num"])}　·　e-Gov 法令檢索</s></a>'
+        f'<a class="ct" href="{DH["order"]["url"]}" rel="nofollow noopener" target="_blank">'
+        f'<b>{html.escape(DH["order"]["name"])} →</b>'
+        f'<s>{html.escape(DH["order"]["num"])}　·　含反則金的別表第六</s></a></div>'
+      + '<h2>常見問題</h2>' + dh_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-driving-licence/")}"><b>🚗 駕照日文譯本</b>'
+        f'<s>國際駕照在日本不能用</s></a>'
+      + f'<a class="ct" href="{U("/japan-rentacar-noc/")}"><b>🚗 租車的 NOC</b>'
+        f'<s>買了免責補償也不一定免除</s></a>'
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>不開車的話幾點以前要到車站</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📱 日本 eSIM 比較</b>'
+        f'<s>導航吃流量，用量要算進去</s></a></div>'
+      + f'<p class="disc">本頁引用的是日本{DH["law"]["name"]}與{DH["order"]["name"]}的原文，'
+        f'{html.escape(DH["law"]["rev"])}，查證於 {DH["checked"]}。'
+        f'{html.escape(DH["_反則金說明"])}'
+        f'法規會修訂，個別路段另有公安委員會的規定，現場以標誌為準。</p>'
+      + foot())
+    pages.append(('/japan-driving-habits/', 0.7))
 
 # ---------- 日本租車的 NOC（營業補償）----------
 # 買了免責補償不等於不用賠：NOC 是另一筆，2～5 萬日圓，而且「汚損」就會觸發。
@@ -3901,6 +4018,8 @@ if INS:
         f'<s>刷哪張回饋最高</s></a>'
       + f'<a class="ct" href="{U("/japan-driving-licence/")}"><b>🚗 駕照日文譯本</b>'
         f'<s>租車前要先辦的</s></a>'
+      + f'<a class="ct" href="{U("/japan-driving-habits/")}"><b>🚗 開車習慣差在哪</b>'
+        f'<s>哪幾條有罰則，罰多少</s></a>'
       + f'<a class="ct" href="{U("/japan-rentacar-noc/")}"><b>🚗 租車的 NOC</b>'
         f'<s>另一種「以為有保其實沒有」</s></a>'
       + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
