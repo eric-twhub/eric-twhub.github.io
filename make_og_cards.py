@@ -21,7 +21,7 @@ import html as htm
 W, H = 1200, 630
 # 版面改過就換這個字串，所有卡片的指紋會跟著變，CI 下一次跑會全部重產。
 # 不在本機 --force 重跑是因為字型不同：CI 裝的是 Noto，本機會變成蘋方。
-DESIGN = "2026-10-02 加上站台圖示"
+DESIGN = "2026-10-02 加上站台圖示，飛機置中"
 OUT = "og"
 MANIFEST = "og-manifest.json"
 STATE = os.path.join(OUT, ".hash.json")
@@ -68,7 +68,8 @@ body{background:#141210;color:#f5f2ee;
 ICON = (
     '<svg width="46" height="46" viewBox="0 0 32 32" aria-hidden="true">'
     '<rect width="32" height="32" rx="7" fill="#c2410c"/>'
-    '<g transform="rotate(-30 16 16) translate(16 16) scale(.88) translate(-16 -16)">'
+    '<g transform="translate(1.74 -3.49) rotate(-30 16 16) '
+    'translate(16 16) scale(.88) translate(-16 -16)">'
     '<path d="M5.1 25.8 28 16 5.1 6.2v7.6L21.5 16 5.1 18.2z" fill="#fff"/></g></svg>')
 
 
