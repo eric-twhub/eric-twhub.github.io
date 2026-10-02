@@ -29,7 +29,7 @@ https://eric-twhub.github.io/japan-flight-baggage/
 
 ・沖繩　價差 NT$1,612 → NT$-288
 ・東京　價差 NT$7,578 → NT$5,678
-・大阪　價差 NT$7,544 → NT$5,644
+・大阪　價差 NT$5,286 → NT$3,386
 
 沖繩縮得最兇，少了 118%。
 
