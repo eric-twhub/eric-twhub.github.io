@@ -19,6 +19,9 @@ import json, os, sys, subprocess, hashlib, shutil
 import html as htm
 
 W, H = 1200, 630
+# 版面改過就換這個字串，所有卡片的指紋會跟著變，CI 下一次跑會全部重產。
+# 不在本機 --force 重跑是因為字型不同：CI 裝的是 Noto，本機會變成蘋方。
+DESIGN = "2026-10-02 加上站台圖示"
 OUT = "og"
 MANIFEST = "og-manifest.json"
 STATE = os.path.join(OUT, ".hash.json")
@@ -50,13 +53,23 @@ body{background:#141210;color:#f5f2ee;
  background:#1f1a15;top:-210px;right:-150px}
 .glow2{position:absolute;width:200px;height:200px;border-radius:50%%;
  background:#2b2118;top:-70px;right:-40px}
-.brand{font-size:24px;letter-spacing:.34em;color:#fb923c;font-weight:700;position:relative}
+.brand{font-size:24px;letter-spacing:.34em;color:#fb923c;font-weight:700;position:relative;
+ display:flex;align-items:center;gap:17px}
+.brand svg{display:block;flex:0 0 auto}
 .h{font-size:%dpx;font-weight:800;line-height:1.22;letter-spacing:-.02em;
  position:relative;max-width:1020px}
 .foot{display:flex;align-items:center;gap:18px;position:relative}
 .bar{width:54px;height:5px;background:#fb923c;border-radius:3px}
 .site{font-size:25px;color:#8a837c;letter-spacing:.02em}
 """
+
+
+# 跟 favicon.svg 同一份圖形。內嵌而不是 <img>，Chrome 截圖時不必等外部檔案。
+ICON = (
+    '<svg width="46" height="46" viewBox="0 0 32 32" aria-hidden="true">'
+    '<rect width="32" height="32" rx="7" fill="#c2410c"/>'
+    '<g transform="rotate(-30 16 16) translate(16 16) scale(.88) translate(-16 -16)">'
+    '<path d="M5.1 25.8 28 16 5.1 6.2v7.6L21.5 16 5.1 18.2z" fill="#fff"/></g></svg>')
 
 
 def page(h1, site):
@@ -66,7 +79,7 @@ def page(h1, site):
     return (f'<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'
             f'<style>{CSS % (W, H, size)}</style></head><body>'
             f'<div class="glow"></div><div class="glow2"></div>'
-            f'<div class="brand">台日機票速報</div>'
+            f'<div class="brand">{ICON}台日機票速報</div>'
             f'<div class="h">{htm.escape(h1)}</div>'
             f'<div class="foot"><span class="bar"></span>'
             f'<span class="site">{htm.escape(site)}</span></div>'
@@ -109,7 +122,7 @@ def main():
     jobs.append(("default", "台灣飛日本，今天的票價與行前要知道的事"))
 
     for slug, h1 in jobs:
-        key = hashlib.sha1(h1.encode("utf-8")).hexdigest()[:16]
+        key = hashlib.sha1((DESIGN + "|" + h1).encode("utf-8")).hexdigest()[:16]
         png = os.path.join(OUT, f"{slug}.png")
         if old.get(slug) == key and os.path.exists(png):
             new[slug] = key; kept += 1; continue
