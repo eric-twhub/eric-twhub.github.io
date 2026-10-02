@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-02 12:28",
+ "generated": "2026-10-02 12:46",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -3259,7 +3259,12 @@
      }
     ],
     "fest": [],
-    "fare": null,
+    "fare": {
+     "n": 3,
+     "median": 9286,
+     "low": 8846,
+     "enough": false
+    },
     "areas": [
      {
       "area": "hokkaido",
@@ -6175,7 +6180,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-10-02 04:28"
+   "generated": "2026-10-02 04:45"
   },
   "last": "2027-12-31",
   "extra": [
