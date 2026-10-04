@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-04-transfer-osaka-hiroshima",
- "generated": "2026-10-04 05:58",
+ "generated": "2026-10-04 12:04",
  "kind": "transfer",
  "city": "hiroshima",
  "via": "osaka",
@@ -28,7 +28,7 @@
  "jpy_text": "¥10,210",
  "twd_one_way": 2092,
  "rate": 0.2049,
- "rate_at": "Sat, 03 Oct 2026",
+ "rate_at": "Sun, 04 Oct 2026",
  "fare_gate": "Farera",
  "tc_alt": null,
  "route": "新大阪 → 廣島",
