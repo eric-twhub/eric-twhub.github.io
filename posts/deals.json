@@ -1,6 +1,6 @@
 [
  {
-  "slug": "2026-10-04-taichung-okinawa",
+  "slug": "2026-10-05-taichung-okinawa",
   "title": "台中飛沖繩 NT$9,518 來回含稅｜真航空 10/10 出發",
   "o": "台中",
   "c": "沖繩",
@@ -13,48 +13,48 @@
   "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,873（28 天有紀錄），這張低 12%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,713（25 天有紀錄），這張低 11%"
   ],
-  "med": 11709,
+  "med": 11665,
   "url": "https://www.aviasales.com/search/RMQ1010OKA15101?t=LJ17916534001791720300001055RMQICNOKA17920926001792094400000090OKARMQ_71834bfcd155452d915a5fb2a19c1b04_25271&search_date=28092026&expected_price_uuid=01a0e67a-bc2a-8030-eeed-078e186d6d70&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=4JDTYrJnpeiRo-uZVRUzIg&expected_price_source=share&expected_price_currency=twd&expected_price=9518&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 8748,
-   "hi": 12375,
-   "days": 40
+   "lo": 8545,
+   "hi": 11935,
+   "days": 37
   },
   "mbase": {
-   "avg": 10873,
-   "days": 28,
+   "avg": 10713,
+   "days": 25,
    "month": 10
   },
   "rank": 8,
-  "n": 103
+  "n": 101
  },
  {
-  "slug": "2026-10-04-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$5,975",
+  "slug": "2026-10-05-transfer-fukuoka-kumamoto",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$3,248",
   "o": "台灣",
-  "c": "廣島",
-  "via": "大阪",
-  "price": 11199,
-  "air": "飛大阪再轉乘",
-  "fl_price": 7015,
+  "c": "熊本",
+  "via": "福岡",
+  "price": 11458,
+  "air": "飛福岡再轉乘",
+  "fl_price": 9282,
   "fl_rt": true,
-  "fl_to": "大阪",
-  "tr_twd": 2092,
-  "tr_mode": "山陽新幹線",
-  "dep": "2026-10-10",
+  "fl_to": "福岡",
+  "tr_twd": 1088,
+  "tr_mode": "九州新幹線",
+  "dep": "2026-11-10",
   "ret": "",
-  "stops": "山陽新幹線",
+  "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$5,975"
+   "比直飛省 NT$3,248"
   ],
-  "med": 17174,
-  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=GK17916564001791669600000160TPEKIX17920776001792084800000180KIXTPE_e71df73e58d90cb313acbd91efacfc48_18343&search_date=30092026&expected_price_uuid=01a0f36a-2855-8030-e8d3-779435533589&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=-CTSp_7DuU4uJKiPwyFCqQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7015&marker=775639",
-  "hotelcity": "廣島",
-  "cslug": "hiroshima"
+  "med": 14706,
+  "url": "https://www.aviasales.com/search/RMQ1011FUK16111?t=TW17943318001794396900001025RMQICNFUK17948604001794933000001270FUKICNRMQ_bd6f88c6112c84dccb64d36322a42a1f_24675&search_date=28092026&expected_price_uuid=01a0e7f3-98d7-8030-227a-06d22d5c2bed&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=bpBQN02v1NRU7EoSxXecmg&expected_price_source=share&expected_price_currency=twd&expected_price=9282&marker=775639",
+  "hotelcity": "熊本",
+  "cslug": "kumamoto"
  }
 ]
