@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-05-transfer-fukuoka-kumamoto",
- "generated": "2026-10-05 05:09",
+ "generated": "2026-10-05 09:44",
  "kind": "transfer",
  "city": "kumamoto",
  "via": "fukuoka",
@@ -28,7 +28,7 @@
  "jpy_text": "¥5,310（自由席）",
  "twd_one_way": 1088,
  "rate": 0.2049,
- "rate_at": "Sun, 04 Oct 2026",
+ "rate_at": "Mon, 05 Oct 2026",
  "fare_gate": "Farera",
  "tc_alt": null,
  "route": "博多 → 熊本",

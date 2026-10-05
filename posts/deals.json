@@ -13,19 +13,19 @@
   "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,713（25 天有紀錄），這張低 11%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,741（25 天有紀錄），這張低 11%"
   ],
-  "med": 11665,
+  "med": 11656,
   "url": "https://www.aviasales.com/search/RMQ1010OKA15101?t=LJ17916534001791720300001055RMQICNOKA17920926001792094400000090OKARMQ_71834bfcd155452d915a5fb2a19c1b04_25271&search_date=28092026&expected_price_uuid=01a0e67a-bc2a-8030-eeed-078e186d6d70&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=4JDTYrJnpeiRo-uZVRUzIg&expected_price_source=share&expected_price_currency=twd&expected_price=9518&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 8545,
    "hi": 11935,
-   "days": 37
+   "days": 38
   },
   "mbase": {
-   "avg": 10713,
+   "avg": 10741,
    "days": 25,
    "month": 10
   },
