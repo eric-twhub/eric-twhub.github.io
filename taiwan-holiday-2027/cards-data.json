@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-06 23:49",
+ "generated": "2026-10-07 02:08",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -1264,9 +1264,9 @@
      }
     ],
     "fare": {
-     "n": 19,
-     "median": 9610,
-     "low": 6002,
+     "n": 20,
+     "median": 9541,
+     "low": 5964,
      "enough": true
     },
     "areas": [
@@ -1678,7 +1678,7 @@
     "fare": {
      "n": 29,
      "median": 11899,
-     "low": 5733,
+     "low": 5738,
      "enough": true
     },
     "areas": [
@@ -2053,8 +2053,8 @@
     ],
     "fare": {
      "n": 8,
-     "median": 13009,
-     "low": 7319,
+     "median": 13015,
+     "low": 7326,
      "enough": true
     },
     "areas": [
@@ -2461,7 +2461,7 @@
     "fare": {
      "n": 6,
      "median": 8688,
-     "low": 6287,
+     "low": 6292,
      "enough": false
     },
     "areas": [
@@ -3260,9 +3260,9 @@
     ],
     "fest": [],
     "fare": {
-     "n": 3,
-     "median": 9260,
-     "low": 8820,
+     "n": 4,
+     "median": 9040,
+     "low": 7779,
      "enough": false
     },
     "areas": [
@@ -3651,7 +3651,12 @@
      }
     ],
     "fest": [],
-    "fare": null,
+    "fare": {
+     "n": 2,
+     "median": 9037,
+     "low": 7797,
+     "enough": false
+    },
     "areas": [
      {
       "area": "hokkaido",
@@ -4070,9 +4075,9 @@
      }
     ],
     "fare": {
-     "n": 2,
-     "median": 13135,
-     "low": 9642,
+     "n": 3,
+     "median": 9642,
+     "low": 8849,
      "enough": false
     },
     "areas": [
@@ -6185,7 +6190,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-10-06 15:49"
+   "generated": "2026-10-06 18:07"
   },
   "last": "2027-12-31",
   "extra": [
