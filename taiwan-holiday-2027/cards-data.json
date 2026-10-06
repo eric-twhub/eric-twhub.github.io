@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-06 09:43",
+ "generated": "2026-10-06 23:49",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -1264,7 +1264,7 @@
      }
     ],
     "fare": {
-     "n": 21,
+     "n": 19,
      "median": 9610,
      "low": 6002,
      "enough": true
@@ -1676,9 +1676,9 @@
      }
     ],
     "fare": {
-     "n": 25,
+     "n": 29,
      "median": 11899,
-     "low": 5963,
+     "low": 5733,
      "enough": true
     },
     "areas": [
@@ -2052,10 +2052,10 @@
      }
     ],
     "fare": {
-     "n": 5,
-     "median": 13600,
-     "low": 9112,
-     "enough": false
+     "n": 8,
+     "median": 13009,
+     "low": 7319,
+     "enough": true
     },
     "areas": [
      {
@@ -2460,8 +2460,8 @@
     "fest": [],
     "fare": {
      "n": 6,
-     "median": 8996,
-     "low": 6570,
+     "median": 8688,
+     "low": 6287,
      "enough": false
     },
     "areas": [
@@ -6185,7 +6185,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-10-06 01:42"
+   "generated": "2026-10-06 15:49"
   },
   "last": "2027-12-31",
   "extra": [
