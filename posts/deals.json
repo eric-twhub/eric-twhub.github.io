@@ -13,34 +13,59 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,751（23 天有紀錄），這張低 33%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,723（24 天有紀錄），這張低 33%"
   ],
-  "med": 11676,
+  "med": 11682,
   "url": "https://www.aviasales.com/search/RMQ1210OKA15101?t=IT17917890001791798000000090RMQOKA17920926001792094400000090OKARMQ_50ece50feed81c488b3465a9a2f70fcd_18889&search_date=05102026&expected_price_uuid=01a10ac8-1610-8030-68ab-43dc2f8da12f&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=klsY7nVtb5q8C-4ERRuScA&expected_price_source=share&expected_price_currency=twd&expected_price=7151&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 8545,
-   "hi": 11935,
-   "days": 36
+   "hi": 11970,
+   "days": 39
   },
   "mbase": {
-   "avg": 10751,
-   "days": 23,
+   "avg": 10723,
+   "days": 24,
    "month": 10
   },
   "rank": 1,
   "n": 101
  },
  {
+  "slug": "2026-10-07-transfer-osaka-hiroshima",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$1,249",
+  "o": "台灣",
+  "c": "廣島",
+  "via": "大阪",
+  "price": 11183,
+  "air": "飛大阪再轉乘",
+  "fl_price": 7015,
+  "fl_rt": true,
+  "fl_to": "大阪",
+  "tr_twd": 2084,
+  "tr_mode": "山陽新幹線",
+  "dep": "2026-10-10",
+  "ret": "",
+  "stops": "山陽新幹線",
+  "cls": "transfer",
+  "reasons": [
+   "比直飛省 NT$1,249"
+  ],
+  "med": 12432,
+  "url": "https://www.aviasales.com/search/TPE1010KIX15101?t=GK17916564001791669600000160TPEKIX17920776001792084800000180KIXTPE_e71df73e58d90cb313acbd91efacfc48_18343&search_date=30092026&expected_price_uuid=01a0f36a-2855-8030-e8d3-779435533589&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=-CTSp_7DuU4uJKiPwyFCqQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7015&marker=775639",
+  "hotelcity": "廣島",
+  "cslug": "hiroshima"
+ },
+ {
   "slug": "2026-10-07-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,241",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,237",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 10498,
+  "price": 10502,
   "air": "飛福岡再轉乘",
-  "fl_price": 8330,
+  "fl_price": 8334,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1084,
@@ -50,10 +75,10 @@
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$1,241"
+   "比直飛省 NT$1,237"
   ],
   "med": 11739,
-  "url": "https://www.aviasales.com/search/TPE1610FUK20101?t=IT17921610001792173300000145TPEFUK17924937001792499100000150FUKTPE_c1e169cf3d0d6b3e8f8a0ca44c51a860_22525&search_date=06102026&expected_price_uuid=01a110a0-c68f-8030-6677-c2bc3749cb08&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6CJLssXXk1KRmp6pWXwp-g&expected_price_source=share&expected_price_currency=twd&expected_price=8330&marker=775639",
+  "url": "https://www.aviasales.com/search/TPE1610FUK20101?t=IT17921610001792173300000145TPEFUK17924937001792499100000150FUKTPE_c1e169cf3d0d6b3e8f8a0ca44c51a860_22525&search_date=06102026&expected_price_uuid=01a110a0-c68f-8030-6677-c2bc3749cb08&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6CJLssXXk1KRmp6pWXwp-g&expected_price_source=share&expected_price_currency=twd&expected_price=8334&marker=775639",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
  }
