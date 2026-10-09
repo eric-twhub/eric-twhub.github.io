@@ -13,28 +13,28 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,665（22 天有紀錄），這張低 33%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,530（21 天有紀錄），這張低 32%"
   ],
-  "med": 11366,
+  "med": 11271,
   "url": "https://www.aviasales.com/search/RMQ1210OKA15101?t=IT17917890001791798000000090RMQOKA17920926001792094400000090OKARMQ_50ece50feed81c488b3465a9a2f70fcd_18889&search_date=05102026&expected_price_uuid=01a10ac8-1610-8030-68ab-43dc2f8da12f&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=klsY7nVtb5q8C-4ERRuScA&expected_price_source=share&expected_price_currency=twd&expected_price=7151&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 8027,
-   "hi": 12149,
-   "days": 39
+   "hi": 11885,
+   "days": 38
   },
   "mbase": {
-   "avg": 10665,
-   "days": 22,
+   "avg": 10530,
+   "days": 21,
    "month": 10
   },
   "rank": 1,
-  "n": 102
+  "n": 106
  },
  {
   "slug": "2026-10-09-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,227",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,035",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
@@ -50,9 +50,9 @@
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$1,227"
+   "比直飛省 NT$2,035"
   ],
-  "med": 11739,
+  "med": 12547,
   "url": "https://www.aviasales.com/search/TPE1610FUK20101?t=IT17921610001792173300000145TPEFUK17924937001792499100000150FUKTPE_c1e169cf3d0d6b3e8f8a0ca44c51a860_22525&search_date=06102026&expected_price_uuid=01a110a0-c68f-8030-6677-c2bc3749cb08&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6CJLssXXk1KRmp6pWXwp-g&expected_price_source=share&expected_price_currency=twd&expected_price=8334&marker=775639",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
