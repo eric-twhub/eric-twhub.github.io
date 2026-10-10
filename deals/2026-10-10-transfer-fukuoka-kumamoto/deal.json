@@ -1,11 +1,11 @@
 {
  "schema": 1,
  "slug": "2026-10-10-transfer-fukuoka-kumamoto",
- "generated": "2026-10-10 09:45",
+ "generated": "2026-10-10 23:48",
  "kind": "transfer",
  "city": "kumamoto",
  "via": "fukuoka",
- "own": 12540,
+ "own": 11410,
  "fare": {
   "o": "TPE",
   "d": "FUK",
@@ -40,5 +40,5 @@
  "mode": "九州新幹線",
  "tm": "約 40 分",
  "total": 10510,
- "save": 2030
+ "save": 900
 }
