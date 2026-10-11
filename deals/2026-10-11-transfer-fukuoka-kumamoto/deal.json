@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-11-transfer-fukuoka-kumamoto",
- "generated": "2026-10-11 02:07",
+ "generated": "2026-10-11 15:36",
  "kind": "transfer",
  "city": "kumamoto",
  "via": "fukuoka",
@@ -28,7 +28,7 @@
  "jpy_text": "¥5,310（自由席）",
  "twd_one_way": 1088,
  "rate": 0.205,
- "rate_at": "Sat, 10 Oct 2026",
+ "rate_at": "Sun, 11 Oct 2026",
  "fare_gate": "Farera",
  "tc_alt": {
   "price": 12564,
