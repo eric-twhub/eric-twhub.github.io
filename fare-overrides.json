@@ -1,0 +1,20 @@
+{
+ "_說明": "手動查證過的票價，蓋掉票價資料庫裡同一班的價格。只有在資料庫那筆明顯對不上航空公司官網時才用。",
+ "_判準": "src 必須是航空公司自己的訂位頁，而且要留 checked 與 expires。過期就不再套用，寧可讓它消失，也不要留一個沒人複查的價格在站上。",
+ "_為什麼需要": "票價來自 Aviasales 資料庫，它的快照可能是幾天前的，而且不是每條航線在每個通路都有艙位。2026-10-12 查到虎航台中到沖繩在 Trip.com 完全叫不出來，資料庫給的是 10/07 的 NT$7,357，虎航自己的訂位頁同樣日期只要 NT$5,098。",
+ "items": [
+  {
+   "air": "IT",
+   "o": "RMQ",
+   "d": "OKA",
+   "dep": "2026-11-23",
+   "ret": "2026-11-26",
+   "price": 5098,
+   "gate": "Tigerair Taiwan",
+   "checked": "2026-10-13",
+   "expires": "2026-10-20",
+   "src": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
+   "note": "去程 IT 792 07:10 台中 → 09:40 沖繩 TWD 2,299，回程 IT 793 21:05 沖繩 → 21:35 台中 TWD 2,799。這是最低票價（tigerlight），不含託運行李。查證當天顯示只剩 3 席。"
+  }
+ ]
+}

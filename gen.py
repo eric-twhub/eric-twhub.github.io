@@ -27,6 +27,7 @@ GATES={
  'Trip.com':('Trip.com','A'),'All Nippon Airways':('全日空官網','A'),
  'Japan Airlines':('日本航空官網','A'),'China Airlines':('中華航空官網','A'),
  'EVA Air':('長榮航空官網','A'),'STARLUX':('星宇航空官網','A'),
+ 'Tigerair Taiwan':('台灣虎航官網','A'),
  'Kiwi.com':('Kiwi.com','B'),'Gotogate':('Gotogate','B'),'Mytrip.com':('Mytrip','B'),
  'Flightnetwork':('Flightnetwork','B'),'Vayama':('Vayama','B'),'Wowtickets':('Wowtickets','B'),
  'Expedia':('Expedia','B'),'Booking.com':('Booking.com','B'),
@@ -241,7 +242,14 @@ _AFF = (P.get('flight', {}) or {}).get('affiliate') or {}
 AFF_Q = ''.join(f'&{k}={v}' for k, v in _AFF.items() if not k.startswith('_'))
 
 def flight_url(x):
-    """以航班資料組出 Trip.com 搜尋連結（繁中 / TWD）"""
+    """以航班資料組出 Trip.com 搜尋連結（繁中 / TWD）
+
+    手動蓋過價格的那幾筆例外，直接送到查證時用的那個訂位頁。
+    這些票之所以要蓋，就是因為 Trip.com 沒有那條線的艙位，
+    按鈕還指過去的話，讀者點開只會看到一個買不到的價格。
+    """
+    if x.get('ovr') and x['ovr'].get('src'):
+        return x['ovr']['src']
     return plink('flight', o=x['o'].lower(), d=x['d'].lower(),
                  dep=x['dep'], ret=x['ret'] or x['dep'],
                  tt='rt' if x['rt'] else 'ow', sub=x['d'].lower())
@@ -728,6 +736,20 @@ def plabel(kind,city_name=''):
     p=P[kind]
     return f"{p['icon']} 到 {p['brand']} {p['label'].replace('{q}',city_name)}"
 
+# 手動查證過的票價，蓋掉資料庫那筆。資料庫的快照可能是幾天前的，而且不是
+# 每條航線在每個通路都有艙位，對不上航空公司官網時以官網為準。
+# 判準與出處寫在 fare-overrides.json，過期的不套用，避免站上留著沒人複查的價格。
+_FO = (json.load(open('fare-overrides.json', encoding='utf-8'))
+       if os.path.exists('fare-overrides.json') else {'items': []})
+FARE_OVR, FARE_OVR_OLD = {}, []
+for _it in _FO['items']:
+    if _it.get('expires', '') < TODAY:
+        FARE_OVR_OLD.append(_it)
+        continue
+    FARE_OVR[(_it['air'], _it['o'], _it['d'], _it['dep'], _it.get('ret', ''))] = _it
+_ovr_hit = collections.Counter()
+
+
 def load():
     rows=[]
     for f in ('/tmp/scan_all.json','/tmp/scan.json'):
@@ -748,6 +770,13 @@ def load():
             dur=r.get('duration',0) or 0, dur_to=r.get('duration_to',0) or 0,
             gate=r.get('gate','') or '',
             url=f"https://www.aviasales.com{r['link']}&marker={MARKER}" if r.get('link') else ''))
+    for x in out:
+        ov = FARE_OVR.get((x['air'], x['o'], x['d'], x['dep'], x['ret']))
+        if ov:
+            x['price'], x['gate'] = ov['price'], ov['gate']
+            x['url'] = ov.get('src') or x['url']
+            x['ovr'] = ov
+            _ovr_hit[(x['air'], x['o'], x['d'], x['dep'], x['ret'])] += 1
     return out
 
 CSS='''*{box-sizing:border-box}
@@ -1395,8 +1424,13 @@ def fare_card(x,hot=False):
     if x.get('dept'):
         dates += f"　{x['dept']}"+(f" → {x['rett']}" if x.get('rett') else '')
     # 措辭需與上方「近期最低紀錄」區隔：紀錄是過去的，按鈕是去查現在的價
+    # 按鈕文字要跟它實際連去的地方一致，被蓋過價格的那幾筆連的是航空公司官網
+    _bto = (gate_info(x['ovr']['gate'])[0] if x.get('ovr') and x['ovr'].get('src')
+            else P['flight']['brand'])
+    _rel = ('nofollow noopener' if x.get('ovr') and x['ovr'].get('src')
+            else 'nofollow noopener sponsored')
     btn=(f'<a class="btn" href="{html.escape(flight_url(x))}" target="_blank" '
-         f'rel="nofollow noopener sponsored">✈️ 到 {P["flight"]["brand"]} 查這天目前票價</a>')
+         f'rel="{_rel}">✈️ 到 {_bto} 查這天目前票價</a>')
     gname,tier=gate_info(x.get('gate',''))
     gcls={'A':'ga','B':'gb','C':'gc'}[tier]
     gtxt={'A':'台灣可訂','B':'國際平台','C':'台灣較陌生'}[tier]
@@ -1617,6 +1651,14 @@ def write(path,content):
 
 # ---------- 建構資料 ----------
 deals=load()
+for _k, _n in sorted(_ovr_hit.items()):
+    _ov = FARE_OVR[_k]
+    print(f'   ✎ 手動票價蓋掉 {_n} 筆 {_k[0]} {_k[1]}→{_k[2]} {_k[3]}：'
+          f'NT${_ov["price"]:,}（{_ov["gate"]}，查證 {_ov["checked"]}，'
+          f'到 {_ov["expires"]} 失效）')
+for _ov in FARE_OVR_OLD:
+    print(f'   ⚠ fare-overrides.json 有過期項目（{_ov["expires"]}）：'
+          f'{_ov["air"]} {_ov["o"]}→{_ov["d"]} {_ov["dep"]}，已不套用，請複查或刪除')
 by_city=collections.defaultdict(list)
 for x in deals:
     c=CITY_OF.get(x['d'])
