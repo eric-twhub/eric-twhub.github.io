@@ -7887,6 +7887,16 @@ write(f'{DEALDIR}/index.html',
   + past_html + jp_runs_block(4, key='tw') + foot())
 pages.append((f'/{DEALDIR}/',0.95))
 
+# 有自家訂位頁的航空公司，貼文的查證連結直接開它自己的，不要繞 Trip.com。
+# 網址格式取自虎航官網首頁自己的航線連結（outbound=TPE-SDJ 那種）。
+def _tigerair_booking(o, d, dep, ret):
+    q = f'outbound={o}-{d}&departureDate={dep}'
+    q += (f'&inbound={d}-{o}&returnDate={ret}&type=return' if ret else '&type=oneWay')
+    return f'https://booking.tigerairtw.com/?{q}&adult=1&language=zh-TW'
+
+
+OWN_BOOKING = {'台灣虎航': _tigerair_booking}
+
 # FB / IG 文案（本地檔，不上傳網站）
 os.makedirs('posts',exist_ok=True)
 json.dump(deals_out, open('posts/deals.json','w',encoding='utf-8'),
@@ -7901,14 +7911,25 @@ for d in deals_out:
     _lbl='總計' if d['cls']=='transfer' else '來回含稅'
     _url=SITE+U('/'+DEALDIR+'/'+d['slug']+'/')
     _dates=d['dep']+(' – '+d['ret'] if d['ret'] else '')
-    # 查證用：直接開該航線該日期的 Trip.com 搜尋頁
+    # 查證用：預設開該航線該日期的 Trip.com 搜尋頁。
+    #
+    # 但 Trip.com 不是每條線都有艙位。2026-10-12 查到虎航台中到沖繩在
+    # Trip.com 完全叫不出來（航空公司篩選列表裡沒有虎航），而虎航自己的
+    # 訂位頁查得到 IT 792／IT 793，價格還比資料庫那筆低。查證連結開到一個
+    # 永遠對不上的通路，等於每天都在把真的票當成假的丟掉。
+    # 所以有自家訂位頁的航空公司，就直接開它自己的。
     _oc=(d.get('_oiata') or 'TPE').lower()
     _dc=(d.get('_diata') or '').lower()
-    _verify=(f"https://tw.trip.com/flights/showfarefirst?dcity={_oc}&acity={_dc}"
-             f"&ddate={d['dep']}&rdate={d['ret'] or d['dep']}"
-             f"&triptype={'rt' if d['ret'] else 'ow'}&class=y&quantity=1&locale=zh-TW&curr=TWD"
-             f"{AFF_Q}&trip_sub1={_dc}"
-             ) if _dc else '（轉乘方案，請分段查證）'
+    if _dc and d.get('air') in OWN_BOOKING:
+        _verify=OWN_BOOKING[d['air']](
+            (d.get('_oiata') or 'TPE').upper(), _dc.upper(), d['dep'], d['ret'])
+    elif _dc:
+        _verify=(f"https://tw.trip.com/flights/showfarefirst?dcity={_oc}&acity={_dc}"
+                 f"&ddate={d['dep']}&rdate={d['ret'] or d['dep']}"
+                 f"&triptype={'rt' if d['ret'] else 'ow'}&class=y&quantity=1&locale=zh-TW&curr=TWD"
+                 f"{AFF_Q}&trip_sub1={_dc}")
+    else:
+        _verify='（轉乘方案，請分段查證）'
     _mix=''
     if d['cls']=='transfer' and d.get('fl_price'):
         _mix=(f"\n　🧮 組成：機票飛{d['fl_to']} NT${d['fl_price']:,}"
