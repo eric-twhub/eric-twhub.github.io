@@ -13,61 +13,28 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "11 月出發的票，每天最便宜的平均要 NT$10,409（21 天有紀錄），這張低 29%"
+   "11 月出發的票，每天最便宜的平均要 NT$10,428（21 天有紀錄），這張低 29%"
   ],
-  "med": 11269,
+  "med": 11266,
   "url": "https://www.aviasales.com/search/RMQ2311OKA26111?t=IT17954178001795426800000090RMQOKA17957271001795728900000090OKARMQ_73866693ef47be8a32a59100c948c365_19739&search_date=07102026&expected_price_uuid=01a117ac-068c-8030-6431-bdbf26151108&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=7357&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 8473,
-   "hi": 12516,
-   "days": 41
+   "lo": 8243,
+   "hi": 12614,
+   "days": 39
   },
   "mbase": {
-   "avg": 10409,
+   "avg": 10428,
    "days": 21,
    "month": 11
   },
   "rank": 1,
-  "n": 106
- },
- {
-  "slug": "2026-10-12-kaohsiung-tokyo",
-  "title": "高雄飛東京 NT$9,744 來回含稅｜泰國亞洲航空 10/18 出發",
-  "o": "高雄",
-  "c": "東京",
-  "_oiata": "KHH",
-  "_diata": "TYO",
-  "price": 9744,
-  "air": "泰國亞洲航空",
-  "dep": "2026-10-18",
-  "ret": "2026-10-21",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$11,009（8 天有紀錄），這張低 11%"
-  ],
-  "med": 13828,
-  "url": "https://www.aviasales.com/search/KHH1810NRT21101?t=FD17923107001792328100000230KHHNRT17925909001792602300000250NRTKHH_e3b44aafbd759cbcdd6f3d379086a776_25995&search_date=11102026&expected_price_uuid=01a128af-f4b9-8030-aebf-4d4d2b77ec0a&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pZqn23iHsQF4BUqse6NCaQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9744&marker=775639",
-  "hotelcity": "東京",
-  "cslug": "tokyo",
-  "usual": {
-   "lo": 9744,
-   "hi": 12497,
-   "days": 18
-  },
-  "mbase": {
-   "avg": 11009,
-   "days": 8,
-   "month": 10
-  },
-  "rank": 2,
-  "n": 77
+  "n": 105
  },
  {
   "slug": "2026-10-12-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$329",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$317",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
@@ -83,9 +50,9 @@
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$329"
+   "比直飛省 NT$317"
   ],
-  "med": 12081,
+  "med": 12069,
   "url": "https://www.aviasales.com/search/RMQ2710KIX04111?t=LJ17931177001793201100001330RMQPUSKIX17938347001793872800000695KIXICNRMQ_4e30f881bd89fae7fa6e1605922d563d_20153&search_date=10102026&expected_price_uuid=01a123e2-fc22-8031-6e13-743c3b40d5ae&static_fare_key=TY%7CP0%7CH1%7CL1_1_15%7CCH0%7CR0%7CTBC1&itinerary_key=3BsgzkSqnqID2mpHKodBPQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7564&marker=775639",
   "hotelcity": "廣島",
   "cslug": "hiroshima"
