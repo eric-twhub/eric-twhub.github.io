@@ -728,15 +728,6 @@ def plabel(kind,city_name=''):
     p=P[kind]
     return f"{p['icon']} 到 {p['brand']} {p['label'].replace('{q}',city_name)}"
 
-# 票價資料庫查得到價格，不代表那班飛機存在。擋掉「這家航空根本不從這裡飛」
-# 的筆數，判準與出處寫在 airline-routes.json，沒查過的航空公司不會被擋。
-_AR = (json.load(open('airline-routes.json', encoding='utf-8'))
-       if os.path.exists('airline-routes.json') else {'airlines': {}})
-NO_ROUTE = {(k, o) for k, v in _AR['airlines'].items()
-            for o in (v.get('origins_absent') or [])}
-_dropped = collections.Counter()
-
-
 def load():
     rows=[]
     for f in ('/tmp/scan_all.json','/tmp/scan.json'):
@@ -746,9 +737,6 @@ def load():
         d=r.get('destination','')
         if d not in DEST: continue
         a=r.get('airline','')
-        if (a, r.get('origin')) in NO_ROUTE:
-            _dropped[(a, r.get('origin'))] += 1
-            continue
         k=(r.get('origin'),d,r.get('departure_at','')[:10],r.get('return_at','')[:10],a,r.get('price'))
         if k in seen: continue
         seen.add(k)
@@ -1629,10 +1617,6 @@ def write(path,content):
 
 # ---------- 建構資料 ----------
 deals=load()
-for (_a, _o), _n in sorted(_dropped.items()):
-    _an = (_AR['airlines'].get(_a) or {}).get('name', _a)
-    print(f'   ⚠ 擋掉 {_n} 筆 {_an} {_o} 出發：'
-          f'{_an}的官方時刻表上沒有這個出發地（airline-routes.json）')
 by_city=collections.defaultdict(list)
 for x in deals:
     c=CITY_OF.get(x['d'])
