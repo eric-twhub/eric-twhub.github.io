@@ -1,61 +1,36 @@
 [
  {
   "slug": "2026-10-12-taichung-okinawa",
-  "title": "台中飛沖繩 NT$7,357 來回含稅｜台灣虎航 11/23 出發",
+  "title": "台中飛沖繩 NT$8,473 來回含稅｜真航空 10/26 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 7357,
-  "air": "台灣虎航",
-  "dep": "2026-11-23",
-  "ret": "2026-11-26",
-  "stops": "直飛",
+  "price": 8473,
+  "air": "真航空",
+  "dep": "2026-10-26",
+  "ret": "2026-10-29",
+  "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "11 月出發的票，每天最便宜的平均要 NT$10,428（21 天有紀錄），這張低 29%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,589（16 天有紀錄），這張低 20%"
   ],
-  "med": 11266,
-  "url": "https://www.aviasales.com/search/RMQ2311OKA26111?t=IT17954178001795426800000090RMQOKA17957271001795728900000090OKARMQ_73866693ef47be8a32a59100c948c365_19739&search_date=07102026&expected_price_uuid=01a117ac-068c-8030-6431-bdbf26151108&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=7357&marker=775639",
+  "med": 11343,
+  "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=LJ17930313001793095500001010RMQPUSOKA17933079001793309700000090OKARMQ_09131bb60761b9bc5580b92c2bef778d_22606&search_date=11102026&expected_price_uuid=01a128e2-edcf-8030-2b31-e6815002dc58&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=g4IiBR8ynb7TLknDuiWJlA&expected_price_source=share&expected_price_currency=twd&expected_price=8473&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 8243,
-   "hi": 12614,
-   "days": 39
+   "lo": 9741,
+   "hi": 12365,
+   "days": 31
   },
   "mbase": {
-   "avg": 10428,
-   "days": 21,
-   "month": 11
+   "avg": 10589,
+   "days": 16,
+   "month": 10
   },
   "rank": 1,
-  "n": 105
- },
- {
-  "slug": "2026-10-12-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$317",
-  "o": "台灣",
-  "c": "廣島",
-  "via": "大阪",
-  "price": 11752,
-  "air": "飛大阪再轉乘",
-  "fl_price": 7564,
-  "fl_rt": true,
-  "fl_to": "大阪",
-  "tr_twd": 2094,
-  "tr_mode": "山陽新幹線",
-  "dep": "2026-10-27",
-  "ret": "",
-  "stops": "山陽新幹線",
-  "cls": "transfer",
-  "reasons": [
-   "比直飛省 NT$317"
-  ],
-  "med": 12069,
-  "url": "https://www.aviasales.com/search/RMQ2710KIX04111?t=LJ17931177001793201100001330RMQPUSKIX17938347001793872800000695KIXICNRMQ_4e30f881bd89fae7fa6e1605922d563d_20153&search_date=10102026&expected_price_uuid=01a123e2-fc22-8031-6e13-743c3b40d5ae&static_fare_key=TY%7CP0%7CH1%7CL1_1_15%7CCH0%7CR0%7CTBC1&itinerary_key=3BsgzkSqnqID2mpHKodBPQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7564&marker=775639",
-  "hotelcity": "廣島",
-  "cslug": "hiroshima"
+  "n": 83
  },
  {
   "slug": "2026-10-12-transfer-fukuoka-kumamoto",

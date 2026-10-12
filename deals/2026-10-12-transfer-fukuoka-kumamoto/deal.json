@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-12-transfer-fukuoka-kumamoto",
- "generated": "2026-10-12 15:44",
+ "generated": "2026-10-12 22:29",
  "kind": "transfer",
  "city": "kumamoto",
  "via": "fukuoka",
@@ -30,12 +30,7 @@
  "rate": 0.2051,
  "rate_at": "Mon, 12 Oct 2026",
  "fare_gate": "Farera",
- "tc_alt": {
-  "price": 12564,
-  "airname": "台灣虎航",
-  "dep": "2026-10-23",
-  "total": 14742
- },
+ "tc_alt": null,
  "route": "博多 → 熊本",
  "mode": "九州新幹線",
  "tm": "約 40 分",
