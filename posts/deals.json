@@ -46,24 +46,24 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,903（9 天有紀錄），這張低 11%"
+   "10 月出發的票，每天最便宜的平均要 NT$11,009（8 天有紀錄），這張低 11%"
   ],
-  "med": 13684,
+  "med": 13828,
   "url": "https://www.aviasales.com/search/KHH1810NRT21101?t=FD17923107001792328100000230KHHNRT17925909001792602300000250NRTKHH_e3b44aafbd759cbcdd6f3d379086a776_25995&search_date=11102026&expected_price_uuid=01a128af-f4b9-8030-aebf-4d4d2b77ec0a&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pZqn23iHsQF4BUqse6NCaQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9744&marker=775639",
   "hotelcity": "東京",
   "cslug": "tokyo",
   "usual": {
    "lo": 9744,
    "hi": 12497,
-   "days": 19
+   "days": 18
   },
   "mbase": {
-   "avg": 10903,
-   "days": 9,
+   "avg": 11009,
+   "days": 8,
    "month": 10
   },
   "rank": 2,
-  "n": 78
+  "n": 77
  },
  {
   "slug": "2026-10-12-transfer-osaka-hiroshima",

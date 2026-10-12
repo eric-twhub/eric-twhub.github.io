@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-12-kaohsiung-tokyo",
- "generated": "2026-10-12 14:00",
+ "generated": "2026-10-12 14:07",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "tokyo",
@@ -24,10 +24,10 @@
   "url": "https://www.aviasales.com/search/KHH1810NRT21101?t=FD17923107001792328100000230KHHNRT17925909001792602300000250NRTKHH_e3b44aafbd759cbcdd6f3d379086a776_25995&search_date=11102026&expected_price_uuid=01a128af-f4b9-8030-aebf-4d4d2b77ec0a&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pZqn23iHsQF4BUqse6NCaQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9744&marker=775639"
  },
  "reasons": [
-  "10 月出發的票，每天最便宜的平均要 NT$10,903（9 天有紀錄），這張低 11%"
+  "10 月出發的票，每天最便宜的平均要 NT$11,009（8 天有紀錄），這張低 11%"
  ],
- "med": 13684,
- "n_rt": 78,
+ "med": 13828,
+ "n_rt": 77,
  "others": [
   {
    "o": "KHH",
@@ -71,17 +71,17 @@
    "air": "GK",
    "airname": "捷星日本",
    "cls": "lcc",
-   "price": 10051,
-   "dep": "2026-10-12",
-   "ret": "2026-10-15",
+   "price": 10356,
+   "dep": "2026-11-29",
+   "ret": "2026-12-01",
    "dept": "14:00",
-   "rett": "09:55",
+   "rett": "09:25",
    "rt": true,
    "tr": 0,
-   "dur": 455,
+   "dur": 485,
    "dur_to": 210,
-   "gate": "Авиасейлс",
-   "url": "https://www.aviasales.com/search/KHH1210NRT15101?t=GK17918136001791829800000210KHHNRT17920581001792069200000245NRTKHH_4ab76c14387241eda09e8c3cd1fb93be_26769&search_date=05102026&expected_price_uuid=01a10b02-2c61-8050-6779-c7f37e8aa99f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6OT7nQuTs7A8xDKZTCY0mQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=10051&marker=775639"
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/KHH2911NRT01121?t=GK17959608001795977000000210KHHNRT17961171001796130000000275NRTKHH_0955e1e8f9c7ca84b770ccc366803c8b_27592&search_date=10102026&expected_price_uuid=01a126b0-a5f2-8031-6954-483c79976a3e&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tmZ_-Eo_ToB1z7fLHReO2w&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=10356&marker=775639"
   }
  ]
 }
