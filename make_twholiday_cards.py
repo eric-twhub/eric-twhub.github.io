@@ -129,6 +129,12 @@ def _eff(g, L):
     return f'{g / L:.2f}'.rstrip('0').rstrip('.')
 
 
+def _month_len(ym):
+    a = _dt.date(int(ym[:4]), int(ym[5:7]), 1)
+    b = (a.replace(day=28) + _dt.timedelta(days=4)).replace(day=1)
+    return (b - a).days
+
+
 def _chunk(xs, n):
     """切成每組不超過 n 筆，而且各組盡量一樣多。
 
@@ -358,7 +364,10 @@ def build(d):
     # 一張塞十二個月的話格子只剩三十幾 px，寫不下假日名稱。
     # 一個月一張，格子放大到 118px 高，三國的名稱才擺得進去。
     cal = d.get('cal') or {}
-    ms = cal.get('months') or []
+    # 跨年那個月在資料裡常常只有連假用到的那幾天（例如 2028 年 1 月只到 1/3）。
+    # 頁面上畫半個月說得清楚，單獨一張圖卡轉出去就只是一張空月曆，不產。
+    ms = [m for m in (cal.get('months') or [])
+          if len(m['days']) >= _month_len(m['ym'])]
     for k, m in enumerate(ms, 1):
         out.append((f'cal-{m["ym"]}.png',
                     page(_month(m, cal, d) + foot(k, len(ms), fn), '', CSS)))

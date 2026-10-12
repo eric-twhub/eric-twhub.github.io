@@ -1271,6 +1271,10 @@ def good_times(x):
 # 機票與住宿都會跳。標在使用者挑日期的地方才有用，所以做成票價卡上的標籤。
 HOL = {}
 JPH_RUN, TWH_RUN, HOL_OVER, HOL_DAYS = [], [], [], {}
+# 每個國家的行事曆各自涵蓋到哪一天。資料尾端會跨到隔年（跨年的連假要算得出來，
+# 就得多幾天），但三個國家的公布進度不一樣，*_off 是 None 就代表那天還沒公布。
+# 走出範圍的日子要說「未公布」，寫「沒有假」等於替對方宣告。
+HOL_COV = {'jp': '', 'tw': '', 'cn': ''}
 if os.path.exists('holidays.json'):
     HOL = json.load(open('holidays.json', encoding='utf-8'))
 
@@ -1295,6 +1299,9 @@ if os.path.exists('holidays.json'):
     TWH_RUN = HOL['runs']['tw']
     HOL_OVER = HOL.get('overlaps') or []
     HOL_DAYS = {x['d']: x for x in HOL['days']}
+    HOL_COV = {k: max((x['d'] for x in HOL['days']
+                       if x.get(k + '_off') is not None), default='')
+               for k in ('jp', 'tw', 'cn')}
 
 
 def jp_run(d):
@@ -5796,8 +5803,14 @@ if HOL:
             if not opts:
                 continue
             nms = [x for x in gp['names'] if x != '補假'] or gp['names']
+            _nm = '、'.join(nms)
+            # 跨年那一段補的是隔年的假日（2027-12-31 補的是 2028 的元旦），
+            # 同一張表上會出現兩個「元旦」，標上年份才分得出來。
+            # 年份放前面：下面的明細是「名稱（日期範圍）」，放後面會變成兩層括號。
+            if gp['end'][:4] != gp['start'][:4]:
+                _nm = f'{gp["end"][:4]} {_nm}'
             out.append({'start': gp['start'], 'end': gp['end'],
-                        'name': '、'.join(nms), 'base': base,
+                        'name': _nm, 'base': base,
                         'from': D[s0], 'to': D[e0], 'opts': opts})
         # 中間卡著週末的兩個假日（例如中秋與教師節）會算出同一段連休，
         # 那是同一件事，合併成一列，名字接起來
@@ -6079,7 +6092,8 @@ if HOL:
             f'<a href="{U("/taiwan-holiday-2027/")}">2027 年請假攻略</a>。</p>'
           + '<p class="disc">算法：把週六日與國定假日視為非上班日，'
             '在假期前後各九天的範圍內找出「請 N 個上班日就能連起來」的最長區間。'
-            '資料只到 2027-12-31，跨年那幾段會被截斷，所以不列。</p>')
+            f'台灣的行事曆資料到 {HOL_COV["tw"]}，'
+            '碰到資料邊界的假期算出來的連休會短一截，所以不列。</p>')
          if _LP else '')
       + '<h2>各國接下來的連假</h2>'
       + '<h3>🇯🇵 日本</h3>' + _runs_tbl('jp')
@@ -6192,6 +6206,11 @@ if HOL:
     _CAL_SHORT = {'臺灣光復暨金門古寧頭大捷紀念日': '光復節',
                   '孔子誕辰紀念日/教師節': '教師節'}
 
+    def _month_len(ym):
+        a = datetime.date(int(ym[:4]), int(ym[5:7]), 1)
+        b = (a.replace(day=28) + datetime.timedelta(days=4)).replace(day=1)
+        return (b - a).days
+
     def _cal_data(ys, lp):
         """月曆要標什麼：哪幾天放假、哪幾天建議請假、三國各自的假日名。
 
@@ -6265,6 +6284,11 @@ if HOL:
                              'dests': MF.get('dest_names') or MF.get('dests'),
                              'generated': MF.get('generated')} if MF else None,
                 'last': max(d for d in days if d[:4] == ys),
+                # 跨年那個月常常只有連假用到的那幾天在資料裡，月曆上會是半個月。
+                # 頁面要說明是哪幾個月，不然看起來像漏畫。
+                'partial': sorted(
+                    ym for ym in {d[:7] for d in days}
+                    if sum(1 for d in days if d[:7] == ym) < _month_len(ym)),
                 'extra': sorted({d[:7] for d in days if d[:4] != ys}),
                 'leave': {d: {'name': v[0], 'tot': v[1]} for d, v in leave.items()}}
 
@@ -6273,6 +6297,7 @@ if HOL:
         if not cd:
             return ''
         cn_open, last, extra = cd['cn_open'], cd['last'], cd['extra']
+        partial = cd.get('partial') or []
         out = ''
         for _m in cd['months']:
             ym = _m['ym']
@@ -6332,11 +6357,18 @@ if HOL:
                 '台灣有兩個名字太長，月曆上縮寫成光復節與教師節。'
                 + ('' if cn_open else
                    f'中國的 {ys} 年節假日國務院還沒公布，所以月曆上沒有中國的標記。')
-                + f'資料只到 {last}，之後的不列。</p>')
+                + (f'{"、".join(f"{int(pm[:4])} 年 {int(pm[5:7])} 月" for pm in partial)}'
+                   '只畫了跨年連假用到的那幾天，'
+                   f'台灣的行事曆資料到 {HOL_COV["tw"]} 為止，之後的還沒公布。</p>'
+                   if partial else f'資料只到 {last}，之後的不列。</p>'))
         # 每個月適合去哪裡：票價、當地大型活動、三個地區。
         # 這一段跟月曆圖卡讀同一份資料。
         _mg_rows = ''
         for _m in cd['months']:
+            # 跨年那個月只有連假那幾天在資料裡，拿來講「這個月適合去哪裡」
+            # 會把整月的票價與祭典掛在半個月上，所以這張表跳過它。
+            if _m['ym'] in partial:
+                continue
             _fa = _m.get('fare') or {}
             if _fa.get('enough'):
                 _fc = (f'<td class="nm"><b>{money(_fa["median"])}</b>'
@@ -6406,6 +6438,9 @@ if HOL:
                            f'{html.escape("、".join(x["names"]) or "連假")}'
                            f' {_dm(x["start"], x["end"])}，重疊 {n} 天'
                            for x, n in jp) + '</small></td>')
+            elif e > HOL_COV['jp']:
+                # 資料還沒涵蓋到的日子寫「無」，等於替日本宣告那幾天不放假。
+                jpc = '<td class="dimcell">未公布</td>'
             else:
                 jpc = '<td class="dimcell">無</td>'
             if not cn_open:
@@ -6425,7 +6460,9 @@ if HOL:
                     + ('　<b>推估</b>' if f['conf_y'] == 'est' else '')
                     for f in fs) + '</small></td>')
                   if fs else '<td class="dimcell">—</td>')
-            rows += (f'<tr><td class="nm"><b>{html.escape("、".join(r["names"]))}</b>'
+            # 跨年那一段補的是隔年的假日，不標年份會跟年初的同名假日混在一起。
+            _rn = '、'.join(r['names']) + (f'（{e[:4]}）' if e[:4] != s[:4] else '')
+            rows += (f'<tr><td class="nm"><b>{html.escape(_rn)}</b>'
                      f'<br><small style="color:var(--dim)">'
                      f'{_dm(r["start"], r["end"])}</small></td>'
                      f'<td><b>{r["days"]} 天</b></td>{jpc}{cnc}{fc}</tr>')
