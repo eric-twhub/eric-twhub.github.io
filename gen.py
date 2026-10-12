@@ -6640,8 +6640,11 @@ if HOL:
             s, e = r['start'], r['end']
             _cd_runs.append({
                 'names': r['names'], 'start': s, 'end': e, 'days': r['days'],
-                'jp': [{'names': x['names'], 'start': x['start'], 'end': x['end'],
-                        'overlap': n} for x, n in _ovl_runs('jp', s, e)],
+                # None 代表那幾天日本還沒公布（跟中國同一套三態），空陣列才是沒有連假。
+                'jp': (None if e > HOL_COV['jp'] else
+                       [{'names': x['names'], 'start': x['start'],
+                         'end': x['end'], 'overlap': n}
+                        for x, n in _ovl_runs('jp', s, e)]),
                 'cn': (None if not cn_open else
                        [{'names': x['names'], 'start': x['start'], 'end': x['end'],
                          'overlap': n} for x, n in _ovl_runs('cn', s, e)]),

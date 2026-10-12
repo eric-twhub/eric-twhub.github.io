@@ -213,7 +213,10 @@ def build(d):
         rows = ''
         for r in grp:
             bits = []
-            if r['jp']:
+            if r['jp'] is None:
+                # 跨年那段走出日本行事曆的範圍。寫「沒有連假」等於替日本宣告。
+                bits.append('🇯🇵 日本尚未公布')
+            elif r['jp']:
                 bits.append('🇯🇵 <em>日本同時連假</em>　' + '；'.join(
                     f'{"、".join(x["names"]) or "連假"} {_rng(x["start"], x["end"])}'
                     f'，重疊 {x["overlap"]} 天' for x in r['jp']))
@@ -231,7 +234,11 @@ def build(d):
                 bits.append('🎆 <em>' + '、'.join(
                     f'{f["name"]}（{f["city"]}）' + ('・推估' if f['est'] else '')
                     for f in r['fest']) + '</em>')
-            rows += (f'<div class="rn"><b>{E("、".join(r["names"]))}　'
+            # 跨年那段補的是隔年的假日，標上年份才不會跟年初的同名假日混在一起。
+            _nm = '、'.join(r['names'])
+            if r['end'][:4] != r['start'][:4]:
+                _nm += f'（{r["end"][:4]}）'
+            rows += (f'<div class="rn"><b>{E(_nm)}　'
                      f'{r["days"]} 天</b>'
                      f'<u>{_rng(r["start"], r["end"])}</u>'
                      + ''.join('<s class="q">' + x + '</s>' if 'em>' not in x
