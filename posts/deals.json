@@ -13,57 +13,24 @@
   "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,898（19 天有紀錄），這張低 22%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,910（18 天有紀錄），這張低 22%"
   ],
-  "med": 11266,
+  "med": 11527,
   "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=LJ17930313001793095500001010RMQPUSOKA17933079001793309700000090OKARMQ_09131bb60761b9bc5580b92c2bef778d_22606&search_date=11102026&expected_price_uuid=01a128e2-edcf-8030-2b31-e6815002dc58&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=g4IiBR8ynb7TLknDuiWJlA&expected_price_source=share&expected_price_currency=twd&expected_price=8473&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 8473,
    "hi": 12614,
-   "days": 43
+   "days": 40
   },
   "mbase": {
-   "avg": 10898,
-   "days": 19,
+   "avg": 10910,
+   "days": 18,
    "month": 10
   },
   "rank": 5,
-  "n": 105
- },
- {
-  "slug": "2026-10-13-kaohsiung-tokyo",
-  "title": "高雄飛東京 NT$9,744 來回含稅｜泰國亞洲航空 10/18 出發",
-  "o": "高雄",
-  "c": "東京",
-  "_oiata": "KHH",
-  "_diata": "TYO",
-  "price": 9744,
-  "air": "泰國亞洲航空",
-  "dep": "2026-10-18",
-  "ret": "2026-10-21",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,830（9 天有紀錄），這張低 10%"
-  ],
-  "med": 13531,
-  "url": "https://www.aviasales.com/search/KHH1810NRT21101?t=FD17923107001792328100000230KHHNRT17925909001792602300000250NRTKHH_e3b44aafbd759cbcdd6f3d379086a776_25995&search_date=11102026&expected_price_uuid=01a128af-f4b9-8030-aebf-4d4d2b77ec0a&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pZqn23iHsQF4BUqse6NCaQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9744&marker=775639",
-  "hotelcity": "東京",
-  "cslug": "tokyo",
-  "usual": {
-   "lo": 10040,
-   "hi": 12199,
-   "days": 21
-  },
-  "mbase": {
-   "avg": 10830,
-   "days": 9,
-   "month": 10
-  },
-  "rank": 2,
-  "n": 98
+  "n": 107
  },
  {
   "slug": "2026-10-13-transfer-fukuoka-kumamoto",
