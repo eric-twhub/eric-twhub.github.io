@@ -19,6 +19,12 @@ OTA 拿到的是加價後的票。2026-10-13 抽六筆不同航線比對，六�
 """
 import json, sys, datetime, urllib.request, urllib.error, time
 
+try:                                   # 一律以台北時間為準（CI 執行環境是 UTC）
+    from zoneinfo import ZoneInfo
+    TPE = ZoneInfo('Asia/Taipei')
+except Exception:
+    TPE = datetime.timezone(datetime.timedelta(hours=8))
+
 API = 'https://api-book.tigerairtw.com/graphql'
 DESTS = ('https://api-book.tigerairtw.com/api/general/'
          'available-destinations?locale=zh-TW&origin=%s')
@@ -99,7 +105,10 @@ def main():
         if a == '--out' and i + 1 < len(sys.argv):
             out_path = sys.argv[i + 1]
 
-    today = datetime.date.today()
+    # 用台北的今天，不是 runner 的今天。CI 跑在 UTC，台北入夜後兩者差一天，
+    # 會害今天出發的班機整天抓不到。
+    now = datetime.datetime.now(TPE)
+    today = now.date()
     since = today.isoformat()
     until = (today + datetime.timedelta(days=int(months * 30.5))).isoformat()
 
@@ -138,7 +147,8 @@ def main():
                '所以這份每天重抓，不要拿舊的用。',
         '_來回不等於兩段相加': '虎航來回一起訂常比兩段單程相加便宜，'
                      '所以用這份算出來的來回價是上限，不是最優惠價。',
-        'generated': datetime.datetime.now().astimezone().isoformat(timespec='seconds'),
+        'generated': now.strftime('%Y-%m-%d %H:%M'),
+        '_時區': '台北時間。站上其他時間戳也都是台北時間，不要混到 UTC。',
         'since': since, 'until': until,
         'routes': rt,
         'fares': dict(sorted(fares.items())),
