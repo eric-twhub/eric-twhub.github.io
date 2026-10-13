@@ -13,47 +13,47 @@
   "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "10 月出發的票，每天最便宜的平均要 NT$10,910（18 天有紀錄），這張低 22%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,969（17 天有紀錄），這張低 23%"
   ],
   "med": 11527,
   "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=LJ17930313001793095500001010RMQPUSOKA17933079001793309700000090OKARMQ_09131bb60761b9bc5580b92c2bef778d_22606&search_date=11102026&expected_price_uuid=01a128e2-edcf-8030-2b31-e6815002dc58&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=g4IiBR8ynb7TLknDuiWJlA&expected_price_source=share&expected_price_currency=twd&expected_price=8473&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 8473,
-   "hi": 12614,
-   "days": 40
+   "lo": 5965,
+   "hi": 12640,
+   "days": 39
   },
   "mbase": {
-   "avg": 10910,
-   "days": 18,
+   "avg": 10969,
+   "days": 17,
    "month": 10
   },
   "rank": 5,
-  "n": 107
+  "n": 105
  },
  {
   "slug": "2026-10-13-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$904",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$346",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 10506,
+  "price": 11064,
   "air": "飛福岡再轉乘",
-  "fl_price": 8334,
+  "fl_price": 8892,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1086,
   "tr_mode": "九州新幹線",
-  "dep": "2026-10-16",
+  "dep": "2026-11-03",
   "ret": "",
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$904"
+   "比直飛省 NT$346"
   ],
   "med": 11410,
-  "url": "https://www.aviasales.com/search/TPE1610FUK20101?t=IT17921610001792173300000145TPEFUK17924937001792499100000150FUKTPE_c1e169cf3d0d6b3e8f8a0ca44c51a860_22525&search_date=06102026&expected_price_uuid=01a110a0-c68f-8030-6677-c2bc3749cb08&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6CJLssXXk1KRmp6pWXwp-g&expected_price_source=share&expected_price_currency=twd&expected_price=8334&marker=775639",
+  "url": "https://www.aviasales.com/search/TPE0311FUK06111?t=AK17937069001793719200000145TPEFUK17939820001793988600000170FUKTPE_d84fa42efeba0b7b691f65a4364e0dc6_23698&search_date=09102026&expected_price_uuid=01a11fc3-be35-8040-6b6f-4da70589f4d7&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ZU-O81JhyLL43RDdv44dvQ&expected_price_source=share&expected_price_currency=twd&expected_price=8892&marker=775639",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
  }

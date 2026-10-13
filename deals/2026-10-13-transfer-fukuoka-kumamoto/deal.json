@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-13-transfer-fukuoka-kumamoto",
- "generated": "2026-10-13 16:05",
+ "generated": "2026-10-13 23:32",
  "kind": "transfer",
  "city": "kumamoto",
  "via": "fukuoka",
@@ -9,20 +9,20 @@
  "fare": {
   "o": "TPE",
   "d": "FUK",
-  "air": "IT",
-  "airname": "台灣虎航",
+  "air": "AK",
+  "airname": "馬來西亞亞航",
   "cls": "lcc",
-  "price": 8334,
-  "dep": "2026-10-16",
-  "ret": "2026-10-20",
-  "dept": "14:30",
-  "rett": "10:55",
+  "price": 8892,
+  "dep": "2026-11-03",
+  "ret": "2026-11-06",
+  "dept": "11:55",
+  "rett": "16:20",
   "rt": true,
   "tr": 0,
-  "dur": 295,
+  "dur": 315,
   "dur_to": 145,
   "gate": "Farera",
-  "url": "https://www.aviasales.com/search/TPE1610FUK20101?t=IT17921610001792173300000145TPEFUK17924937001792499100000150FUKTPE_c1e169cf3d0d6b3e8f8a0ca44c51a860_22525&search_date=06102026&expected_price_uuid=01a110a0-c68f-8030-6677-c2bc3749cb08&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6CJLssXXk1KRmp6pWXwp-g&expected_price_source=share&expected_price_currency=twd&expected_price=8334&marker=775639"
+  "url": "https://www.aviasales.com/search/TPE0311FUK06111?t=AK17937069001793719200000145TPEFUK17939820001793988600000170FUKTPE_d84fa42efeba0b7b691f65a4364e0dc6_23698&search_date=09102026&expected_price_uuid=01a11fc3-be35-8040-6b6f-4da70589f4d7&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ZU-O81JhyLL43RDdv44dvQ&expected_price_source=share&expected_price_currency=twd&expected_price=8892&marker=775639"
  },
  "fare_rt": true,
  "jpy_text": "¥5,310（自由席）",
@@ -34,6 +34,6 @@
  "route": "博多 → 熊本",
  "mode": "九州新幹線",
  "tm": "約 40 分",
- "total": 10506,
- "save": 904
+ "total": 11064,
+ "save": 346
 }
