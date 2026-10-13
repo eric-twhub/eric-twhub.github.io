@@ -1,56 +1,89 @@
 [
  {
   "slug": "2026-10-13-taichung-okinawa",
-  "title": "台中飛沖繩 NT$8,027 來回含稅｜台灣虎航 11/09 出發",
+  "title": "台中飛沖繩 NT$8,473 來回含稅｜真航空 10/26 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 8027,
-  "air": "台灣虎航",
-  "dep": "2026-11-09",
-  "ret": "2026-11-12",
-  "stops": "直飛",
+  "price": 8473,
+  "air": "真航空",
+  "dep": "2026-10-26",
+  "ret": "2026-10-29",
+  "stops": "轉機 1 次",
   "cls": "lcc",
   "reasons": [
-   "11 月出發的票，每天最便宜的平均要 NT$10,595（23 天有紀錄），這張低 24%"
+   "10 月出發的票，每天最便宜的平均要 NT$10,898（19 天有紀錄），這張低 22%"
   ],
   "med": 11266,
-  "url": "https://www.aviasales.com/search/RMQ0911OKA12111?t=IT17942082001794217200000090RMQOKA17945175001794519300000090OKARMQ_cf93d367ecac54c81581bf6a60cf461d_21354&search_date=08102026&expected_price_uuid=01a11d60-72f5-8030-2c25-d5581d5f39a7&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=8027&marker=775639",
+  "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=LJ17930313001793095500001010RMQPUSOKA17933079001793309700000090OKARMQ_09131bb60761b9bc5580b92c2bef778d_22606&search_date=11102026&expected_price_uuid=01a128e2-edcf-8030-2b31-e6815002dc58&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=g4IiBR8ynb7TLknDuiWJlA&expected_price_source=share&expected_price_currency=twd&expected_price=8473&marker=775639",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 8473,
    "hi": 12614,
-   "days": 41
+   "days": 43
   },
   "mbase": {
-   "avg": 10595,
-   "days": 23,
-   "month": 11
+   "avg": 10898,
+   "days": 19,
+   "month": 10
   },
-  "rank": 2,
+  "rank": 5,
   "n": 105
  },
  {
+  "slug": "2026-10-13-kaohsiung-tokyo",
+  "title": "高雄飛東京 NT$9,744 來回含稅｜泰國亞洲航空 10/18 出發",
+  "o": "高雄",
+  "c": "東京",
+  "_oiata": "KHH",
+  "_diata": "TYO",
+  "price": 9744,
+  "air": "泰國亞洲航空",
+  "dep": "2026-10-18",
+  "ret": "2026-10-21",
+  "stops": "直飛",
+  "cls": "lcc",
+  "reasons": [
+   "10 月出發的票，每天最便宜的平均要 NT$10,830（9 天有紀錄），這張低 10%"
+  ],
+  "med": 13531,
+  "url": "https://www.aviasales.com/search/KHH1810NRT21101?t=FD17923107001792328100000230KHHNRT17925909001792602300000250NRTKHH_e3b44aafbd759cbcdd6f3d379086a776_25995&search_date=11102026&expected_price_uuid=01a128af-f4b9-8030-aebf-4d4d2b77ec0a&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pZqn23iHsQF4BUqse6NCaQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9744&marker=775639",
+  "hotelcity": "東京",
+  "cslug": "tokyo",
+  "usual": {
+   "lo": 10040,
+   "hi": 12199,
+   "days": 21
+  },
+  "mbase": {
+   "avg": 10830,
+   "days": 9,
+   "month": 10
+  },
+  "rank": 2,
+  "n": 98
+ },
+ {
   "slug": "2026-10-13-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$898",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$904",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 10512,
+  "price": 10506,
   "air": "飛福岡再轉乘",
   "fl_price": 8334,
   "fl_rt": true,
   "fl_to": "福岡",
-  "tr_twd": 1089,
+  "tr_twd": 1086,
   "tr_mode": "九州新幹線",
   "dep": "2026-10-16",
   "ret": "",
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$898"
+   "比直飛省 NT$904"
   ],
   "med": 11410,
   "url": "https://www.aviasales.com/search/TPE1610FUK20101?t=IT17921610001792173300000145TPEFUK17924937001792499100000150FUKTPE_c1e169cf3d0d6b3e8f8a0ca44c51a860_22525&search_date=06102026&expected_price_uuid=01a110a0-c68f-8030-6677-c2bc3749cb08&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6CJLssXXk1KRmp6pWXwp-g&expected_price_source=share&expected_price_currency=twd&expected_price=8334&marker=775639",

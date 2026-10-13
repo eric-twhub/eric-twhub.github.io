@@ -1,30 +1,30 @@
 {
  "schema": 1,
  "slug": "2026-10-13-taichung-okinawa",
- "generated": "2026-10-13 08:00",
+ "generated": "2026-10-13 11:13",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
  "fare": {
   "o": "RMQ",
   "d": "OKA",
-  "air": "IT",
-  "airname": "台灣虎航",
+  "air": "LJ",
+  "airname": "真航空",
   "cls": "lcc",
-  "price": 8027,
-  "dep": "2026-11-09",
-  "ret": "2026-11-12",
-  "dept": "07:10",
+  "price": 8473,
+  "dep": "2026-10-26",
+  "ret": "2026-10-29",
+  "dept": "16:15",
   "rett": "21:05",
   "rt": true,
-  "tr": 0,
-  "dur": 180,
-  "dur_to": 90,
+  "tr": 1,
+  "dur": 1100,
+  "dur_to": 260,
   "gate": "Trip.com",
-  "url": "https://www.aviasales.com/search/RMQ0911OKA12111?t=IT17942082001794217200000090RMQOKA17945175001794519300000090OKARMQ_cf93d367ecac54c81581bf6a60cf461d_21354&search_date=08102026&expected_price_uuid=01a11d60-72f5-8030-2c25-d5581d5f39a7&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=8027&marker=775639"
+  "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=LJ17930313001793095500001010RMQPUSOKA17933079001793309700000090OKARMQ_09131bb60761b9bc5580b92c2bef778d_22606&search_date=11102026&expected_price_uuid=01a128e2-edcf-8030-2b31-e6815002dc58&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=g4IiBR8ynb7TLknDuiWJlA&expected_price_source=share&expected_price_currency=twd&expected_price=8473&marker=775639"
  },
  "reasons": [
-  "11 月出發的票，每天最便宜的平均要 NT$10,595（23 天有紀錄），這張低 24%"
+  "10 月出發的票，每天最便宜的平均要 NT$10,898（19 天有紀錄），這張低 22%"
  ],
  "med": 11266,
  "n_rt": 105,
@@ -57,7 +57,7 @@
     "checked": "2026-10-13",
     "expires": "2026-10-20",
     "src": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
-    "note": "去程 IT 792 07:10 台中 → 09:40 沖繩 TWD 2,299，回程 IT 793 21:05 沖繩 → 21:35 台中 TWD 2,799。這是最低票價（tigerlight），不含託運行李。查證當天顯示只剩 3 席。"
+    "note": "去程 IT 792 2,299 ＋ 回程 IT 793 2,799。資料庫報 7,357。"
    }
   },
   {
@@ -66,7 +66,38 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8113,
+   "price": 5098,
+   "dep": "2026-11-09",
+   "ret": "2026-11-12",
+   "dept": "07:10",
+   "rett": "21:05",
+   "rt": true,
+   "tr": 0,
+   "dur": 180,
+   "dur_to": 90,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
+   "ovr": {
+    "air": "IT",
+    "o": "RMQ",
+    "d": "OKA",
+    "dep": "2026-11-09",
+    "ret": "2026-11-12",
+    "price": 5098,
+    "gate": "Tigerair Taiwan",
+    "checked": "2026-10-13",
+    "expires": "2026-10-20",
+    "src": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
+    "note": "去程 IT 792 2,799 ＋ 回程 IT 793 2,299。資料庫報 8,027，是今天的特價第一名。"
+   }
+  },
+  {
+   "o": "RMQ",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 5098,
    "dep": "2026-11-02",
    "ret": "2026-11-05",
    "dept": "07:10",
@@ -75,26 +106,21 @@
    "tr": 0,
    "dur": 180,
    "dur_to": 90,
-   "gate": "Trip.com",
-   "url": "https://www.aviasales.com/search/RMQ0211OKA05111?t=IT17936034001793612400000090RMQOKA17939127001793914500000090OKARMQ_6cecd3460181911d0d350a0d4a1dcb60_21616&search_date=10102026&expected_price_uuid=01a12379-0d70-8030-aec2-27d7ec295a11&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=8113&marker=775639"
-  },
-  {
-   "o": "RMQ",
-   "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 8243,
-   "dep": "2026-11-30",
-   "ret": "2026-12-03",
-   "dept": "07:10",
-   "rett": "21:05",
-   "rt": true,
-   "tr": 0,
-   "dur": 180,
-   "dur_to": 90,
-   "gate": "Trip.com",
-   "url": "https://www.aviasales.com/search/RMQ3011OKA03121?t=IT17960226001796031600000090RMQOKA17963319001796333700000090OKARMQ_455f6c0fc82f9d194d568398ce9bad3b_21964&search_date=10102026&expected_price_uuid=01a1260e-e0b5-8040-2450-a1b3900cfc9e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=8243&marker=775639"
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
+   "ovr": {
+    "air": "IT",
+    "o": "RMQ",
+    "d": "OKA",
+    "dep": "2026-11-02",
+    "ret": "2026-11-05",
+    "price": 5098,
+    "gate": "Tigerair Taiwan",
+    "checked": "2026-10-13",
+    "expires": "2026-10-20",
+    "src": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
+    "note": "去程 IT 792 1,799 ＋ 回程 IT 793 3,299。資料庫報 8,113。"
+   }
   }
  ]
 }
