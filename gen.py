@@ -745,7 +745,7 @@ def plabel(kind,city_name=''):
 _TGF = (json.load(open('tigerair-fares.json', encoding='utf-8'))
         if os.path.exists('tigerair-fares.json') else {})
 TGF = _TGF.get('fares') or {}
-_tgf_hit, _tgf_gap = collections.Counter(), []
+_tgf_hit, _tgf_gap, _tgf_log = collections.Counter(), [], []
 
 
 def _tiger_price(x):
@@ -811,6 +811,8 @@ def load():
         if tp is not None and tp < x['price']:
             _tgf_gap.append((x['price'] - tp) / x['price'])
             _tgf_hit[f"{x['o']}-{x['d']}"] += 1
+            _tgf_log.append({'route': f"{x['o']}-{x['d']}", 'dep': x['dep'],
+                             'ret': x['ret'], 'db': x['price'], 'air': tp})
             x['price'], x['gate'] = tp, 'Tigerair Taiwan'
             x['url'] = tiger_url(x['o'], x['d'], x['dep'], x['ret'])
             x['ta_rt_sum'] = rt_sum
@@ -1706,6 +1708,44 @@ if _tgf_gap:
           f'比資料庫便宜 中位數 {_g[len(_g)//2]*100:.0f}%、'
           f'最多 {_g[-1]*100:.0f}%，'
           f'官網價查證於 {(_TGF.get("generated") or "")[:16]}')
+
+    # 把每天的差距存起來。這是我們自己量的東西，別人沒有，不存今天就沒了。
+    # 只留彙總與一個最極端的例子，逐筆存會隨著站上票價每天換而變成噪音。
+    _GAPF = 'tigerair-gap.json'
+    try:
+        _gap_doc = json.load(open(_GAPF, encoding='utf-8'))
+    except Exception:
+        _gap_doc = {
+            '_說明': '每天比對「票價資料庫的虎航報價」與「虎航官網同一天的價格」，'
+                   '記下差距。資料庫收的是各家 OTA 報價，虎航主要自己賣，'
+                   'OTA 拿到的是加價後的票。',
+            '_怎麼算的': 'gap 是 (資料庫價 − 官網價) ÷ 資料庫價，只統計官網比較便宜的那些。'
+                    '來回的官網價是去程加回程，虎航來回一起訂常更低，所以實際差距只會更大。',
+            '_樣本會變': '每天統計的是當天站上有的虎航票，張數與航線組合每天不同，'
+                    '所以 n 的變化不代表什麼，看 med 才有意義。',
+            '_單位': 'med / max / min 是比例，db_total / air_total 是 TWD 加總。',
+            'days': {}}
+    _by = collections.defaultdict(list)
+    for _r in _tgf_log:
+        _by[_r['route']].append((_r['db'] - _r['air']) / _r['db'])
+    _worst = max(_tgf_log, key=lambda r: (r['db'] - r['air']) / r['db'])
+    _gap_doc['days'][TODAY] = {
+        'n': len(_tgf_gap),
+        'med': round(_g[len(_g) // 2], 4),
+        'max': round(_g[-1], 4), 'min': round(_g[0], 4),
+        'db_total': sum(r['db'] for r in _tgf_log),
+        'air_total': sum(r['air'] for r in _tgf_log),
+        'routes': {k: {'n': len(v), 'med': round(sorted(v)[len(v) // 2], 4)}
+                   for k, v in sorted(_by.items())},
+        'worst': _worst,
+    }
+    _gap_doc['days'] = dict(sorted(_gap_doc['days'].items()))
+    with open(_GAPF, 'w', encoding='utf-8') as _f:
+        json.dump(_gap_doc, _f, ensure_ascii=False, indent=1)
+    _w = _gap_doc['days'][TODAY]['worst']
+    print(f'     差距存進 {_GAPF}（累積 {len(_gap_doc["days"])} 天）；'
+          f'今天差最多的是 {_w["route"]} {_w["dep"]}：'
+          f'{_w["db"]:,} 對 {_w["air"]:,}')
 elif TGF:
     print('   ✈ 虎航官網價沒有任何一筆比資料庫便宜，這很反常，請查 tigerair-fares.json')
 else:
