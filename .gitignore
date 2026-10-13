@@ -12,3 +12,7 @@ cards/*
 !cards/ski/
 !cards/oneway/
 !cards/sapporo/
+
+# 虎航官網票價：每天重抓、300 KB 上下，進版控會讓歷史快速膨脹。
+# CI 每次跑 scan_tigerair.py 重建；抓不到時 gen.py 會印警告並沿用資料庫價。
+tigerair-fares.json

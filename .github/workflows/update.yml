@@ -52,6 +52,13 @@ jobs:
         continue-on-error: true
         run: python3 scan_months.py
 
+      - name: 抓取虎航官網票價
+        # 票價資料庫收的是 OTA 報價，虎航主要自己賣，OTA 拿到的是加價後的票，
+        # 比對下來官網便宜中位數 24%。抓不到就沿用 repo 裡上一版，gen.py 會
+        # 印出警告；不該因為它失敗就讓整個票價更新停掉。
+        continue-on-error: true
+        run: python3 scan_tigerair.py
+
       - name: 更新日圓匯率
         run: python3 update_rate.py
 

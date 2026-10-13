@@ -250,6 +250,8 @@ def flight_url(x):
     """
     if x.get('ovr') and x['ovr'].get('src'):
         return x['ovr']['src']
+    if x.get('gate') == 'Tigerair Taiwan' and x.get('url'):
+        return x['url']
     return plink('flight', o=x['o'].lower(), d=x['d'].lower(),
                  dep=x['dep'], ret=x['ret'] or x['dep'],
                  tt='rt' if x['rt'] else 'ow', sub=x['d'].lower())
@@ -736,6 +738,39 @@ def plabel(kind,city_name=''):
     p=P[kind]
     return f"{p['icon']} 到 {p['brand']} {p['label'].replace('{q}',city_name)}"
 
+# 虎航官網的每日票價，由 scan_tigerair.py 每天抓。
+# 票價資料庫收的是 OTA 報價，虎航主要自己賣，OTA 拿到的是加價後的票，
+# 2026-10-13 比對站上 29 筆，27 筆官網便宜，中位數差 24%、最多 42%。
+# 只在官網比較便宜時才換，換上去的價格不會比原本貴。
+_TGF = (json.load(open('tigerair-fares.json', encoding='utf-8'))
+        if os.path.exists('tigerair-fares.json') else {})
+TGF = _TGF.get('fares') or {}
+_tgf_hit, _tgf_gap = collections.Counter(), []
+
+
+def _tiger_price(x):
+    """這班虎航在官網的價格。來回是去程加回程，查不到就回 None。
+
+    虎航來回一起訂常比兩段單程相加便宜，所以來回算出來的是上限，
+    真正訂下去只會更低。寧可標得比實際高一點，也不要標一個訂不到的低價。
+    """
+    if x['air'] != 'IT':
+        return None, False
+    out = (TGF.get(f"{x['o']}-{x['d']}") or {}).get(x['dep'])
+    if out is None:
+        return None, False
+    if not x['ret']:
+        return out, False
+    back = (TGF.get(f"{x['d']}-{x['o']}") or {}).get(x['ret'])
+    return (None, False) if back is None else (out + back, True)
+
+
+def tiger_url(o, d, dep, ret):
+    q = f'outbound={o}-{d}&departureDate={dep}'
+    q += (f'&inbound={d}-{o}&returnDate={ret}&type=return' if ret else '&type=oneWay')
+    return f'https://booking.tigerairtw.com/?{q}&adult=1&language=zh-TW'
+
+
 # 手動查證過的票價，蓋掉資料庫那筆。資料庫的快照可能是幾天前的，而且不是
 # 每條航線在每個通路都有艙位，對不上航空公司官網時以官網為準。
 # 判準與出處寫在 fare-overrides.json，過期的不套用，避免站上留著沒人複查的價格。
@@ -771,11 +806,20 @@ def load():
             gate=r.get('gate','') or '',
             url=f"https://www.aviasales.com{r['link']}&marker={MARKER}" if r.get('link') else ''))
     for x in out:
+        # 先套官網價，手動查證過的 fare-overrides 再蓋上去（手查的最準）
+        tp, rt_sum = _tiger_price(x)
+        if tp is not None and tp < x['price']:
+            _tgf_gap.append((x['price'] - tp) / x['price'])
+            _tgf_hit[f"{x['o']}-{x['d']}"] += 1
+            x['price'], x['gate'] = tp, 'Tigerair Taiwan'
+            x['url'] = tiger_url(x['o'], x['d'], x['dep'], x['ret'])
+            x['ta_rt_sum'] = rt_sum
         ov = FARE_OVR.get((x['air'], x['o'], x['d'], x['dep'], x['ret']))
         if ov:
             x['price'], x['gate'] = ov['price'], ov['gate']
             x['url'] = ov.get('src') or x['url']
             x['ovr'] = ov
+            x.pop('ta_rt_sum', None)
             _ovr_hit[(x['air'], x['o'], x['d'], x['dep'], x['ret'])] += 1
     return out
 
@@ -1424,11 +1468,11 @@ def fare_card(x,hot=False):
     if x.get('dept'):
         dates += f"　{x['dept']}"+(f" → {x['rett']}" if x.get('rett') else '')
     # 措辭需與上方「近期最低紀錄」區隔：紀錄是過去的，按鈕是去查現在的價
-    # 按鈕文字要跟它實際連去的地方一致，被蓋過價格的那幾筆連的是航空公司官網
-    _bto = (gate_info(x['ovr']['gate'])[0] if x.get('ovr') and x['ovr'].get('src')
-            else P['flight']['brand'])
-    _rel = ('nofollow noopener' if x.get('ovr') and x['ovr'].get('src')
-            else 'nofollow noopener sponsored')
+    # 按鈕文字要跟它實際連去的地方一致，用官網價的那幾筆連的是航空公司官網
+    _own = bool((x.get('ovr') and x['ovr'].get('src'))
+                or (x.get('gate') == 'Tigerair Taiwan' and x.get('url')))
+    _bto = gate_info(x['gate'])[0] if _own else P['flight']['brand']
+    _rel = 'nofollow noopener' if _own else 'nofollow noopener sponsored'
     btn=(f'<a class="btn" href="{html.escape(flight_url(x))}" target="_blank" '
          f'rel="{_rel}">✈️ 到 {_bto} 查這天目前票價</a>')
     gname,tier=gate_info(x.get('gate',''))
@@ -1438,6 +1482,11 @@ def fare_card(x,hot=False):
     if is_trip:
         gate_html=('<div class="gate ga">📊 近期最低紀錄　來源 <b>Trip.com</b>'
                    '<span>同平台可查</span></div>')
+    elif x.get('ta_rt_sum'):
+        # 來回是官網去程價加回程價。虎航來回一起訂常比這個數字更低，
+        # 標成「今日官網價」會讓人以為就是結帳金額，所以寫清楚怎麼算的。
+        gate_html=(f'<div class="gate {gcls}">📊 今日官網價　來源 '
+                   f'<b>{html.escape(gname)}</b><span>去回程相加</span></div>')
     else:
         gate_html=(f'<div class="gate {gcls}">📊 近期最低紀錄　來源 '
                    f'<b>{html.escape(gname)}</b><span>{gtxt}</span></div>')
@@ -1651,6 +1700,17 @@ def write(path,content):
 
 # ---------- 建構資料 ----------
 deals=load()
+if _tgf_gap:
+    _g = sorted(_tgf_gap)
+    print(f'   ✈ 虎航改用官網價 {len(_tgf_gap)} 筆（{len(_tgf_hit)} 條航線）：'
+          f'比資料庫便宜 中位數 {_g[len(_g)//2]*100:.0f}%、'
+          f'最多 {_g[-1]*100:.0f}%，'
+          f'官網價查證於 {(_TGF.get("generated") or "")[:16]}')
+elif TGF:
+    print('   ✈ 虎航官網價沒有任何一筆比資料庫便宜，這很反常，請查 tigerair-fares.json')
+else:
+    print('   ⚠ 沒有 tigerair-fares.json，虎航的票沿用資料庫價（會偏高），'
+          '請跑 python3 scan_tigerair.py')
 for _k, _n in sorted(_ovr_hit.items()):
     _ov = FARE_OVR[_k]
     print(f'   ✎ 手動票價蓋掉 {_n} 筆 {_k[0]} {_k[1]}→{_k[2]} {_k[3]}：'
