@@ -1319,6 +1319,7 @@ def topnav(cur=''):
             + link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
             + link('/apple-japan-price/', '🍎 台日 Apple 價差')
+            + link('/japan-camera-price/', '📷 雲台相機台日價差')
             + link('/iphone-cost/', '📉 iPhone 持有成本')
             + link('/iphone-card/', '💰 買 iPhone 刷哪張卡'))
     if os.path.exists('coupons.json'):
@@ -8539,6 +8540,8 @@ if os.path.exists('apple.json'):
         f'答案是<b>不行</b>，只能享有 10% 的免稅價。'
         f'同樣被排除的還有進口品牌手錶、Grand Seiko、各種遊戲主機與軟體、'
         f'Meta Quest、DJI、特價品與 Outlet 品。'
+        f'DJI 這一條影響到 Osmo Pocket，逐套裝的台日價差算在'
+        f'<a href="{U("/japan-camera-price/")}">雲台相機那一頁</a>。'
         f'所以本頁的價差算的是<b>免稅價</b>，沒有把那 7% 算進去。'
         f'細節與各類別的實際折扣列在'
         f'<a href="{U("/japan-coupon/bic-camera/")}">Bic Camera 折價券那一頁</a>。</p>'
@@ -8651,6 +8654,241 @@ if os.path.exists('apple.json'):
             f'本頁為公開資訊整理，非購買建議。</p>'
           + foot())
         pages.append(('/iphone-duo/', 0.8))
+
+# ---------- 日本買雲台相機划算嗎（DJI Osmo Pocket／Insta360 Luna Ultra） ----------
+# 這頁的重點不是價差本身，是價差押在哪個條件上。四台裡有兩台在日本買比台灣貴，
+# 另外兩台的價差幾乎等於那張 7% 折價券，而券對 DJI 明文不適用、對 Insta360
+# 沒寫。所以先回答券的問題，再給價格，順序不能反。
+if os.path.exists('cameras.json') and os.path.exists('apple.json'):
+    CMS = json.load(open('cameras.json', encoding='utf-8'))
+    _ccp = CMS['coupon']; _ctx = CMS['tax_change']
+    _CB = _ccp['brands']
+
+    def _cex(jpy):  return jpy / TAXR * RATE          # 退稅後約當台幣
+    def _cinc(jpy): return jpy * RATE                 # 含稅換算台幣
+
+    def _cgap(v):
+        if v > 0:  return f'<td class="win">日本省 {money(round(v))}</td>'
+        if v < 0:  return f'<td class="lose">台灣省 {money(round(-v))}</td>'
+        return '<td>持平</td>'
+
+    _STK = {'ok': '', 'out': SMALL + '目前缺貨</small>', None: ''}
+    _pair = [r for r in CMS['rows'] if r.get('jpy')]
+    _twonly = [r for r in CMS['rows'] if not r.get('jpy') and r.get('twd')]
+
+    # 哪幾台在日本買反而比較貴。這是本頁最反直覺的一段，拿來當結論。
+    _lose = [r for r in _pair if r['twd'] - _cex(r['jpy']) < 0]
+    _winr = [r for r in _pair if r['twd'] - _cex(r['jpy']) > 0]
+    _bestr = max(_pair, key=lambda r: r['twd'] - _cex(r['jpy']))
+    _bestv = _bestr['twd'] - _cex(_bestr['jpy'])
+
+    _crow = ''
+    for r in _pair:
+        ex = _cex(r['jpy']); inc = _cinc(r['jpy'])
+        _crow += (
+            '<tr><td><b>' + html.escape(r['model']) + '</b>' + SMALL
+            + html.escape(r['jp_name']) + '</small></td>'
+            + f'<td>¥{r["jpy"]:,}{_STK[r["jp_stock"]]}</td>'
+            + f'<td>{money(round(inc))}</td><td><b>{money(round(ex))}</b></td>'
+            + '<td>' + money(r['twd']) + SMALL + html.escape(r['tw_name'])
+            + '</small>' + _STK[r['tw_stock']] + '</td>'
+            + _cgap(r['twd'] - ex) + '</tr>')
+
+    ctable = ('<div class="tw"><table><thead><tr><th>機型</th>'
+              '<th>日本售價' + SMALL + '含稅</small></th>'
+              '<th>換算台幣' + SMALL + '含稅</small></th>'
+              '<th>退稅後' + SMALL + '約當台幣</small></th>'
+              '<th>台灣官網' + SMALL + '對應套裝</small></th>'
+              '<th>退稅後比較</th></tr></thead><tbody>' + _crow
+              + '</tbody></table></div>')
+
+    # Insta360 那兩台「如果券刷得過」的數字。單獨一張表，不混進上面那張，
+    # 因為那是一個沒查證到的條件，不該跟已確認的價格並排在同一欄。
+    _ins = [r for r in _pair if r['brand'] == 'Insta360']
+    _irow = ''
+    for r in _ins:
+        ex = _cex(r['jpy']); cu = ex * (1 - _ccp['rate'] / 100)
+        _irow += ('<tr><td><b>' + html.escape(r['tw_name']) + '</b></td>'
+                  + f'<td>{money(round(ex))}</td>'
+                  + _cgap(r['twd'] - ex)
+                  + f'<td><b>{money(round(cu))}</b></td>'
+                  + _cgap(r['twd'] - cu) + '</tr>')
+    itable = ('<div class="tw"><table><thead><tr><th>Luna Ultra</th>'
+              '<th>只用免稅</th><th>與台灣比</th>'
+              f'<th>再加 {_ccp["rate"]}% 券</th><th>與台灣比</th>'
+              '</tr></thead><tbody>' + _irow + '</tbody></table></div>')
+
+    _trow = ''
+    for r in _twonly:
+        _trow += ('<tr><td><b>' + html.escape(r['model']) + '</b>' + SMALL
+                  + html.escape(r['tw_name']) + '</small></td>'
+                  + '<td>' + money(r['twd']) + _STK[r['tw_stock']] + '</td>'
+                  + '<td class="dimcell">日本沒有這個套裝</td></tr>')
+    ttable = ('<div class="tw"><table><thead><tr><th>套裝</th>'
+              '<th>台灣官網</th><th>日本售價</th></tr></thead><tbody>'
+              + _trow + '</tbody></table></div>')
+
+    _ptr = CMS['points']
+    _prow = ''.join(
+        f'<tr><td>{html.escape(x["name"])}</td><td>¥{x["jpy"]:,}</td>'
+        f'<td><b>{x["pt"]:,} 點</b>{SMALL}{round(x["pt"]/x["jpy"]*100)}%</small></td></tr>'
+        for x in _ptr['third_party_examples'])
+
+    _cfaq = [
+        ('Bic Camera 的 7% 折價券可以買 DJI Osmo Pocket 嗎？',
+         '不行。折價券條款把「DJI 商品」整個列進不適用清單，沒有分型號，'
+         f'核對於 {_ccp["checked"]}。買得到免稅 10%，但沒有那 7%。'),
+        ('那 Insta360 Luna Ultra 可以用嗎？',
+         '條款的不適用清單沒有列到 Insta360。但同一份條款另外寫了'
+         '「即使是未列在摘要表中的商品，也有可能不適用折扣」，而且'
+         '「最終決定權始終歸店鋪及結帳人員所有」，所以沒被列到不等於刷得過。'
+         '我們查不到今年有人回報實際用這張券買 Insta360 的結果，'
+         '只能請店員當場刷看看。'),
+        ('日本買這幾台一定比較便宜嗎？',
+         '不一定。Osmo Pocket 4 的標準套裝與全能套裝，就算算進退稅，'
+         '換算台幣之後還是比台灣官網貴一點。價差最大的是 Osmo Pocket 3。'),
+        ('2026 年 11 月之後免稅怎麼算？',
+         f'{_ctx["date"]} 起改成退款制：店家以含稅價出售，出境時由海關確認'
+         '物品帶出國之後，店家再退還消費稅。現場不再直接扣掉，'
+         '所以本頁「退稅後」的金額要等出境確認後才會回到手上。'),
+    ]
+    _cfaq_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                       for q, a in _cfaq]}, ensure_ascii=False)
+
+    _ct = (f'日本買 DJI Osmo Pocket 划算嗎？{len(_pair)} 個套裝台日價差實算'
+           f'（Insta360 Luna Ultra 一起比）')
+    _cd = ('DJI Osmo Pocket 3／4／4P 與 Insta360 Luna Ultra 的日本與台灣官網'
+           '售價逐套裝比較，退稅後換算台幣。附 Bic Camera 7% 折價券對這兩個'
+           '品牌適不適用的查證結果，以及 11 月起免稅改退款制的影響。')
+
+    write('japan-camera-price/index.html',
+      head(_ct, _cd, 'japan-camera-price/',
+           '<script type="application/ld+json">' + _cfaq_ld + '</script>')
+      + crumbs([('首頁', '/'), ('日本雲台相機價差', None)])
+      + topnav()
+      + '<h1>日本買 Osmo Pocket 與 Luna Ultra，划算嗎？</h1>'
+      + f'<p class="lede">售價核對於 {CMS["checked"]}　·　'
+        f'匯率 {RATE}（含約 {AP["rate"]["spread"]*100:.1f}% 換匯成本，每日更新）'
+        f'　·　日本價取 <a href="{CMS["src_jp"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(CMS["src_jp_name"])}</a>，'
+        f'台灣價取 <a href="{CMS["src_dji"]}" rel="nofollow noopener" '
+        f'target="_blank">DJI</a> 與 <a href="{CMS["src_insta"]}" '
+        f'rel="nofollow noopener" target="_blank">Insta360</a> 官方商城</p>'
+      + '<div class="today">'
+        f'<div class="tday">{len(_pair)} 個兩邊都買得到的套裝</div>'
+        f'<div class="tans">{len(_lose)} 個在日本買比較貴</div>'
+        f'<div class="tsub">算進退稅之後，'
+        + ('、'.join(html.escape(r['model'] + ' ' + r['tw_name'])
+                     for r in _lose) + '換算台幣之後還是高於台灣官網。'
+           if _lose else '每一個套裝在日本買都比台灣便宜。')
+        + f'價差最大的是 '
+        f'{html.escape(_bestr["model"])}（{html.escape(_bestr["jp_name"])}），'
+        f'退稅後約省 {money(round(_bestv))}。</div>'
+        f'<div class="tbuf">DJI 不適用 Bic 的 {_ccp["rate"]}% 折價券，'
+        f'這點條款寫得很明白。Insta360 沒被列進不適用清單，'
+        f'但也查不到有人回報真的刷過。</div></div>'
+
+      + '<h2>先看那張券，再看價格</h2>'
+      + f'<p class="lede">這四台的價差不大，所以能不能疊上 Bic Camera 的'
+        f'{_ccp["rate"]}% 折價券，幾乎決定了值不值得在日本買。'
+        f'券的條款（核對於 {_ccp["checked"]}）對兩個品牌的待遇不一樣。</p>'
+      + '<div class="tw"><table><thead><tr><th>品牌</th>'
+        f'<th>免稅 10%</th><th>再加 {_ccp["rate"]}% 券</th>'
+        '<th>依據</th></tr></thead><tbody>'
+      + '<tr><td><b>DJI</b>' + SMALL + 'Osmo Pocket 3／4／4P</small></td>'
+        '<td class="win">適用</td><td class="lose">不適用</td>'
+        f'<td>{html.escape(_CB["DJI"]["why"])}</td></tr>'
+      + '<tr><td><b>Insta360</b>' + SMALL + 'Luna Ultra</small></td>'
+        '<td class="win">適用</td><td class="dimcell">沒查到</td>'
+        f'<td>{html.escape(_CB["Insta360"]["why"])}</td></tr>'
+      + '</tbody></table></div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>條款列出的不適用品項。</b>'
+        f'{"、".join(html.escape(x) for x in _ccp["exclude_list"])}。'
+        f'條款另外註明未列在清單中的商品也可能不適用。'
+        f'（<a href="{_ccp["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_ccp["src_name"])}</a>）</li>'
+        f'<li><b>有人真的刷過嗎。</b>{html.escape(_CB["Insta360"]["reports"])}'
+        f'（<a href="{_CB["Insta360"]["reports_src"]}" rel="nofollow noopener" '
+        f'target="_blank">PTT 原串</a>）我們在 '
+        f'{html.escape(_CB["Insta360"]["scanned_where"])} 查過，'
+        f'核對於 {_CB["Insta360"]["scanned"]}。</li>'
+        f'<li><b>怎麼用。</b>'
+        f'{html.escape(_ccp["only_taxfree"])}'
+        f'門檻是{html.escape(_ccp["min_spend"])}</li>'
+        f'<li><b>這張券 {_ccp["expires"]} 到期。</b>'
+        f'之後的版本還沒公布，本頁的試算以現行條款為準。</li>'
+        '</ul></div>'
+
+      + '<h2>兩邊都買得到的套裝，逐一算</h2>'
+      + '<p class="lede">日本售價是含 10% 消費稅的牌價，觀光客退稅後約當台幣如'
+        '第四欄。這張表只放免稅，不放折價券，因為折價券對 DJI 不適用、'
+        '對 Insta360 沒查到，把它算進來會算出一個不保證拿得到的數字。</p>'
+      + ctable
+      + '<p class="disc">退稅後金額為日本牌價除以 1.1 再換算台幣。'
+        '日本的消費稅免稅只在有執照的實體免稅店成立，線上訂購不適用，'
+        '所以日本側取實體連鎖的牌價而非網購專價。在庫狀況會變動，以店頭為準。</p>'
+
+      + '<h2>Luna Ultra：券刷得過與刷不過，差在這裡</h2>'
+      + f'<p class="lede">Insta360 是這四台裡唯一沒被券的條款排除的品牌，'
+        f'但也沒有確認可用。兩種結果的數字都列出來，因為差距不小：'
+        f'刷不過的話價差只有幾百元，刷得過才會變成真的划算。'
+        f'折扣基準是未稅價。</p>'
+      + itable
+      + '<p class="disc">右側兩欄是假設店家願意套用折價券的結果，不是確認可用。'
+        '條款明載未列在清單中的商品也可能不適用，最終決定權在店鋪與結帳人員。</p>'
+
+      + '<h2>台灣有、日本沒有的套裝</h2>'
+      + f'<p class="lede">台灣官方商城的套裝組合比日本多。'
+        f'下面這些在 {html.escape(CMS["src_jp_name"])} 的搜尋結果裡沒有對應商品，'
+        f'所以沒有台日價格可以比。想要特定配件組合的話，'
+        f'這一欄本身就是答案。</p>'
+      + ttable
+
+      + '<h2>點數不要算進去</h2>'
+      + f'<p class="lede">Bic 的點數率依商品而定，而這兩個品牌的原廠機身與原廠'
+        f'配件都是 {_ptr["brand_rate"]}%。同一個貨架上的第三方配件是 10%，'
+        f'差一個級距。</p>'
+      + '<div class="tw"><table><thead><tr><th>第三方配件（同貨架）</th>'
+        '<th>售價</th><th>標示點數</th></tr></thead><tbody>' + _prow
+      + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(CMS["_點數不計入比較"])}</p>'
+
+      + f'<h2>{_ctx["date"]} 起，退稅要等出境之後</h2>'
+      + f'<p class="lede">{html.escape(_ctx["what"])}'
+        f'對這幾台的影響是現金流：上表「退稅後」的金額不變，但結帳當下要先付'
+        f'含稅全額，差額要等出境海關確認之後才回到手上。'
+        f'一台 Luna Ultra 的消費稅就是一萬日圓上下，刷卡額度要留著。'
+        f'制度細節與 90 天期限在'
+        f'<a href="{U("/japan-tax-free-2026/")}">免稅新制那一頁</a>。</p>'
+      + f'<p class="disc">依據：<a href="{_ctx["src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(_ctx["src_name"])}</a>，核對於 {_ctx["checked"]}。</p>'
+
+      + fare_cta('tokyo', '算完價差，機票多少')
+
+      + '<h2>刷哪張卡再省一層</h2>'
+      + f'<p class="lede">這幾台一筆就是一兩萬，回饋與 {_FXF}% 國外交易手續費'
+        f'動到的金額不小。旅日信用卡的逐卡比較在另一頁，可以輸入金額試算。</p>'
+      + '<div class="cities">'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
+        f'<s>回饋扣掉手續費是賺是賠</s></a>'
+      + f'<a class="ct" href="{U("/japan-coupon/bic-camera/")}">'
+        f'<b>🎫 Bic Camera 折價券</b><s>條款與不適用清單</s></a>'
+      + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 台日 Apple 價差</b>'
+        f'<s>iPhone、Watch、AirPods 全系列</s></a>'
+      + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
+        f'<s>先墊多少、怎麼退</s></a></div>'
+
+      + f'<p class="disc">日本售價取自 {html.escape(CMS["src_jp_name"])}，'
+        f'台灣售價取自 DJI 與 Insta360 官方商城，核對於 {CMS["checked"]}；'
+        f'匯率每日更新。DJI 官方商城標示商品不從台灣地區本地出貨，'
+        f'由買方自行處理進口報關。折價券與免稅規定以店家及日本官方公告為準。'
+        f'本頁為公開資訊整理，非購買建議。</p>'
+      + foot())
+    pages.append(('/japan-camera-price/', 0.8))
 
     # ── iPhone 持有成本：用台灣實際二手回收行情攤提 ──────────────
     # 網路上談「持有成本」多半自己假設一個殘值，數字沒有來源。
@@ -11163,7 +11401,12 @@ if os.path.exists('cards.json'):
               + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
                 f'<s>哪張卡回饋最高</s></a>'
               + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
-                f'<s>改成出境後才退稅</s></a></div>'
+                f'<s>改成出境後才退稅</s></a>'
+              + (f'<a class="ct" href="{U("/japan-camera-price/")}">'
+                 f'<b>📷 雲台相機台日價差</b>'
+                 f'<s>Osmo Pocket 與 Luna Ultra 逐套裝</s></a>'
+                 if st['slug'] == 'bic-camera' else '')
+              + '</div>'
               + '<h2>常見問題</h2>' + sf_html
               + (f'<p class="disc">領券頁：<a href="{html.escape(st["src"])}" '
                  f'rel="nofollow noopener" target="_blank">{html.escape(st["src_name"])}</a>，'

@@ -1,0 +1,362 @@
+{
+ "_說明": "台灣人去日本會買的雲台相機，台日價格對照。只收 DJI Osmo Pocket 系列與 Insta360 Luna Ultra，因為這幾台是現在實際在比價的機種。",
+ "_判準": "日本價取 ビックカメラ.com 商品列表的含稅價與標示點數，台灣價取品牌官方商城定價。兩邊都要是官方通路，不收電商第三方賣家、不收水貨。每一筆都要有核對日期。",
+ "_為什麼不用日亞": "日本的消費稅免稅只在「輸出物品販売場」這類有執照的實體店成立，線上訂購不適用。拿日亞價格去算免稅會算出一個買不到的數字，所以日本側一律用實體連鎖的牌價。",
+ "_jpy_為_null_的意思": "代表 2026-10-14 查 ビックカメラ.com 的全部搜尋結果都沒有這個套裝，不是沒查。反之 twd 為 null 代表台灣官方商城沒有這個組合。",
+ "_點數不計入比較": "商品列表標示的點數是網購的給法。免稅加折價券結帳時的點數給法以店頭公告為準，沒查到明確規則，所以點數只照列，不加進價差試算。",
+ "updated": "2026-10-14",
+ "checked": "2026-10-14",
+ "src_jp": "https://www.biccamera.com/",
+ "src_jp_name": "ビックカメラ.com",
+ "src_dji": "https://store.dji.com/tw",
+ "src_insta": "https://store.insta360.com/tw/product/luna-series",
+ "_台灣官網出貨地": "DJI 官方商城標示「不從台灣地區本地出貨」，由買方自行處理進口報關。這會影響到貨時間與保固送修流程，不影響定價。",
+ "coupon": {
+  "name": "Bic Camera 免稅＋最高 7% 折價券",
+  "rate": 7,
+  "expires": "2026-10-31",
+  "src": "https://livejapan.com/public/operation/coupon/biccamera/zh-tw.html",
+  "src_name": "LIVE JAPAN・Bic Camera 優惠券（繁體中文版）",
+  "checked": "2026-10-14",
+  "only_taxfree": "只能在免稅結帳時使用。",
+  "final_say": "最終決定權始終歸店鋪及結帳人員所有。",
+  "min_spend": "免稅折抵後的一般免稅對象金額合計需達 5,000 日圓（未稅）。",
+  "brands": {
+   "DJI": {
+    "ok": false,
+    "why": "折價券條款把「DJI 商品」整個列進不適用清單，沒有分型號。",
+    "src": "https://livejapan.com/public/operation/coupon/biccamera/zh-tw.html"
+   },
+   "Insta360": {
+    "ok": null,
+    "why": "折價券的不適用清單沒有列到 Insta360。但條款另外寫了「即使是未列在摘要表中的商品，也有可能不適用折扣」，而且最終決定權在店鋪與結帳人員，所以沒列到不等於刷得過。",
+    "reports": "查不到今年有人回報實際用這張券買 Insta360 的結果。PTT 日本旅遊板 2025-04-26 有一篇問的正是這題（Insta360 GO 3S 與 DJI Pocket 3 能不能用 7%），推文裡沒有人回答 Insta360 那半邊；同串有人說 DJI 不適用，另有人說問店家得到「Pocket 3 現在不能加 7%」的答覆。",
+    "reports_src": "https://www.ptt.cc/bbs/Japan_Travel/M.1745661950.A.E7F.html",
+    "scanned": "2026-10-14",
+    "scanned_where": "Threads、日文與中文網路搜尋、PTT 日本旅遊板"
+   }
+  },
+  "exclude_list": [
+   "Apple 商品",
+   "進口品牌手錶",
+   "Grand Seiko 系列商品",
+   "各種遊戲主機及官方配件",
+   "遊戲軟體",
+   "PlayStation VR",
+   "Meta Quest",
+   "Panasonic 部分商品",
+   "DJI 商品",
+   "FUJIFILM 部分商品",
+   "特價商品",
+   "Outlet 商品",
+   "二手商品"
+  ],
+  "_exclude_list_說明": "折價券條款列出的不適用品項，逐項照列。條款另註明未列在清單中的商品也可能不適用。"
+ },
+ "tax_change": {
+  "date": "2026-11-01",
+  "name": "リファンド方式",
+  "what": "2026 年 11 月 1 日起的銷售改制：免稅店改以含稅價出售，旅客出境時在機場等地由海關確認物品帶出國，店家再退還消費稅。",
+  "quote_sale": "免税店は、購入者に対して、税込価格（課税）で免税対象物品を販売することとなります。",
+  "quote_refund": "免税店は、税関確認情報（持出しを税関が確認した旨の情報）を確認後に購入者に消費税相当額を返金（リファンド）することとなります。",
+  "src": "https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00019.html",
+  "src_name": "日本觀光廳・消費稅免稅店網站",
+  "checked": "2026-10-14",
+  "_未查到的部分": "門檻金額、一般物品與消耗品的區分是否取消、海關確認的期限，觀光廳這一頁都沒有寫。二手資料有講法但沒有官方頁可引，所以不寫。"
+ },
+ "points": {
+  "_說明": "ビックカメラ.com 商品列表標示的點數率。同一個貨架上原廠機身與第三方配件差一個級距。",
+  "brand_rate": 1,
+  "third_party_examples": [
+   {
+    "name": "H&Y DJI CPL フィルター（Pocket 3・4 兼用）",
+    "jpy": 3190,
+    "pt": 319
+   },
+   {
+    "name": "K&F Concept マグネット式広角レンズ（Pocket 3/4 対応）",
+    "jpy": 4000,
+    "pt": 400
+   }
+  ],
+  "note": "DJI 與 Insta360 的原廠機身與原廠配件都是 1%，上面兩個第三方配件是 10%。"
+ },
+ "rows": [
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 3",
+   "jp_name": "1インチCMOS（単体）",
+   "jp_sku": "OP9923",
+   "jpy": 49940,
+   "jp_pt": 500,
+   "jp_stock": "ok",
+   "tw_name": "Osmo Pocket 3",
+   "twd": 10590,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 3",
+   "jp_name": "クリエイター コンボ",
+   "jp_sku": "OP9913",
+   "jpy": 62810,
+   "jp_pt": 629,
+   "jp_stock": "ok",
+   "tw_name": "全能套裝",
+   "twd": 13990,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 3",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "Vlog 套裝（Mic Mini）",
+   "twd": 11230,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 3",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "Vlog 套裝（Mic 3）",
+   "twd": 13330,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 3",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "Vlog 套裝（Mic 2）",
+   "twd": 16780,
+   "tw_stock": "out"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 4",
+   "jp_name": "スタンダードコンボ",
+   "jp_sku": "OP4402",
+   "jpy": 79200,
+   "jp_pt": 792,
+   "jp_stock": "ok",
+   "tw_name": "標準套裝",
+   "twd": 14690,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 4",
+   "jp_name": "クリエイターコンボ",
+   "jp_sku": "OP4401",
+   "jpy": 99880,
+   "jp_pt": 999,
+   "jp_stock": "ok",
+   "tw_name": "全能套裝",
+   "twd": 18590,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 4",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "收音套裝",
+   "twd": 15580,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 4",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "質感人像套裝",
+   "twd": 16580,
+   "tw_stock": "out"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 4",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "旅拍套裝",
+   "twd": 17760,
+   "tw_stock": "out"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 4",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "美拍套裝",
+   "twd": 19910,
+   "tw_stock": "out"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 4",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "長續航全能套裝",
+   "twd": 20340,
+   "tw_stock": "out"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 4P",
+   "jp_name": "スタンダードコンボ",
+   "jp_sku": "OP4P58",
+   "jpy": 99000,
+   "jp_pt": 990,
+   "jp_stock": "out",
+   "tw_name": "標準套裝",
+   "twd": 19290,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "DJI",
+   "model": "Osmo Pocket 4P",
+   "jp_name": "Vlogコンボ",
+   "jp_sku": "OP4P62",
+   "jpy": 113300,
+   "jp_pt": 1133,
+   "jp_stock": "ok",
+   "tw_name": "Vlog 套裝",
+   "twd": 21790,
+   "tw_stock": "out"
+  },
+  {
+   "brand": "Insta360",
+   "model": "Luna Ultra",
+   "jp_name": "スタンダードバンドル（コズミックブラック）",
+   "jp_sku": "CINSABTA-LUNAULTRA01",
+   "jpy": 119800,
+   "jp_pt": 1198,
+   "jp_stock": "ok",
+   "tw_name": "標準套裝",
+   "twd": 22990,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "Insta360",
+   "model": "Luna Ultra",
+   "jp_name": "クリエイターバンドル（コズミックブラック）",
+   "jp_sku": "CINSABTA-LUNAULTRA03",
+   "jpy": 151800,
+   "jp_pt": 1518,
+   "jp_stock": "ok",
+   "tw_name": "創作者套裝",
+   "twd": 29990,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "Insta360",
+   "model": "Luna Ultra",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "人像套裝",
+   "twd": 25290,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "Insta360",
+   "model": "Luna Ultra",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "随行套裝",
+   "twd": 26200,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "Insta360",
+   "model": "Luna Ultra",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "續航套裝",
+   "twd": 26200,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "Insta360",
+   "model": "Luna Ultra",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "POV 套裝（背包夾）",
+   "twd": 26200,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "Insta360",
+   "model": "Luna Ultra",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "POV 套裝",
+   "twd": 26300,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "Insta360",
+   "model": "Luna Ultra",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "長焦套裝",
+   "twd": 26550,
+   "tw_stock": "ok"
+  },
+  {
+   "brand": "Insta360",
+   "model": "Luna Ultra",
+   "jp_name": null,
+   "jp_sku": null,
+   "jpy": null,
+   "jp_pt": null,
+   "jp_stock": null,
+   "tw_name": "輕鬆拍套裝",
+   "twd": 26900,
+   "tw_stock": "ok"
+  }
+ ]
+}
