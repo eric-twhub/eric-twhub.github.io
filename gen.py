@@ -10717,6 +10717,86 @@ if os.path.exists('cards.json'):
         pages.append(('/japan-coupon/', 0.8))
 
         # ── 每家店的獨立頁 ──
+        # 新戶加碼多半上限極低（幣倍卡只有 NT$200），排名時算進去會讓名次失真，
+        # 而且多數讀者不是新戶。這個判斷與卡片頁的 _is_newbie 同一套，
+        # 那邊在另一個區塊裡，這裡自己留一份。
+        _NB = re.compile(r'新戶|核卡')
+
+        def _store_cards(st):
+            """這家店可用的卡，去掉新戶限定的加碼之後的費率"""
+            out = []
+            for c in CD['cards']:
+                out.append({'n': c['name'], 's': c['slug'], 'base': c['base'],
+                            'tiers': [t for t in c['tiers']
+                                      if t['scope'] in ('shop', 'any')
+                                      and not _NB.search(t['label'] + t.get('cond', ''))],
+                            'reg': c.get('reg_short', '')})
+            return out
+
+        def _store_card_calc(st):
+            """店家頁最上面的試算：輸入日幣金額，列出每張卡實拿與實際負擔。
+
+            排序是結果，不是我們挑的。金額一變名次就會換，因為各卡的加碼上限
+            在不同金額卡住。
+            """
+            data = json.dumps({'cards': _store_cards(st),
+                               'max': st['max'], 'steps': st['steps'],
+                               'name': st['name']}, ensure_ascii=False)
+            return (
+                '<div class="today"><div class="tday">這家店的券最高折 '
+                f'{st["max"]}%　·　{html.escape(st["combo"])}</div>'
+                f'<div class="tans" id="kv">—</div>'
+                f'<div class="tsub">先扣免稅、再折券，換成台幣帳單之後才算回饋。'
+                f'帳單含 {_fx["typical"]}% 國外交易手續費。</div></div>'
+                + '<div class="calc"><div class="sf">'
+                  '<label>預計消費（含稅）¥<input id="kq" type="number" value="30000" '
+                  'min="0" step="1000"></label>'
+                  '<label>用券<select id="ku">'
+                  '<option value="1" selected>有用券</option>'
+                  '<option value="0">沒有券</option></select></label>'
+                  '</div><div class="tw" id="kr"></div></div>'
+                + f'<p class="disc">依各卡的日本實體消費費率計算，'
+                  f'不含新戶限定加碼，也假設各層加碼的條件都符合（部分卡要先登錄或'
+                  f'達資產門檻）。點數型回饋以 1 點約 1 元估算。'
+                  f'匯率 {_MIDC} 每日更新。</p>'
+                + _CJS + '<script>window.KSTORE=' + data + ';</script>'
+                + """<script>
+(function(){
+ var $=function(i){return document.getElementById(i)}, S=window.KSTORE;
+ function crate(free){            // 券的折扣：有級距就按級距，否則單一費率
+  if(!S.steps||!S.steps.length) return S.max;
+  var r=0; S.steps.forEach(function(p){ if(free>=p[0]) r=p[1]; }); return r;
+ }
+ function run(){
+  var y=+$('kq').value||0, use=$('ku').value==='1';
+  var free=y/1.1, cr=use?crate(free):0, after=free*(1-cr/100);
+  var rows=S.cards.map(function(c){
+   var bill=jbill(after), v=c.base/100*bill, cap=false;
+   c.tiers.forEach(function(t){var x=t.rate/100*bill;
+     if(t.cap&&x>t.cap){x=t.cap;cap=true;} v+=x;});
+   return {n:c.n,s:c.s,bill:bill,v:v,net:bill-v,cap:cap,reg:c.reg};
+  }).sort(function(a,b){return a.net-b.net;});
+  var h='<table><thead><tr><th>卡片</th><th>刷卡回饋</th><th>實際負擔</th>'+
+        '<th>有效回饋率</th></tr></thead><tbody>';
+  rows.forEach(function(r,i){
+   h+='<tr><td'+(i===0?' class="nm"':'')+'>'+(i===0?'<b>':'')+r.n+(i===0?'</b>':'')+
+      '<s style="display:block;color:var(--dim);font-size:.78rem">'+(r.reg||'')+
+      (r.cap?'　加碼已達上限':'')+'</s></td>'+
+      '<td>NT$'+jfmt(r.v)+'</td>'+
+      '<td class="'+(i===0?'win':'')+'"><b>NT$'+jfmt(r.net)+'</b></td>'+
+      '<td>'+(r.bill?(r.v/r.bill*100).toFixed(1):'0')+'%</td></tr>';
+  });
+  $('kr').innerHTML=h+'</tbody></table>';
+  var b=rows[0], w=rows[rows.length-1];
+  $('kv').textContent = y ? ('最省 '+b.n+'　實付 NT$'+jfmt(b.net)+
+      '　比最差的卡省 NT$'+jfmt(w.net-b.net)) : '請輸入金額';
+ }
+ ['kq','ku'].forEach(function(i){var e=$(i);if(e){e.addEventListener('input',run);
+   e.addEventListener('change',run);}});
+ run();
+})();
+</script>""")
+
         for st in CP['stores']:
             _ex = '<div class="tw"><table><thead><tr><th>日幣定價（含稅）</th>'\
                   '<th>免稅後（未稅）</th><th>適用折扣</th><th>折券後</th>'\
@@ -10765,17 +10845,19 @@ if os.path.exists('cards.json'):
                                for q, a in sf]}, ensure_ascii=False)
 
             write(f'japan-coupon/{st["slug"]}/index.html',
-              head(f'{st["name"]}優惠券怎麼用？折扣幅度、免稅併用與實付價試算',
-                   f'{st["name"]}（{st["jp"]}）常見折扣 {st["rate"]}，{st["combo"]}。'
-                   f'含級距條件、券的取得與出示時機、免稅門檻，'
-                   f'以及折價券加免稅加刷卡回饋的實付價試算。',
+              head(f'{st["name"]} 刷哪張卡最划算？{len(CD["cards"])} 張卡回饋與實付價試算',
+                   f'在{st["name"]}（{st["jp"]}）消費，{len(CD["cards"])} 張旅日信用卡'
+                   f'各自回饋多少、實際負擔多少。含折價券 {st["rate"]}、免稅與'
+                   f'國外交易手續費，輸入金額即可試算。',
                    f'japan-coupon/{st["slug"]}/',
                    '<script type="application/ld+json">' + sf_ld + '</script>')
               + crumbs([('首頁', '/'), ('日本購物折扣', '/japan-coupon/'), (st['name'], None)])
               + topnav()
-              + f'<h1>{html.escape(st["name"])}優惠券怎麼用？</h1>'
+              + f'<h1>在{html.escape(st["name"])} 刷哪張卡最划算？</h1>'
               + f'<p class="lede">{html.escape(st["jp"])}　·　{html.escape(st["cat"])}　·　'
-                f'折扣幅度查證於 {CP["checked"]}</p>'
+                f'輸入金額就知道每張卡實拿多少。'
+                f'卡片條件查證於 {CD["checked"]}，折扣幅度查證於 {CP["checked"]}</p>'
+              + _store_card_calc(st)
               + f'<div class="today"><div class="tday">常見折扣 {html.escape(st["rate"])}'
                 f'　·　{html.escape(st["combo"])}　·　{html.escape(st["tax_min"])}</div>'
                 f'<div class="tans">{html.escape(st["tiers"])}</div>'
