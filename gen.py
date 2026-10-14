@@ -2569,7 +2569,7 @@ if os.path.exists('ski.json'):
     ]
     _bg_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      f'<p class="lede">同一份資料做成{len(_BG_CARD)}張圖，存下來或轉發都可以，不用註明出處。'
       '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.bgk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -2766,7 +2766,7 @@ if os.path.exists('ski-ticket.json'):
     ]
     _sk_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成十張圖，24 個雪場依截止日分成三張，'
+      f'<p class="lede">同一份資料做成{len(_SK_CARD)}張圖，24 個雪場依截止日分成三張，'
       '存下來或轉發都可以，不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.skk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -3362,7 +3362,7 @@ if os.path.exists('lasttrain.json'):
     ]
     _lt_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      f'<p class="lede">同一份資料做成{len(_LT_CARD)}張圖，存下來或轉發都可以，不用註明出處。'
       '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.ltk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -3865,7 +3865,7 @@ if DRV:
     ]
     _dlg_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
+      f'<p class="lede">同一份資料做成 {len(_DLC_CARD)} 張圖，存下來或轉發都可以，'
       '不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.dlg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -4140,7 +4140,7 @@ if NOC:
     ]
     _nocg_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
+      f'<p class="lede">同一份資料做成 {len(_NOCC_CARD)} 張圖，存下來或轉發都可以，'
       '不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.nocg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -4312,7 +4312,7 @@ if INS:
     ]
     _insg_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
+      f'<p class="lede">同一份資料做成 {len(_INSC_CARD)} 張圖，存下來或轉發都可以，'
       '不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.insg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -4578,7 +4578,7 @@ if os.path.exists('japan-rules.json'):
     ]
     _rl_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      f'<p class="lede">同一份資料做成{len(_RL_CARD)}張圖，存下來或轉發都可以，不用註明出處。'
       '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.rlk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -6191,7 +6191,7 @@ if os.path.exists('jttp.json'):
     ]
     _jttp_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      f'<p class="lede">同一份資料做成{len(_JT_CARD)}張圖，存下來或轉發都可以，不用註明出處。'
       '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.jttpk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -6549,7 +6549,7 @@ if HOL:
     ]
     _hc_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      f'<p class="lede">同一份資料做成{len(_HC_CARD)}張圖，存下來或轉發都可以，不用註明出處。'
       '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.hck{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -7601,7 +7601,7 @@ if os.path.exists('card-insurance.json'):
     ]
     _cig_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成 8 張圖，存下來或轉發都可以，'
+      f'<p class="lede">同一份資料做成 {len(_CIC_CARD)} 張圖，存下來或轉發都可以，'
       '不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.cig{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -7937,7 +7937,7 @@ document.addEventListener('DOMContentLoaded',function(){
     ]
     _es_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成十六張圖，最後三張掃 QR 可以直接開各店的官方發券頁，存下來或轉發都可以，不用註明出處。'
+      f'<p class="lede">同一份資料做成{len(_ES_CARD)}張圖，最後三張掃 QR 可以直接開各店的官方發券頁，存下來或轉發都可以，不用註明出處。'
       '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.esk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -8863,7 +8863,7 @@ if os.path.exists('apple.json'):
     ]
     _ap_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      f'<p class="lede">同一份資料做成{len(_AP_CARD)}張圖，存下來或轉發都可以，不用註明出處。'
       '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.apk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -10728,7 +10728,7 @@ if os.path.exists('cobrand-cards.json'):
         ]
         _rsg_cards = (
           '<h2>整理成圖片</h2>'
-          '<p class="lede">同一份資料做成 6 張圖，存下來或轉發都可以，'
+          f'<p class="lede">同一份資料做成 {len(_RSC_CARD)} 張圖，存下來或轉發都可以，'
           '不用註明出處。點圖放大，可以左右翻下一張。</p>'
           '<style>'
           '.rsg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -11453,7 +11453,7 @@ if os.path.exists('cards.json'):
     ]
     _cc_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成八張圖，存下來或轉發都可以，不用註明出處。'
+      f'<p class="lede">同一份資料做成{len(_CC_CARD)}張圖，存下來或轉發都可以，不用註明出處。'
       '點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.cck{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -12430,7 +12430,7 @@ if os.path.exists('cards.json'):
         ]
         _cp_cards = (
           '<h2>整理成圖片</h2>'
-          '<p class="lede">同一份資料做成九張圖，存下來或轉發都可以，不用註明出處。'
+          f'<p class="lede">同一份資料做成{len(_CP_CARD)}張圖，存下來或轉發都可以，不用註明出處。'
           '點圖放大，可以左右翻下一張。</p>'
           '<style>'
           '.cpk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
@@ -13120,7 +13120,7 @@ if HS:
     ]
     _hsg_cards = (
       '<h2>整理成圖片</h2>'
-      '<p class="lede">同一份資料做成 7 張圖，存下來或轉發都可以，'
+      f'<p class="lede">同一份資料做成 {len(_HSC_CARD)} 張圖，存下來或轉發都可以，'
       '不用註明出處。點圖放大，可以左右翻下一張。</p>'
       '<style>'
       '.hsg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
