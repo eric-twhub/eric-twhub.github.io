@@ -10160,39 +10160,80 @@ if os.path.exists('cards.json'):
         # 只有發卡行自己逐平台公告費率的卡才做。其他卡的官方頁面只寫「海外消費」，
         # 拿通用費率去套在平台上等於替發卡行發明規則。
         _PF = (FC.get('platforms') or {})
-        if _PF.get('card_slug') == c['slug'] and _PF.get('rows'):
+        _PF_ON = _PF.get('card_slug') == c['slug'] and _PF.get('rows')
+        if True:
+            # 機票是線上消費，多數卡的日本加碼限「實體消費」，疊不上去。
+            # 這裡只算 scope 為 any 的加碼，也就是不分通路型態都成立的那幾層。
+            _onl = [t for t in c['tiers'] if t['scope'] == 'any' and not _is_newbie(t)]
+            _orate = round(c['base'] + sum(t['rate'] for t in _onl), 2)
+            _net = round(_orate - _fx['typical'], 2)
             _pr = ''.join(
                 f'<tr><td class="nm"><b>{html.escape(r["name"])}</b></td>'
                 f'<td class="win"><b>{r["rate"]}%</b></td>'
                 f'<td>{html.escape(r["note"]) or "—"}</td></tr>'
-                for r in sorted(_PF['rows'], key=lambda r: -r['rate']))
-            _hi = max(r['rate'] for r in _PF['rows'])
-            _lo = min(r['rate'] for r in _PF['rows'])
-            _t3 = f'{c["name"]}買機票刷哪個平台最划算？{len(_PF["rows"])} 個通路回饋比較'
-            _d3 = (f'{c["name"]}切換「{_PF["plan"]}」之後，機票與訂房通路的回饋從 '
-                   f'{_lo}% 到 {_hi}% 不等。逐平台列出費率與限制，含航空公司官網購票的'
-                   f'認定方式與不適用項目。')
+                for r in sorted(_PF['rows'], key=lambda r: -r['rate'])) if _PF_ON else ''
+            _hi = max((r['rate'] for r in _PF['rows']), default=0) if _PF_ON else 0
+            _lo = min((r['rate'] for r in _PF['rows']), default=0) if _PF_ON else 0
+            # 不同票價的淨值：回饋減手續費，負的就是刷了反而虧
+            _nr = ''
+            for _amt in (10000, 20000, 30000, 50000):
+                _fee = _amt * _fx['typical'] / 100
+                _bk = _amt * _orate / 100
+                _nr += (f'<tr><td>{money(_amt)}</td><td>{money(round(_fee))}</td>'
+                        f'<td>{money(round(_bk))}</td>'
+                        f'<td class="{"win" if _bk >= _fee else "lose"}">'
+                        f'<b>{"＋" if _bk >= _fee else "－"}{money(abs(round(_bk - _fee)))}</b>'
+                        f'</td></tr>')
+            _verdict = ('刷這張卡買機票是划算的' if _net > 0 else
+                        '刷這張卡買機票剛好打平' if abs(_net) < 0.01 else
+                        '刷這張卡買機票反而虧錢')
+            _t3 = (f'{c["name"]}買機票划算嗎？回饋 {_orate}% 扣掉手續費實際剩 {_net}%')
+            _d3 = (f'{c["name"]}以外幣結帳買機票回饋 {_orate}%，'
+                   f'國外交易手續費 {_fx["typical"]}%，淨值 {"＋" if _net >= 0 else "－"}'
+                   f'{abs(_net)}%。{_verdict}。含不同票價的淨值試算與不適用項目。')
             write(f'japan-credit-card/{c["slug"]}/flights/index.html',
               head(_t3, _d3, f'japan-credit-card/{c["slug"]}/flights/')
               + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
                         (c['name'], f'/japan-credit-card/{c["slug"]}/'), ('買機票', None)])
               + topnav()
-              + f'<h1>{html.escape(c["name"])}買機票，在哪個平台刷最划算？</h1>'
-              + f'<p class="lede">同一張機票在不同平台買，這張卡的回饋差 '
-                f'{round(_hi - _lo, 1)} 個百分點。以下是發卡行自己逐平台公告的費率，'
-                f'查證於 {_PF["checked"]}。</p>'
-              + f'<div class="today"><div class="tday">切換「{html.escape(_PF["plan"])}」'
-                f'　·　{html.escape(_PF["period"])}</div>'
-                f'<div class="tans">{_lo}% 到 {_hi}%</div>'
-                f'<div class="tsub">差距來自通路，不是來自飛哪條航線。'
-                f'同一張票選錯地方買，回饋就少一截。</div>'
-                f'<div class="tbuf">刷外幣還會收 {_fx["typical"]}% 國外交易手續費，'
-                f'回饋以台幣帳單計算，所以回饋率不等於淨省。</div></div>'
-              + '<h2>逐平台的回饋</h2>'
-              + '<div class="tw"><table><thead><tr><th>通路</th><th>回饋</th>'
-                '<th>限制</th></tr></thead><tbody>' + _pr + '</tbody></table></div>'
-              + '<h2>這些不算買機票</h2><div class="tldr"><ul>'
-              + ''.join(f'<li>{html.escape(x)}</li>' for x in _PF.get('exclude') or [])
+              + f'<h1>{html.escape(c["name"])}買機票划算嗎？</h1>'
+              + f'<p class="lede">機票是線上消費，多數卡的日本加碼限實體消費、疊不上去，'
+                f'而刷外幣要收 {_fx["typical"]}% 國外交易手續費。'
+                f'回饋扣掉手續費才是真正拿到的。條件查證於 {CD["checked"]}。</p>'
+              + f'<div class="today"><div class="tday">以外幣結帳買機票</div>'
+                f'<div class="tans">{"＋" if _net >= 0 else "－"}{abs(_net)}%</div>'
+                f'<div class="tsub">回饋 {_orate}% 減手續費 {_fx["typical"]}%。'
+                f'{html.escape(_verdict)}。</div>'
+                f'<div class="tbuf">'
+                + ('這張卡的日本加碼只算實體消費，線上買機票吃不到，'
+                   '所以這裡用的是不分通路型態都成立的費率。'
+                   if any(t['scope'] == 'shop' for t in c['tiers']) else
+                   '這張卡沒有限實體消費的加碼，線上線下同一個費率。')
+                + '</div></div>'
+              + '<h2>不同票價，實際賺還是賠</h2>'
+              + f'<p class="lede">以台幣帳單金額計算。手續費是銀行收的，回饋是銀行給的，'
+                f'兩者相減才是這張卡在這筆機票上的淨值。</p>'
+              + '<div class="tw"><table><thead><tr><th>機票金額</th>'
+                f'<th>手續費 {_fx["typical"]}%</th><th>回饋 {_orate}%</th>'
+                '<th>淨值</th></tr></thead><tbody>' + _nr + '</tbody></table></div>'
+              + (('<h2>這張卡逐平台的回饋</h2>'
+                  f'<p class="lede">發卡行自己公告了各通路的費率，從 {_lo}% 到 {_hi}%。'
+                  f'同一張機票選錯地方買就少一截，而這跟飛哪條航線無關。</p>'
+                  '<div class="tw"><table><thead><tr><th>通路</th><th>回饋</th>'
+                  '<th>限制</th></tr></thead><tbody>' + _pr + '</tbody></table></div>')
+                 if _PF_ON else
+                 ('<h2>平台之間有差別嗎</h2>'
+                  f'<p class="lede">{html.escape(c["name"])}的官方頁面沒有逐平台公告費率，'
+                  f'只有「海外消費」這一類的分法，所以本站不列平台比較表，'
+                  f'不替發卡行發明規則。實際以刷卡當下的特店分類為準。</p>'))
+              + (('<h2>這些不算買機票</h2><div class="tldr"><ul>'
+                  + ''.join(f'<li>{html.escape(x)}</li>' for x in _PF.get('exclude') or [])
+                  + '</ul></div>') if _PF_ON else '')
+              + '<h2>什麼情況拿不到</h2><div class="tldr"><ul>'
+              + ''.join(f'<li>{html.escape(x)}</li>' for x in c['exclude'])
+              + '<li>在台幣結帳的台灣平台買，算國內消費，不吃上面這個海外費率，'
+                '但也不會被收國外交易手續費。兩邊都要算過才知道哪個划算。</li>'
+              + '<li>結帳選台幣（DCC）：匯率差 3 到 5%，回饋補不回來。</li>'
               + '</ul></div>'
               + fare_cta('tokyo', '看今天的便宜機票')
               + '<h2>買之前先確認的事</h2><div class="tldr"><ul>'
@@ -10211,10 +10252,13 @@ if os.path.exists('cards.json'):
               + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日機票特價</b>'
                 f'<s>每天更新，附刷卡建議</s></a></div>'
               + f'<p class="disc">本頁為公開資訊整理，非理財建議。'
-                f'費率查證於 {_PF["checked"]}，來源：'
-                f'<a href="{html.escape(_PF["src"])}" target="_blank" rel="noopener nofollow">'
-                f'{html.escape(_PF["src_name"])}</a>。'
-                f'其他卡的官方頁面沒有逐平台公告費率，所以本站不做同樣的比較表。'
+                f'條件查證於 {CD["checked"]}，來源：'
+                f'<a href="{html.escape(c["src"])}" target="_blank" rel="noopener nofollow">'
+                f'{html.escape(c["src_name"])}</a>'
+                + (f'；逐平台費率查證於 {_PF["checked"]}，來源：'
+                   f'<a href="{html.escape(_PF["src"])}" target="_blank" rel="noopener nofollow">'
+                   f'{html.escape(_PF["src_name"])}</a>' if _PF_ON else '')
+                + f'。國外交易手續費以 {_fx["typical"]}% 計，實際依發卡行與國際組織公告。'
                 f'發卡行可隨時調整，請以發卡行公告為準。</p>'
               + foot())
             pages.append((f'/japan-credit-card/{c["slug"]}/flights/', 0.6))
