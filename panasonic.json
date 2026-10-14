@@ -1,0 +1,169 @@
+{
+ "_說明": "Panasonic 吹風機的台日對照。這一類跟相機、Dyson 都不同：同一個型號代碼兩地都有在賣，但電壓不一樣，而且日本的旗艦機種在 Bic 不給點數。",
+ "_判準": "日本價取 ビックカメラ.com 商品頁的含稅價與點數標示，台灣價取 Panasonic 台灣松下官方購物商城。電壓取兩地 Panasonic 官網自己的規格表，不採信通路頁。",
+ "updated": "2026-10-14",
+ "checked": "2026-10-14",
+ "src_jp": "https://www.biccamera.com/",
+ "src_jp_name": "ビックカメラ.com",
+ "src_tw": "https://pstw.panasonic.com.tw/shop",
+ "src_tw_name": "Panasonic 台灣松下官方購物商城",
+ "_台灣價是會員優惠價": "官方商城的吹風機只標會員優惠價，沒有同時標定價，所以沒有辦法像 Dyson 那頁一樣做「原價比／特價比」的對照。這裡用的就是商城頁面上的會員優惠價。",
+ "_日本沒有定價": "Panasonic 日本對這些機種採オープン価格（開放價格），官網不公布建議售價，所以日本側只能用通路實際售價。",
+ "voltage": {
+  "jp": 100,
+  "tw": 110,
+  "_核心": "同一個型號代碼，日本賣的是 100V 版、台灣賣的是 110V 版。型號上看不出來，要看規格表。",
+  "jp_quote": "電源 AC100V 50-60Hz ／ 消費電力 1200W",
+  "jp_src": "https://panasonic.jp/hair/products/EH-NA0K/spec.html",
+  "jp_src_name": "Panasonic 日本・EH-NA0K 仕様",
+  "tw_quote": "電壓 110V ／ 瓦數 1200W",
+  "tw_src": "https://www.panasonic.com/tw/consumer/beauty/hair-dryer/nanoe-hair-dryer/eh-na0k.html",
+  "tw_src_name": "Panasonic 台灣・EH-NA0K 規格",
+  "model": "EH-NA0K",
+  "checked": "2026-10-14",
+  "intl_model": "EH-NA55",
+  "intl_label": "國際電壓設計",
+  "intl_src": "https://www.panasonic.com/tw/consumer/beauty/hair-dryer/nanoe-hair-dryer.html",
+  "intl_src_name": "Panasonic 台灣・奈米水離子吹風機一覽",
+  "_只有一台標國際電壓": "台灣官網的奈米水離子吹風機一覽裡，只有 EH-NA55 的賣點寫著「國際電壓設計」，其餘機種都沒有這一行。",
+  "jp_safety": "ご使用の際は、定格15A以上のコンセントを単独でご使用ください（消費電力1000W以上の為）",
+  "jp_safety_why": "這台 1200W，要單獨使用 15A 以上的插座，否則可能造成火災或觸電。",
+  "_沒查到的部分": "日規機器接在台灣 110V 上會怎樣，Panasonic 沒有公開說明，本站不推測。保固也一樣，日本買的機器在台灣的保固範圍沒有查到官方說明。"
+ },
+ "points": {
+  "_說明": "Bic 的點數標示。Panasonic 的旗艦吹風機跟其他品牌不一樣，不是點數低，是整個不給。",
+  "flagship_label": "ポイント対象外",
+  "flagship_src": "https://www.biccamera.com/bc/item/14268607/",
+  "flagship_src_name": "ビックカメラ.com・EH-NA0K 商品頁",
+  "why_quote_zh": "此商品限定經銷商。部分店鋪以製造商指定價格銷售。",
+  "why_src": "https://panasonic.jp/tourist/cn/hair/EH-NA0K.html",
+  "why_src_name": "Panasonic 日本・旅客用中文商品頁",
+  "_因果": "Panasonic 對這些機種限定經銷商並指定售價，所以通路沒有折扣空間，點數也跟著取消。這是 Panasonic 的通路政策，不是 Bic 單方面的決定。",
+  "checked": "2026-10-14"
+ },
+ "coupon": {
+  "name": "Bic Camera 免稅＋最高 7% 折價券",
+  "rate": 7,
+  "expires": "2026-10-31",
+  "src": "https://livejapan.com/public/operation/coupon/biccamera/zh-tw.html",
+  "src_name": "LIVE JAPAN・Bic Camera 優惠券（繁體中文版）",
+  "checked": "2026-10-14",
+  "listed_as": "Panasonic 部分商品",
+  "_第三種狀況": "折價券的不適用清單寫的是「Panasonic 部分商品」。這跟 DJI（整個品牌排除）與 Dyson（完全沒提到）都不同：它明講有一部分不適用，但沒有公布是哪一部分。",
+  "_查不到的部分": "「部分商品」指哪些機種，條款沒有列，我們也查不到任何公布的清單。所以不能說旗艦機種一定不能用，也不能說一定可以。"
+ },
+ "rows": [
+  {
+   "model": "EH-NA0K",
+   "line": "nanocare",
+   "jp_name": "ヘアードライヤー nanocare",
+   "jpy": 34650,
+   "jp_pt": null,
+   "jp_pt_label": "ポイント対象外",
+   "jp_stock": "ok",
+   "tw_name": "nanocare 奈米水離子吹風機",
+   "twd": 8990,
+   "tw_stock": "ok"
+  },
+  {
+   "model": "EH-NB70",
+   "line": "高滲透奈米水離子",
+   "jp_name": "ヘアードライヤー nanocare ミスティローズ",
+   "jpy": 40590,
+   "jp_pt": null,
+   "jp_pt_label": "無標示",
+   "jp_stock": "pre",
+   "tw_name": "高滲透奈米水離子吹風機",
+   "twd": 9900,
+   "tw_stock": "out"
+  },
+  {
+   "model": "EH-NA0J",
+   "line": "nanocare",
+   "jp_name": "ヘアドライヤー＋TOUCHBeauty ヘアブラシセット",
+   "jpy": 34800,
+   "jp_pt": 348,
+   "jp_pt_label": null,
+   "jp_stock": "ok",
+   "tw_name": "nanocare 吹風機",
+   "twd": 8990,
+   "tw_stock": "ok",
+   "bundle": "日本那一筆是跟 TOUCHBeauty 髮梳的組合包，台灣那一筆是單機，內容物不同。"
+  },
+  {
+   "model": "EH-NE9N",
+   "line": "ionity",
+   "jp_name": "ヘアードライヤー ionity モダングレー",
+   "jpy": 18810,
+   "jp_pt": null,
+   "jp_pt_label": "無標示",
+   "jp_stock": "ok",
+   "tw_name": null,
+   "twd": null,
+   "tw_stock": null
+  },
+  {
+   "model": "EH-NE7P",
+   "line": "ionity",
+   "jp_name": "ヘアードライヤー ionity ミスティラベンダー",
+   "jpy": 9790,
+   "jp_pt": 979,
+   "jp_pt_label": null,
+   "jp_stock": "pre",
+   "tw_name": null,
+   "twd": null,
+   "tw_stock": null
+  },
+  {
+   "model": "EH-NE5P",
+   "line": "ionity",
+   "jp_name": "ヘアードライヤー ionity ミスティラベンダー",
+   "jpy": 6600,
+   "jp_pt": 660,
+   "jp_pt_label": null,
+   "jp_stock": "pre",
+   "tw_name": null,
+   "twd": null,
+   "tw_stock": null
+  }
+ ],
+ "_twd_為_null_的意思": "台灣那一欄寫「台灣官方商城沒有這台」的，代表 2026-10-14 查 Panasonic 台灣松下官方購物商城的吹風機沒有這個型號，不是沒查。",
+ "tw_only": [
+  {
+   "model": "EH-NC80",
+   "name": "nanocare ULTIMATE 吹風機",
+   "twd": 18900
+  },
+  {
+   "model": "EH-NC50",
+   "name": "nanocare ULTIMATE 吹風機",
+   "twd": 15900
+  },
+  {
+   "model": "EH-NA9N",
+   "name": "奈米水離子吹風機",
+   "twd": 5790
+  },
+  {
+   "model": "EH-NA7M",
+   "name": "奈米水離子吹風機",
+   "twd": 3690
+  },
+  {
+   "model": "EH-NE8M",
+   "name": "高速馬達礦物負離子吹風機",
+   "twd": 3290
+  },
+  {
+   "model": "EH-NE6M",
+   "name": "高速馬達負離子吹風機",
+   "twd": 2990
+  },
+  {
+   "model": "EH-NE4H",
+   "name": "負離子吹風機",
+   "twd": 699
+  }
+ ],
+ "_tw_only_說明": "台灣官方商城有、日本 Bic 搜不到同型號的機種。nanocare ULTIMATE（EH-NC80／EH-NC50）是台灣主打的高階線，日本那邊 Bic 沒有同代碼的商品。"
+}

@@ -1321,6 +1321,7 @@ def topnav(cur=''):
             + link('/apple-japan-price/', '🍎 台日 Apple 價差')
             + link('/japan-camera-price/', '📷 雲台相機台日價差')
             + link('/japan-dyson-price/', '💨 日本買 Dyson')
+            + link('/japan-panasonic-dryer/', '💇 日本買 Panasonic 吹風機')
             + link('/iphone-cost/', '📉 iPhone 持有成本')
             + link('/iphone-card/', '💰 買 iPhone 刷哪張卡'))
     if os.path.exists('coupons.json'):
@@ -9217,6 +9218,232 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
         f'電壓與保固請以 Dyson 官方說明為準。本頁為公開資訊整理，非購買建議。</p>'
       + foot())
     pages.append(('/japan-dyson-price/', 0.8))
+
+# ---------- 日本買 Panasonic 吹風機 ----------
+# 這一類跟相機、Dyson 的差別在於：型號代碼兩地一樣，所以看起來像同一台，
+# 但日本賣 100V 版、台灣賣 110V 版，規格表才看得出來。價差兩千多，
+# 而代價是買到一台不是給台灣電壓用的機器，卻沒有任何型號上的提示。
+# 另外兩層優惠在 Panasonic 身上也跟別人不同：Bic 對旗艦機種標「ポイント対象外」，
+# 折價券則寫「Panasonic 部分商品」不適用而沒說哪一部分。
+if os.path.exists('panasonic.json') and os.path.exists('apple.json'):
+    PN = json.load(open('panasonic.json', encoding='utf-8'))
+    _pv = PN['voltage']; _ppt = PN['points']; _pcp = PN['coupon']
+
+    def _pex(jpy):  return jpy / TAXR * RATE
+    def _pinc(jpy): return jpy * RATE
+
+    def _pgap(v):
+        if v > 0:  return f'<td class="win">日本省 {money(round(v))}</td>'
+        if v < 0:  return f'<td class="lose">台灣省 {money(round(-v))}</td>'
+        return '<td>持平</td>'
+
+    _PSTK = {'ok': '', 'pre': SMALL + '預約中</small>',
+             'out': SMALL + '售完</small>', None: ''}
+    _ppair = [r for r in PN['rows'] if r.get('twd')]
+    _pjonly = [r for r in PN['rows'] if not r.get('twd')]
+    _pbest = max(_ppair, key=lambda r: r['twd'] - _pex(r['jpy']))
+
+    def _ptcell(r):
+        if r.get('jp_pt_label'):
+            return ('<td class="dimcell">' + html.escape(r['jp_pt_label']) + '</td>')
+        return (f'<td>{r["jp_pt"]:,} 點{SMALL}'
+                f'{round(r["jp_pt"]/r["jpy"]*100)}%</small></td>')
+
+    _prow = ''
+    for r in _ppair + _pjonly:
+        ex = _pex(r['jpy'])
+        tw = (('<td>' + money(r['twd']) + SMALL + html.escape(r['tw_name'])
+               + '</small>' + _PSTK[r['tw_stock']] + '</td>')
+              if r.get('twd') else '<td class="dimcell">台灣官方商城沒有這台</td>')
+        _prow += ('<tr><td><b>' + html.escape(r['model']) + '</b>' + SMALL
+                  + html.escape(r['line']) + '</small></td>'
+                  + f'<td>¥{r["jpy"]:,}{_PSTK[r["jp_stock"]]}</td>'
+                  + f'<td><b>{money(round(ex))}</b></td>'
+                  + _ptcell(r) + tw
+                  + (_pgap(r['twd'] - ex) if r.get('twd')
+                     else '<td class="dimcell">無法比較</td>')
+                  + '</tr>')
+    ptable = ('<div class="tw"><table><thead><tr><th>型號</th>'
+              '<th>日本售價' + SMALL + '含稅</small></th>'
+              '<th>退稅後' + SMALL + '約當台幣</small></th>'
+              '<th>Bic 點數</th>'
+              '<th>台灣官方商城' + SMALL + '會員優惠價</small></th>'
+              '<th>退稅後比較</th></tr></thead><tbody>' + _prow
+              + '</tbody></table></div>')
+
+    _ptwrow = ''.join(
+        '<tr><td><b>' + html.escape(x['model']) + '</b>' + SMALL
+        + html.escape(x['name']) + '</small></td>'
+        + '<td>' + money(x['twd']) + '</td>'
+        + '<td class="dimcell">Bic 搜不到同型號</td></tr>' for x in PN['tw_only'])
+
+    _pbun = [r for r in _ppair if r.get('bundle')]
+
+    _pfaq = [
+        ('日本買 Panasonic 吹風機帶回台灣可以用嗎？',
+         f'要先看電壓。{_pv["model"]} 這個型號兩地都有賣，但日本版的規格是'
+         f'「{_pv["jp_quote"]}」，台灣版是「{_pv["tw_quote"]}」。'
+         f'型號代碼一樣，電壓不一樣，從型號上看不出來。'
+         f'台灣官網的奈米水離子吹風機裡，只有 {_pv["intl_model"]} 的賣點寫著'
+         f'「{_pv["intl_label"]}」。'),
+        ('日本買 Panasonic 吹風機便宜多少？',
+         f'以 {PN["checked"]} 的價格算，{_pv["model"]} 在 Bic 是 '
+         f'¥{[r for r in _ppair if r["model"]==_pv["model"]][0]["jpy"]:,}，'
+         f'退稅後約當 '
+         f'{money(round(_pex([r for r in _ppair if r["model"]==_pv["model"]][0]["jpy"])))}，'
+         f'台灣官方商城會員優惠價 '
+         f'{money([r for r in _ppair if r["model"]==_pv["model"]][0]["twd"])}，'
+         f'差約 {money(round(_pbest["twd"] - _pex(_pbest["jpy"])))} 上下。'),
+        ('Panasonic 吹風機在 Bic 有點數嗎？',
+         f'旗艦機種沒有。{_pv["model"]} 的商品頁直接標「{_ppt["flagship_label"]}」。'
+         f'原因在 Panasonic 自己的通路政策：這些機種限定經銷商、部分店鋪以製造商'
+         f'指定價格銷售，通路沒有折扣空間，點數也跟著取消。'
+         f'入門的 ionity 系列反而有 10%。'),
+        ('Bic 的 7% 折價券可以買 Panasonic 嗎？',
+         f'條款寫的是「{_pcp["listed_as"]}」不適用，但沒有公布是哪一部分。'
+         f'這跟 DJI（整個品牌排除）與 Dyson（完全沒提到）都不一樣。'
+         f'我們查不到任何公布的清單，所以不能說旗艦機種一定不能用，'
+         f'也不能說一定可以，只能請店員當場刷看看。'),
+    ]
+    _pfaq_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                       for q, a in _pfaq]}, ensure_ascii=False)
+
+    _pt_title = ('日本買 Panasonic 吹風機划算嗎？同型號的台日電壓不一樣'
+                 '（nanocare 逐台實算）')
+    _pt_desc = ('Panasonic nanocare、ionity 吹風機的日本與台灣官方售價比較，'
+                '退稅後換算台幣。重點在同一個型號代碼日本賣 100V、台灣賣 110V，'
+                '型號上看不出來。另附 Bic 對旗艦機種標「ポイント対象外」的原因，'
+                '以及折價券「Panasonic 部分商品」的查證結果。')
+
+    write('japan-panasonic-dryer/index.html',
+      head(_pt_title, _pt_desc, 'japan-panasonic-dryer/',
+           '<script type="application/ld+json">' + _pfaq_ld + '</script>')
+      + crumbs([('首頁', '/'), ('日本買 Panasonic 吹風機', None)])
+      + topnav()
+      + '<h1>日本買 Panasonic 吹風機，省多少、代價是什麼？</h1>'
+      + f'<p class="lede">售價核對於 {PN["checked"]}　·　'
+        f'匯率 {RATE}（含約 {AP["rate"]["spread"]*100:.1f}% 換匯成本，每日更新）'
+        f'　·　日本價取 <a href="{PN["src_jp"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(PN["src_jp_name"])}</a>，'
+        f'台灣價取 <a href="{PN["src_tw"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(PN["src_tw_name"])}</a></p>'
+      + '<div class="today">'
+        f'<div class="tday">{_pv["model"]} 兩地都買得到</div>'
+        f'<div class="tans">但不是同一台</div>'
+        f'<div class="tsub">日本版的規格是 {html.escape(_pv["jp_quote"])}，'
+        f'台灣版是 {html.escape(_pv["tw_quote"])}。'
+        f'型號代碼一模一樣，電壓不一樣，從型號上看不出來。</div>'
+        f'<div class="tbuf">價差約 '
+        f'{money(round(_pbest["twd"] - _pex(_pbest["jpy"])))}。'
+        f'而且 Panasonic 的旗艦機種在 Bic 標「{html.escape(_ppt["flagship_label"])}」，'
+        f'折價券那邊又寫「{html.escape(_pcp["listed_as"])}」不適用，'
+        f'所以通常只拿得到免稅 10%，沒有第二層。</div></div>'
+
+      + '<h2>同一個型號，兩種電壓</h2>'
+      + f'<p class="lede">這是 Panasonic 跟 Dyson 最大的差別。Dyson 的機種兩地'
+        f'連名字都不一樣，看得出來不是同一台；Panasonic 的 {_pv["model"]} '
+        f'兩地同一個代碼，包裝也長得像，差別只寫在規格表裡。</p>'
+      + '<div class="tw"><table><thead><tr><th>　</th>'
+        '<th>日本版</th><th>台灣版</th></tr></thead><tbody>'
+      + f'<tr><td><b>型號</b></td><td>{html.escape(_pv["model"])}</td>'
+        f'<td>{html.escape(_pv["model"])}</td></tr>'
+      + f'<tr><td><b>電源</b></td>'
+        f'<td class="lose">{html.escape(_pv["jp_quote"])}</td>'
+        f'<td class="win">{html.escape(_pv["tw_quote"])}</td></tr>'
+      + f'<tr><td><b>依據</b></td>'
+        f'<td><a href="{_pv["jp_src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_pv["jp_src_name"])}</a></td>'
+        f'<td><a href="{_pv["tw_src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_pv["tw_src_name"])}</a></td></tr>'
+      + '</tbody></table></div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>台灣整條線只有一台標國際電壓。</b>'
+        f'{html.escape(_pv["_只有一台標國際電壓"])}'
+        f'（<a href="{_pv["intl_src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_pv["intl_src_name"])}</a>，核對於 {_pv["checked"]}）</li>'
+        f'<li><b>這台吃的電不小。</b>Panasonic 日本的規格頁自己寫了安全注意事項：'
+        f'「{html.escape(_pv["jp_safety"])}」{html.escape(_pv["jp_safety_why"])}</li>'
+        f'<li><b>我們沒查到的部分。</b>{html.escape(_pv["_沒查到的部分"])}</li>'
+        '</ul></div>'
+
+      + '<h2>逐台對照</h2>'
+      + f'<p class="lede">日本售價是含 10% 消費稅的牌價，觀光客退稅後約當台幣如第三欄。'
+        f'台灣那一欄是官方商城的會員優惠價。{html.escape(PN["_台灣價是會員優惠價"])}</p>'
+      + ptable
+      + ''.join(f'<p class="disc">{html.escape(r["model"])}：'
+                f'{html.escape(r["bundle"])}</p>' for r in _pbun)
+      + f'<p class="disc">{html.escape(PN["_日本沒有定價"])}'
+        f'{html.escape(PN["_twd_為_null_的意思"])}</p>'
+
+      + '<h2>點數：旗艦機種整個不給</h2>'
+      + f'<p class="lede">別的品牌是點數高低的差別，Panasonic 的旗艦吹風機是'
+        f'直接沒有。{_pv["model"]} 的 Bic 商品頁在點數欄寫'
+        f'「{html.escape(_ppt["flagship_label"])}」。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>為什麼。</b>Panasonic 自己的商品頁寫'
+        f'「{html.escape(_ppt["why_quote_zh"])}」'
+        f'（<a href="{_ppt["why_src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_ppt["why_src_name"])}</a>，這是 Panasonic 給外國旅客的'
+        f'中文頁）。{html.escape(_ppt["_因果"])}</li>'
+        f'<li><b>入門機種反而有。</b>上表的 ionity 系列裡，'
+        f'EH-NE7P 與 EH-NE5P 都是 10%，同一個品牌同一個貨架。</li>'
+        f'<li><b>依據。</b><a href="{_ppt["flagship_src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(_ppt["flagship_src_name"])}</a>，'
+        f'核對於 {_ppt["checked"]}。</li>'
+        '</ul></div>'
+
+      + f'<h2>折價券：第三種狀況</h2>'
+      + f'<p class="lede">{html.escape(_pcp["_第三種狀況"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>品牌</th>'
+        '<th>條款怎麼寫</th><th>結果</th></tr></thead><tbody>'
+      + '<tr><td><b>DJI</b></td><td>整個品牌列進不適用清單</td>'
+        '<td class="lose">不適用</td></tr>'
+      + f'<tr><td><b>Panasonic</b></td>'
+        f'<td>「{html.escape(_pcp["listed_as"])}」，但沒說是哪一部分</td>'
+        '<td class="dimcell">查不到</td></tr>'
+      + '<tr><td><b>Dyson</b></td><td>完全沒有提到</td>'
+        '<td class="dimcell">沒查到</td></tr>'
+      + '</tbody></table></div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>查不到的是什麼。</b>{html.escape(_pcp["_查不到的部分"])}</li>'
+        f'<li><b>這張券 {_pcp["expires"]} 到期。</b>'
+        f'核對於 {_pcp["checked"]}'
+        f'（<a href="{_pcp["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_pcp["src_name"])}</a>）。</li>'
+        f'<li><b>加起來的結果。</b>旗艦機種沒有點數，折價券狀況不明，'
+        f'所以在日本買 {_pv["model"]} 多半就是免稅 10% 而已。'
+        f'旁邊的 Dyson 同時有 10% 點數，這個差別在結帳時才會看出來。</li>'
+        '</ul></div>'
+
+      + '<h2>台灣有、日本 Bic 沒有同型號的機種</h2>'
+      + f'<p class="lede">{html.escape(PN["_tw_only_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>型號</th>'
+        '<th>台灣官方商城</th><th>日本</th></tr></thead><tbody>'
+      + _ptwrow + '</tbody></table></div>'
+
+      + fare_cta('tokyo', '算完價差，機票多少')
+
+      + '<h2>相關頁面</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-dyson-price/")}"><b>💨 日本買 Dyson</b>'
+        f'<s>吹風機、吸塵器、空氣清淨機</s></a>'
+      + f'<a class="ct" href="{U("/japan-camera-price/")}"><b>📷 雲台相機台日價差</b>'
+        f'<s>Osmo Pocket 與 Luna Ultra</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
+        f'<s>回饋扣掉手續費是賺是賠</s></a>'
+      + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
+        f'<s>改成出境後才退稅</s></a></div>'
+
+      + f'<p class="disc">日本售價取自 {html.escape(PN["src_jp_name"])}，'
+        f'台灣售價取自 {html.escape(PN["src_tw_name"])}，核對於 {PN["checked"]}；'
+        f'匯率每日更新。電壓與規格取自兩地 Panasonic 官網的規格表。'
+        f'台灣官方商城的價格為會員優惠價，會隨檔期變動；日本採開放價格，'
+        f'各通路售價不同。折價券與免稅規定以店家及日本官方公告為準。'
+        f'本頁為公開資訊整理，非購買建議。</p>'
+      + foot())
+    pages.append(('/japan-panasonic-dryer/', 0.8))
 
     # ── iPhone 持有成本：用台灣實際二手回收行情攤提 ──────────────
     # 網路上談「持有成本」多半自己假設一個殘值，數字沒有來源。
