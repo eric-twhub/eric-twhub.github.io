@@ -1320,6 +1320,7 @@ def topnav(cur=''):
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
             + link('/apple-japan-price/', '🍎 台日 Apple 價差')
             + link('/japan-camera-price/', '📷 雲台相機台日價差')
+            + link('/japan-dyson-price/', '💨 日本買 Dyson')
             + link('/iphone-cost/', '📉 iPhone 持有成本')
             + link('/iphone-card/', '💰 買 iPhone 刷哪張卡'))
     if os.path.exists('coupons.json'):
@@ -8879,6 +8880,8 @@ if os.path.exists('cameras.json') and os.path.exists('apple.json'):
         f'<b>🎫 Bic Camera 折價券</b><s>條款與不適用清單</s></a>'
       + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 台日 Apple 價差</b>'
         f'<s>iPhone、Watch、AirPods 全系列</s></a>'
+      + f'<a class="ct" href="{U("/japan-dyson-price/")}"><b>💨 日本買 Dyson</b>'
+        f'<s>價差大，但台灣特價會吃掉一半</s></a>'
       + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
         f'<s>先墊多少、怎麼退</s></a></div>'
 
@@ -8889,6 +8892,227 @@ if os.path.exists('cameras.json') and os.path.exists('apple.json'):
         f'本頁為公開資訊整理，非購買建議。</p>'
       + foot())
     pages.append(('/japan-camera-price/', 0.8))
+
+# ---------- 日本買 Dyson 頭髮護理產品划算嗎 ----------
+# 跟相機那頁不同的地方：Dyson 的台日價差很大，大到「要不要在日本買」不是問題，
+# 問題變成「那個價差是真的嗎」。Dyson 台灣幾乎長期掛特價，拿台灣原價去比會把
+# 價差高估一倍以上（Airstrait 原價比省九千，特價比只省兩千五）。所以這頁的主軸
+# 是兩種比法的差距，不是價差本身。電壓是第二件事：Dyson 自己把吹風機分成
+# 「全球電壓版」與其他，這點只有官網文案講得清楚。
+if os.path.exists('dyson.json') and os.path.exists('apple.json'):
+    DY = json.load(open('dyson.json', encoding='utf-8'))
+    _dcp = DY['coupon']; _dv = DY['voltage']; _dpt = DY['points']
+
+    def _dex(jpy):  return jpy / TAXR * RATE
+    def _dinc(jpy): return jpy * RATE
+
+    def _dgap(v):
+        if v > 0:  return f'<td class="win">日本省 {money(round(v))}</td>'
+        if v < 0:  return f'<td class="lose">台灣省 {money(round(-v))}</td>'
+        return '<td>持平</td>'
+
+    _DSTK = {'ok': '', 'late': SMALL + '出貨要等</small>', None: ''}
+    _dpair = [r for r in DY['rows'] if r.get('twd')]
+    _djonly = [r for r in DY['rows'] if not r.get('twd')]
+
+    # 兩種比法差最多的那一台，拿來當結論。
+    def _over(r): return (r['twd_list'] - _dex(r['jpy'])) - (r['twd'] - _dex(r['jpy']))
+    _dworst = max(_dpair, key=_over)
+    _dwin = [r for r in _dpair if r['twd'] - _dex(r['jpy']) > 0]
+    _dmin = min(_dpair, key=lambda r: r['twd'] - _dex(r['jpy']))
+    _dmax = max(_dpair, key=lambda r: r['twd'] - _dex(r['jpy']))
+
+    # 兩種比法對照：這是本頁的主表
+    _drow2 = ''
+    for r in sorted(_dpair, key=_over, reverse=True):
+        ex = _dex(r['jpy'])
+        g_list = r['twd_list'] - ex
+        g_sale = r['twd'] - ex
+        _drow2 += ('<tr><td><b>' + html.escape(r['model']) + '</b>' + SMALL
+                   + html.escape(r['sku']) + '</small></td>'
+                   + f'<td>{money(round(ex))}</td>'
+                   + '<td>' + money(r['twd_list']) + '</td>' + _dgap(g_list)
+                   + '<td>' + money(r['twd']) + '</td>' + _dgap(g_sale)
+                   + ('<td class="lose">高估 ' + money(round(g_list - g_sale)) + '</td>'
+                      if g_list > g_sale else '<td>一樣</td>')
+                   + '</tr>')
+    dtable2 = ('<div class="tw"><table><thead><tr><th>型號</th>'
+               '<th>日本退稅後' + SMALL + '約當台幣</small></th>'
+               '<th>台灣原價</th><th>用原價比</th>'
+               '<th>台灣特價</th><th>用特價比</th>'
+               '<th>差別</th></tr></thead><tbody>' + _drow2 + '</tbody></table></div>')
+
+    # 逐台明細
+    _drow = ''
+    for r in _dpair + _djonly:
+        ex = _dex(r['jpy'])
+        tw = ('<td>' + money(r['twd']) + SMALL + html.escape(r['tw_name']) + '</small>'
+              + (SMALL + '原價 ' + money(r['twd_list']) + '</small>'
+                 if r['twd_list'] != r['twd'] else '') + '</td>'
+              ) if r.get('twd') else '<td class="dimcell">台灣官網沒有這台</td>'
+        _drow += ('<tr><td><b>' + html.escape(r['model']) + '</b>' + SMALL
+                  + html.escape(r['sku']) + '　' + html.escape(r['jp_name'])
+                  + '</small></td>'
+                  + f'<td>¥{r["jpy"]:,}{_DSTK[r["jp_stock"]]}</td>'
+                  + f'<td>{money(round(_dinc(r["jpy"])))}</td>'
+                  + f'<td><b>{money(round(ex))}</b></td>'
+                  + f'<td>{r["jp_pt"]:,} 點{SMALL}'
+                  + f'{round(r["jp_pt"]/r["jpy"]*100)}%</small></td>'
+                  + tw
+                  + (_dgap(r['twd'] - ex) if r.get('twd') else '<td class="dimcell">無法比較</td>')
+                  + '</tr>')
+    dtable = ('<div class="tw"><table><thead><tr><th>型號</th>'
+              '<th>日本售價' + SMALL + '含稅</small></th>'
+              '<th>換算台幣' + SMALL + '含稅</small></th>'
+              '<th>退稅後' + SMALL + '約當台幣</small></th>'
+              '<th>Bic 點數</th>'
+              '<th>台灣官網' + SMALL + '現在的價格</small></th>'
+              '<th>退稅後比較</th></tr></thead><tbody>' + _drow + '</tbody></table></div>')
+
+    _dprow = ''.join(
+        f'<tr><td>{html.escape(x["name"])}</td><td>¥{x["jpy"]:,}</td>'
+        f'<td><b>{x["pt"]:,} 點</b>{SMALL}{round(x["pt"]/x["jpy"]*100)}%</small></td></tr>'
+        for x in _dpt['exceptions'])
+
+    _dfaq = [
+        ('日本買 Dyson 吹風機便宜多少？',
+         f'以 {DY["checked"]} 的牌價算，{len(_dpair)} 個兩邊都買得到的型號，'
+         f'日本退稅後都比台灣便宜，從 {money(round(_dmin["twd"] - _dex(_dmin["jpy"])))} 到 '
+         f'{money(round(_dmax["twd"] - _dex(_dmax["jpy"])))}。但這是拿台灣的特價比；'
+         f'拿台灣原價比會算出大很多的數字，那個數字買不到。'),
+        ('日本買的 Dyson 吹風機在台灣可以用嗎？',
+         f'要看是不是全球電壓的機型。Dyson 自己把 {_dv["global_model"]} 稱為'
+         f'「{_dv["first_quote"]}」，規格寫「{_dv["global_quote"]}」。'
+         f'日本家用電壓是 {_dv["jp"]}V，台灣是 {_dv["tw"]}V。'
+         f'買之前看機身或變壓器上的輸入電壓標示，寫 100-240V 才是全球電壓。'),
+        ('Bic Camera 的 7% 折價券可以買 Dyson 嗎？',
+         'Dyson 沒有被列在折價券的不適用清單上。但條款註明未列在清單中的商品也可能'
+         '不適用，最終決定權在店鋪與結帳人員，所以沒列到不等於刷得過。'
+         '我們查不到可以引用的第一手回報，只能請店員當場刷看看。'),
+        ('Dyson 在 Bic 的點數是多少？',
+         f'多數型號是 {_dpt["common_rate"]}%，比相機類的 1% 高一個級距。'
+         f'但同品牌內有例外，{len(_dpt["exceptions"])} 個型號只有 1%，差十倍。'
+         f'買之前看商品頁標示的點數。'),
+    ]
+    _dfaq_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                       for q, a in _dfaq]}, ensure_ascii=False)
+
+    _dt_title = (f'日本買 Dyson 吹風機划算嗎？{len(_dpair)} 台台日價差實算'
+                 f'（附台灣特價與原價兩種比法）')
+    _dt_desc = ('Dyson Airwrap、Supersonic、Airstrait 的日本與台灣官網售價逐台比較，'
+                '退稅後換算台幣。重點在台灣官網長期特價，用原價比會把價差高估一倍以上。'
+                '另附全球電壓機型、Bic 點數率與折價券適用狀況。')
+
+    write('japan-dyson-price/index.html',
+      head(_dt_title, _dt_desc, 'japan-dyson-price/',
+           '<script type="application/ld+json">' + _dfaq_ld + '</script>')
+      + crumbs([('首頁', '/'), ('日本買 Dyson', None)])
+      + topnav()
+      + '<h1>日本買 Dyson，到底省多少？</h1>'
+      + f'<p class="lede">售價核對於 {DY["checked"]}　·　'
+        f'匯率 {RATE}（含約 {AP["rate"]["spread"]*100:.1f}% 換匯成本，每日更新）'
+        f'　·　日本價取 <a href="{DY["src_jp"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(DY["src_jp_name"])}</a>，'
+        f'台灣價取 <a href="{DY["src_tw"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(DY["src_tw_name"])}</a></p>'
+      + '<div class="today">'
+        f'<div class="tday">{len(_dpair)} 台兩邊都買得到的型號</div>'
+        f'<div class="tans">全部日本比較便宜</div>'
+        f'<div class="tsub">退稅後從 '
+        f'{money(round(_dmin["twd"] - _dex(_dmin["jpy"])))} 省到 '
+        f'{money(round(_dmax["twd"] - _dex(_dmax["jpy"])))}。'
+        f'但這是拿台灣<b>特價</b>比出來的。Dyson 台灣線上商城多數型號長期掛特價，'
+        f'拿原價去比會得到大很多的數字，而那個數字買不到。</div>'
+        f'<div class="tbuf">差最多的是 {html.escape(_dworst["model"])}：'
+        f'用台灣原價比會算出省 '
+        f'{money(round(_dworst["twd_list"] - _dex(_dworst["jpy"])))}，'
+        f'用現在的特價比只省 '
+        f'{money(round(_dworst["twd"] - _dex(_dworst["jpy"])))}。</div></div>'
+
+      + '<h2>同一台機器，兩種比法</h2>'
+      + '<p class="lede">比價文章通常拿台灣的建議售價去跟日本牌價比，因為原價是固定的、'
+        '好查。問題是台灣官網幾乎沒有照原價賣。下表把兩種比法並排，'
+        '最後一欄是用原價比會高估多少。</p>'
+      + dtable2
+      + '<p class="disc">台灣特價是查證當日官網的售價，會隨檔期變動，'
+        '原價是官網同時標示的建議售價。兩邊的盒裝配件與贈品不同，'
+        '台灣官網多數型號另附贈品，所以這是機器本體的價差，不是等值品的價差。</p>'
+
+      + '<h2>逐台明細</h2>'
+      + f'<p class="lede">日本售價是含 10% 消費稅的牌價，觀光客退稅後約當台幣如第四欄。'
+        f'台灣那一欄是現在實際賣的價格，括號裡是原價。</p>'
+      + dtable
+      + f'<p class="disc">{html.escape(DY["_套裝內容兩邊不一樣"])}'
+        f'{html.escape(DY["_twd_為_null_的意思"])}</p>'
+
+      + '<h2>電壓：只有一台是全球電壓</h2>'
+      + f'<p class="lede">這是 Dyson 跟相機最大的差別。相機用 USB 充電，到哪裡都能用；'
+        f'吹風機吃的是市電，而日本是 {_dv["jp"]}V、台灣是 {_dv["tw"]}V。'
+        f'Dyson 自己把這件事當成產品區分：台灣商城的吹風機分類另外開了一個'
+        f'「全球電壓版」。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>Dyson 自己怎麼說。</b>{html.escape(_dv["global_model"])} 的官網文案寫'
+        f'「{html.escape(_dv["first_quote"])}」，規格是'
+        f'「{html.escape(_dv["global_quote"])}」。'
+        f'既然是「首款」，其他吹風機就不是全球電壓。'
+        f'（<a href="{_dv["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_dv["src_name"])}</a>，核對於 {_dv["checked"]}）</li>'
+        f'<li><b>我們沒有逐台查證的部分。</b>{html.escape(_dv["_沒有逐台查證的部分"])}</li>'
+        f'<li><b>保固。</b>{html.escape(_dv["_保固"])}</li>'
+        f'<li><b>所以價差要這樣看。</b>'
+        f'{html.escape(_dv["global_model"])} 是唯一買回來確定能直接用的，'
+        f'而它的價差剛好是這幾台裡最小的。其他幾台價差大，但要自己先確認電壓標示。</li>'
+        '</ul></div>'
+
+      + '<h2>點數：多數 10%，但有三台是 1%</h2>'
+      + f'<p class="lede">Dyson 在 Bic 的點數率比相機類高一個級距，多數型號 '
+        f'{_dpt["common_rate"]}%。但同一個品牌裡有例外，而且差十倍。</p>'
+      + '<div class="tw"><table><thead><tr><th>只有 1% 的型號</th>'
+        '<th>售價</th><th>標示點數</th></tr></thead><tbody>' + _dprow
+      + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_dpt["note"])}'
+        f'點數是網購的給法，免稅加折價券結帳的給法以店頭公告為準，'
+        f'所以上面的價差試算沒有把點數算進去。</p>'
+
+      + f'<h2>那張 {_dcp["rate"]}% 折價券</h2>'
+      + f'<p class="lede">Dyson 沒有被列在折價券的不適用清單上，'
+        f'這點跟 DJI 不一樣（DJI 是明文排除）。但沒列到不等於刷得過。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>條款沒排除 Dyson。</b>不適用清單上沒有這個品牌，'
+        f'核對於 {_dcp["checked"]}（<a href="{_dcp["src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(_dcp["src_name"])}</a>）。</li>'
+        f'<li><b>但條款自己留了後門。</b>未列在清單中的商品也可能不適用，'
+        f'最終決定權在店鋪與結帳人員。</li>'
+        f'<li><b>有人被拒絕過嗎。</b>網路上有這個說法，但我們查不到可以引用的'
+        f'第一手來源，所以不寫成事實，也不寫成可用。請店員當場刷看看最快。</li>'
+        f'<li><b>這張券 {_dcp["expires"]} 到期。</b>'
+        f'之後的版本還沒公布。</li>'
+        '</ul></div>'
+      + f'<p class="disc">DJI 與 Insta360 的折價券狀況不同，'
+        f'逐項查證在 <a href="{U("/japan-camera-price/")}">雲台相機那一頁</a>。</p>'
+
+      + fare_cta('tokyo', '算完價差，機票多少')
+
+      + '<h2>相關頁面</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
+        f'<s>回饋扣掉手續費是賺是賠</s></a>'
+      + f'<a class="ct" href="{U("/japan-coupon/bic-camera/")}">'
+        f'<b>🎫 Bic Camera 折價券</b><s>條款與不適用清單</s></a>'
+      + f'<a class="ct" href="{U("/japan-camera-price/")}"><b>📷 雲台相機台日價差</b>'
+        f'<s>Osmo Pocket 與 Luna Ultra</s></a>'
+      + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
+        f'<s>改成出境後才退稅</s></a></div>'
+
+      + f'<p class="disc">日本售價取自 {html.escape(DY["src_jp_name"])}，'
+        f'台灣售價取自 {html.escape(DY["src_tw_name"])}，核對於 {DY["checked"]}；'
+        f'匯率每日更新。台灣特價隨檔期變動，日本在庫以店頭為準。'
+        f'{html.escape(DY["_沒做吸塵器與空氣清淨機"])}'
+        f'電壓與保固請以 Dyson 官方說明為準。本頁為公開資訊整理，非購買建議。</p>'
+      + foot())
+    pages.append(('/japan-dyson-price/', 0.8))
 
     # ── iPhone 持有成本：用台灣實際二手回收行情攤提 ──────────────
     # 網路上談「持有成本」多半自己假設一個殘值，數字沒有來源。

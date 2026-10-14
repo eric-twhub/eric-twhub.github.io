@@ -1,0 +1,160 @@
+{
+ "_說明": "Dyson 頭髮護理產品的台日價格對照。只做頭髮護理，因為這是台灣人在日本實際會買的那一類。",
+ "_判準": "日本價取 ビックカメラ.com 商品列表的含稅價與標示點數，台灣價取 Dyson 台灣線上商城。兩邊都要是官方通路。每一筆都要有核對日期。",
+ "_台灣有原價也有特價": "Dyson 台灣線上商城多數型號長期掛特價。價差一律用特價算，因為那是現在實際付得出去的價格。原價一起列出來，是為了讓人看出用原價比會高估多少。",
+ "_套裝內容兩邊不一樣": "同一個型號在日本與台灣的盒裝配件、贈品不同，台灣官網還常附市值數千元的贈品。所以價差是機器本體的價差，不是等值品的價差。",
+ "_沒做吸塵器與空氣清淨機": "不是沒有，是還沒查。這兩類的充電器與電源規格、以及台灣的對應型號都還沒逐台核對過，沒查就不寫。",
+ "updated": "2026-10-14",
+ "checked": "2026-10-14",
+ "src_jp": "https://www.biccamera.com/",
+ "src_jp_name": "ビックカメラ.com",
+ "src_tw": "https://shop.dyson.tw/hair-care",
+ "src_tw_name": "Dyson 台灣線上商城",
+ "voltage": {
+  "jp": 100,
+  "tw": 110,
+  "_說明": "日本的家用電壓是 100V，台灣是 110V。吹風機這類純發熱的電器，功率大致隨電壓平方變化，所以同一台機器在台灣會比在日本吃更多電。",
+  "global_model": "Dyson Supersonic Travel HD19",
+  "global_quote": "100–240V全球電壓自動調節",
+  "first_quote": "Dyson首款全球電壓吹風機",
+  "src": "https://shop.dyson.tw/hair-care",
+  "src_name": "Dyson 台灣線上商城・吹風機分類頁",
+  "checked": "2026-10-14",
+  "_為什麼這句重要": "Dyson 自己說 HD19 Travel 是「首款」全球電壓吹風機，台灣商城也另外開了一個「全球電壓版」分類。代表電壓相容與否是 Dyson 自己做的產品區分，不是網路傳言。",
+  "_沒有逐台查證的部分": "日規各型號的實際電壓標示沒有逐台查到官方規格頁，所以本站不逐台斷定。買之前看機身或變壓器上的輸入電壓標示：寫 100-240V 才是全球電壓，只寫 100V 就是日本國內規格。",
+  "_保固": "Dyson 台灣線上商城標示「免費5年或2年保固」，適用對象是台灣販售的機器。日本買的機器在台灣的保固範圍沒有查到官方說明，沒查就不寫。"
+ },
+ "coupon": {
+  "name": "Bic Camera 免稅＋最高 7% 折價券",
+  "rate": 7,
+  "expires": "2026-10-31",
+  "src": "https://livejapan.com/public/operation/coupon/biccamera/zh-tw.html",
+  "src_name": "LIVE JAPAN・Bic Camera 優惠券（繁體中文版）",
+  "checked": "2026-10-14",
+  "dyson_listed": false,
+  "_狀態": "Dyson 不在繁中版折價券的不適用清單上。但條款註明未列在清單中的商品也可能不適用，最終決定權在店鋪與結帳人員。網路上有「店員拒刷 Dyson」的說法，但查不到可以引用的第一手來源，所以不寫成事實，也不寫成可用。",
+  "scanned": "2026-10-14"
+ },
+ "points": {
+  "_說明": "ビックカメラ.com 商品列表標示的點數率。Dyson 多數型號是 10%，跟相機那類的 1% 差一個級距，但同品牌內也有例外。",
+  "common_rate": 10,
+  "exceptions": [
+   {
+    "name": "Dyson V8 Slim Fluffy SV25SLM",
+    "jpy": 34496,
+    "pt": 345
+   },
+   {
+    "name": "Dyson V15 Detect Complete SV22ABL2",
+    "jpy": 115000,
+    "pt": 1150
+   },
+   {
+    "name": "Dyson Supersonic HD08＋TOUCHBeauty ヘアブラシセット",
+    "jpy": 32800,
+    "pt": 328
+   }
+  ],
+  "note": "上面三個是 1%，同一個品牌差十倍。買之前看商品頁標示的點數，不要假設整個品牌都一樣。"
+ },
+ "rows": [
+  {
+   "model": "Airwrap i.d.",
+   "sku": "HS08",
+   "jp_name": "マルチスタイラー&ドライヤー セラミックパティーナ／トパーズ",
+   "jpy": 63250,
+   "jp_pt": 6325,
+   "jp_stock": "ok",
+   "tw_name": "藍牙多功能造型器 琥珀香檳 附精美禮盒",
+   "twd": 17600,
+   "twd_list": 17600,
+   "tw_stock": "ok"
+  },
+  {
+   "model": "Airwrap Origin",
+   "sku": "HS02",
+   "jp_name": "マルチスタイラー&ドライヤー ダークブルー／コッパー",
+   "jpy": 48000,
+   "jp_pt": 4800,
+   "jp_stock": "ok",
+   "tw_name": null,
+   "twd": null,
+   "twd_list": null,
+   "tw_stock": null
+  },
+  {
+   "model": "Supersonic Nural",
+   "sku": "HD16",
+   "jp_name": "Shine ヘアドライヤー セラミックピンク",
+   "jpy": 49478,
+   "jp_pt": 4948,
+   "jp_stock": "late",
+   "tw_name": "智能吹風機 平裝版 夜幕綠",
+   "twd": 11600,
+   "twd_list": 12900,
+   "tw_stock": "ok"
+  },
+  {
+   "model": "Supersonic Nural Lite",
+   "sku": "HD16",
+   "jp_name": "ヘアドライヤー セラミックカーキ",
+   "jpy": 47800,
+   "jp_pt": 4780,
+   "jp_stock": "ok",
+   "tw_name": null,
+   "twd": null,
+   "twd_list": null,
+   "tw_stock": null
+  },
+  {
+   "model": "Supersonic r",
+   "sku": "HD17",
+   "jp_name": "ヘアドライヤー セラミックピンク",
+   "jpy": 56070,
+   "jp_pt": 5607,
+   "jp_stock": "ok",
+   "tw_name": "精準造型 輕量吹風機 雲霧紫",
+   "twd": 14900,
+   "twd_list": 14900,
+   "tw_stock": "ok"
+  },
+  {
+   "model": "Supersonic Travel",
+   "sku": "HD19",
+   "jp_name": "ヘアドライヤー セラミックピンク",
+   "jpy": 42800,
+   "jp_pt": 4280,
+   "jp_stock": "ok",
+   "tw_name": "隨行吹風機 粉霧玫瑰",
+   "twd": 9900,
+   "twd_list": 10900,
+   "tw_stock": "ok",
+   "global_voltage": true
+  },
+  {
+   "model": "Airstrait",
+   "sku": "HT01",
+   "jp_name": "ストレイトナー セラミックピンク",
+   "jpy": 39800,
+   "jp_pt": 3980,
+   "jp_stock": "ok",
+   "tw_name": "二合一吹風直髮器 普魯士藍",
+   "twd": 9999,
+   "twd_list": 16600,
+   "tw_stock": "ok"
+  },
+  {
+   "model": "Supersonic",
+   "sku": "HD08",
+   "jp_name": "ヘアドライヤー＋TOUCHBeauty ヘアブラシセット",
+   "jpy": 32800,
+   "jp_pt": 328,
+   "jp_stock": "ok",
+   "tw_name": null,
+   "twd": null,
+   "twd_list": null,
+   "tw_stock": null
+  }
+ ],
+ "_twd_為_null_的意思": "台灣那一欄寫「台灣官網沒有這台」的，代表 2026-10-14 查 Dyson 台灣線上商城的頭髮護理分類沒有這個型號，不是沒查。"
+}
