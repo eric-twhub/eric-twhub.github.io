@@ -8792,7 +8792,7 @@ if os.path.exists('cameras.json') and os.path.exists('apple.json'):
         f'但也查不到有人回報真的刷過。</div></div>'
 
       + '<h2>先看那張券，再看價格</h2>'
-      + f'<p class="lede">這四台的價差不大，所以能不能疊上 Bic Camera 的'
+      + f'<p class="lede">這四台的價差不大，所以能不能疊上 Bic Camera 那張 '
         f'{_ccp["rate"]}% 折價券，幾乎決定了值不值得在日本買。'
         f'券的條款（核對於 {_ccp["checked"]}）對兩個品牌的待遇不一樣。</p>'
       + '<div class="tw"><table><thead><tr><th>品牌</th>'
