@@ -33,7 +33,13 @@
      "cap": 500,
      "cap_unit": "每歸戶每期",
      "scope": "shop",
-     "cond": "需登錄，活動期間登錄一次即可；名單含 Suica／PASMO 儲值、租車、東京迪士尼、環球影城、Bic Camera、松本清、UNIQLO 等"
+     "cond": "需登錄，活動期間登錄一次即可；名單含 Suica／PASMO 儲值、租車、東京迪士尼、環球影城、Bic Camera、松本清、UNIQLO 等",
+     "store_scope": [
+      "bic-camera",
+      "matsukiyo",
+      "uniqlo"
+     ],
+     "partial_list": true
     }
    ],
    "reg": "需登錄，活動期間僅需登錄 1 次（2025/12/31 前登錄過者須重新登錄）",
@@ -131,7 +137,17 @@
      "rate": 1.5,
      "cap": 0,
      "scope": "shop",
-     "cond": "秋日遊期間（2026/10/1 – 11/30）於指定日本人氣愛店、IP 專賣店與餐廳預約平台消費，合計 5%；名單含 UNIQLO、Loft、ABC-MART、3COINS、Alpen、寶可夢中心、SANRIO、KIDDY LAND、Tabelog、TableCheck、OMAKASE"
+     "cond": "秋日遊期間（2026/10/1 – 11/30）於指定日本人氣愛店、IP 專賣店與餐廳預約平台消費，合計 5%；名單含 UNIQLO、Loft、ABC-MART、3COINS、Alpen、寶可夢中心、SANRIO、KIDDY LAND、Tabelog、TableCheck、OMAKASE",
+     "store_scope": [
+      "uniqlo",
+      "loft",
+      "abc-mart",
+      "3coins",
+      "pokemon-center",
+      "sanrio",
+      "kiddy-land",
+      "alpen"
+     ]
     }
    ],
    "reg": "不需登錄，但需於 CUBE App 在消費當日切換至「秋日遊」",
@@ -238,7 +254,9 @@
      "cap": 600,
      "cap_unit": "活動期間",
      "scope": "shop",
-     "cond": "便利商店、遊樂園、百貨公司、量販等指定通路"
+     "cond": "便利商店、遊樂園、百貨公司、量販等指定通路",
+     "store_scope": [],
+     "partial_list": true
     },
     {
      "label": "新戶加碼",
@@ -884,5 +902,6 @@
    "中信 LINE Pay",
    "台新 Richart"
   ]
- }
+ },
+ "_指定店家加碼": "有些加碼只在發卡行公告的指定店家成立。tier 加 store_scope（本站店家 slug 陣列）之後，只有名單上的店才會把那一層算進去；partial_list 代表官方名單寫「等」、沒有窮舉，那一層就不自動套用到任何店，只在頁面上說明。"
 }

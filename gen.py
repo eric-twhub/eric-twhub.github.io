@@ -10090,6 +10090,9 @@ if os.path.exists('cards.json'):
                 for _t in _tiers(c, 'shop'):
                     if _is_newbie(_t):
                         continue
+                    # 綁定指定店家的加碼，只在名單上的店算；官方名單沒窮舉的不自動套
+                    if 'store_scope' in _t and s['slug'] not in _t['store_scope']:
+                        continue
                     _x = _t['rate'] / 100 * bill_t
                     if _t['cap'] and _x > _t['cap']:
                         _x, capped = _t['cap'], True
@@ -10788,14 +10791,27 @@ if os.path.exists('cards.json'):
         # 那邊在另一個區塊裡，這裡自己留一份。
         _NB = re.compile(r'新戶|核卡')
 
+        def _tier_ok(t, st):
+            """這一層加碼在這家店成不成立。
+
+            有些加碼只在發卡行公告的指定店家有；官方名單寫「等」沒有窮舉的，
+            一律不自動套用，寧可少算也不要替讀者宣稱拿得到。
+            """
+            if 'store_scope' not in t:
+                return True
+            # partial_list 只代表官方名單寫「等」、可能還有別家，
+            # 不代表名單上這幾家不算。名單上的照算，名單外的不算。
+            return st['slug'] in t['store_scope']
+
         def _store_cards(st):
-            """這家店可用的卡，去掉新戶限定的加碼之後的費率"""
+            """這家店可用的卡，去掉新戶限定與不適用這家店的加碼之後的費率"""
             out = []
             for c in CD['cards']:
                 out.append({'n': c['name'], 's': c['slug'], 'base': c['base'],
                             'tiers': [t for t in c['tiers']
                                       if t['scope'] in ('shop', 'any')
-                                      and not _NB.search(t['label'] + t.get('cond', ''))],
+                                      and not _NB.search(t['label'] + t.get('cond', ''))
+                                      and _tier_ok(t, st)],
                             'reg': c.get('reg_short', '')})
             return out
 
@@ -10827,6 +10843,14 @@ if os.path.exists('cards.json'):
                    '<option value="1" selected>有用券</option>'
                    '<option value="0">沒有券</option></select></label>')
                 + '</div><div class="tw" id="kr"></div></div>'
+                + (''.join(
+                    f'<p class="disc">⚠ {html.escape(c["name"])}另有'
+                    f'{html.escape(t["label"])} {t["rate"]}%，官方名單寫「等」沒有窮舉，'
+                    f'這一頁沒有把它算進去。條件：{html.escape(t.get("cond", ""))}。'
+                    f'詳見<a href="{U("/japan-credit-card/"+c["slug"]+"/")}">'
+                    f'{html.escape(c["name"])}</a>。</p>'
+                    for c in CD['cards'] for t in c['tiers']
+                    if t.get('partial_list') and st['slug'] not in (t.get('store_scope') or [])))
                 + f'<p class="disc">依各卡的日本實體消費費率計算，'
                   f'不含新戶限定加碼，也假設各層加碼的條件都符合（部分卡要先登錄或'
                   f'達資產門檻）。點數型回饋以 1 點約 1 元估算。'
