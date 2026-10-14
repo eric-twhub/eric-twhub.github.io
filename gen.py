@@ -1336,7 +1336,8 @@ def topnav(cur=''):
             + link('/japan-card-calculator/', '🧮 回饋計算機')
             + link('/japan-airline-card/', '✈️ 買機票算國內還是國外')
             + link('/japan-airline-card/china-airlines/', '✈️ 華航聯名卡')
-            + link('/japan-airline-card/starlux/', '✈️ 星宇聯名卡'))
+            + link('/japan-airline-card/starlux/', '✈️ 星宇聯名卡')
+            + link('/japan-airline-card/eva-air/', '✈️ 長榮聯名卡'))
     if _cd:
         card += '<hr><b>熱門卡片</b>' + ''.join(
             link(f'/japan-credit-card/{c["slug"]}/', c['name'])
@@ -9701,6 +9702,10 @@ if os.path.exists('airline-card.json'):
         f'（<a href="{_ar["ctbc_src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(_ar["ctbc_src_name"])}</a>）</li>'
         f'<li><b>結帳時改成台幣也一樣。</b>「{html.escape(_ar["dcc_quote"])}」（玉山銀行，同上）</li>'
+        f'<li><b>國泰世華直接講到航空公司。</b>「{html.escape(_ar["cathay_quote"])}」，'
+        f'並提醒「{html.escape(_ar["cathay_tw"])}」'
+        f'（<a href="{_ar["cathay_src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_ar["cathay_src_name"])}</a>）{html.escape(_ar["cathay_context"])}</li>'
         '</ul></div>'
 
       + '<h2>怎麼自己確認</h2>'
@@ -9743,7 +9748,9 @@ if os.path.exists('airline-card.json'):
       + f'<a class="ct" href="{U("/japan-airline-card/china-airlines/")}"><b>✈️ 華航聯名卡</b>'
         f'<s>中國信託，3 張卡</s></a>'
       + f'<a class="ct" href="{U("/japan-airline-card/starlux/")}"><b>✈️ 星宇聯名卡</b>'
-        f'<s>玉山銀行，4 張卡</s></a></div>'
+        f'<s>玉山銀行，4 張卡</s></a>'
+      + f'<a class="ct" href="{U("/japan-airline-card/eva-air/")}"><b>✈️ 長榮聯名卡</b>'
+        f'<s>國泰世華與美國運通，6 張卡</s></a></div>'
       + '<h2>相關頁面</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
         f'<s>15 張卡各有一頁機票頁</s></a>'
@@ -9761,97 +9768,100 @@ if os.path.exists('airline-card.json'):
       + foot())
     pages.append(('/japan-airline-card/', 0.8))
 
-# ---------- 航空聯名卡：華航、星宇 ----------
-# 以航空公司為主角。聯名卡的回饋是哩程，不能跟旅日信用卡那 15 張現金回饋卡
-# 放在同一張表比，所以獨立成頁。頁面上只做一種計算：官方兌換標準 × 官方每哩
-# 所需金額，回答「換一張台日來回要刷多少」，不替讀者估哩程值多少錢。
-# 另一個重點是官網購票折扣的實際適用範圍：標題寫的折數，飛日本坐經濟艙的人
-# 多半拿不到，條件寫在活動頁下面。
+# ---------- 航空聯名卡：華航、星宇、長榮 ----------
+# 以航空公司為主角，一家一頁。聯名卡的回饋是哩程，不能跟旅日信用卡那 15 張
+# 現金回饋卡放在同一張表比，所以獨立成頁。頁面上只做一種計算：官方兌換標準 ×
+# 官方每哩所需金額，回答「換一張台日來回要刷多少」，不替讀者估哩程值多少錢。
+# 三家的費率結構不同（華航國內外同率、星宇分國內外、長榮兩家發卡行），所以
+# 表格欄位由 cobrand-cards.json 的 cmp_cols / spend_cols 決定，沒寫就依 earn_kind 推。
 if os.path.exists('cobrand-cards.json'):
     CB = json.load(open('cobrand-cards.json', encoding='utf-8'))
-    _cb_pages = []
 
     def _cbn(x):
         return (f'{x:.2f}'.rstrip('0').rstrip('.') if isinstance(x, (int, float)) else '')
 
+    def _cb_cols(A):
+        if A.get('cmp_cols'):
+            return ([tuple(c) for c in A['cmp_cols']],
+                    [tuple(c) for c in A['spend_cols']])
+        if A['earn_kind'] == 'flat':
+            return ([('rate_dom', '一般消費' + SMALL + '國內國外相同</small>'),
+                     ('rate_x2', '國外實體與指定通路'),
+                     ('rate_bday', '生日月國外實體')],
+                    [('rate_dom', '全部一般消費', False),
+                     ('rate_x2', '全部國外實體商店', True),
+                     ('rate_bday', '全部生日月國外實體', True)])
+        return ([('rate_dom', '國內一般消費'), ('rate_ovs', '國外一般消費'),
+                 ('rate_x2_pair', '指定通路加倍' + SMALL + '含官網購票</small>'),
+                 ('rate_bday', '生日月國外實體')],
+                [('rate_dom', '全部國內一般消費', False),
+                 ('rate_ovs', '全部國外消費', True),
+                 ('rate_bday', '全部生日月國外實體', True)])
+
+    def _cb_rate(t, k):
+        if k == 'rate_x2_pair':
+            return (f'{_cbn(t["rate_x2_dom"])} 或 {_cbn(t["rate_x2_ovs"])} 元 1 哩'
+                    f'{SMALL}依官網購票算國內或國外</small>')
+        v = t.get(k)
+        return (f'{_cbn(v)} 元 1 哩' if v else '<span class="dimcell">不適用</span>')
+
     for A in CB['airlines']:
         _T = A['tiers']; _F = A['fare']; _M = A['award_jp_rt']
-        _split = A['earn_kind'] == 'split'
+        _cmp, _spend = _cb_cols(A)
 
-        # 各卡比較表
-        def _rate_cells(t):
-            if _split:
-                return (f'<td>{_cbn(t["rate_dom"])} 元 1 哩</td>'
-                        f'<td>{_cbn(t["rate_ovs"])} 元 1 哩</td>')
-            return (f'<td colspan="2">{_cbn(t["rate_dom"])} 元 1 哩'
-                    f'{SMALL}國內國外相同</small></td>')
-        _crow = ''
-        for t in _T:
-            x2 = (f'{_cbn(t["rate_x2"])} 元 1 哩' if not _split else
-                  f'{_cbn(t["rate_x2_dom"])} 或 {_cbn(t["rate_x2_ovs"])} 元 1 哩'
-                  f'{SMALL}依官網購票算國內或國外</small>')
-            bd = (f'{_cbn(t["rate_bday"])} 元 1 哩' if t.get('rate_bday')
-                  else '<span class="dimcell">不適用</span>')
-            _crow += ('<tr><td><b>' + html.escape(t['name']) + '</b>' + SMALL
-                      + '年費 ' + money(t['fee']) + '　' + html.escape(t['fee_note'])
-                      + '</small></td>' + _rate_cells(t)
-                      + '<td>' + x2 + '</td><td>' + bd + '</td>'
-                      + '<td>' + html.escape(t['eco_disc']) + '</td></tr>')
+        def _tname(t):
+            fee = (('年費 ' + money(t['fee'])) if t.get('fee') is not None else '年費未查')
+            return ('<b>' + html.escape(t['name']) + '</b>' + SMALL + fee + '　'
+                    + html.escape(t['fee_note'])
+                    + (('<br>' + html.escape(t['rate_note'])) if t.get('rate_note') else '')
+                    + '</small>')
+
+        _crow = ''.join(
+            '<tr><td>' + _tname(t) + '</td>'
+            + ''.join('<td>' + _cb_rate(t, k) + '</td>' for k, _ in _cmp)
+            + '<td>' + html.escape(t['eco_disc']) + '</td></tr>' for t in _T)
         _ctab = ('<div class="tw"><table><thead><tr><th>卡別</th>'
-                 '<th>國內一般消費</th><th>國外一般消費</th>'
-                 '<th>指定通路加倍' + SMALL + '含官網購票</small></th>'
-                 '<th>生日月國外實體</th><th>官網經濟艙折扣</th>'
-                 '</tr></thead><tbody>' + _crow + '</tbody></table></div>')
+                 + ''.join(f'<th>{h}</th>' for _, h in _cmp)
+                 + '<th>官網經濟艙折扣</th></tr></thead><tbody>' + _crow
+                 + '</tbody></table></div>')
 
-        # 換一張台日經濟艙來回要刷多少
-        _arow = ''
-        for t in _T:
-            def cell(r, fee=False):
-                if not r:
-                    return '<td class="dimcell">不適用</td>'
-                need = round(_M * r)
-                s = money(need)
-                if fee:
-                    s += SMALL + '另付 1.5% 手續費約 ' + money(round(need * 0.015)) + '</small>'
-                return '<td>' + s + '</td>'
-            if _split:
-                _arow += ('<tr><td><b>' + html.escape(t['name']) + '</b></td>'
-                          + cell(t['rate_dom']) + cell(t['rate_ovs'], True)
-                          + cell(t.get('rate_bday'), True) + '</tr>')
-            else:
-                _arow += ('<tr><td><b>' + html.escape(t['name']) + '</b></td>'
-                          + cell(t['rate_dom']) + cell(t['rate_x2'], True)
-                          + cell(t.get('rate_bday'), True) + '</tr>')
-        _ahead = (('<th>全部國內一般消費</th><th>全部國外消費</th><th>全部生日月國外實體</th>')
-                  if _split else
-                  ('<th>全部一般消費</th><th>全部國外實體商店</th><th>全部生日月國外實體</th>'))
-        _atab = ('<div class="tw"><table><thead><tr><th>卡別</th>' + _ahead
+        def _scell(r, fee):
+            if not r:
+                return '<td class="dimcell">不適用</td>'
+            need = round(_M * r)
+            s = money(need)
+            if fee:
+                s += SMALL + '另付 1.5% 手續費約 ' + money(round(need * 0.015)) + '</small>'
+            return '<td>' + s + '</td>'
+        _arow = ''.join(
+            '<tr><td><b>' + html.escape(t['name']) + '</b></td>'
+            + ''.join(_scell(t.get(k), fee) for k, _, fee in _spend) + '</tr>' for t in _T)
+        _atab = ('<div class="tw"><table><thead><tr><th>卡別</th>'
+                 + ''.join(f'<th>{h}</th>' for _, h, _f in _spend)
                  + '</tr></thead><tbody>' + _arow + '</tbody></table></div>')
 
-        # 年費換哩程：只列有續卡禮的卡
         _rrow = ''
         for t in _T:
-            if not t.get('renew'):
+            if not t.get('renew') or t.get('fee') is None:
                 continue
-            m = re.search(r'([\d,]+)\s*哩', t['renew'])
+            m = re.search(r'續卡\s*([\d,]+)\s*哩', t['renew'])
             if not m:
                 continue
             mi = int(m.group(1).replace(',', ''))
             _rrow += ('<tr><td><b>' + html.escape(t['name']) + '</b></td>'
                       + '<td>' + money(t['fee']) + '</td>'
-                      + f'<td>{mi:,} 哩</td>'
-                      + f'<td>{t["fee"]/mi:.2f} 元 1 哩</td></tr>')
+                      + f'<td>{mi:,} 哩</td><td>{t["fee"]/mi:.2f} 元 1 哩</td></tr>')
 
-        # 首刷、續卡、貴賓室
         _grow = ''.join(
             '<tr><td><b>' + html.escape(t['name']) + '</b></td>'
             + '<td>' + html.escape(t['welcome']) + '</td>'
-            + '<td>' + (html.escape(t['renew']) if t.get('renew') else '<span class="dimcell">無</span>') + '</td>'
+            + '<td>' + (html.escape(t['renew']) if t.get('renew') else '<span class="dimcell">官方頁未列</span>') + '</td>'
             + '<td>' + (html.escape(t['lounge']) if t.get('lounge') else '<span class="dimcell">無</span>') + '</td></tr>'
             for t in _T)
 
-        _best = min((t.get('rate_bday') or 999) for t in _T)
-        _bestT = [t for t in _T if t.get('rate_bday') == _best][0]
+        # 最快的刷法：試算表裡每哩所需金額最低的那一格
+        _cands = [(t.get(k), t, h) for t in _T for k, h, _f in _spend if t.get(k)]
+        _best, _bestT, _bestH = min(_cands, key=lambda x: x[0])
         _fast = round(_M * _best)
 
         _faq = [
@@ -9859,8 +9869,8 @@ if os.path.exists('cobrand-cards.json'):
              f'{_F["headline_truth"]}其他條件：{_F["who"]}；{_F["not"]}。'),
             (f'刷{A["short"]}聯名卡多少錢可以換一張台日來回？',
              f'{A["name"]}台灣到日本經濟艙來回是 {_M:,} 哩。{A["award_note"]}'
-             f'最快的是{_bestT["name"]}在生日月國外實體消費，每 {_cbn(_best)} 元 1 哩，'
-             f'約要刷 {money(_fast)}，國外消費另付 1.5% 手續費。'),
+             f'最快的是{_bestT["name"]}（{re.sub("<[^>]+>", "", _bestH).replace("全部", "")}），'
+             f'每 {_cbn(_best)} 元 1 哩，約要刷 {money(_fast)}，國外消費另付 1.5% 手續費。'),
             (f'{A["short"]}聯名卡在日本刷卡算幾倍？',
              f'{A["earn_note"]}{A.get("overseas_def") or ""}{A["birthday"]}'),
         ]
@@ -9874,8 +9884,11 @@ if os.path.exists('cobrand-cards.json'):
               f'（{A["issuer"]} {len(_T)} 張卡比較）')
         _d = (f'{A["card_family"]}各卡別的哩程費率、{A["short"]}官網購票折扣的實際適用範圍、'
               f'換一張台灣到日本經濟艙來回（{_M:,} 哩）要刷多少錢，以及在日本刷卡要注意的條件。'
-              f'全部取自{A["issuer"]}與{A["name"]}官網。')
+              f'全部取自發卡行與{A["name"]}官網。')
         _p = f'japan-airline-card/{A["slug"]}/'
+        _srcs = ''.join(
+            f'<a href="{A[k]}" rel="nofollow noopener" target="_blank">{html.escape(A[k + "_name"])}</a>、'
+            for k in ('src_card', 'src_card2', 'src_card3') if A.get(k)).rstrip('、')
 
         write(_p + 'index.html',
           head(_t, _d, _p, '<script type="application/ld+json">' + _faq_ld + '</script>')
@@ -9883,15 +9896,14 @@ if os.path.exists('cobrand-cards.json'):
                     (A['short'] + '聯名卡', None)])
           + topnav()
           + f'<h1>{html.escape(A["short"])}聯名卡，飛日本的人實際拿到什麼</h1>'
-          + f'<p class="lede">卡片權益取自 <a href="{A["src_card"]}" rel="nofollow noopener" '
-            f'target="_blank">{html.escape(A["src_card_name"])}</a>，'
+          + f'<p class="lede">卡片權益取自 {_srcs}，'
             f'哩程兌換取自 <a href="{A["award_src"]}" rel="nofollow noopener" target="_blank">'
             f'{html.escape(A["award_src_name"])}</a>　·　核對於 {CB["checked"]}</p>'
           + '<div class="today">'
             f'<div class="tday">官網購票寫「{html.escape(_F["headline"])}」</div>'
             f'<div class="tans">坐經濟艙飛日本，多半拿不到</div>'
             f'<div class="tsub">{html.escape(_F["headline_truth"])}</div>'
-            f'<div class="tbuf">{html.escape(A["name"])}的聯名卡只有{html.escape(A["issuer"])}一家發行，'
+            f'<div class="tbuf">{html.escape(A["name"])}的聯名卡由{html.escape(A["issuer"])}發行，'
             f'共 {len(_T)} 個卡別。台日經濟艙來回要 {_M:,} 哩，最快的刷法約要 '
             f'{money(_fast)}。</div></div>'
 
@@ -9912,9 +9924,9 @@ if os.path.exists('cobrand-cards.json'):
           + f'<p class="lede">{html.escape(A["earn_note"])}指定通路是：'
             f'{html.escape(A["designated"])}</p>'
           + _ctab
-          + (f'<p class="disc">{html.escape(A["_沒查到的"])}</p>' if _split else '')
+          + (f'<p class="disc">{html.escape(A["_沒查到的"])}</p>' if A.get('_沒查到的') else '')
 
-          + f'<h2>換一張台日經濟艙來回，要刷多少</h2>'
+          + '<h2>換一張台日經濟艙來回，要刷多少</h2>'
           + f'<p class="lede">{html.escape(A["name"])}台灣到日本經濟艙來回是 '
             f'<b>{_M:,} 哩</b>。{html.escape(A["award_note"])}下表是把這個哩數乘上'
             f'各卡每哩所需金額，假設全部消費都落在同一種情況。</p>'
@@ -9923,10 +9935,11 @@ if os.path.exists('cobrand-cards.json'):
           + '<p class="disc">國外消費要另付約 1.5% 國外交易手續費，表裡已附上金額。'
             '哩程換機票要看當時有沒有酬賓機位，稅金與附加費另付。</p>'
 
-          + f'<h2>在日本刷卡要知道的</h2><div class="tldr"><ul>'
-          + (f'<li><b>什麼算「國外實體」。</b>{html.escape(A["overseas_def"])}'
+          + '<h2>在日本刷卡要知道的</h2><div class="tldr"><ul>'
+          + (f'<li><b>什麼算「海外實體」或「國外實體」。</b>{html.escape(A["overseas_def"])}'
              f'所以在日本用 PayPay 之類的掃碼付款，拿不到加倍。</li>' if A.get('overseas_def') else '')
-          + f'<li><b>生日月。</b>{html.escape(A["birthday"])}</li>'
+          + f'<li><b>生日。</b>{html.escape(A["birthday"])}</li>'
+          + ''.join(f'<li>{html.escape(x)}</li>' for x in A.get('jp_notes') or [])
           + '<li><b>國外交易手續費。</b>在日本刷是外幣交易，一定收約 1.5%。'
             f'買機票那一筆算國內還是國外，看<a href="{U("/japan-airline-card/")}">這一頁</a>的判斷方法。</li>'
           + ''.join(f'<li><b>{html.escape(t["name"])}的 eSIM。</b>{html.escape(t["esim"])}。</li>'
@@ -9958,12 +9971,11 @@ if os.path.exists('cobrand-cards.json'):
           + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
             f'<s>15 張現金回饋卡</s></a></div>'
 
-          + f'<p class="disc">卡片權益取自{html.escape(A["issuer"])}官網，購票優惠與哩程兌換取自'
-            f'{html.escape(A["name"])}官網，核對於 {CB["checked"]}。活動條件、年費與兌換標準'
+          + f'<p class="disc">卡片權益取自發卡行官網，購票優惠與哩程兌換取自'
+            f'發卡行與{html.escape(A["name"])}官網，核對於 {CB["checked"]}。活動條件、年費與兌換標準'
             f'由發卡行與航空公司隨時調整，以官方公告為準。本頁為公開資訊整理，非理財建議。</p>'
           + foot())
         pages.append(('/' + _p, 0.8))
-        _cb_pages.append(A['slug'])
 
     # ── iPhone 持有成本：用台灣實際二手回收行情攤提 ──────────────
     # 網路上談「持有成本」多半自己假設一個殘值，數字沒有來源。

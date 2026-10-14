@@ -197,6 +197,170 @@
    ],
    "promo_period": "首刷禮 2026/1/1–2026/12/31；首刷同時完成玉山帳戶自動扣繳，2026/9/1–12/31 另加贈 1,000 哩",
    "_沒查到的": "星宇官網購票在帳單上算國內還是國外，玉山與星宇都沒有說明。這會決定官網購票的基本哩是國內費率還是國外費率，所以加倍後的每哩金額有兩種可能，下面兩種都列。"
+  },
+  {
+   "slug": "eva-air",
+   "name": "長榮航空",
+   "short": "長榮",
+   "iata": "BR",
+   "issuer": "國泰世華、美國運通",
+   "card_family": "長榮航空聯名卡",
+   "program": "無限萬哩遊",
+   "src_card": "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/eva",
+   "src_card_name": "國泰世華・長榮航空聯名卡",
+   "src_card2": "https://www.americanexpress.com/tw/benefits/evaplat-charge-card.html",
+   "src_card2_name": "美國運通・長榮航空簽帳白金卡",
+   "src_card3": "https://www.evaair.com/zh-tw/infinity-mileagelands/member-special-offers/co-brand-cards/2021-01-01-americanexpress-promotion.html",
+   "src_card3_name": "長榮航空・美國運通長榮航空簽帳金卡",
+   "src_fare": "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/eva",
+   "src_fare_name": "國泰世華・長榮航空聯名卡（購票最優9折詳細說明）",
+   "award_jp_rt": 35000,
+   "award_note": "亞洲區域間（含東北亞，不含台灣－香港／澳門）經濟艙來回，另付稅金與附加費。",
+   "award_src": "https://www.evaair.com/zh-tw/infinity-mileageLands/mileage-award-program/mileage-redemption/award-ticket/eva-uni-air/",
+   "award_src_name": "長榮航空・長榮／立榮航空酬賓機票換取標準",
+   "stale_example": null,
+   "earn_kind": "custom",
+   "earn_note": "長榮有兩家發卡行，算法不一樣。國泰世華分國內一般、海外一般、海外指定三種費率；美國運通是每 25 元 1 哩，再對海外消費與長榮機票加碼。",
+   "cmp_cols": [
+    [
+     "rate_dom",
+     "國內一般消費"
+    ],
+    [
+     "rate_ovs",
+     "海外一般消費"
+    ],
+    [
+     "rate_x2",
+     "海外指定消費、長榮官網購票"
+    ]
+   ],
+   "spend_cols": [
+    [
+     "rate_dom",
+     "全部國內一般消費",
+     false
+    ],
+    [
+     "rate_ovs",
+     "全部海外一般消費",
+     true
+    ],
+    [
+     "rate_x2",
+     "全部海外指定消費",
+     true
+    ]
+   ],
+   "overseas_def": "國泰世華的「海外實體消費」：消費地或商店登記國別碼在國外，用實體卡或 Apple Pay、Google Pay、Samsung Pay、Garmin Pay 面對面感應，且交易時要產出紙本簽單。",
+   "designated": "國泰世華：長榮官網或 App 購票、機上免稅品、海外指定消費（海外實體消費，以及海外訂房平台、海外飯店官網、海外航空官網、海外交通與門票等線上旅遊類別），2026 年免登錄；國內旅行社買長榮機票、國外自由行與團體旅遊要登錄。御璽卡不適用。美國運通：海外消費與長榮機票加碼。",
+   "birthday": "長榮的生日禮看的是搭機，不是刷卡：生日當月搭乘長榮，單程最高哩程航段加贈哩程，國泰世華極致無限卡與無限卡 100%、極致御璽卡與御璽卡 50%，美國運通金卡 75%。",
+   "jp_notes": [
+    "用 Apple 錢包幫 Suica、PASMO、ICOCA 儲值，國泰世華列為海外指定消費，10 元 1 哩。條款另外建議先把 iOS 更新到最新，再用 Visa 卡儲值。",
+    "日本飯店官網如果是透過 JTB、JAPANiCAN、TRIPLA 這類平台付款，商店代碼不是住宿類，國泰世華條款寫明不算海外指定消費。",
+    "KKday、Klook 用台幣刷，國泰世華條款寫明會算成台灣國內交易，不列入海外指定；要用外幣刷才算，但會被收國外交易手續費。",
+    "海外航空公司官網購票也一樣：國泰世華條款寫，用台幣刷的話「航空公司會以台灣國內交易類別與銀行計算」。"
+   ],
+   "mile_value_note": "兩家都在條款裡寫了退卡時扣回贈哩的計價：國泰世華「每一點哩程點數以新台幣0.5元計算」，美國運通「每積分單價新臺幣1元」。這是扣回用的價格，不是市價。",
+   "fare": {
+    "where": "長榮官網勾選「使用信用卡優惠」，或長榮 App 的「信用卡專區」",
+    "route": "台灣出發的單程或單點來回，不含延伸行程與不同點進出",
+    "who": "持卡人本人刷卡購買；代同行親友購買時，持卡人須去程同班機並購買同一專案，在機場出示原購票的卡",
+    "not": "經濟艙只有 Y、B、M、H、Q、S 艙打折，W、V 艙不適用；促銷票價不另外打折；兒童票與嬰兒票不適用；訂位服務費、燃油附加費與機場稅不打折",
+    "headline": "最優 9 折",
+    "headline_truth": "國泰世華只有極致無限卡是 9 折，無限卡、極致御璽卡、御璽卡是 95 折，而且經濟艙最便宜的 W、V 艙不適用。美國運通白金卡的 9 折只限商務艙。",
+    "period": "2026/1/1–2026/12/31（國泰世華）"
+   },
+   "tiers": [
+    {
+     "name": "國泰世華 極致無限卡",
+     "fee": 20000,
+     "fee_note": "附卡免年費；申辦須年收入 200 萬",
+     "rate_dom": 20,
+     "rate_ovs": 15,
+     "rate_x2": 10,
+     "rate_bday": null,
+     "cap": "10 元 1 哩每年上限 20 萬哩",
+     "eco_disc": "9 折（W、V 艙不適用）",
+     "welcome": "首刷 35,000 哩（核卡 60 天內消費滿 NT10,000，繳全額年費）＋首次申辦長榮聯名卡的新戶再消費 NT40,000 加贈 15,000 哩",
+     "renew": "續卡 20,000 哩（繳全額年費），年費下帳期間再消費滿 NT30,000 加贈 10,000 哩",
+     "lounge": "長榮貴賓室與 U.First 全球貴賓室免費"
+    },
+    {
+     "name": "國泰世華 無限卡",
+     "fee": 2400,
+     "fee_note": "附卡免年費；申辦須年收入 60 萬",
+     "rate_dom": 22,
+     "rate_ovs": 15,
+     "rate_x2": 10,
+     "rate_bday": null,
+     "cap": "10 元 1 哩每年上限 15 萬哩",
+     "eco_disc": "95 折（W、V 艙不適用）",
+     "welcome": "首刷 3,000 哩（核卡 60 天內消費滿 NT5,000，繳全額年費）＋新戶再消費 NT5,000 加贈 3,000 哩",
+     "renew": "續卡 2,000 哩（繳全額年費），年費下帳期間再消費滿 NT5,000 加贈 1,000 哩",
+     "lounge": "桃園 The Club 自費 NT2,000／次；U.First NT850／次"
+    },
+    {
+     "name": "國泰世華 極致御璽卡",
+     "fee": 800,
+     "fee_note": "附卡免年費；申辦須年收入 40 萬",
+     "rate_dom": 30,
+     "rate_ovs": 15,
+     "rate_x2": 10,
+     "rate_bday": null,
+     "cap": "10 元 1 哩每年上限 10 萬哩",
+     "eco_disc": "95 折（W、V 艙不適用）",
+     "welcome": "首刷 1,500 哩（核卡 60 天內消費滿 NT3,000，繳全額年費）",
+     "renew": "續卡 1,000 哩（繳全額年費）",
+     "lounge": "U.First NT850／次"
+    },
+    {
+     "name": "國泰世華 御璽卡",
+     "fee": 300,
+     "fee_note": "首年免年費，附卡免年費；申辦須年收入 20 萬",
+     "rate_dom": 30,
+     "rate_ovs": 30,
+     "rate_x2": null,
+     "rate_bday": null,
+     "cap": "倍速哩遇不適用",
+     "eco_disc": "95 折（W、V 艙不適用）",
+     "welcome": "首刷 500 哩（核卡 60 天內消費滿 NT1,000）",
+     "renew": "續卡 300 哩（繳全額年費）",
+     "lounge": "U.First NT850／次"
+    },
+    {
+     "name": "美國運通 長榮航空簽帳白金卡",
+     "fee": 36800,
+     "fee_note": "含 1 張主卡與 2 張附屬卡",
+     "rate_dom": 25,
+     "rate_ovs": 16.666666666666668,
+     "rate_x2": 16.666666666666668,
+     "rate_bday": null,
+     "rate_note": "每 25 元 1 分，海外消費與長榮機票加碼 50%，等於約 16.67 元 1 哩（本站換算）",
+     "cap": "加碼的上限與排除項目見美國運通權益總引，本站沒有查",
+     "eco_disc": "只有商務艙 9 折",
+     "welcome": "首刷 60,000 哩（2026/9/24–2027/3/31 申辦，核卡後三個月內不限金額刷卡一次並繳年費；兩年內曾持有者不適用）",
+     "renew": null,
+     "lounge": "長榮桃園與高雄貴賓室、Centurion、Priority Pass、環亞貴賓室免費"
+    },
+    {
+     "name": "美國運通 長榮航空簽帳金卡",
+     "fee": null,
+     "fee_note": "年費官方頁面沒有寫，本站未查",
+     "rate_dom": 25,
+     "rate_ovs": 25,
+     "rate_x2": 25,
+     "rate_bday": null,
+     "rate_note": "每 25 元 1 哩；每月前 2,000 哩加碼，國內 20 元 1 哩、海外與長榮機票 15 元 1 哩。超過每月 2,000 哩回到 25 元 1 哩，所以下面的試算用 25 元",
+     "cap": "加碼每月前 2,000 哩",
+     "eco_disc": "指定艙等最優 9 折",
+     "welcome": "首刷 3,000 哩（2027/3/31 前新申辦，核卡後首 3 個月內不限金額）",
+     "renew": null,
+     "lounge": "長榮桃園、高雄貴賓室 NT800／次"
+    }
+   ],
+   "promo_period": "國泰世華首刷與續卡活動 2026/1/1–2026/12/31；美國運通首刷見各卡條件",
+   "_沒查到的": "長榮官網購票在帳單上算國內還是國外，國泰世華與美國運通都沒有逐筆說明。國泰世華把長榮官網購票列在指定類別，免登錄 10 元 1 哩，所以哩數不受影響，只影響要不要付 1.5%。"
   }
  ]
 }
