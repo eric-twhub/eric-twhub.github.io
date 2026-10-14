@@ -1,6 +1,6 @@
 [
  {
-  "slug": "2026-10-14-taipei-okinawa",
+  "slug": "2026-10-15-taipei-okinawa",
   "title": "台北飛沖繩 NT$2,514 來回含稅｜台灣虎航 11/02 出發",
   "o": "台北",
   "c": "沖繩",
@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,362（7 天有紀錄），這張低 42%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,426（7 天有紀錄），這張低 43%"
   ],
   "med": 11949,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-02&inbound=OKA-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
@@ -26,7 +26,7 @@
    "days": 10
   },
   "mbase": {
-   "avg": 4362,
+   "avg": 4426,
    "days": 7,
    "month": 11
   },
@@ -34,41 +34,7 @@
   "n": 22
  },
  {
-  "slug": "2026-10-14-kaohsiung-okinawa",
-  "title": "高雄飛沖繩 NT$2,914 來回含稅｜台灣虎航 11/17 出發",
-  "o": "高雄",
-  "c": "沖繩",
-  "_oiata": "KHH",
-  "_diata": "OKA",
-  "price": 2914,
-  "air": "台灣虎航",
-  "dep": "2026-11-17",
-  "ret": "2026-11-20",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,979（6 天有紀錄），這張低 41%"
-  ],
-  "med": 5394,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
-  "hotelcity": "那霸",
-  "cslug": "okinawa",
-  "usual": {
-   "lo": 3972,
-   "hi": 10191,
-   "days": 8
-  },
-  "mbase": {
-   "avg": 4979,
-   "days": 6,
-   "month": 11
-  },
-  "rank": 1,
-  "n": 8
- },
- {
-  "slug": "2026-10-14-taichung-okinawa",
+  "slug": "2026-10-15-taichung-okinawa",
   "title": "台中飛沖繩 NT$3,364 來回含稅｜台灣虎航 11/09 出發",
   "o": "台中",
   "c": "沖繩",
@@ -82,9 +48,9 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$10,029（22 天有紀錄），這張低 66%"
+   "11 月出發的票，每天最便宜的平均要 NT$10,047（22 天有紀錄），這張低 67%"
   ],
-  "med": 11593,
+  "med": 11597,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -94,7 +60,7 @@
    "days": 38
   },
   "mbase": {
-   "avg": 10029,
+   "avg": 10047,
    "days": 22,
    "month": 11
   },
@@ -102,7 +68,41 @@
   "n": 104
  },
  {
-  "slug": "2026-10-14-transfer-fukuoka-kumamoto",
+  "slug": "2026-10-15-kaohsiung-okinawa",
+  "title": "高雄飛沖繩 NT$3,364 來回含稅｜台灣虎航 11/17 出發",
+  "o": "高雄",
+  "c": "沖繩",
+  "_oiata": "KHH",
+  "_diata": "OKA",
+  "price": 3364,
+  "air": "台灣虎航",
+  "dep": "2026-11-17",
+  "ret": "2026-11-20",
+  "stops": "直飛",
+  "cls": "lcc",
+  "reasons": [
+   "廉航低於 NT$6,000",
+   "11 月出發的票，每天最便宜的平均要 NT$5,196（6 天有紀錄），這張低 35%"
+  ],
+  "med": 5394,
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
+  "hotelcity": "那霸",
+  "cslug": "okinawa",
+  "usual": {
+   "lo": 4372,
+   "hi": 10191,
+   "days": 8
+  },
+  "mbase": {
+   "avg": 5196,
+   "days": 6,
+   "month": 11
+  },
+  "rank": 1,
+  "n": 8
+ },
+ {
+  "slug": "2026-10-15-transfer-fukuoka-kumamoto",
   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,233",
   "o": "台灣",
   "c": "熊本",
