@@ -144,22 +144,22 @@
    "title": "台中飛沖繩 NT$2,514 來回含稅｜台灣虎航 11/09 出發"
   },
   {
+   "slug": "deals-2026-10-14-kaohsiung-okinawa",
+   "url": "/deals/2026-10-14-kaohsiung-okinawa/",
+   "h1": "高雄飛沖繩 NT$2,914 來回含稅｜台灣虎航 11/17 出發",
+   "title": "高雄飛沖繩 NT$2,914 來回含稅｜台灣虎航 11/17 出發"
+  },
+  {
    "slug": "deals-2026-10-14-taipei-okinawa",
    "url": "/deals/2026-10-14-taipei-okinawa/",
    "h1": "台北飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/10 出發",
    "title": "台北飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/10 出發"
   },
   {
-   "slug": "deals-2026-10-14-kaohsiung-okinawa",
-   "url": "/deals/2026-10-14-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/17 出發",
-   "title": "高雄飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/17 出發"
-  },
-  {
    "slug": "deals-2026-10-14-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-10-14-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,633",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,633"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,033",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,033"
   },
   {
    "slug": "apple-japan-price",
@@ -204,10 +204,22 @@
    "title": "玉山熊本熊卡日本回饋怎麼算？最高 8.5% 的上限與登錄方式"
   },
   {
+   "slug": "japan-credit-card-esun-kumamon-shopping",
+   "url": "/japan-credit-card/esun-kumamon/shopping/",
+   "h1": "玉山熊本熊卡在日本哪些店刷最划算？",
+   "title": "玉山熊本熊卡在日本購物回饋多少？21 家店實付價試算"
+  },
+  {
    "slug": "japan-credit-card-dbs-eco",
    "url": "/japan-credit-card/dbs-eco/",
    "h1": "星展 eco 永續卡　日本回饋怎麼算？",
    "title": "星展 eco 永續卡日本回饋怎麼算？最高 5.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-dbs-eco-shopping",
+   "url": "/japan-credit-card/dbs-eco/shopping/",
+   "h1": "星展 eco 永續卡在日本哪些店刷最划算？",
+   "title": "星展 eco 永續卡在日本購物回饋多少？21 家店實付價試算"
   },
   {
    "slug": "japan-credit-card-taishin-richart",
@@ -216,10 +228,22 @@
    "title": "台新 Richart 卡日本回饋怎麼算？最高 3.3% 的上限與登錄方式"
   },
   {
+   "slug": "japan-credit-card-taishin-richart-shopping",
+   "url": "/japan-credit-card/taishin-richart/shopping/",
+   "h1": "台新 Richart 卡在日本哪些店刷最划算？",
+   "title": "台新 Richart 卡在日本購物回饋多少？21 家店實付價試算"
+  },
+  {
    "slug": "japan-credit-card-cathay-cube",
    "url": "/japan-credit-card/cathay-cube/",
    "h1": "國泰世華 CUBE 卡　日本回饋怎麼算？",
    "title": "國泰世華 CUBE 卡日本回饋怎麼算？最高 5.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-cathay-cube-shopping",
+   "url": "/japan-credit-card/cathay-cube/shopping/",
+   "h1": "國泰世華 CUBE 卡在日本哪些店刷最划算？",
+   "title": "國泰世華 CUBE 卡在日本購物回饋多少？21 家店實付價試算"
   },
   {
    "slug": "japan-credit-card-ubot-jiho",
@@ -228,10 +252,22 @@
    "title": "聯邦吉鶴卡日本回饋怎麼算？最高 11.0% 的上限與登錄方式"
   },
   {
+   "slug": "japan-credit-card-ubot-jiho-shopping",
+   "url": "/japan-credit-card/ubot-jiho/shopping/",
+   "h1": "聯邦吉鶴卡在日本哪些店刷最划算？",
+   "title": "聯邦吉鶴卡在日本購物回饋多少？21 家店實付價試算"
+  },
+  {
    "slug": "japan-credit-card-fubon-j",
    "url": "/japan-credit-card/fubon-j/",
    "h1": "台北富邦 J 卡　日本回饋怎麼算？",
    "title": "台北富邦 J 卡日本回饋怎麼算？最高 6.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-fubon-j-shopping",
+   "url": "/japan-credit-card/fubon-j/shopping/",
+   "h1": "台北富邦 J 卡在日本哪些店刷最划算？",
+   "title": "台北富邦 J 卡在日本購物回饋多少？21 家店實付價試算"
   },
   {
    "slug": "japan-credit-card-esun-unicard",
@@ -240,10 +276,22 @@
    "title": "玉山 Unicard日本回饋怎麼算？最高 1.0% 的上限與登錄方式"
   },
   {
+   "slug": "japan-credit-card-esun-unicard-shopping",
+   "url": "/japan-credit-card/esun-unicard/shopping/",
+   "h1": "玉山 Unicard在日本哪些店刷最划算？",
+   "title": "玉山 Unicard在日本購物回饋多少？21 家店實付價試算"
+  },
+  {
    "slug": "japan-credit-card-sinopac-jcb",
    "url": "/japan-credit-card/sinopac-jcb/",
    "h1": "永豐現金回饋 JCB 卡　日本回饋怎麼算？",
    "title": "永豐現金回饋 JCB 卡日本回饋怎麼算？最高 10.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-sinopac-jcb-shopping",
+   "url": "/japan-credit-card/sinopac-jcb/shopping/",
+   "h1": "永豐現金回饋 JCB 卡在日本哪些店刷最划算？",
+   "title": "永豐現金回饋 JCB 卡在日本購物回饋多少？21 家店實付價試算"
   },
   {
    "slug": "japan-credit-card-sinopac-dual",
@@ -255,7 +303,7 @@
    "slug": "japan-credit-card-sinopac-dual-shopping",
    "url": "/japan-credit-card/sinopac-dual/shopping/",
    "h1": "永豐幣倍卡在日本哪些店刷最划算？",
-   "title": "永豐幣倍卡在日本購物回饋多少？14 家店實付價試算"
+   "title": "永豐幣倍卡在日本購物回饋多少？21 家店實付價試算"
   },
   {
    "slug": "japan-credit-card-ctbc-linepay",
@@ -264,10 +312,22 @@
    "title": "中信 LINE Pay 卡日本回饋怎麼算？最高 5.0% 的上限與登錄方式"
   },
   {
+   "slug": "japan-credit-card-ctbc-linepay-shopping",
+   "url": "/japan-credit-card/ctbc-linepay/shopping/",
+   "h1": "中信 LINE Pay 卡在日本哪些店刷最划算？",
+   "title": "中信 LINE Pay 卡在日本購物回饋多少？21 家店實付價試算"
+  },
+  {
    "slug": "japan-credit-card-ctbc-uniopen",
    "url": "/japan-credit-card/ctbc-uniopen/",
    "h1": "中信 uniopen 聯名卡　日本回饋怎麼算？",
    "title": "中信 uniopen 聯名卡日本回饋怎麼算？最高 11.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-ctbc-uniopen-shopping",
+   "url": "/japan-credit-card/ctbc-uniopen/shopping/",
+   "h1": "中信 uniopen 聯名卡在日本哪些店刷最划算？",
+   "title": "中信 uniopen 聯名卡在日本購物回饋多少？21 家店實付價試算"
   },
   {
    "slug": "japan-credit-card-firstbank-ileo",
@@ -276,10 +336,22 @@
    "title": "第一銀行 iLEO 卡日本回饋怎麼算？最高 13.0% 的上限與登錄方式"
   },
   {
+   "slug": "japan-credit-card-firstbank-ileo-shopping",
+   "url": "/japan-credit-card/firstbank-ileo/shopping/",
+   "h1": "第一銀行 iLEO 卡在日本哪些店刷最划算？",
+   "title": "第一銀行 iLEO 卡在日本購物回饋多少？21 家店實付價試算"
+  },
+  {
    "slug": "japan-credit-card-sinopac-dawho",
    "url": "/japan-credit-card/sinopac-dawho/",
    "h1": "永豐 DAWHO 大戶卡　日本回饋怎麼算？",
    "title": "永豐 DAWHO 大戶卡日本回饋怎麼算？最高 6.0% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-sinopac-dawho-shopping",
+   "url": "/japan-credit-card/sinopac-dawho/shopping/",
+   "h1": "永豐 DAWHO 大戶卡在日本哪些店刷最划算？",
+   "title": "永豐 DAWHO 大戶卡在日本購物回饋多少？21 家店實付價試算"
   },
   {
    "slug": "japan-credit-card-dbs-aov",
@@ -288,10 +360,22 @@
    "title": "星展傳說對決聯名卡日本回饋怎麼算？最高 5.0% 的上限與登錄方式"
   },
   {
+   "slug": "japan-credit-card-dbs-aov-shopping",
+   "url": "/japan-credit-card/dbs-aov/shopping/",
+   "h1": "星展傳說對決聯名卡在日本哪些店刷最划算？",
+   "title": "星展傳說對決聯名卡在日本購物回饋多少？21 家店實付價試算"
+  },
+  {
    "slug": "japan-credit-card-hsbc-liveplus",
    "url": "/japan-credit-card/hsbc-liveplus/",
    "h1": "滙豐 Live+ 現金回饋卡　日本回饋怎麼算？",
    "title": "滙豐 Live+ 現金回饋卡日本回饋怎麼算？最高 5.88% 的上限與登錄方式"
+  },
+  {
+   "slug": "japan-credit-card-hsbc-liveplus-shopping",
+   "url": "/japan-credit-card/hsbc-liveplus/shopping/",
+   "h1": "滙豐 Live+ 現金回饋卡在日本哪些店刷最划算？",
+   "title": "滙豐 Live+ 現金回饋卡在日本購物回饋多少？21 家店實付價試算"
   },
   {
    "slug": "japan-card-calculator",
@@ -388,6 +472,48 @@
    "url": "/japan-coupon/cosmos/",
    "h1": "在COSMOS 藥品 刷哪張卡最划算？",
    "title": "COSMOS 藥品 刷哪張卡最划算？15 張卡回饋與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-uniqlo",
+   "url": "/japan-coupon/uniqlo/",
+   "h1": "在UNIQLO 刷哪張卡最划算？",
+   "title": "UNIQLO 刷哪張卡最划算？15 張卡回饋與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-loft",
+   "url": "/japan-coupon/loft/",
+   "h1": "在Loft 刷哪張卡最划算？",
+   "title": "Loft 刷哪張卡最划算？15 張卡回饋與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-abc-mart",
+   "url": "/japan-coupon/abc-mart/",
+   "h1": "在ABC-MART 刷哪張卡最划算？",
+   "title": "ABC-MART 刷哪張卡最划算？15 張卡回饋與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-3coins",
+   "url": "/japan-coupon/3coins/",
+   "h1": "在3COINS 刷哪張卡最划算？",
+   "title": "3COINS 刷哪張卡最划算？15 張卡回饋與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-pokemon-center",
+   "url": "/japan-coupon/pokemon-center/",
+   "h1": "在寶可夢中心 刷哪張卡最划算？",
+   "title": "寶可夢中心 刷哪張卡最划算？15 張卡回饋與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-sanrio",
+   "url": "/japan-coupon/sanrio/",
+   "h1": "在SANRIO 三麗鷗 刷哪張卡最划算？",
+   "title": "SANRIO 三麗鷗 刷哪張卡最划算？15 張卡回饋與實付價試算"
+  },
+  {
+   "slug": "japan-coupon-kiddy-land",
+   "url": "/japan-coupon/kiddy-land/",
+   "h1": "在KIDDY LAND 刷哪張卡最划算？",
+   "title": "KIDDY LAND 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "tokyo-hostel",
