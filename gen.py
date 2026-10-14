@@ -1049,6 +1049,7 @@ border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
 blockquote.q{margin:14px 0;padding:12px 16px;background:var(--card);
 border-left:3px solid var(--acc);border-radius:0 8px 8px 0;font-size:.9rem;line-height:1.75}
 blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem;color:var(--dim)}
+blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem;color:var(--dim)}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
 .tw table{min-width:640px;font-size:.84rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
@@ -1777,12 +1778,97 @@ def _trim_note(content):
                    .replace('<!--a-->', '').replace('<!--/a-->', ''))
 
 
+# ---------- 日文加註繁中 ----------
+# 頁面上出現的日文（店名、方案名、官方原文）在後面補上中文。對照表在 ja-zh.json。
+# 短詞每頁只加第一次；長句（平假名 6 個以上，且有標點或 20 字以上）每次都加，blockquote 裡的長句另起一行。
+# 附近 60 字內已經出現同樣的中文就不加，避免跟頁面原本的說明重複。
+_JZ_KANA = re.compile(r'[ぁ-ゖァ-ヺ]')
+def _jz_load():
+    try:
+        m = json.load(open('ja-zh.json', encoding='utf-8'))['map']
+    except Exception:
+        return []
+    out = []
+    for k, v in m.items():
+        if v is None:
+            zh, seen = None, []
+        elif isinstance(v, list):
+            zh, seen = v[0], v[1:] or [v[0]]
+        else:
+            zh, seen = v, [v]
+        pat = r'[ 　]*'.join(re.escape(x) for x in re.split(r'[ 　]+', k))
+        out.append((k, re.compile(pat), zh, seen))
+    out.sort(key=lambda x: -len(x[0]))
+    return out
+_JZ = _jz_load()
+
+def _ja_gloss(content):
+    if not _JZ or not _JZ_KANA.search(content):
+        return content
+    head, sep, body = content.partition('<body')
+    if not sep:
+        return content
+    parts = re.split(r'(<script\b.*?</script>|<style\b.*?</style>|<[^>]+>)', body, flags=re.S)
+    vis = [html.unescape(x) if i % 2 == 0 else '' for i, x in enumerate(parts)]
+    done = set()
+    for i in range(0, len(parts), 2):
+        t = vis[i]
+        if not t or not _JZ_KANA.search(t):
+            continue
+        if i and re.match(r'<(option|textarea|title)\b', parts[i-1]):
+            continue
+        prev_txt = ''.join(vis[max(0, i-12):i])[-60:]
+        next_txt = ''.join(vis[i+1:i+13])[:60]
+        claimed, ins = [], []
+        for k, rx, zh, seen in _JZ:
+            for m in rx.finditer(t):
+                a, b = m.span()
+                if any(a < cb and ca < b for ca, cb in claimed):
+                    continue
+                claimed.append((a, b))
+                if zh is None:
+                    continue
+                longq = (len(re.findall(r'[\u3041-\u3096]', k)) >= 6
+                         and ('、' in k or '。' in k or len(k) >= 20))
+                if not longq and k in done:
+                    continue
+                done.add(k)
+                win = (prev_txt + t[:a])[-60:] + '\x00' + (t[b:] + next_txt)[:60]
+                if any(x in win for x in seen):
+                    continue
+                # blockquote 整段都是這句：另起一行
+                if i and parts[i-1].startswith('<blockquote') and t.strip() == m.group(0).strip():
+                    ins.append((len(t), None, zh))
+                    continue
+                q = b
+                if t[q:q+1] in '」』':
+                    q += 1
+                if zh.startswith('，') and m.group(0).endswith('）'):
+                    ins.append((b - 1, zh, None))
+                elif t[a-1:a] == '（' and t[b:b+1] == '）':
+                    ins.append((b, '，' + zh, None))
+                else:
+                    ins.append((q, '（' + ('中譯：' if longq else '') + zh + '）', None))
+        if not ins:
+            continue
+        ins.sort(key=lambda x: x[0])
+        res, last, tail = [], 0, ''
+        for pos, g, blk in ins:
+            if blk is not None:
+                tail = f'<span class="qz">{html.escape(blk)}</span>'
+                continue
+            res.append(html.escape(t[last:pos], quote=False)); res.append(html.escape(g, quote=False)); last = pos
+        res.append(html.escape(t[last:], quote=False))
+        parts[i] = ''.join(res) + tail
+    return head + sep + ''.join(parts)
+
 def write(path,content):
     d=os.path.dirname(path)
     if d: os.makedirs(d,exist_ok=True)
     if path.endswith('.html'):
         content = _toc(content)
         content = _trim_note(content)
+        content = _ja_gloss(content)
     open(path,'w',encoding='utf-8').write(content)
     if path.endswith('.html'):
         PAGE_HASH[path] = hashlib.sha1(content.encode('utf-8')).hexdigest()[:16]
