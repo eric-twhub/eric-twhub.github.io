@@ -9459,8 +9459,8 @@ if os.path.exists('bic-points.json'):
 
     _brule = ''.join(
         f'<tr><td><b>{html.escape(r["n"])}</b></td>'
-        f'<td>{html.escape(r["jp"])}</td>'
-        f'<td>{html.escape(r["zh"])}</td></tr>' for r in BP['rules'])
+        f'<td>{html.escape(r["zh"])}</td>'
+        f'<td>{html.escape(r["jp"])}</td></tr>' for r in BP['rules'])
 
     def _brow(x):
         return ('<tr><td>' + html.escape(x['brand']) + '</td>'
@@ -9555,9 +9555,9 @@ if os.path.exists('bic-points.json'):
 
       + '<h2>規約原文</h2>'
       + '<p class="lede">點數這件事網路上講法很多，但規約本身只有幾條，'
-        '而且寫得很直接。以下照抄，中文是我們的說明。</p>'
+        '而且寫得很直接。中間那欄是我們的說明，右邊是規約原文照抄。</p>'
       + '<div class="tw"><table><thead><tr><th>條號</th>'
-        '<th>原文</th><th>意思</th></tr></thead><tbody>' + _brule
+        '<th>意思</th><th>規約原文</th></tr></thead><tbody>' + _brule
       + '</tbody></table></div>'
 
       + '<h2>實際費率：同一個貨架上差十倍</h2>'
