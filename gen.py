@@ -9090,7 +9090,7 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
         f'台灣價取 <a href="{DY["src_tw"]}" rel="nofollow noopener" '
         f'target="_blank">{html.escape(DY["src_tw_name"])}</a></p>'
       + '<div class="today">'
-        f'<div class="tday">{len(_dpair)} 台兩邊都買得到的型號</div>'
+        f'<div class="tday">頭髮護理：{len(_dpair)} 台兩邊都買得到</div>'
         f'<div class="tans">全部日本比較便宜</div>'
         f'<div class="tsub">退稅後從 '
         f'{money(round(_dmin["twd"] - _dex(_dmin["jpy"])))} 省到 '
