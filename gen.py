@@ -1058,6 +1058,8 @@ blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem
 .tw td.warn{color:var(--acc);font-weight:700}
 /* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
 .tw td.nm{white-space:normal;line-height:1.55;min-width:150px;max-width:290px}
+/* 表格裡的日文原文（含中譯）：要換行，不然整張表會撐到好幾個螢幕寬 */
+.tw td.jq{white-space:normal;line-height:1.6;min-width:200px;max-width:420px;font-size:.88rem}
 .tw td.dimcell{color:var(--dim);opacity:.55}
 /* 頁內書籤：每頁的 h2 自動收成一排，讓人直接跳到要看的那一段 */
 .toc{margin:16px 0 6px;padding:11px 14px 12px;background:var(--soft);
@@ -2472,7 +2474,7 @@ if os.path.exists('ski.json'):
                     f'<td>{_cm(a["total_cm"])}</td>'
                     f'<td class="{"win" if _roomy else ""}">{_side}</td>'
                     f'<td>{_cm(a["max_kg"], "公斤")}</td>'
-                    f'<td>{html.escape(a["notify"])}</td></tr>')
+                    f'<td class="nm">{html.escape(a["notify"])}</td></tr>')
 
     def _skcard(a):
         return (f'<h3>{html.escape(a["name"])}<span class="tag">{a["code"]}</span></h3>'
@@ -9867,8 +9869,8 @@ if os.path.exists('bic-points.json'):
 
     _brule = ''.join(
         f'<tr><td><b>{html.escape(r["n"])}</b></td>'
-        f'<td>{html.escape(r["zh"])}</td>'
-        f'<td>{html.escape(r["jp"])}</td></tr>' for r in BP['rules'])
+        f'<td class="nm">{html.escape(r["zh"])}</td>'
+        f'<td class="jq">{html.escape(r["jp"])}</td></tr>' for r in BP['rules'])
 
     def _brow(x):
         return ('<tr><td>' + html.escape(x['brand']) + '</td>'
