@@ -9863,12 +9863,17 @@ if os.path.exists('cobrand-cards.json'):
             for r in rows)
         notes = ''.join('<li><b>' + html.escape(r['name']) + '。</b>' + html.escape(r['note']) + '</li>'
                         for r in rows if r.get('note'))
+        # 「十家」指的是保險資料裡查過條款的銀行。不在其中的發卡行（例如美國運通）
+        # 要明講沒查到，不然讀者會以為它也確認排除了哩程票。
+        _ten = {b['name'] for b in (_CBI.get('banks') or {}).values()}
+        _out = sorted({r['bank'] for r in rows if r['bank'] not in _ten})
+        _out_txt = ''.join(f'{b}不在這十家裡，它的條款我們沒查到，哩程票保不保不知道。' for b in _out)
         return ('<h2>刷這張卡買機票，送什麼保險</h2>'
           + '<div class="today"><div class="tday">要先知道的一件事</div>'
             '<div class="tans">用哩程換的票，刷卡送的保險不保</div>'
             f'<div class="tsub">上面算的 {A["award_jp_rt"]:,} 哩換到的那張台日來回，'
             '只刷了機場稅與燃油附加費，不算「用這張卡付全部票款」。'
-            '我們查過的十家發卡行條款都把這種票排除在外。</div>'
+            '我們查過的十家發卡行條款都把這種票排除在外。' + html.escape(_out_txt) + '</div>'
             '<div class="tbuf">不只哩程票：用點數、折價券或抵用券折抵掉一部分票款的，'
             '也一樣不在保障內；刷了之後退刷，保障也跟著消失。</div></div>'
           + '<p class="lede">要有保障，機票的全部票款（含機場稅與燃油附加費）都要刷這張卡；'
