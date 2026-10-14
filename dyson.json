@@ -1,9 +1,8 @@
 {
- "_說明": "Dyson 頭髮護理產品的台日價格對照。只做頭髮護理，因為這是台灣人在日本實際會買的那一類。",
+ "_說明": "Dyson 的台日價格對照，分三類：頭髮護理、吸塵器、空氣清淨機。三類的結論不一樣，因為電壓怎麼進到機器裡不一樣，兩地賣的型號重疊程度也不一樣。",
  "_判準": "日本價取 ビックカメラ.com 商品列表的含稅價與標示點數，台灣價取 Dyson 台灣線上商城。兩邊都要是官方通路。每一筆都要有核對日期。",
  "_台灣有原價也有特價": "Dyson 台灣線上商城多數型號長期掛特價。價差一律用特價算，因為那是現在實際付得出去的價格。原價一起列出來，是為了讓人看出用原價比會高估多少。",
  "_套裝內容兩邊不一樣": "同一個型號在日本與台灣的盒裝配件、贈品不同，台灣官網還常附市值數千元的贈品。所以價差是機器本體的價差，不是等值品的價差。",
- "_沒做吸塵器與空氣清淨機": "不是沒有，是還沒查。這兩類的充電器與電源規格、以及台灣的對應型號都還沒逐台核對過，沒查就不寫。",
  "updated": "2026-10-14",
  "checked": "2026-10-14",
  "src_jp": "https://www.biccamera.com/",
@@ -22,7 +21,9 @@
   "checked": "2026-10-14",
   "_為什麼這句重要": "Dyson 自己說 HD19 Travel 是「首款」全球電壓吹風機，台灣商城也另外開了一個「全球電壓版」分類。代表電壓相容與否是 Dyson 自己做的產品區分，不是網路傳言。",
   "_沒有逐台查證的部分": "日規各型號的實際電壓標示沒有逐台查到官方規格頁，所以本站不逐台斷定。買之前看機身或變壓器上的輸入電壓標示：寫 100-240V 才是全球電壓，只寫 100V 就是日本國內規格。",
-  "_保固": "Dyson 台灣線上商城標示「免費5年或2年保固」，適用對象是台灣販售的機器。日本買的機器在台灣的保固範圍沒有查到官方說明，沒查就不寫。"
+  "_保固": "Dyson 台灣線上商城標示「免費5年或2年保固」，適用對象是台灣販售的機器。日本買的機器在台灣的保固範圍沒有查到官方說明，沒查就不寫。",
+  "_三類的差別": "頭髮護理與空氣清淨機是機器本體直接插市電，日本機器就是照日本 100V 做的。無線吸塵器不是：機器吃電池，插座那端是充電器，所以要看的是充電器上的輸入電壓標示。充電器是不是全球電壓，我們沒有查到 Dyson 官方的規格頁，ビックカメラ 的吸塵器規格表也沒有電壓這一欄，所以不寫。買之前翻過來看充電器上的 INPUT 標示。",
+  "_空氣清淨機更要注意": "空氣清淨機是長時間連續運轉的機器，不像吹風機一次吹幾分鐘。同樣的電壓差，累積在它身上的時間長很多。"
  },
  "coupon": {
   "name": "Bic Camera 免稅＋最高 7% 折價券",
@@ -156,5 +157,174 @@
    "tw_stock": null
   }
  ],
- "_twd_為_null_的意思": "台灣那一欄寫「台灣官網沒有這台」的，代表 2026-10-14 查 Dyson 台灣線上商城的頭髮護理分類沒有這個型號，不是沒查。"
+ "_twd_為_null_的意思": "台灣那一欄寫「台灣官網沒有這台」的，代表 2026-10-14 查 Dyson 台灣線上商城的頭髮護理分類沒有這個型號，不是沒查。",
+ "rows_vacuum_pair": [
+  {
+   "model": "PencilVac Fluffycones",
+   "sku": "SV50FC",
+   "jp_name": "マットブラック",
+   "jpy": 73670,
+   "jp_pt": 7367,
+   "jp_stock": "ok",
+   "tw_name": "鉛筆吸塵器",
+   "twd": 19900,
+   "twd_list": 21900,
+   "tw_stock": "ok"
+  },
+  {
+   "model": "V12 Detect Slim Fluffy",
+   "sku": "SV46FF2",
+   "jp_name": "イエロー/アイアン/ニッケル",
+   "jpy": 66770,
+   "jp_pt": 6677,
+   "jp_stock": "ok",
+   "tw_name": "輕量無線吸塵器",
+   "twd": 17900,
+   "twd_list": 21900,
+   "tw_stock": "ok"
+  }
+ ],
+ "_吸塵器只配對兩台的原因": "只有名稱完全相同的套裝才配對。其他機種兩地的套裝名稱不一樣（日本賣 V15 Detect Complete、台灣賣 V15 Detect Fluffy；日本賣 V8 Slim Fluffy、台灣賣 V8 Cyclone），配件組成不同，配在一起比會比到不同的東西。",
+ "rows_vacuum_jp_only": [
+  {
+   "model": "V15 Detect Complete",
+   "sku": "SV22ABL2",
+   "jpy": 115000,
+   "jp_pt": 1150,
+   "jp_stock": "ok"
+  },
+  {
+   "model": "V12s Detect Slim Submarine",
+   "sku": "SV46SU",
+   "jpy": 93489,
+   "jp_pt": 9349,
+   "jp_stock": "ok"
+  },
+  {
+   "model": "V12 Detect Slim Absolute",
+   "sku": "SV46ABL",
+   "jpy": 90590,
+   "jp_pt": 9059,
+   "jp_stock": "ok"
+  },
+  {
+   "model": "Micro Plus",
+   "sku": "SV33 FF PL",
+   "jpy": 65800,
+   "jp_pt": 6580,
+   "jp_stock": "late"
+  },
+  {
+   "model": "V10 Optic",
+   "sku": "SV55 FF PL",
+   "jpy": 59840,
+   "jp_pt": 5984,
+   "jp_stock": "ok"
+  },
+  {
+   "model": "Cyclone DS20",
+   "sku": "SV55FFBK",
+   "jpy": 59800,
+   "jp_pt": 5980,
+   "jp_stock": "ok"
+  },
+  {
+   "model": "Digital Slim Origin",
+   "sku": "SV57 OR",
+   "jpy": 48180,
+   "jp_pt": 4818,
+   "jp_stock": "ok"
+  },
+  {
+   "model": "Cyclone V10 Fluffy",
+   "sku": "SV12FFLF",
+   "jpy": 41800,
+   "jp_pt": 4180,
+   "jp_stock": "ok"
+  },
+  {
+   "model": "V8 Slim Fluffy",
+   "sku": "SV25SLM",
+   "jpy": 34496,
+   "jp_pt": 345,
+   "jp_stock": "ok"
+  }
+ ],
+ "rows_vacuum_tw_only": [
+  {
+   "model": "V16 Piston Animal",
+   "tw_name": "強勁雙錐吸塵器",
+   "twd": 28888,
+   "twd_list": 30900,
+   "note": "2026-10-14 查 ビックカメラ.com 沒有這個機種。"
+  }
+ ],
+ "rows_purifier": [
+  {
+   "line": "HushJet",
+   "jp_model": "Hushjet shizuka",
+   "jp_sku": "SP01",
+   "jpy": 49800,
+   "jp_pt": 4980,
+   "tw_model": "HushJet Purifier Compact",
+   "tw_sku": "HJ10",
+   "twd": 12900,
+   "twd_list": 14900
+  },
+  {
+   "line": "Purifier Cool",
+   "jp_model": "Purifier Cool",
+   "jp_sku": "TP10",
+   "jpy": 44220,
+   "jp_pt": 4422,
+   "tw_model": "Purifier Cool",
+   "tw_sku": "TP11",
+   "twd": 12900,
+   "twd_list": 18900
+  },
+  {
+   "line": "Purifier Big+Quiet",
+   "jp_model": "Purifier Big+Quiet",
+   "jp_sku": "BP02",
+   "jpy": 102410,
+   "jp_pt": 10241,
+   "tw_model": "Purifier Big+Quiet Formaldehyde",
+   "tw_sku": "BP04",
+   "twd": 29900,
+   "twd_list": 37900
+  }
+ ],
+ "_空氣清淨機不給價差的原因": "三條產品線的型號代碼兩地都不一樣：日本 SP01／TP10／BP02，台灣 HJ10／TP11／BP04。代碼不同代表不是同一代或同一規格的機器，濾網料號也可能不同。把兩個不同的東西相減算出來的「價差」沒有意義，所以這一類只並排列出價格，不算價差。",
+ "rows_purifier_jp_only": [
+  {
+   "model": "Purifier Hot+Cool HP2 De-NOx",
+   "sku": "HP12WG",
+   "jpy": 67800,
+   "jp_pt": 6780
+  },
+  {
+   "model": "Purifier Humidify+Cool PH2 De-NOx",
+   "sku": "PH05WG",
+   "jpy": 99000,
+   "jp_pt": 9900
+  },
+  {
+   "model": "Hot+Cool HF1",
+   "sku": "AM15WS",
+   "jpy": 51470,
+   "jp_pt": 5147
+  },
+  {
+   "model": "Purifier Hot + Cool Gen1",
+   "sku": "HP10WW",
+   "jpy": 49800,
+   "jp_pt": 4980
+  },
+  {
+   "model": "Pure Hot + Cool",
+   "sku": "HP00 IS N",
+   "jpy": 49800,
+   "jp_pt": 4980
+  }
+ ]
 }

@@ -8969,6 +8969,76 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
               '<th>台灣官網' + SMALL + '現在的價格</small></th>'
               '<th>退稅後比較</th></tr></thead><tbody>' + _drow + '</tbody></table></div>')
 
+    # ── 吸塵器：只配對名稱完全相同的套裝 ──────────────────────────
+    _dvp = DY['rows_vacuum_pair']
+    _dvrow = ''
+    for r in _dvp:
+        ex = _dex(r['jpy'])
+        _dvrow += ('<tr><td><b>' + html.escape(r['model']) + '</b>' + SMALL
+                   + html.escape(r['sku']) + '</small></td>'
+                   + f'<td>¥{r["jpy"]:,}{_DSTK[r["jp_stock"]]}</td>'
+                   + f'<td><b>{money(round(ex))}</b></td>'
+                   + f'<td>{r["jp_pt"]:,} 點{SMALL}'
+                   + f'{round(r["jp_pt"]/r["jpy"]*100)}%</small></td>'
+                   + '<td>' + money(r['twd']) + SMALL + '原價 '
+                   + money(r['twd_list']) + '</small></td>'
+                   + _dgap(r['twd'] - ex)
+                   + _dgap(r['twd_list'] - ex) + '</tr>')
+    dvtable = ('<div class="tw"><table><thead><tr><th>機種</th>'
+               '<th>日本售價' + SMALL + '含稅</small></th>'
+               '<th>退稅後' + SMALL + '約當台幣</small></th>'
+               '<th>Bic 點數</th>'
+               '<th>台灣特價' + SMALL + '括號為原價</small></th>'
+               '<th>用特價比</th><th>用原價比</th></tr></thead><tbody>'
+               + _dvrow + '</tbody></table></div>')
+
+    _dvj = ''.join(
+        '<tr><td><b>' + html.escape(x['model']) + '</b>' + SMALL
+        + html.escape(x['sku']) + '</small></td>'
+        + f'<td>¥{x["jpy"]:,}{_DSTK[x["jp_stock"]]}</td>'
+        + f'<td>{money(round(_dex(x["jpy"])))}</td>'
+        + f'<td>{x["jp_pt"]:,} 點{SMALL}{round(x["jp_pt"]/x["jpy"]*100)}%</small></td>'
+        + '</tr>' for x in DY['rows_vacuum_jp_only'])
+    dvjtable = ('<div class="tw"><table><thead><tr><th>機種</th>'
+                '<th>日本售價' + SMALL + '含稅</small></th>'
+                '<th>退稅後' + SMALL + '約當台幣</small></th>'
+                '<th>Bic 點數</th></tr></thead><tbody>' + _dvj
+                + '</tbody></table></div>')
+
+    _dvt = ''.join(
+        '<tr><td><b>' + html.escape(x['model']) + '</b>' + SMALL
+        + html.escape(x['tw_name']) + '</small></td>'
+        + '<td>' + money(x['twd']) + SMALL + '原價 ' + money(x['twd_list']) + '</small></td>'
+        + '<td class="dimcell">' + html.escape(x['note']) + '</td></tr>'
+        for x in DY['rows_vacuum_tw_only'])
+
+    # ── 空氣清淨機：型號代碼兩地不同，並排列價格但不算價差 ──────────
+    _dpu = ''
+    for r in DY['rows_purifier']:
+        _dpu += ('<tr><td><b>' + html.escape(r['line']) + '</b></td>'
+                 + '<td>' + html.escape(r['jp_sku']) + SMALL
+                 + html.escape(r['jp_model']) + '</small></td>'
+                 + f'<td>¥{r["jpy"]:,}</td>'
+                 + f'<td>{money(round(_dex(r["jpy"])))}</td>'
+                 + '<td>' + html.escape(r['tw_sku']) + SMALL
+                 + html.escape(r['tw_model']) + '</small></td>'
+                 + '<td>' + money(r['twd']) + SMALL + '原價 '
+                 + money(r['twd_list']) + '</small></td>'
+                 + '<td class="dimcell">型號不同</td></tr>')
+    dputable = ('<div class="tw"><table><thead><tr><th>產品線</th>'
+                '<th>日本型號</th><th>日本售價' + SMALL + '含稅</small></th>'
+                '<th>退稅後' + SMALL + '約當台幣</small></th>'
+                '<th>台灣型號</th><th>台灣特價</th>'
+                '<th>可以比嗎</th></tr></thead><tbody>' + _dpu
+                + '</tbody></table></div>')
+
+    _dpuj = ''.join(
+        '<tr><td><b>' + html.escape(x['model']) + '</b>' + SMALL
+        + html.escape(x['sku']) + '</small></td>'
+        + f'<td>¥{x["jpy"]:,}</td>'
+        + f'<td>{money(round(_dex(x["jpy"])))}</td>'
+        + f'<td>{x["jp_pt"]:,} 點</td></tr>' for x in DY['rows_purifier_jp_only'])
+
     _dprow = ''.join(
         f'<tr><td>{html.escape(x["name"])}</td><td>¥{x["jpy"]:,}</td>'
         f'<td><b>{x["pt"]:,} 點</b>{SMALL}{round(x["pt"]/x["jpy"]*100)}%</small></td></tr>'
@@ -9000,10 +9070,11 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
                         'acceptedAnswer': {'@type': 'Answer', 'text': a}}
                        for q, a in _dfaq]}, ensure_ascii=False)
 
-    _dt_title = (f'日本買 Dyson 吹風機划算嗎？{len(_dpair)} 台台日價差實算'
-                 f'（附台灣特價與原價兩種比法）')
-    _dt_desc = ('Dyson Airwrap、Supersonic、Airstrait 的日本與台灣官網售價逐台比較，'
-                '退稅後換算台幣。重點在台灣官網長期特價，用原價比會把價差高估一倍以上。'
+    _dt_title = ('日本買 Dyson 划算嗎？吹風機、吸塵器、空氣清淨機'
+                 '台日價差實算（附電壓與型號對照）')
+    _dt_desc = ('Dyson Airwrap、Supersonic、Airstrait、無線吸塵器與空氣清淨機的'
+                '日本與台灣官網售價比較，退稅後換算台幣。台灣官網長期特價，'
+                '用原價比會把價差高估一倍以上；空氣清淨機兩地型號代碼不同，不能直接比。'
                 '另附全球電壓機型、Bic 點數率與折價券適用狀況。')
 
     write('japan-dyson-price/index.html',
@@ -9030,9 +9101,12 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
         f'用台灣原價比會算出省 '
         f'{money(round(_dworst["twd_list"] - _dex(_dworst["jpy"])))}，'
         f'用現在的特價比只省 '
-        f'{money(round(_dworst["twd"] - _dex(_dworst["jpy"])))}。</div></div>'
+        f'{money(round(_dworst["twd"] - _dex(_dworst["jpy"])))}。'
+        f'吸塵器的價差更大，但兩地的套裝名稱多半對不起來，只有 '
+        f'{len(_dvp)} 台配得上。空氣清淨機整類不能比，'
+        f'因為日本與台灣賣的型號代碼不一樣。</div></div>'
 
-      + '<h2>同一台機器，兩種比法</h2>'
+      + '<h2>頭髮護理：同一台機器，兩種比法</h2>'
       + '<p class="lede">比價文章通常拿台灣的建議售價去跟日本牌價比，因為原價是固定的、'
         '好查。問題是台灣官網幾乎沒有照原價賣。下表把兩種比法並排，'
         '最後一欄是用原價比會高估多少。</p>'
@@ -9041,18 +9115,47 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
         '原價是官網同時標示的建議售價。兩邊的盒裝配件與贈品不同，'
         '台灣官網多數型號另附贈品，所以這是機器本體的價差，不是等值品的價差。</p>'
 
-      + '<h2>逐台明細</h2>'
+      + '<h2>頭髮護理：逐台明細</h2>'
       + f'<p class="lede">日本售價是含 10% 消費稅的牌價，觀光客退稅後約當台幣如第四欄。'
         f'台灣那一欄是現在實際賣的價格，括號裡是原價。</p>'
       + dtable
       + f'<p class="disc">{html.escape(DY["_套裝內容兩邊不一樣"])}'
         f'{html.escape(DY["_twd_為_null_的意思"])}</p>'
 
-      + '<h2>電壓：只有一台是全球電壓</h2>'
+      + '<h2>吸塵器：價差更大，但只有兩台配得起來</h2>'
+      + f'<p class="lede">{html.escape(DY["_吸塵器只配對兩台的原因"])}</p>'
+      + dvtable
+      + '<p class="disc">無線吸塵器的電壓問題跟吹風機不一樣，'
+        '插座那端是充電器而不是機器本體，往下一節說明。</p>'
+      + '<h3>日本有、台灣官網沒有同名套裝的機種</h3>'
+      + '<p class="lede">這些在台灣官網找不到名稱相同的套裝，所以沒有可比的台灣價格。'
+        '價格照列，因為它本身就是「日本買得到什麼」的答案。'
+        '注意點數那一欄，有兩台只有 1%。</p>'
+      + dvjtable
+      + ('<h3>台灣有、日本沒有</h3>'
+         + '<div class="tw"><table><thead><tr><th>機種</th>'
+           '<th>台灣特價</th><th>日本</th></tr></thead><tbody>'
+         + _dvt + '</tbody></table></div>' if _dvt else '')
+
+      + '<h2>空氣清淨機：兩邊賣的不是同一代</h2>'
+      + f'<p class="lede">{html.escape(DY["_空氣清淨機不給價差的原因"])}</p>'
+      + dputable
+      + '<p class="disc">日本的售價與退稅後金額照列，是為了讓人知道日本現場大概是什麼價位，'
+        '不是拿來跟台灣那一欄相減的。要比的話，要先確認兩個型號的規格與濾網料號相同，'
+        '這點我們沒有查證。</p>'
+      + '<h3>台灣官網沒有對應產品線的機種</h3>'
+      + '<p class="lede">日本還有這幾台，台灣官網的空氣清淨機分類裡沒有對應的產品線。'
+        '暖風那幾台（Hot+Cool）尤其明顯，台灣市場沒有在賣。</p>'
+      + '<div class="tw"><table><thead><tr><th>機種</th>'
+        '<th>日本售價' + SMALL + '含稅</small></th>'
+        '<th>退稅後' + SMALL + '約當台幣</small></th>'
+        '<th>Bic 點數</th></tr></thead><tbody>' + _dpuj + '</tbody></table></div>'
+
+      + '<h2>電壓：三類的狀況不一樣</h2>'
       + f'<p class="lede">這是 Dyson 跟相機最大的差別。相機用 USB 充電，到哪裡都能用；'
-        f'吹風機吃的是市電，而日本是 {_dv["jp"]}V、台灣是 {_dv["tw"]}V。'
-        f'Dyson 自己把這件事當成產品區分：台灣商城的吹風機分類另外開了一個'
-        f'「全球電壓版」。</p>'
+        f'這三類不是，而且彼此也不是同一種狀況。日本家用電壓是 {_dv["jp"]}V，'
+        f'台灣是 {_dv["tw"]}V。</p>'
+      + f'<p class="lede">{html.escape(_dv["_三類的差別"])}</p>'
       + '<div class="tldr"><ul>'
         f'<li><b>Dyson 自己怎麼說。</b>{html.escape(_dv["global_model"])} 的官網文案寫'
         f'「{html.escape(_dv["first_quote"])}」，規格是'
@@ -9061,10 +9164,12 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
         f'（<a href="{_dv["src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(_dv["src_name"])}</a>，核對於 {_dv["checked"]}）</li>'
         f'<li><b>我們沒有逐台查證的部分。</b>{html.escape(_dv["_沒有逐台查證的部分"])}</li>'
+        f'<li><b>空氣清淨機更要注意。</b>'
+        f'{html.escape(_dv["_空氣清淨機更要注意"])}</li>'
         f'<li><b>保固。</b>{html.escape(_dv["_保固"])}</li>'
         f'<li><b>所以價差要這樣看。</b>'
-        f'{html.escape(_dv["global_model"])} 是唯一買回來確定能直接用的，'
-        f'而它的價差剛好是這幾台裡最小的。其他幾台價差大，但要自己先確認電壓標示。</li>'
+        f'頭髮護理裡，{html.escape(_dv["global_model"])} 是唯一確定買回來能直接用的，'
+        f'而它的價差剛好是那幾台裡最小的。價差大的那幾台，都要自己先確認電壓標示。</li>'
         '</ul></div>'
 
       + '<h2>點數：多數 10%，但有三台是 1%</h2>'
@@ -9109,7 +9214,6 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
       + f'<p class="disc">日本售價取自 {html.escape(DY["src_jp_name"])}，'
         f'台灣售價取自 {html.escape(DY["src_tw_name"])}，核對於 {DY["checked"]}；'
         f'匯率每日更新。台灣特價隨檔期變動，日本在庫以店頭為準。'
-        f'{html.escape(DY["_沒做吸塵器與空氣清淨機"])}'
         f'電壓與保固請以 Dyson 官方說明為準。本頁為公開資訊整理，非購買建議。</p>'
       + foot())
     pages.append(('/japan-dyson-price/', 0.8))
