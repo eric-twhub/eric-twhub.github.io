@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-14-transfer-fukuoka-kumamoto",
- "generated": "2026-10-14 22:43",
+ "generated": "2026-10-14 23:06",
  "kind": "transfer",
  "city": "kumamoto",
  "via": "fukuoka",
@@ -32,10 +32,10 @@
  "rate_at": "Wed, 14 Oct 2026",
  "fare_gate": "Tigerair Taiwan",
  "tc_alt": {
-  "price": 36422,
+  "price": 36436,
   "airname": "中華航空",
   "dep": "2026-10-16",
-  "total": 38612
+  "total": 38626
  },
  "route": "博多 → 熊本",
  "mode": "九州新幹線",
