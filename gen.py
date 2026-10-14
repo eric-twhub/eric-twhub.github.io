@@ -1845,6 +1845,8 @@ def _ja_gloss(content):
                     q += 1
                 if zh.startswith('，') and m.group(0).endswith('）'):
                     ins.append((b - 1, zh, None))
+                elif zh.endswith('，') and m.group(0).endswith('）'):
+                    ins.append((a + m.group(0).rfind('（') + 1, zh, None))
                 elif t[a-1:a] == '（' and t[b:b+1] == '）':
                     ins.append((b, '，' + zh, None))
                 else:
