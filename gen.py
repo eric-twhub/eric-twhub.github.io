@@ -7086,6 +7086,8 @@ if os.path.exists('card-insurance.json'):
     CI = json.load(open('card-insurance.json', encoding='utf-8'))
 
     def _ci_money(v):
+        if v == '未查':
+            return '<td class="dimcell">未查</td>'
         if v is None:
             return '<td class="lose"><b>無</b></td>'
         if isinstance(v, str):
@@ -7098,6 +7100,8 @@ if os.path.exists('card-insurance.json'):
 
     def _ci_med(v):
         # 傷害醫療是最可能用到的一格，單獨上色
+        if v == '未查':
+            return '<td class="dimcell">未查</td>'
         if v is None:
             return '<td class="lose"><b>沒有</b></td>'
         cls = ' class="win"' if v >= 1000000 else ''
@@ -7140,6 +7144,29 @@ if os.path.exists('card-insurance.json'):
                '<th>身故失能</th><th>班機延誤</th><th>行李遺失</th>'
                '<th>行程取消<br>或縮短</th><th>海外全程</th></tr>'
                + _ci_rows + '</table></div>')
+
+    # 航空聯名卡另列，不併進 15 張現金回饋卡的比較（標題寫的是 15 張）。
+    _AIRN = {'china-airlines': '華航', 'starlux': '星宇', 'eva-air': '長榮'}
+    _ci_cb = ''
+    for r in CI.get('cobrand') or []:
+        _lk = (('<a href="' + html.escape(r['src']) + '" rel="nofollow noopener" target="_blank">'
+                + html.escape(r['bank']) + ' 條款 →</a>') if r.get('src') else html.escape(r['bank']))
+        _lk += ('　·　<a href="' + U('/japan-airline-card/' + r['airline'] + '/') + '">'
+                + _AIRN.get(r['airline'], '') + '聯名卡頁 →</a>')
+        _ci_cb += ('<tr><td class="nm"><b>' + html.escape(r['name']) + '</b>'
+                   + ('<sup>†</sup>' if r.get('note') else '')
+                   + '<br><small>' + _lk + '</small></td>'
+                   + _ci_med(r['傷害醫療']) + _ci_money(r['身故失能'])
+                   + _ci_money(r['班機延誤']) + _ci_money(r['行李遺失'])
+                   + _ci_money(r['行程取消或縮短']) + _ci_money(r['海外全程']) + '</tr>')
+    _ci_cb_notes = ''.join(
+        '<li><b>' + html.escape(r['name']) + '。</b>' + html.escape(r['note']) + '</li>'
+        for r in CI.get('cobrand') or [] if r.get('note'))
+    _ci_cb_tbl = (('<div class="tw"><table><tr>'
+                   '<th>卡片</th><th>受傷看醫生<br><small>傷害醫療</small></th>'
+                   '<th>身故失能</th><th>班機延誤</th><th>行李遺失</th>'
+                   '<th>行程取消<br>或縮短</th><th>海外全程</th></tr>'
+                   + _ci_cb + '</table></div>') if _ci_cb else '')
 
     _ci_cond = ''.join(
         '<details class="faq"><summary>' + html.escape(k) + '</summary><div>'
@@ -7251,6 +7278,15 @@ if os.path.exists('card-insurance.json'):
       + _ci_tbl
       + '<p class="disc">† 卡等未逐一查證，但該行的鈦金／御璽／晶緻／白金四級保額完全相同，'
         '只要不是金卡或普卡就是這組數字。金額單位為新臺幣，各項皆為實支實付上限而非定額給付。</p>'
+      + (('<h2>航空聯名卡：華航、星宇、長榮</h2>'
+          '<p class="lede">這三家的聯名卡回饋的是哩程，所以不跟上面 15 張現金回饋卡排在一起。'
+          '保額多半比較高，但有兩個要注意：中信華航的璀璨卡與商務御璽卡在搭乘期間沒有傷害醫療；'
+          '而這些卡最常被拿來做的事，用哩程換機票，正好是保險不保的那種票。</p>'
+          + _ci_cb_tbl
+          + '<div class="tldr"><ul>' + _ci_cb_notes + '</ul></div>'
+          + '<p class="disc">「無」是發卡行條款寫明沒有這項保障；「未查」是我們沒有找到官方數字。'
+            f'航空聯名卡核對於 {CI.get("cobrand_checked", CI["checked"])}。</p>')
+         if _ci_cb_tbl else '')
       + '<h2>兩個各家共通、但很少人知道的折扣</h2>'
       + '<div class="cmp">'
         '<div class="pp"><b>非健保身分只賠七成</b>'
@@ -9776,6 +9812,15 @@ if os.path.exists('airline-card.json'):
 # 表格欄位由 cobrand-cards.json 的 cmp_cols / spend_cols 決定，沒寫就依 earn_kind 推。
 if os.path.exists('cobrand-cards.json'):
     CB = json.load(open('cobrand-cards.json', encoding='utf-8'))
+    _CBI = (json.load(open('card-insurance.json', encoding='utf-8'))
+            if os.path.exists('card-insurance.json') else {})
+
+    def _cbi_cell(v, med=False):
+        if v == '未查':
+            return '<td class="dimcell">未查</td>'
+        if v is None:
+            return '<td class="lose"><b>' + ('沒有' if med else '無') + '</b></td>'
+        return '<td>' + f'{v // 10000:,}' + ' 萬</td>'
 
     def _cbn(x):
         return (f'{x:.2f}'.rstrip('0').rstrip('.') if isinstance(x, (int, float)) else '')
@@ -9804,6 +9849,38 @@ if os.path.exists('cobrand-cards.json'):
                     f'{SMALL}依官網購票算國內或國外</small>')
         v = t.get(k)
         return (f'{_cbn(v)} 元 1 哩' if v else '<span class="dimcell">不適用</span>')
+
+    def _cb_ins_html(A):
+        rows = [r for r in (_CBI.get('cobrand') or []) if r['airline'] == A['slug']]
+        if not rows:
+            return ''
+        cond = _CBI.get('_十家共通的生效條件') or {}
+        tb = ''.join(
+            '<tr><td><b>' + html.escape(r['name']) + '</b></td>'
+            + _cbi_cell(r['傷害醫療'], True) + _cbi_cell(r['身故失能'])
+            + _cbi_cell(r['班機延誤']) + _cbi_cell(r['行李遺失'])
+            + _cbi_cell(r['行程取消或縮短']) + _cbi_cell(r['海外全程']) + '</tr>'
+            for r in rows)
+        notes = ''.join('<li><b>' + html.escape(r['name']) + '。</b>' + html.escape(r['note']) + '</li>'
+                        for r in rows if r.get('note'))
+        return ('<h2>刷這張卡買機票，送什麼保險</h2>'
+          + '<div class="today"><div class="tday">要先知道的一件事</div>'
+            '<div class="tans">用哩程換的票，刷卡送的保險不保</div>'
+            f'<div class="tsub">上面算的 {A["award_jp_rt"]:,} 哩換到的那張台日來回，'
+            '只刷了機場稅與燃油附加費，不算「用這張卡付全部票款」。'
+            '我們查過的十家發卡行條款都把這種票排除在外。</div>'
+            '<div class="tbuf">' + html.escape(cond.get('只刷機場稅無效', '')) + '</div></div>'
+          + '<p class="lede">要有保障，機票的全部票款（含機場稅與燃油附加費）都要刷這張卡；'
+            '跟團的話要刷團費 80% 以上。下表是各卡別的最高保額，'
+            '「無」是發卡行條款寫明沒有，「未查」是我們沒找到官方數字。</p>'
+          + '<div class="tw"><table><thead><tr><th>卡別</th>'
+            '<th>受傷看醫生<br><small>傷害醫療</small></th><th>身故失能</th>'
+            '<th>班機延誤</th><th>行李遺失</th><th>行程取消<br>或縮短</th>'
+            '<th>海外全程</th></tr></thead><tbody>' + tb + '</tbody></table></div>'
+          + (('<div class="tldr"><ul>' + notes + '</ul></div>') if notes else '')
+          + '<p class="disc">刷卡送的保險不含海外突發疾病，在日本感冒、腸胃炎不賠；'
+            '非健保身分的醫療費用只賠七成。各卡別的完整比較與生效條件在'
+            f'<a href="{U("/japan-card-insurance/")}">刷卡送的保險那一頁</a>。</p>')
 
     for A in CB['airlines']:
         _T = A['tiers']; _F = A['fare']; _M = A['award_jp_rt']
@@ -9964,6 +10041,7 @@ if os.path.exists('cobrand-cards.json'):
               + (html.escape(A["mile_value_note"]) if A.get('mile_value_note') else '')
               + '</p>') if _rrow else '')
 
+          + _cb_ins_html(A)
           + fare_cta('tokyo', '看今天的便宜機票')
 
           + '<h2>相關頁面</h2><div class="cities">'
