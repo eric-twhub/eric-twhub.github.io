@@ -9476,6 +9476,11 @@ if _GT:
 # ---------- 旅日信用卡 ----------
 if os.path.exists('cards.json'):
     CD = json.load(open('cards.json', encoding='utf-8'))
+    # 店家券資料：卡片頁要用它算「這張卡在各店的實付價」，CP 要到後面才載入，
+    # 這裡自己讀一份。先只產幣倍卡，版型確認後再放開。
+    _CPS = (json.load(open('coupons.json', encoding='utf-8'))
+            if os.path.exists('coupons.json') else {})
+    _SHOP_PAGES = {'sinopac-dual'}
     _fx = CD['fx_fee']
     _ap = json.load(open('apple.json', encoding='utf-8')) if os.path.exists('apple.json') else {}
     _MIDC = (_ap.get('rate', {}).get('jpy_twd_mid')
@@ -10065,6 +10070,85 @@ if os.path.exists('cards.json'):
             f'本站與發卡行無合作關係，頁內卡片連結非聯盟連結。</p>'
           + foot())
         pages.append((f'/japan-credit-card/{c["slug"]}/', 0.7))
+
+        # ── 這張卡在日本哪些店刷最划算 ──
+        # 搜「松本清」我們排不進去（28 天 14 次曝光），但「松本清 刷什麼卡」
+        # 沒有大站在經營，而券、免稅、費率三份資料我們都有，算得出實付價。
+        if c['slug'] in _SHOP_PAGES and _CPS.get('stores'):
+            _sb = ''
+            for s in sorted(_CPS['stores'], key=lambda x: -x['max']):
+                free = 100000 / 1.1                      # 以 ¥100,000 為例
+                after = free * (1 - s['max'] / 100)
+                bill = after * _MIDC * (1 + _fx['typical'] / 100)
+                # 用既有卡友的費率。新戶加碼多半上限很低（幣倍卡只有 NT$200），
+                # 算進去會讓每一家都顯示「加碼已滿」，反而看不出店家之間的差別。
+                bill_t = after * _MIDC * (1 + _fx['typical'] / 100)
+                val, capped = bill_t * c['base'] / 100, False
+                for _t in _tiers(c, 'shop'):
+                    if _is_newbie(_t):
+                        continue
+                    _x = _t['rate'] / 100 * bill_t
+                    if _t['cap'] and _x > _t['cap']:
+                        _x, capped = _t['cap'], True
+                    val += _x
+                _sb += (f'<tr><td><a href="{U("/japan-coupon/"+s["slug"]+"/")}">'
+                        f'{html.escape(s["name"])}</a>{SMALL}{html.escape(s["cat"])}</small></td>'
+                        f'<td>{html.escape(s["rate"])}</td>'
+                        f'<td>{money(round(bill))}</td>'
+                        f'<td class="win"><b>{money(round(val))}</b>'
+                        f'{SMALL}{"加碼已滿" if capped else ""}</small></td>'
+                        f'<td><b>{money(round(bill - val))}</b></td></tr>')
+            _t2 = f'{c["name"]}在日本購物回饋多少？{len(_CPS["stores"])} 家店實付價試算'
+            _d2 = (f'{c["name"]}在日本實體店消費最高 {c["total"]}%。'
+                   f'逐家算出折價券、免稅與刷卡回饋疊起來之後的實付價，'
+                   f'含松本清、大國藥妝、Bic Camera 等 {len(_CPS["stores"])} 家常見店家。')
+            write(f'japan-credit-card/{c["slug"]}/shopping/index.html',
+              head(_t2, _d2, f'japan-credit-card/{c["slug"]}/shopping/')
+              + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
+                        (c['name'], f'/japan-credit-card/{c["slug"]}/'), ('日本購物', None)])
+              + topnav()
+              + f'<h1>{html.escape(c["name"])}在日本哪些店刷最划算？</h1>'
+              + f'<p class="lede">折價券、免稅、刷卡回饋是三件事，疊起來才是實付價。'
+                f'下面用 ¥100,000 為例逐家算。條件查證於 {CD["checked"]}。</p>'
+              + f'<div class="today"><div class="tday">這張卡的日本實體消費</div>'
+                f'<div class="tans">既有卡友最高 {_oldrate(c, "shop")}%</div>'
+                f'<div class="tsub">{html.escape(c["base_note"])}。'
+                f'刷日幣會再收 {_fx["typical"]}% 國外交易手續費，回饋以台幣帳單計算，'
+                f'所以回饋率不等於淨省。</div>'
+                f'<div class="tbuf">{html.escape(c["reg"])}</div></div>'
+              + f'<h2>{len(_CPS["stores"])} 家店，各自實付多少</h2>'
+              + f'<p class="lede">以 ¥100,000 含稅商品為例：先扣免稅，再折該店的券，'
+                f'換成台幣帳單後才算回饋。券的級距依該店當期公告，點店名看細節。</p>'
+              + '<div class="tw"><table><thead><tr><th>店家</th><th>常見券折扣</th>'
+                '<th>台幣帳單</th><th>刷卡回饋</th><th>實際負擔</th>'
+                '</tr></thead><tbody>' + _sb + '</tbody></table></div>'
+              + f'<p class="disc">匯率 {_MIDC}，加計 {_fx["typical"]}% 國外交易手續費。'
+                f'假設該店的券與這張卡的各層加碼條件都符合；加碼有上限的卡，'
+                f'金額拉高之後有效回饋率會下降。券的幅度查證於 {_CPS["checked"]}。</p>'
+              + fare_cta('tokyo', '算完購物，順便看機票')
+              + '<h2>三件事的順序不能錯</h2><div class="tldr"><ul>'
+                '<li><b>先免稅，再折券。</b>券是以免稅後的金額計算，'
+                '所以免稅 10% 加券 7% 不等於 17%。</li>'
+                '<li><b>回饋算在台幣帳單上。</b>帳單已經含 '
+                f'{_fx["typical"]}% 國外交易手續費，回饋率要扣掉這一段才是淨省。</li>'
+                '<li><b>結帳不要選台幣。</b>選台幣（DCC）匯率差 3 到 5%，'
+                '而且多數銀行的海外加碼要求以外幣結帳。</li>'
+                '</ul></div>'
+              + '<h2>什麼情況拿不到</h2><div class="tldr"><ul>'
+              + ''.join(f'<li>{html.escape(x)}</li>' for x in c['exclude'])
+              + '</ul></div>'
+              + '<div class="cities">'
+              + f'<a class="ct" href="{U("/japan-credit-card/"+c["slug"]+"/")}">'
+                f'<b>{html.escape(c["name"])} 回饋怎麼算</b><s>加碼層級與上限</s></a>'
+              + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 日本購物折扣總覽</b>'
+                f'<s>券、免稅與實付價計算機</s></a>'
+              + f'<a class="ct" href="{U("/japan-credit-card/")}">'
+                f'<b>💳 {len(CD["cards"])} 張卡比較</b><s>哪張在日本最划算</s></a></div>'
+              + f'<p class="disc">本頁為公開資訊整理，非理財建議。'
+                f'卡片條件查證於 {CD["checked"]}，券的幅度查證於 {_CPS["checked"]}，'
+                f'以發卡行與店家公告為準。</p>'
+              + foot())
+            pages.append((f'/japan-credit-card/{c["slug"]}/shopping/', 0.6))
 
     # ── 日幣回饋計算機 ──
     _calc_js = _CJS + ("""
