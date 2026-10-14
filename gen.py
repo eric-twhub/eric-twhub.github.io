@@ -2118,6 +2118,11 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'<a href="{U("/tokyo/worth-flying-for/")}">東京值得為它再飛一次的 45 家店</a>'
                      f'（Threads 上七千多則回覆挑出來的，每家都查過官方地址與公休，'
                      f'其中一家已經歇業）。</p>')
+        if slug == 'okinawa' and os.path.exists('churasun6.json'):
+            body += (f'<p class="lede">晚上想找點事做？'
+                     f'<a href="{U("/okinawa/churasun6/")}">那霸ちゅらさん6 的座位方案與取消規定</a>'
+                     f'（六本木 63 ANGEL 官網連過去的沖繩店，官網原文整理；演出前 10 分鐘沒到就取消，'
+                     f'未滿 20 歲不得入場）。</p>')
         if slug == 'tokyo' and os.path.exists('angel63.json'):
             body += (f'<p class="lede">晚上想找點事做？'
                      f'<a href="{U("/tokyo/63angel/")}">六本木 63 ANGEL 的座位方案與取消規定</a>'
@@ -5533,6 +5538,8 @@ if os.path.exists('angel63.json'):
       + f'<ul class="lede">{_ag_un}</ul>'
       + '<h2>常見問題</h2>' + ag_html
       + '<h2>順便看看</h2><div class="cities">'
+      + (f'<a class="ct" href="{U("/okinawa/churasun6/")}"><b>🎭 沖繩ちゅらさん6</b>'
+         f'<s>官網連過去的那霸店，兩個場次</s></a>' if os.path.exists('churasun6.json') else '')
       + f'<a class="ct" href="{U("/tokyo/")}"><b>✈️ 東京機票</b>'
         f'<s>各出發地比價，每日更新</s></a>'
       + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
@@ -5697,6 +5704,142 @@ if os.path.exists('angel63.json'):
             f'<s>散場之後走得回去的價位</s></a></div>'
           + foot())
         pages.append(('/tokyo/63angel/talents/', 0.5))
+
+# ---------- 那霸 ちゅらさん6（Churasun6） ----------
+# 六本木 63 ANGEL 官網自己連過去的沖繩店。跟六本木那頁同一套做法：只引官網，
+# 官網自己矛盾的地方並列不選邊。這家的矛盾有兩處，取消規定的中間級距
+# 跟六本木錯在同一個地方，另外多一個 VIP 席要不要另付稅服務費。
+if os.path.exists('churasun6.json'):
+    CS = json.load(open('churasun6.json', encoding='utf-8'))
+    _cs_rate = JPY
+
+    def _cs_tw(y):
+        return f'NT${round(y * _cs_rate):,}'
+
+    _cs_shows = ('<div class="tw narrow"><table><tr>'
+                 + ''.join(f'<th>{html.escape(h)}</th>' for h in CS['shows']['head'])
+                 + '</tr>'
+                 + ''.join('<tr><td class="nm"><b>' + html.escape(r[0]) + '</b></td>'
+                           + ''.join(f'<td class="nm">{html.escape(c)}</td>' for c in r[1:])
+                           + '</tr>' for r in CS['shows']['rows'])
+                 + '</table></div>')
+
+    _cs_plans = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(p["n"])}</b></td>'
+        f'<td class="nm">¥{p["p"]:,}<br><small style="color:var(--dim)">約 {_cs_tw(p["p"])}</small></td>'
+        f'<td class="nm"><small style="color:var(--dim)">¥{p["local"]:,}</small></td>'
+        f'<td class="nm">{html.escape(p["d"])}</td></tr>' for p in CS['plans'])
+    _cs_vip = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(v["n"])}</b></td>'
+        f'<td class="nm">¥{v["p"]:,}<br><small style="color:var(--dim)">約 {_cs_tw(v["p"])}</small></td>'
+        + ('<td class="nm lose">另加 20%</td>' if v['tax'] else '<td class="nm dimcell">沒有註記</td>')
+        + '</tr>' for v in CS['vip'])
+    _cs_opt = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(o[0])}</b></td><td class="nm">＋¥{o[1]:,}</td></tr>'
+        for o in CS['options'])
+    _cs_cancel = ''.join(
+        f'<tr><td class="nm">{html.escape(r[0])}</td><td class="nm">{html.escape(r[1])}</td>'
+        f'<td class="nm"><b>{html.escape(r[2])}</b></td></tr>' for r in CS['cancel']['rows'])
+    _fc = CS['fee_conflict']
+    _cs_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>：{html.escape(u["why"])}</li>'
+                     for u in CS['unverified'])
+
+    _cs_faq = [
+        ('沖繩的ちゅらさん6 跟六本木 63 ANGEL 是同一家嗎？',
+         f'六本木官網把ちゅらさん6 列在相關連結裡，兩邊的表演者也互相客串。'
+         f'但營運公司不同：{CS["operator"]}，六本木那家是 Cooper.Wonder.Land 株式会社。'
+         f'官方沒有說明兩家公司的關係。'),
+        ('ちゅらさん6 一個人多少錢？',
+         f'一般座位四種方案，含 1 杯飲料，¥{CS["plans"][0]["p"]:,} 到 ¥{CS["plans"][-1]["p"]:,}。'
+         f'價格旁邊另有「県民割引」價，但官網沒寫怎麼認定縣民，旅客請以一般價計算。'),
+        ('ちゅらさん6 可以取消嗎？',
+         '6 天前取消免費。中間那段官網兩頁寫得不一樣：預約頁寫 5 天前至 2 天前 50%，'
+         '特商法頁寫 3 天前為止 50%。前一天與當天 100%。特商法頁另外寫刷卡付款後取消與沒到場都不退款。'),
+        ('遲到會怎樣？',
+         f'官網預約頁寫：{CS["late"]["zh"]}'),
+    ]
+    _cs_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                       for q, a in _cs_faq]}, ensure_ascii=False)
+
+    _cs_title = 'ちゅらさん6 沖繩（Churasun6）訂位前要知道的事：價格、場次、取消規定'
+    _cs_desc = ('那霸松山的ちゅらさん6，六本木 63 ANGEL 官網連過去的沖繩店。'
+                '座位方案與台幣換算、兩個場次、官網自己寫不一致的取消規定與 VIP 費用，'
+                '以及遲到 10 分鐘就取消的規定。全部引官網原文。')
+
+    write('okinawa/churasun6/index.html',
+      head(_cs_title, _cs_desc, 'okinawa/churasun6/',
+           '<script type="application/ld+json">' + _cs_ld + '</script>')
+      + crumbs([('首頁', '/'), ('沖繩', '/okinawa/'), ('ちゅらさん6', None)]) + topnav()
+      + '<h1>ちゅらさん6 沖繩，訂位前要知道的幾件事</h1>'
+      + f'<p class="lede">{html.escape(CS["_說明"])}'
+        f'台幣以中間匯率 {_cs_rate} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網原文，查證於 {CS["checked"]}　·　{html.escape(CS["age"])}</div>'
+        '<div class="tans">演出前 <b>10 分鐘</b>沒到，位子就被讓出去</div>'
+        f'<div class="tsub">{html.escape(CS["late"]["zh"])}那霸的晚上常常塞車，'
+        f'2 部 22:30 開演，22:20 前一定要在店裡。</div>'
+        '<div class="tbuf">另外兩件事官網自己寫得不一致：取消費用的中間級距，'
+        '以及 VIP 席要不要另付 20% 稅服務費。下面都並列出來。</div></div>'
+
+      + '<h2>場次時間</h2>' + _cs_shows
+      + f'<p class="disc">{html.escape(CS["shows"]["note"])}營業時間官網寫 {html.escape(CS["hours"])}。</p>'
+
+      + '<h2>座位方案與價格</h2>'
+      + '<div class="tw"><table><tr><th>方案</th><th>價格</th><th>縣民價</th><th>內容</th></tr>'
+      + _cs_plans + '</table></div>'
+      + f'<p class="disc">{html.escape(CS["local_note"])}</p>'
+      + '<h3>VIP 席</h3>'
+      + '<div class="tw"><table><tr><th>席位</th><th>每人</th><th>稅服務費</th></tr>'
+      + _cs_vip + '</table></div>'
+      + f'<p class="disc">{html.escape(CS["vip_note"])}</p>'
+      + '<h3>加購</h3>'
+      + '<div class="tw narrow"><table><tr><th>項目</th><th>價格</th></tr>' + _cs_opt + '</table></div>'
+
+      + f'<h2>{html.escape(_fc["t"])}</h2>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>{html.escape(_fc["a_where"])}。</b>「{html.escape(_fc["a_quote"])}」，'
+        f'也就是{html.escape(_fc["a_zh"])}</li>'
+        f'<li><b>{html.escape(_fc["b_where"])}。</b>「{html.escape(_fc["b_quote"])}」，'
+        f'{html.escape(_fc["b_zh"])}</li>'
+        '</ul></div>'
+      + f'<p class="lede">{html.escape(_fc["so"])}</p>'
+
+      + f'<h2>{html.escape(CS["cancel"]["t"])}</h2>'
+      + '<div class="tw"><table><tr><th>出處</th><th>時間</th><th>取消費</th></tr>'
+      + _cs_cancel + '</table></div>'
+      + f'<p class="lede">特商法頁另外寫「{html.escape(CS["cancel"]["extra_quote"])}」，'
+        f'{html.escape(CS["cancel"]["extra_zh"])}</p>'
+      + f'<p class="disc">{html.escape(CS["cancel"]["so"])}</p>'
+
+      + '<h2>地址、電話與付款</h2><div class="tldr"><ul>'
+        f'<li><b>地址。</b>{html.escape(CS["addr"])}</li>'
+        f'<li><b>電話。</b>{html.escape(CS["tel"])}；當天預約 {html.escape(CS["tel_today"])}。'
+        f'{html.escape(CS["tel_today_note"])}</li>'
+        f'<li><b>付款。</b>{html.escape(CS["pay"])}</li>'
+        f'<li><b>營運公司。</b>{html.escape(CS["operator"])}。{html.escape(CS["operator_note"])}</li>'
+        '</ul></div>'
+      + f'<p class="lede">官網：<a href="{CS["site"]}" rel="nofollow noopener" target="_blank">churasun6.com</a>'
+        f'　·　<a href="{CS["booking"]}" rel="nofollow noopener" target="_blank">網路預約</a>'
+        f'　·　<a href="{CS["commerce"]}" rel="nofollow noopener" target="_blank">特定商取引法頁</a></p>'
+
+      + '<h2>這頁查不到的部分</h2><div class="tldr"><ul>' + _cs_un + '</ul></div>'
+
+      + fare_cta('okinawa', '飛沖繩的機票多少')
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 六本木 63 ANGEL</b>'
+        f'<s>同系列的東京店，三個場次</s></a>'
+      + f'<a class="ct" href="{U("/okinawa/")}"><b>🏝️ 沖繩機票</b><s>各出發地的票價</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
+        f'<s>在日本刷哪張卡</s></a></div>'
+      + f'<p class="disc">內容引自ちゅらさん6 官網，查證於 {CS["checked"]}。'
+        f'價格、場次與規定由店家隨時調整，請以官網為準。未滿 20 歲不得入場。'
+        f'本頁為公開資訊整理，與店家無合作關係。</p>'
+      + foot())
+    pages.append(('/okinawa/churasun6/', 0.6))
 
 # ---------- JTTP（日本信賴旅客制度） ----------
 # 中文內容一律叫它 JTTP，但官方分類裡 JTTP 只是 A 類（美日互惠）。
