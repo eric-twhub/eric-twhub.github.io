@@ -1,0 +1,70 @@
+{
+ "schema": 1,
+ "slug": "2026-10-14-kaohsiung-okinawa",
+ "generated": "2026-10-14 16:15",
+ "kind": "fare",
+ "origin": "kaohsiung",
+ "city": "okinawa",
+ "fare": {
+  "o": "KHH",
+  "d": "OKA",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 5516,
+  "dep": "2026-11-03",
+  "ret": "2026-11-07",
+  "dept": "17:30",
+  "rett": "14:00",
+  "rt": true,
+  "tr": 0,
+  "dur": 200,
+  "dur_to": 85,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-03&inbound=OKA-KHH&returnDate=2026-11-07&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 10191,
+ "n_rt": 3,
+ "others": [
+  {
+   "o": "KHH",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 10191,
+   "dep": "2026-10-16",
+   "ret": "2026-10-21",
+   "dept": "10:10",
+   "rett": "14:35",
+   "rt": true,
+   "tr": 1,
+   "dur": 1645,
+   "dur_to": 110,
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/KHH1610OKA21101?t=TW17921454001792155600000110KHHOKA17925933001792681800001535OKAICNKHH_2af7882b23365606e20a209605de860c_27189&search_date=11102026&expected_price_uuid=01a12a2f-bbca-8040-ac84-18abe3f8c2ea&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=1i1vay8SfO2a507bYHLpaw&expected_price_source=share&expected_price_currency=twd&expected_price=10191&marker=775639"
+  },
+  {
+   "o": "KHH",
+   "d": "OKA",
+   "air": "TW",
+   "airname": "德威航空",
+   "cls": "lcc",
+   "price": 10293,
+   "dep": "2026-10-26",
+   "ret": "2026-10-31",
+   "dept": "17:00",
+   "rett": "14:00",
+   "rt": true,
+   "tr": 1,
+   "dur": 1340,
+   "dur_to": 320,
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/KHH2610OKA31101?t=TW17930340001793111100001225KHHICNOKA17934552001793458500000115OKAKHH_9f0e198a6e7111823adf33b80822e0b4_27407&search_date=09102026&expected_price_uuid=01a11df7-d3dc-8040-a9e3-0a0a3b44cb57&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=VIdQdx8m419flANoA8u0LA&expected_price_source=share&expected_price_currency=twd&expected_price=10293&marker=775639"
+  }
+ ]
+}
