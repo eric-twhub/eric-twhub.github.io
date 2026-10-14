@@ -5537,7 +5537,29 @@ if os.path.exists('angel63.json'):
       + '<h2>這頁沒有涵蓋的</h2>'
       + f'<ul class="lede">{_ag_un}</ul>'
       + '<h2>常見問題</h2>' + ag_html
+      # 同一棟樓上下兩家，訂錯樓層的機會不小，把兩家並排。
+      + (('<h2>同一棟樓的 B1：SUPER SPARK TOKYO</h2>'
+          '<p class="lede">六本木日拓大樓 B2F 是 63 ANGEL，B1 是 SUPER SPARK TOKYO，'
+          '63 官網把它列在相關連結裡。兩家的計價、預約方式與取消規定都不一樣，訂之前確認是哪一家。</p>'
+          '<div class="tw"><table><tr><th>　</th><th>63 ANGEL</th><th>SUPER SPARK TOKYO</th></tr>'
+          '<tr><td class="nm"><b>樓層</b></td><td class="nm">B2F</td><td class="nm">B1</td></tr>'
+          '<tr><td class="nm"><b>演出開始</b></td><td class="nm">18:30／20:30／22:40</td><td class="nm">18:25／20:25／22:25</td></tr>'
+          '<tr><td class="nm"><b>一般座位</b></td><td class="nm">¥8,500 至 ¥16,000<br><small style="color:var(--dim)">含 1 drink</small></td>'
+          '<td class="nm">¥6,000 至 ¥11,000<br><small style="color:var(--dim)">含 2 drink＋チップ</small></td></tr>'
+          '<tr><td class="nm"><b>女子会</b></td><td class="nm">¥3,000<br><small style="color:var(--dim)">限全女性，只有 1 部</small></td>'
+          '<td class="nm">¥4,000<br><small style="color:var(--dim)">官網沒寫條件</small></td></tr>'
+          '<tr><td class="nm"><b>預約</b></td><td class="nm">網路或電話</td><td class="nm">只有網路</td></tr>'
+          '<tr><td class="nm"><b>取消</b></td><td class="nm">6 天前起就要付 30%，前一天與當天 100%<br><small style="color:var(--dim)">中間級距官網兩頁矛盾</small></td>'
+          '<td class="nm">只寫前一天與當天 100%</td></tr>'
+          '<tr><td class="nm"><b>年齡</b></td><td class="nm">未滿 20 歲不得入場</td><td class="nm dimcell">官網沒寫</td></tr>'
+          '<tr><td class="nm"><b>營運公司</b></td><td class="nm">Cooper.Wonder.Land</td><td class="nm">株式会社 party on</td></tr>'
+          '</table></div>'
+          f'<p class="disc">兩家都引自各自官網。SUPER SPARK 的方案細節與查不到的部分在'
+          f'<a href="{U("/tokyo/superspark/")}">SUPER SPARK 那一頁</a>。</p>')
+         if os.path.exists('superspark.json') else '')
       + '<h2>順便看看</h2><div class="cities">'
+      + (f'<a class="ct" href="{U("/tokyo/superspark/")}"><b>🎭 樓上的 SUPER SPARK</b>'
+         f'<s>同一棟 B1，只收網路預約</s></a>' if os.path.exists('superspark.json') else '')
       + (f'<a class="ct" href="{U("/okinawa/churasun6/")}"><b>🎭 沖繩ちゅらさん6</b>'
          f'<s>官網連過去的那霸店，兩個場次</s></a>' if os.path.exists('churasun6.json') else '')
       + f'<a class="ct" href="{U("/tokyo/")}"><b>✈️ 東京機票</b>'
@@ -5832,6 +5854,8 @@ if os.path.exists('churasun6.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 六本木 63 ANGEL</b>'
         f'<s>同系列的東京店，三個場次</s></a>'
+      + (f'<a class="ct" href="{U("/tokyo/superspark/")}"><b>🎭 六本木 SUPER SPARK</b>'
+         f'<s>63 同一棟樓的 B1</s></a>' if os.path.exists('superspark.json') else '')
       + f'<a class="ct" href="{U("/okinawa/")}"><b>🏝️ 沖繩機票</b><s>各出發地的票價</s></a>'
       + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
         f'<s>在日本刷哪張卡</s></a></div>'
@@ -5840,6 +5864,112 @@ if os.path.exists('churasun6.json'):
         f'本頁為公開資訊整理，與店家無合作關係。</p>'
       + foot())
     pages.append(('/okinawa/churasun6/', 0.6))
+
+# ---------- 六本木 SUPER SPARK TOKYO ----------
+# 跟 63 ANGEL 同一棟樓（63 在 B2F、這家在 B1），63 官網列在相關連結裡。
+# 計價方式跟另外兩家不同：每個方案含 2 杯飲料再附チップ，取消規定只有一級。
+# 年齡限制在四個官方頁面都沒找到，照「沒查到≠沒有」標未查。
+if os.path.exists('superspark.json'):
+    SS = json.load(open('superspark.json', encoding='utf-8'))
+    _ss_rate = JPY
+
+    def _ss_tw(y):
+        return f'NT${round(y * _ss_rate):,}'
+
+    _ss_shows = ('<div class="tw narrow"><table><tr>'
+                 + ''.join(f'<th>{html.escape(h)}</th>' for h in SS['shows']['head'])
+                 + '</tr>'
+                 + ''.join('<tr><td class="nm"><b>' + html.escape(r[0]) + '</b></td>'
+                           + ''.join(f'<td class="nm">{html.escape(c)}</td>' for c in r[1:])
+                           + '</tr>' for r in SS['shows']['rows'])
+                 + '</table></div>')
+    _ss_plans = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(p["n"])}</b>'
+        + (f'<br><small style="color:var(--dim)">{html.escape(p["seat"])}</small>' if p['seat'] else '')
+        + f'</td><td class="nm">¥{p["p"]:,}<br><small style="color:var(--dim)">約 {_ss_tw(p["p"])}</small></td>'
+        f'<td class="nm">2 drink＋チップ ¥{p["chip"]:,} 份</td></tr>' for p in SS['plans'])
+    _ss_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>：{html.escape(u["why"])}</li>'
+                     for u in SS['unverified'])
+    _pmin = min(p['p'] for p in SS['plans']); _pmax = max(p['p'] for p in SS['plans'])
+
+    _ss_faq = [
+        ('SUPER SPARK TOKYO 跟 63 ANGEL 是同一家嗎？',
+         f'同一棟大樓，63 ANGEL 在 B2F、SUPER SPARK 在 B1，63 官網也把它列在相關連結裡。'
+         f'但營運公司不同：{SS["operator"]}，63 ANGEL 是 Cooper.Wonder.Land。'),
+        ('SUPER SPARK TOKYO 多少錢？',
+         f'官網列的方案從 ¥{_pmin:,} 到 ¥{_pmax:,}，全部含稅，都含 2 杯飲料，'
+         f'再附 1,000 或 2,000 円份的チップ。活動日價格可能不同。'),
+        ('SUPER SPARK TOKYO 可以打電話訂位嗎？',
+         '不行。官網寫明只接受網路預約，當天可以在網路上訂到 17:00，訂位時用信用卡或 PayPay 付款。'),
+        ('SUPER SPARK TOKYO 可以取消嗎？',
+         f'官網寫{SS["cancel"]["rule"]}。只寫了這一級，沒有寫更早取消要不要付錢。'),
+    ]
+    _ss_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                       for q, a in _ss_faq]}, ensure_ascii=False)
+
+    _ss_title = 'SUPER SPARK TOKYO（スーパースパーク東京）價格、場次、取消規定：跟 63 ANGEL 同一棟樓'
+    _ss_desc = ('六本木 SUPER SPARK TOKYO，跟 63 ANGEL 同一棟大樓的 B1。'
+                '8 種座位方案與台幣換算、三個場次、只收網路預約與取消規定，'
+                '以及官網沒寫清楚的年齡限制與チップ用法。全部引官網原文。')
+
+    write('tokyo/superspark/index.html',
+      head(_ss_title, _ss_desc, 'tokyo/superspark/',
+           '<script type="application/ld+json">' + _ss_ld + '</script>')
+      + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('SUPER SPARK', None)]) + topnav()
+      + '<h1>SUPER SPARK TOKYO，訂位前要知道的幾件事</h1>'
+      + f'<p class="lede">{html.escape(SS["_說明"])}'
+        f'台幣以中間匯率 {_ss_rate} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網原文，查證於 {SS["checked"]}</div>'
+        '<div class="tans">只能網路預約，<b>不接電話訂位</b></div>'
+        '<div class="tsub">當天可以在網路上訂到 17:00，訂位時就用信用卡或 PayPay 付款。'
+        f'取消規定只有一級：{html.escape(SS["cancel"]["rule"])}。</div>'
+        f'<div class="tbuf">每個方案都含 2 杯飲料，再附 1,000 或 2,000 円份的チップ，'
+        f'計價方式跟樓下的 63 ANGEL 不一樣。年齡限制官網沒寫，帶證件去。</div></div>'
+
+      + '<h2>場次時間</h2>' + _ss_shows
+      + f'<p class="disc">{html.escape(SS["shows"]["note"])}</p>'
+
+      + '<h2>座位方案與價格</h2>'
+      + '<div class="tw"><table><tr><th>方案</th><th>價格（含稅）</th><th>內容</th></tr>'
+      + _ss_plans + '</table></div>'
+      + f'<p class="disc">{html.escape(SS["plans_note"])}</p>'
+      + f'<p class="disc">{html.escape(SS["female_note"])}</p>'
+      + f'<p class="disc">{html.escape(SS["price_change"])}</p>'
+
+      + '<h2>預約與取消</h2><div class="tldr"><ul>'
+      + ''.join(f'<li>{html.escape(x)}。</li>' for x in SS['booking_rules'])
+      + f'<li><b>取消。</b>{html.escape(SS["cancel"]["rule"])}。{html.escape(SS["cancel"]["note"])}</li>'
+      + '</ul></div>'
+
+      + '<h2>地址與電話</h2><div class="tldr"><ul>'
+        f'<li><b>地址。</b>{html.escape(SS["addr"])}</li>'
+        f'<li><b>電話。</b>{html.escape(SS["tel"])}。{html.escape(SS["tel_conflict"])}</li>'
+        f'<li><b>營運公司。</b>{html.escape(SS["operator"])}。{html.escape(SS["operator_note"])}</li>'
+        '</ul></div>'
+      + f'<p class="lede">官網：<a href="{SS["site"]}" rel="nofollow noopener" target="_blank">superspark.tokyo</a>'
+        f'　·　<a href="{SS["system"]}" rel="nofollow noopener" target="_blank">價格</a>'
+        f'　·　<a href="{SS["booking"]}" rel="nofollow noopener" target="_blank">網路預約</a>'
+        f'　·　<a href="{SS["law"]}" rel="nofollow noopener" target="_blank">特定商取引法頁</a></p>'
+
+      + '<h2>這頁查不到的部分</h2><div class="tldr"><ul>' + _ss_un + '</ul></div>'
+
+      + fare_cta('tokyo', '飛東京的機票多少')
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 樓下的 63 ANGEL</b>'
+        f'<s>同一棟 B2F，兩家比較</s></a>'
+      + (f'<a class="ct" href="{U("/okinawa/churasun6/")}"><b>🎭 沖繩ちゅらさん6</b>'
+         f'<s>63 官網連過去的那霸店</s></a>' if os.path.exists('churasun6.json') else '')
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
+        f'<s>3 部散場已經是隔天凌晨</s></a></div>'
+      + f'<p class="disc">內容引自 SUPER SPARK TOKYO 官網，查證於 {SS["checked"]}。'
+        f'價格、場次與規定由店家隨時調整，請以官網為準。本頁為公開資訊整理，與店家無合作關係。</p>'
+      + foot())
+    pages.append(('/tokyo/superspark/', 0.6))
 
 # ---------- JTTP（日本信賴旅客制度） ----------
 # 中文內容一律叫它 JTTP，但官方分類裡 JTTP 只是 A 類（美日互惠）。
