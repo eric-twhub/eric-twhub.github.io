@@ -1,0 +1,230 @@
+{
+ "_說明": "ビックカメラ 的點數率怎麼看。做這一頁的理由：相機、Dyson、Panasonic 三頁各自在註腳寫了一次點數，而三次的結論都不一樣，散著寫會讓人以為點數率跟品牌有關。",
+ "_判準": "規則取 ビックカメラ 自己的利用規約，費率取 ビックカメラ.com 商品頁的標示。部落格與問答網站的說法不收。",
+ "updated": "2026-10-14",
+ "checked": "2026-10-14",
+ "src": "https://www.biccamera.co.jp/shopguide/service/pointcard/point_regulation.html",
+ "src_name": "ビックカメラ・ビックポイントカード利用規約",
+ "src_list": "https://www.biccamera.com/",
+ "src_list_name": "ビックカメラ.com 商品頁",
+ "headline": {
+  "quote": "免税によるお買い上げは、ポイント付与及びポイント利用の対象外となります。",
+  "where": "利用規約 第５条（６）",
+  "zh": "用免稅買的，不給點數，也不能用點數折抵。",
+  "_為什麼重要": "觀光客到 Bic 幾乎都是走免稅結帳，而免稅結帳就沒有點數。所以商品頁上那個 10% 或 1%，對免稅的人來說不是打折，是另一條路的條件。"
+ },
+ "rules": [
+  {
+   "n": "第４条（１）",
+   "jp": "ポイントは、商品の購入価格及び決済方法に応じて当社並びにビックカメラグループが設定した率を乗じて算出し",
+   "zh": "費率由 Bic 逐商品、逐付款方式設定。所以沒有一張公開的「品牌對費率」對照表，只能看商品頁。"
+  },
+  {
+   "n": "第５条（２）",
+   "jp": "一部の商品でポイント付与対象外があります。",
+   "zh": "有些商品整個不給點數。商品頁會寫「ポイント対象外」。"
+  },
+  {
+   "n": "第５条（３）",
+   "jp": "現金値引きによるお買い上げは、ポイント付与対象外となります。",
+   "zh": "談成現金折扣就沒有點數。折扣與點數是同一筆錢的兩種給法。"
+  },
+  {
+   "n": "第５条（６）",
+   "jp": "免税によるお買い上げは、ポイント付与及びポイント利用の対象外となります。",
+   "zh": "免稅結帳不給點數，也不能用點數折抵。"
+  },
+  {
+   "n": "第７条",
+   "jp": "カードご利用による最終お買い上げ日から2年間カードのご利用がない場合、獲得されたポイントは失効いたします。",
+   "zh": "最後一次消費起算兩年沒再用就失效。對一年去一次日本的人來說，這個期限不算寬。"
+  }
+ ],
+ "paths": {
+  "_說明": "所以結帳其實是兩條路，不是把優惠疊起來。",
+  "taxfree": {
+   "name": "免稅結帳",
+   "gain": "消費稅免掉，等於含稅價的 9.09%",
+   "coupon": "可以疊折價券（券本身就規定只能在免稅結帳時用）",
+   "points": "沒有點數"
+  },
+  "taxed": {
+   "name": "含稅結帳",
+   "gain": "拿該商品的點數",
+   "coupon": "不能用折價券",
+   "points": "依商品而定，10%、1% 或沒有"
+  },
+  "_怎麼選": "點數率低於 9.09% 的商品，免稅這條路比較划算，而且差距很大。點數率 10% 的商品兩條路很接近，但免稅省的是現金、哪裡都能用，點數只能在 Bic 的店裡用，而且兩年不用會失效。再加上折價券只有免稅那條路能用，所以多數情況免稅還是贏。",
+  "_免稅門檻": "免稅本身有門檻，未稅合計 5,000 日圓以上。買不到門檻的話就只剩含稅結帳這條路，那時候點數率才真的有意義。"
+ },
+ "rates": [
+  {
+   "rate": 10,
+   "brand": "富士フイルム",
+   "name": "FUJIFILM X-T50 ボディ",
+   "jpy": 264000,
+   "pt": 26400
+  },
+  {
+   "rate": 10,
+   "brand": "富士フイルム",
+   "name": "FUJIFILM X-T50 XC15-45mm レンズキット",
+   "jpy": 281600,
+   "pt": 28160
+  },
+  {
+   "rate": 10,
+   "brand": "Dyson",
+   "name": "Dyson Airwrap i.d. HS08",
+   "jpy": 63250,
+   "pt": 6325
+  },
+  {
+   "rate": 10,
+   "brand": "Dyson",
+   "name": "Dyson PencilVac Fluffycones SV50FC",
+   "jpy": 73670,
+   "pt": 7367
+  },
+  {
+   "rate": 10,
+   "brand": "Panasonic",
+   "name": "Panasonic ionity EH-NE7P",
+   "jpy": 9790,
+   "pt": 979
+  },
+  {
+   "rate": 10,
+   "brand": "Panasonic",
+   "name": "Panasonic ionity EH-NE5P",
+   "jpy": 6600,
+   "pt": 660
+  },
+  {
+   "rate": 10,
+   "brand": "第三方配件",
+   "name": "H&Y DJI CPL フィルター（Pocket 3・4 用）",
+   "jpy": 3190,
+   "pt": 319
+  },
+  {
+   "rate": 10,
+   "brand": "第三方配件",
+   "name": "K&F Concept 広角レンズ（Pocket 3/4 用）",
+   "jpy": 4000,
+   "pt": 400
+  },
+  {
+   "rate": 1,
+   "brand": "Apple",
+   "name": "iPhone 18 Pro 256GB SIMフリー",
+   "jpy": 219800,
+   "pt": 2198
+  },
+  {
+   "rate": 1,
+   "brand": "DJI",
+   "name": "DJI Osmo Pocket 3",
+   "jpy": 49940,
+   "pt": 500
+  },
+  {
+   "rate": 1,
+   "brand": "DJI",
+   "name": "DJI Osmo Pocket 4 スタンダードコンボ",
+   "jpy": 79200,
+   "pt": 792
+  },
+  {
+   "rate": 1,
+   "brand": "Insta360",
+   "name": "Insta360 Luna Ultra スタンダードバンドル",
+   "jpy": 119800,
+   "pt": 1198
+  },
+  {
+   "rate": 1,
+   "brand": "Insta360",
+   "name": "Insta360 Luna Ultra 広角レンズ（原廠配件）",
+   "jpy": 6700,
+   "pt": 67
+  },
+  {
+   "rate": 1,
+   "brand": "Dyson",
+   "name": "Dyson V15 Detect Complete SV22ABL2",
+   "jpy": 115000,
+   "pt": 1150
+  },
+  {
+   "rate": 1,
+   "brand": "Dyson",
+   "name": "Dyson V8 Slim Fluffy SV25SLM",
+   "jpy": 34496,
+   "pt": 345
+  },
+  {
+   "rate": 1,
+   "brand": "Panasonic",
+   "name": "Panasonic EH-NA0J＋TOUCHBeauty 組合包",
+   "jpy": 34800,
+   "pt": 348
+  }
+ ],
+ "zero": [
+  {
+   "brand": "Panasonic",
+   "name": "Panasonic nanocare EH-NA0K",
+   "jpy": 34650,
+   "label": "ポイント対象外",
+   "src": "https://www.biccamera.com/bc/item/14268607/"
+  }
+ ],
+ "_同品牌不同率": "Dyson 多數機種 10%，但 V15 Detect Complete 與 V8 Slim Fluffy 只有 1%。Panasonic 入門的 ionity 是 10%，旗艦 nanocare 卻是 0%。DJI 與 Insta360 則是連原廠配件都 1%，而同一個貨架上第三方做的配件是 10%。所以費率看的是商品，不是品牌。",
+ "why_zero": {
+  "brand": "Panasonic",
+  "quote_zh": "此商品限定經銷商。部分店鋪以製造商指定價格銷售。",
+  "src": "https://panasonic.jp/tourist/cn/hair/EH-NA0K.html",
+  "src_name": "Panasonic 日本・旅客用中文商品頁",
+  "zh": "廠商限定經銷商並指定售價，通路就沒有折扣空間。點數等於變相折扣，所以也一起取消。",
+  "_其他品牌沒有說明": "DJI、Insta360、Apple 為什麼是 1%，查不到任何一方的公開說明，所以本站只記錄費率，不推測原因。"
+ },
+ "vs_coupon": {
+  "_說明": "折價券的不適用清單跟點數率是兩套獨立的規則。兩張表有重疊，但對不起來，不能用一張推另一張。",
+  "rows": [
+   {
+    "brand": "Apple",
+    "coupon": "明文排除",
+    "point": "1%"
+   },
+   {
+    "brand": "DJI",
+    "coupon": "明文排除",
+    "point": "1%"
+   },
+   {
+    "brand": "FUJIFILM",
+    "coupon": "部分商品排除",
+    "point": "10%（X-T50）"
+   },
+   {
+    "brand": "Panasonic",
+    "coupon": "部分商品排除",
+    "point": "旗艦 0%、入門 10%"
+   },
+   {
+    "brand": "Insta360",
+    "coupon": "沒有列到",
+    "point": "1%"
+   },
+   {
+    "brand": "Dyson",
+    "coupon": "沒有列到",
+    "point": "多數 10%、個別 1%"
+   }
+  ],
+  "_最明顯的落差": "FUJIFILM 在券上被列為部分排除，X-T50 的點數卻是 10%；Insta360 在券上沒被排除，點數卻只有 1%。想用「券排除的＝不划算」去推，會推反。",
+  "coupon_src": "https://livejapan.com/public/operation/coupon/biccamera/zh-tw.html",
+  "coupon_src_name": "LIVE JAPAN・Bic Camera 優惠券（繁體中文版）"
+ }
+}

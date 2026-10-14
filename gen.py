@@ -1322,6 +1322,7 @@ def topnav(cur=''):
             + link('/japan-camera-price/', '📷 雲台相機台日價差')
             + link('/japan-dyson-price/', '💨 日本買 Dyson')
             + link('/japan-panasonic-dryer/', '💇 日本買 Panasonic 吹風機')
+            + link('/japan-bic-points/', '🧮 Bic 點數率怎麼看')
             + link('/iphone-cost/', '📉 iPhone 持有成本')
             + link('/iphone-card/', '💰 買 iPhone 刷哪張卡'))
     if os.path.exists('coupons.json'):
@@ -9180,8 +9181,9 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
         '<th>售價</th><th>標示點數</th></tr></thead><tbody>' + _dprow
       + '</tbody></table></div>'
       + f'<p class="disc">{html.escape(_dpt["note"])}'
-        f'點數是網購的給法，免稅加折價券結帳的給法以店頭公告為準，'
-        f'所以上面的價差試算沒有把點數算進去。</p>'
+        f'Bic 的利用規約第５条（６）寫明免稅結帳不給點數，所以上面的價差'
+        f'只算免稅，沒有把點數算進去。兩條路怎麼選在'
+        f'<a href="{U("/japan-bic-points/")}">點數那一頁</a>。</p>'
 
       + f'<h2>那張 {_dcp["rate"]}% 折價券</h2>'
       + f'<p class="lede">Dyson 沒有被列在折價券的不適用清單上，'
@@ -9444,6 +9446,172 @@ if os.path.exists('panasonic.json') and os.path.exists('apple.json'):
         f'本頁為公開資訊整理，非購買建議。</p>'
       + foot())
     pages.append(('/japan-panasonic-dryer/', 0.8))
+
+# ---------- ビックカメラ 的點數率怎麼看 ----------
+# 做這頁的起點是三個商品頁各寫了一次點數，三次結論都不一樣。查下去才發現
+# 更根本的一條：Bic 自己的利用規約寫明免稅結帳不給點數。所以那些 10%、1%
+# 對觀光客來說不是折扣，是「放棄免稅改走含稅」才拿得到的東西。
+# 這一頁的主軸因此是兩條路怎麼選，費率表是支撐，不是結論。
+if os.path.exists('bic-points.json'):
+    BP = json.load(open('bic-points.json', encoding='utf-8'))
+    _bh = BP['headline']; _bp = BP['paths']; _bz = BP['why_zero']; _bv = BP['vs_coupon']
+    _TAXFREE_PCT = round((1 - 1 / 1.1) * 100, 2)      # 免稅相當於含稅價的幾 %
+
+    _brule = ''.join(
+        f'<tr><td><b>{html.escape(r["n"])}</b></td>'
+        f'<td>{html.escape(r["jp"])}</td>'
+        f'<td>{html.escape(r["zh"])}</td></tr>' for r in BP['rules'])
+
+    def _brow(x):
+        return ('<tr><td>' + html.escape(x['brand']) + '</td>'
+                + '<td>' + html.escape(x['name']) + '</td>'
+                + f'<td>¥{x["jpy"]:,}</td>'
+                + f'<td><b>{x["pt"]:,} 點</b></td>'
+                + f'<td class="{"win" if x["rate"]>=10 else "lose"}">{x["rate"]}%</td></tr>')
+
+    _b10 = ''.join(_brow(x) for x in BP['rates'] if x['rate'] >= 10)
+    _b1 = ''.join(_brow(x) for x in BP['rates'] if x['rate'] < 10)
+    _b0 = ''.join(
+        '<tr><td>' + html.escape(x['brand']) + '</td>'
+        + '<td><a href="' + x['src'] + '" rel="nofollow noopener" target="_blank">'
+        + html.escape(x['name']) + '</a></td>'
+        + f'<td>¥{x["jpy"]:,}</td>'
+        + '<td class="dimcell" colspan="2">' + html.escape(x['label']) + '</td></tr>'
+        for x in BP['zero'])
+
+    _bvs = ''.join(
+        '<tr><td><b>' + html.escape(r['brand']) + '</b></td>'
+        + '<td>' + html.escape(r['coupon']) + '</td>'
+        + '<td>' + html.escape(r['point']) + '</td></tr>' for r in _bv['rows'])
+
+    _bfaq = [
+        ('在 Bic Camera 免稅買東西還有點數嗎？',
+         f'沒有。Bic 的利用規約{_bh["where"]}寫明「{_bh["quote"]}」，'
+         f'意思是用免稅買的不給點數，也不能用點數折抵。'
+         f'商品頁上標的 10% 或 1%，是含稅結帳才拿得到的。'),
+        ('那免稅跟點數哪個划算？',
+         f'免稅省的是消費稅，相當於含稅價的 {_TAXFREE_PCT}%，而且省的是現金。'
+         f'點數只能在 Bic 的店裡用，最後一次消費起算兩年沒再用會失效。'
+         f'點數率低於 {_TAXFREE_PCT}% 的商品，免稅明顯划算；'
+         f'點數率 10% 的兩條路很接近，但折價券只有免稅那條路能用，'
+         f'所以多數情況免稅還是贏。'),
+        ('為什麼同一個品牌的點數率不一樣？',
+         f'{BP["_同品牌不同率"]}'),
+        ('有些商品寫「ポイント対象外」是什麼意思？',
+         f'整個不給點數。查到唯一有廠商自己說明的是 Panasonic：'
+         f'「{_bz["quote_zh"]}」{_bz["zh"]}'),
+    ]
+    _bfaq_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                       for q, a in _bfaq]}, ensure_ascii=False)
+
+    _bt = 'Bic Camera 的點數率怎麼看？免稅結帳其實沒有點數（附逐商品實例）'
+    _bd = ('ビックカメラ 的點數規則與各商品實際費率。重點是官方規約寫明免稅結帳'
+           '不給點數，所以商品頁上的 10% 或 1% 是含稅結帳才拿得到的。'
+           '另附同品牌不同費率的實例，以及折價券排除清單與點數率對不起來的對照。')
+
+    write('japan-bic-points/index.html',
+      head(_bt, _bd, 'japan-bic-points/',
+           '<script type="application/ld+json">' + _bfaq_ld + '</script>')
+      + crumbs([('首頁', '/'), ('Bic Camera 點數率', None)])
+      + topnav()
+      + '<h1>Bic 的點數，免稅買就沒有</h1>'
+      + f'<p class="lede">規則取自 <a href="{BP["src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(BP["src_name"])}</a>，'
+        f'費率取自 <a href="{BP["src_list"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(BP["src_list_name"])}</a>的標示'
+        f'　·　核對於 {BP["checked"]}</p>'
+      + '<div class="today">'
+        f'<div class="tday">{html.escape(_bh["where"])}</div>'
+        f'<div class="tans">免稅結帳沒有點數</div>'
+        f'<div class="tsub">原文是「{html.escape(_bh["quote"])}」，'
+        f'也就是{html.escape(_bh["zh"])}</div>'
+        f'<div class="tbuf">{html.escape(_bh["_為什麼重要"])}</div></div>'
+
+      + '<h2>所以是兩條路，不是把優惠疊起來</h2>'
+      + '<p class="lede">免稅與點數互斥，而折價券又規定只能在免稅結帳時用。'
+        '結帳前要決定的是走哪一條，不是能湊到幾種。</p>'
+      + '<div class="tw"><table><thead><tr><th>　</th>'
+        f'<th>{html.escape(_bp["taxfree"]["name"])}</th>'
+        f'<th>{html.escape(_bp["taxed"]["name"])}</th></tr></thead><tbody>'
+      + f'<tr><td><b>拿到什麼</b></td>'
+        f'<td class="win">{html.escape(_bp["taxfree"]["gain"])}</td>'
+        f'<td>{html.escape(_bp["taxed"]["gain"])}</td></tr>'
+      + f'<tr><td><b>折價券</b></td>'
+        f'<td class="win">{html.escape(_bp["taxfree"]["coupon"])}</td>'
+        f'<td class="lose">{html.escape(_bp["taxed"]["coupon"])}</td></tr>'
+      + f'<tr><td><b>點數</b></td>'
+        f'<td class="lose">{html.escape(_bp["taxfree"]["points"])}</td>'
+        f'<td>{html.escape(_bp["taxed"]["points"])}</td></tr>'
+      + '</tbody></table></div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>怎麼選。</b>{html.escape(_bp["_怎麼選"])}</li>'
+        f'<li><b>免稅有門檻。</b>{html.escape(_bp["_免稅門檻"])}</li>'
+        f'<li><b>點數會過期。</b>最後一次消費起算兩年沒再用就失效。'
+        f'一年去一次日本的話，這個期限不算寬。</li>'
+        '</ul></div>'
+
+      + '<h2>規約原文</h2>'
+      + '<p class="lede">點數這件事網路上講法很多，但規約本身只有幾條，'
+        '而且寫得很直接。以下照抄，中文是我們的說明。</p>'
+      + '<div class="tw"><table><thead><tr><th>條號</th>'
+        '<th>原文</th><th>意思</th></tr></thead><tbody>' + _brule
+      + '</tbody></table></div>'
+
+      + '<h2>實際費率：同一個貨架上差十倍</h2>'
+      + f'<p class="lede">{html.escape(BP["_同品牌不同率"])}'
+        f'下面是核對於 {BP["checked"]} 的實例，點數欄是商品頁自己標的數字。</p>'
+      + '<h3>10%</h3>'
+      + '<div class="tw"><table><thead><tr><th>品牌</th><th>商品</th>'
+        '<th>售價</th><th>標示點數</th><th>費率</th></tr></thead><tbody>'
+      + _b10 + '</tbody></table></div>'
+      + '<h3>1%</h3>'
+      + '<div class="tw"><table><thead><tr><th>品牌</th><th>商品</th>'
+        '<th>售價</th><th>標示點數</th><th>費率</th></tr></thead><tbody>'
+      + _b1 + '</tbody></table></div>'
+      + '<h3>整個不給</h3>'
+      + '<div class="tw"><table><thead><tr><th>品牌</th><th>商品</th>'
+        '<th>售價</th><th>標示</th></tr></thead><tbody>'
+      + _b0 + '</tbody></table></div>'
+      + f'<p class="disc">費率由 Bic 逐商品設定，會變動，也會因付款方式不同。'
+        f'上表是查證當日商品頁的標示，買之前看商品頁那一行最準。</p>'
+
+      + '<h2>為什麼有商品整個不給</h2>'
+      + f'<p class="lede">查到唯一有廠商自己說明的是 {html.escape(_bz["brand"])}。'
+        f'他們給外國旅客的中文商品頁寫「{html.escape(_bz["quote_zh"])}」'
+        f'（<a href="{_bz["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_bz["src_name"])}</a>）。{html.escape(_bz["zh"])}</p>'
+      + f'<p class="disc">{html.escape(_bz["_其他品牌沒有說明"])}</p>'
+
+      + '<h2>折價券的清單跟點數率是兩回事</h2>'
+      + f'<p class="lede">{html.escape(_bv["_說明"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>品牌</th>'
+        '<th>在折價券條款上</th><th>點數率</th></tr></thead><tbody>'
+      + _bvs + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_bv["_最明顯的落差"])}'
+        f'折價券條款取自 <a href="{_bv["coupon_src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(_bv["coupon_src_name"])}</a>。</p>'
+
+      + fare_cta('tokyo', '算完再看機票多少')
+
+      + '<h2>各品牌的逐台價差</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-camera-price/")}"><b>📷 雲台相機台日價差</b>'
+        f'<s>Osmo Pocket 與 Luna Ultra</s></a>'
+      + f'<a class="ct" href="{U("/japan-dyson-price/")}"><b>💨 日本買 Dyson</b>'
+        f'<s>吹風機、吸塵器、空氣清淨機</s></a>'
+      + f'<a class="ct" href="{U("/japan-panasonic-dryer/")}">'
+        f'<b>💇 日本買 Panasonic 吹風機</b><s>同型號的台日電壓不一樣</s></a>'
+      + f'<a class="ct" href="{U("/japan-coupon/bic-camera/")}">'
+        f'<b>🎫 Bic Camera 折價券</b><s>條款與不適用清單</s></a></div>'
+
+      + f'<p class="disc">規則取自 {html.escape(BP["src_name"])}，'
+        f'費率取自 {html.escape(BP["src_list_name"])}，核對於 {BP["checked"]}。'
+        f'費率與規約由 Bic 隨時調整，請以結帳當下的店頭與商品頁標示為準。'
+        f'本頁為公開資訊整理，非購買建議。</p>'
+      + foot())
+    pages.append(('/japan-bic-points/', 0.8))
 
     # ── iPhone 持有成本：用台灣實際二手回收行情攤提 ──────────────
     # 網路上談「持有成本」多半自己假設一個殘值，數字沒有來源。
