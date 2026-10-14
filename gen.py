@@ -5779,8 +5779,8 @@ if os.path.exists('churasun6.json'):
       + '<div class="today">'
         f'<div class="tday">官網原文，查證於 {CS["checked"]}　·　{html.escape(CS["age"])}</div>'
         '<div class="tans">演出前 <b>10 分鐘</b>沒到，位子就被讓出去</div>'
-        f'<div class="tsub">{html.escape(CS["late"]["zh"])}那霸的晚上常常塞車，'
-        f'2 部 22:30 開演，22:20 前一定要在店裡。</div>'
+        f'<div class="tsub">{html.escape(CS["late"]["zh"])}換成時間就是：'
+        f'1 部 20:30 開演，20:20 前要在店裡；2 部 22:30 開演，22:20 前要在店裡。</div>'
         '<div class="tbuf">另外兩件事官網自己寫得不一致：取消費用的中間級距，'
         '以及 VIP 席要不要另付 20% 稅服務費。下面都並列出來。</div></div>'
 
