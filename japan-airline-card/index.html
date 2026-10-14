@@ -1,0 +1,311 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="google-site-verification" content="lL18Diq98hRIL65-BKEiZ-mhQ2DNyf0WYwRpRBiT-Rk">
+<title>買機票刷哪張卡？先看這家航空算國內還是國外（台幣付也可能收 1.5%）</title>
+<meta name="description" content="在航空公司官網買機票，海外交易手續費收不收，看的是收單行在哪，不是付款幣別，用台幣付也可能被收 1.5%。附銀行官方說明、自己確認的方法，以及台灣虎航、樂桃、酷航、國泰航空官網查得到的付款規則。">
+<link rel="canonical" href="https://eric-twhub.github.io/japan-airline-card/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#c2410c">
+<meta property="og:title" content="買機票刷哪張卡？先看這家航空算國內還是國外（台幣付也可能收 1.5%）">
+<meta property="og:description" content="在航空公司官網買機票，海外交易手續費收不收，看的是收單行在哪，不是付款幣別，用台幣付也可能被收 1.5%。附銀行官方說明、自己確認的方法，以及台灣虎航、樂桃、酷航、國泰航空官網查得到的付款規則。">
+<meta property="og:type" content="website"><meta property="og:url" content="https://eric-twhub.github.io/japan-airline-card/">
+<meta property="og:image" content="https://eric-twhub.github.io/og/japan-airline-card.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>*{box-sizing:border-box}
+/* 固定淺色主題：color-scheme 讓下拉選單與日期選擇器等原生元件也維持淺色，
+   否則使用者系統為深色模式時表單控制項會變黑，與頁面不一致 */
+:root{color-scheme:light;
+--bg:#f7f7f5;--card:#fff;--fg:#1a1a1a;--dim:#63605c;--line:#e5e3de;--acc:#c2410c;
+--hot:#dc2626;--lcc:#0f766e;--fsc:#4f46e5;--soft:#faf9f7}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 72px}
+a{color:var(--acc)}
+.crumb{font-size:.8rem;color:var(--dim);padding:16px 0 0}
+.crumb a{color:var(--dim);text-decoration:none}.crumb a:hover{color:var(--acc)}
+h1{font-size:1.95rem;margin:14px 0 8px;letter-spacing:-.025em;line-height:1.3}
+.lede{color:var(--dim);font-size:.95rem;margin:0 0 4px}
+.upd{color:var(--dim);font-size:.78rem;margin:6px 0 0}
+nav.top{position:sticky;top:0;z-index:30;background:var(--bg);padding:9px 0;margin-top:14px;
+border-bottom:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+nav.top>a{color:var(--dim);text-decoration:none;font-size:.86rem;white-space:nowrap;
+font-weight:500;padding:6px 10px;border-radius:7px}
+nav.top>a:hover,nav.top>a.cur{color:var(--acc);background:var(--soft)}
+/* 用 details 做下拉：不需 JS，鍵盤可操作，手機上也不會因 hover 失效 */
+/* 寬螢幕：面板錨在自己的項目下方，點哪個就在哪個下面展開 */
+nav.top details{position:relative}
+nav.top summary{list-style:none;cursor:pointer;font-size:.86rem;font-weight:500;color:var(--dim);
+padding:6px 10px;border-radius:7px;white-space:nowrap;user-select:none}
+nav.top summary::-webkit-details-marker{display:none}
+nav.top summary::after{content:"▾";margin-left:5px;font-size:.7rem;opacity:.6}
+nav.top summary:hover,nav.top details[open]>summary{color:var(--acc);background:var(--soft)}
+nav.top details[open]>summary::after{content:"▴"}
+/* 一律絕對定位：若改 static，展開時會把同列其他項目擠開、版面錯位 */
+/* 最右邊的分類往左展開，否則視窗接近斷點時面板會凸出畫面右緣 */
+nav.top>details.end>.dd{left:auto;right:0}
+.dd{position:absolute;top:calc(100% + 6px);left:0;min-width:220px;
+max-width:min(340px,calc(100vw - 32px));max-height:70vh;overflow-y:auto;
+background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px;
+box-shadow:0 10px 28px rgba(0,0,0,.14);display:flex;flex-direction:column;gap:1px;z-index:40}
+.dd a{display:block;padding:8px 11px;border-radius:7px;color:var(--fg);text-decoration:none;
+font-size:.87rem;white-space:nowrap}
+.dd a:hover{background:var(--soft);color:var(--acc)}
+.dd a.cur{color:var(--acc);font-weight:600}
+.dd b{display:block;padding:9px 11px 4px;font-size:.72rem;color:var(--dim);font-weight:600;
+letter-spacing:.05em}
+.dd hr{border:0;border-top:1px solid var(--line);margin:5px 0}
+/* 窄螢幕導覽列會換行，面板錨在各自的項目上時很容易被推出畫面左右緣；
+   改為錨定導覽列本身（position:sticky 已建立定位脈絡）並撐滿整列 */
+@media(max-width:767px){
+ nav.top details{position:static}
+ .dd{left:0;right:0;max-width:none;top:calc(100% + 4px)}
+ .dd a{white-space:normal}
+}
+/* 漢堡選單：只在窄螢幕出現，同時把四個分類的下拉收起來 */
+nav.top>details.burger{display:none}
+@media(max-width:767px){
+ nav.top>details.burger{display:block}
+ nav.top>details:not(.burger){display:none}
+}
+/* 漢堡面板內的分類標題 */
+.dd>details>summary{list-style:none;cursor:pointer;user-select:none;
+font-size:.9rem;font-weight:600;color:var(--fg);padding:10px 11px;border-radius:7px;
+display:flex;justify-content:space-between;align-items:center}
+.dd>details>summary::-webkit-details-marker{display:none}
+.dd>details>summary::after{content:"▾";font-size:.7rem;color:var(--dim)}
+.dd>details[open]>summary,.dd>details>summary:hover{color:var(--acc);background:var(--soft)}
+.dd>details[open]>summary::after{content:"▴"}
+/* 就地展開的子清單，沿用 .dd 的排版但不再是浮動面板 */
+.sub{display:flex;flex-direction:column;gap:1px;padding:1px 0 8px 12px}
+.sub a{display:block;padding:8px 11px;border-radius:7px;color:var(--fg);
+text-decoration:none;font-size:.86rem}
+.sub a:hover{background:var(--soft);color:var(--acc)}
+.sub a.cur{color:var(--acc);font-weight:600}
+.sub b{display:block;padding:9px 11px 4px;font-size:.72rem;color:var(--dim);
+font-weight:600;letter-spacing:.05em}
+.sub hr{border:0;border-top:1px solid var(--line);margin:5px 0}
+
+h2{font-size:1.28rem;margin:40px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--acc)}
+h3{font-size:1.02rem;margin:26px 0 8px}
+h3.grp{font-size:.78rem;letter-spacing:.12em;color:var(--dim);font-weight:700;margin:34px 0 0;text-transform:uppercase}
+h3 .tag{font-size:.7rem;font-weight:600;color:var(--dim);margin-left:7px;border:1px solid var(--line);border-radius:5px;padding:1px 5px;vertical-align:middle}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px;margin-top:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 14px;
+display:flex;flex-direction:column;gap:6px}
+.card.hot{border-color:var(--hot)}
+.rt{display:flex;align-items:center;gap:6px;font-size:.96rem;flex-wrap:wrap}
+.rt i{color:var(--dim);font-style:normal}
+.rt em{background:var(--hot);color:#fff;font-size:.66rem;padding:2px 6px;border-radius:4px;font-style:normal;font-weight:700}
+.pr{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.pr span{font-size:.68rem;font-weight:600;margin-left:6px;padding:2px 6px;border-radius:4px}
+.pr .rtx{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc)}
+.pr .owx{background:var(--line);color:var(--dim)}
+.mt{display:flex;gap:6px;flex-wrap:wrap;font-size:.78rem;color:var(--dim)}
+.tg{padding:1px 6px;border-radius:4px;font-size:.69rem;font-weight:600}
+.tg.lcc{background:color-mix(in srgb,var(--lcc) 15%,transparent);color:var(--lcc)}
+.tg.fsc{background:color-mix(in srgb,var(--fsc) 15%,transparent);color:var(--fsc)}
+.tg.other{background:var(--line);color:var(--dim)}
+.tg.gt{background:color-mix(in srgb,#b45309 16%,transparent);color:#b45309}.tg.hol{background:color-mix(in srgb,#be123c 15%,transparent);color:#be123c}
+.gate{font-size:.73rem;color:var(--dim);display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+padding-top:6px;border-top:1px dashed var(--line)}
+.gate b{color:var(--fg);font-weight:600}
+.gate span{padding:1px 6px;border-radius:4px;font-size:.66rem;font-weight:600}
+.gate.ga span{background:color-mix(in srgb,var(--lcc) 18%,transparent);color:var(--lcc)}
+.gate.gb span{background:var(--line);color:var(--dim)}
+.gate.gc span{background:color-mix(in srgb,var(--hot) 14%,transparent);color:var(--hot)}
+.dt{font-size:.81rem;color:var(--dim);font-variant-numeric:tabular-nums}
+.btn{margin-top:auto;display:block;text-align:center;background:var(--acc);color:#fff;
+text-decoration:none;padding:7px;border-radius:7px;font-size:.83rem;font-weight:600}
+.cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:9px;margin-top:12px}
+.ct{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;
+padding:12px 13px;text-decoration:none;color:var(--fg)}
+.ct:hover{border-color:var(--acc)}
+.ct b{display:block;font-size:1rem}
+.ct s{display:block;font-size:.74rem;color:var(--dim);text-decoration:none;margin-top:1px}
+.ct u{display:block;font-size:.95rem;color:var(--acc);text-decoration:none;font-weight:700;margin-top:6px}
+.ct u small{font-weight:400;font-size:.7rem;color:var(--dim)}
+.plinks{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.plink{flex:1 1 190px;text-align:center;border:1px solid var(--line);background:var(--card);
+color:var(--fg);text-decoration:none;padding:11px 13px;border-radius:9px;font-size:.88rem;font-weight:600}
+.plink:hover{border-color:var(--acc);color:var(--acc)}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-weight:600;font-size:.79rem}
+td b{color:var(--acc)}
+.today{background:linear-gradient(180deg,#fff,var(--soft));border:1px solid var(--line);
+ border-top:4px solid var(--acc);border-radius:12px;padding:19px 22px;margin-top:14px}
+.tday{font-size:.79rem;color:var(--dim);letter-spacing:.04em;font-weight:600}
+.tans{font-size:1.3rem;font-weight:800;line-height:1.42;margin-top:8px;letter-spacing:-.02em}
+.tsub{font-size:.93rem;color:var(--dim);line-height:1.7;margin-top:10px}
+.tbuf{font-size:.93rem;line-height:1.7;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.tbuf b{color:var(--acc)}
+.tldr{background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--acc);
+border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
+.tldr ul{margin:0;padding-left:2px}
+.tldr li{margin-bottom:9px;font-size:.94rem;line-height:1.75}
+.tldr li:last-child{margin-bottom:0}
+/* 規格／官方原文的引用塊：原文照抄，cite 放出處或中譯 */
+blockquote.q{margin:14px 0;padding:12px 16px;background:var(--card);
+border-left:3px solid var(--acc);border-radius:0 8px 8px 0;font-size:.9rem;line-height:1.75}
+blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem;color:var(--dim)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
+.tw table{min-width:640px;font-size:.84rem}
+.tw th,.tw td{white-space:nowrap;padding:9px 11px}
+.tw td.win{color:var(--lcc);font-weight:700}
+/* 數字比左欄低、而且低的原因是條件限制時，用暖色標出來 */
+.tw td.warn{color:var(--acc);font-weight:700}
+/* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
+.tw td.nm{white-space:normal;line-height:1.55;min-width:150px;max-width:290px}
+.tw td.dimcell{color:var(--dim);opacity:.55}
+/* 頁內書籤：每頁的 h2 自動收成一排，讓人直接跳到要看的那一段 */
+.toc{margin:16px 0 6px;padding:11px 14px 12px;background:var(--soft);
+border:1px solid var(--line);border-radius:12px}
+.toc>b{display:block;font-size:.76rem;color:var(--dim);font-weight:600;
+margin-bottom:8px;letter-spacing:.02em}
+.toc>div{display:flex;flex-wrap:wrap;gap:7px}
+.toc a{font-size:.82rem;line-height:1.4;color:var(--fg);background:var(--card);
+border:1px solid var(--line);border-radius:999px;padding:5px 11px;
+text-decoration:none;white-space:nowrap}
+.toc a:hover{color:var(--acc);border-color:var(--acc)}
+@media(max-width:560px){.toc a{font-size:.78rem;padding:4px 9px}}
+/* 圖卡燈箱：原本點圖是另開分頁，一次只能看一張，要按上一頁才能看下一張 */
+.lbx{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.93);
+display:none;align-items:center;justify-content:center;padding:46px 16px 0}
+.lbx.on{display:flex}
+.lbx{overscroll-behavior:contain}
+.lbx figure{margin:0;max-width:min(96vw,720px);text-align:center}
+.lbx img{max-width:100%;max-height:76vh;width:auto;height:auto;display:block;
+margin:0 auto;border-radius:8px;background:#fff;transition:opacity .15s}
+.lbx figcaption{color:#fff;padding:11px 4px 10px;font-size:.88rem;line-height:1.5}
+.lbx figcaption b{display:block;font-weight:600}
+.lbx figcaption span{display:block;color:#a8a8a8;font-size:.78rem;margin-top:4px}
+.lbx button{position:absolute;background:rgba(255,255,255,.13);color:#fff;
+border:0;border-radius:999px;cursor:pointer;line-height:1;font-family:inherit;
+-webkit-tap-highlight-color:transparent}
+.lbx .lbc{top:12px;right:12px;width:38px;height:38px;font-size:1.4rem}
+.lbx .lbp,.lbx .lbn{top:50%;margin-top:-32px;width:44px;height:64px;
+font-size:1.9rem;border-radius:10px}
+.lbx .lbp{left:10px}
+.lbx .lbn{right:10px}
+.lbx button:hover{background:rgba(255,255,255,.27)}
+.lbx button[disabled]{opacity:.22;cursor:default}
+/* 圖兩側放不下按鈕時（手機、或很窄的視窗）移到底下，拇指構得到，
+   也不會壓在圖上。放不放得下由 JS 量圖的實際寬度決定，掛 nb 這個 class。 */
+.lbx.nb .lbp,.lbx.nb .lbn{top:auto;bottom:12px;margin-top:0;width:58px;
+height:40px;font-size:1.5rem;left:auto;right:auto}
+.lbx.nb .lbp{left:12px}
+.lbx.nb .lbn{right:12px}
+.lbx.nb figcaption{padding-bottom:58px}
+@media(max-width:560px){
+.lbx{padding:42px 8px 0}
+.lbx img{max-height:66vh}
+}
+/* 導覽列是 sticky，跳過去要留出它的高度，不然標題會被蓋住 */
+html{scroll-behavior:smooth}
+h2[id],h3[id],.thc[id]{scroll-margin-top:72px}
+
+/* 月曆：標出放假、建議請假，三國的假日名稱直接寫在格子裡 */
+.cal{margin:14px 0}
+.calm{margin:0 0 20px}
+.calm>b{display:block;font-size:1rem;margin:0 0 6px}
+.calg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.calg>.wd{font-size:.72rem;color:var(--dim);text-align:center;padding:1px 0 3px}
+.cd{min-height:64px;border:1px solid var(--line);border-radius:6px;padding:3px 4px;
+background:var(--card);font-size:.62rem;line-height:1.4;overflow:hidden}
+.cd.pad{border:0;background:none;min-height:0}
+.cd>i{display:block;font-style:normal;font-weight:700;font-size:.78rem;color:var(--dim)}
+.cd s{display:block;text-decoration:none;white-space:normal;word-break:break-all}
+.cd.we{background:#efeeea}
+.cd.hol{background:#fdecea;border-color:#f3c2b8}
+.cd.hol>i{color:var(--hot)}
+.cd.lv{background:#fff4e6;border-color:var(--acc);border-width:2px;padding:2px 3px}
+.cd.lv>i{color:var(--acc)}
+.cd.mk{background:#eef6fb;border-color:#b9d8ea}
+.cd.gone{opacity:.42}
+.cd .tag{display:inline-block;font-size:.58rem;font-weight:700;color:#fff;
+background:var(--acc);border-radius:3px;padding:0 3px;margin-top:1px}
+.callg{display:flex;flex-wrap:wrap;gap:8px 14px;margin:8px 0 14px;font-size:.78rem;
+color:var(--dim)}
+.callg span{display:flex;align-items:center;gap:5px}
+.callg u{display:inline-block;width:14px;height:14px;border-radius:4px;
+border:1px solid var(--line)}
+@media(max-width:560px){.cd{min-height:56px;font-size:.55rem;padding:2px 2px}
+.cd>i{font-size:.7rem}}
+
+/* 欄位少的表格不要被 min-width 逼出橫向捲動 */
+.tw.narrow table{min-width:0}
+/* 回饋計算機的並排比較表 */
+.cmp{width:100%;border-collapse:collapse}
+.cmp th,.cmp td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;
+ white-space:nowrap;vertical-align:baseline}
+.cmp th:first-child,.cmp td:first-child{text-align:left;color:var(--dim);font-weight:600}
+.cmp thead th{font-weight:700;border-bottom:2px solid var(--line);color:var(--fg)}
+.cmp thead th a{text-decoration:none}
+.cmp b{font-variant-numeric:tabular-nums;font-size:1.06rem}
+.tw td .pw,.cmp .pw{background:var(--acc);color:#fff;font-size:.68rem;padding:1px 6px;border-radius:4px;
+ font-weight:700;margin-right:5px;vertical-align:middle}
+.cmp .pc{font-style:normal;color:var(--hot)}
+.cmp .pp{font-style:normal;font-size:.76rem;color:var(--dim);font-weight:600;margin-left:6px}
+.tw td.lose{color:var(--acc);font-weight:700}
+.tw td.win b,.tw td.lose b{color:inherit}
+.cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
+background:var(--card);border:1px solid var(--line);border-radius:12px;
+text-decoration:none;color:var(--fg)}
+.cta:hover{border-color:var(--acc)}
+.cta .ci{font-size:1.5rem;flex:0 0 auto}
+.cta .ct{flex:1;display:flex;flex-direction:column;gap:2px}
+.cta .ct b{font-size:.98rem;font-weight:700}
+.cta .ct s{text-decoration:none;font-size:.82rem;color:var(--dim)}
+.cta .ca{color:var(--acc);font-weight:700;font-size:1.1rem;flex:0 0 auto}
+.cta .ca.pr{font-size:1.42rem;letter-spacing:-.03em;line-height:1.15;text-align:right}
+.cta .ca.pr small{display:block;font-size:.66rem;font-weight:600;color:var(--dim);letter-spacing:0}
+details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
+margin-top:8px;padding:0}
+details.faq summary{cursor:pointer;padding:13px 15px;font-weight:600;font-size:.95rem;
+list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"＋";color:var(--acc);font-weight:700;flex:0 0 auto}
+details.faq[open] summary::after{content:"－"}
+details.faq summary:hover{color:var(--acc)}
+details.faq>div{padding:0 15px 14px;font-size:.9rem;color:var(--dim);line-height:1.8}
+.sf{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:12px;
+padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.sf label{display:flex;flex-direction:column;gap:5px;font-size:.78rem;color:var(--dim);flex:1 1 150px}
+.sf select,.sf input{font:inherit;font-size:.92rem;padding:9px 10px;border-radius:8px;
+border:1px solid var(--line);background:var(--card);color:var(--fg);width:100%}
+.sf button{font:inherit;font-weight:700;font-size:.92rem;padding:10px 22px;border:0;
+border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
+.sf button:hover{opacity:.9}
+@media(max-width:520px){.sf label{flex:1 1 100%}.sf button{width:100%}}
+.calc{margin-top:12px;padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.calc .sf{margin-top:0;padding:0;background:none;border:0}
+.calc .klv{margin-top:5px;font-size:.82rem}
+.cmp thead th .pp{display:block;margin:2px 0 0;font-weight:600}
+.cres{margin-top:14px;padding:16px 18px;background:var(--card);border:1px solid var(--line);
+ border-radius:10px}
+.cres .cl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+ padding:7px 0;font-size:.95rem;border-bottom:1px dashed var(--line)}
+.cres .cl:last-of-type{border-bottom:0}
+.cres .cl b{font-size:1.16rem;font-variant-numeric:tabular-nums}
+.cres .cl .pw{background:var(--acc);color:#fff;font-size:.7rem;padding:1px 7px;border-radius:4px;
+ font-weight:700;margin-right:4px}
+.cres .cl .pc{font-style:normal;font-size:.72rem;color:var(--hot);margin-left:8px}
+.cres .cl .pp{font-style:normal;font-size:.78rem;color:var(--dim);font-weight:600;margin-left:8px}
+.cres .cv{margin-top:12px;padding-top:12px;border-top:2px solid var(--line);
+ font-size:1.12rem;font-weight:800;line-height:1.5}
+.cres .cv.jp{color:var(--lcc)}.cres .cv.tw{color:var(--acc)}
+.widget{margin:12px 0 0;min-height:60px}
+.widget iframe{max-width:100%;border:0}
+.gatebar{margin:16px 0 0;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
+.disc{font-size:.76rem;color:var(--dim);margin:8px 0 0;line-height:1.6}
+.note{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:.79rem;color:var(--dim);line-height:1.85}
+.note a{color:var(--dim)}
+@media(max-width:520px){h1{font-size:1.5rem}.grid{grid-template-columns:1fr}}</style><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "在航空公司官網用台幣付款，就不會被收海外交易手續費嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不一定。銀行看的是收單行在哪，不是你付哪種幣。玉山銀行的說明把「國外以新臺幣交易（含收單行設於國外特約商店或網路交易）」列為收 1.5% 的情況；中國信託的說法是「只要是在國外或於台灣消費且商家所配合的刷卡機為國外銀行／單位提供，就是跨國交易。」"}}, {"@type": "Question", "name": "怎麼知道某家航空公司的官網算國內還是國外？", "acceptedAnswer": {"@type": "Answer", "text": "航空公司沒有公開自己的收單行，所以只能刷了之後看。第一次在這家航空官網刷完之後，看信用卡帳單或 App 明細上這筆的「交易國別」。是 TW 就是國內，不是 TW 就是國外，之後同一家官網大概都一樣。中國信託的說明也寫到，跨國交易在帳單上「交易國別則會看到非TW的國家」。"}}, {"@type": "Question", "name": "那買機票到底要刷哪張卡？", "acceptedAnswer": {"@type": "Answer", "text": "先確認交易國別。是 TW，不收 1.5%，拿的是這張卡的國內回饋，不是海外回饋；不是 TW，收 1.5%，拿的是這張卡的海外回饋，扣掉 1.5% 才是淨值。目前唯一有逐家航空公司列費率的是國泰世華 CUBE，台灣虎航與國泰航空官網直購各 3.5%。"}}, {"@type": "Question", "name": "酷航用台幣付還是新幣付比較好？", "acceptedAnswer": {"@type": "Answer", "text": "酷航是唯一付款幣別會直接影響費用的。官網寫明用 VISA 付款時，選 TWD、JPY、AUD、THB 要付酷航的付款處理費，其他幣別不用；其他卡別的規則官網收合在別的欄位，這次沒有逐一核對。改用新幣付可以避開處理費，但外幣交易一定算國外，銀行的 1.5% 一定收。用台幣付的那筆，收單行在不在國外沒有公開，所以 1.5% 收不收要看帳單。"}}]}</script><script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2">(function(){var s=document.createElement("script");s.async=1;s.setAttribute("data-cmp-ab","2");s.src='https://tpembars.com/NTcyMTY4.js?t=572168';document.head.appendChild(s);})();</script></head><body><div class="wrap"><div class="crumb"><a href="/">首頁</a> › <a href="/japan-credit-card/">旅日信用卡</a> › <span>買機票刷哪張卡</span></div><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首頁", "item": "https://eric-twhub.github.io/"}, {"@type": "ListItem", "position": 2, "name": "旅日信用卡", "item": "https://eric-twhub.github.io/japan-credit-card/"}, {"@type": "ListItem", "position": 3, "name": "買機票刷哪張卡", "item": null}]}</script><nav class="top"><a href="/" class=cur>首頁</a><a href="/deals/">🔥 機票特價</a><details name="topnav"><summary>✈️ 航班地區</summary><div class="dd"><b>日本地區</b><a href="/okinawa-islands/">沖繩・離島</a><a href="/kyushu/">九州</a><a href="/kansai/">關西</a><a href="/kanto/">關東</a><a href="/chubu/">中部・北陸</a><a href="/hokkaido/">北海道</a><a href="/tohoku/">東北</a><a href="/chugoku/">中國</a><a href="/shikoku/">四國</a><hr><b>台灣出發地</b><a href="/taipei/">從台北出發</a><a href="/taichung/">從台中出發</a><a href="/kaohsiung/">從高雄出發</a><a href="/tainan/">從台南出發</a></div></details><details name="topnav"><summary>🕐 航班類型</summary><div class="dd"><a href="/japan-flight-good-times/">☀️ 早去晚回</a><a href="/deals/">🔥 今日特價</a><a href="/japan-flight-baggage/">🧳 廉航行李費</a><a href="/japan-ski-baggage/">🎿 雪具託運</a><a href="/japan-ski-lift-ticket/">🎟️ 雪票早鳥</a></div></details><details name="topnav"><summary>🧭 行前準備</summary><div class="dd"><b>挑日期</b><a href="/taiwan-holiday-2026/">📅 2026 請假攻略</a><a href="/taiwan-holiday-2027/">📅 2027 請假攻略</a><a href="/japan-holiday-calendar/">📅 三國連假撞期</a><hr><b>訂房與交通</b><a href="/hotel-price-check/">🏨 訂房比價</a><a href="/japan-airport-last-train/">🚉 機場末班車</a><hr><b>上網與門號</b><a href="/japan-esim/">📱 日本 eSIM 比較</a><a href="/japan-esim-native-roaming/">📱 原生還是漫遊</a><a href="/japan-sms-roaming/">✉️ 台灣門號收簡訊</a><hr><b>租車自駕</b><a href="/japan-driving-licence/">🚗 駕照日文譯本</a><a href="/japan-rentacar-noc/">🚗 租車的 NOC</a><a href="/japan-driving-habits/">🚗 開車習慣差在哪</a><hr><b>出事之前</b><a href="/japan-travel-insurance/">🛡️ 旅平險怎麼賠</a><a href="/japan-card-insurance/">💳 刷卡送的保險賠什麼</a><hr><b>新制度</b><a href="/japan-travel-rules/">📋 出境稅與住宿稅</a><a href="/japan-jttp/">🛂 JTTP 快速通關</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a></div></details><details name="topnav"><summary>🛍️ 旅日購物</summary><div class="dd"><a href="/tokyo/street-fashion/">👕 東京潮牌選物店</a><a href="/japan-coupon/">🏷️ 購物折扣總覽</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a><a href="/apple-japan-price/">🍎 台日 Apple 價差</a><a href="/japan-camera-price/">📷 雲台相機台日價差</a><a href="/japan-dyson-price/">💨 日本買 Dyson</a><a href="/japan-panasonic-dryer/">💇 日本買 Panasonic 吹風機</a><a href="/japan-bic-points/">🧮 Bic 點數率怎麼看</a><a href="/iphone-cost/">📉 iPhone 持有成本</a><a href="/iphone-card/">💰 買 iPhone 刷哪張卡</a><hr><b>各店折扣</b><a href="/japan-coupon/matsukiyo/">松本清 matsukiyo</a><a href="/japan-coupon/sundrug/">SUNDRUG 尚都樂客</a><a href="/japan-coupon/daikoku/">大國藥妝 DAIKOKU</a><a href="/japan-coupon/tsuruha/">鶴羽藥妝 TSURUHA</a><a href="/japan-coupon/sapporo-drug/">札幌藥妝</a><a href="/japan-coupon/bic-camera/">Bic Camera</a></div></details><details name="topnav" class=end><summary>💳 旅日信用卡</summary><div class="dd"><a href="/japan-credit-card/">💳 15 張卡比較</a><a href="/japan-card-calculator/">🧮 回饋計算機</a><a href="/japan-airline-card/">✈️ 買機票算國內還是國外</a><hr><b>熱門卡片</b><a href="/japan-credit-card/firstbank-ileo/">第一銀行 iLEO 卡</a><a href="/japan-credit-card/ubot-jiho/">聯邦吉鶴卡</a><a href="/japan-credit-card/ctbc-uniopen/">中信 uniopen 聯名卡</a><a href="/japan-credit-card/sinopac-jcb/">永豐現金回饋 JCB 卡</a><a href="/japan-credit-card/esun-kumamon/">玉山熊本熊卡</a><a href="/japan-credit-card/sinopac-dual/">永豐幣倍卡</a></div></details><a href="/threads-japan/">🔥 日本熱搜</a><details class="burger"><summary>☰ 選單</summary><div class="dd"><details name="burgernav"><summary>✈️ 航班地區</summary><div class="sub"><b>日本地區</b><a href="/okinawa-islands/">沖繩・離島</a><a href="/kyushu/">九州</a><a href="/kansai/">關西</a><a href="/kanto/">關東</a><a href="/chubu/">中部・北陸</a><a href="/hokkaido/">北海道</a><a href="/tohoku/">東北</a><a href="/chugoku/">中國</a><a href="/shikoku/">四國</a><hr><b>台灣出發地</b><a href="/taipei/">從台北出發</a><a href="/taichung/">從台中出發</a><a href="/kaohsiung/">從高雄出發</a><a href="/tainan/">從台南出發</a></div></details><details name="burgernav"><summary>🕐 航班類型</summary><div class="sub"><a href="/japan-flight-good-times/">☀️ 早去晚回</a><a href="/deals/">🔥 今日特價</a><a href="/japan-flight-baggage/">🧳 廉航行李費</a><a href="/japan-ski-baggage/">🎿 雪具託運</a><a href="/japan-ski-lift-ticket/">🎟️ 雪票早鳥</a></div></details><details name="burgernav"><summary>🧭 行前準備</summary><div class="sub"><b>挑日期</b><a href="/taiwan-holiday-2026/">📅 2026 請假攻略</a><a href="/taiwan-holiday-2027/">📅 2027 請假攻略</a><a href="/japan-holiday-calendar/">📅 三國連假撞期</a><hr><b>訂房與交通</b><a href="/hotel-price-check/">🏨 訂房比價</a><a href="/japan-airport-last-train/">🚉 機場末班車</a><hr><b>上網與門號</b><a href="/japan-esim/">📱 日本 eSIM 比較</a><a href="/japan-esim-native-roaming/">📱 原生還是漫遊</a><a href="/japan-sms-roaming/">✉️ 台灣門號收簡訊</a><hr><b>租車自駕</b><a href="/japan-driving-licence/">🚗 駕照日文譯本</a><a href="/japan-rentacar-noc/">🚗 租車的 NOC</a><a href="/japan-driving-habits/">🚗 開車習慣差在哪</a><hr><b>出事之前</b><a href="/japan-travel-insurance/">🛡️ 旅平險怎麼賠</a><a href="/japan-card-insurance/">💳 刷卡送的保險賠什麼</a><hr><b>新制度</b><a href="/japan-travel-rules/">📋 出境稅與住宿稅</a><a href="/japan-jttp/">🛂 JTTP 快速通關</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a></div></details><details name="burgernav"><summary>🛍️ 旅日購物</summary><div class="sub"><a href="/tokyo/street-fashion/">👕 東京潮牌選物店</a><a href="/japan-coupon/">🏷️ 購物折扣總覽</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a><a href="/apple-japan-price/">🍎 台日 Apple 價差</a><a href="/japan-camera-price/">📷 雲台相機台日價差</a><a href="/japan-dyson-price/">💨 日本買 Dyson</a><a href="/japan-panasonic-dryer/">💇 日本買 Panasonic 吹風機</a><a href="/japan-bic-points/">🧮 Bic 點數率怎麼看</a><a href="/iphone-cost/">📉 iPhone 持有成本</a><a href="/iphone-card/">💰 買 iPhone 刷哪張卡</a><hr><b>各店折扣</b><a href="/japan-coupon/matsukiyo/">松本清 matsukiyo</a><a href="/japan-coupon/sundrug/">SUNDRUG 尚都樂客</a><a href="/japan-coupon/daikoku/">大國藥妝 DAIKOKU</a><a href="/japan-coupon/tsuruha/">鶴羽藥妝 TSURUHA</a><a href="/japan-coupon/sapporo-drug/">札幌藥妝</a><a href="/japan-coupon/bic-camera/">Bic Camera</a></div></details><details name="burgernav"><summary>💳 旅日信用卡</summary><div class="sub"><a href="/japan-credit-card/">💳 15 張卡比較</a><a href="/japan-card-calculator/">🧮 回饋計算機</a><a href="/japan-airline-card/">✈️ 買機票算國內還是國外</a><hr><b>熱門卡片</b><a href="/japan-credit-card/firstbank-ileo/">第一銀行 iLEO 卡</a><a href="/japan-credit-card/ubot-jiho/">聯邦吉鶴卡</a><a href="/japan-credit-card/ctbc-uniopen/">中信 uniopen 聯名卡</a><a href="/japan-credit-card/sinopac-jcb/">永豐現金回饋 JCB 卡</a><a href="/japan-credit-card/esun-kumamon/">玉山熊本熊卡</a><a href="/japan-credit-card/sinopac-dual/">永豐幣倍卡</a></div></details></div></details></nav><h1>買機票刷哪張卡，先看這筆算國內還是國外</h1><p class="lede">判斷規則取自發卡行官方說明，航空公司的部分取自各家官網，核對於 2026-10-14</p><div class="today"><div class="tday">海外交易手續費看的是</div><div class="tans">收單行在哪，不是幣別</div><div class="tsub">用台幣付不代表算國內。只要收單行在國外，台幣交易一樣收 1.5%。反過來，外幣交易一定算國外。</div><div class="tbuf">銀行看的是收單行（幫商店收款的銀行）在哪個國家，而沒有一家航空公司公開自己的收單行。所以「這家航空算國內還是國外」沒辦法從官方來源逐家查到，只能刷了之後看帳單。</div></div><div class="toc"><b>這一頁有</b><div><a href="#h-d5d9df">銀行怎麼寫</a><a href="#h-f2e68b">怎麼自己確認</a><a href="#h-acab76">兩種結果，刷卡的算法不一樣</a><a href="#h-bd5c42">各航空公司官網查得到的部分</a><a href="#h-bafa81">酷航：付款幣別會直接影響費用</a><a href="#h-2e33f7">相關頁面</a></div></div><h2 id="h-d5d9df">銀行怎麼寫</h2><div class="tldr"><ul><li><b>玉山銀行。</b>收 1.5% 的情況包括「國外以新臺幣交易（含收單行設於國外特約商店或網路交易）」，VISA、MasterCard、JCB 皆為 1.5%。（<a href="https://www.esunbank.com/zh-tw/about/faq/content?q=credit_card%2F018" rel="nofollow noopener" target="_blank">玉山銀行・持信用卡在國外消費會收取什麼費用</a>）</li><li><b>中國信託。</b>「只要是在國外或於台灣消費且商家所配合的刷卡機為國外銀行／單位提供，就是跨國交易。」（<a href="https://service.ctbcbank.com/FAQ/Page01?kmid=4724" rel="nofollow noopener" target="_blank">中國信託・國外交易手續費如何收取</a>）</li><li><b>結帳時改成台幣也一樣。</b>「若商店使用刷卡當下匯率轉換為新臺幣結帳「DCC（動態貨幣轉換）機制」，您仍須加付1.5%之國外交易服務費。」（玉山銀行，同上）</li></ul></div><h2 id="h-f2e68b">怎麼自己確認</h2><p class="lede">第一次在這家航空官網刷完之後，看信用卡帳單或 App 明細上這筆的「交易國別」。是 TW 就是國內，不是 TW 就是國外，之後同一家官網大概都一樣。中國信託的說明也是這樣講：「您在帳單中的交易國別則會看到非TW的國家。」</p><h2 id="h-acab76">兩種結果，刷卡的算法不一樣</h2><div class="tw"><table><thead><tr><th>　</th><th>交易國別是 TW</th><th>交易國別不是 TW</th></tr></thead><tbody><tr><td><b>手續費</b></td><td class="win">不收 1.5%</td><td class="lose">收 1.5%</td></tr><tr><td><b>回饋</b></td><td>拿的是這張卡的國內回饋，不是海外回饋</td><td>拿的是這張卡的海外回饋，扣掉 1.5% 才是淨值</td></tr></tbody></table></div><div class="tldr"><ul><li><b>算國外的話。</b>15 張卡各有一頁機票頁，算的就是這條路：海外回饋減 1.5%。從<a href="/japan-credit-card/">旅日信用卡比較</a>點進任一張卡，再進「買機票」那一頁。</li><li><b>算國內的話。</b>本站 15 張卡的資料只收日本與海外費率，沒有收國內費率，所以這條路沒辦法替你逐卡算出淨值。看發卡行的國內一般消費回饋。</li></ul></div><h2 id="h-bd5c42">各航空公司官網查得到的部分</h2><p class="lede">只列官網付款頁查得到東西、或有發卡行逐家列費率的航空公司。長榮、華航、星宇、日本航空、全日空、捷星日本的付款幣別與付款費用，這次沒有逐家查官網，所以不列，不是沒有。</p><div class="tw"><table><thead><tr><th>航空公司</th><th>官網能用台幣付嗎</th><th>跟付款幣別有關的收費</th><th>有發卡行針對這家加碼嗎</th></tr></thead><tbody><tr><td><b>台灣虎航</b><br><small style="color:var(--dim)">IT　總部在台灣</small></td><td>可以<br><small style="color:var(--dim)"><a href="https://booking.tigerairtw.com/" rel="nofollow noopener" target="_blank">台灣虎航訂位系統（以新台幣報價）</a></small></td><td class="dimcell">官網費用頁只列行李費用，沒有跟付款幣別或卡別有關的收費</td><td class="win">國泰世華 CUBE 秋日遊 3.5%（限臨櫃、官網或航空公司 App 購票，2026/10/1–11/30，消費當日要切換方案）<br><small style="color:var(--dim)"><a href="/japan-credit-card/cathay-cube/flights/">這張卡的機票頁</a></small></td></tr><tr><td><b>樂桃航空</b><br><small style="color:var(--dim)">MM　總部在日本</small></td><td>可以<br><small style="color:var(--dim)">官網列出的信用卡付款幣別有 JPY、KRW、CNY、TWD、HKD、THB、SGD 七種。另有限台灣國內使用的 AFTEE 先享後付（TWD）。</small><br><small style="color:var(--dim)"><a href="https://www.flypeach.com/tw/lm/fares/payment" rel="nofollow noopener" target="_blank">樂桃航空・付款方式</a></small></td><td class="dimcell">付款方式頁沒有提到跟幣別有關的手續費，也沒有提到發卡行的海外手續費</td><td class="dimcell">沒有發卡行逐家列費率</td></tr><tr><td><b>酷航</b><br><small style="color:var(--dim)">TR　總部在新加坡</small></td><td>可以<br><small style="color:var(--dim)"><a href="https://www.flyscoot.com/zhtw/plan/booking-your-flight/payment-options" rel="nofollow noopener" target="_blank">酷航・付款方式</a></small></td><td>用 VISA 付款時，選 AUD、JPY、TWD、THB 要付付款處理費，其他幣別不用<br><small style="color:var(--dim)">官網寫明從台灣出發的航班「視您選擇的付款方式而定，可能會收取無法退款的手續費」，金額在確認付款前顯示。這筆是酷航收的，跟發卡行的 1.5% 是兩回事。</small></td><td class="dimcell">沒有發卡行逐家列費率</td></tr><tr><td><b>國泰航空</b><br><small style="color:var(--dim)">CX　總部在香港</small></td><td class="dimcell">未查</td><td class="dimcell">未查</td><td class="win">國泰世華 CUBE 秋日遊 3.5%（限臨櫃、官網或航空公司 App 購票，2026/10/1–11/30，消費當日要切換方案）<br><small style="color:var(--dim)"><a href="/japan-credit-card/cathay-cube/flights/">這張卡的機票頁</a></small></td></tr></tbody></table></div><p class="disc">「能用台幣付」只代表結帳幣別，不代表算國內。收單行在哪，每一家都沒有公開。</p><h2 id="h-bafa81">酷航：付款幣別會直接影響費用</h2><p class="lede">酷航是唯一付款幣別會直接影響費用的。官網寫明用 VISA 付款時，選 TWD、JPY、AUD、THB 要付酷航的付款處理費，其他幣別不用；其他卡別的規則官網收合在別的欄位，這次沒有逐一核對。改用新幣付可以避開處理費，但外幣交易一定算國外，銀行的 1.5% 一定收。用台幣付的那筆，收單行在不在國外沒有公開，所以 1.5% 收不收要看帳單。</p><p class="disc">兩邊都可能有一筆，結帳前看清楚酷航顯示的處理費金額，再跟 1.5% 比。</p><a class="cta" href="https://tw.trip.com/flights/showfarefirst?dcity=tpe&amp;acity=tyo&amp;ddate=2026-10-29&amp;rdate=2026-11-12&amp;triptype=rt&amp;class=y&amp;quantity=1&amp;locale=zh-TW&amp;curr=TWD&amp;Allianceid=10585044&amp;SID=331341333&amp;trip_sub1=tyo&amp;trip_sub3=D19828713" target="_blank" rel="nofollow noopener sponsored"><span class="ci">✈️</span><span class="ct"><b>看今天的便宜機票</b><s>台北飛東京・樂桃航空・2026-10-29 出發・來回含稅　→ 到 Trip.com 查這天</s></span><span class="ca pr">NT$6,578<small>近期最低</small></span></a><h2 id="h-2e33f7">相關頁面</h2><div class="cities"><a class="ct" href="/japan-credit-card/"><b>💳 旅日信用卡比較</b><s>15 張卡各有一頁機票頁</s></a><a class="ct" href="/japan-credit-card/cathay-cube/flights/"><b>✈️ CUBE 買機票</b><s>唯一逐家列航空費率的卡</s></a><a class="ct" href="/deals/"><b>🔥 今日機票特價</b><s>每天更新，附刷卡建議</s></a><a class="ct" href="/japan-bic-points/"><b>🧮 Bic 點數率怎麼看</b><s>免稅結帳沒有點數</s></a></div><p class="disc">判斷規則引自玉山銀行與中國信託的官方說明，各發卡行條款可能不同，請以你自己那張卡的約定條款為準。航空公司的付款規則取自各家官網，核對於 2026-10-14。本頁為公開資訊整理，非理財建議。</p><p class="note">
+票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
+實際訂購由合作平台完成：機票／住宿／行程與一日遊／交通票／租車／機場接送 Trip.com、景點門票 KKday、網卡與 eSIM Klook。<br>
+本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
+最後更新 2026-10-14 21:39　·　<a href="/">回首頁</a>
+</p></div><script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toLowerCase(),a=f.dep.value,b=f.ret.value,t=b?"rt":"ow",u="https://tw.trip.com/flights/showfarefirst?dcity="+o+"&acity="+d+"&ddate="+a+(b?"&rdate="+b:"")+"&triptype="+t+"&class=y&quantity=1&locale=zh-TW&curr=TWD"+"&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1="+d;window.open(u,"_blank","noopener");return false;}</script><script>(function(){var n=document.querySelector("nav.top");if(!n)return;var d=[].slice.call(n.querySelectorAll(":scope>details"));function shut(x){d.forEach(function(o){if(o!==x)o.open=false})}d.forEach(function(o){o.addEventListener("toggle",function(){if(o.open)shut(o)})});document.addEventListener("click",function(e){if(!n.contains(e.target))shut(null);else if(e.target.closest&&e.target.closest(".dd a"))shut(null)});document.addEventListener("keydown",function(e){if(e.key==="Escape")shut(null)});})();</script><script>(function(){var L=[].slice.call(document.querySelectorAll('a[href$=".png"]')).filter(function(a){return a.querySelector("img")});if(!L.length)return;var gs=[],G=[];L.forEach(function(a){var p=a.parentElement,i=gs.indexOf(p);if(i<0){i=gs.length;gs.push(p);G.push([])}G[i].push(a);a.setAttribute("data-g",i);a.setAttribute("data-i",G[i].length-1)});var box,im,tt,nu,pv,nx,cur=[],at=0,back=null;function cap(a){var b=a.querySelector("b");return b?b.textContent:(a.querySelector("img").getAttribute("alt")||"")}function pre(i){if(cur[i]){var x=new Image();x.src=cur[i].href}}function show(i){at=i;var a=cur[i];im.style.opacity="0";im.onload=function(){im.style.opacity="1";place()};im.src=a.href;if(im.complete){im.style.opacity="1";place()}im.alt=a.querySelector("img").getAttribute("alt")||"";tt.textContent=cap(a);nu.textContent=(i+1)+" / "+cur.length;pv.disabled=(i===0);nx.disabled=(i===cur.length-1);pv.style.display=nx.style.display=(cur.length<2?"none":"");pre(i-1);pre(i+1)}function go(d){var i=at+d;if(i>=0&&i<cur.length)show(i)}function place(){var r=im.getBoundingClientRect();if(!r.width)return;if(r.left<62||innerWidth-r.right<62){box.classList.add("nb");pv.style.left="";nx.style.right="";return}box.classList.remove("nb");pv.style.left=Math.round(r.left-58)+"px";nx.style.right=Math.round(innerWidth-r.right-58)+"px"}var ky=0;function lock(){ky=window.pageYOffset;var b=document.body.style;b.position="fixed";b.top=(-ky)+"px";b.left="0";b.width="100%"}function unlock(){var b=document.body.style;b.position="";b.top="";b.left="";b.width="";var h=document.documentElement.style.scrollBehavior;document.documentElement.style.scrollBehavior="auto";window.scrollTo(0,ky);document.documentElement.style.scrollBehavior=h}function shut(){box.className="lbx";unlock();im.src="";if(back)try{back.focus({preventScroll:true})}catch(e){back.focus()}back=null}function build(){box=document.createElement("div");box.className="lbx";box.setAttribute("role","dialog");box.setAttribute("aria-modal","true");box.setAttribute("aria-label","圖卡");box.innerHTML='<button class="lbc" aria-label="關閉">\u00d7</button>'+'<button class="lbp" aria-label="上一張">\u2039</button>'+'<button class="lbn" aria-label="下一張">\u203a</button>'+'<figure><img alt=""><figcaption><b></b><span></span>'+'</figcaption></figure>';document.body.appendChild(box);im=box.querySelector("img");tt=box.querySelector("figcaption b");nu=box.querySelector("figcaption span");pv=box.querySelector(".lbp");nx=box.querySelector(".lbn");box.querySelector(".lbc").onclick=shut;pv.onclick=function(e){e.stopPropagation();go(-1)};nx.onclick=function(e){e.stopPropagation();go(1)};box.addEventListener("click",function(e){if(e.target===box||e.target.tagName==="FIGURE")shut()});var sx=null;box.addEventListener("touchstart",function(e){sx=e.touches[0].clientX},{passive:true});box.addEventListener("touchend",function(e){if(sx===null)return;var d=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(d)>45)go(d<0?1:-1)},{passive:true});addEventListener("resize",function(){if(box.className.indexOf("on")>=0)place()});document.addEventListener("keydown",function(e){if(box.className.indexOf("on")<0)return;if(e.key==="Escape")shut();else if(e.key==="ArrowLeft")go(-1);else if(e.key==="ArrowRight")go(1)})}document.addEventListener("click",function(e){var a=e.target.closest?e.target.closest('a[data-g]'):null;if(!a||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;e.preventDefault();if(!box)build();back=a;cur=G[+a.getAttribute("data-g")];lock();box.className="lbx on";show(+a.getAttribute("data-i"));box.querySelector(".lbc").focus()});})();</script></body></html>
