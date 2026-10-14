@@ -26,12 +26,17 @@ FORM = {'tap': ('點開條碼', '官方禁止截圖，要現場點開啟用'),
         'counter': ('櫃台換紙本', '到店內服務台憑護照換')}
 
 
+def _coupon_stores(d):
+    """有折價券的店。kind == 'card' 是沒有折價券、只比刷卡回饋的品牌，不放進折價券圖卡。"""
+    return [s for s in d['stores'] if s.get('kind') != 'card']
+
+
 def fingerprint(d):
     """圖卡真正用到的欄位的指紋。"""
     pay = [[s.get(k) for k in ('name', 'jp', 'cat', 'rate', 'max', 'tax_min',
                                'form', 'expires', 'tiers', 'note', 'combo', 'src')]
            + [s.get('steps'), s.get('watch')]
-           for s in d['stores']]
+           for s in _coupon_stores(d)]
     pay.append([d['checked'], d['order'], d['tax_note']])
     return hashlib.sha1(json.dumps(pay, ensure_ascii=False,
                                    sort_keys=True).encode('utf-8')).hexdigest()[:12]
@@ -155,7 +160,7 @@ def yen(v):
 
 def build(d, today):
     n = 16
-    sts = d['stores']
+    sts = _coupon_stores(d)
     fnote = f'發券頁逐家查證於 {d["checked"]}'
     out = []
 
