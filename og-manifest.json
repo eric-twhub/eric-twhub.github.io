@@ -146,20 +146,20 @@
   {
    "slug": "deals-2026-10-14-taipei-okinawa",
    "url": "/deals/2026-10-14-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/02 出發",
-   "title": "台北飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/02 出發"
+   "h1": "台北飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/10 出發",
+   "title": "台北飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/10 出發"
   },
   {
    "slug": "deals-2026-10-14-kaohsiung-okinawa",
    "url": "/deals/2026-10-14-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$5,516 來回含稅｜台灣虎航 11/03 出發",
-   "title": "高雄飛沖繩 NT$5,516 來回含稅｜台灣虎航 11/03 出發"
+   "h1": "高雄飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/17 出發",
+   "title": "高雄飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/17 出發"
   },
   {
    "slug": "deals-2026-10-14-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-10-14-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,033",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,033"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,633",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,633"
   },
   {
    "slug": "apple-japan-price",
@@ -252,6 +252,12 @@
    "title": "永豐幣倍卡日本回饋怎麼算？最高 8.0% 的上限與登錄方式"
   },
   {
+   "slug": "japan-credit-card-sinopac-dual-shopping",
+   "url": "/japan-credit-card/sinopac-dual/shopping/",
+   "h1": "永豐幣倍卡在日本哪些店刷最划算？",
+   "title": "永豐幣倍卡在日本購物回饋多少？14 家店實付價試算"
+  },
+  {
    "slug": "japan-credit-card-ctbc-linepay",
    "url": "/japan-credit-card/ctbc-linepay/",
    "h1": "中信 LINE Pay 卡　日本回饋怎麼算？",
@@ -302,86 +308,86 @@
   {
    "slug": "japan-coupon-matsukiyo",
    "url": "/japan-coupon/matsukiyo/",
-   "h1": "松本清 matsukiyo優惠券怎麼用？",
-   "title": "松本清 matsukiyo優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在松本清 matsukiyo 刷哪張卡最划算？",
+   "title": "松本清 matsukiyo 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-sundrug",
    "url": "/japan-coupon/sundrug/",
-   "h1": "SUNDRUG 尚都樂客優惠券怎麼用？",
-   "title": "SUNDRUG 尚都樂客優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在SUNDRUG 尚都樂客 刷哪張卡最划算？",
+   "title": "SUNDRUG 尚都樂客 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-daikoku",
    "url": "/japan-coupon/daikoku/",
-   "h1": "大國藥妝 DAIKOKU優惠券怎麼用？",
-   "title": "大國藥妝 DAIKOKU優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在大國藥妝 DAIKOKU 刷哪張卡最划算？",
+   "title": "大國藥妝 DAIKOKU 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-tsuruha",
    "url": "/japan-coupon/tsuruha/",
-   "h1": "鶴羽藥妝 TSURUHA優惠券怎麼用？",
-   "title": "鶴羽藥妝 TSURUHA優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在鶴羽藥妝 TSURUHA 刷哪張卡最划算？",
+   "title": "鶴羽藥妝 TSURUHA 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-sapporo-drug",
    "url": "/japan-coupon/sapporo-drug/",
-   "h1": "札幌藥妝優惠券怎麼用？",
-   "title": "札幌藥妝優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在札幌藥妝 刷哪張卡最划算？",
+   "title": "札幌藥妝 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-bic-camera",
    "url": "/japan-coupon/bic-camera/",
-   "h1": "Bic Camera優惠券怎麼用？",
-   "title": "Bic Camera優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在Bic Camera 刷哪張卡最划算？",
+   "title": "Bic Camera 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-edion",
    "url": "/japan-coupon/edion/",
-   "h1": "愛電王 EDION優惠券怎麼用？",
-   "title": "愛電王 EDION優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在愛電王 EDION 刷哪張卡最划算？",
+   "title": "愛電王 EDION 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-yamada",
    "url": "/japan-coupon/yamada/",
-   "h1": "YAMADA 山田電機優惠券怎麼用？",
-   "title": "YAMADA 山田電機優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在YAMADA 山田電機 刷哪張卡最划算？",
+   "title": "YAMADA 山田電機 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-laox",
    "url": "/japan-coupon/laox/",
-   "h1": "LAOX優惠券怎麼用？",
-   "title": "LAOX優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在LAOX 刷哪張卡最划算？",
+   "title": "LAOX 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-takeya",
    "url": "/japan-coupon/takeya/",
-   "h1": "多慶屋 TAKEYA優惠券怎麼用？",
-   "title": "多慶屋 TAKEYA優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在多慶屋 TAKEYA 刷哪張卡最划算？",
+   "title": "多慶屋 TAKEYA 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-don-quijote",
    "url": "/japan-coupon/don-quijote/",
-   "h1": "唐吉訶德 驚安殿堂優惠券怎麼用？",
-   "title": "唐吉訶德 驚安殿堂優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在唐吉訶德 驚安殿堂 刷哪張卡最划算？",
+   "title": "唐吉訶德 驚安殿堂 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-alpen",
    "url": "/japan-coupon/alpen/",
-   "h1": "Alpen 運動用品優惠券怎麼用？",
-   "title": "Alpen 運動用品優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在Alpen 運動用品 刷哪張卡最划算？",
+   "title": "Alpen 運動用品 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-daimaru",
    "url": "/japan-coupon/daimaru/",
-   "h1": "大丸・松坂屋 DAIMARU優惠券怎麼用？",
-   "title": "大丸・松坂屋 DAIMARU優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在大丸・松坂屋 DAIMARU 刷哪張卡最划算？",
+   "title": "大丸・松坂屋 DAIMARU 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "japan-coupon-cosmos",
    "url": "/japan-coupon/cosmos/",
-   "h1": "COSMOS 藥品優惠券怎麼用？",
-   "title": "COSMOS 藥品優惠券怎麼用？折扣幅度、免稅併用與實付價試算"
+   "h1": "在COSMOS 藥品 刷哪張卡最划算？",
+   "title": "COSMOS 藥品 刷哪張卡最划算？15 張卡回饋與實付價試算"
   },
   {
    "slug": "tokyo-hostel",
