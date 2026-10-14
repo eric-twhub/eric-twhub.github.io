@@ -1333,7 +1333,8 @@ def topnav(cur=''):
     _cd = json.load(open('cards.json', encoding='utf-8'))['cards'] \
         if os.path.exists('cards.json') else []
     card = (link('/japan-credit-card/', f'💳 {len(_cd) or ""} 張卡比較'.replace('  ', ' '))
-            + link('/japan-card-calculator/', '🧮 回饋計算機'))
+            + link('/japan-card-calculator/', '🧮 回饋計算機')
+            + link('/japan-airline-card/', '✈️ 買機票算國內還是國外'))
     if _cd:
         card += '<hr><b>熱門卡片</b>' + ''.join(
             link(f'/japan-credit-card/{c["slug"]}/', c['name'])
@@ -9613,6 +9614,146 @@ if os.path.exists('bic-points.json'):
       + foot())
     pages.append(('/japan-bic-points/', 0.8))
 
+# ---------- 買機票刷哪張卡：先看這家航空算國內還是國外 ----------
+# 原本想做成「航空公司 × 卡片」的對照表，查下去發現做不到：銀行看的是收單行
+# 在哪，而沒有一家航空公司公開自己的收單行。所以這頁的主軸改成判斷規則
+# 與自己確認的方法，逐家表只列官網查得到的部分，其餘標未查。
+if os.path.exists('airline-card.json'):
+    AC = json.load(open('airline-card.json', encoding='utf-8'))
+    _ar = AC['rule']; _ao = AC['outcomes']; _asc = AC['scoot_case']
+
+    def _acell(v, src=None, src_name=None, note=None):
+        if v is None:
+            return '<td class="dimcell">未查</td>'
+        body = html.escape(v)
+        if note:
+            body += SMALL + html.escape(note) + '</small>'
+        if src:
+            body += (SMALL + f'<a href="{src}" rel="nofollow noopener" target="_blank">'
+                     + html.escape(src_name or '來源') + '</a></small>')
+        return '<td>' + body + '</td>'
+
+    _arow = ''
+    for a in AC['airlines']:
+        card = ('<td class="dimcell">沒有發卡行逐家列費率</td>' if not a.get('card') else
+                '<td class="win">' + html.escape(a['card'])
+                + (f'{SMALL}<a href="{U("/japan-credit-card/" + a["card_slug"] + "/flights/")}">'
+                   f'這張卡的機票頁</a></small>' if a.get('card_slug') else '') + '</td>')
+        fx = (_acell(a['fx_fee'], note=a.get('fx_fee_note')) if a.get('fx_fee')
+              else ('<td class="dimcell">' + html.escape(a['fx_fee_note']) + '</td>'
+                    if a.get('fx_fee_note') else '<td class="dimcell">未查</td>'))
+        _arow += ('<tr><td><b>' + html.escape(a['name']) + '</b>' + SMALL
+                  + html.escape(a['code']) + '　總部在' + html.escape(a['hq']) + '</small></td>'
+                  + _acell(a['twd'], a.get('twd_src'), a.get('twd_src_name'), a.get('twd_note'))
+                  + fx + card + '</tr>')
+
+    _afaq = [
+        ('在航空公司官網用台幣付款，就不會被收海外交易手續費嗎？',
+         f'不一定。銀行看的是收單行在哪，不是你付哪種幣。玉山銀行的說明把'
+         f'「{_ar["esun_quote"]}」列為收 1.5% 的情況；中國信託的說法是'
+         f'「{_ar["ctbc_quote"]}」'),
+        ('怎麼知道某家航空公司的官網算國內還是國外？',
+         f'航空公司沒有公開自己的收單行，所以只能刷了之後看。{_ar["how_to_check"]}'
+         f'中國信託的說明也寫到，跨國交易在帳單上「交易國別則會看到非TW的國家」。'),
+        ('那買機票到底要刷哪張卡？',
+         f'先確認交易國別。是 TW，{_ao["domestic"]["fee"]}，'
+         f'{_ao["domestic"]["reward"]}；不是 TW，{_ao["foreign"]["fee"]}，'
+         f'{_ao["foreign"]["reward"]}。目前唯一有逐家航空公司列費率的是國泰世華 CUBE，'
+         f'台灣虎航與國泰航空官網直購各 3.5%。'),
+        ('酷航用台幣付還是新幣付比較好？',
+         f'{_asc["_說明"]}'),
+    ]
+    _afaq_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                       for q, a in _afaq]}, ensure_ascii=False)
+
+    _att = '買機票刷哪張卡？先看這家航空算國內還是國外（台幣付也可能收 1.5%）'
+    _atd = ('在航空公司官網買機票，海外交易手續費收不收，看的是收單行在哪，'
+            '不是付款幣別，用台幣付也可能被收 1.5%。附銀行官方說明、自己確認的方法，'
+            '以及台灣虎航、樂桃、酷航、國泰航空官網查得到的付款規則。')
+
+    write('japan-airline-card/index.html',
+      head(_att, _atd, 'japan-airline-card/',
+           '<script type="application/ld+json">' + _afaq_ld + '</script>')
+      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
+                ('買機票刷哪張卡', None)])
+      + topnav()
+      + '<h1>買機票刷哪張卡，先看這筆算國內還是國外</h1>'
+      + f'<p class="lede">判斷規則取自發卡行官方說明，航空公司的部分取自各家官網，'
+        f'核對於 {AC["checked"]}</p>'
+      + '<div class="today">'
+        '<div class="tday">海外交易手續費看的是</div>'
+        '<div class="tans">收單行在哪，不是幣別</div>'
+        f'<div class="tsub">{html.escape(_ar["zh"])}</div>'
+        f'<div class="tbuf">{html.escape(AC["_為什麼不能逐家判定"])}</div></div>'
+
+      + '<h2>銀行怎麼寫</h2>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>玉山銀行。</b>收 1.5% 的情況包括「{html.escape(_ar["esun_quote"])}」，'
+        f'{html.escape(_ar["esun_rate"])}。'
+        f'（<a href="{_ar["esun_src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_ar["esun_src_name"])}</a>）</li>'
+        f'<li><b>中國信託。</b>「{html.escape(_ar["ctbc_quote"])}」'
+        f'（<a href="{_ar["ctbc_src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_ar["ctbc_src_name"])}</a>）</li>'
+        f'<li><b>結帳時改成台幣也一樣。</b>「{html.escape(_ar["dcc_quote"])}」（玉山銀行，同上）</li>'
+        '</ul></div>'
+
+      + '<h2>怎麼自己確認</h2>'
+      + f'<p class="lede">{html.escape(_ar["how_to_check"])}'
+        f'中國信託的說明也是這樣講：「'
+        f'{html.escape(_ar["ctbc_statement"])}」</p>'
+
+      + '<h2>兩種結果，刷卡的算法不一樣</h2>'
+      + '<div class="tw"><table><thead><tr><th>　</th>'
+        f'<th>{html.escape(_ao["domestic"]["name"])}</th>'
+        f'<th>{html.escape(_ao["foreign"]["name"])}</th></tr></thead><tbody>'
+      + f'<tr><td><b>手續費</b></td><td class="win">{html.escape(_ao["domestic"]["fee"])}</td>'
+        f'<td class="lose">{html.escape(_ao["foreign"]["fee"])}</td></tr>'
+      + f'<tr><td><b>回饋</b></td><td>{html.escape(_ao["domestic"]["reward"])}</td>'
+        f'<td>{html.escape(_ao["foreign"]["reward"])}</td></tr>'
+      + '</tbody></table></div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>算國外的話。</b>{html.escape(_ao["foreign"]["_本站有的資料"])}'
+        f'從<a href="{U("/japan-credit-card/")}">旅日信用卡比較</a>點進任一張卡，'
+        f'再進「買機票」那一頁。</li>'
+        f'<li><b>算國內的話。</b>{html.escape(_ao["domestic"]["_本站沒有的資料"])}</li>'
+        '</ul></div>'
+
+      + '<h2>各航空公司官網查得到的部分</h2>'
+      + f'<p class="lede">{html.escape(AC["_airlines_只列這幾家的原因"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>航空公司</th>'
+        '<th>官網能用台幣付嗎</th><th>跟付款幣別有關的收費</th>'
+        '<th>有發卡行針對這家加碼嗎</th></tr></thead><tbody>'
+      + _arow + '</tbody></table></div>'
+      + '<p class="disc">「能用台幣付」只代表結帳幣別，不代表算國內。'
+        '收單行在哪，每一家都沒有公開。</p>'
+
+      + '<h2>酷航：付款幣別會直接影響費用</h2>'
+      + f'<p class="lede">{html.escape(_asc["_說明"])}</p>'
+      + f'<p class="disc">{html.escape(_asc["zh"])}</p>'
+
+      + fare_cta('tokyo', '看今天的便宜機票')
+
+      + '<h2>相關頁面</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
+        f'<s>15 張卡各有一頁機票頁</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/cathay-cube/flights/")}">'
+        f'<b>✈️ CUBE 買機票</b><s>唯一逐家列航空費率的卡</s></a>'
+      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日機票特價</b>'
+        f'<s>每天更新，附刷卡建議</s></a>'
+      + f'<a class="ct" href="{U("/japan-bic-points/")}"><b>🧮 Bic 點數率怎麼看</b>'
+        f'<s>免稅結帳沒有點數</s></a></div>'
+
+      + f'<p class="disc">判斷規則引自玉山銀行與中國信託的官方說明，'
+        f'各發卡行條款可能不同，請以你自己那張卡的約定條款為準。'
+        f'航空公司的付款規則取自各家官網，核對於 {AC["checked"]}。'
+        f'本頁為公開資訊整理，非理財建議。</p>'
+      + foot())
+    pages.append(('/japan-airline-card/', 0.8))
+
     # ── iPhone 持有成本：用台灣實際二手回收行情攤提 ──────────────
     # 網路上談「持有成本」多半自己假設一個殘值，數字沒有來源。
     # 這裡改成反過來做：拿收購商今天公開的回收報價，除以該機種當年的
@@ -11306,7 +11447,9 @@ if os.path.exists('cards.json'):
               + f'<a class="ct" href="{U("/japan-credit-card/"+c["slug"]+"/shopping/")}">'
                 f'<b>在日本哪些店刷最划算</b><s>21 家店實付價</s></a>'
               + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日機票特價</b>'
-                f'<s>每天更新，附刷卡建議</s></a></div>'
+                f'<s>每天更新，附刷卡建議</s></a>'
+              + f'<a class="ct" href="{U("/japan-airline-card/")}"><b>🧾 這筆算國內還是國外</b>'
+                f'<s>台幣付也可能收 1.5%</s></a></div>'
               + f'<p class="disc">本頁為公開資訊整理，非理財建議。'
                 f'條件查證於 {CD["checked"]}，來源：'
                 f'<a href="{html.escape(c["src"])}" target="_blank" rel="noopener nofollow">'
