@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-24",
+ "checked": "2026-10-14",
  "fx_fee": {
   "typical": 1.5,
   "amex": 2.0,
@@ -108,31 +108,55 @@
    "name": "國泰世華 CUBE 卡",
    "slug": "cathay-cube",
    "plan": "趣旅行",
-   "period": "依國泰世華公告",
-   "src": "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/product/japancoupons/index.html",
-   "src_name": "國泰世華官方活動頁",
-   "good": "已經有國泰台幣帳戶、會登入 CUBE App 並設定自動扣繳卡款的人：這樣才拿得到 3% 以上。",
-   "bad": "只辦卡、沒有國泰帳戶的人。權益等級只有 2%，低於台新的 3.3%。",
+   "period": "秋日遊 2026/10/1 – 2026/11/30；其餘方案依國泰世華公告",
+   "src": "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/product/japanrewards/index.html",
+   "src_name": "國泰世華・CUBE 秋日遊活動頁",
+   "good": "2026/10/1 到 11/30 之間要去日本的人，不管有沒有國泰帳戶：切到「秋日遊」就是 3.5%，在 UNIQLO、Loft、寶可夢中心這類指定店是 5%。",
+   "bad": "11/30 之後才出發的人。秋日遊結束後回到「趣旅行」，只持卡沒有國泰帳戶的話只有 2%。",
    "steps": [
-    "在 CUBE App 於消費當日切換至「趣旅行」",
+    "在 CUBE App 於消費當日切換至「秋日遊」（2026/10/1 到 11/30）",
     "先訂後付或到店付款者，要在實際扣款當日維持切換狀態",
-    "確認自己的權益等級，等級不同回饋差很多"
+    "秋日遊的日本回饋不看權益等級，但期間結束後回到趣旅行就要看等級"
    ],
    "exclude": [
-    "Agoda、Airbnb、Expedia 等海外訂房平台有授權時間差，建議提前切換並多留幾天"
+    "Agoda、Airbnb、Expedia 等海外訂房平台有授權時間差，建議提前切換並多留幾天",
+    "秋日遊的日本店家回饋限當地實體門市，不含百貨與商場內的門市、店中櫃、期間限定快閃店、禮品卡購買或儲值、第三方支付、線上購物，以及線上預訂到現場取貨",
+    "航空公司回饋限臨櫃、官網或航空公司 App 購票，不含旅行社、線上旅遊平台、機上免稅品、貴賓室、哩程相關費用"
    ],
-   "base": 3.3,
-   "base_note": "海外實體消費小樹點回饋，無上限。依權益等級為 2%（Level 1）／3%（Level 2）／3.3%（Level 3），且需在消費當日於 CUBE App 切到「趣旅行」。另有「固定回饋」方案，切換後至 2026/12/31 止海外實體消費一律 2.5%、不看權益等級：Level 1 的人切過去比趣旅行的 2% 好，Level 2 與 Level 3 則維持趣旅行",
-   "tiers": [],
-   "reg": "不需登錄，但需於 CUBE App 在消費當日切換至「趣旅行」",
+   "base": 3.5,
+   "base_note": "2026/10/1 到 11/30 切換「秋日遊」，日本實體消費 3.5%，不分權益等級，Level 1 只持卡的人也是 3.5%。四大機場指定免稅店（成田、關西、新千歲、福岡）4%；日本人氣愛店與 IP 專賣店（UNIQLO、Loft、ABC-MART、3COINS、Alpen、寶可夢中心、SANRIO、KIDDY LAND）與餐廳預約平台（Tabelog、TableCheck、OMAKASE）5%。國泰世華財富管理貴賓另有專屬任務，累積消費滿額再加碼最高 2%。這段期間以外回到「趣旅行」，依權益等級為 2%（Level 1）／3%（Level 2）／3.3%（Level 3）。",
+   "tiers": [
+    {
+     "label": "指定人氣愛店加碼",
+     "rate": 1.5,
+     "cap": 0,
+     "scope": "shop",
+     "cond": "秋日遊期間（2026/10/1 – 11/30）於指定日本人氣愛店、IP 專賣店與餐廳預約平台消費，合計 5%；名單含 UNIQLO、Loft、ABC-MART、3COINS、Alpen、寶可夢中心、SANRIO、KIDDY LAND、Tabelog、TableCheck、OMAKASE"
+    }
+   ],
+   "reg": "不需登錄，但需於 CUBE App 在消費當日切換至「秋日遊」",
    "reg_race": false,
-   "total": 3.3,
+   "total": 5.0,
    "reg_short": "免登錄，但消費當日要切 App",
    "reg_level": "setup",
    "levels": {
     "label": "權益等級",
-    "note": "等級由持有的商品決定：Level 1 只持卡 2%；Level 2 另需臺幣存款帳戶並登入 CUBE App，3%；Level 3 需為財富管理貴賓，3.3%。集精選方案不分等級統一 2%。 另有「固定回饋」方案：切換當日起至 2026/12/31 止，海外實體消費一律 2.5%，不看權益等級。Level 1 只有 2%，切到固定回饋反而比趣旅行高；Level 2（3%）與 Level 3（3.3%）則是趣旅行較好。",
+    "note": "等級由持有的商品決定：Level 1 只持卡 2%；Level 2 另需臺幣存款帳戶並登入 CUBE App，3%；Level 3 需為財富管理貴賓，3.3%。但這套分級只適用玩數位、樂饗購、趣旅行、集精選四個方案。2026/10/1 到 11/30 的「秋日遊」不在分級表內，日本實體消費一律 3.5%，貴賓另有任務加碼。另有「固定回饋」方案：切換當日起至 2026/12/31 止，海外實體消費一律 2.5%，也不看等級。",
     "options": [
+     {
+      "key": "autumn",
+      "name": "秋日遊（不分等級，2026/10/1 – 11/30）",
+      "base": 3.5,
+      "tiers": [
+       {
+        "label": "指定人氣愛店加碼",
+        "rate": 1.5,
+        "cap": 0,
+        "scope": "shop",
+        "cond": "秋日遊期間（2026/10/1 – 11/30）於指定日本人氣愛店、IP 專賣店與餐廳預約平台消費，合計 5%；名單含 UNIQLO、Loft、ABC-MART、3COINS、Alpen、寶可夢中心、SANRIO、KIDDY LAND、Tabelog、TableCheck、OMAKASE"
+       }
+      ]
+     },
      {
       "key": "l3",
       "name": "Level 3（財富管理貴賓）",
@@ -170,6 +194,19 @@
      "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/product/japancoupons/index.html"
     ],
     "順帶查到": "「固定回饋」是我們原本沒有的方案，海外實體 2.5% 不分等級，已補進 levels。"
+   },
+   "src3": "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/cube-list#japanrewards",
+   "src3_name": "國泰世華・CUBE 卡權益方案（秋日遊條款）",
+   "_2026-10-14_複查": {
+    "查了什麼": "使用者回報 CUBE 卡有旅日優惠。",
+    "結論": "「秋日遊」確實存在，適用期間 2026/10/1 到 11/30。日本實體消費 3.5%、四大機場指定免稅店 4%、指定人氣愛店與餐廳預約平台 5%，財富管理貴賓另有任務加碼最高 2%。",
+    "跟 9/26 的關係": "9/26 查無此方案是對的，當時活動還沒開始，japanrewards 活動頁那時確實是 404。社群的消息早了幾天，不是假的。",
+    "等級怎麼判斷的": "官網權益分級表只列玩數位、樂饗購、趣旅行、集精選四個方案，秋日遊不在其中；活動頁把「財富管理貴賓專屬任務」寫成「權益 3.5% ＋ 達成任務 2%」，是在同一個 3.5% 之上加碼，所以 3.5% 本身不分等級。",
+    "來源": [
+     "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/product/japanrewards/index.html",
+     "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/cube-list#japanrewards",
+     "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/cube#level"
+    ]
    }
   },
   {
