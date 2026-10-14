@@ -82,7 +82,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,460（7 天有紀錄），這張低 34%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,395（7 天有紀錄），這張低 33%"
   ],
   "med": 11949,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-10&inbound=OKA-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
@@ -94,7 +94,7 @@
    "days": 10
   },
   "mbase": {
-   "avg": 4460,
+   "avg": 4395,
    "days": 7,
    "month": 11
   },
