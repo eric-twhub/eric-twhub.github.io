@@ -8559,6 +8559,99 @@ if os.path.exists('apple.json'):
       + foot())
     pages.append(('/apple-japan-price/',0.9))
 
+    # ── iPhone Duo 專頁：新機開賣前後，單一機種問得最多 ──────────
+    # 全系列那頁回答「哪些機種划算」，這頁回答「這一台到底要不要在日本買」。
+    # 差別在多算一步：省下來的錢扣掉入境要補的稅之後還剩多少。
+    # 那一步全系列那頁沒做，而它常常把價差吃掉一大半。
+    _DUO = [p for p in AP['products'] if p['name'] == 'iPhone Duo']
+    if _DUO:
+        _dd = (AP.get('dates') or {}).get('iPhone Duo') or {}
+        _drow = ''
+        _best = None
+        for p in sorted(_DUO, key=lambda x: x['jpy']):
+            ex = p['jpy'] / TAXR * RATE                 # 日本退稅後，換算台幣
+            over = max(0, ex - ALLOW)                   # 超過入境免稅額的部分
+            vat = over * 0.05                           # 手機關稅 0%，主要是 5% 營業稅
+            real = ex + vat                             # 老實申報之後的實際成本
+            save = p['twd'] - real
+            if _best is None or save > _best[1]:
+                _best = (p['spec'], save)
+            _drow += (f'<tr><td><b>{html.escape(p["spec"])}</b></td>'
+                      f'<td>¥{p["jpy"]:,}</td>'
+                      f'<td>{money(round(ex))}</td>'
+                      f'<td>{money(round(vat))}</td>'
+                      f'<td><b>{money(round(real))}</b></td>'
+                      f'<td>{money(p["twd"])}</td>'
+                      + (f'<td class="win"><b>省 {money(round(save))}</b></td>'
+                         if save > 0 else
+                         f'<td class="lose">貴 {money(round(-save))}</td>') + '</tr>')
+        _dt = ('<div class="tw"><table><thead><tr><th>容量</th>'
+               f'<th>日本售價{SMALL}含稅</small></th>'
+               f'<th>退稅後{SMALL}約當台幣</small></th>'
+               f'<th>入境補稅{SMALL}5% 營業稅</small></th>'
+               f'<th>實際成本{SMALL}申報後</small></th>'
+               '<th>台灣售價</th><th>差額</th></tr></thead><tbody>'
+               + _drow + '</tbody></table></div>')
+        _t = (f'iPhone Duo 日本買划算嗎？四種容量實算，扣掉入境補稅還省 '
+              f'{money(round(_best[1]))}' if _best and _best[1] > 0 else
+              'iPhone Duo 日本買划算嗎？四種容量實算')
+        _d = (f'iPhone Duo 日本與台灣售價逐容量比較，退稅後換算台幣，'
+              f'再扣掉入境超過免稅額要補的 5% 營業稅，算出真正的差額。'
+              f'含日台預購與開賣時間、日版的差異與申報規定。')
+        write('iphone-duo/index.html',
+          head(_t, _d, 'iphone-duo/')
+          + crumbs([('首頁', '/'), ('台日 Apple 價差', '/apple-japan-price/'),
+                    ('iPhone Duo', None)])
+          + topnav()
+          + '<h1>iPhone Duo 在日本買划算嗎？</h1>'
+          + f'<p class="lede">售價核對於 {AP["price_checked"]}　·　'
+            f'匯率 {RATE}（含約 {AP["rate"]["spread"]*100:.1f}% 換匯成本，每日更新）</p>'
+          + (f'<div class="today"><div class="tday">扣掉入境補稅之後</div>'
+             f'<div class="tans">{"省 " + money(round(_best[1])) if _best[1] > 0 else "沒有比較便宜"}</div>'
+             f'<div class="tsub">最划算的是 {html.escape(_best[0])}。'
+             f'這個數字已經扣掉超過行李免稅額 {money(ALLOW)} 要補的 5% 營業稅，'
+             f'不是只看定價差。</div>'
+             + (f'<div class="tbuf">日本 {_dd.get("jp_pre","")} 預約、{_dd.get("jp_sale","")} 開賣；'
+                f'台灣 {_dd.get("tw_pre","")} 預購、{_dd.get("tw_sale","")} 開賣。'
+                f'日本 21:00 與台灣 20:00 是同一時刻。</div>' if _dd else '')
+             + '</div>' if _best else '')
+          + '<h2>四種容量，逐一算</h2>'
+          + f'<p class="lede">日本售價是含 10% 消費稅的定價，觀光客退稅後約當台幣如第三欄。'
+            f'手機關稅 0%，但入境超過免稅額 {money(ALLOW)} 的部分要課 5% 營業稅，'
+            f'這一筆常被忽略，而它會把價差吃掉一截。</p>'
+          + _dt
+          + '<p class="disc">退稅後金額為日本定價除以 1.1 再換算台幣，'
+            '實際退稅方式與金額依日本當期免稅制度與店家規定。'
+            '入境補稅以超出免稅額的部分課 5% 營業稅估算，實際以海關核定為準。</p>'
+          + '<h2>在日本買之前要知道的</h2><div class="tldr"><ul>'
+            f'<li><b>超過 {money(ALLOW)} 就該申報。</b>iPhone Duo 四種容量全部超過，'
+            '依規定應主動向海關申報。上表的「實際成本」就是老實申報之後的數字。</li>'
+            '<li><b>日版的快門聲。</b>限制綁在銷售地版本，帶出國是否就會靜音'
+            '各方實測說法不一，Apple 未公布判定規則，在意的話不要買日版。</li>'
+            '<li><b>保固。</b>Apple 的保固多數情況跨國適用，但維修零件供應與'
+            '服務內容各地不同，送修前先確認。</li>'
+            '<li><b>刷卡還有一層。</b>日本刷卡的回饋與國外交易手續費會再動到實際成本，'
+            '下面有逐卡比較。</li>'
+            '</ul></div>'
+          + fare_cta('tokyo', '算完價差，機票多少')
+          + '<h2>刷哪張卡再省一層</h2>'
+          + f'<p class="lede">在日本刷卡買的話，回饋與 {_FXF}% 國外交易手續費'
+            f'會再動到實際成本。旅日信用卡的逐卡比較在另一頁，可以輸入金額試算。</p>'
+          + '<div class="cities">'
+          + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
+            f'<s>各卡的回饋與上限</s></a>'
+          + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 台日 Apple 價差</b>'
+            f'<s>iPhone、Watch、AirPods 全系列</s></a>'
+          + f'<a class="ct" href="{U("/iphone-cost/")}"><b>📉 iPhone 持有成本</b>'
+            f'<s>用實際回收行情攤提</s></a>'
+          + f'<a class="ct" href="{U("/iphone-card/")}"><b>💰 買 iPhone 刷哪張卡</b>'
+            f'<s>國內外通路的回饋差別</s></a></div>'
+          + f'<p class="disc">售價取自 Apple 日本與台灣官網，核對於 {AP["price_checked"]}；'
+            f'匯率取自臺灣銀行牌告，每日更新。稅務規定請以海關公告為準。'
+            f'本頁為公開資訊整理，非購買建議。</p>'
+          + foot())
+        pages.append(('/iphone-duo/', 0.8))
+
     # ── iPhone 持有成本：用台灣實際二手回收行情攤提 ──────────────
     # 網路上談「持有成本」多半自己假設一個殘值，數字沒有來源。
     # 這裡改成反過來做：拿收購商今天公開的回收報價，除以該機種當年的
