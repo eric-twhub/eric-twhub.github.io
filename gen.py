@@ -9809,12 +9809,15 @@ if os.path.exists('cobrand-cards.json'):
         _T = A['tiers']; _F = A['fare']; _M = A['award_jp_rt']
         _cmp, _spend = _cb_cols(A)
 
+        # 卡名欄只放卡名與年費。附註很長，放進表格會把右邊的費率欄擠出畫面，
+        # 所以移到表格下方逐條列出。
         def _tname(t):
             fee = (('年費 ' + money(t['fee'])) if t.get('fee') is not None else '年費未查')
-            return ('<b>' + html.escape(t['name']) + '</b>' + SMALL + fee + '　'
-                    + html.escape(t['fee_note'])
-                    + (('<br>' + html.escape(t['rate_note'])) if t.get('rate_note') else '')
-                    + '</small>')
+            return '<b>' + html.escape(t['name']) + '</b>' + SMALL + fee + '</small>'
+        _tnotes = ''.join(
+            '<li><b>' + html.escape(t['name']) + '。</b>' + html.escape(t['fee_note'])
+            + (('。' + html.escape(t['rate_note'])) if t.get('rate_note') else '') + '。</li>'
+            for t in _T)
 
         _crow = ''.join(
             '<tr><td>' + _tname(t) + '</td>'
@@ -9924,6 +9927,7 @@ if os.path.exists('cobrand-cards.json'):
           + f'<p class="lede">{html.escape(A["earn_note"])}指定通路是：'
             f'{html.escape(A["designated"])}</p>'
           + _ctab
+          + '<div class="tldr"><ul>' + _tnotes + '</ul></div>'
           + (f'<p class="disc">{html.escape(A["_沒查到的"])}</p>' if A.get('_沒查到的') else '')
 
           + '<h2>換一張台日經濟艙來回，要刷多少</h2>'
