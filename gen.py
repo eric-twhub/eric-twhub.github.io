@@ -381,10 +381,12 @@ def _card_bonus_block(st):
         + '<div class="today">'
           f'<div class="tday">以 ¥10,000 含稅商品為例</div>'
           f'<div class="tans">¥{round(final):,}</div>'
-          f'<div class="tsub">免稅後約 ¥{round(free):,}，再折 {st["max"]}% 是 '
-          f'¥{round(after):,}，刷卡再回 {rate}%，實際負擔約 ¥{round(final):,}，'
-          f'合計省 {(1-final/10000)*100:.1f}%。</div>'
-          f'<div class="tbuf">{html.escape(cb["cond"])}</div></div>'
+          + ('<div class="tsub">'
+             + (f'免稅後約 ¥{round(free):,}，' if st.get('kind') == 'card' else
+                f'免稅後約 ¥{round(free):,}，再折 {st["max"]}% 是 ¥{round(after):,}，')
+             + f'刷卡再回 {rate}%，實際負擔約 ¥{round(final):,}，'
+               f'合計省 {(1-final/10000)*100:.1f}%。</div>')
+        + f'<div class="tbuf">{html.escape(cb["cond"])}</div></div>'
         + f'<p class="disc">回饋以台幣帳單計算，上面的日幣金額是換算後的概念值，'
           f'實際會再受匯率與國外交易手續費影響，精確試算用'
           f'<a href="{U("/japan-coupon/")}">實付價計算機</a>。'
@@ -9480,7 +9482,8 @@ if os.path.exists('cards.json'):
     # 這裡自己讀一份。先只產幣倍卡，版型確認後再放開。
     _CPS = (json.load(open('coupons.json', encoding='utf-8'))
             if os.path.exists('coupons.json') else {})
-    _SHOP_PAGES = {'sinopac-dual'}
+    # 15 張卡全開。版型在幣倍卡那頁確認過，資料是共用的，不必逐張再看一次。
+    _SHOP_PAGES = {c['slug'] for c in CD['cards']}
     _fx = CD['fx_fee']
     _ap = json.load(open('apple.json', encoding='utf-8')) if os.path.exists('apple.json') else {}
     _MIDC = (_ap.get('rate', {}).get('jpy_twd_mid')
@@ -10742,19 +10745,25 @@ if os.path.exists('cards.json'):
             data = json.dumps({'cards': _store_cards(st),
                                'max': st['max'], 'steps': st['steps'],
                                'name': st['name']}, ensure_ascii=False)
+            nc = st.get('kind') == 'card'      # 沒有折價券的店
             return (
-                '<div class="today"><div class="tday">這家店的券最高折 '
-                f'{st["max"]}%　·　{html.escape(st["combo"])}</div>'
+                '<div class="today"><div class="tday">'
+                + ('這家店沒有對台灣旅客的折價券，省錢靠免稅與刷卡回饋'
+                   if nc else f'這家店的券最高折 {st["max"]}%　·　'
+                              + html.escape(st['combo'])) + '</div>'
                 f'<div class="tans" id="kv">—</div>'
-                f'<div class="tsub">先扣免稅、再折券，換成台幣帳單之後才算回饋。'
-                f'帳單含 {_fx["typical"]}% 國外交易手續費。</div></div>'
+                + '<div class="tsub">'
+                + ('先扣免稅，換成台幣帳單之後才算回饋。'
+                   if nc else '先扣免稅、再折券，換成台幣帳單之後才算回饋。')
+                + f'帳單含 {_fx["typical"]}% 國外交易手續費。</div></div>'
                 + '<div class="calc"><div class="sf">'
                   '<label>預計消費（含稅）¥<input id="kq" type="number" value="30000" '
                   'min="0" step="1000"></label>'
-                  '<label>用券<select id="ku">'
-                  '<option value="1" selected>有用券</option>'
-                  '<option value="0">沒有券</option></select></label>'
-                  '</div><div class="tw" id="kr"></div></div>'
+                + ('<input id="ku" type="hidden" value="0">' if nc else
+                   '<label>用券<select id="ku">'
+                   '<option value="1" selected>有用券</option>'
+                   '<option value="0">沒有券</option></select></label>')
+                + '</div><div class="tw" id="kr"></div></div>'
                 + f'<p class="disc">依各卡的日本實體消費費率計算，'
                   f'不含新戶限定加碼，也假設各層加碼的條件都符合（部分卡要先登錄或'
                   f'達資產門檻）。點數型回饋以 1 點約 1 元估算。'
@@ -10826,6 +10835,15 @@ if os.path.exists('cards.json'):
                 if o['slug'] != st['slug'] and o['cat'] == st['cat'])
 
             sf = [
+             (f'在{st["name"]}刷哪張卡回饋最高？',
+              f'頁面最上面的試算會依輸入金額排序 {len(CD["cards"])} 張卡。'
+              f'排名會隨金額改變，因為各卡的加碼上限在不同金額卡住。'
+              f'回饋以台幣帳單計算，帳單已含 {_fx["typical"]}% 國外交易手續費。'),
+             (f'在{st["name"]}買東西可以免稅嗎？', f'{st["tax_min"]}。{st["combo"]}。'),
+             (f'在{st["name"]}買東西要注意什麼？',
+              '；'.join(st['watch']) + '。' if st['watch'] else
+              f'{st["bad"]}'),
+            ] if st.get('kind') == 'card' else [
              (f'{st["name"]}的折價券可以折多少？',
               f'{st["tiers"]}。券以免稅後的金額計算，不是直接和免稅相加，'
               f'以 ¥10,000 含稅商品為例，免稅後約 ¥9,091，再折 {st["max"]}% 之後，'
@@ -10858,26 +10876,30 @@ if os.path.exists('cards.json'):
                 f'輸入金額就知道每張卡實拿多少。'
                 f'卡片條件查證於 {CD["checked"]}，折扣幅度查證於 {CP["checked"]}</p>'
               + _store_card_calc(st)
-              + f'<div class="today"><div class="tday">常見折扣 {html.escape(st["rate"])}'
+              + ('' if st.get('kind') == 'card' else
+                 f'<div class="today"><div class="tday">常見折扣 {html.escape(st["rate"])}'
                 f'　·　{html.escape(st["combo"])}　·　{html.escape(st["tax_min"])}</div>'
                 f'<div class="tans">{html.escape(st["tiers"])}</div>'
                 f'<div class="tsub">券以<b>免稅後</b>的金額計算，不是和免稅相加。'
                 f'以 ¥10,000 含稅商品為例，免稅後約 ¥9,091，再折 {st["max"]}%，'
                 f'合計約省 {(1-(10000/1.1*(1-st["max"]/100))/10000)*100:.1f}%。</div>'
-                f'<div class="tbuf">{html.escape(st["when"])}</div></div>'
-              + '<h2>不同金額省多少</h2>'
+                f'<div class="tbuf">{html.escape(st["when"])}</div></div>')
+              + ('' if st.get('kind') == 'card' else
+                 '<h2>不同金額省多少</h2>'
               + f'<p class="lede">先扣免稅，券再以未稅金額計算。'
                 + _rate_basis(st) + '</p>'
               + _ex
               # 折扣不是看金額的店，上面那張表預設「你買的東西適用」，要把前提講明
               + (f'<p class="disc" style="color:var(--hot)"><b>⚠ 上表的前提</b>：'
                  f'{html.escape(st["calc_caveat"])}</p>' if st.get('calc_caveat') else '')
-              + _cat_tiers_block(st) + _exclude_block(st) + _visa_block(st)
-              + f'<p class="disc">實際折扣依商品類別與當期券別而異，以店家公告為準。'
-                f'想連刷卡回饋一起算，可用<a href="{U("/japan-coupon/")}">實付價計算機</a>。</p>'
+              + _cat_tiers_block(st) + _exclude_block(st) + _visa_block(st))
+              + ('' if st.get('kind') == 'card' else
+                 f'<p class="disc">實際折扣依商品類別與當期券別而異，以店家公告為準。'
+                 f'想連刷卡回饋一起算，可用<a href="{U("/japan-coupon/")}">實付價計算機</a>。</p>')
               + _card_bonus_block(st)
               + fare_cta('tokyo', '算完省多少，機票呢')
-              + '<h2>券怎麼拿、什麼時候出示</h2><div class="tldr"><ul>'
+              + ('' if st.get('kind') == 'card' else
+                 '<h2>券怎麼拿、什麼時候出示</h2><div class="tldr"><ul>'
               + f'<li><b>取得</b>：{html.escape(st["how"])}</li>'
                 f'<li><b>出示時機</b>：{html.escape(st["when"])}</li>'
                 f'<li><b>免稅門檻</b>：{html.escape(st["tax_min"])}</li>'
@@ -10889,7 +10911,7 @@ if os.path.exists('cards.json'):
                  + ('　<b style="color:var(--hot)">⚠ 已過期，請到發券頁確認新券</b>'
                     if st['expires'] < TODAY else '')
                  + '</li>' if st.get('expires') else '')
-              + '</ul></div>'
+              + '</ul></div>')
               + (f'<div class="plinks"><a class="plink" href="{html.escape(st["src"])}" '
                  f'target="_blank" rel="nofollow noopener">🏷️ 到{html.escape(st["src_name"])}領券</a>'
                  f'</div>' if st.get('src') else '')
