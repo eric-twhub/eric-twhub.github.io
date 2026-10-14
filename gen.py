@@ -1843,12 +1843,19 @@ def _ja_gloss(content):
                 q = b
                 if t[q:q+1] in '」』':
                     q += 1
-                if zh.startswith('，') and m.group(0).endswith('）'):
+                # 原文自己帶括號，或後面緊接著括號：中譯併進同一個括號
+                if '|' in zh and m.group(0).endswith('）'):
+                    front, back = zh.split('|', 1)
+                    ins.append((a + m.group(0).rfind('（') + 1, front, None))
+                    ins.append((b - 1, back, None))
+                elif zh.startswith('，') and m.group(0).endswith('）'):
                     ins.append((b - 1, zh, None))
                 elif zh.endswith('，') and m.group(0).endswith('）'):
                     ins.append((a + m.group(0).rfind('（') + 1, zh, None))
                 elif t[a-1:a] == '（' and t[b:b+1] == '）':
                     ins.append((b, '，' + zh, None))
+                elif t[b:b+1] == '（':
+                    ins.append((b + 1, ('中譯：' if longq else '') + zh + '，', None))
                 else:
                     ins.append((q, '（' + ('中譯：' if longq else '') + zh + '）', None))
         if not ins:
