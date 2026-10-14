@@ -3495,12 +3495,12 @@ if EG:
         f'MVNO 尖峰降速，或多 IMSI 產品切換到<b>另一家日本電信商</b>。'
         f'最後那種是在日本國內換，不會讓 IP 跑到香港。</div></div>'
       + _eg_l1 + _eg_l2 + _eg_sd + _eg_bb + _eg_vc + _eg_hc + _eg_im
+      + cta('esim', '日本', '東京', '看看有哪些日本 eSIM 方案',
+            '商品頁的寫法怎麼讀，上面那張表有')
       + '<h2>這頁還查不到的部分</h2>'
       + '<p class="lede">以下這幾項找不到可引用的官方說法，所以不寫成結論：</p>'
       + f'<ul class="lede">{_eg_un}</ul>'
       + '<h2>常見問題</h2>' + eg_html
-      + cta('esim', '日本', '東京', '看看有哪些日本 eSIM 方案',
-            '商品頁的寫法怎麼讀，上面那張表有')
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
         f'<s>落地之後還回得去市區嗎</s></a>'
@@ -3632,6 +3632,8 @@ if RS2:
         '這不是選配，是沒開就沒訊號。以下是各家的原文。</p>'
       + _rs_cards
       + '<h2>兩條路，看你願意付什麼</h2>' + _rs_routes
+      + cta('esim', '日本', '東京', '走 eSIM 這條路的話',
+            '232 個方案比過單價，台灣門號留著收簡訊、上網另外買')
       + _rs_am
       + '<h2>出國前後的檢查清單</h2>'
       + f'<div class="tldr"><ul>{_rs_check}</ul></div>'
@@ -8548,8 +8550,6 @@ if os.path.exists('apple.json'):
       + shoptable
       + flights
       + '<h2>常見問題</h2>' + faq_html
-      + cta('esim','日本','東京','出發前先把上網搞定',
-            '到 Klook 買 eSIM 或網卡，落地就能開導航找店')
       + f'<p class="disc">補充：台灣入境旅客行李物品免稅額為 {money(ALLOW)}，'
         f'多數 iPhone 單機已超過，依規定應主動向海關申報，超出部分課徵進口稅捐。'
         f'手機關稅為 0%，主要為 5% 營業稅，實際以海關核定為準。<br>'
