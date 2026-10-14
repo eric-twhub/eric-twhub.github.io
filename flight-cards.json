@@ -1,0 +1,59 @@
+{
+ "_說明": "找到便宜機票之後，再告訴讀者刷哪張卡。回饋率決定於「在哪裡買」而不是飛哪條航線，所以這份資料以通路為鍵。",
+ "_判準": "只收發卡行官方頁面寫明的通路與費率，每一筆都要有 src 與 checked。官方沒寫的通路不列，不推測、不換算。",
+ "_手續費": "機票多為外幣交易，台幣帳單會再加約 1.5% 國外交易手續費，回饋是以台幣帳單計算。所以回饋率不等於淨省，只是把手續費抵掉一部分。",
+ "_只有一張卡的原因": "2026-10-14 只逐條查證過國泰世華 CUBE 的秋日遊。其他卡的機票通路回饋還沒對過官方頁面，沒查就不寫。要加的時候照同樣格式補。",
+ "checked": "2026-10-14",
+ "channels": {
+  "tigerair": {
+   "name": "台灣虎航官網",
+   "match": "booking.tigerairtw.com",
+   "cards": [
+    {
+     "card": "國泰世華 CUBE 卡",
+     "slug": "cathay-cube",
+     "plan": "秋日遊",
+     "rate": 3.5,
+     "period": "2026/10/1 – 2026/11/30",
+     "cond": "消費當日要在 CUBE App 切換「秋日遊」。航空公司回饋限臨櫃、官網或航空公司 App 購票，透過旅行社或線上旅遊平台買不算。",
+     "src": "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/product/japanrewards/index.html",
+     "src_name": "國泰世華・CUBE 秋日遊活動頁"
+    }
+   ],
+   "airline_only": "IT"
+  },
+  "trip": {
+   "name": "Trip.com",
+   "match": "trip.com",
+   "cards": [
+    {
+     "card": "國泰世華 CUBE 卡",
+     "slug": "cathay-cube",
+     "plan": "秋日遊",
+     "rate": 3.0,
+     "period": "2026/10/1 – 2026/11/30",
+     "cond": "消費當日要在 CUBE App 切換「秋日遊」。先訂後付或到店付款的訂單，要在實際扣款當日維持切換狀態。",
+     "src": "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/cube-list#japanrewards",
+     "src_name": "國泰世華・CUBE 卡權益方案"
+    }
+   ]
+  },
+  "eztravel": {
+   "name": "易遊網",
+   "match": "eztravel",
+   "cards": [
+    {
+     "card": "國泰世華 CUBE 卡",
+     "slug": "cathay-cube",
+     "plan": "秋日遊",
+     "rate": 3.5,
+     "period": "2026/10/1 – 2026/11/30",
+     "cond": "消費當日要在 CUBE App 切換「秋日遊」。",
+     "src": "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/cube-list#japanrewards",
+     "src_name": "國泰世華・CUBE 卡權益方案"
+    }
+   ]
+  }
+ },
+ "_airline_only": "標了 airline_only 的通路只賣自家機票，不能拿來當「換個地方買更划算」的建議：德威航空的票不可能在虎航官網買到。值是該航空公司的 IATA 代碼。"
+}

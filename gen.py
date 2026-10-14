@@ -316,6 +316,45 @@ def compare_line(city_name='', slug=''):
     return (f'<p class="disc">票價僅供參考，建議到 {ls} {where}'
             f'，台灣 OTA 常有旅行社切位票，是國際比價站看不到的貨源。</p>')
 
+def _flight_card_block(x):
+    """找到便宜機票之後，順便講刷哪張卡。
+
+    回饋率決定於「在哪裡買」而不是飛哪條航線，所以用這張票的購買連結
+    去對通路，不是用航空公司。同一張票在不同通路買，回饋率不一樣。
+    """
+    ch = (FC.get('channels') or {})
+    if not ch:
+        return ''
+    url = flight_url(x)
+    hit = next((c for c in ch.values() if c.get('match') and c['match'] in url), None)
+    if not hit or not hit.get('cards'):
+        return ''
+    best = max(hit['cards'], key=lambda c: c['rate'])
+    # 同一段期間，別的通路如果更高，一併講，讀者才知道有選擇
+    # 只賣自家機票的通路不能當替代建議：德威的票買不到虎航官網去
+    better = [(c, k['name']) for k in ch.values() for c in k.get('cards', [])
+              if c['card'] == best['card'] and c['rate'] > best['rate']
+              and (not k.get('airline_only') or k['airline_only'] == x['air'])]
+    alt = max(better, key=lambda t: t[0]['rate']) if better else None
+    back = round(x['price'] * best['rate'] / 100)
+    return (
+        '<h2>這張票刷哪張卡</h2>'
+        f'<p class="lede">這個價格我們連到的是{html.escape(hit["name"])}。'
+        f'在那裡刷{html.escape(best["card"])}並切換「{html.escape(best["plan"])}」，'
+        f'回饋 <b>{best["rate"]}%</b>，以 {money(x["price"])} 計約 {money(back)}。</p>'
+        + (f'<p class="lede">同一張卡在{html.escape(alt[1])}買是 <b>{alt[0]["rate"]}%</b>，'
+           f'比這裡高。票價一樣的話，換個地方買多拿 '
+           f'{money(round(x["price"]*(alt[0]["rate"]-best["rate"])/100))}。</p>' if alt else '')
+        + f'<p class="disc">{html.escape(best["cond"])}'
+          f'　機票多為外幣交易，台幣帳單會再加約 {_FXF}% 國外交易手續費，'
+          f'回饋以台幣帳單計算，所以回饋率不等於淨省。'
+          f'期間 {html.escape(best["period"])}，查證於 {FC["checked"]}，'
+          f'<a href="{html.escape(best["src"])}" target="_blank" rel="nofollow noopener">'
+          f'{html.escape(best["src_name"])}</a>，以發卡行公告為準。'
+          f'其他卡看<a href="{U("/japan-credit-card/")}">旅日信用卡比較</a>，'
+          f'或用<a href="{U("/japan-card-calculator/")}">回饋計算機</a>。</p>')
+
+
 def _card_bonus_block(st):
     """券之外還有刷卡回饋。折扣券頁只講券，等於少講了一段同樣能省的錢。
 
@@ -776,6 +815,13 @@ def widget_block(kind,title,note,**kw):
 def plabel(kind,city_name=''):
     p=P[kind]
     return f"{p['icon']} 到 {p['brand']} {p['label'].replace('{q}',city_name)}"
+
+# 找到便宜機票之後要給的刷卡建議。特價頁在 CD 載入之前就產生了，所以這兩份
+# 都在這裡先讀：FC 是逐通路的回饋率，_FXF 只取國外交易手續費那個數字。
+FC = (json.load(open('flight-cards.json', encoding='utf-8'))
+      if os.path.exists('flight-cards.json') else {})
+_FXF = ((json.load(open('cards.json', encoding='utf-8')).get('fx_fee') or {}).get('typical', 1.5)
+        if os.path.exists('cards.json') else 1.5)
 
 # 虎航官網的每日票價，由 scan_tigerair.py 每天抓。
 # 票價資料庫收的是 OTA 報價，虎航主要自己賣，OTA 拿到的是加價後的票，
@@ -7765,7 +7811,10 @@ def pick_deals():
         # 這類台灣陌生平台的低價當頭條，讀者點進去必然對不上（9/15 寫 NT$4,462、
         # 實際 NT$5,392；9/17 寫泰國獅航 NT$4,934、實際樂桃 NT$4,863）。
         # 全站沒有 Trip.com 紀錄的航線就不發。查不到的價格不該當頭條。
-        tc=[x for x in rts if x.get('gate')=='Trip.com']
+        # 虎航那些是直接取自虎航官網的價格，查證連結也是虎航自己的訂位頁，
+        # 比 Trip.com 更對得上。2026-10-14 改用官網取價之後，若只收 Trip.com，
+        # 全站最便宜又最好查證的那批票反而永遠選不上頭條。
+        tc=[x for x in rts if x.get('gate') in ('Trip.com', 'Tigerair Taiwan')]
         if not tc: continue
         b=min(tc,key=lambda x:x['price'])
         # 統計基準仍用全部紀錄：基準被陌生平台的低價拉低，折扣率只會低估不會誇大，
@@ -7860,6 +7909,7 @@ for (oslug,cslug),(b,reasons,med,rts) in sorted(pick_deals().items(),key=lambda 
                     + (f'整體而言每日最低價多落在 {money(ur[0])}–{money(ur[1])}。' if ur else '')
                     + '</p>')
              )(usual_range(rts), month_base(rts, b['dep'][:7])))
+    body+=_flight_card_block(b)
     if others:
         body+=f'<h2>同航線其他選擇</h2><div class="grid">'+''.join(fare_card(x) for x in others)+'</div>'
     body+=klook_tours(cslug,cname)
