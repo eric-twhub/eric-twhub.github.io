@@ -140,14 +140,8 @@
   {
    "slug": "deals-2026-10-14-taipei-okinawa",
    "url": "/deals/2026-10-14-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,514 來回含稅｜台灣虎航 11/02 出發",
-   "title": "台北飛沖繩 NT$2,514 來回含稅｜台灣虎航 11/02 出發"
-  },
-  {
-   "slug": "deals-2026-10-14-taichung-okinawa",
-   "url": "/deals/2026-10-14-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$2,514 來回含稅｜台灣虎航 11/09 出發",
-   "title": "台中飛沖繩 NT$2,514 來回含稅｜台灣虎航 11/09 出發"
+   "h1": "台北飛沖繩 NT$2,564 來回含稅｜台灣虎航 11/10 出發",
+   "title": "台北飛沖繩 NT$2,564 來回含稅｜台灣虎航 11/10 出發"
   },
   {
    "slug": "deals-2026-10-14-kaohsiung-okinawa",
@@ -156,10 +150,16 @@
    "title": "高雄飛沖繩 NT$2,914 來回含稅｜台灣虎航 11/17 出發"
   },
   {
+   "slug": "deals-2026-10-14-taichung-okinawa",
+   "url": "/deals/2026-10-14-taichung-okinawa/",
+   "h1": "台中飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/09 出發",
+   "title": "台中飛沖繩 NT$2,964 來回含稅｜台灣虎航 11/09 出發"
+  },
+  {
    "slug": "deals-2026-10-14-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-10-14-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,233",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,233"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,033",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,033"
   },
   {
    "slug": "apple-japan-price",
@@ -172,6 +172,12 @@
    "url": "/iphone-duo/",
    "h1": "iPhone Duo 在日本買划算嗎？",
    "title": "iPhone Duo 日本買划算嗎？四種容量實算，扣掉入境補稅還省 NT$7,459"
+  },
+  {
+   "slug": "japan-camera-price",
+   "url": "/japan-camera-price/",
+   "h1": "日本買 Osmo Pocket 與 Luna Ultra，划算嗎？",
+   "title": "日本買 DJI Osmo Pocket 划算嗎？8 個套裝台日價差實算（Insta360 Luna Ultra 一起比）"
   },
   {
    "slug": "iphone-cost",
