@@ -55,5 +55,76 @@
    ]
   }
  },
- "_airline_only": "標了 airline_only 的通路只賣自家機票，不能拿來當「換個地方買更划算」的建議：德威航空的票不可能在虎航官網買到。值是該航空公司的 IATA 代碼。"
+ "_airline_only": "標了 airline_only 的通路只賣自家機票，不能拿來當「換個地方買更划算」的建議：德威航空的票不可能在虎航官網買到。值是該航空公司的 IATA 代碼。",
+ "_逐平台費率": "發卡行自己逐平台公告的費率。國泰世華秋日遊活動頁把機票、訂房、行程的通路分成三檔，以下照抄。其他卡的官方頁面沒有逐平台說明，所以不列，不要用「海外消費」的通用費率去套在平台上。",
+ "platforms": {
+  "card": "國泰世華 CUBE 卡",
+  "card_slug": "cathay-cube",
+  "plan": "秋日遊",
+  "period": "2026/10/1 – 2026/11/30",
+  "checked": "2026-10-14",
+  "src": "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/cube-list#japanrewards",
+  "src_name": "國泰世華・CUBE 卡權益方案",
+  "rows": [
+   {
+    "name": "Expedia",
+    "rate": 5.0,
+    "note": "限專屬網頁訂房"
+   },
+   {
+    "name": "Hotels.com",
+    "rate": 5.0,
+    "note": "限專屬網頁訂房"
+   },
+   {
+    "name": "Klook",
+    "rate": 5.0,
+    "note": "限指定日本商品；其餘 Klook 消費 3%"
+   },
+   {
+    "name": "台灣虎航",
+    "rate": 3.5,
+    "note": "限臨櫃、官網或航空公司 App 購票，透過旅行社或線上旅遊平台買不算"
+   },
+   {
+    "name": "國泰航空",
+    "rate": 3.5,
+    "note": "限臨櫃、官網或航空公司 App 購票"
+   },
+   {
+    "name": "KKday",
+    "rate": 3.5,
+    "note": ""
+   },
+   {
+    "name": "易遊網 ezTravel",
+    "rate": 3.5,
+    "note": ""
+   },
+   {
+    "name": "Agoda",
+    "rate": 3.5,
+    "note": "海外訂房平台有授權時間差，要在實際扣款當日維持切換"
+   },
+   {
+    "name": "可樂旅遊",
+    "rate": 3.5,
+    "note": ""
+   },
+   {
+    "name": "東南旅遊",
+    "rate": 3.5,
+    "note": ""
+   },
+   {
+    "name": "Trip.com",
+    "rate": 3.0,
+    "note": ""
+   }
+  ],
+  "exclude": [
+   "機上免稅商品、機場商店、貴賓室、哩程數、套裝行程，以及用哩程兌換機票的附加費用（升等、行李、稅費等）都不算購買機票",
+   "先訂後付或到店付款的訂單，要在實際扣款當日維持切換狀態；訂房平台選到店付款可能以「飯店、住宿」認列，就不適用"
+  ]
+ }
 }
