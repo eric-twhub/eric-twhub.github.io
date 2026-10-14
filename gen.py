@@ -316,6 +316,45 @@ def compare_line(city_name='', slug=''):
     return (f'<p class="disc">票價僅供參考，建議到 {ls} {where}'
             f'，台灣 OTA 常有旅行社切位票，是國際比價站看不到的貨源。</p>')
 
+def _card_bonus_block(st):
+    """券之外還有刷卡回饋。折扣券頁只講券，等於少講了一段同樣能省的錢。
+
+    基準是整段日本實體消費都有的那個費率，少數店家在活動頁上另有更高的，
+    就以該店的為準。沒有檔期資料時整塊不出現。
+    """
+    cb = (CP.get('card_bonus') or {})
+    if not cb.get('base'):
+        return ''
+    ex = (cb.get('stores') or {}).get(st['slug'])
+    # partial 的店只有部分分店適用那個費率，試算仍用基準，不然會高估到整家店
+    rate = cb['base'] if (not ex or ex.get('partial')) else ex['max']
+    # 以本頁那家店的券為例，把券與回饋疊起來的實付價算出來，不要只丟兩個百分比
+    free = 10000 / 1.1
+    after = free * (1 - st['max'] / 100)
+    final = after * (1 - rate / 100)
+    return (
+        '<h2>這段期間刷卡還能再省</h2>'
+        f'<p class="lede">{html.escape(cb["card"])}在 {html.escape(cb["period"])} '
+        f'切換「{html.escape(cb["plan"])}」，{html.escape(cb["scope"])}回饋 '
+        f'<b>{cb["base"]}%</b>，{html.escape(cb["levels"])}。</p>'
+        + (f'<p class="lede">活動頁另外把{html.escape(st["name"])}列到 '
+           f'<b>{ex["max"]}%</b>：{html.escape(ex["note"])}。</p>' if ex else '')
+        + '<div class="today">'
+          f'<div class="tday">以 ¥10,000 含稅商品為例</div>'
+          f'<div class="tans">¥{round(final):,}</div>'
+          f'<div class="tsub">免稅後約 ¥{round(free):,}，再折 {st["max"]}% 是 '
+          f'¥{round(after):,}，刷卡再回 {rate}%，實際負擔約 ¥{round(final):,}，'
+          f'合計省 {(1-final/10000)*100:.1f}%。</div>'
+          f'<div class="tbuf">{html.escape(cb["cond"])}</div></div>'
+        + f'<p class="disc">回饋以台幣帳單計算，上面的日幣金額是換算後的概念值，'
+          f'實際會再受匯率與國外交易手續費影響，精確試算用'
+          f'<a href="{U("/japan-coupon/")}">實付價計算機</a>。'
+          f'查證於 {cb["checked"]}，'
+          f'<a href="{html.escape(cb["src"])}" target="_blank" rel="nofollow noopener">'
+          f'{html.escape(cb["src_name"])}</a>，條件以發卡行公告為準。'
+          f'各卡比較看<a href="{U("/japan-credit-card/")}">旅日信用卡</a>。</p>')
+
+
 def _rate_basis(st):
     """說明折扣率是怎麼決定的。
 
@@ -10446,7 +10485,13 @@ if os.path.exists('cards.json'):
             f'<div class="tsub">以 ¥10,000 含稅商品為例：免稅後約 ¥9,091，再折 7% 是 ¥8,455，'
             f'合計省約 15.4%。不是 10% ＋ 7% ＝ 17%。</div>'
             f'<div class="tbuf">再疊上刷卡回饋，最高可以壓到原價的 <b>七折出頭</b>。'
-            f'下面可以用自己的金額和卡片試算。</div></div>'
+            f'下面可以用自己的金額和卡片試算。'
+            + (f'　{html.escape(CP["card_bonus"]["period"])} 這段期間，'
+               f'{html.escape(CP["card_bonus"]["card"])}切換「'
+               f'{html.escape(CP["card_bonus"]["plan"])}」的日本實體消費回饋是 '
+               f'{CP["card_bonus"]["base"]}%，不分權益等級。'
+               if (CP.get('card_bonus') or {}).get('base') else '')
+            + '</div></div>'
           + '<h2>直接去領券</h2>'
           + '<p class="lede">每一家的券都在自己的官方發券頁上，下面是逐家的直達連結。'
             '券要在結帳前出示，有幾家的券要當場點開才會啟用，不能先截圖。</p>'
@@ -10614,6 +10659,7 @@ if os.path.exists('cards.json'):
               + _cat_tiers_block(st) + _exclude_block(st) + _visa_block(st)
               + f'<p class="disc">實際折扣依商品類別與當期券別而異，以店家公告為準。'
                 f'想連刷卡回饋一起算，可用<a href="{U("/japan-coupon/")}">實付價計算機</a>。</p>'
+              + _card_bonus_block(st)
               + fare_cta('tokyo', '算完省多少，機票呢')
               + '<h2>券怎麼拿、什麼時候出示</h2><div class="tldr"><ul>'
               + f'<li><b>取得</b>：{html.escape(st["how"])}</li>'
