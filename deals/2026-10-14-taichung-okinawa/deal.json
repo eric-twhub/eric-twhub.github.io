@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-14-taichung-okinawa",
- "generated": "2026-10-14 11:21",
+ "generated": "2026-10-14 12:18",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -24,10 +24,10 @@
   "url": "https://www.aviasales.com/search/RMQ1910OKA22101?t=TW17924292001792503300001175RMQICNOKA17926974001792699200000090OKARMQ_74998cb01a2f7ec0b9f5fdbd07bb9cba_23194&search_date=12102026&expected_price_uuid=01a12ecd-8fe6-8030-6580-b6bb4c4d2d0b&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Q5uFoa5PtVFm5J72v6wS8A&expected_price_source=share&expected_price_currency=twd&expected_price=8704&marker=775639"
  },
  "reasons": [
-  "10 月出發的票，每天最便宜的平均要 NT$11,176（18 天有紀錄），這張低 22%"
+  "10 月出發的票，每天最便宜的平均要 NT$11,178（18 天有紀錄），這張低 22%"
  ],
- "med": 11728,
- "n_rt": 104,
+ "med": 11747,
+ "n_rt": 103,
  "others": [
   {
    "o": "RMQ",
@@ -35,7 +35,26 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 2964,
+   "price": 3364,
+   "dep": "2026-11-09",
+   "ret": "2026-11-12",
+   "dept": "07:10",
+   "rett": "21:05",
+   "rt": true,
+   "tr": 0,
+   "dur": 180,
+   "dur_to": 90,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "RMQ",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 3415,
    "dep": "2026-11-02",
    "ret": "2026-11-05",
    "dept": "07:10",
@@ -65,25 +84,6 @@
    "dur_to": 90,
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
-  {
-   "o": "RMQ",
-   "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 4372,
-   "dep": "2026-11-09",
-   "ret": "2026-11-12",
-   "dept": "07:10",
-   "rett": "21:05",
-   "rt": true,
-   "tr": 0,
-   "dur": 180,
-   "dur_to": 90,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
