@@ -19,14 +19,17 @@ W, H = 1440, 400
 OUT = 'ads'
 E = htm.escape
 
-# 與 gen.py 的 _AD_KIND 對齊，但文案改成橫幅用的短句
+# 與 gen.py 的 _AD_KIND 對齊，但文案改成橫幅用的短句。
+# 第四欄是平台名，一定要印在圖上：partners.json 的標示原則是
+# 「每個連結都標明會前往哪個平台，讓使用者點擊前就知道目的地」。
+# 只寫「看看有什麼」的話，讀者不知道會被帶去哪，不會點。
 BANNERS = {
-    'esim':      ('📱', '日本上網卡與 eSIM', '落地就能用，不用現場找櫃台'),
-    'activity2': ('🎫', '日本行程與門票', '在地一日遊、景點票與體驗'),
-    'transfer':  ('🚕', '日本機場接送', '深夜抵達也有車，先訂好不用排'),
-    'car':       ('🚗', '在日本租車', '比較各家車型與保險方案'),
-    'transport': ('🚄', 'JR Pass 與日本交通票', '跨城市移動前先比一次'),
-    'hotel':     ('🏨', '日本住宿', '看完機票就是訂房'),
+    'esim':      ('📱', '日本上網卡與 eSIM', '落地就能用，不用現場找櫃台', 'Klook'),
+    'activity2': ('🎫', '日本行程與門票', '在地一日遊、景點票與體驗', 'KKday'),
+    'transfer':  ('🚕', '日本機場接送', '深夜抵達也有車，先訂好不用排', 'Trip.com'),
+    'car':       ('🚗', '在日本租車', '比較各家車型與保險方案', 'Trip.com'),
+    'transport': ('🚄', 'JR Pass 與日本交通票', '跨城市移動前先比一次', 'Trip.com'),
+    'hotel':     ('🏨', '日本住宿', '看完機票就是訂房', 'Trip.com'),
 }
 
 CSS = """
@@ -46,18 +49,21 @@ body{width:1440px;height:400px;overflow:hidden;
 .t{font-size:62px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
 .s{font-size:31px;margin-top:16px;opacity:.9;line-height:1.5}
 .go{flex:0 0 auto;position:relative;z-index:1;background:#fff;color:#9a3412;
- font-size:30px;font-weight:800;padding:20px 38px;border-radius:999px;white-space:nowrap}
+ padding:18px 36px;border-radius:18px;white-space:nowrap;text-align:center}
+.go b{display:block;font-size:31px;font-weight:800;line-height:1.2}
+.go s{display:block;text-decoration:none;font-size:19px;font-weight:600;
+ color:#a8674a;margin-top:5px}
 """
 
 
 def page(kind):
-    icon, title, sub = BANNERS[kind]
+    icon, title, sub, brand = BANNERS[kind]
     return ('<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'
             f'<style>{CSS}</style></head><body><div class="b">'
             f'<div class="ic">{icon}</div>'
             f'<div class="tx"><div class="t">{E(title)}</div>'
             f'<div class="s">{E(sub)}</div></div>'
-            '<div class="go">看看有什麼 →</div>'
+            f'<div class="go"><b>到 {E(brand)} 看</b><s>查價格與供應狀況</s></div>'
             '</div></body></html>')
 
 
