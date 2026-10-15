@@ -14,19 +14,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,207（7 天有紀錄），這張低 40%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,150（7 天有紀錄），這張低 39%"
   ],
   "med": 11949,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-02&inbound=OKA-TPE&returnDate=2026-11-07&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 2972,
+   "lo": 2572,
    "hi": 5849,
    "days": 10
   },
   "mbase": {
-   "avg": 4207,
+   "avg": 4150,
    "days": 7,
    "month": 11
   },
@@ -35,12 +35,12 @@
  },
  {
   "slug": "2026-10-15-taichung-okinawa",
-  "title": "台中飛沖繩 NT$3,372 來回含稅｜台灣虎航 11/09 出發",
+  "title": "台中飛沖繩 NT$2,972 來回含稅｜台灣虎航 11/09 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 3372,
+  "price": 2972,
   "air": "台灣虎航",
   "dep": "2026-11-09",
   "ret": "2026-11-12",
@@ -48,7 +48,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$10,026（24 天有紀錄），這張低 66%"
+   "11 月出發的票，每天最便宜的平均要 NT$10,009（24 天有紀錄），這張低 70%"
   ],
   "med": 11582,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
@@ -60,7 +60,7 @@
    "days": 41
   },
   "mbase": {
-   "avg": 10026,
+   "avg": 10009,
    "days": 24,
    "month": 11
   },
@@ -82,9 +82,9 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$5,378（6 天有紀錄），這張低 37%"
+   "11 月出發的票，每天最便宜的平均要 NT$5,312（6 天有紀錄），這張低 37%"
   ],
-  "med": 5668,
+  "med": 5468,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -94,7 +94,7 @@
    "days": 8
   },
   "mbase": {
-   "avg": 5378,
+   "avg": 5312,
    "days": 6,
    "month": 11
   },
@@ -103,26 +103,26 @@
  },
  {
   "slug": "2026-10-15-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,476",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,218",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 8934,
+  "price": 9192,
   "air": "飛福岡再轉乘",
-  "fl_price": 6748,
+  "fl_price": 7006,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1093,
   "tr_mode": "九州新幹線",
-  "dep": "2026-10-16",
+  "dep": "2026-11-03",
   "ret": "",
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$2,476"
+   "比直飛省 NT$2,218"
   ],
   "med": 11410,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-10-16&inbound=FUK-TPE&returnDate=2026-10-20&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
  }
