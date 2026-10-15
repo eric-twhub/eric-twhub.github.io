@@ -152,8 +152,8 @@
   {
    "slug": "deals-2026-10-15-taipei-okinawa",
    "url": "/deals/2026-10-15-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,520 來回含稅｜台灣虎航 11/02 出發",
-   "title": "台北飛沖繩 NT$2,520 來回含稅｜台灣虎航 11/02 出發"
+   "h1": "台北飛沖繩 NT$2,972 來回含稅｜台灣虎航 11/02 出發",
+   "title": "台北飛沖繩 NT$2,972 來回含稅｜台灣虎航 11/02 出發"
   },
   {
    "slug": "deals-2026-10-15-taichung-okinawa",
@@ -168,10 +168,16 @@
    "title": "高雄飛沖繩 NT$3,372 來回含稅｜台灣虎航 11/17 出發"
   },
   {
+   "slug": "deals-2026-10-15-taipei-fukuoka",
+   "url": "/deals/2026-10-15-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$5,754 來回含稅｜台灣虎航 11/03 出發",
+   "title": "台北飛福岡 NT$5,754 來回含稅｜台灣虎航 11/03 出發"
+  },
+  {
    "slug": "deals-2026-10-15-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-10-15-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,618",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,618"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,470",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,470"
   },
   {
    "slug": "apple-japan-price",
@@ -250,6 +256,12 @@
    "url": "/japan-tax-free-2026/",
    "h1": "2026/11/1 起，日本免稅改成「出境後才退錢」",
    "title": "2026/11/1 日本免稅新制：先付全額、出境後才退稅（懶人包）"
+  },
+  {
+   "slug": "japan-park-ticket",
+   "url": "/japan-park-ticket/",
+   "h1": "東京迪士尼門票，哪一天比較便宜？",
+   "title": "東京迪士尼門票哪天便宜？111 天逐日票價與星期規律"
   },
   {
    "slug": "japan-flight-good-times",
