@@ -1,12 +1,12 @@
 [
  {
   "slug": "2026-10-15-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,920 來回含稅｜台灣虎航 11/02 出發",
+  "title": "台北飛沖繩 NT$2,520 來回含稅｜台灣虎航 11/02 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 2920,
+  "price": 2520,
   "air": "台灣虎航",
   "dep": "2026-11-02",
   "ret": "2026-11-07",
@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,344（7 天有紀錄），這張低 33%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,287（7 天有紀錄），這張低 41%"
   ],
   "med": 11949,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-02&inbound=OKA-TPE&returnDate=2026-11-07&type=return&adult=1&language=zh-TW",
@@ -26,7 +26,7 @@
    "days": 10
   },
   "mbase": {
-   "avg": 4344,
+   "avg": 4287,
    "days": 7,
    "month": 11
   },
@@ -35,12 +35,12 @@
  },
  {
   "slug": "2026-10-15-taichung-okinawa",
-  "title": "台中飛沖繩 NT$3,372 來回含稅｜台灣虎航 11/09 出發",
+  "title": "台中飛沖繩 NT$2,972 來回含稅｜台灣虎航 11/09 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 3372,
+  "price": 2972,
   "air": "台灣虎航",
   "dep": "2026-11-09",
   "ret": "2026-11-12",
@@ -48,7 +48,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,971（23 天有紀錄），這張低 66%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,996（23 天有紀錄），這張低 70%"
   ],
   "med": 11661,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
@@ -60,7 +60,7 @@
    "days": 40
   },
   "mbase": {
-   "avg": 9971,
+   "avg": 9996,
    "days": 23,
    "month": 11
   },
@@ -82,24 +82,24 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$5,143（6 天有紀錄），這張低 34%"
+   "11 月出發的票，每天最便宜的平均要 NT$5,688（7 天有紀錄），這張低 41%"
   ],
-  "med": 5211,
+  "med": 5537,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 4385,
    "hi": 10191,
-   "days": 8
+   "days": 9
   },
   "mbase": {
-   "avg": 5143,
-   "days": 6,
+   "avg": 5688,
+   "days": 7,
    "month": 11
   },
   "rank": 1,
-  "n": 8
+  "n": 9
  },
  {
   "slug": "2026-10-15-transfer-fukuoka-kumamoto",
