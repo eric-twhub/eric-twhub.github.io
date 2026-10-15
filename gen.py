@@ -1371,6 +1371,7 @@ def topnav(cur=''):
     # 訂完票之後才會看的東西。同一層放太多會找不到，所以分兩組小標。
     trip = ('<b>挑日期</b>'
             + link('/japan-park-ticket/', '🎢 樂園門票哪天便宜')
+            + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
             + link('/japan-holiday-calendar/', '📅 三國連假撞期')
@@ -1501,7 +1502,7 @@ _AD_MAP = [
     ('iphone-', 'esim'), ('japan-tax-free', 'esim'),
     ('japan-credit-card', 'transport'), ('japan-card', 'transport'),
     ('japan-airline-card', 'transport'),
-    ('japan-park-ticket', 'activity2'), ('tigerair-nagoya', 'transfer'),
+    ('japan-park-ticket', 'activity2'), ('japan-seasonal-event', 'activity2'), ('tigerair-nagoya', 'transfer'),
     ('taiwan-holiday', 'activity2'), ('japan-holiday-calendar', 'activity2'),
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
     ('japan-travel-insurance', 'activity2'),
@@ -11723,6 +11724,136 @@ if os.path.exists('cobrand-cards.json'):
         '頁內部分連結為聯盟行銷連結，本站可能獲得分潤，不影響你的價格。</p>'
       + foot())
     pages.append(('/japan-tax-free-2026/', 0.9))
+
+# ---------- 萬聖節與聖誕節 ----------
+if os.path.exists('seasonal.json'):
+    SE = json.load(open('seasonal.json', encoding='utf-8'))
+    _se_sm = '<br><small style="color:var(--dim)">'
+
+    def _se_d(x):
+        """2026-09-16 → 9/16（三）"""
+        dt = datetime.date(*map(int, x.split('-')))
+        return f'{dt.month}/{dt.day}（{"一二三四五六日"[dt.weekday()]}）'
+
+    def _se_state(it):
+        """照今天判斷進行中／還沒開始／已結束，頁面天天重建所以會自己走。"""
+        t = TODAY
+        if t < it['from']:
+            d = (datetime.date(*map(int, it['from'].split('-')))
+                 - datetime.date(*map(int, t.split('-')))).days
+            return ('soon', f'{d} 天後開始')
+        if t > it['to']:
+            return ('past', '已結束')
+        d = (datetime.date(*map(int, it['to'].split('-')))
+             - datetime.date(*map(int, t.split('-')))).days
+        return ('now', '進行中' + (f'，剩 {d} 天' if d <= 30 else ''))
+
+    def _se_rows(items):
+        out = ''
+        for it in items:
+            st, label = _se_state(it)
+            cls = {'now': 'win', 'soon': '', 'past': 'lose'}[st]
+            out += (f'<tr><td><b>{html.escape(it["name"])}</b>'
+                    f'{_se_sm}{html.escape(it["place"])}</small></td>'
+                    f'<td class="nm">{_se_d(it["from"])} – {_se_d(it["to"])}</td>'
+                    f'<td class="{cls}"><b>{label}</b></td>'
+                    f'<td class="nm">{html.escape(it["note"])}'
+                    f'{_se_sm}出處：<a href="{it["src"]}" target="_blank" '
+                    f'rel="nofollow noopener">{html.escape(it["src_name"])}</a>'
+                    f'（{html.escape(it["lang"])}）</small></td></tr>')
+        return out
+
+    _se_h, _se_c = SE['halloween'], SE['christmas']
+    _se_w = _se_h['warning']
+    _se_now = [it for it in _se_h['items'] + _se_c['items']
+               if _se_state(it)[0] == 'now']
+
+    _se_faq = [
+      ('東京迪士尼的萬聖節辦到什麼時候？',
+       f'官方活動頁寫 {_se_d(_se_h["items"][0]["from"])} 到 '
+       f'{_se_d(_se_h["items"][0]["to"])}。接著是 '
+       f'{_se_d(_se_c["items"][0]["from"])} 開始的迪士尼聖誕節，中間隔十一天。'),
+      ('USJ 的萬聖驚魂夜跟白天的活動是同一個嗎？',
+       '不是。官方頁把「環球影城・極致之秋」的期間寫成 2026 年 9 月 10 日到 11 月 8 日，'
+       '但另外註明萬聖驚魂夜自 9 月 11 日起舉辦，兩者的起始日不同。'),
+      ('去澀谷看萬聖節要注意什麼？',
+       '澀谷區在公共場所禁止飲酒，而且是通年禁止，不是只有萬聖節期間。'
+       '時間是每天下午 6 點到隔天早上 5 點，範圍涵蓋澀谷站周邊的路上與公園。'
+       '這條原本為萬聖節與跨年訂的，2024 年 10 月起改成通年。'),
+      ('其他城市的點燈活動呢？',
+       '多數要到 11 月才公布當年日期。查證當天（'
+       + SE['checked'] + '）六本木之丘官網只有飯店餐廳的聖誕餐，'
+       '沒有點燈的公告頁；川崎 La Cittadella 的首頁也沒有萬聖節公告。'
+       '沒有官方日期的活動這一頁不收，等公布了再補。'),
+    ]
+    _se_ld = json.dumps({
+      "@context": "https://schema.org", "@type": "FAQPage",
+      "mainEntity": [{"@type": "Question", "name": q,
+                      "acceptedAnswer": {"@type": "Answer", "text": a}}
+                     for q, a in _se_faq]}, ensure_ascii=False)
+
+    _se_title = '日本萬聖節與聖誕節活動：兩大樂園的確切檔期與澀谷的飲酒禁令'
+    _se_desc = ('東京迪士尼與 USJ 的萬聖節、聖誕節活動期間，全部引官方繁體中文頁面。'
+                '另含澀谷區公共場所禁止飲酒的條例內容，那是通年的不是只有萬聖節。')
+
+    write('japan-seasonal-event/index.html',
+      head(_se_title, _se_desc, 'japan-seasonal-event/',
+           '<script type="application/ld+json">' + _se_ld + '</script>')
+      + crumbs([('首頁', '/'), ('萬聖節與聖誕節', None)]) + topnav()
+      + '<h1>日本的萬聖節與聖誕節，哪裡在辦</h1>'
+      + f'<p class="lede">{html.escape(SE["_判準"])}</p>'
+      + f'<div class="today"><div class="tday">活動日期查證於 {SE["checked"]}'
+        f'　·　狀態依 {TODAY} 計算</div>'
+      + (f'<div class="tans">現在有 <b>{len(_se_now)}</b> 個活動進行中</div>'
+         f'<div class="tsub">'
+         + html.escape('、'.join(x['name'] for x in _se_now)) + '</div>'
+         if _se_now else '<div class="tans">目前沒有進行中的活動</div>')
+      + f'<div class="tbuf">⚠ 要去澀谷的話先看下面那條：'
+        f'<b>公共場所禁止飲酒是通年的</b>，不是只有萬聖節期間。</div></div>'
+
+      + f'<h2>{html.escape(_se_h["title"])}</h2>'
+      + '<div class="tw"><table><thead><tr><th>活動</th><th>期間</th>'
+        '<th>狀態</th><th>說明與出處</th></tr></thead><tbody>'
+      + _se_rows(_se_h['items']) + '</tbody></table></div>'
+
+      + f'<h3>{html.escape(_se_w["title"])}</h3>'
+      + f'<p class="lede">{html.escape(_se_w["zh"])}</p>'
+      + f'<blockquote class="q">{html.escape(_se_w["jp"])}'
+        f'<cite><a href="{_se_w["src"]}" target="_blank" rel="nofollow noopener">'
+        f'{html.escape(_se_w["src_name"])}</a></cite></blockquote>'
+      + f'<div class="tldr"><ul><li>{html.escape(_se_w["detail"])}</li>'
+        f'<li>{html.escape(_se_w["note"])}</li></ul></div>'
+
+      + f'<h2>{html.escape(_se_c["title"])}</h2>'
+      + '<div class="tw"><table><thead><tr><th>活動</th><th>期間</th>'
+        '<th>狀態</th><th>說明與出處</th></tr></thead><tbody>'
+      + _se_rows(_se_c['items']) + '</tbody></table></div>'
+
+      + '<h2>這一頁還沒有的</h2>'
+      + '<div class="tldr"><ul>'
+      + ''.join(f'<li>{html.escape(x)}</li>' for x in SE['_待查'])
+      + '<li>查證當天六本木之丘官網只有飯店餐廳的聖誕餐，沒有點燈的公告頁；'
+        '川崎 La Cittadella 的首頁也沒有萬聖節公告。沒有官方日期就不列，'
+        '不用第三方整理補。</li>'
+      + '</ul></div>'
+
+      + '<div class="cities">'
+      + f'<a class="ct" href="{U("/japan-park-ticket/")}"><b>🎢 樂園門票哪天便宜</b>'
+        f'<s>逐日票價與星期規律</s></a>'
+      + f'<a class="ct" href="{U("/taiwan-holiday-2026/")}"><b>📅 2026 請假攻略</b>'
+        f'<s>連假與祭典日期</s></a></div>'
+
+      + '<h2>常見問題</h2><div class="faq">'
+      + ''.join(f'<details><summary>{html.escape(q)}</summary>'
+                f'<div>{html.escape(a)}</div></details>' for q, a in _se_faq)
+      + '</div>'
+      + f'<p class="disc">本頁為公開資訊整理，活動日期取自各主辦單位官方網站，'
+        f'查證於 {SE["checked"]}。活動內容與期間可能變更，出發前請以官方公告為準。'
+        f'本站與文中場館無合作關係。</p>'
+      + foot())
+    pages.append(('/japan-seasonal-event/', 0.8))
+    print(f'   節慶活動頁：萬聖節 {len(_se_h["items"])} 項、'
+          f'聖誕節 {len(_se_c["items"])} 項（查證 {SE["checked"]}）')
 
 # ---------- 樂園門票價格 ----------
 if os.path.exists('park-ticket.json'):
