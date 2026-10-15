@@ -1183,6 +1183,7 @@ background:var(--acc);color:#fff;text-decoration:none;font-weight:700;font-size:
 .adgo .agt s{display:block;text-decoration:none;font-size:.76rem;font-weight:500;
 opacity:.88;margin-top:2px}
 .adgo .aga{flex:0 0 auto;font-size:1.15rem}
+.adbox.mid{margin:22px 0 28px}
 .adbox .adfp{padding:0 15px 13px;font-size:.73rem;color:var(--dim);line-height:1.65}
 details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
 margin-top:8px;padding:0}
@@ -1494,10 +1495,12 @@ def _ad_kind_for(path):
     return None
 
 
-def adbox(kind, path):
-    """頁尾的廣告區塊。track 帶頁面路徑，才分得出哪一頁真的有人點。"""
+def adbox(kind, path, slot='foot'):
+    """廣告區塊。track 帶頁面路徑與版位，才分得出哪一頁、哪個位置有人點。"""
     icon, title, sub = _AD_KIND[kind]
     track = 'ad_' + (path[:-len('index.html')].strip('/') or 'home').replace('/', '_')
+    if slot != 'foot':
+        track += '_' + slot
     city = _ad_city(path)
     if kind == 'activity2' and u_region(path):
         title = f'找{u_region(path)}的行程與門票'
@@ -1515,14 +1518,15 @@ def adbox(kind, path):
             # Klook 的 adid 是後台的廣告單元代號，不是任意字串；
             # 傳 'adbox' 走 partners.json 的分組，ID 沒填就併回預設單元。
             href = plink(kind, '日本', sub=track,
-                         adid='adbox' if kind == 'esim' else track[:40])
+                         adid=('adbox' if slot == 'foot' else 'adbox_mid')
+                              if kind == 'esim' else track[:40])
     except Exception:
         return ''
     if '{' in href or href.startswith('TODO'):
         return ''
     brand = P[kind]['brand']
     return (
-      '<aside class="adbox">'
+      f'<aside class="adbox{" mid" if slot != "foot" else ""}">'
       '<div class="adhd"><i>廣告</i>'
       f'<span>以下為合作平台的推廣連結，點了會離開本站前往 {html.escape(brand)}。'
       '本站可能獲得分潤，不影響你的價格。</span></div>'
@@ -2062,6 +2066,53 @@ def _ja_gloss(content):
         parts[i] = ''.join(res) + tail
     return head + sep + ''.join(parts)
 
+# 長頁面在中段再放一個。捲到頁尾才看得到的版位，長頁面幾乎沒人捲得到。
+# 門檻量過全站：5,000 字且 6 個 h2 以上，大約是最長的二十幾頁。
+_AD2_MIN_CHARS, _AD2_MIN_H2 = 5000, 6
+# 中段那個要跟頁尾那個不一樣，同一頁放兩個一樣的東西沒有意義。
+_AD2_PAIR = {'esim': 'activity2', 'activity2': 'esim', 'car': 'esim',
+             'transport': 'esim', 'transfer': 'esim', 'hotel': 'transfer',
+             'activity': 'esim'}
+# 收尾性質的段落，插在它們前面等於跟頁尾那個版位擠在一起
+_AD2_SKIP_H2 = ('整理成圖片', '常見問題', '資料來源', '這一頁', '其他選擇',
+                '延伸閱讀', '出處', '更新紀錄', '相關頁面')
+
+
+def _ad_second(path, content, kind):
+    """長頁面的第二個版位，插在內容過半後的第一個 h2 之前。
+
+    插在 h2 前面是為了不切斷正在講的段落；避開最後兩個 h2，
+    那裡通常是常見問題與資料來源，再放廣告就擠在頁尾那個旁邊了。
+    """
+    def _plain(x):
+        return html.unescape(re.sub(r'<[^>]+>', '', re.sub(
+            r'<(script|style|nav)[^>]*>.*?</\1>', '', x, flags=re.S)))
+
+    hs = [(m.start(), _plain(m.group(1)))
+          for m in re.finditer(r'<h2[ >][^>]*>(.*?)</h2>', content, re.S)]
+    total = len(_plain(content.split('<body', 1)[-1]))
+    if total < _AD2_MIN_CHARS or len(hs) < _AD2_MIN_H2:
+        return content
+    k2 = _AD2_PAIR.get(kind)
+    if not k2:
+        return content
+    # 位置用實際讀到的字數算，不是 HTML 的字元位置：
+    # 表格與圖卡的標籤會灌水，用 HTML 位置會把中點往前推。
+    cand = []
+    for pos, title in hs[1:-2]:
+        if any(x in title for x in _AD2_SKIP_H2):
+            continue
+        if len(_plain(content[:pos])) >= total // 2:
+            cand.append(pos)
+    if not cand:
+        return content
+    box = adbox(k2, path, slot='mid')
+    if not box:
+        return content
+    i = cand[0]
+    return content[:i] + box + content[i:]
+
+
 def _ad_inject(path, content):
     """把廣告區塊放進頁尾聲明之前。
 
@@ -2076,7 +2127,10 @@ def _ad_inject(path, content):
     if i < 0:
         return content
     box = adbox(kind, path)
-    return content[:i] + box + content[i:] if box else content
+    if box:
+        content = content[:i] + box + content[i:]
+        content = _ad_second(path, content, kind)
+    return content
 
 
 def write(path,content):
