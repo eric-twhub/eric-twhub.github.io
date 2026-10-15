@@ -1526,8 +1526,9 @@ def _ad_products(kind, track):
         return ''
     cells = ''
     for it in g['items']:
-        href = klook(it['url'], 'adbox_prod') if g['brand'] == 'Klook' else \
-               (kkday(it['url'], track) if g['brand'] == 'KKday' else it['url'])
+        href = (klook(it['url'], 'adbox_prod') if g['brand'] == 'Klook' else
+                kkday(it['url'], track + '_prod') if g['brand'] == 'KKday' else
+                it['url'])
         cells += (f'<a class="adp" href="{html.escape(href)}" target="_blank" '
                   f'rel="nofollow noopener sponsored">'
                   f'<b>{html.escape(it["name"])}</b>'
@@ -1591,6 +1592,14 @@ def adbox(kind, path, slot='foot'):
     if '{' in href or href.startswith('TODO'):
         return ''
     brand = P[kind]['brand']
+    if _g.get('items'):
+        # 商品是哪個平台的，整個版位就標哪個平台，按鈕也送去那裡。
+        # 不然會變成列 KKday 的商品、按鈕卻把人送去 Trip.com。
+        brand = _g.get('brand') or brand
+        _target = _g.get('search')
+        if _target:
+            href = (klook(_target, 'adbox_' + slot) if brand == 'Klook' else
+                    kkday(_target, track) if brand == 'KKday' else _target)
     img = (kind in _AD_IMG_KINDS and _ad_use_img(path, slot)
            and os.path.exists(f'ads/banner-{kind}.jpg'))
     cls = ('' if slot == 'foot' else ' ' + slot) + (' img' if img else '')

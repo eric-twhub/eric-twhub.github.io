@@ -10,19 +10,200 @@
    "brand": "Klook",
    "search": "https://www.klook.com/zh-TW/search/?query=%E6%97%A5%E6%9C%AC%20eSIM",
    "items": [
-    {"id": "109393", "name": "日本 eSIM 原生網路｜吃到飽，不穩就退",
-     "note": "Softbank 5G／DOCOMO 4G LTE", "star": "4.6", "booked": "2M+",
-     "url": "https://www.klook.com/zh-TW/activity/109393-japan-esim-high-speed-internet-qr-code-voucher/"},
-    {"id": "96247", "name": "日本 4G/5G eSIM 高速上網", "note": "即買即取 QR code",
-     "star": "4.1", "booked": "100K+",
-     "url": "https://www.klook.com/zh-TW/activity/96247-4-esim-japan/"},
-    {"id": "39586", "name": "日本 eSIM 卡", "note": "電子郵件寄送 QR Code",
-     "star": "4.4", "booked": "60K+",
-     "url": "https://www.klook.com/zh-TW/activity/39586-4g-esim-japan/"},
-    {"id": "79682", "name": "日本 eSIM（NTT docomo／Sakura Mobile）",
-     "note": "日系電信直營", "star": "4.2", "booked": "40K+",
-     "url": "https://www.klook.com/zh-TW/activity/79682-4g-lte-esim-japan-nttdocomo-unlimited-data-sakura-mobile/"}
+    {
+     "id": "109393",
+     "name": "日本 eSIM 原生網路｜吃到飽，不穩就退",
+     "note": "Softbank 5G／DOCOMO 4G LTE",
+     "star": "4.6",
+     "booked": "2M+",
+     "url": "https://www.klook.com/zh-TW/activity/109393-japan-esim-high-speed-internet-qr-code-voucher/"
+    },
+    {
+     "id": "96247",
+     "name": "日本 4G/5G eSIM 高速上網",
+     "note": "即買即取 QR code",
+     "star": "4.1",
+     "booked": "100K+",
+     "url": "https://www.klook.com/zh-TW/activity/96247-4-esim-japan/"
+    },
+    {
+     "id": "39586",
+     "name": "日本 eSIM 卡",
+     "note": "電子郵件寄送 QR Code",
+     "star": "4.4",
+     "booked": "60K+",
+     "url": "https://www.klook.com/zh-TW/activity/39586-4g-esim-japan/"
+    },
+    {
+     "id": "79682",
+     "name": "日本 eSIM（NTT docomo／Sakura Mobile）",
+     "note": "日系電信直營",
+     "star": "4.2",
+     "booked": "40K+",
+     "url": "https://www.klook.com/zh-TW/activity/79682-4g-lte-esim-japan-nttdocomo-unlimited-data-sakura-mobile/"
+    }
+   ]
+  },
+  "transport": {
+   "title": "JR Pass 與日本鐵路周遊券",
+   "sub": "跨城市移動前先比一次，算得出來才買",
+   "brand": "KKday",
+   "search": "https://www.kkday.com/zh-tw/product/productlist?keyword=JR%20PASS",
+   "items": [
+    {
+     "id": "3494",
+     "name": "JR Pass 九州鐵路周遊券",
+     "note": "北九州／南九州／全九州",
+     "star": "4.8",
+     "booked": "70K+",
+     "url": "https://www.kkday.com/zh-tw/product/3494"
+    },
+    {
+     "id": "6681",
+     "name": "JR PASS 東日本鐵路周遊券",
+     "note": "含成田往返",
+     "star": "4.9",
+     "booked": "30K+",
+     "url": "https://www.kkday.com/zh-tw/product/6681"
+    },
+    {
+     "id": "20317",
+     "name": "JR 關西廣域鐵路周遊 5 日券",
+     "note": "關西機場進出適用",
+     "star": "4.8",
+     "booked": "30K+",
+     "url": "https://www.kkday.com/zh-tw/product/20317"
+    },
+    {
+     "id": "25777",
+     "name": "JR 關西地區鐵路周遊券",
+     "note": "大阪京都神戶近郊",
+     "star": "4.6",
+     "booked": "30K+",
+     "url": "https://www.kkday.com/zh-tw/product/25777"
+    }
+   ]
+  },
+  "transfer": {
+   "title": "日本機場接送",
+   "sub": "深夜抵達也有車，先訂好不用現場排",
+   "brand": "KKday",
+   "search": "https://www.kkday.com/zh-tw/product/productlist?keyword=%E6%97%A5%E6%9C%AC%20%E6%A9%9F%E5%A0%B4%E6%8E%A5%E9%80%81",
+   "items": [
+    {
+     "id": "129909",
+     "name": "關西機場至大阪、京都、奈良、神戶",
+     "note": "可選接機或送機",
+     "star": "4.9",
+     "booked": "20K+",
+     "url": "https://www.kkday.com/zh-tw/product/129909"
+    },
+    {
+     "id": "151505",
+     "name": "東京成田・羽田・迪士尼・市區接送",
+     "note": "可選中文或日文司機",
+     "star": "4.8",
+     "booked": "10K+",
+     "url": "https://www.kkday.com/zh-tw/product/151505"
+    },
+    {
+     "id": "138060",
+     "name": "沖繩那霸機場至沖繩全島",
+     "note": "含 JUNGLIA 接送",
+     "star": "4.9",
+     "booked": "2K+",
+     "url": "https://www.kkday.com/zh-tw/product/138060"
+    },
+    {
+     "id": "268770",
+     "name": "關西機場・大阪伊丹機場接送",
+     "note": "KIX／ITM 往返大阪",
+     "star": "4.8",
+     "booked": "5K+",
+     "url": "https://www.kkday.com/zh-tw/product/268770"
+    }
+   ]
+  },
+  "activity2": {
+   "title": "日本行程與門票",
+   "sub": "在地一日遊、樂園門票與體驗",
+   "brand": "KKday",
+   "search": "https://www.kkday.com/zh-tw/product/productlist?keyword=%E6%97%A5%E6%9C%AC%20%E9%96%80%E7%A5%A8",
+   "items": [
+    {
+     "id": "2247",
+     "name": "日本環球影城門票",
+     "note": "大阪 USJ",
+     "star": "4.8",
+     "booked": "300K+",
+     "url": "https://www.kkday.com/zh-tw/product/2247"
+    },
+    {
+     "id": "19252",
+     "name": "東京迪士尼樂園 & 迪士尼海洋門票",
+     "note": "兩園擇一或兩日",
+     "star": "4.8",
+     "booked": "300K+",
+     "url": "https://www.kkday.com/zh-tw/product/19252"
+    },
+    {
+     "id": "139872",
+     "name": "日本吉卜力公園門票",
+     "note": "標準／高級大散步券",
+     "star": "4.5",
+     "booked": "2K+",
+     "url": "https://www.kkday.com/zh-tw/product/139872"
+    },
+    {
+     "id": "25439",
+     "name": "天橋立一日遊",
+     "note": "京都伊根舟屋與遊船",
+     "star": "4.8",
+     "booked": "10K+",
+     "url": "https://www.kkday.com/zh-tw/product/25439"
+    }
+   ]
+  },
+  "car": {
+   "title": "在日本租車",
+   "sub": "非都會區自駕比較省，先看有什麼車",
+   "brand": "KKday",
+   "search": "https://www.kkday.com/zh-tw/product/productlist?keyword=%E6%97%A5%E6%9C%AC%20%E7%A7%9F%E8%BB%8A",
+   "items": [
+    {
+     "id": "21486",
+     "name": "北海道租車 NISSAN",
+     "note": "新千歲機場・札幌・旭川・函館取車",
+     "star": "4.9",
+     "booked": "100+",
+     "url": "https://www.kkday.com/zh-tw/product/21486"
+    },
+    {
+     "id": "132693",
+     "name": "九州租車 NISSAN",
+     "note": "福岡機場・博多站・長崎・熊本取車",
+     "star": "4.4",
+     "booked": "100+",
+     "url": "https://www.kkday.com/zh-tw/product/132693"
+    },
+    {
+     "id": "132746",
+     "name": "沖繩租車 NISSAN",
+     "note": "那霸・宮古島・石垣島取車",
+     "star": "4.7",
+     "booked": "200+",
+     "url": "https://www.kkday.com/zh-tw/product/132746"
+    },
+    {
+     "id": "21488",
+     "name": "名古屋與北陸租車 NISSAN",
+     "note": "中部機場・名古屋站・新潟・金澤取車",
+     "star": "4.9",
+     "booked": "100+",
+     "url": "https://www.kkday.com/zh-tw/product/21488"
+    }
    ]
   }
- }
+ },
+ "_沒有商品清單的類型": "hotel 維持泛稱：訂房本來就是依日期與區域搜尋，列四間飯店既不具代表性，本站也沒有查證過那幾間。城市頁的住宿版位連的是該城市的搜尋結果，那才是讀者要的。"
 }
