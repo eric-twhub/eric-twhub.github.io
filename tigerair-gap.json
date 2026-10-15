@@ -88,7 +88,7 @@
    "max": 0.7024,
    "min": 0.0154,
    "db_total": 242078,
-   "air_total": 176075,
+   "air_total": 176527,
    "routes": {
     "KHH-OKA": {
      "n": 8,
@@ -112,7 +112,7 @@
     },
     "TPE-OKA": {
      "n": 8,
-     "med": 0.3595
+     "med": 0.3524
     }
    },
    "worst": {
