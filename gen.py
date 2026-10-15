@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """台日機票速報 — 多頁 SEO 網站產生器"""
-import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics, hashlib
+import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics, hashlib, calendar
 import glob
 
 CFG=json.load(open('partners.json',encoding='utf-8'))
@@ -1404,6 +1404,43 @@ def foot():
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
 <!--/a-->最後更新 {NOWS}　·　<a href="{U("/")}">回首頁</a>
 </p></div>{SF_JS}{NAV_JS}{LB_JS}</body></html>'''
+
+def _reg_window(c):
+    """每月要重搶的登錄活動，現在是不是開放中。
+
+    頁面天天重建，所以 15 日一到自己會亮，月底過了自己會收，不用手動改。
+    只有 cards.json 標了 reg_monthly 的卡有這塊。"""
+    m = c.get('reg_monthly')
+    if not m:
+        return ''
+    y, mo, d = int(TODAY[:4]), int(TODAY[5:7]), int(TODAY[8:10])
+    last = calendar.monthrange(y, mo)[1]
+    links = {x['label']: x for x in c.get('reg_links', [])}
+    tc = links.get('交通卡活動登錄') or {}
+    url = tc.get('url', '')
+    path = tc.get('path', '')
+    a = (f'<a href="{url}" target="_blank" rel="nofollow noopener">去登錄</a>'
+         if url else '')
+    if d < m['day']:
+        return (f'<div class="tbuf">本月的{html.escape(m["what"])}登錄還沒開放：'
+                f'{mo} 月 {m["day"]} 日 {m["hour"]}:00 開始，限量 {m["quota"]:,} 名。</div>')
+    return (f'<div class="tbuf">⚠ <b>本月登錄開放中</b>：{html.escape(m["what"])}'
+            f' 要在 {mo}/{m["day"]} {m["hour"]}:00 到 {mo}/{last} 23:59 之間登錄，'
+            f'限量 {m["quota"]:,} 名，額滿提前關閉。'
+            f'當月消費要在當月登錄完才算。{a}'
+            + (f'<br><small>路徑：{html.escape(path)}</small>' if path else '')
+            + '</div>')
+
+
+def _reg_link_row(c):
+    """登錄入口。行動支付與交通卡是兩個不同的頁面，不要混為一談。"""
+    ls = c.get('reg_links') or []
+    if not ls:
+        return ''
+    return ('<p class="disc">登錄入口：'
+            + '、'.join(f'<a href="{x["url"]}" target="_blank" rel="nofollow noopener">'
+                        f'{html.escape(x["label"])}</a>' for x in ls)
+            + '。兩個活動分開登錄，登錄的是聯邦官網，不是本站。</p>')
 
 def _hh(t):
     """'HH:MM' → 小時整數；缺值回 None"""
@@ -11899,10 +11936,15 @@ if os.path.exists('cards.json'):
             f'<div class="tsub">{html.escape(c["base_note"])}。'
             + (f'另有 {len(c["tiers"])} 層加碼，各有條件與上限，需同時符合才疊得上去。'
                if c['tiers'] else '') + '</div>'
-            + (f'<div class="tbuf">⚠ 加碼需<b>搶限量登錄</b>：{html.escape(c["reg"])}</div>'
+            + ((f'<div class="tbuf">⚠ '
+                + ('部分加碼需<b>搶限量登錄</b>' if c.get('reg_monthly')
+                   else '加碼需<b>搶限量登錄</b>')
+                + f'：{html.escape(c["reg"])}</div>')
                if c.get('reg_race') else
                (f'<div class="tbuf">超過之後只剩 <b>{c["base"]}%</b>。</div>' if hit else ''))
+            + _reg_window(c)
             + '</div>'
+          + _reg_link_row(c)
           + (('<h2>回饋是怎麼疊出來的</h2>'
               f'<p class="lede">基本 {c["base"]}%（{html.escape(c["base_note"])}），'
               f'再加上以下各層。每層各自受上限限制，也各自要符合條件。</p>'
