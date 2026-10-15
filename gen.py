@@ -1184,6 +1184,9 @@ background:var(--acc);color:#fff;text-decoration:none;font-weight:700;font-size:
 opacity:.88;margin-top:2px}
 .adgo .aga{flex:0 0 auto;font-size:1.15rem}
 .adbox.mid,.adbox.top{margin:22px 0 28px}
+.adbox .adimg{display:block;text-decoration:none}
+.adbox .adimg img{display:block;width:100%;height:auto;aspect-ratio:1440/400}
+.adbox.img>.adbd{padding:0}
 .adbox .adfp{padding:0 15px 13px;font-size:.73rem;color:var(--dim);line-height:1.65}
 details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
 margin-top:8px;padding:0}
@@ -1495,12 +1498,28 @@ def _ad_kind_for(path):
     return None
 
 
+# 圖片橫幅與文字版的對照實驗。上版位一半頁面給圖、一半維持文字，
+# 同一頁的版本不會變（照路徑算的），讀者重整不會看到不一樣的東西。
+# 比的時候要用同一個位置的兩組數字比，不要拿上版位的圖去比頁尾的文字。
+_AD_IMG_KINDS = {'esim', 'activity2', 'transfer', 'car', 'transport', 'hotel'}
+
+
+def _ad_use_img(path, slot):
+    """這一頁的這個版位要不要用圖片版。只有上版位參與實驗。"""
+    if slot != 'top':
+        return False
+    h = hashlib.sha1(path.encode('utf-8')).hexdigest()
+    return int(h[:8], 16) % 2 == 0
+
+
 def adbox(kind, path, slot='foot'):
     """廣告區塊。track 帶頁面路徑與版位，才分得出哪一頁、哪個位置有人點。"""
     icon, title, sub = _AD_KIND[kind]
     track = 'ad_' + (path[:-len('index.html')].strip('/') or 'home').replace('/', '_')
     if slot != 'foot':
         track += '_' + slot
+    if kind in _AD_IMG_KINDS and _ad_use_img(path, slot):
+        track += '_img'
     city = _ad_city(path)
     if kind == 'activity2' and u_region(path):
         title = f'找{u_region(path)}的行程與門票'
@@ -1520,28 +1539,40 @@ def adbox(kind, path, slot='foot'):
             # Klook 的 adid 是後台的廣告單元代號，不是任意字串。
             # 一個版位一組，ID 沒填就併回預設單元，連結照常可用。
             href = plink(kind, '日本', sub=track,
-                         adid=('adbox' if slot == 'foot' else 'adbox_' + slot)
+                         adid=(('adbox' if slot == 'foot' else 'adbox_' + slot)
+                               + ('_img' if _ad_use_img(path, slot) else ''))
                               if kind == 'esim' else track[:40])
     except Exception:
         return ''
     if '{' in href or href.startswith('TODO'):
         return ''
     brand = P[kind]['brand']
+    img = (kind in _AD_IMG_KINDS and _ad_use_img(path, slot)
+           and os.path.exists(f'ads/banner-{kind}.jpg'))
+    cls = ('' if slot == 'foot' else ' ' + slot) + (' img' if img else '')
+    if img:
+        body = (f'<div class="adbd"><a class="adimg" href="{html.escape(href)}" '
+                f'target="_blank" rel="nofollow noopener sponsored">'
+                f'<img src="{U("/ads/banner-" + kind + ".jpg")}" '
+                f'alt="廣告：{html.escape(title)}，前往 {html.escape(brand)}" '
+                f'width="1440" height="400" loading="lazy"></a></div>')
+    else:
+        body = (f'<div class="adbd"><div class="adt">{html.escape(title)}</div>'
+                f'<div class="ads">{html.escape(sub)}</div>'
+                f'<a class="adgo" href="{html.escape(href)}" target="_blank" '
+                f'rel="nofollow noopener sponsored">'
+                f'<span class="agi">{icon}</span>'
+                f'<span class="agt">到 {html.escape(brand)} 看'
+                f'<s>價格與供應狀況以該平台為準</s></span>'
+                '<span class="aga">→</span></a></div>')
     return (
-      f'<aside class="adbox{"" if slot == "foot" else " " + slot}">'
+      f'<aside class="adbox{cls}">'
       '<div class="adhd"><i>廣告</i>'
       f'<span>以下為合作平台的推廣連結，點了會離開本站前往 {html.escape(brand)}。'
       '本站可能獲得分潤，不影響你的價格。</span></div>'
-      f'<div class="adbd"><div class="adt">{html.escape(title)}</div>'
-      f'<div class="ads">{html.escape(sub)}</div>'
-      f'<a class="adgo" href="{html.escape(href)}" target="_blank" '
-      f'rel="nofollow noopener sponsored">'
-      f'<span class="agi">{icon}</span>'
-      f'<span class="agt">到 {html.escape(brand)} 看'
-      f'<s>價格與供應狀況以該平台為準</s></span>'
-      '<span class="aga">→</span></a></div>'
-      '<p class="adfp">本站沒有販售這些商品，也沒有查證過上面的價格與庫存。'
-      '這一頁自己整理的資料在上面，廣告與那些資料沒有關係。</p>'
+      + body
+      + '<p class="adfp">本站沒有販售這些商品，也沒有查證過上面的價格與庫存。'
+        '這一頁自己整理的資料在上面，廣告與那些資料沒有關係。</p>'
       '</aside>')
 
 def foot():
