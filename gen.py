@@ -1184,6 +1184,17 @@ background:var(--acc);color:#fff;text-decoration:none;font-weight:700;font-size:
 opacity:.88;margin-top:2px}
 .adgo .aga{flex:0 0 auto;font-size:1.15rem}
 .adbox.mid,.adbox.top{margin:22px 0 28px}
+.adbox .adpl{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.adbox .adp{display:flex;flex-direction:column;gap:5px;padding:11px 13px;
+background:var(--card);border:1px solid var(--line);border-radius:10px;
+text-decoration:none;color:var(--fg)}
+.adbox .adp:hover{border-color:var(--acc)}
+.adbox .adp b{font-size:.88rem;font-weight:700;line-height:1.45}
+.adbox .adp s{text-decoration:none;font-size:.76rem;color:var(--dim);line-height:1.5}
+.adbox .adp u{text-decoration:none;font-size:.75rem;color:var(--dim);
+display:flex;gap:8px;align-items:center;margin-top:auto;padding-top:3px}
+.adbox .adp u i{font-style:normal;color:var(--acc);font-weight:700}
+@media(max-width:560px){.adbox .adpl{grid-template-columns:1fr}}
 .adbox .adimg{display:block;text-decoration:none}
 .adbox .adimg img{display:block;width:100%;height:auto;aspect-ratio:1440/400}
 .adbox.img>.adbd{padding:0}
@@ -1498,6 +1509,34 @@ def _ad_kind_for(path):
     return None
 
 
+_ADS = (json.load(open('ads.json', encoding='utf-8'))
+        if os.path.exists('ads.json') else {'groups': {}, 'checked': ''})
+
+
+def _ad_products(kind, track):
+    """實際商品清單。泛稱「日本上網卡與 eSIM」讀者不知道會看到什麼，
+    列出商品名與評價明確得多，這也是這一版廣告要改掉的地方。
+
+    刻意不放價格：Klook 的搜尋價是最低規格的起價，而且一天內就會變
+    （2026-10-15 同一支前後兩次查是 NT$11 與 NT$14），寫進靜態頁隔天就錯。
+    放變動慢的欄位就好，價格讓讀者到平台上看。
+    """
+    g = (_ADS.get('groups') or {}).get(kind)
+    if not g or not g.get('items'):
+        return ''
+    cells = ''
+    for it in g['items']:
+        href = klook(it['url'], 'adbox_prod') if g['brand'] == 'Klook' else \
+               (kkday(it['url'], track) if g['brand'] == 'KKday' else it['url'])
+        cells += (f'<a class="adp" href="{html.escape(href)}" target="_blank" '
+                  f'rel="nofollow noopener sponsored">'
+                  f'<b>{html.escape(it["name"])}</b>'
+                  + (f'<s>{html.escape(it["note"])}</s>' if it.get('note') else '')
+                  + f'<u><i>★ {html.escape(it["star"])}</i>'
+                    f'<span>{html.escape(it["booked"])} 人參加過</span></u></a>')
+    return f'<div class="adpl">{cells}</div>'
+
+
 # 圖片橫幅與文字版的對照實驗。上版位一半頁面給圖、一半維持文字，
 # 同一頁的版本不會變（照路徑算的），讀者重整不會看到不一樣的東西。
 # 比的時候要用同一個位置的兩組數字比，不要拿上版位的圖去比頁尾的文字。
@@ -1515,6 +1554,11 @@ def _ad_use_img(path, slot):
 def adbox(kind, path, slot='foot'):
     """廣告區塊。track 帶頁面路徑與版位，才分得出哪一頁、哪個位置有人點。"""
     icon, title, sub = _AD_KIND[kind]
+    # 有商品清單的群組用 ads.json 的標題：那是名詞片語，
+    # 接在「看 Klook 上全部的…」後面才通順。
+    _g = (_ADS.get('groups') or {}).get(kind) or {}
+    if _g.get('title'):
+        title, sub = _g['title'], _g.get('sub') or sub
     track = 'ad_' + (path[:-len('index.html')].strip('/') or 'home').replace('/', '_')
     if slot != 'foot':
         track += '_' + slot
@@ -1557,14 +1601,18 @@ def adbox(kind, path, slot='foot'):
                 f'alt="廣告：{html.escape(title)}，前往 {html.escape(brand)}" '
                 f'width="1440" height="400" loading="lazy"></a></div>')
     else:
+        prods = _ad_products(kind, track)
         body = (f'<div class="adbd"><div class="adt">{html.escape(title)}</div>'
                 f'<div class="ads">{html.escape(sub)}</div>'
-                f'<a class="adgo" href="{html.escape(href)}" target="_blank" '
-                f'rel="nofollow noopener sponsored">'
-                f'<span class="agi">{icon}</span>'
-                f'<span class="agt">到 {html.escape(brand)} 看'
-                f'<s>價格與供應狀況以該平台為準</s></span>'
-                '<span class="aga">→</span></a></div>')
+                + prods
+                + f'<a class="adgo" href="{html.escape(href)}" target="_blank" '
+                  f'rel="nofollow noopener sponsored">'
+                  f'<span class="agi">{icon}</span>'
+                  f'<span class="agt">'
+                + (f'看 {html.escape(brand)} 上全部的{html.escape(title)}'
+                   if prods else f'到 {html.escape(brand)} 看')
+                + f'<s>價格與供應狀況以該平台為準</s></span>'
+                  '<span class="aga">→</span></a></div>')
     return (
       f'<aside class="adbox{cls}">'
       '<div class="adhd"><i>廣告</i>'
@@ -1572,7 +1620,10 @@ def adbox(kind, path, slot='foot'):
       '本站可能獲得分潤，不影響你的價格。</span></div>'
       + body
       + '<p class="adfp">本站沒有販售這些商品，也沒有查證過上面的價格與庫存。'
-        '這一頁自己整理的資料在上面，廣告與那些資料沒有關係。</p>'
+      + (f'商品名稱與評價查證於 {_ADS.get("checked", "")}，'
+         '價格與方案會變動，以平台顯示為準。'
+         if kind in (_ADS.get('groups') or {}) and not img else '')
+      + '這一頁自己整理的資料在上面，廣告與那些資料沒有關係。</p>'
       '</aside>')
 
 def foot():

@@ -1,0 +1,28 @@
+{
+ "_說明": "廣告版位要放的實際商品。泛稱「日本上網卡與 eSIM」讀者不知道會看到什麼，點擊率低；列出實際商品名與評價就明確得多。",
+ "_為什麼不標價格": "Klook 搜尋頁的價格是最低規格的起價，而且變動很快：2026-10-15 同一支商品前後兩次查分別是 NT$11 與 NT$14。寫進靜態頁隔天就錯，所以只放變動慢的欄位（商品名、評分、累計人數），價格讓讀者到平台上看。",
+ "_怎麼更新": "Klook 搜尋頁是前端算繪，curl 抓不到，要用瀏覽器開 https://www.klook.com/zh-TW/search/?query=<關鍵字> 等 5 秒，再從 a.card-item 取 .card-title／.review-star／.review-booked。下架的商品連結會失效，每季回查一次。",
+ "checked": "2026-10-15",
+ "groups": {
+  "esim": {
+   "title": "日本上網卡與 eSIM",
+   "sub": "落地就能用，不用現場找櫃台",
+   "brand": "Klook",
+   "search": "https://www.klook.com/zh-TW/search/?query=%E6%97%A5%E6%9C%AC%20eSIM",
+   "items": [
+    {"id": "109393", "name": "日本 eSIM 原生網路｜吃到飽，不穩就退",
+     "note": "Softbank 5G／DOCOMO 4G LTE", "star": "4.6", "booked": "2M+",
+     "url": "https://www.klook.com/zh-TW/activity/109393-japan-esim-high-speed-internet-qr-code-voucher/"},
+    {"id": "96247", "name": "日本 4G/5G eSIM 高速上網", "note": "即買即取 QR code",
+     "star": "4.1", "booked": "100K+",
+     "url": "https://www.klook.com/zh-TW/activity/96247-4-esim-japan/"},
+    {"id": "39586", "name": "日本 eSIM 卡", "note": "電子郵件寄送 QR Code",
+     "star": "4.4", "booked": "60K+",
+     "url": "https://www.klook.com/zh-TW/activity/39586-4g-esim-japan/"},
+    {"id": "79682", "name": "日本 eSIM（NTT docomo／Sakura Mobile）",
+     "note": "日系電信直營", "star": "4.2", "booked": "40K+",
+     "url": "https://www.klook.com/zh-TW/activity/79682-4g-lte-esim-japan-nttdocomo-unlimited-data-sakura-mobile/"}
+   ]
+  }
+ }
+}
