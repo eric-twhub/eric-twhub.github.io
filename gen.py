@@ -536,6 +536,41 @@ def ticket_cards(items, slug):
         for it in items)
 
 
+def adbox_tickets(items, slug, title, sub, note=''):
+    """把指定的票券包成廣告版位的樣子。
+
+    這些連結本來就有分潤，只是先前長得像內文卡片。讀者分不出哪些是
+    我們整理的資料、哪些是會抽成的連結，所以改成跟全站廣告版位一致的外觀，
+    一樣標「廣告」。非分潤的連結（例如店家官網）不要放進來。
+    """
+    if not items:
+        return ''
+    brands = []
+    cells = ''
+    for it in items:
+        b = 'Klook' if it.get('provider') == 'klook' else 'KKday'
+        if b not in brands:
+            brands.append(b)
+        cells += (f'<a class="adp" href="{html.escape(_ticket_link(it, slug))}" '
+                  f'target="_blank" rel="nofollow noopener sponsored">'
+                  f'<b>{html.escape(it["name"])}</b>'
+                  f'<s>{html.escape(it["area"])}</s>'
+                  + (f'<u><span>{html.escape(it["note"])}</span>'
+                     f'<i>{html.escape(b)}</i></u>' if it.get('note') else
+                     f'<u><i>{html.escape(b)}</i></u>')
+                  + '</a>')
+    one = ' one' if len(items) == 1 else ''
+    return ('<aside class="adbox">'
+            '<div class="adhd"><i>廣告</i>'
+            f'<span>以下為合作平台的推廣連結，點了會離開本站前往 '
+            f'{html.escape("、".join(brands))}。本站可能獲得分潤，不影響你的價格。</span></div>'
+            f'<div class="adbd"><div class="adt">{html.escape(title)}</div>'
+            f'<div class="ads">{html.escape(sub)}</div>'
+            f'<div class="adpl{one}">{cells}</div></div>'
+            + (f'<p class="adfp">{html.escape(note)}</p>' if note else '')
+            + '</aside>')
+
+
 def ticket_block(slug, name):
     """城市頁的門票區塊。
 
@@ -1650,7 +1685,7 @@ def adbox(kind, path, slot='foot'):
                 + f'<s>價格與供應狀況以該平台為準</s></span>'
                   '<span class="aga">→</span></a></div>')
     return (
-      f'<aside class="adbox{cls}">'
+      f'<aside class="adbox{cls}" data-ad="auto">'
       '<div class="adhd"><i>廣告</i>'
       f'<span>以下為合作平台的推廣連結，點了會離開本站前往 {html.escape(brand)}。'
       '本站可能獲得分潤，不影響你的價格。</span></div>'
@@ -2279,7 +2314,7 @@ def _ad_inject(path, content):
 
     放在 _trim_note 之前跑，那邊才看得到這些分潤連結，
     頁尾的聯盟行銷揭露才不會被誤刪。"""
-    if 'class="adbox"' in content:
+    if 'data-ad="auto"' in content:   # 已經插過了
         return content
     kind = _ad_kind_for(path)
     if not kind:
@@ -5898,7 +5933,6 @@ if os.path.exists('angel63.json'):
 
     _agk = AG['klook']
     _ag_kl = ''.join('<li>' + html.escape(x) + '</li>' for x in _agk['points'])
-    _ag_tk = ticket_cards(AG['tickets']['items'], 'tokyo')
     _ag_vs = ('<div class="tw"><table><tr>'
               + ''.join(f'<th>{html.escape(h)}</th>' for h in AG['vs']['head'])
               + '</tr>'
@@ -6009,10 +6043,10 @@ if os.path.exists('angel63.json'):
       + f'<p class="disc">{html.escape(AG["lang"]["shop"])}</p>'
       + '<h2>線上訂票</h2>'
       + f'<p class="lede">{html.escape(AG["tickets"]["_說明"])}</p>'
-      + f'<div class="cities">{_ag_tk}</div>'
-      + f'<p class="disc">{html.escape(AG["tickets"]["_無售價"])}'
-        '　透過這些連結完成購買時本站可獲得分潤，不影響你的價格。'
-        '售價與庫存以各平台頁面為準。</p>'
+      + adbox_tickets(AG['tickets']['items'], 'tokyo',
+                      '六本木這兩家的門票',
+                      '名字很像，訂之前先確認是哪一家',
+                      AG['tickets']['_無售價'])
       # 最便宜的女子会プラン 與可以指定座位的迫力系列只有官網賣，
       # 這一段卻只給得出兩個有分潤的平台，等於把那些方案藏起來。
       + '<div class="cities">'
