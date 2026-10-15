@@ -355,9 +355,10 @@
    "why": "Trip.com 的飯店列表要數字城市 ID，只有六個城市拿得到，其餘 27 個城市頁等於沒有住宿版位。Agoda 走關鍵字就能帶城市，而且站上實測東京住宿用的就是這個價格帶的平台。",
    "apply": "https://partners.agoda.com/",
    "apply_note": "自家聯盟，不走聯盟網。必須先有網站（本站符合），不限國家，官方寫明旅遊相關且針對飯店的網站通過機會好。付款為銀行匯款，最低門檻 US$200，未達累積到下月；以旅客「退房」後的次月計算，15 日前付款。查證 2026-10-15。",
-   "_status": "TODO 尚未申請。核准後把 template 換成後台給的連結格式，並把 city 頁的 hotel 版位改走這裡。在那之前 _ad_kind_for 讓沒有 Trip.com 城市 ID 的城市配機場接送。",
+   "_status": "2026-10-15 已送出申請，走手動驗證（後台沒有自動驗證選項），官方寫約七個工作天。核准後到後台「行銷工具 → 文字連結」取連結格式，填進 template，再把 _ad_kind_for 裡沒有 Trip.com 城市 ID 的城市從 transfer 改回 hotel（走 hotel2）。在那之前那 27 頁配的是機場接送。",
    "template": "TODO_核准後貼上_Agoda_分潤連結",
-   "fallback": "https://www.agoda.com/zh-tw/search?city={q}"
+   "fallback": "https://www.agoda.com/zh-tw/search?city={q}",
+   "_預計回覆": "約 2026-10-26（2026-10-15 送出，七個工作天，未計台灣與泰國的假日）"
   }
  },
  "_已排除及原因": {
