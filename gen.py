@@ -1337,6 +1337,7 @@ def topnav(cur=''):
         if os.path.exists('cards.json') else []
     card = (link('/japan-credit-card/', f'💳 {len(_cd) or ""} 張卡比較'.replace('  ', ' '))
             + link('/japan-card-calculator/', '🧮 回饋計算機')
+            + link('/japan-card-register/', '📆 登錄日曆')
             + link('/japan-airline-card/', '✈️ 買機票算國內還是國外')
             + link('/japan-airline-card/china-airlines/', '✈️ 華航聯名卡')
             + link('/japan-airline-card/starlux/', '✈️ 星宇聯名卡')
@@ -8530,7 +8531,9 @@ def _card_stamp_warn():
             ('make_budgethotel_cards', 'budget-hotels.json',
              'tokyo/budget-hotel/cards', '東京便宜旅館'),
             ('make_shops_cards', 'tokyo-shops-raw.json',
-             'tokyo/street-fashion/cards', '東京潮牌選物店')):
+             'tokyo/street-fashion/cards', '東京潮牌選物店'),
+            ('make_cardreg_cards', 'cards.json',
+             'japan-card-register/cards', '登錄日曆')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
@@ -11751,8 +11754,308 @@ if os.path.exists('cards.json'):
       '真正會被新制影響的是現金流與加碼額度的分配，'
       '想把加碼留給貴的東西，記得換算的是含稅金額。</p>'
       + '<div class="cities">'
+      + f'<a class="ct" href="{U("/japan-card-register/")}"><b>📆 登錄日曆</b>'
+        f'<s>哪張卡幾號開放登錄</s></a>'
       + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制全解</b>'
         f'<s>要先墊多少、90 天期限、怎麼退</s></a></div>')
+
+    # ---------- 登錄日曆 ----------
+    # 加碼要登錄的卡不少，而且每張開放的時間都不一樣：有每月幾號、有每週幾、
+    # 有每季一次。錯過就是只剩基本回饋，所以單獨開一頁按日期排。
+    _RG_WD = ['一', '二', '三', '四', '五', '六', '日']
+
+    def _rg_all():
+        out = []
+        for c in CD['cards']:
+            for e in c.get('reg_events', []):
+                out.append((c, e))
+        return out
+
+    def _rg_when(e):
+        """這個活動什麼時候開放，寫成一句話。"""
+        t = e.get('time', '')
+        if e['cycle'] == 'monthly':
+            w = f'每月 {e["day"]} 號'
+            if t:
+                w += f' {t}'
+            if e.get('until'):
+                w += f'起至{e["until"]}'
+            return w
+        if e['cycle'] == 'weekly':
+            return f'每週{_RG_WD[e["weekday"]]}' + (f' {t}' if t else '')
+        if e['cycle'] == 'quarterly':
+            return '每季一次，日期逐季公布'
+        if e['cycle'] == 'once':
+            return '活動期間一次'
+        return '官網沒有寫'
+
+    def _rg_next(e):
+        """下一次開放是哪一天。回 (日期, 說明)，排不出來的回 (None, 說明)。"""
+        y, mo, d = int(TODAY[:4]), int(TODAY[5:7]), int(TODAY[8:10])
+        today = datetime.date(y, mo, d)
+        if e['cycle'] == 'monthly':
+            day = e['day']
+            last = calendar.monthrange(y, mo)[1]
+            if d <= min(day, last):
+                return datetime.date(y, mo, min(day, last)), ''
+            ny, nm = (y + 1, 1) if mo == 12 else (y, mo + 1)
+            nlast = calendar.monthrange(ny, nm)[1]
+            return datetime.date(ny, nm, min(day, nlast)), ''
+        if e['cycle'] == 'weekly':
+            ahead = (e['weekday'] - today.weekday()) % 7
+            return today + datetime.timedelta(days=ahead), ''
+        if e['cycle'] == 'quarterly':
+            for x in e.get('dates', []):
+                if x['open'] >= TODAY:
+                    return datetime.date(*map(int, x['open'].split('-'))), ''
+            return None, '下一季的日期官方還沒公布'
+        if e['cycle'] == 'once':
+            return None, '隨時可登錄，登錄一次就好'
+        return None, '官網沒有寫開放時間'
+
+    _rg_rows = []
+    for c, e in _rg_all():
+        nd, note = _rg_next(e)
+        _rg_rows.append({'c': c, 'e': e, 'next': nd, 'note': note,
+                         'days': (nd - datetime.date(int(TODAY[:4]), int(TODAY[5:7]),
+                                                     int(TODAY[8:10]))).days
+                                 if nd else 9999})
+    _rg_rows.sort(key=lambda r: (r['days'], r['c']['name']))
+
+    def _rg_when_cell(r):
+        e = r['e']
+        if r['next'] is None:
+            return html.escape(r['note'])
+        n = r['next']
+        d = r['days']
+        when = ('<b>就是今天</b>' if d == 0 else
+                '明天' if d == 1 else f'{d} 天後')
+        return (f'{n.month}/{n.day}（{_RG_WD[n.weekday()]}）'
+                + (f' {e["time"]}' if e.get('time') else '')
+                + f'　·　{when}')
+
+    _rg_tr = ''.join(
+        f'<tr><td><a href="{U("/japan-credit-card/" + r["c"]["slug"] + "/")}">'
+        f'<b>{html.escape(r["c"]["name"])}</b></a></td>'
+        f'<td class="nm">{html.escape(r["e"]["what"])}</td>'
+        f'<td class="nm">{html.escape(_rg_when(r["e"]))}</td>'
+        f'<td class="nm{" win" if r["days"] <= 2 else ""}">{_rg_when_cell(r)}</td>'
+        f'<td class="nm">'
+        + (f'{r["e"]["quota"]:,} 名<small style="color:var(--dim)">'
+           f'（{html.escape(r["e"]["quota_unit"])}）</small>'
+           if r['e'].get('quota') else html.escape(r['e'].get('quota_unit', '')))
+        + '</td></tr>'
+        for r in _rg_rows)
+
+    # 每月固定幾號的那幾個，做成一張當月日曆。看一眼就知道這個月還剩哪幾天。
+    _rg_y, _rg_m = int(TODAY[:4]), int(TODAY[5:7])
+    _rg_d = int(TODAY[8:10])
+    _rg_mark = {}
+    for r in _rg_rows:
+        e = r['e']
+        if e['cycle'] == 'monthly':
+            _rg_mark.setdefault(min(e['day'], calendar.monthrange(_rg_y, _rg_m)[1]),
+                                []).append(f'{r["c"]["name"]}　{e["what"]}')
+        elif e['cycle'] == 'weekly':
+            for dd in range(1, calendar.monthrange(_rg_y, _rg_m)[1] + 1):
+                if datetime.date(_rg_y, _rg_m, dd).weekday() == e['weekday']:
+                    _rg_mark.setdefault(dd, []).append(
+                        f'{r["c"]["name"]}　{e["what"]}')
+        elif e['cycle'] == 'quarterly':
+            for x in e.get('dates', []):
+                yy, mm, dd = map(int, x['open'].split('-'))
+                if (yy, mm) == (_rg_y, _rg_m):
+                    _rg_mark.setdefault(dd, []).append(
+                        f'{r["c"]["name"]}　{e["what"]}'
+                        + ('（已額滿）' if x.get('full') else ''))
+
+    _rg_cells = ''
+    _first = datetime.date(_rg_y, _rg_m, 1).weekday()
+    _rg_cells += '<div class="rgc pad"></div>' * _first
+    for dd in range(1, calendar.monthrange(_rg_y, _rg_m)[1] + 1):
+        who = _rg_mark.get(dd, [])
+        cls = 'rgc'
+        if dd == _rg_d:
+            cls += ' today'
+        if who:
+            cls += ' has' if dd >= _rg_d else ' past'
+        _rg_cells += (f'<div class="{cls}"><u>{dd}</u>'
+                      + ''.join(f'<s>{html.escape(x)}</s>' for x in who)
+                      + '</div>')
+
+    _rg_soon = [r for r in _rg_rows if r['days'] <= 7]
+    _rg_today = [r for r in _rg_rows if r['days'] == 0]
+
+    _rg_ld = json.dumps({
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in [
+          ('旅日信用卡的加碼登錄都是幾號開放？',
+           '各家不同。' + '；'.join(
+               f'{r["c"]["name"]}的{r["e"]["what"]}是{_rg_when(r["e"])}'
+               for r in _rg_rows if r['e']['cycle'] in ('monthly', 'weekly'))
+           + '。'),
+          ('沒登錄會怎樣？',
+           '只剩那張卡的基本回饋。加碼層是獨立計算的，沒登錄就是不給，'
+           '事後補登錄多數不能回溯到登錄前的消費。'),
+          ('登錄一次就好，還是每個月都要登錄？',
+           '要看活動。聯邦吉鶴卡的行動支付加碼與玉山熊本熊卡是活動期間登錄一次即可；'
+           '台北富邦 J 卡是每季登錄一次；聯邦吉鶴卡的交通卡儲值與中信 LINE Pay 卡的'
+           '國外實體店加碼則是每月或每週都要重登。'),
+        ]]}, ensure_ascii=False)
+
+    # 分享圖卡。張數與標題由 make_cardreg_cards.py 隨資料產生，這裡照著排。
+    _rgi = 'japan-card-register/cards/index.json'
+    _rgk = [c for c in (json.load(open(_rgi, encoding='utf-8'))
+                        if os.path.exists(_rgi) else [])
+            if os.path.exists('japan-card-register/cards/' + c['file'])]
+    _rg_cards = ''
+    if _rgk:
+        _rg_cards = (
+          '<h2>整理成圖片</h2>'
+          f'<p class="lede">同一份資料做成 {len(_rgk)} 張圖，存下來或轉發都可以，'
+          '不用註明出處。月曆那張是當月的，每個月會換。</p>'
+          '<style>'
+          '.rgk{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+          '.rgk a{display:block;border:1px solid var(--line);border-radius:10px;'
+          'overflow:hidden;background:var(--card);text-decoration:none}'
+          '.rgk img{display:block;width:100%;height:auto;aspect-ratio:1080/1350;'
+          'object-fit:cover;object-position:top}'
+          '.rgk b{display:block;padding:8px 10px 3px;font-size:.84rem}'
+          '.rgk s{display:block;padding:0 10px 10px;font-size:.76rem;color:var(--dim);'
+          'text-decoration:none;line-height:1.5}'
+          '@media(max-width:720px){.rgk{grid-template-columns:repeat(2,1fr)}}'
+          '</style><div class="rgk">'
+          + ''.join(
+              f'<a href="{U("/japan-card-register/cards/" + c["file"])}" target="_blank">'
+              f'<img src="{U("/japan-card-register/cards/" + c["file"])}" '
+              f'alt="登錄日曆圖卡第 {i} 張：{html.escape(c["title"])}" '
+              f'width="1080" height="1350" loading="lazy">'
+              f'<b>{html.escape(c["title"])}</b><s>{html.escape(c["sub"])}</s></a>'
+              for i, c in enumerate(_rgk, 1))
+          + '</div>'
+          + f'<p class="disc">圖上的登錄時間與名額跟這一頁的表格一樣，'
+            f'查證於 {CD["checked"]}。</p>')
+
+    _rg_title = '旅日信用卡登錄日曆：哪張卡幾號開放登錄，錯過只剩基本回饋'
+    _rg_desc = (f'{len(set(r["c"]["slug"] for r in _rg_rows))} 張旅日信用卡、'
+                f'{len(_rg_rows)} 個加碼活動的登錄時間整理：每月幾號、每週幾、每季一次，'
+                f'附名額與登錄入口。')
+
+    write('japan-card-register/index.html',
+      head(_rg_title, _rg_desc, 'japan-card-register/',
+           '<script type="application/ld+json">' + _rg_ld + '</script>')
+      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
+                ('登錄日曆', None)]) + topnav()
+      + '<h1>旅日信用卡登錄日曆</h1>'
+      + '<p class="lede">加碼要先登錄，而且各家開放的時間都不一樣。'
+        '沒登錄就是只剩基本回饋，補登錄多數不能回溯。</p>'
+      + f'<div class="today"><div class="tday">條件查證於 {CD["checked"]}'
+        f'　·　{TODAY} 的狀態</div>'
+      + ('<div class="tans">今天有 <b>' + str(len(_rg_today)) + '</b> 個活動開放登錄</div>'
+         '<div class="tsub">' + html.escape('、'.join(
+             f'{r["c"]["name"]}（{r["e"]["what"]}）' for r in _rg_today)) + '</div>'
+         if _rg_today else
+         '<div class="tans">今天沒有活動開放登錄</div>'
+         + ('<div class="tsub">最近的是 ' + html.escape(
+             f'{_rg_rows[0]["c"]["name"]}（{_rg_rows[0]["e"]["what"]}）')
+            + f'，{_rg_rows[0]["days"]} 天後。</div>' if _rg_rows and
+            _rg_rows[0]['days'] < 9999 else ''))
+      + '<div class="tbuf">這一頁只整理「什麼時候要登錄」。'
+        '每張卡的回饋怎麼算、上限多少，在<a href="' + U('/japan-credit-card/')
+      + '">各卡頁面</a>。</div></div>'
+
+      + f'<h2>{_rg_y} 年 {_rg_m} 月</h2>'
+      + '<p class="lede">灰色是已經過去的日子。格子裡有卡名的就是那天開放登錄。</p>'
+      + '<style>'
+        '.rgw{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:14px 0}'
+        '.rgh{font-size:.78rem;color:var(--dim);text-align:center;padding:3px 0}'
+        '.rgc{min-height:62px;border:1px solid var(--line);border-radius:7px;'
+        'padding:5px 6px;background:var(--card)}'
+        '.rgc.pad{border:none;background:none}'
+        '.rgc u{display:block;font-size:.82rem;color:var(--dim);text-decoration:none}'
+        '.rgc s{display:block;font-size:.68rem;line-height:1.35;margin-top:2px;'
+        'text-decoration:none;word-break:break-all}'
+        '.rgc.has{border-color:var(--acc);border-width:2px}'
+        '.rgc.has u{color:var(--acc);font-weight:700}'
+        '.rgc.past{opacity:.45}'
+        '.rgc.today{background:var(--acc);}'
+        '.rgc.today u,.rgc.today s{color:#fff}'
+        '@media(max-width:560px){.rgc{min-height:52px;padding:4px}'
+        '.rgc s{font-size:.6rem}}'
+        '</style>'
+      + '<div class="rgw">'
+      + ''.join(f'<div class="rgh">{w}</div>' for w in _RG_WD)
+      + _rg_cells + '</div>'
+
+      + '<h2>全部的登錄活動</h2>'
+      + '<p class="lede">依下一次開放的日期排。</p>'
+      + '<div class="tw"><table><thead><tr><th>卡片</th><th>哪個加碼</th>'
+        '<th>開放時間</th><th>下一次</th><th>名額</th>'
+        '</tr></thead><tbody>' + _rg_tr + '</tbody></table></div>'
+      + '<p class="disc">「下一次」是照官方公布的規則推算的，'
+        '銀行臨時改期或提前額滿都有可能，以各家公告為準。</p>'
+
+      + '<h2>逐張怎麼登錄</h2>'
+      + ''.join(
+          f'<h3>{html.escape(c["name"])}</h3>'
+          + f'<p class="lede">{html.escape(c.get("reg", ""))}</p>'
+          + '<div class="tldr"><ul>'
+          + ''.join(
+              f'<li><b>{html.escape(e["what"])}。</b>'
+              f'{html.escape(_rg_when(e))}。'
+              + (f'名額 {e["quota"]:,} 名（{html.escape(e["quota_unit"])}）。'
+                 if e.get('quota') else
+                 (html.escape(e.get('quota_unit', '')) + '。'
+                  if e.get('quota_unit') else ''))
+              + (f'資格：{html.escape(e["valid"])}。' if e.get('valid') else '')
+              + (f'<br><small>路徑：{html.escape(e["path"])}</small>'
+                 if e.get('path') else '')
+              + (f'<br><a href="{e["url"]}" target="_blank" rel="nofollow noopener">'
+                 f'官方登錄頁</a>' if e.get('url') else '')
+              + ''.join(
+                  f'<br><small>{html.escape(x["label"])}：{x["open"]} 開放'
+                  + (f'，{x["full"]} 額滿' if x.get('full') else '')
+                  + '</small>' for x in e.get('dates', []))
+              + '</li>' for e in c.get('reg_events', []))
+          + '</ul></div>'
+          for c in CD['cards'] if c.get('reg_events'))
+
+      + '<h2>常見問題</h2>'
+      + '<div class="faq">'
+      + ''.join(
+          f'<details><summary>{html.escape(q)}</summary><div>{html.escape(a)}</div></details>'
+          for q, a in [
+            ('沒登錄會怎樣？',
+             '只剩基本回饋。加碼層是分開算的，沒登錄就是不給。'
+             '而且多數活動寫明不能回溯到登錄前的消費，事後補登錄救不回來。'),
+            ('登錄一次就好，還是每個月都要？',
+             '看活動。聯邦吉鶴卡的行動支付加碼、玉山熊本熊卡是期間內一次；'
+             '台北富邦 J 卡是每季一次；聯邦吉鶴卡的交通卡儲值每月要重登，'
+             '中信 LINE Pay 卡的國外實體店加碼每週要重登。'),
+            ('限量的搶得到嗎？',
+             '看名額大小。永豐現金回饋 JCB 卡每季 5,000 名，'
+             '2026 第三季開放當天中午 12:37 額滿、第四季當天下午 17:49 額滿，'
+             '兩次都在開放當天就沒了。台北富邦 J 卡每月 20,000 名，'
+             '官方沒有公布額滿時間。'),
+            ('這一頁會自己更新嗎？',
+             '日曆與「下一次」會跟著日期走，每天重新算。'
+             '但活動本身的規則是人工查證的，銀行改規則不會自動反映，'
+             '出發前還是要看一次官方頁。'),
+          ])
+      + '</div>'
+      + _rg_cards
+      + '<div class="cities">'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張卡比較</b>'
+        f'<s>回饋、上限與實拿試算</s></a>'
+      + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
+        f'<s>輸入金額看每張卡實拿</s></a></div>'
+      + f'<p class="disc">本頁為公開資訊整理，登錄時間與名額查證於 {CD["checked"]}，'
+        f'來源為各發卡行官方活動頁。銀行可隨時調整，請以官方公告為準。'
+        f'本站與各發卡行無合作關係。</p>'
+      + foot())
+    pages.append(('/japan-card-register/', 0.8))
 
     _best = max(CD['cards'], key=lambda c: c['total'])
     _race = [c['name'] for c in CD['cards'] if c.get('reg_race')]

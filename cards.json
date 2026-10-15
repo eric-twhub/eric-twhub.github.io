@@ -46,7 +46,17 @@
    "reg_race": false,
    "total": 8.5,
    "reg_short": "需登錄（期間內 1 次）",
-   "reg_level": "reg"
+   "reg_level": "reg",
+   "reg_events": [
+    {
+     "what": "日本加碼",
+     "cycle": "once",
+     "quota": 0,
+     "quota_unit": "名額不限",
+     "valid": "活動期間登錄一次即可（2025/12/31 前登錄過的要重登）",
+     "url": "https://event.esunbank.com.tw/credit/kumamon-card/japan-discount.html"
+    }
+   ]
   },
   {
    "name": "星展 eco 永續卡",
@@ -82,7 +92,17 @@
    "reg_race": false,
    "total": 5.0,
    "reg_short": "登錄規則待向星展確認",
-   "reg_level": "reg"
+   "reg_level": "reg",
+   "reg_events": [
+    {
+     "what": "日韓泰 5%",
+     "cycle": "unknown",
+     "quota": 0,
+     "quota_unit": "未查",
+     "valid": "官網沒有寫明這層加碼的登錄規則，過往曾採月月登錄，以星展公告為準",
+     "url": "https://www.dbs.com.tw/personal-zh/cards/dbs_eco/index.html"
+    }
+   ]
   },
   {
    "name": "台新 Richart 卡",
@@ -318,6 +338,28 @@
    },
    "unverified": [
     "吉鶴卡是 JCB 卡，台灣發卡的 JCB 卡綁 Apple Pay 在日本實體店感應時，是走 QUICPay 還是 JCB Contactless，聯邦與 JCB 都沒有公開說明。這會決定行動支付那 2.5% 在日本拿不拿得到，刷之前建議先打客服問。"
+   ],
+   "reg_events": [
+    {
+     "what": "交通卡儲值 1.5%",
+     "cycle": "monthly",
+     "day": 15,
+     "time": "10:00",
+     "until": "月底 23:59",
+     "quota": 10000,
+     "quota_unit": "每月",
+     "valid": "當月，當月消費要在當月登錄完才算",
+     "url": "https://cardweb.ubot.com.tw/register_extra",
+     "path": "限時登錄活動專區 → 其他平台 →『115年吉鶴卡儲值交通卡活動』"
+    },
+    {
+     "what": "行動支付加碼 1.5%",
+     "cycle": "once",
+     "valid": "活動期間登錄一次即可，不用每月重登",
+     "quota": 0,
+     "quota_unit": "名額不限",
+     "url": "https://card.ubot.com.tw/eCard/activity_login/register_activity.aspx"
+    }
    ]
   },
   {
@@ -345,7 +387,7 @@
     }
    ],
    "period": "2026/4/1 – 2026/12/31",
-   "reg": "兩項加碼皆需登錄且每月限量：日韓泰加碼每月 20 日 16:00、交通卡加碼每月 18 日 16:00",
+   "reg": "兩項加碼皆需登錄且每月限量：日韓泰加碼每月 20 日 16:00 起至月底，限量 20,000 名；日本交通卡加碼每月 19 日 16:00 開放，每月限量 10,000 名",
    "reg_race": true,
    "src": "https://www.fubon.com/banking/Personal/credit_card/all_card/omiyage/omiyage.htm",
    "src_name": "台北富邦官方卡片頁",
@@ -363,7 +405,31 @@
    ],
    "total": 6.0,
    "reg_short": "需搶登錄（每月限量）",
-   "reg_level": "race"
+   "reg_level": "race",
+   "reg_events": [
+    {
+     "what": "日本交通卡加碼 7%",
+     "cycle": "monthly",
+     "day": 19,
+     "time": "16:00",
+     "until": "",
+     "quota": 10000,
+     "quota_unit": "每月（每季 30,000）",
+     "valid": "當季，當季登錄一次即可，不用每月重登",
+     "url": "https://www.fubon.com/banking/event/credit_card/20170718A/index.html"
+    },
+    {
+     "what": "日韓泰加碼",
+     "cycle": "monthly",
+     "day": 20,
+     "time": "16:00",
+     "until": "月底 23:59",
+     "quota": 20000,
+     "quota_unit": "每月",
+     "valid": "當季，當季登錄一次即可（例：1 月登錄，1 到 3 月都算）",
+     "url": "https://www.fubon.com/banking/event/credit_card/20170718A/index.html"
+    }
+   ]
   },
   {
    "name": "玉山 Unicard",
@@ -423,7 +489,7 @@
     }
    ],
    "period": "2026/7/1 – 2026/12/31",
-   "reg": "日韓泰季度加碼需登錄且每季限量 5,000 名；特選通路加碼需完成電子帳單與自動扣繳",
+   "reg": "日韓泰季度加碼需登錄且每季限量 5,000 名，2026 下半年兩季都在開放當天額滿；特選通路加碼需完成電子帳單與自動扣繳",
    "reg_race": true,
    "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/cashcardJCB.html",
    "src_name": "永豐官方卡片頁",
@@ -440,7 +506,35 @@
    ],
    "total": 10.0,
    "reg_short": "需搶登錄（每季限量）",
-   "reg_level": "race"
+   "reg_level": "race",
+   "reg_events": [
+    {
+     "what": "日韓泰每季滿 2 萬加碼 5%",
+     "cycle": "quarterly",
+     "time": "10:00",
+     "quota": 5000,
+     "quota_unit": "每季",
+     "valid": "當季",
+     "dates": [
+      {
+       "label": "2026 第三季",
+       "open": "2026-07-02",
+       "full": "2026-07-02 12:37"
+      },
+      {
+       "label": "2026 第四季",
+       "open": "2026-10-02",
+       "full": "2026-10-02 17:49"
+      },
+      {
+       "label": "2027 第一季",
+       "open": "2027-03-25",
+       "full": ""
+      }
+     ],
+     "url": "https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/cashcardJCB.html"
+    }
+   ]
   },
   {
    "name": "永豐幣倍卡",
@@ -520,7 +614,42 @@
    ],
    "total": 5.0,
    "reg_short": "需搶登錄（每週限量）",
-   "reg_level": "race"
+   "reg_level": "race",
+   "reg_events": [
+    {
+     "what": "不限國別國外實體店 5%",
+     "cycle": "weekly",
+     "weekday": 1,
+     "time": "00:00",
+     "until": "",
+     "quota": 3000,
+     "quota_unit": "每週",
+     "valid": "當週",
+     "url": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html"
+    },
+    {
+     "what": "Trip.com 5%、Airbnb 5%（限 Visa 卡）",
+     "cycle": "monthly",
+     "day": 6,
+     "time": "10:00",
+     "until": "",
+     "quota": 0,
+     "quota_unit": "未標示",
+     "valid": "未標示",
+     "url": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html"
+    },
+    {
+     "what": "台灣虎航 10%（限 JCB 卡）",
+     "cycle": "monthly",
+     "day": 6,
+     "time": "13:00",
+     "until": "",
+     "quota": 0,
+     "quota_unit": "未標示",
+     "valid": "未標示",
+     "url": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html"
+    }
+   ]
   },
   {
    "name": "中信 uniopen 聯名卡",
@@ -750,7 +879,17 @@
     ]
    },
    "src2": "https://bank.sinopac.com/sinopacBT/about/news-center/news/content/2025122301.html",
-   "src2_name": "永豐銀行新聞稿・升等大戶Plus 權益加碼"
+   "src2_name": "永豐銀行新聞稿・升等大戶Plus 權益加碼",
+   "reg_events": [
+    {
+     "what": "海外加碼",
+     "cycle": "once",
+     "quota": 0,
+     "quota_unit": "未標示",
+     "valid": "需登錄，另要綁定 DAWHO 帳戶自動扣繳與電子帳單兩項設定",
+     "url": "https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/DAWHO.html"
+    }
+   ]
   },
   {
    "name": "星展傳說對決聯名卡",
@@ -928,5 +1067,6 @@
    "台新 Richart"
   ]
  },
- "_指定店家加碼": "有些加碼只在發卡行公告的指定店家成立。tier 加 store_scope（本站店家 slug 陣列）之後，只有名單上的店才會把那一層算進去；partial_list 代表官方名單寫「等」、沒有窮舉，那一層就不自動套用到任何店，只在頁面上說明。"
+ "_指定店家加碼": "有些加碼只在發卡行公告的指定店家成立。tier 加 store_scope（本站店家 slug 陣列）之後，只有名單上的店才會把那一層算進去；partial_list 代表官方名單寫「等」、沒有窮舉，那一層就不自動套用到任何店，只在頁面上說明。",
+ "_reg_說明": "reg_events 是各卡加碼活動的登錄時點，給 /japan-card-register/ 用。cycle：monthly 每月幾號、weekly 每週幾（weekday 0=週一）、quarterly 每季（日期逐季公布，列在 dates）、once 期間內一次、unknown 官網沒寫。"
 }
