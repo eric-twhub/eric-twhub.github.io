@@ -11911,17 +11911,21 @@ if os.path.exists('park-ticket.json'):
     _pt_by_m = collections.OrderedDict()
     for dt, pr in _pt_days:
         _pt_by_m.setdefault(f'{dt.year}-{dt.month:02d}', []).append((dt, pr))
-    # 最後一個月多半只賣到一半，平均會失真，標出來而不是默默算進去
+    # 頭尾的月份多半只有半個月，平均會失真，標出來而不是默默算進去。
+    # 頭尾不完整的理由不一樣：第一個月是已經過去的日期不賣，最後一個月是月曆只標到那裡。
     _pt_full = {k: v for k, v in _pt_by_m.items() if len(v) >= 28}
+    _pt_mkeys = list(_pt_by_m)
 
     _pt_mrows = ''
     for k, v in _pt_by_m.items():
         ps = [x[1] for x in v]
         y, m = k.split('-')
         full = len(v) >= 28
+        _pt_why = ('已經過去的日期官網不賣' if k == _pt_mkeys[0]
+                   else '官網的月曆只標到這裡')
         _pt_mrows += (
             f'<tr><td><b>{int(y)} 年 {int(m)} 月</b></td>'
-            f'<td>{len(v)} 天{"" if full else f"{_PT_SM}官網只賣到約兩個月後</small>"}</td>'
+            f'<td>{len(v)} 天{"" if full else f"{_PT_SM}{_pt_why}</small>"}</td>'
             + (f'<td><b>¥{round(statistics.mean(ps)):,}</b>'
                f'{_PT_SM}{_pt_money(statistics.mean(ps))}</small></td>'
                if full else '<td class="nm">資料不滿一個月，不算平均</td>')
@@ -12067,8 +12071,9 @@ if os.path.exists('park-ticket.json'):
        '週六通常是一週裡最貴的一天，比週日還貴。'),
       ('可以提早多久買？',
        '官網寫明每日 14:00 起銷售 2 個月後同一日期的票券，'
-       '所以最多只看得到約兩個月後的價格，沒辦法提早半年買。'
-       '這也表示這一頁的資料永遠只有兩個月，不是全年預測。'),
+       '所以買得到的最遠只到約兩個月後，沒辦法提早半年買。'
+       '月曆標出價格的範圍比買得到的更遠，官網自己寫明開始銷售前的日期也查得到票價，'
+       '但那些日期還不能買。這一頁不是全年預測。'),
       ('在 Klook、KKday 買會不會比較便宜？',
        '要看日期。官網是浮動價，通路多半是固定價，所以旺日通路可能較便宜、'
        '淡日官網較便宜。但兩個樂園對通路的態度不一樣：USJ 官網的繁體中文頁面'
@@ -12118,14 +12123,15 @@ if os.path.exists('park-ticket.json'):
         f'<div class="tsub">差 ¥{_pt_hi - _pt_lo:,}（{_pt_money(_pt_hi - _pt_lo)}）。'
         f'最低價出現在 {_pt_dlist(_pt_lodays, 4)}。</div>'
         f'<div class="tbuf">官網寫明每日 14:00 起只銷售 <b>2 個月後</b>同一日期的票，'
-        f'所以這一頁永遠只有約兩個月的資料，不是全年預測。</div></div>'
+        f'所以現在買得到的只到約兩個月後。月曆標出價格的範圍比買得到的更遠，'
+        f'再遠的日期看得到票價但還沒開賣。這一頁不是全年預測。</div></div>'
 
       + '<h2>每個月的票價</h2>'
       + '<div class="tw"><table><thead><tr><th>月份</th><th>天數</th>'
         '<th>平均</th><th>最低</th><th>最高</th></tr></thead><tbody>'
       + _pt_mrows + '</tbody></table></div>'
       + '<p class="disc">平均只算資料滿一個月的月份。'
-        '最後一個月受「只賣兩個月」的限制，天數不足，算了會失真。</p>'
+        '頭尾的月份天數不足，算了會失真。</p>'
 
       + '<h2>星期幾比較便宜</h2>'
       + f'<p class="lede">只用資料完整的 {len(_pt_full)} 個月份計算。</p>'
