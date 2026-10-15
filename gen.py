@@ -8995,6 +8995,9 @@ for _af, _alabel, _acycle, _ahow in (
          '對一次商品還在不在、評分與人數有沒有變'),
         ('kkday-1pct.json', 'KKday 的 1% 特殊商品清單', 90,
          '到聯盟網重新下載，再用 ads.json 裡每個 KKday 的 id 對一次'),
+        ('seasonal.json', '萬聖節與聖誕節的活動', 30,
+         '點燈活動多半 11 月才公布當年日期，公布後要補進 seasonal.json；'
+         '活動結束的項目狀態會自己變，但清單要人工擴充'),
         ('park-ticket.json', '樂園門票的逐日票價', 30,
          '官網每日 14:00 只賣兩個月後同一日期的票，資料滾動得快。'
          '更新方法寫在 park-ticket.json 的 _怎麼更新')):
@@ -11780,6 +11783,14 @@ if os.path.exists('seasonal.json'):
        '澀谷區在公共場所禁止飲酒，而且是通年禁止，不是只有萬聖節期間。'
        '時間是每天下午 6 點到隔天早上 5 點，範圍涵蓋澀谷站周邊的路上與公園。'
        '這條原本為萬聖節與跨年訂的，2024 年 10 月起改成通年。'),
+      ('可以變裝進迪士尼嗎？',
+       '可以，但日期是分段的。官方頁寫 9/15 到 9/30 與 10/16 到 10/31 '
+       '兩園都開放全身變裝成迪士尼明星入園，但 10/1 到 10/15 '
+       '明寫請勿全身變裝來園。中間那半個月不行，細則官方只提供英文版。'),
+      ('街頭的萬聖節遊行呢？',
+       '查證當天找不到官方公告。川崎 La Cittadella 的官網首頁、TOPICS 與'
+       '站內搜尋都沒有萬聖節字樣，不確定今年是否續辦；池袋萬聖節的官網連不上。'
+       '這一頁只收官方寫明日期的活動，沒有就不列，免得有人白跑。'),
       ('其他城市的點燈活動呢？',
        '多數要到 11 月才公布當年日期。查證當天（'
        + SE['checked'] + '）六本木之丘官網只有飯店餐廳的聖誕餐，'
@@ -11816,6 +11827,35 @@ if os.path.exists('seasonal.json'):
         '<th>狀態</th><th>說明與出處</th></tr></thead><tbody>'
       + _se_rows(_se_h['items']) + '</tbody></table></div>'
 
+      + (('<h3>' + html.escape(_se_h['parade']['title']) + '</h3>'
+          + '<p class="lede">' + html.escape(_se_h['parade']['_說明']) + '</p>'
+          + '<div class="tw"><table><thead><tr><th>名稱</th><th>類型</th>'
+            '<th>時間</th><th>說明</th></tr></thead><tbody>'
+          + ''.join(
+              f'<tr><td><b>{html.escape(x["name"])}</b>'
+              f'{_se_sm}{html.escape(x["place"])}</small></td>'
+              f'<td>{html.escape(x["kind"])}</td>'
+              f'<td class="nm">{html.escape(x["time"])}</td>'
+              f'<td class="nm">{html.escape(x["note"])}</td></tr>'
+              for x in _se_h['parade']['items'])
+          + '</tbody></table></div>'
+          + f'<p class="disc">時間取自查證當天的園區資訊，每日可能不同，'
+            f'當天請看官方 App。出處：<a href="{_se_h["parade"]["src"]}" '
+            f'target="_blank" rel="nofollow noopener">'
+            f'{html.escape(_se_h["parade"]["src_name"])}</a>。</p>')
+         if _se_h.get('parade') else '')
+      + (('<h3>' + html.escape(_se_h['costume']['title']) + '</h3>'
+          + '<div class="tldr"><ul>'
+          + '<li>' + html.escape(_se_h['costume']['zh']) + '</li>'
+          + '<li><b>可以全身變裝：</b>'
+          + '、'.join(f'{_se_d(a)} – {_se_d(b)}'
+                     for a, b in _se_h['costume']['open']) + '</li>'
+          + '<li><b>官方明寫請勿全身變裝：</b>'
+          + '、'.join(f'{_se_d(a)} – {_se_d(b)}'
+                     for a, b in _se_h['costume']['closed']) + '</li>'
+          + '<li>' + html.escape(_se_h['costume']['note']) + '</li>'
+          + '</ul></div>')
+         if _se_h.get('costume') else '')
       + f'<h3>{html.escape(_se_w["title"])}</h3>'
       + f'<p class="lede">{html.escape(_se_w["zh"])}</p>'
       + f'<blockquote class="q">{html.escape(_se_w["jp"])}'
@@ -11832,9 +11872,8 @@ if os.path.exists('seasonal.json'):
       + '<h2>這一頁還沒有的</h2>'
       + '<div class="tldr"><ul>'
       + ''.join(f'<li>{html.escape(x)}</li>' for x in SE['_待查'])
-      + '<li>查證當天六本木之丘官網只有飯店餐廳的聖誕餐，沒有點燈的公告頁；'
-        '川崎 La Cittadella 的首頁也沒有萬聖節公告。沒有官方日期就不列，'
-        '不用第三方整理補。</li>'
+      + ''.join(f'<li>{html.escape(x)}</li>' for x in SE.get('_查不到的', []))
+      + '<li>查證當天六本木之丘官網只有飯店餐廳的聖誕餐，沒有點燈的公告頁。</li>'
       + '</ul></div>'
 
       + '<div class="cities">'
