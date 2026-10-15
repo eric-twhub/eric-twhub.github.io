@@ -1185,6 +1185,7 @@ opacity:.88;margin-top:2px}
 .adgo .aga{flex:0 0 auto;font-size:1.15rem}
 .adbox.mid,.adbox.top{margin:22px 0 28px}
 .adbox .adpl{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.adbox .adpl.one{grid-template-columns:1fr}
 .adbox .adp{display:flex;flex-direction:column;gap:5px;padding:11px 13px;
 background:var(--card);border:1px solid var(--line);border-radius:10px;
 text-decoration:none;color:var(--fg)}
@@ -1513,7 +1514,25 @@ _ADS = (json.load(open('ads.json', encoding='utf-8'))
         if os.path.exists('ads.json') else {'groups': {}, 'checked': ''})
 
 
-def _ad_products(kind, track):
+# 頁面專屬商品放哪一個版位。只放一個：三個版位都放同一支門票，
+# 等於同一頁跟讀者推銷三次一樣的東西。
+_AD_PAGE_SLOT = 'top'
+
+
+def _ad_group(kind, path, slot='foot'):
+    """這一頁這個版位要用哪一組商品。頁面專屬的優先。
+
+    有些頁面講的就是某一支商品（SUPER SPARK、ちゅらさん6 的門票），
+    那種頁放通用清單等於答非所問。
+    """
+    u = path[:-len('index.html')].strip('/') if path.endswith('index.html') else path
+    pg = (_ADS.get('pages') or {}).get(u)
+    if pg and slot == _AD_PAGE_SLOT:
+        return pg
+    return (_ADS.get('groups') or {}).get(kind) or {}
+
+
+def _ad_products(g, track):
     """實際商品清單。泛稱「日本上網卡與 eSIM」讀者不知道會看到什麼，
     列出商品名與評價明確得多，這也是這一版廣告要改掉的地方。
 
@@ -1521,7 +1540,6 @@ def _ad_products(kind, track):
     （2026-10-15 同一支前後兩次查是 NT$11 與 NT$14），寫進靜態頁隔天就錯。
     放變動慢的欄位就好，價格讓讀者到平台上看。
     """
-    g = (_ADS.get('groups') or {}).get(kind)
     if not g or not g.get('items'):
         return ''
     cells = ''
@@ -1533,9 +1551,13 @@ def _ad_products(kind, track):
                   f'rel="nofollow noopener sponsored">'
                   f'<b>{html.escape(it["name"])}</b>'
                   + (f'<s>{html.escape(it["note"])}</s>' if it.get('note') else '')
-                  + f'<u><i>★ {html.escape(it["star"])}</i>'
-                    f'<span>{html.escape(it["booked"])} 人參加過</span></u></a>')
-    return f'<div class="adpl">{cells}</div>'
+                  + '<u>'
+                  + (f'<i>★ {html.escape(it["star"])}</i>' if it.get('star') else '')
+                  + (f'<span>{html.escape(it["booked"])} 人參加過</span>'
+                     if it.get('booked') else '')
+                  + '</u></a>')
+    one = ' one' if len(g['items']) == 1 else ''
+    return f'<div class="adpl{one}">{cells}</div>'
 
 
 # 圖片橫幅與文字版的對照實驗。上版位一半頁面給圖、一半維持文字，
@@ -1548,6 +1570,9 @@ def _ad_use_img(path, slot):
     """這一頁的這個版位要不要用圖片版。只有上版位參與實驗。"""
     if slot != 'top':
         return False
+    u = path[:-len('index.html')].strip('/') if path.endswith('index.html') else path
+    if u in (_ADS.get('pages') or {}):   # 有專屬商品的頁不參加，圖會把商品蓋掉
+        return False
     h = hashlib.sha1(path.encode('utf-8')).hexdigest()
     return int(h[:8], 16) % 2 == 0
 
@@ -1557,7 +1582,7 @@ def adbox(kind, path, slot='foot'):
     icon, title, sub = _AD_KIND[kind]
     # 有商品清單的群組用 ads.json 的標題：那是名詞片語，
     # 接在「看 Klook 上全部的…」後面才通順。
-    _g = (_ADS.get('groups') or {}).get(kind) or {}
+    _g = _ad_group(kind, path, slot)
     if _g.get('title'):
         title, sub = _g['title'], _g.get('sub') or sub
     track = 'ad_' + (path[:-len('index.html')].strip('/') or 'home').replace('/', '_')
@@ -1610,7 +1635,7 @@ def adbox(kind, path, slot='foot'):
                 f'alt="廣告：{html.escape(title)}，前往 {html.escape(brand)}" '
                 f'width="1440" height="400" loading="lazy"></a></div>')
     else:
-        prods = _ad_products(kind, track)
+        prods = _ad_products(_g, track)
         body = (f'<div class="adbd"><div class="adt">{html.escape(title)}</div>'
                 f'<div class="ads">{html.escape(sub)}</div>'
                 + prods
@@ -1631,7 +1656,7 @@ def adbox(kind, path, slot='foot'):
       + '<p class="adfp">本站沒有販售這些商品，也沒有查證過上面的價格與庫存。'
       + (f'商品名稱與評價查證於 {_ADS.get("checked", "")}，'
          '價格與方案會變動，以平台顯示為準。'
-         if kind in (_ADS.get('groups') or {}) and not img else '')
+         if _g.get('items') and not img else '')
       + '這一頁自己整理的資料在上面，廣告與那些資料沒有關係。</p>'
       '</aside>')
 

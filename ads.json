@@ -205,5 +205,40 @@
    ]
   }
  },
- "_沒有商品清單的類型": "hotel 維持泛稱：訂房本來就是依日期與區域搜尋，列四間飯店既不具代表性，本站也沒有查證過那幾間。城市頁的住宿版位連的是該城市的搜尋結果，那才是讀者要的。"
+ "_沒有商品清單的類型": "hotel 維持泛稱：訂房本來就是依日期與區域搜尋，列四間飯店既不具代表性，本站也沒有查證過那幾間。城市頁的住宿版位連的是該城市的搜尋結果，那才是讀者要的。",
+ "pages": {
+  "tokyo/superspark": {
+   "title": "SUPER SPARK TOKYO 的門票",
+   "sub": "官網只接受網路預約，KKday 上也買得到",
+   "brand": "KKday",
+   "search": "https://www.kkday.com/zh-tw/product/598904",
+   "items": [
+    {
+     "id": "598904",
+     "name": "六本木 Super Spark Tokyo VIP 沉浸式娛樂秀門票",
+     "note": "含兩杯飲料",
+     "star": "5.0",
+     "url": "https://www.kkday.com/zh-tw/product/598904"
+    }
+   ]
+  },
+  "okinawa/churasun6": {
+   "title": "ちゅらさん6 的門票",
+   "sub": "官網要線上申請，KKday 上也買得到",
+   "brand": "KKday",
+   "search": "https://www.kkday.com/zh-tw/product/181495",
+   "items": [
+    {
+     "id": "181495",
+     "name": "Churasun 6 沖繩（ちゅらさん6）表演觀賞門票預約",
+     "note": "那霸・表演",
+     "star": "4.9",
+     "booked": "6K+",
+     "url": "https://www.kkday.com/zh-tw/product/181495"
+    }
+   ]
+  }
+ },
+ "_頁面專屬商品": "pages 覆寫 groups：某些頁面講的就是某一支商品，放通用清單等於答非所問。63 ANGEL 沒有列在這裡，那一頁本來就有票券比較區塊（兩家對照、附價格比較），廣告版位再放一次是重複。",
+ "_kkday_1pct驗證": "598904、181495 都已對 kkday-1pct.json 驗過不在 1% 特殊商品清單上（清單查證 2026-09-24）。"
 }
