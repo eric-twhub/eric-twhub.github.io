@@ -1183,7 +1183,7 @@ background:var(--acc);color:#fff;text-decoration:none;font-weight:700;font-size:
 .adgo .agt s{display:block;text-decoration:none;font-size:.76rem;font-weight:500;
 opacity:.88;margin-top:2px}
 .adgo .aga{flex:0 0 auto;font-size:1.15rem}
-.adbox.mid{margin:22px 0 28px}
+.adbox.mid,.adbox.top{margin:22px 0 28px}
 .adbox .adfp{padding:0 15px 13px;font-size:.73rem;color:var(--dim);line-height:1.65}
 details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
 margin-top:8px;padding:0}
@@ -1526,7 +1526,7 @@ def adbox(kind, path, slot='foot'):
         return ''
     brand = P[kind]['brand']
     return (
-      f'<aside class="adbox{" mid" if slot != "foot" else ""}">'
+      f'<aside class="adbox{"" if slot == "foot" else " " + slot}">'
       '<div class="adhd"><i>廣告</i>'
       f'<span>以下為合作平台的推廣連結，點了會離開本站前往 {html.escape(brand)}。'
       '本站可能獲得分潤，不影響你的價格。</span></div>'
@@ -2068,17 +2068,29 @@ def _ja_gloss(content):
 
 # 長頁面在中段再放一個。捲到頁尾才看得到的版位，長頁面幾乎沒人捲得到。
 # 門檻量過全站：5,000 字且 6 個 h2 以上，大約是最長的二十幾頁。
-_AD2_MIN_CHARS, _AD2_MIN_H2 = 5000, 6
+_AD2_MIN_CHARS, _AD2_MIN_H2 = 1500, 3
+_AD2_MIN_GAP = 400   # 與前一個版位至少隔這麼多字
 # 中段那個要跟頁尾那個不一樣，同一頁放兩個一樣的東西沒有意義。
 _AD2_PAIR = {'esim': 'activity2', 'activity2': 'esim', 'car': 'esim',
              'transport': 'esim', 'transfer': 'esim', 'hotel': 'transfer',
              'activity': 'esim'}
+# 同一頁三個版位不放一樣的東西。照這個順序挑沒用過的補上。
+# 順序是「到哪裡都適用」優先：JR Pass 排最後，因為沖繩沒有 JR，
+# 那霸的頁面配到 JR Pass 會讓人覺得是亂配的。
+_AD_ROTATE = ['esim', 'activity2', 'transfer', 'car', 'transport']
+
+
+def _ad_other(used):
+    for k in _AD_ROTATE:
+        if k not in used:
+            return k
+    return None
 # 收尾性質的段落，插在它們前面等於跟頁尾那個版位擠在一起
 _AD2_SKIP_H2 = ('整理成圖片', '常見問題', '資料來源', '這一頁', '其他選擇',
                 '延伸閱讀', '出處', '更新紀錄', '相關頁面')
 
 
-def _ad_second(path, content, kind):
+def _ad_second(path, content, used):
     """長頁面的第二個版位，插在內容過半後的第一個 h2 之前。
 
     插在 h2 前面是為了不切斷正在講的段落；避開最後兩個 h2，
@@ -2093,7 +2105,9 @@ def _ad_second(path, content, kind):
     total = len(_plain(content.split('<body', 1)[-1]))
     if total < _AD2_MIN_CHARS or len(hs) < _AD2_MIN_H2:
         return content
-    k2 = _AD2_PAIR.get(kind)
+    k2 = _AD2_PAIR.get(used[0]) or _ad_other(used)
+    if not k2 or k2 in used:
+        k2 = _ad_other(used)
     if not k2:
         return content
     # 位置用實際讀到的字數算，不是 HTML 的字元位置：
@@ -2102,15 +2116,42 @@ def _ad_second(path, content, kind):
     for pos, title in hs[1:-2]:
         if any(x in title for x in _AD2_SKIP_H2):
             continue
-        if len(_plain(content[:pos])) >= total // 2:
-            cand.append(pos)
+        if len(_plain(content[:pos])) < total // 2:
+            continue
+        # 前面不遠處已經有情境式 CTA 的就跳過，兩個版位黏在一起很難看。
+        # 機場末班車那頁每個機場都有叫車 CTA，跳完就不放了，那頁本來版位就夠。
+        back = content[max(0, pos - 1500):pos]
+        j = back.rfind('class="cta"')
+        if j >= 0 and len(_plain(back[j:])) < _AD2_MIN_GAP:
+            continue
+        cand.append(pos)
     if not cand:
         return content
     box = adbox(k2, path, slot='mid')
     if not box:
         return content
     i = cand[0]
+    used.append(k2)
     return content[:i] + box + content[i:]
+
+
+def _ad_top(path, content, used):
+    """頁面上方的版位，放在第一個 h2 之前。
+
+    不放在 h1 正下方：導言那段是讀者判斷「這頁有沒有我要的東西」的依據，
+    被廣告擋住的話，人還沒進入內容就先走了。
+    """
+    m = re.search(r'<h2[ >]', content)
+    if not m:
+        return content, used
+    k = _ad_other(used)
+    if not k:
+        return content, used
+    box = adbox(k, path, slot='top')
+    if not box:
+        return content, used
+    i = m.start()
+    return content[:i] + box + content[i:], used + [k]
 
 
 def _ad_inject(path, content):
@@ -2127,9 +2168,12 @@ def _ad_inject(path, content):
     if i < 0:
         return content
     box = adbox(kind, path)
-    if box:
-        content = content[:i] + box + content[i:]
-        content = _ad_second(path, content, kind)
+    if not box:
+        return content
+    content = content[:i] + box + content[i:]
+    used = [kind]
+    content = _ad_second(path, content, used)
+    content, used = _ad_top(path, content, used)
     return content
 
 
