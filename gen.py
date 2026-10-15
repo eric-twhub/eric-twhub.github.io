@@ -11419,10 +11419,12 @@ if os.path.exists('cards.json'):
     def _back(c, jpy, mode='shop'):
         """回饋金額。base 模式只算基本回饋，其餘加上該類型的各層加碼（各自受上限）。"""
         b = _bill(jpy)
-        v = c['base'] / 100 * b
+        ts = [] if mode == 'base' else _tiers(c, mode)
+        # 標了 no_base 的加碼層不疊基本回饋（例如交通卡儲值不算一般消費）
+        v = 0 if any(t.get('no_base') for t in ts) else c['base'] / 100 * b
         capped = False
         if mode != 'base':
-            for t in _tiers(c, mode):
+            for t in ts:
                 x = t['rate'] / 100 * b
                 if t['cap'] and x > t['cap']:
                     x = t['cap']; capped = True
@@ -11430,7 +11432,11 @@ if os.path.exists('cards.json'):
         return v, capped
 
     def _maxrate(c, mode):
-        return c['base'] + (0 if mode == 'base' else sum(t['rate'] for t in _tiers(c, mode)))
+        if mode == 'base':
+            return c['base']
+        ts = _tiers(c, mode)
+        base = 0 if any(t.get('no_base') for t in ts) else c['base']
+        return base + sum(t['rate'] for t in ts)
 
     # 有幾張卡的帳面數字把「新戶加碼」也算進去了，那是核卡後一段期間內的一次性優惠。
     # 已經持卡的人看到的其實是另一個數字，所以另外算一欄。

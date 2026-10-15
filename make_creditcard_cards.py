@@ -29,8 +29,10 @@ NEW = re.compile(r'新戶|核卡')
 
 def fingerprint(CD):
     """圖卡真正用到的欄位的指紋。用途同 make_picks_cards.fingerprint。"""
-    pay = [[c.get(k) for k in ('name', 'plan', 'base', 'total', 'reg_level')]
-           + [[t['label'], t['rate'], t['cap'], t['scope'], t.get('cond', '')]
+    pay = [[c.get(k) for k in ('name', 'plan', 'base', 'total', 'reg_level',
+                               'reg_monthly')]
+           + [[t['label'], t['rate'], t['cap'], t['scope'], t.get('cond', ''),
+               t.get('no_base')]
               for t in c['tiers']]
            for c in CD['cards']]
     pay.append([CD['fx_fee']['typical'], CD['checked']])
@@ -142,9 +144,11 @@ def make_math(CD, mid, fee):
 
     def back(c, jpy, scope='shop', newbie=True):
         b = bill(jpy)
-        v = c['base'] / 100 * b
+        ts = tiers(c, scope, newbie)
+        # 標了 no_base 的加碼層不疊基本回饋（例如交通卡儲值不算一般消費）
+        v = 0 if any(t.get('no_base') for t in ts) else c['base'] / 100 * b
         capped = False
-        for t in tiers(c, scope, newbie):
+        for t in ts:
             x = t['rate'] / 100 * b
             if t['cap'] and x > t['cap']:
                 x = t['cap']
@@ -153,7 +157,9 @@ def make_math(CD, mid, fee):
         return v, capped
 
     def maxrate(c, scope='shop', newbie=True):
-        return round(c['base'] + sum(t['rate'] for t in tiers(c, scope, newbie)), 2)
+        ts = tiers(c, scope, newbie)
+        base = 0 if any(t.get('no_base') for t in ts) else c['base']
+        return round(base + sum(t['rate'] for t in ts), 2)
 
     def hit(c, scope='shop'):
         ts = [t for t in tiers(c, scope) if t['cap']]
@@ -271,7 +277,10 @@ def build(CD, mid, fee, rate_note):
           ('none', '不用登錄', '直接刷就算。')]
     rows = ''
     for k, lab, why in LV:
-        ns = [c['name'] for c in cards if c.get('reg_level') == k]
+        # 有 reg_monthly 的卡是「只有某一層要搶」，不是整張卡都要搶，標出來
+        ns = [c['name'] + ('（只有' + c['reg_monthly']['what'] + '那層）'
+                           if k == 'race' and c.get('reg_monthly') else '')
+              for c in cards if c.get('reg_level') == k]
         if not ns:
             continue
         rows += ('<div class="grp">'
