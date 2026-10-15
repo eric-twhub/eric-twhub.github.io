@@ -1370,6 +1370,7 @@ def topnav(cur=''):
 
     # 訂完票之後才會看的東西。同一層放太多會找不到，所以分兩組小標。
     trip = ('<b>挑日期</b>'
+            + link('/japan-park-ticket/', '🎢 樂園門票哪天便宜')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
             + link('/japan-holiday-calendar/', '📅 三國連假撞期')
@@ -11716,6 +11717,211 @@ if os.path.exists('cobrand-cards.json'):
         '頁內部分連結為聯盟行銷連結，本站可能獲得分潤，不影響你的價格。</p>'
       + foot())
     pages.append(('/japan-tax-free-2026/', 0.9))
+
+# ---------- 樂園門票價格 ----------
+if os.path.exists('park-ticket.json'):
+    PT = json.load(open('park-ticket.json', encoding='utf-8'))
+    _pt_days = [(datetime.date(*map(int, x['date'].split('-'))), x['p'])
+                for x in PT['days']]
+    _PT_WD = '一二三四五六日'
+    # _SM2 與 _MIDC 都定義在別的區塊的函式裡，這裡自己留一份
+    _PT_SM = '<br><small style="color:var(--dim)">'
+
+    def _pt_money(jpy):
+        """日圓換台幣。匯率用站上同一支，不另外算一份。"""
+        return f'約 NT${round(jpy * JPY):,}'
+
+    # 依月份
+    _pt_by_m = collections.OrderedDict()
+    for dt, pr in _pt_days:
+        _pt_by_m.setdefault(f'{dt.year}-{dt.month:02d}', []).append((dt, pr))
+    # 最後一個月多半只賣到一半，平均會失真，標出來而不是默默算進去
+    _pt_full = {k: v for k, v in _pt_by_m.items() if len(v) >= 28}
+
+    _pt_mrows = ''
+    for k, v in _pt_by_m.items():
+        ps = [x[1] for x in v]
+        y, m = k.split('-')
+        full = len(v) >= 28
+        _pt_mrows += (
+            f'<tr><td><b>{int(y)} 年 {int(m)} 月</b></td>'
+            f'<td>{len(v)} 天{"" if full else f"{_PT_SM}官網只賣到約兩個月後</small>"}</td>'
+            + (f'<td><b>¥{round(statistics.mean(ps)):,}</b>'
+               f'{_PT_SM}{_pt_money(statistics.mean(ps))}</small></td>'
+               if full else '<td class="nm">資料不滿一個月，不算平均</td>')
+            + f'<td class="win">¥{min(ps):,}{_PT_SM}{_pt_money(min(ps))}</small></td>'
+              f'<td class="lose">¥{max(ps):,}{_PT_SM}{_pt_money(max(ps))}</small></td>'
+              '</tr>')
+
+    # 依星期（只用完整月份）
+    _pt_wd = collections.OrderedDict((i, []) for i in range(7))
+    for k, v in _pt_full.items():
+        for dt, pr in v:
+            _pt_wd[dt.weekday()].append(pr)
+    _pt_wmin = min(statistics.mean(v) for v in _pt_wd.values() if v)
+    _pt_wmax = max(statistics.mean(v) for v in _pt_wd.values() if v)
+    _pt_wrows = ''
+    for i, ps in _pt_wd.items():
+        if not ps:
+            continue
+        avg = statistics.mean(ps)
+        cls = ('win' if avg == _pt_wmin else 'lose' if avg == _pt_wmax else '')
+        _pt_wrows += (f'<tr><td><b>週{_PT_WD[i]}</b></td><td>{len(ps)} 天</td>'
+                      f'<td class="{cls}"><b>¥{round(avg):,}</b>'
+                      f'{_PT_SM}{_pt_money(avg)}</small></td>'
+                      f'<td>¥{min(ps):,} – ¥{max(ps):,}</td></tr>')
+
+    _pt_all = [x[1] for x in _pt_days]
+    _pt_lo, _pt_hi = min(_pt_all), max(_pt_all)
+    _pt_lodays = [dt for dt, pr in _pt_days if pr == _pt_lo]
+    _pt_hidays = [dt for dt, pr in _pt_days if pr == _pt_hi]
+    _pt_wkday = [pr for dt, pr in _pt_days if dt.weekday() < 5]
+    _pt_wkend = [pr for dt, pr in _pt_days if dt.weekday() >= 5]
+    _pt_gap = round(statistics.mean(_pt_wkend) - statistics.mean(_pt_wkday))
+
+    def _pt_dlist(ds, n=6):
+        out = '、'.join(f'{d.month}/{d.day}（{_PT_WD[d.weekday()]}）' for d in ds[:n])
+        return out + ('…' if len(ds) > n else '')
+
+    _pt_u = PT['usj']
+    _pt_urows = ''.join(
+        f'<tr><td><b>{html.escape(x["n"])}</b></td>'
+        f'<td>¥{x["from"]:,} 起{_PT_SM}{_pt_money(x["from"])}</small></td></tr>'
+        for x in _pt_u['prices'])
+
+    _pt_faq = [
+      ('東京迪士尼門票哪一天最便宜？',
+       f'這份資料涵蓋的 {len(_pt_days)} 天裡，最低是 ¥{_pt_lo:,}，'
+       f'出現在 {_pt_dlist(_pt_lodays)}；最高 ¥{_pt_hi:,}。'
+       f'同一張一日護照，差距 ¥{_pt_hi - _pt_lo:,}。'),
+      ('平日跟週末差多少？',
+       f'平日平均 ¥{round(statistics.mean(_pt_wkday)):,}，'
+       f'週末平均 ¥{round(statistics.mean(_pt_wkend)):,}，差 ¥{_pt_gap:,}。'
+       '週六通常是一週裡最貴的一天，比週日還貴。'),
+      ('可以提早多久買？',
+       '官網寫明每日 14:00 起銷售 2 個月後同一日期的票券，'
+       '所以最多只看得到約兩個月後的價格，沒辦法提早半年買。'
+       '這也表示這一頁的資料永遠只有兩個月，不是全年預測。'),
+      ('在 Klook、KKday 買會不會比較便宜？',
+       '要看日期。官網是浮動價，通路多半是固定價，所以旺日通路可能較便宜、'
+       '淡日官網較便宜。但兩個樂園對通路的態度不一樣：USJ 官網的繁體中文頁面'
+       '明確列出 KKday 與 klook 是販賣旅行社；東京迪士尼沒有公開名單，'
+       '官網只寫「部分旅行社、超商亦有銷售票券」，另有一頁寫明非正規販售店的票'
+       '可能被判定無效、無法入園且不予退款。'),
+      ('官網買的門檻是什麼？',
+       '東京迪士尼的線上購票只有英文，要先註冊 MyDisney Account，'
+       '每次上限 10 張，買了之後不能因為自己的因素取消或退票。'
+       'USJ 官網購票要先過排隊系統，介面是日文。'),
+    ]
+    _pt_ld = json.dumps({
+      "@context": "https://schema.org", "@type": "FAQPage",
+      "mainEntity": [{"@type": "Question", "name": q,
+                      "acceptedAnswer": {"@type": "Answer", "text": a}}
+                     for q, a in _pt_faq]}, ensure_ascii=False)
+
+    _pt_title = (f'東京迪士尼門票哪天便宜？{len(_pt_days)} 天逐日票價與星期規律')
+    _pt_desc = (f'東京迪士尼一日護照採浮動價，{len(_pt_days)} 天的官方票價攤開比較：'
+                f'最低 ¥{_pt_lo:,}、最高 ¥{_pt_hi:,}，平日與週末差 ¥{_pt_gap:,}。'
+                f'另含 USJ 起價與官網、通路的購票門檻比較。')
+
+    write('japan-park-ticket/index.html',
+      head(_pt_title, _pt_desc, 'japan-park-ticket/',
+           '<script type="application/ld+json">' + _pt_ld + '</script>')
+      + crumbs([('首頁', '/'), ('樂園門票價格', None)]) + topnav()
+      + '<h1>東京迪士尼門票，哪一天比較便宜？</h1>'
+      + '<p class="lede">一日護照採浮動價格制，同一張票不同日期差很多。'
+        '這一頁把官網每一天的價格攤開來，看得出規律再決定哪天去。</p>'
+      + f'<div class="today"><div class="tday">票價取自'
+        f'<a href="{PT["src"]}" target="_blank" rel="nofollow noopener">'
+        f'{html.escape(PT["src_name"])}</a>　·　查證於 {PT["checked"]}'
+        f'　·　匯率 {JPY} 每日更新</div>'
+        f'<div class="tans">{len(_pt_days)} 天裡最低 <b>¥{_pt_lo:,}</b>、'
+        f'最高 <b>¥{_pt_hi:,}</b></div>'
+        f'<div class="tsub">差 ¥{_pt_hi - _pt_lo:,}（{_pt_money(_pt_hi - _pt_lo)}）。'
+        f'最低價出現在 {_pt_dlist(_pt_lodays, 4)}。</div>'
+        f'<div class="tbuf">官網寫明每日 14:00 起只銷售 <b>2 個月後</b>同一日期的票，'
+        f'所以這一頁永遠只有約兩個月的資料，不是全年預測。</div></div>'
+
+      + '<h2>每個月的票價</h2>'
+      + '<div class="tw"><table><thead><tr><th>月份</th><th>天數</th>'
+        '<th>平均</th><th>最低</th><th>最高</th></tr></thead><tbody>'
+      + _pt_mrows + '</tbody></table></div>'
+      + '<p class="disc">平均只算資料滿一個月的月份。'
+        '最後一個月受「只賣兩個月」的限制，天數不足，算了會失真。</p>'
+
+      + '<h2>星期幾比較便宜</h2>'
+      + f'<p class="lede">只用資料完整的 {len(_pt_full)} 個月份計算。</p>'
+      + '<div class="tw"><table><thead><tr><th>星期</th><th>天數</th>'
+        '<th>平均</th><th>區間</th></tr></thead><tbody>'
+      + _pt_wrows + '</tbody></table></div>'
+      + f'<div class="tldr"><ul>'
+        f'<li><b>週六最貴。</b>平均比平日高 ¥{_pt_gap:,}，而且比週日還貴。</li>'
+        f'<li><b>平日之間差很少。</b>週一到週五的平均幾乎一樣，'
+        f'真正拉開差距的是假期與活動期間，不是星期幾。</li>'
+        f'<li><b>要省就避開週六與年末。</b>'
+        f'最高價 ¥{_pt_hi:,} 出現在 {_pt_dlist(_pt_hidays, 5)}。</li>'
+        f'</ul></div>'
+
+      + '<h2>USJ 的票價</h2>'
+      + f'<p class="lede">{html.escape(_pt_u["note"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>票種</th><th>官網起價</th>'
+        '</tr></thead><tbody>' + _pt_urows + '</tbody></table></div>'
+      + f'<p class="disc">取自<a href="{_pt_u["src"]}" target="_blank" '
+        f'rel="nofollow noopener">{html.escape(_pt_u["src_name"])}</a>，'
+        f'查證於 {PT["checked"]}。</p>'
+
+      + '<h2>官網買還是通路買</h2>'
+      + '<div class="tw"><table><thead><tr><th>　</th><th>東京迪士尼</th>'
+        '<th>USJ</th></tr></thead><tbody>'
+        '<tr><td><b>官方認可的通路</b></td>'
+        '<td class="nm">沒有公開名單。官網只寫「部分旅行社、超商亦有銷售票券」，'
+        '另有一頁寫明非正規販售店、轉售網站、拍賣網站或金券店的票'
+        '<b>可能被判定無效</b>，無法入園且不予退款。</td>'
+        f'<td class="nm win">官網的繁體中文頁面明確列出 KKday 與 klook，'
+        f'另有可樂旅遊、Trip.com、Lion Travel、東南旅遊等。</td></tr>'
+        '<tr><td><b>官網購票的門檻</b></td>'
+        '<td class="nm">只有英文介面，要先註冊 MyDisney Account，'
+        '每次上限 10 張，買了不能因個人因素退票。</td>'
+        '<td class="nm">要先通過排隊系統，購票介面是日文。</td></tr>'
+        '<tr><td><b>價格形態</b></td>'
+        '<td class="nm">浮動價，逐日公布</td>'
+        '<td class="nm">浮動價，但逐日價要進購票系統才看得到</td></tr>'
+        '</tbody></table></div>'
+      + f'<p class="disc">迪士尼那一欄的依據：'
+        f'<a href="https://www.tokyodisneyresort.jp/tc/ticket/purchase.html" '
+        f'target="_blank" rel="nofollow noopener">購票方法（線上）</a>與'
+        f'<a href="https://www.tokyodisneyresort.jp/ticket_info/ticket_resale.html" '
+        f'target="_blank" rel="nofollow noopener">園區票券不當轉賣之防範措施</a>；'
+        f'USJ 那一欄的依據：<a href="{_pt_u["agency_src"]}" target="_blank" '
+        f'rel="nofollow noopener">販賣旅行社</a>。查證於 {PT["checked"]}。</p>'
+
+      + '<h2>刷卡這一層</h2>'
+      + '<div class="tldr"><ul>'
+        '<li><b>官網買一定算國外交易。</b>結帳幣別是日圓，'
+        '吃得到日本加碼，但也要付國外交易服務費（多數卡 1.5%）。</li>'
+        '<li><b>在台灣的通路買，用台幣付不代表算國內。</b>'
+        '判斷的是收單行在哪裡，不是幣別。'
+        '這一點各家發卡行的說法與查法整理在另一頁。</li>'
+        '<li><b>本站沒有查證各通路的收單行。</b>'
+        '要確定的話，刷完看帳單上那筆的「交易國別」，是 TW 就是國內。</li>'
+        '</ul></div>'
+      + '<div class="cities">'
+      + f'<a class="ct" href="{U("/japan-airline-card/")}"><b>💳 算國內還是國外</b>'
+        f'<s>發卡行怎麼認，怎麼自己查</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
+        f'<s>日本消費的回饋與上限</s></a></div>'
+
+      + '<h2>常見問題</h2><div class="faq">'
+      + ''.join(f'<details><summary>{html.escape(q)}</summary>'
+                f'<div>{html.escape(a)}</div></details>' for q, a in _pt_faq)
+      + '</div>'
+      + f'<p class="disc">本頁為公開資訊整理。票價取自各樂園官方網站，'
+        f'查證於 {PT["checked"]}；官網寫明票價可能不經預告而變更，'
+        f'購買前請以官方頁面為準。本站不販售門票，與兩個樂園無合作關係。</p>'
+      + foot())
+    pages.append(('/japan-park-ticket/', 0.8))
+    print(f'   樂園門票價格頁：{len(_pt_days)} 天（{_pt_lo:,}–{_pt_hi:,} 日圓，'
+          f'查證 {PT["checked"]}）')
 
 # ---------- 早去晚回 ----------
 _GT = [x for x in deals if good_times(x)]
