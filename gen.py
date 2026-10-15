@@ -1501,6 +1501,7 @@ _AD_MAP = [
     ('iphone-', 'esim'), ('japan-tax-free', 'esim'),
     ('japan-credit-card', 'transport'), ('japan-card', 'transport'),
     ('japan-airline-card', 'transport'),
+    ('japan-park-ticket', 'activity2'), ('tigerair-nagoya', 'transfer'),
     ('taiwan-holiday', 'activity2'), ('japan-holiday-calendar', 'activity2'),
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
     ('japan-travel-insurance', 'activity2'),
@@ -14892,6 +14893,28 @@ urls='\n'.join(f'  <url><loc>{SITE}{U(u)}</loc>'
 print(f'   sitemap：{len(pages)} 個 URL，其中 {_lm_same} 個內容未變、沿用原 lastmod')
 write('sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n'
       f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n')
+
+# 新頁面忘了加進 _AD_MAP 的話，那一頁會靜靜地沒有任何廣告版位。
+# 內容夠長卻一個版位都沒有的，建置時列出來，不要等到上線才發現。
+_noad = []
+for _u, _pr in pages:
+    _f = _page_file(_u)
+    if not _f.endswith('.html') or _u.startswith('/deals/'):
+        continue
+    try:
+        _c = open(_f, encoding='utf-8').read()
+    except OSError:
+        continue
+    if '<aside class="adbox' in _c:
+        continue
+    _body = re.sub(r'<(script|style|nav)[^>]*>.*?</\1>', '',
+                   _c.split('<body', 1)[-1], flags=re.S)
+    if len(html.unescape(re.sub(r'<[^>]+>', '', _body))) >= 1500:
+        _noad.append(_u)
+if _noad:
+    print(f'   ⚠ {len(_noad)} 頁內容夠長卻沒有廣告版位，'
+          f'可能是忘了加進 gen.py 的 _AD_MAP：' + '、'.join(_noad[:6])
+          + ('…' if len(_noad) > 6 else ''))
 # og 圖卡清單：只列內容頁。票價頁的標題每天帶著當日最低價，
 # 每天重產只會讓 repo 一直長出二進位檔，那些統一用預設卡。
 _og_items = []
