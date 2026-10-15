@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-15 22:21",
+ "generated": "2026-10-16 02:21",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -1737,7 +1737,7 @@
     ],
     "fare": {
      "n": 20,
-     "median": 11318,
+     "median": 11252,
      "low": 6003,
      "enough": true
     },
@@ -3712,8 +3712,8 @@
     ],
     "fest": [],
     "fare": {
-     "n": 4,
-     "median": 7616,
+     "n": 3,
+     "median": 7082,
      "low": 5858,
      "enough": false
     },
@@ -4587,12 +4587,7 @@
       "est": false
      }
     ],
-    "fare": {
-     "n": 1,
-     "median": 9103,
-     "low": 9103,
-     "enough": false
-    },
+    "fare": null,
     "areas": [
      {
       "area": "tohoku",
@@ -6318,7 +6313,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-10-15 14:20"
+   "generated": "2026-10-15 18:19"
   },
   "last": "2027-12-31",
   "partial": [
