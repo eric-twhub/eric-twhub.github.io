@@ -12014,6 +12014,48 @@ if os.path.exists('park-ticket.json'):
             f'這一列是分潤連結，點了本站可獲得分潤，不影響你的價格。'
             f'本站沒有查證過這些商品與樂園官方的價差。</p>')
 
+    # ---- 其他樂園 ----
+    _ot = PT.get('others') or {}
+    _ot_html = ''
+    if _ot:
+        _ot_rows = ''
+        for x in _ot['items']:
+            pr = ''
+            for q in x.get('prices') or []:
+                pr = (f'大人 ¥{q["adult"]:,}{"起" if q.get("from") else ""}'
+                      f'{_PT_SM}{_pt_money(q["adult"])}　·　'
+                      f'中人 ¥{q["mid"]:,}、小人 ¥{q["child"]:,}</small>')
+            if not pr:
+                pr = '<span class="nm">要選日期才看得到</span>'
+            _ot_rows += (
+              f'<tr><td><b>{html.escape(x["name"])}</b>'
+              f'{_PT_SM}{html.escape(x["jp"])}<br>{html.escape(x["place"])}</small></td>'
+              f'<td class="nm"><b>{html.escape(x["how"])}</b>'
+              + (f'{_PT_SM}{html.escape(x["apply"])}</small>' if x.get('apply') else '')
+              + f'</td><td class="nm">{pr}</td>'
+                f'<td class="nm">{html.escape(x["note"])}'
+                f'{_PT_SM}出處：<a href="{x["src"]}" target="_blank" '
+                f'rel="nofollow noopener">{html.escape(x["src_name"])}</a>'
+                f'（{html.escape(x["lang"])}）'
+              + (f'、<a href="{x["src2"]}" target="_blank" rel="nofollow noopener">'
+                 f'{html.escape(x["src2_name"])}</a>' if x.get('src2') else '')
+              + '</small></td></tr>')
+        _ot_html = (
+          '<h2>哈利波特影城與寶可夢樂園</h2>'
+          f'<p class="lede">{html.escape(_ot["_說明"])}</p>'
+          '<div class="tw"><table><thead><tr><th>園區</th><th>怎麼買</th>'
+          '<th>票價</th><th>說明與出處</th></tr></thead><tbody>'
+          + _ot_rows + '</tbody></table></div>'
+          + '<div class="tldr"><ul>'
+            '<li><b>寶可夢樂園要先問買不買得到，再問便不便宜。</b>'
+            '它是申請制，提前三個月、每月 1 到 12 日受理，月底才通知中籤。'
+            '行程排定了才發現沒中籤的話沒有備案，官方通路只有這一條。</li>'
+            '<li><b>海外旅客不要走日本官網。</b>日本居民那條要用日本手機號碼'
+            '做簡訊認證，台灣人過不了。官方另外開了英文購票網站給海外旅客。</li>'
+            '<li><b>哈利波特影城是正常買得到的。</b>官網直接買，浮動價，'
+            '跟迪士尼一樣早點看價格日曆就能挑便宜的日子。</li>'
+            '</ul></div>')
+
     _pt_faq = [
       ('東京迪士尼門票哪一天最便宜？',
        f'這份資料涵蓋的 {len(_pt_days)} 天裡，最低是 ¥{_pt_lo:,}，'
@@ -12033,6 +12075,11 @@ if os.path.exists('park-ticket.json'):
        '明確列出 KKday 與 klook 是販賣旅行社；東京迪士尼沒有公開名單，'
        '官網只寫「部分旅行社、超商亦有銷售票券」，另有一頁寫明非正規販售店的票'
        '可能被判定無效、無法入園且不予退款。'),
+      ('哈利波特影城跟寶可夢樂園怎麼買？',
+       '兩個完全不一樣。哈利波特影城（練馬）在官網直接買，浮動票價，一般票大人 6,600 円起。'
+       '寶可夢樂園（讀賣樂園內）是申請制：提前三個月、每月 1 日到 12 日受理申請，'
+       '月底才通知中籤者。海外旅客要走官方授權的英文購票網站，'
+       '日本居民那條要用日本手機號碼做簡訊認證，台灣人過不了。'),
       ('快速通關多少錢？',
        '兩個樂園的官網都沒有公開價目表。迪士尼的尊享卡是入園後在官方 App 內買，'
        '價格依設施與當下狀況變動；USJ 的快速通關要先選入場日期才看得到可買的商品與價格。'
@@ -12048,16 +12095,18 @@ if os.path.exists('park-ticket.json'):
                       "acceptedAnswer": {"@type": "Answer", "text": a}}
                      for q, a in _pt_faq]}, ensure_ascii=False)
 
-    _pt_title = (f'東京迪士尼門票哪天便宜？{len(_pt_days)} 天逐日票價與星期規律')
+    _pt_title = (f'日本樂園門票怎麼買？迪士尼 {len(_pt_days)} 天逐日票價、USJ、'
+                 f'哈利波特與寶可夢樂園')
     _pt_desc = (f'東京迪士尼一日護照採浮動價，{len(_pt_days)} 天的官方票價攤開比較：'
                 f'最低 ¥{_pt_lo:,}、最高 ¥{_pt_hi:,}，平日與週末差 ¥{_pt_gap:,}。'
-                f'另含 USJ 起價與官網、通路的購票門檻比較。')
+                f'另含 USJ、哈利波特影城與寶可夢樂園的買法，'
+                f'以及快速通關與刷卡算國內還是國外。')
 
     write('japan-park-ticket/index.html',
       head(_pt_title, _pt_desc, 'japan-park-ticket/',
            '<script type="application/ld+json">' + _pt_ld + '</script>')
       + crumbs([('首頁', '/'), ('樂園門票價格', None)]) + topnav()
-      + '<h1>東京迪士尼門票，哪一天比較便宜？</h1>'
+      + '<h1>日本樂園門票，怎麼買比較便宜？</h1>'
       + '<p class="lede">一日護照採浮動價格制，同一張票不同日期差很多。'
         '這一頁把官網每一天的價格攤開來，看得出規律再決定哪天去。</p>'
       + f'<div class="today"><div class="tday">票價取自'
@@ -12124,6 +12173,7 @@ if os.path.exists('park-ticket.json'):
         f'USJ 那一欄的依據：<a href="{_pt_u["agency_src"]}" target="_blank" '
         f'rel="nofollow noopener">販賣旅行社</a>。查證於 {PT["checked"]}。</p>'
 
+      + _ot_html
       + _px_html
       + '<h2>刷卡這一層</h2>'
       + '<div class="tldr"><ul>'
