@@ -1536,8 +1536,12 @@ def _ad_kind_for(path):
             return kind
     # 城市頁與航線頁本來就有行程與 eSIM 兩個版位，這裡配住宿：
     # 看完機票的下一步就是訂房，而且不跟既有的兩個重複。
-    if _ad_city(path):
-        return 'hotel'
+    # 但 Trip.com 的飯店列表要數字城市 ID，只有六個城市有；
+    # 其餘城市會掉回 Agoda 的關鍵字連結，那不是我們的夥伴，點了沒有分潤。
+    # 那些城市改配機場接送，一樣是落地後要用的東西，而且連結帶得到分潤。
+    _c = _ad_city(path)
+    if _c:
+        return 'hotel' if (P['hotel'].get('city_ids') or {}).get(_c[1]) else 'transfer'
     if u in REGNAME:                # 地區頁：還在挑日本哪一區，配當地行程
         return 'activity2'
     if u in ONAME:                  # 出發地頁：從台灣出發，配上網
