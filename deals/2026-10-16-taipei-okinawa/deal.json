@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-16-taipei-okinawa",
- "generated": "2026-10-16 02:21",
+ "generated": "2026-10-16 03:23",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -28,7 +28,7 @@
   "廉航低於 NT$6,000",
   "11 月出發的票，每天最便宜的平均要 NT$4,468（8 天有紀錄），這張低 44%"
  ],
- "med": 12325,
+ "med": 12331,
  "n_rt": 27,
  "others": [
   {
