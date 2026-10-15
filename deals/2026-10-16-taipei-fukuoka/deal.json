@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-16-taipei-fukuoka",
- "generated": "2026-10-16 03:23",
+ "generated": "2026-10-16 04:48",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 6101,
+  "price": 5701,
   "dep": "2026-11-01",
   "ret": "2026-11-05",
   "dept": "06:45",
@@ -25,9 +25,10 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "11 月出發的票，每天最便宜的平均要 NT$8,230（6 天有紀錄），這張低 26%"
+  "廉航低於 NT$6,000",
+  "11 月出發的票，每天最便宜的平均要 NT$8,095（6 天有紀錄），這張低 30%"
  ],
- "med": 14232,
+ "med": 14218,
  "n_rt": 16,
  "others": [
   {
@@ -36,7 +37,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 6554,
+   "price": 6154,
    "dep": "2026-11-03",
    "ret": "2026-11-06",
    "dept": "06:45",
@@ -55,7 +56,7 @@
    "air": "AK",
    "airname": "馬來西亞亞航",
    "cls": "lcc",
-   "price": 7343,
+   "price": 7332,
    "dep": "2026-11-02",
    "ret": "2026-11-06",
    "dept": "12:00",
@@ -65,7 +66,7 @@
    "dur": 305,
    "dur_to": 140,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TPE0211FUK06111?t=IT17936208001793632800000140TPEFUK17939625001793968800000165FUKTPE_584f65cdc0d2c8274780a86705707e42_18977&search_date=15102026&expected_price_uuid=01a1402c-11d6-8040-28ae-4b6634c783a9&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=BekVH5HyBhGfd1Zw0iIvCQ&expected_price_source=share&expected_price_currency=twd&expected_price=7343&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE0211FUK06111?t=IT17936208001793632800000140TPEFUK17939625001793968800000165FUKTPE_584f65cdc0d2c8274780a86705707e42_18977&search_date=15102026&expected_price_uuid=01a1402c-11d6-8040-28ae-4b6634c783a9&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=BekVH5HyBhGfd1Zw0iIvCQ&expected_price_source=share&expected_price_currency=twd&expected_price=7332&marker=775639"
   },
   {
    "o": "TPE",
