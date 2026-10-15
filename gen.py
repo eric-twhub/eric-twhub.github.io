@@ -1517,8 +1517,10 @@ def adbox(kind, path, slot='foot'):
         else:
             # Klook 的 adid 是後台的廣告單元代號，不是任意字串；
             # 傳 'adbox' 走 partners.json 的分組，ID 沒填就併回預設單元。
+            # Klook 的 adid 是後台的廣告單元代號，不是任意字串。
+            # 一個版位一組，ID 沒填就併回預設單元，連結照常可用。
             href = plink(kind, '日本', sub=track,
-                         adid=('adbox' if slot == 'foot' else 'adbox_mid')
+                         adid=('adbox' if slot == 'foot' else 'adbox_' + slot)
                               if kind == 'esim' else track[:40])
     except Exception:
         return ''
