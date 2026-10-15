@@ -11789,6 +11789,55 @@ if os.path.exists('park-ticket.json'):
         f'<td>¥{x["from"]:,} 起{_PT_SM}{_pt_money(x["from"])}</small></td></tr>'
         for x in _pt_u['prices'])
 
+    # ---- 快速通關 ----
+    _px = PT.get('express') or {}
+    _px_html = ''
+    if _px:
+        _pxt, _pxu, _pxc = _px['tdr'], _px['usj'], _px['channel']
+        _px_items = ''.join(
+            f'<tr><td><b>{html.escape(x["name"])}</b>'
+            f'{_PT_SM}{html.escape(x["note"])}</small></td>'
+            f'<td>NT${x["from"]:,} – NT${x["to"]:,}</td>'
+            f'<td>★ {html.escape(x["star"])}{_PT_SM}{html.escape(x["booked"])} 個已訂購</small></td>'
+            f'<td><a href="{html.escape(kkday(x["url"], "park_express"))}" target="_blank" '
+            f'rel="nofollow noopener sponsored">到 {html.escape(x["brand"])} 看</a></td></tr>'
+            for x in _pxc['items'])
+        _px_html = (
+          '<h2>快速通關要多少錢</h2>'
+          '<p class="lede">兩個樂園的官網都沒有公開價目表。這一段先講查得到的規則，'
+          '價格只能給通路的標價。</p>'
+          '<div class="tw"><table><thead><tr><th>　</th>'
+          '<th>東京迪士尼</th><th>USJ</th></tr></thead><tbody>'
+          f'<tr><td><b>名稱</b></td><td class="nm">{html.escape(_pxt["name"])}</td>'
+          f'<td class="nm">{html.escape(_pxu["name"])}</td></tr>'
+          f'<tr><td><b>官方價目表</b></td>'
+          f'<td class="nm lose">{html.escape(_pxt["price_status"])}</td>'
+          f'<td class="nm lose">{html.escape(_pxu["price_status"])}</td></tr>'
+          f'<tr><td><b>為什麼查不到</b></td>'
+          f'<td class="nm">{html.escape(_pxt["why"])}</td>'
+          f'<td class="nm">{html.escape(_pxu["why"])}</td></tr>'
+          f'<tr><td><b>在哪裡買</b></td><td class="nm">{html.escape(_pxt["where"])}</td>'
+          f'<td class="nm">{html.escape(_pxu["where"])}</td></tr>'
+          '</tbody></table></div>'
+          + '<h3>USJ 官網寫明的規則</h3>'
+          + '<div class="tldr"><ul>'
+          + ''.join(f'<li>{html.escape(x)}。</li>' for x in _pxu['rules'])
+          + '</ul></div>'
+          + f'<p class="disc">取自<a href="{_pxu["src"]}" target="_blank" '
+            f'rel="nofollow noopener">{html.escape(_pxu["src_name"])}</a>，'
+            f'查證於 {PT["checked"]}。券種有'
+          + '、'.join(html.escape(x) for x in _pxu['types'])
+          + '等，實際可買的依入場日期而定。</p>'
+          + '<h3>通路上買得到的</h3>'
+          + f'<p class="lede">{html.escape(_pxc["_說明"])}</p>'
+          + '<div class="tw"><table><thead><tr><th>商品</th><th>價格帶</th>'
+            '<th>評價</th><th>　</th></tr></thead><tbody>' + _px_items
+          + '</tbody></table></div>'
+          + f'<p class="disc">價格帶是 {_pxc["checked"]} 查到的方案區間，'
+            f'依設施數量與日期而不同，實際金額以該平台為準。'
+            f'這一列是分潤連結，點了本站可獲得分潤，不影響你的價格。'
+            f'本站沒有查證過這些商品與樂園官方的價差。</p>')
+
     _pt_faq = [
       ('東京迪士尼門票哪一天最便宜？',
        f'這份資料涵蓋的 {len(_pt_days)} 天裡，最低是 ¥{_pt_lo:,}，'
@@ -11808,6 +11857,10 @@ if os.path.exists('park-ticket.json'):
        '明確列出 KKday 與 klook 是販賣旅行社；東京迪士尼沒有公開名單，'
        '官網只寫「部分旅行社、超商亦有銷售票券」，另有一頁寫明非正規販售店的票'
        '可能被判定無效、無法入園且不予退款。'),
+      ('快速通關多少錢？',
+       '兩個樂園的官網都沒有公開價目表。迪士尼的尊享卡是入園後在官方 App 內買，'
+       '價格依設施與當下狀況變動；USJ 的快速通關要先選入場日期才看得到可買的商品與價格。'
+       '通路上買得到「門票＋快速通關」的組合，但那是通路價，不是樂園官方價。'),
       ('官網買的門檻是什麼？',
        '東京迪士尼的線上購票只有英文，要先註冊 MyDisney Account，'
        '每次上限 10 張，買了之後不能因為自己的因素取消或退票。'
@@ -11895,6 +11948,7 @@ if os.path.exists('park-ticket.json'):
         f'USJ 那一欄的依據：<a href="{_pt_u["agency_src"]}" target="_blank" '
         f'rel="nofollow noopener">販賣旅行社</a>。查證於 {PT["checked"]}。</p>'
 
+      + _px_html
       + '<h2>刷卡這一層</h2>'
       + '<div class="tldr"><ul>'
         '<li><b>官網買一定算國外交易。</b>結帳幣別是日圓，'
