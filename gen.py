@@ -1234,6 +1234,8 @@ display:flex;gap:8px;align-items:center;margin-top:auto;padding-top:3px}
 .adbox .adimg{display:block;text-decoration:none}
 .adbox .adimg img{display:block;width:100%;height:auto;aspect-ratio:1440/400}
 .adbox.img>.adbd{padding:0}
+.adbox .adbd2{padding:0 15px 2px}
+.adbox .adbd2 .adpl{margin-top:13px}
 .adbox .adfp{padding:0 15px 13px;font-size:.73rem;color:var(--dim);line-height:1.65}
 details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
 margin-top:8px;padding:0}
@@ -1663,14 +1665,18 @@ def adbox(kind, path, slot='foot'):
     img = (kind in _AD_IMG_KINDS and _ad_use_img(path, slot)
            and os.path.exists(f'ads/banner-{kind}.jpg'))
     cls = ('' if slot == 'foot' else ' ' + slot) + (' img' if img else '')
+    prods = _ad_products(_g, track)
     if img:
+        # 圖片版也放商品清單。少了它，這個對照就變成
+        # 「泛稱的圖」對「有商品的文字」，贏了也分不出是圖的功勞還是商品的。
         body = (f'<div class="adbd"><a class="adimg" href="{html.escape(href)}" '
                 f'target="_blank" rel="nofollow noopener sponsored">'
                 f'<img src="{U("/ads/banner-" + kind + ".jpg")}" '
                 f'alt="廣告：{html.escape(title)}，前往 {html.escape(brand)}" '
-                f'width="1440" height="400" loading="lazy"></a></div>')
+                f'width="1440" height="400" loading="lazy"></a>'
+                + (f'<div class="adbd2">{prods}</div>' if prods else '')
+                + '</div>')
     else:
-        prods = _ad_products(_g, track)
         body = (f'<div class="adbd"><div class="adt">{html.escape(title)}</div>'
                 f'<div class="ads">{html.escape(sub)}</div>'
                 + prods
@@ -1693,7 +1699,7 @@ def adbox(kind, path, slot='foot'):
       + '<p class="adfp">本站沒有販售這些商品，也沒有查證過上面的價格與庫存。'
       + (f'商品名稱與評價查證於 {_ADS.get("checked", "")}，'
          '價格與方案會變動，以平台顯示為準。'
-         if _g.get('items') and not img else '')
+         if _g.get('items') else '')
       + '這一頁自己整理的資料在上面，廣告與那些資料沒有關係。</p>'
       '</aside>')
 
