@@ -1163,6 +1163,27 @@ text-decoration:none;color:var(--fg)}
 .cta .ca{color:var(--acc);font-weight:700;font-size:1.1rem;flex:0 0 auto}
 .cta .ca.pr{font-size:1.42rem;letter-spacing:-.03em;line-height:1.15;text-align:right}
 .cta .ca.pr small{display:block;font-size:.66rem;font-weight:600;color:var(--dim);letter-spacing:0}
+/* 廣告版位。明確標示，而且跟內文的卡片長得不一樣，
+   不要讓讀者以為那是我們查證過的資料。 */
+.adbox{margin:26px 0 0;border:1px solid var(--line);border-radius:14px;
+background:var(--soft);overflow:hidden}
+.adbox>.adhd{display:flex;align-items:center;gap:8px;padding:9px 15px;
+border-bottom:1px solid var(--line);background:var(--card)}
+.adbox>.adhd i{font-style:normal;font-size:.68rem;font-weight:700;letter-spacing:.08em;
+padding:2px 7px;border-radius:4px;background:var(--dim);color:var(--bg);flex:0 0 auto}
+.adbox>.adhd span{font-size:.78rem;color:var(--dim);line-height:1.5}
+.adbox>.adbd{padding:13px 15px 15px}
+.adbox .adt{font-size:1.02rem;font-weight:700;line-height:1.5;margin-bottom:3px}
+.adbox .ads{font-size:.86rem;color:var(--dim);line-height:1.7;margin-bottom:12px}
+.adgo{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:11px;
+background:var(--acc);color:#fff;text-decoration:none;font-weight:700;font-size:.97rem}
+.adgo:hover{filter:brightness(1.08)}
+.adgo .agi{font-size:1.3rem;flex:0 0 auto}
+.adgo .agt{flex:1;line-height:1.4}
+.adgo .agt s{display:block;text-decoration:none;font-size:.76rem;font-weight:500;
+opacity:.88;margin-top:2px}
+.adgo .aga{flex:0 0 auto;font-size:1.15rem}
+.adbox .adfp{padding:0 15px 13px;font-size:.73rem;color:var(--dim);line-height:1.65}
 details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
 margin-top:8px;padding:0}
 details.faq summary{cursor:pointer;padding:13px 15px;font-weight:600;font-size:.95rem;
@@ -1393,6 +1414,129 @@ def _partner_line():
             by_brand.setdefault(b, []).append(name)
     return '、'.join(f'{"／".join(v)} {b}' for b, v in by_brand.items())
 
+
+# ---------- 廣告版位 ----------
+# 站上的資料都是旅日用的，所以放旅遊相關的廣告。規則有三條：
+# 1. 一定標「廣告」，而且跟內文卡片長得不一樣，不要讓人誤以為是我們查過的資料。
+# 2. 只用 template 帶得到分潤參數的夥伴。hotel 要城市 ID、flight 要航班參數，
+#    通用頁面兩者都沒有，會掉回沒有分潤的原始連結，等於白放。
+# 3. 依頁面主題配，租車的頁面就放租車。硬塞不相關的東西既沒人點也難看。
+_AD_KIND = {
+    'car':       ('🚗', '在日本租車', '比較各家車型與保險方案'),
+    'transfer':  ('🚕', '訂機場接送', '深夜抵達也有車，先訂好不用現場排'),
+    'transport': ('🚄', '買 JR Pass 與日本交通票', '跨城市移動前先比一次'),
+    'esim':      ('📱', '買日本上網卡與 eSIM', '落地就能用，不用現場找櫃台'),
+    'activity2': ('🎫', '找日本行程與門票', 'KKday 的在地行程與景點票'),
+    'activity':  ('🎫', '找日本行程與門票', '當地玩樂與景點門票'),
+    'hotel':     ('🏨', '找日本的住宿', '看完機票就是訂房'),
+}
+
+# 路徑前綴 → 廣告類型。由長到短比對，取第一個命中的。
+_AD_MAP = [
+    ('japan-driving', 'car'), ('japan-rentacar', 'car'),
+    ('japan-airport-last-train', 'transfer'),
+    ('japan-esim', 'esim'), ('japan-sms', 'esim'),
+    ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
+    ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
+    ('okinawa/churasun6', 'activity2'), ('tokyo/worth-flying-for', 'activity2'),
+    ('tokyo/street-fashion', 'activity2'), ('tokyo/hostel', 'transfer'),
+    ('tokyo/budget-hotel', 'transfer'),
+    ('japan-coupon', 'esim'), ('japan-bic-points', 'esim'),
+    ('japan-camera-price', 'esim'), ('japan-dyson-price', 'esim'),
+    ('japan-panasonic-dryer', 'esim'), ('apple-japan-price', 'esim'),
+    ('iphone-', 'esim'), ('japan-tax-free', 'esim'),
+    ('japan-credit-card', 'transport'), ('japan-card', 'transport'),
+    ('japan-airline-card', 'transport'),
+    ('taiwan-holiday', 'activity2'), ('japan-holiday-calendar', 'activity2'),
+    ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
+    ('japan-travel-insurance', 'activity2'),
+    ('japan-flight-baggage', 'transport'),
+    ('hotel-price-check', 'transfer'), ('threads-japan', 'activity2'),
+    ('japan-flight-good-times', 'activity2'),
+]
+_AD_SKIP = ('deals/', 'cards/', 'posts/')
+
+
+def u_region(path):
+    """地區頁回地區名，其餘回空字串。"""
+    u = path[:-len('index.html')].strip('/') if path.endswith('index.html') else path
+    return REGNAME.get(u, '')
+
+
+def _ad_city(path):
+    """城市頁與航線頁回 (城市名, 訂房用的城市名)，其餘回 None。
+
+    航線頁是 <出發地>/<目的地>/，所以取最後一段去查。"""
+    u = path[:-len('index.html')].strip('/') if path.endswith('index.html') else path
+    slug = u.rsplit('/', 1)[-1]
+    c = CITY.get(slug)
+    return (c[1], c[4]) if c else None
+
+
+def _ad_kind_for(path):
+    """這一頁該配哪一種廣告。沒對到的不放，不要硬塞。"""
+    u = path[:-len('index.html')].strip('/') if path.endswith('index.html') else path
+    if any(u.startswith(x) for x in _AD_SKIP):
+        return None
+    for pre, kind in _AD_MAP:
+        if u == pre or u.startswith(pre):
+            return kind
+    # 城市頁與航線頁本來就有行程與 eSIM 兩個版位，這裡配住宿：
+    # 看完機票的下一步就是訂房，而且不跟既有的兩個重複。
+    if _ad_city(path):
+        return 'hotel'
+    if u in REGNAME:                # 地區頁：還在挑日本哪一區，配當地行程
+        return 'activity2'
+    if u in ONAME:                  # 出發地頁：從台灣出發，配上網
+        return 'esim'
+    if not u:
+        return 'activity2'          # 首頁
+    return None
+
+
+def adbox(kind, path):
+    """頁尾的廣告區塊。track 帶頁面路徑，才分得出哪一頁真的有人點。"""
+    icon, title, sub = _AD_KIND[kind]
+    track = 'ad_' + (path[:-len('index.html')].strip('/') or 'home').replace('/', '_')
+    city = _ad_city(path)
+    if kind == 'activity2' and u_region(path):
+        title = f'找{u_region(path)}的行程與門票'
+        sub = '在地一日遊、景點票與體驗，出發前先看有什麼'
+    if kind == 'hotel' and city:
+        title = f'找{city[0]}的住宿'
+        sub = '看完機票就是訂房。比價後再決定要不要現在訂。'
+    try:
+        if kind == 'hotel' and city:
+            href = plink('hotel', city[1], sub=track)
+        elif kind == 'activity2':
+            # KKday 的目標網址要包兩層編碼，plink 不處理，要走 kkday()
+            href = kkday(P['activity2']['fallback'].replace('{q}', '日本'), track)
+        else:
+            # Klook 的 adid 是後台的廣告單元代號，不是任意字串；
+            # 傳 'adbox' 走 partners.json 的分組，ID 沒填就併回預設單元。
+            href = plink(kind, '日本', sub=track,
+                         adid='adbox' if kind == 'esim' else track[:40])
+    except Exception:
+        return ''
+    if '{' in href or href.startswith('TODO'):
+        return ''
+    brand = P[kind]['brand']
+    return (
+      '<aside class="adbox">'
+      '<div class="adhd"><i>廣告</i>'
+      f'<span>以下為合作平台的推廣連結，點了會離開本站前往 {html.escape(brand)}。'
+      '本站可能獲得分潤，不影響你的價格。</span></div>'
+      f'<div class="adbd"><div class="adt">{html.escape(title)}</div>'
+      f'<div class="ads">{html.escape(sub)}</div>'
+      f'<a class="adgo" href="{html.escape(href)}" target="_blank" '
+      f'rel="nofollow noopener sponsored">'
+      f'<span class="agi">{icon}</span>'
+      f'<span class="agt">到 {html.escape(brand)} 看'
+      f'<s>價格與供應狀況以該平台為準</s></span>'
+      '<span class="aga">→</span></a></div>'
+      '<p class="adfp">本站沒有販售這些商品，也沒有查證過上面的價格與庫存。'
+      '這一頁自己整理的資料在上面，廣告與那些資料沒有關係。</p>'
+      '</aside>')
 
 def foot():
     """頁尾的兩段聲明不是每一頁都成立：沒有票價的頁面不該說資料來自
@@ -1811,9 +1955,16 @@ def _trim_note(content):
     if 'NT$' not in body:                      # 這頁沒有任何票價
         a, b = content.index('<!--f-->'), content.index('<!--/f-->') + 9
         content = content[:a] + content[b:]
-    if not _AFF_RE.search(body):               # 這頁沒有任何分潤路徑
+    # 廣告版位自己就有分潤連結，但那不代表內文的官方連結也是。
+    # 分開看：內文沒有分潤路徑的，頁尾只講廣告版位，不要把入管廳、
+    # 銀行條款那些連結一起講成分潤連結。
+    body_wo_ad = re.sub(r'<aside class="adbox">.*?</aside>', '', body, flags=re.S)
+    if not _AFF_RE.search(body_wo_ad):
         a, b = content.index('<!--a-->'), content.index('<!--/a-->') + 9
-        content = content[:a] + '這一頁沒有分潤連結。<br>\n' + content[b:]
+        msg = ('這一頁的內文沒有分潤連結，只有標示為廣告的版位是；'
+               '透過那個版位完成訂購時本站可獲得分潤，不影響你的價格。<br>\n'
+               if 'class="adbox"' in body else '這一頁沒有分潤連結。<br>\n')
+        content = content[:a] + msg + content[b:]
     return (content.replace('<!--f-->', '').replace('<!--/f-->', '')
                    .replace('<!--a-->', '').replace('<!--/a-->', ''))
 
@@ -1911,11 +2062,29 @@ def _ja_gloss(content):
         parts[i] = ''.join(res) + tail
     return head + sep + ''.join(parts)
 
+def _ad_inject(path, content):
+    """把廣告區塊放進頁尾聲明之前。
+
+    放在 _trim_note 之前跑，那邊才看得到這些分潤連結，
+    頁尾的聯盟行銷揭露才不會被誤刪。"""
+    if 'class="adbox"' in content:
+        return content
+    kind = _ad_kind_for(path)
+    if not kind:
+        return content
+    i = content.find('<p class="note">')
+    if i < 0:
+        return content
+    box = adbox(kind, path)
+    return content[:i] + box + content[i:] if box else content
+
+
 def write(path,content):
     d=os.path.dirname(path)
     if d: os.makedirs(d,exist_ok=True)
     if path.endswith('.html'):
         content = _toc(content)
+        content = _ad_inject(path, content)
         content = _trim_note(content)
         content = _ja_gloss(content)
     open(path,'w',encoding='utf-8').write(content)
