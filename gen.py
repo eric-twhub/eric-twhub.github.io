@@ -1569,6 +1569,12 @@ def _ad_group(kind, path, slot='foot'):
     return (_ADS.get('groups') or {}).get(kind) or {}
 
 
+def _ad_adid(slot, img=False):
+    """版位對應的 Klook 廣告單元代號。頁尾那個叫 adbox，不是 adbox_foot，
+    兩邊要寫成一樣，不然會靜靜地退回預設單元，數字全部併在一起。"""
+    return ('adbox' if slot == 'foot' else 'adbox_' + slot) + ('_img' if img else '')
+
+
 def _ad_products(g, track):
     """實際商品清單。泛稱「日本上網卡與 eSIM」讀者不知道會看到什麼，
     列出商品名與評價明確得多，這也是這一版廣告要改掉的地方。
@@ -1628,6 +1634,7 @@ def adbox(kind, path, slot='foot'):
     if kind in _AD_IMG_KINDS and _ad_use_img(path, slot):
         track += '_img'
     city = _ad_city(path)
+    img_on = kind in _AD_IMG_KINDS and _ad_use_img(path, slot)
     if kind == 'activity2' and u_region(path):
         title = f'找{u_region(path)}的行程與門票'
         sub = '在地一日遊、景點票與體驗，出發前先看有什麼'
@@ -1641,15 +1648,12 @@ def adbox(kind, path, slot='foot'):
             # KKday 的目標網址要包兩層編碼，plink 不處理，要走 kkday()
             href = kkday(P['activity2']['fallback'].replace('{q}', '日本'), track)
         else:
-            # Klook 的 adid 是後台的廣告單元代號，不是任意字串；
-            # 傳 'adbox' 走 partners.json 的分組，ID 沒填就併回預設單元。
             # Klook 的 adid 是後台的廣告單元代號，不是任意字串。
             # 一個版位一組，ID 沒填就併回預設單元，連結照常可用。
             href = plink(kind, '日本', sub=track,
-                         adid=(('adbox' if slot == 'foot' else 'adbox_' + slot)
-                               + ('_img' if _ad_use_img(path, slot) else ''))
+                         adid=_ad_adid(slot, img_on)
                               if kind == 'esim' else track[:40])
-    except Exception:
+    except (KeyError, IndexError, ValueError):
         return ''
     if '{' in href or href.startswith('TODO'):
         return ''
@@ -1660,10 +1664,9 @@ def adbox(kind, path, slot='foot'):
         brand = _g.get('brand') or brand
         _target = _g.get('search')
         if _target:
-            href = (klook(_target, 'adbox_' + slot) if brand == 'Klook' else
+            href = (klook(_target, _ad_adid(slot, img_on)) if brand == 'Klook' else
                     kkday(_target, track) if brand == 'KKday' else _target)
-    img = (kind in _AD_IMG_KINDS and _ad_use_img(path, slot)
-           and os.path.exists(f'ads/banner-{kind}.jpg'))
+    img = img_on and os.path.exists(f'ads/banner-{kind}.jpg')
     cls = ('' if slot == 'foot' else ' ' + slot) + (' img' if img else '')
     prods = _ad_products(_g, track)
     if img:
