@@ -8968,6 +8968,30 @@ def _card_stamp_warn():
             print(f'   ⚠ {label}圖卡比資料舊了，請重跑 python3 {mod_name}.py')
 
 
+# 廣告商品與 KKday 特殊商品清單的回查提醒。
+# 商品會下架、評分會變、prod_mid 也可能被改到 1% 的特殊清單上，
+# 那會讓分潤從 3.5% 掉到 1% 而且不會有任何通知。一季一次是下限。
+for _af, _alabel, _ahow in (
+        ('ads.json', '廣告版位的商品',
+         '用瀏覽器開 ads.json 裡每個 group 的 search 連結，'
+         '對一次商品還在不在、評分與人數有沒有變'),
+        ('kkday-1pct.json', 'KKday 的 1% 特殊商品清單',
+         '到聯盟網重新下載，再用 ads.json 裡每個 KKday 的 id 對一次')):
+    if not os.path.exists(_af):
+        continue
+    try:
+        _ad = json.load(open(_af, encoding='utf-8'))
+        _ac = _ad.get('checked') or _ad.get('_查證') or ''
+        _age = (datetime.date.today()
+                - datetime.date(*map(int, _ac.split('-')))).days
+    except Exception:
+        continue
+    if _age >= 90:
+        print(f'   ⚠ {_alabel}已經 {_age} 天沒回查（{_ac}）：{_ahow}')
+    elif _age >= 75:
+        print(f'   · {_alabel}再 {90 - _age} 天該回查了（上次 {_ac}）')
+
+
 import glob as _glob
 _today_slugs={d['slug'] for d in deals_out}
 _past=[]
