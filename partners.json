@@ -374,6 +374,16 @@
  "widgets": {
   "_說明": "Klook 行程 widget（Travelpayouts 產生）。{city_id} 由 gen.py 依頁面自動帶入。",
   "_sub_id": "若要分頁面追蹤成效，請在 Travelpayouts widget 設定頁填 SUB ID 後重新產生，把新網址貼回這裡（勿自行猜測參數格式，猜錯會導致完全無法追蹤）",
-  "klook_tours": "<script async src=\"https://tpembd.com/content?currency=TWD&trs=572168&shmarker=775639&locale=zh-TW&city_id={city_id}&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497\" charset=\"utf-8\"></script>"
- }
+  "klook_tours": "<script async src=\"https://tpembd.com/content?currency=TWD&trs=572168&shmarker=775639&locale=zh-TW&city_id={city_id}&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497\" charset=\"utf-8\"></script>",
+  "_費率": {
+   "來源": "Travelpayouts 合作夥伴信，2026-10-17 收到",
+   "Tours & Sightseeing": "12%，2026/10/1 至 10/31",
+   "Activities & Experiences": "12%，2026/10/1 至 10/31",
+   "Hotels": "8%，至 2026/12/31",
+   "_這個_widget_屬於哪一類": "klook_tours 帶 category=4，屬 Tours & Sightseeing，所以目前是 12%，11/1 起掉回原費率。",
+   "_原費率": "未查到。信裡只說 10/1 前的訂單按「previous rate」計算，沒有寫原費率是多少，要到 Travelpayouts 後台看。",
+   "_結算規則": "信中明寫：10/1 之前成立的訂單按舊費率計算，即使狀態仍是 Pending。所以 10 月的 12% 只認訂單成立日，不認入帳日。"
+  }
+ },
+ "_兩套_Klook_不要搞混": "站上同時存在兩個 Klook 方案，費率各自計算，看到任何 Klook 費率公告前要先分清楚是哪一套。一、Klook 官方直接方案（partners.esim 的 template，affiliate.klook.com/redirect?aid=136311）：廣告框的 eSIM 走這條，費率至今未確認，rate 欄仍寫「待後台確認」。二、Travelpayouts 的 Klook 方案（widgets.klook_tours，campaign_id=137、shmarker=775639）：城市頁與航線頁的行程 widget 走這條，適用 Travelpayouts 公告的費率。Travelpayouts 發的費率信只適用第二套，不要拿去套用在 eSIM 廣告框上。"
 }
