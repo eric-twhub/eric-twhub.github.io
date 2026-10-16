@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-16-taichung-okinawa",
- "generated": "2026-10-16 13:13",
+ "generated": "2026-10-16 13:32",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -26,30 +26,11 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$10,042（23 天有紀錄），這張低 57%"
+  "11 月出發的票，每天最便宜的平均要 NT$10,088（23 天有紀錄），這張低 57%"
  ],
- "med": 11404,
+ "med": 11330,
  "n_rt": 101,
  "others": [
-  {
-   "o": "RMQ",
-   "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 4395,
-   "dep": "2026-11-02",
-   "ret": "2026-11-05",
-   "dept": "07:10",
-   "rett": "21:05",
-   "rt": true,
-   "tr": 0,
-   "dur": 180,
-   "dur_to": 90,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
   {
    "o": "RMQ",
    "d": "OKA",
@@ -86,6 +67,25 @@
    "dur_to": 90,
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "RMQ",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 5457,
+   "dep": "2026-11-02",
+   "ret": "2026-11-05",
+   "dept": "07:10",
+   "rett": "21:05",
+   "rt": true,
+   "tr": 0,
+   "dur": 180,
+   "dur_to": 90,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
