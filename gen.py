@@ -1378,6 +1378,7 @@ def topnav(cur=''):
              + link('/deals/', '🔥 今日特價')
             + link('/japan-flight-baggage/', '🧳 廉航行李費')
             + link('/japan-flight-seat/', '💺 選位要錢嗎')
+            + link('/japan-flight-fuji/', '🗻 看富士山坐哪邊')
             + link('/japan-ski-baggage/', '🎿 雪具託運')
             + link('/japan-ski-lift-ticket/', '🎟️ 雪票早鳥'))
 
@@ -1520,6 +1521,7 @@ _AD_MAP = [
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
     ('japan-travel-insurance', 'activity2'),
     ('japan-flight-baggage', 'transport'), ('japan-flight-seat', 'transport'),
+    ('japan-flight-fuji', 'activity2'),
     ('hotel-price-check', 'transfer'), ('threads-japan', 'activity2'),
     ('japan-flight-good-times', 'activity2'),
 ]
