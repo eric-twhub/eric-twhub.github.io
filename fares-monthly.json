@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-16 09:48",
+ "generated": "2026-10-16 18:59",
  "origin": "TPE",
  "dests": [
   "TYO",
@@ -24,39 +24,39 @@
    "enough": true
   },
   "2026-11": {
-   "n": 39,
+   "n": 37,
    "median": 8830,
    "low": 4491,
    "enough": true
   },
   "2026-12": {
-   "n": 27,
+   "n": 23,
    "median": 9583,
    "low": 5670,
    "enough": true
   },
   "2027-01": {
-   "n": 16,
-   "median": 11640,
-   "low": 8813,
+   "n": 17,
+   "median": 11349,
+   "low": 8272,
    "enough": true
   },
   "2027-02": {
-   "n": 12,
-   "median": 9028,
-   "low": 5999,
+   "n": 10,
+   "median": 10514,
+   "low": 6387,
    "enough": true
   },
   "2027-03": {
-   "n": 8,
-   "median": 10114,
-   "low": 8939,
+   "n": 9,
+   "median": 10661,
+   "low": 8108,
    "enough": true
   },
   "2027-04": {
-   "n": 6,
-   "median": 9808,
-   "low": 6122,
+   "n": 4,
+   "median": 10702,
+   "low": 9566,
    "enough": false
   },
   "2027-05": {
@@ -66,20 +66,20 @@
    "enough": false
   },
   "2027-06": {
-   "n": 3,
+   "n": 1,
    "median": 7075,
-   "low": 5858,
+   "low": 7075,
    "enough": false
   },
   "2027-07": {
-   "n": 1,
+   "n": 3,
    "median": 8918,
-   "low": 8918,
+   "low": 8208,
    "enough": false
   },
   "2027-09": {
-   "n": 3,
-   "median": 7688,
+   "n": 4,
+   "median": 8046,
    "low": 6499,
    "enough": false
   }
