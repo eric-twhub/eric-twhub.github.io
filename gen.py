@@ -1652,6 +1652,9 @@ def adbox(kind, path, slot='foot'):
     _g = _ad_group(kind, path, slot)
     if _g.get('title'):
         title, sub = _g['title'], _g.get('sub') or sub
+        # 頁面專屬商品的圖示要跟著商品走。沿用輪替到的那個類型的圖示，
+        # 會出現「🚕 看 KKday 上全部的富士山行程」這種不搭的組合。
+        icon = _g.get('icon') or icon
     track = 'ad_' + (path[:-len('index.html')].strip('/') or 'home').replace('/', '_')
     if slot != 'foot':
         track += '_' + slot
@@ -1724,7 +1727,9 @@ def adbox(kind, path, slot='foot'):
       '本站可能獲得分潤，不影響你的價格。</span></div>'
       + body
       + '<p class="adfp">本站沒有販售這些商品，也沒有查證過上面的價格與庫存。'
-      + (f'商品名稱與評價查證於 {_ADS.get("checked", "")}，'
+      # 頁面專屬商品是另外查的，日期跟著那一組走，不要套用全域日期，
+      # 不然等於宣稱其他組也在同一天重驗過。
+      + (f'商品名稱與評價查證於 {_g.get("checked") or _ADS.get("checked", "")}，'
          '價格與方案會變動，以平台顯示為準。'
          if _g.get('items') else '')
       + '這一頁自己整理的資料在上面，廣告與那些資料沒有關係。</p>'

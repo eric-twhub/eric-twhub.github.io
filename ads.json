@@ -220,7 +220,8 @@
      "star": "5.0",
      "url": "https://www.kkday.com/zh-tw/product/598904"
     }
-   ]
+   ],
+   "icon": "🎫"
   },
   "okinawa/churasun6": {
    "title": "ちゅらさん6 的門票",
@@ -236,9 +237,49 @@
      "booked": "6K+",
      "url": "https://www.kkday.com/zh-tw/product/181495"
     }
-   ]
+   ],
+   "icon": "🎫"
+  },
+  "japan-flight-fuji": {
+   "checked": "2026-10-16",
+   "title": "富士山周邊的一日遊與門票",
+   "sub": "東京出發的一日遊、河口湖巴士與富士急樂園門票",
+   "brand": "KKday",
+   "search": "https://www.kkday.com/zh-tw/product/productlist?keyword=%E5%AF%8C%E5%A3%AB%E5%B1%B1",
+   "items": [
+    {
+     "id": "35701",
+     "name": "日本富士山經典景點一日遊",
+     "note": "新倉山淺間公園・河口湖・忍野八海，東京每日出發",
+     "star": "4.6",
+     "booked": "3K+",
+     "url": "https://www.kkday.com/zh-tw/product/35701"
+    },
+    {
+     "id": "570685",
+     "name": "富士山河口湖全景纜車一日遊",
+     "note": "天上山公園含纜車・大石公園",
+     "star": "5.0",
+     "booked": "200+",
+     "url": "https://www.kkday.com/zh-tw/product/570685"
+    },
+    {
+     "id": "901924",
+     "name": "新宿・東京到河口湖・富士急樂園 高速巴士電子票",
+     "note": "單程電子票，官網查不到評價",
+     "url": "https://www.kkday.com/zh-tw/product/901924"
+    },
+    {
+     "id": "20133",
+     "name": "日本富士急樂園門票",
+     "note": "快速入園",
+     "star": "4.7",
+     "url": "https://www.kkday.com/zh-tw/product/20133"
+    }
+   ],
+   "icon": "🗻"
   }
  },
- "_頁面專屬商品": "pages 覆寫 groups：某些頁面講的就是某一支商品，放通用清單等於答非所問。63 ANGEL 沒有列在這裡，那一頁本來就有票券比較區塊（兩家對照、附價格比較），廣告版位再放一次是重複。",
- "_kkday_1pct驗證": "598904、181495 都已對 kkday-1pct.json 驗過不在 1% 特殊商品清單上（清單查證 2026-09-24）。"
+ "_頁面專屬商品": "pages 覆寫 groups：某些頁面講的就是某一支商品，放通用清單等於答非所問。63 ANGEL 沒有列在這裡，那一頁本來就有票券比較區塊（兩家對照、附價格比較），廣告版位再放一次是重複。富士山頁放的不是單一商品而是主題商品組（一日遊、河口湖巴士、樂園門票），因為那頁講的是搭飛機看富士山，讀者的下一步是到當地。pages 底下可以放自己的 checked，日期跟著那一組走，不要套全域日期。",
+ "_kkday_1pct驗證": "598904、181495 都已對 kkday-1pct.json 驗過不在 1% 特殊商品清單上（清單查證 2026-09-24）。富士山頁的 35701、570685、901924、20133 於 2026-10-16 驗過，同樣不在清單上，都是 3.5%。"
 }
