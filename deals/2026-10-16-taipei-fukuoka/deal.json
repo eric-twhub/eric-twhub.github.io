@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-16-taipei-fukuoka",
- "generated": "2026-10-16 13:07",
+ "generated": "2026-10-16 13:13",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 7020,
+  "price": 6620,
   "dep": "2026-11-03",
   "ret": "2026-11-06",
   "dept": "06:45",
@@ -25,7 +25,7 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "11 月出發的票，每天最便宜的平均要 NT$8,469（6 天有紀錄），這張低 17%"
+  "11 月出發的票，每天最便宜的平均要 NT$8,402（6 天有紀錄），這張低 21%"
  ],
  "med": 10918,
  "n_rt": 14,
