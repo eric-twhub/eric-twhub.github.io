@@ -6,6 +6,12 @@
  ],
  "items": [
   {
+   "slug": "japan-flight-seat",
+   "url": "/japan-flight-seat/",
+   "h1": "台日航線選位：哪幾家要付錢、坐哪裡比較好",
+   "title": "台日航線選位：哪幾家要付錢、坐哪裡比較好"
+  },
+  {
    "slug": "japan-ski-baggage",
    "url": "/japan-ski-baggage/",
    "h1": "帶雪具去日本，行李要怎麼算？",
@@ -152,32 +158,32 @@
   {
    "slug": "deals-2026-10-16-taipei-okinawa",
    "url": "/deals/2026-10-16-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,520 來回含稅｜台灣虎航 11/02 出發",
-   "title": "台北飛沖繩 NT$2,520 來回含稅｜台灣虎航 11/02 出發"
-  },
-  {
-   "slug": "deals-2026-10-16-taichung-okinawa",
-   "url": "/deals/2026-10-16-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$2,972 來回含稅｜台灣虎航 11/09 出發",
-   "title": "台中飛沖繩 NT$2,972 來回含稅｜台灣虎航 11/09 出發"
+   "h1": "台北飛沖繩 NT$2,978 來回含稅｜台灣虎航 11/10 出發",
+   "title": "台北飛沖繩 NT$2,978 來回含稅｜台灣虎航 11/10 出發"
   },
   {
    "slug": "deals-2026-10-16-kaohsiung-okinawa",
    "url": "/deals/2026-10-16-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$3,372 來回含稅｜台灣虎航 11/17 出發",
-   "title": "高雄飛沖繩 NT$3,372 來回含稅｜台灣虎航 11/17 出發"
+   "h1": "高雄飛沖繩 NT$3,378 來回含稅｜台灣虎航 11/17 出發",
+   "title": "高雄飛沖繩 NT$3,378 來回含稅｜台灣虎航 11/17 出發"
+  },
+  {
+   "slug": "deals-2026-10-16-taichung-okinawa",
+   "url": "/deals/2026-10-16-taichung-okinawa/",
+   "h1": "台中飛沖繩 NT$4,332 來回含稅｜台灣虎航 11/16 出發",
+   "title": "台中飛沖繩 NT$4,332 來回含稅｜台灣虎航 11/16 出發"
   },
   {
    "slug": "deals-2026-10-16-taipei-fukuoka",
    "url": "/deals/2026-10-16-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$5,701 來回含稅｜台灣虎航 11/01 出發",
-   "title": "台北飛福岡 NT$5,701 來回含稅｜台灣虎航 11/01 出發"
+   "h1": "台北飛福岡 NT$6,165 來回含稅｜台灣虎航 11/03 出發",
+   "title": "台北飛福岡 NT$6,165 來回含稅｜台灣虎航 11/03 出發"
   },
   {
    "slug": "deals-2026-10-16-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-10-16-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,510",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,510"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,023",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,023"
   },
   {
    "slug": "apple-japan-price",
@@ -189,7 +195,7 @@
    "slug": "iphone-duo",
    "url": "/iphone-duo/",
    "h1": "iPhone Duo 在日本買划算嗎？",
-   "title": "iPhone Duo 日本買划算嗎？四種容量實算，扣掉入境補稅還省 NT$7,623"
+   "title": "iPhone Duo 日本買划算嗎？四種容量實算，扣掉入境補稅還省 NT$6,471"
   },
   {
    "slug": "japan-camera-price",
