@@ -84,7 +84,7 @@
    "廉航低於 NT$6,000",
    "11 月出發的票，每天最便宜的平均要 NT$10,104（24 天有紀錄），這張低 57%"
   ],
-  "med": 11554,
+  "med": 11465,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -99,7 +99,7 @@
    "month": 11
   },
   "rank": 1,
-  "n": 100
+  "n": 102
  },
  {
   "slug": "2026-10-16-taipei-fukuoka",
@@ -115,19 +115,19 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "11 月出發的票，每天最便宜的平均要 NT$8,620（6 天有紀錄），這張低 19%"
+   "11 月出發的票，每天最便宜的平均要 NT$8,570（6 天有紀錄），這張低 18%"
   ],
   "med": 10918,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 7332,
+   "lo": 7111,
    "hi": 10501,
    "days": 7
   },
   "mbase": {
-   "avg": 8620,
+   "avg": 8570,
    "days": 6,
    "month": 11
   },
