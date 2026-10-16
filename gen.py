@@ -27,6 +27,8 @@ FSC={'BR':'長榮航空','CI':'中華航空','JX':'星宇航空','JL':'日本航
 # 讀者看到一個買不到的品牌，廉航／一般航空的價差比較也被 787 的票價拉歪。
 # 查證日 2026-10-16，來源：ANA 官網（上列）＋松山機場官網 https://www.tsa.gov.tw/flights/international/today
 # 哪天 AirJapan 品牌復飛、或資料裡出現 NQ 自己的班號，要回來重看這一條。
+# 套用順序是先 CODE_FIX 再套 fare-overrides，所以要手動蓋這兩班的價格時，
+# fare-overrides.json 的 air 欄位要寫 NH，寫 NQ 永遠對不上。
 CODE_FIX={'NQ':'NH'}
 ORI={'TPE':'台北桃園','TSA':'台北松山','RMQ':'台中','KHH':'高雄','TNN':'台南'}
 ORIGINS=[('taipei','台北',['TPE','TSA']),('taichung','台中',['RMQ']),
