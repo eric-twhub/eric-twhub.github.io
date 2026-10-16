@@ -3873,8 +3873,12 @@ if all(os.path.exists(f) for f in
                     _ex, _p['twd'], '/apple-japan-price/'))
     _wb.sort(reverse=True)
 
-    _wb_jp = [x for x in _wb if x[0] > 0]
-    _wb_tw = [x for x in _wb if x[0] < 0]
+    # 差距小於這個數就不算誰比較便宜。站上的換匯試算也是用 100 元當門檻，
+    # 拿 8 塊錢的差距講「台灣買就好」是過度解讀。
+    _WB_TIE = 100
+    _wb_jp = [x for x in _wb if x[0] >= _WB_TIE]
+    _wb_tw = [x for x in _wb if x[0] <= -_WB_TIE]
+    _wb_tie = [x for x in _wb if -_WB_TIE < x[0] < _WB_TIE]
     _wb_over = [x for x in _wb_jp if x[3] > _WB_ALLOW]
     _wb_best_pct = max(_wb_jp, key=lambda x: x[0] / x[4]) if _wb_jp else None
     _wb_best_abs = _wb_jp[0] if _wb_jp else None
@@ -3900,6 +3904,14 @@ if all(os.path.exists(f) for f in
                 f'<td><a href="{U(page)}">看這一類</a></td></tr>')
 
     _wb_top = ''.join(_wb_row(x) for x in _wb_jp[:12])
+    _wb_tie_rows = ''.join(
+        f'<tr><td><b>{html.escape(x[2])}</b>'
+        f'<br><small style="color:var(--dim)">{html.escape(x[1])}</small></td>'
+        f'<td>{money(x[3])}</td><td>{money(x[4])}</td>'
+        f'<td class="nm">兩邊差不多'
+        f'<br><small style="color:var(--dim)">只差 {money(abs(x[0]))}</small></td>'
+        f'<td><a href="{U(x[5])}">看這一類</a></td></tr>'
+        for x in sorted(_wb_tie, key=lambda y: abs(y[0])))
     _wb_lose = ''.join(
         f'<tr><td><b>{html.escape(x[2])}</b>'
         f'<br><small style="color:var(--dim)">{html.escape(x[1])}</small></td>'
@@ -3976,7 +3988,7 @@ if all(os.path.exists(f) for f in
         '官方通路定價的品項，按<b>免稅後的實際價差</b>排序，並標出哪些超過入境免稅額度。'
         '算不出價差的就不列。</p>'
       + f'<div class="today"><div class="tday">價格更新於 {_WB_AP["updated"]}</div>'
-        f'<div class="tans">{len(_wb)} 項裡有 {len(_wb_jp)} 項日本比較便宜，'
+        f'<div class="tans">{len(_wb)} 項裡有 {len(_wb_jp)} 項日本明顯比較便宜，'
         f'其中 {len(_wb_over)} 項超過入境免稅額度</div>'
         f'<div class="tsub">而且省最多的和省比例最高的不是同一批：'
         f'排行榜前 {_wb_lead} 名全部超過額度，第 {_wb_lead + 1} 名才回到額度內。'
@@ -3985,7 +3997,8 @@ if all(os.path.exists(f) for f in
       + '<div class="tw"><table><thead><tr><th>品項</th><th>日本免稅後</th>'
         '<th>台灣</th><th>省下</th><th>細節</th></tr></thead><tbody>'
       + _wb_top + '</tbody></table></div>'
-      + f'<p class="disc">共 {len(_wb_jp)} 項日本較便宜，上表只列前 {min(12, len(_wb_jp))} 項，'
+      + f'<p class="disc">共 {len(_wb_jp)} 項日本較便宜（差距滿 {money(_WB_TIE)} 才算），'
+        f'上表只列前 {min(12, len(_wb_jp))} 項，'
         f'完整對照在各自的分頁。日本價已還原成免稅價並用含 '
         f'{_WB_AP["rate"]["spread"] * 100:.1f}% 換匯成本的匯率換算，點數不計入。</p>'
       + (f'<h2>省最多的和最划算的不是同一批</h2>'
@@ -4010,12 +4023,14 @@ if all(os.path.exists(f) for f in
          f'而且它超過免稅額度，要補的稅會再吃掉一塊。'
          f'比例最高的那一項金額雖然小，但不必處理課稅，也比較好塞進行李。</li></ul></div>'
          if _wb_best_abs and _wb_best_pct else '')
-      + (('<h2>這幾項台灣反而便宜</h2>'
-          '<p class="lede">不是所有東西在日本都比較便宜。這幾項在台灣買就好，'
-          '省下的行李空間還能裝別的。</p>'
+      + (('<h2>這幾項不必在日本買</h2>'
+          f'<p class="lede">不是所有東西在日本都比較便宜。下面分成兩種：'
+          f'台灣確實比較便宜的，以及兩邊差距在 {money(_WB_TIE)} 以內、'
+          f'其實算同一個價的。後者不值得為了它排免稅櫃檯或佔行李空間。</p>'
           '<div class="tw"><table><thead><tr><th>品項</th><th>日本免稅後</th>'
           '<th>台灣</th><th>結果</th><th>細節</th></tr></thead><tbody>'
-          + _wb_lose + '</tbody></table></div>') if _wb_tw else '')
+          + _wb_lose + _wb_tie_rows + '</tbody></table></div>')
+         if (_wb_tw or _wb_tie) else '')
       + '<h2>每一類都有但書</h2>'
       + '<p class="lede">價差只是帳面上的數字。下面這些條件會把它吃掉一部分，'
         '或者讓兩邊根本不是同一個東西。</p>'
