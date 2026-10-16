@@ -1398,6 +1398,8 @@ def topnav(cur=''):
             + link('/japan-esim/', '📱 日本 eSIM 比較')
             + link('/japan-esim-native-roaming/', '📱 原生還是漫遊')
             + link('/japan-sms-roaming/', '✉️ 台灣門號收簡訊')
+            + '<hr><b>錢的事</b>'
+            + link('/japan-yen-exchange/', '💴 換日幣怎麼換')
             + '<hr><b>租車自駕</b>'
             + link('/japan-driving-licence/', '🚗 駕照日文譯本')
             + link('/japan-rentacar-noc/', '🚗 租車的 NOC')
@@ -1523,6 +1525,7 @@ _AD_MAP = [
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
     ('japan-travel-insurance', 'activity2'),
     ('japan-flight-baggage', 'transport'), ('japan-flight-seat', 'transport'),
+    ('japan-yen-exchange', 'esim'),
     ('japan-flight-fuji', 'activity2'),
     ('hotel-price-check', 'transfer'), ('threads-japan', 'activity2'),
     ('japan-flight-good-times', 'activity2'),
@@ -3387,6 +3390,258 @@ if os.path.exists('fuji.json'):
         f'本頁查證於 {FJ["checked"]}。</p>'
       + foot())
     pages.append(('/japan-flight-fuji/', 0.7))
+
+
+# ---------- 換日幣 ----------
+# 換匯的成本幾乎都藏在匯率裡，不在手續費。多數整理只比手續費，所以結論是錯的。
+# 這頁刻意不寫匯率數字（每天變），只寫結構：用哪一種匯率、減碼多少、下限多少。
+# 唯一的例外是用站上既有的牌告快照算「相對即期中價的成本」，那個有標日期。
+if os.path.exists('fx.json'):
+    FX = json.load(open('fx.json', encoding='utf-8'))
+    _FXD = '<span style="color:var(--dim)">未列</span>'
+
+    def _fx_cell(v):
+        return html.escape(v) if v else _FXD
+
+    _fxframe = ''.join(
+        f'<tr><td><b>{html.escape(t)}</b></td><td class="nm">{html.escape(b)}</td></tr>'
+        for t, b in FX['frame']['items'])
+
+    _fxroute = ''.join(
+        f'<tr><td><b>{html.escape(r)}</b></td><td class="nm">{html.escape(base)}</td>'
+        f'<td class="{"win" if fee == "免手續費" else ""} nm">{html.escape(fee)}</td>'
+        f'<td class="nm">{html.escape(note)}</td></tr>'
+        for r, base, fee, note in FX['routes']['rows'])
+
+    # 減碼越大越好，但只在同一個基準內比得了，所以只標最大的那一個
+    _AT = FX['atm']
+    _fxmax = max((float(r[1]) for r in _AT['rows'] if r[1]), default=0)
+    _fxatm = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td>'
+        f'<td class="{"win" if c and float(c) >= _fxmax else ""}">{_fx_cell(c)}</td>'
+        f'<td>{_fx_cell(f)}</td><td class="nm">{html.escape(note)}</td>'
+        f'<td><a href="{src}" rel="nofollow noopener" target="_blank">官方</a></td></tr>'
+        for n, c, f, note, src in _AT['rows'])
+
+    _fxcnt = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td>'
+        f'<td class="{"win" if "免收" in fee else ""} nm">{html.escape(fee)}</td>'
+        f'<td><a href="{src}" rel="nofollow noopener" target="_blank">官方</a></td></tr>'
+        for n, fee, src in FX['counter']['rows'])
+
+    _fxhours = ''.join(
+        f'<tr><td><b>{html.escape(t)}</b></td><td class="nm">{html.escape(b)}</td></tr>'
+        for t, b in FX['hours']['items'])
+
+    _fxsocial = ''.join(
+        f'<h3>{html.escape(s["claim"])}</h3>'
+        f'<p class="lede"><b class="{"win" if "成立" in s["verdict"] and "不成立" not in s["verdict"] else ""}">'
+        f'{html.escape(s["verdict"])}。</b>{html.escape(s["body"])}</p>'
+        f'<p class="lede">{html.escape(s["fix"])}</p>'
+        f'<p class="disc">出處：<a href="{s["src"]}" rel="nofollow noopener" target="_blank">'
+        f'官方頁面</a>，查證於 {FX["checked"]}。</p>'
+        for s in FX['social']['items'])
+
+    _AB = FX['abroad']
+    _fxlayer = ''.join(
+        f'<li><b>{html.escape(t)}。</b>{html.escape(b)}</li>' for t, b in _AB['layers'])
+    _fxabank = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(ch)}</td>'
+        f'<td>{html.escape(fix)}</td><td>{html.escape(pct)}</td>'
+        f'<td><a href="{src}" rel="nofollow noopener" target="_blank">官方</a></td></tr>'
+        for n, ch, fix, pct, src in _AB['banks'])
+    _fxjatm = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(fee)}</td>'
+        f'<td class="nm">{html.escape(lim)}</td><td class="nm">{html.escape(hr)}</td>'
+        f'<td><a href="{src}" rel="nofollow noopener" target="_blank">官方</a></td></tr>'
+        for n, fee, lim, hr, src in _AB['jp_atm'])
+    _fxfree = ''.join(
+        f'<tr><td><b>{html.escape(f["bank"])}</b></td>'
+        f'<td class="nm">{html.escape(f["what"])}</td>'
+        f'<td class="nm">{html.escape(f["period"])}</td>'
+        f'<td class="nm">{html.escape(f["cond"])}</td>'
+        f'<td><a href="{f["src"]}" rel="nofollow noopener" target="_blank">官方</a></td></tr>'
+        for f in _AB['free'])
+
+    # 和信用卡頁共用 cards.json 裡那一組牌告快照，不另外維護一份。
+    # CD 在這個檔案更後面才載入，所以這裡自己讀一次。
+    _fxcd = (json.load(open('cards.json', encoding='utf-8'))
+             if os.path.exists('cards.json') else {})
+    _fxbot = (_fxcd.get('mpay') or {}).get('bot') or {}
+    _fxcmp = ''
+    if _fxbot:
+        _m = (_fxbot['spot_buy'] + _fxbot['spot_sell']) / 2
+        _cs = (_fxbot['spot_sell'] / _m - 1) * 100
+        _cc = (_fxbot['cash_sell'] / _m - 1) * 100
+        _cf = (_fxcd.get('fx_fee') or {}).get('typical', 1.5)
+        _fxcmp = (
+          '<h2>換現金真的比較省嗎</h2>'
+          '<p class="lede">把「換現金」「刷卡」「用電支掃碼」都換算成相對即期中價的成本，'
+          '才比得出來。結果和直覺相反。</p>'
+          '<div class="tw"><table><thead><tr><th>付錢的方式</th><th>換匯依據</th>'
+          '<th>相對中價的成本</th></tr></thead><tbody>'
+          f'<tr><td><b>電支掃碼</b></td><td>即期賣出</td>'
+          f'<td class="win">＋{_cs:.2f}%</td></tr>'
+          f'<tr><td><b>刷信用卡</b></td><td>卡組織匯率加 {_cf}% 手續費</td>'
+          f'<td>＋{_cf:.2f}%</td></tr>'
+          f'<tr><td><b>換日幣現鈔</b></td><td>現金賣出</td>'
+          f'<td class="lose">＋{_cc:.2f}%</td></tr>'
+          '</tbody></table></div>'
+          f'<p class="disc">以 <a href="{_fxbot["src"]}" rel="nofollow noopener" '
+          f'target="_blank">{html.escape(_fxbot["src_name"])}</a> '
+          f'{_fxbot["date"]} 的牌告計算（即期中價 {_m:.4f}）。'
+          f'卡組織匯率無法事先查詢，此處假設約等於即期中價，實際可能再高一點。'
+          f'這三個數字會隨牌告變動，看的是相對大小不是絕對值。</p>'
+          '<div class="tldr"><ul>'
+          f'<li><b>換現鈔是三者裡最貴的。</b>成本 ＋{_cc:.2f}%，'
+          f'比刷卡的 ＋{_cf:.2f}% 還高 {_cc - _cf:.2f} 個百分點。</li>'
+          '<li><b>但這不代表不用帶現金。</b>日本仍有只收現金的店家、神社、'
+          '小型餐館與部分交通，完全不帶現金會卡住。合理的做法是帶一筆夠用的現金，'
+          '其餘靠刷卡或掃碼，而不是把整趟的錢都換成鈔票。</li>'
+          f'<li><b>真正的差距在回饋，不在這零點幾個百分點。</b>'
+          f'旅日信用卡的海外加碼比上面的差距大一個量級，'
+          f'這也是換現金最吃虧的地方：現金沒有回饋。</li>'
+          '</ul></div>')
+
+    fx_title = '換日幣怎麼換最省：手續費不是重點，匯率才是'
+    fx_desc = ('台灣各家銀行換日幣的減碼與手續費、外幣 ATM 的面額與限額、'
+               '到日本才領現金的四層費用，每一欄都附官方出處。'
+               '另外把社群上流傳最廣的幾種做法逐一查證，哪些成立、哪些要修正。')
+
+    fx_faq = [
+     ('換日幣到底哪裡最便宜？',
+      '多數人最划算的是用台幣帳戶在外幣 ATM 直接提領：免手續費，而且匯率是現金賣出'
+      '再減碼。臨櫃最貴，因為三項全輸，用現金賣出、沒有減碼、還可能收固定手續費，'
+      '機場分行還會再加收。'),
+     ('先線上換匯進外幣帳戶，再去 ATM 領鈔，是不是更省？',
+      '只有在那家銀行把匯差手續費打折的時候才成立。從外幣帳戶領鈔要收「即期與現金'
+      '兩個賣出價的差額」當手續費，台新收五成、玉山收九成，這兩家走這條確實比較省；'
+      '台銀、兆豐、國泰世華、中國信託、第一銀行是全額收，即期匯率的優勢會被手續費'
+      '抵銷掉，還少拿現金減碼，結果反而比直接用台幣帳戶領還貴。'),
+     ('為什麼換少一點反而不划算？',
+      '因為匯差手續費有最低收費。多數銀行的下限是 100 元，第一銀行的數位通路是 '
+      '200 元。換 10 萬日圓時這筆費用大約就在百元量級，下限幾乎一定會咬到；'
+      '換三、五萬的話單位成本更高。而且出鈔面額會強迫你分次領，分次就是重複被收下限。'),
+     ('在日本的 ATM 領現金划算嗎？',
+      '要先知道那是四層費用，不是一層：台灣發卡行的固定手續費每筆 70 到 100 元、'
+      '國際組織手續費 1.1% 到 1.55%（也是發卡行向你收）、日本 ATM 業者可能再收一筆，'
+      '再加上你在機器上選錯計價幣別時的 DCC。領一次的固定成本偏高，所以臨時補錢'
+      '還可以，當成主要管道就不划算。'),
+     ('ATM 問我要用日圓還是台幣計價，選哪個？',
+      '選日圓。選台幣等於讓 ATM 業者替你換匯，這叫 DCC。Mastercard 官方寫明，'
+      '交易若由商店或 ATM 業者換算，就不適用 Mastercard 的匯率；Visa 官方消費者頁面'
+      '直接說 DCC 常見的加成是 3% 到 5%，手法是灌水的匯率。'),
+     ('金融卡可以直接在日本領錢嗎？',
+      '要先申請跨國提款功能，而且多數銀行還要另外設一組四位數的磁條密碼，'
+      '和平常用的晶片密碼不是同一組。臺灣銀行的約定書寫得最硬：臨櫃即時製發的'
+      '晶片金融卡不具跨國提款功能，申請後要經過五個營業日才能領卡與密碼通知書。'
+      '這件事不能等到日本再弄。'),
+     ('以前聽說日本可以用晶片金融卡提款，手續費很低？',
+      '那條路已經沒了。透過財金公司的日本地區晶片金融卡跨國提款自 2023 年 11 月 30 日'
+      '起全面停止，兆豐、國泰世華、臺灣銀行、台新都發過公告。但臺灣銀行現行的費率表'
+      'PDF 裡還留著那一列的費率，和自己的停止公告互相矛盾，那是殘留的過期資料。'),
+     ('日本機場的換匯櫃檯划算嗎？',
+      '查不到可引用的官方費率。成田與羽田機場官網都只列業者與營業時間，沒有手續費'
+      '或價差說明。唯一有明確說法的是 Travelex，而它的說法是明說不揭露：手續費已經'
+      '含在匯率裡，內容不對外公開。所以只能說它的成本藏在匯率裡而且不公開。'),
+    ]
+    fx_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in fx_faq)
+    fx_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in fx_faq]}, ensure_ascii=False)
+
+    write('japan-yen-exchange/index.html',
+      head(fx_title, fx_desc, 'japan-yen-exchange/',
+           '<script type="application/ld+json">' + fx_ld + '</script>')
+      + crumbs([('首頁', '/'), ('換日幣', None)]) + topnav()
+      + '<h1>換日幣怎麼換最省</h1>'
+      + f'<p class="lede">{html.escape(FX["lede"])}</p>'
+      + f'<div class="today"><div class="tday">費率與條件查證於 {FX["checked"]}</div>'
+        '<div class="tans">多數人最省的是用台幣帳戶在外幣 ATM 直接領，免手續費又有減碼</div>'
+        '<div class="tsub">臨櫃最貴，因為用現金賣出、沒有減碼、還可能收固定費。'
+        '機場分行還會再加收，而且加收多少沒有一家公告。</div></div>'
+      + f'<h2>{html.escape(FX["frame"]["title"])}</h2>'
+      + '<div class="tw"><table><tbody>' + _fxframe + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(FX["frame"]["why"])}</b></li></ul></div>'
+      + f'<h2>{html.escape(FX["spread"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(FX["spread"]["body"])}</p>'
+      + f'<p class="lede">{html.escape(FX["spread"]["why"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(FX["spread"]["order"])}</b></li></ul></div>'
+      + _fxcmp
+      + f'<h2>{html.escape(FX["routes"]["title"])}</h2>'
+      + '<div class="tw"><table><thead><tr><th>管道</th><th>用哪一種匯率</th>'
+        '<th>手續費</th><th>備註</th></tr></thead><tbody>'
+      + _fxroute + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(FX["routes"]["math"])}</p>'
+      + f'<div class="tldr"><ul><li><b>最低收費會咬人。</b>'
+        f'{html.escape(FX["routes"]["floor"])}</li></ul></div>'
+      + f'<h2>{html.escape(_AT["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_AT["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>銀行</th><th>日圓減碼<br>'
+        '<small>元／日圓</small></th><th>出鈔面額</th><th>備註</th><th>來源</th>'
+        '</tr></thead><tbody>' + _fxatm + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_AT["note"])}</p>'
+      + f'<div class="tldr"><ul><li><b>兩套減碼不要混用。</b>'
+        f'{html.escape(_AT["warn"])}</li></ul></div>'
+      + f'<h2>{html.escape(FX["counter"]["title"])}</h2>'
+      + '<div class="tw"><table><thead><tr><th>銀行</th><th>臨櫃換現鈔的手續費</th>'
+        '<th>來源</th></tr></thead><tbody>' + _fxcnt + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(FX["counter"]["airport"])}</p>'
+      + f'<h2>{html.escape(FX["hours"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(FX["hours"]["intro"])}</p>'
+      + '<div class="tw"><table><tbody>' + _fxhours + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(FX["hours"]["extra"])}</p>'
+      + f'<h2>{html.escape(FX["social"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(FX["social"]["intro"])}</p>'
+      + _fxsocial
+      + f'<h2>{html.escape(_AB["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_AB["intro"])}</p>'
+      + '<div class="tldr"><ul>' + _fxlayer + '</ul></div>'
+      + f'<p class="disc">{html.escape(_AB["org_note"])}</p>'
+      + '<h3>台灣發卡銀行收多少</h3>'
+      + '<div class="tw"><table><thead><tr><th>銀行</th><th>卡別或管道</th>'
+        '<th>固定手續費</th><th>百分比</th><th>來源</th></tr></thead><tbody>'
+      + _fxabank + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_AB["banks_note"])}</p>'
+      + '<h3>日本的 ATM 再收一筆</h3>'
+      + '<div class="tw"><table><thead><tr><th>業者</th><th>手續費</th>'
+        '<th>單次上限</th><th>時段</th><th>來源</th></tr></thead><tbody>'
+      + _fxjatm + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_AB["jp_atm_note"])}</p>'
+      + f'<h3>{html.escape(_AB["dcc"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(_AB["dcc"]["body"])}</p>'
+      + f'<p class="lede">{html.escape(_AB["dcc"]["why"])}</p>'
+      + f'<h2>{html.escape(_AB["activate"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_AB["activate"]["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_AB["activate"]["worst"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(_AB["activate"]["note"])}</p>'
+      + '<h3>有免手續費的方案，但都有條件</h3>'
+      + '<div class="tw"><table><thead><tr><th>銀行</th><th>優惠</th><th>期間</th>'
+        '<th>條件</th><th>來源</th></tr></thead><tbody>'
+      + _fxfree + '</tbody></table></div>'
+      + f'<h3>{html.escape(_AB["stale"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(_AB["stale"]["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_AB["stale"]["trap"])}</b></li></ul></div>'
+      + f'<h3>{html.escape(_AB["local"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(_AB["local"]["body"])}</p>'
+      + f'<p class="lede">{html.escape(_AB["local"]["honest"])}</p>'
+      + '<h2>這一頁查不到的</h2>'
+      + '<p class="lede">「官網沒寫」和「沒有這項」是兩件事。查不到的就說查不到。</p>'
+      + '<div class="tldr"><ul>'
+      + ''.join(f'<li>{html.escape(u)}</li>' for u in FX['unverified'])
+      + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
+        f'<s>現金沒有回饋，差距在這裡</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
+        f'<s>另一筆被拆開賣的錢</s></a>'
+      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>每日更新</s></a></div>'
+      + '<h2>常見問題</h2>' + fx_html
+      + f'<p class="disc">各行費率、減碼與活動條件隨時調整，本頁查證於 {FX["checked"]}，'
+        f'換匯前請以銀行官網為準。本頁刻意不寫當日匯率，因為那每天都在變。</p>'
+      + foot())
+    pages.append(('/japan-yen-exchange/', 0.7))
 
 
 # ---------- 雪具託運 ----------
