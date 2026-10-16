@@ -1414,6 +1414,7 @@ def topnav(cur=''):
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制'))
 
     shop = (link('/japan-worth-buying/', '💰 買什麼划算')
+            + link('/japan-medicine-limit/', '💊 藥妝能帶多少')
             + link('/tokyo/street-fashion/', '👕 東京潮牌選物店')
             + link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
@@ -1517,6 +1518,7 @@ _AD_MAP = [
     ('tokyo/street-fashion', 'activity2'), ('tokyo/hostel', 'transfer'),
     ('tokyo/budget-hotel', 'transfer'),
     ('japan-worth-buying', 'esim'),
+    ('japan-medicine-limit', 'esim'),
     ('japan-coupon', 'esim'), ('japan-bic-points', 'esim'),
     ('japan-camera-price', 'esim'), ('japan-dyson-price', 'esim'),
     ('japan-panasonic-dryer', 'esim'), ('apple-japan-price', 'esim'),
@@ -4033,6 +4035,149 @@ if all(os.path.exists(f) for f in
         f'最後更新於 {_WB_AP["updated"]}。購買前請以各通路當下的標價為準。</p>'
       + foot())
     pages.append(('/japan-worth-buying/', 0.7))
+
+# ---------- 帶藥妝回台灣的數量限制 ----------
+# 法源是財政部的報驗稅放辦法第 4 條附表，不是食藥署的新聞稿。附表是法規。
+# 最大的坑是化妝品：自用限量 2024/7/1 已廢止，但高雄關官網到現在還在寫 12/36。
+if os.path.exists('medicine.json'):
+    MD = json.load(open('medicine.json', encoding='utf-8'))
+    _MDD = '<span style="color:var(--dim)">官方未查到</span>'
+
+    _md_rows = ''.join(
+      f'<tr><td><b>{html.escape(x["cat"])}</b></td>'
+      f'<td class="{"win" if x["limit"] else ""} nm">'
+      f'{html.escape(x["limit"]) if x["limit"] else _MDD}</td>'
+      f'<td class="nm">{html.escape(x["how"]) if x["how"] else "—"}</td>'
+      f'<td class="nm">{html.escape(x["note"]) if x.get("note") else "—"}</td></tr>'
+      for x in MD['limits'])
+
+    _MC, _MH, _MM, _MO = MD['cosmetic'], MD['half'], MD['myth'], MD['over']
+    _md_unver = ''.join(f'<li>{html.escape(u)}</li>' for u in MD['unverified'])
+    _md_n = sum(1 for x in MD['limits'] if x['limit'])
+
+    md_title = '從日本帶藥妝回台灣，哪些有數量上限'
+    md_desc = ('非處方藥每種 12 瓶、合計 36 瓶，保健食品同樣是 12 與 36。'
+               '但化妝品的自用限量 2024/7/1 已經廢止，而官方網頁還在寫舊數字。'
+               '每個數字都標出法源與修正日期。')
+
+    md_faq = [
+     ('藥妝店的藥可以帶幾瓶？',
+      '非處方藥每種至多 12 瓶（盒、罐、條、支），合計不超過 36 瓶。要注意這是按件數算的，'
+      '不是按總量或劑量。而且有一條備註對買日本藥妝的人特別重要：在台灣要處方、'
+      '但在國外是成藥的品項，適用非處方藥這套 12 與 36 的限量，不是處方藥那套用量制。'),
+     ('面膜和保養品有上限嗎？',
+      '現在沒有數量上限。輸入特定用途化妝品供個人自用免申請查驗登記的限量，'
+      '已在 2024 年 7 月 1 日公告廢止，而現行的報驗稅放辦法第 4 條附表裡也沒有化妝品欄位。'
+      '但要說清楚來源：沒有任何一份官方頁面正面寫出「化妝品沒有數量限制」這句話，'
+      '這是由附表沒有欄位加上限量已廢止兩件事推得的。另外高雄關的網頁到現在還在'
+      '引用那份已廢止的公告寫 12 與 36，臺北關則完全不列，官方自己不一致。'),
+     ('常跑日本的人額度一樣嗎？',
+      '不一樣，會折半。報驗稅放辦法第 16 條規定有明顯帶貨營利行為、或經常出入境'
+      '且有違規紀錄的旅客，數量與價值得折半計算。而「經常出入境」在同一個辦法裡'
+      '定義為 30 日內入出境兩次以上，或半年內入出境六次以上。符合的話非處方藥'
+      '就只剩每種 6 瓶、合計 18 瓶。多數中文整理沒提這一條。'),
+     ('含假麻黃素的感冒藥不能帶嗎？',
+      '這個常見說法和官方文件對不上。假麻黃素確實在食藥署的管制藥品分級表裡，'
+      '但它列在「第四級管制藥品原料藥」那一節，而該節標題明文寫著「並不含其製劑」。'
+      '受管制的是原料藥，不是藥妝店架上的成品。真正要注意的是二氫可待因與可待因，'
+      '這兩種在日本的止咳藥與感冒藥裡很常見，而且依濃度分級。'),
+     ('保健食品算食品所以沒限制嗎？',
+      '有限制。錠狀、膠囊狀食品每種至多 12 瓶（盒、罐、包、袋），合計不超過 36 瓶，'
+      '而且以原包裝為限。另外有兩個容易踩到的：維生素若任一成分超過得不以藥品列管的'
+      '上限就會被歸為藥品；維骨力則要看成分，硫酸鹽型屬指示藥品要申請，鹽酸鹽型不是。'),
+     ('超量被查到會怎樣？',
+      '要分兩種情況。據實申報但超量的話，要在入境翌日起兩個月內繳驗許可文件、'
+      '辦理退運、或書面聲明放棄，必要時可延長一個月。匿不申報或規避檢查就不同了，'
+      '海關緝私條例寫明沒入貨物，並得處貨價三倍以下的罰鍰。'
+      '食藥署雖然澄清過超量不會移送法辦，但那份文件是 2014 年的，而且沒有區分'
+      '據實申報與匿不申報，本站把兩種情況分開寫。'),
+     ('請人幫忙寄回來，數字一樣嗎？',
+      '不一樣。自己提回來依報驗稅放辦法附表，非處方藥是每種 12 瓶、合計 36 瓶。'
+      '郵寄依藥物樣品贈品管理辦法，非處方藥六個月內不得重複申請，每次不得超過 12 瓶、'
+      '或軟管類 12 支、或總量 1,200 顆，三個條件任何一個都不能超過。'
+      '把手提那套數字套到郵寄會算錯。'),
+     ('隱形眼鏡可以帶幾副？',
+      '附表只寫日拋：單一度數 60 片，而且每人限單一品牌、兩種不同度數。'
+      '月拋、雙週拋與長戴型的限量本站查不到，附表與醫療器材辦法的附表都只寫日拋。'
+      '查不到不等於沒有限制，這一項要自己再確認。'),
+    ]
+    md_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in md_faq)
+    md_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in md_faq]}, ensure_ascii=False)
+
+    write('japan-medicine-limit/index.html',
+      head(md_title, md_desc, 'japan-medicine-limit/',
+           '<script type="application/ld+json">' + md_ld + '</script>')
+      + crumbs([('首頁', '/'), ('藥妝帶多少', None)]) + topnav()
+      + '<h1>從日本帶藥妝回台灣，哪些有數量上限</h1>'
+      + '<p class="lede">買十組面膜、囤一堆眼藥水之前，先知道哪些有上限。'
+        '這一頁每個數字都標出法源與修正日期，因為這類規定改過，'
+        '而且<b>官方自己的網頁也還掛著已經廢止的數字</b>。</p>'
+      + f'<div class="today"><div class="tday">查證於 {MD["checked"]}</div>'
+        '<div class="tans">藥品與保健食品是每種 12 瓶、合計 36 瓶，但化妝品已經沒有上限了</div>'
+        '<div class="tsub">化妝品的自用限量 2024/7/1 公告廢止。'
+        '不過常跑日本的人要注意，另有一條規定會把額度折半。</div></div>'
+      + f'<h2>先講法源，因為坊間整理多半引錯</h2>'
+      + f'<p class="lede">所有限量的依據是財政部的「{html.escape(MD["law"]["name"])}」，'
+        f'附表全名是{html.escape(MD["law"]["full"])}，{html.escape(MD["law"]["amended"])}。'
+        f'{html.escape(MD["law"]["basis"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(MD["law"]["why"])}</b></li></ul></div>'
+      + f'<p class="disc">出處：<a href="{MD["law"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">全國法規資料庫</a>，查證於 {MD["checked"]}。</p>'
+      + '<h2>各品項的上限</h2>'
+      + '<p class="lede">「官方未查到」是查過法規附表、四個關區的頁面與食藥署的公告'
+        '與問答集之後仍然沒有找到，不是沒有限制。</p>'
+      + '<div class="tw"><table><thead><tr><th>品項</th><th>上限</th>'
+        '<th>怎麼算</th><th>備註</th></tr></thead><tbody>'
+      + _md_rows + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>有一條備註最容易被漏掉。</b>'
+        f'{html.escape(MD["key_note"])}</li></ul></div>'
+      + f'<h2>{html.escape(_MC["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_MC["body"])}</p>'
+      + f'<p class="lede">{html.escape(_MC["now"])}</p>'
+      + f'<div class="tldr"><ul><li><b>官方自己還在寫舊數字。</b>'
+        f'{html.escape(_MC["wrong"])}</li></ul></div>'
+      + f'<p class="disc">{html.escape(_MC["careful"])}'
+        f'廢止公告：<a href="{_MC["src"]}" rel="nofollow noopener" target="_blank">食藥署</a>。'
+        f'仍在引用舊數字的頁面：<a href="{_MC["src_wrong"]}" rel="nofollow noopener" '
+        f'target="_blank">高雄關</a>。</p>'
+      + f'<p class="lede">{html.escape(_MC["still"])}</p>'
+      + f'<h2>{html.escape(_MH["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_MH["body"])}{html.escape(_MH["define"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_MH["result"])}</b></li></ul></div>'
+      + f'<h2>{html.escape(_MM["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_MM["wrong"])}{html.escape(_MM["why"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_MM["real"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(_MM["stale"])}'
+        f'出處：<a href="{_MM["src"]}" rel="nofollow noopener" target="_blank">衛福部</a>。</p>'
+      + f'<h2>{html.escape(_MO["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_MO["declared"])}</p>'
+      + f'<div class="tldr"><ul><li><b>匿不申報的後果完全不同。</b>'
+        f'{html.escape(_MO["hidden"])}</li></ul></div>'
+      + f'<p class="lede">{html.escape(_MO["sell"])}</p>'
+      + f'<p class="disc">{html.escape(_MO["jail"])}{html.escape(_MO["law_date"])}</p>'
+      + f'<h2>{html.escape(MD["mail"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(MD["mail"]["body"])}</p>'
+      + f'<p class="disc">{html.escape(MD["mail"]["note"])}</p>'
+      + '<h2>查不到的那幾項</h2>'
+      + '<p class="lede">這些是查過法規附表、關區頁面與食藥署資料之後仍然沒有的。'
+        '查不到不等於沒有限制。</p>'
+      + '<div class="tldr"><ul>' + _md_unver + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-worth-buying/")}"><b>💰 買什麼划算</b>'
+        f'<s>算得出價差的那些</s></a>'
+      + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 免稅新制</b>'
+        f'<s>11/1 起退稅的做法變了</s></a>'
+      + f'<a class="ct" href="{U("/japan-travel-rules/")}"><b>📋 出境稅與住宿稅</b>'
+        f'<s>其他會踩到的新制</s></a></div>'
+      + '<h2>常見問題</h2>' + md_html
+      + f'<p class="disc">法規會修正，本頁查證於 {MD["checked"]}，'
+        f'每個數字都標了所依據的法規與修正日期。'
+        f'實際通關以海關現場認定為準，有疑慮請走紅線申報。</p>'
+      + foot())
+    pages.append(('/japan-medicine-limit/', 0.7))
 
 
 # ---------- 雪具託運 ----------
