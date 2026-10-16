@@ -3234,9 +3234,10 @@ if os.path.exists('fuji.json'):
                     for r, j, n in _CF['rows'])
 
     _LT = FJ['letters']
-    _fjlt = ''.join(f'<tr><td><b>{html.escape(m)}</b></td><td class="nm">{html.escape(s)}</td>'
-                    f'<td class="win">{html.escape(l)}</td><td>{html.escape(r)}</td></tr>'
-                    for m, s, l, r in _LT['rows'])
+    _fjlt = ''.join(f'<tr><td><b>{html.escape(s)}</b></td>'
+                    f'<td class="win">{html.escape(l)}</td><td><b>{html.escape(r)}</b></td>'
+                    f'<td class="nm">{html.escape(who)}</td></tr>'
+                    for s, l, r, who in _LT['rows'])
 
     _fjtips = ''.join(f'<tr><td><b>{html.escape(q)}</b></td><td class="nm">{html.escape(a)}</td></tr>'
                       for q, a in FJ['jl_tips']['rows'])
@@ -3280,9 +3281,15 @@ if os.path.exists('fuji.json'):
       '沒有官方答案。官方只說要避開機翼正上方，日本航空官網寫明沒有窗戶的座位與機翼正上方'
       '的座位看不清楚外面，並說選位時可以確認是哪些。至於機翼蓋住第幾排，沒有通用數字，'
       '同樣是 787，各家的排號配置都不同，只能在訂位的選位頁看那一班實際的座位圖。'),
+     ('想坐右邊靠窗，要選哪個字母？',
+      '看你搭哪一家，台日線上有三套制度並存。日本航空、全日空、中華航空、長榮航空、'
+      '星宇航空是 A B C 配 H J K，右窗是 K；台灣虎航、樂桃、捷星日本、星悅航空是 '
+      'A B C 配 D E F，右窗是 F；天馬航空是 A B C 配 F G H，右窗是 H。左窗則一律是 A，'
+      '查過的九家沒有例外。所以「右邊就是 K」或「右邊就是 F」都只對一半，要先看航空公司。'),
      ('靠窗就一定有窗嗎？',
       '不一定。長榮官網直接公布了無窗座位編號：787-9 是 72A 與 72K，787-10 是 53A 與 53K，'
-      'A330-300 是 25A 與 25K。這些位置在座位圖上看起來靠窗，實際上沒有窗戶。'
+      'A330-300 是 25A 與 25K。星宇也公布了無完整窗景的座位：A350-900 是 3A、3K、7A、7K，'
+      'A350-1000 再加 11A、11K。這些位置在座位圖上看起來靠窗，實際上沒有窗或窗景不完整。'
       '其他航空多半沒有公布，要在選位頁自己看。'),
     ]
     fj_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
@@ -3342,16 +3349,19 @@ if os.path.exists('fuji.json'):
       + f'<p class="disc">資料來源：<a href="{_SE["src"]}" rel="nofollow noopener" '
         f'target="_blank">{html.escape(_SE["src_name"])}</a>，查證於 {FJ["checked"]}。'
         f'{html.escape(_SE["caveat"])}</p>'
-      + '<h2>座位字母：A 一定是左邊，右邊不一定是 K</h2>'
+      + '<h2>座位字母：左窗永遠是 A，右窗有三種</h2>'
       + f'<p class="lede">{html.escape(_LT["rule"])}</p>'
       + f'<div class="tldr"><ul><li><b>{html.escape(_LT["warn"])}</b></li></ul></div>'
-      + '<div class="tw"><table><thead><tr><th>航空與機型</th><th>一排的字母</th>'
-        '<th>左側靠窗</th><th>右側靠窗</th></tr></thead><tbody>'
-      + _fjlt + '</tbody></table></div>'
+      + '<div class="tw"><table><thead><tr>'
+      + ''.join(f'<th>{html.escape(c)}</th>' for c in _LT['cols'])
+      + '</tr></thead><tbody>' + _fjlt + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(_LT["note"])}</p>'
+      + f'<p class="disc">{html.escape(_LT["attribution"])}</p>'
       + f'<p class="disc">{html.escape(_LT["unverified"])}</p>'
       + '<h2>機翼會擋住，但擋住第幾排沒有通用答案</h2>'
       + f'<p class="lede">{html.escape(FJ["wing"]["official"])}'
         f'{html.escape(FJ["wing"]["jl"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(FJ["wing"]["proof"])}</b></li></ul></div>'
       + f'<p class="lede">{html.escape(FJ["wing"]["no_rows"])}</p>'
       + f'<div class="tldr"><ul><li><b>靠窗不一定有窗。</b>'
         f'{html.escape(FJ["wing"]["eva"])}</li></ul></div>'
