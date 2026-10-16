@@ -3894,8 +3894,11 @@ if all(os.path.exists(f) for f in
     def _wb_row(x):
         gap, cat, name, ex, twd, page = x
         pct = round(gap / twd * 100)
+        # 兩種狀態都標出來。只標「超過」的話，沒有標記等於要讀者自己推論，
+        # 而這一頁的重點正是額度內外的對比，不該靠留白表達。
         over = ('<br><small style="color:var(--dim)">超過免稅額度</small>'
-                if ex > _WB_ALLOW else '')
+                if ex > _WB_ALLOW
+                else '<br><small class="win">在額度內</small>')
         return (f'<tr><td><b>{html.escape(name)}</b>'
                 f'<br><small style="color:var(--dim)">{html.escape(cat)}</small></td>'
                 f'<td>{money(ex)}{over}</td><td>{money(twd)}</td>'
