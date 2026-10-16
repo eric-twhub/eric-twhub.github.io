@@ -16,14 +16,14 @@
    "廉航低於 NT$6,000",
    "11 月出發的票，每天最便宜的平均要 NT$4,514（8 天有紀錄），這張低 34%"
   ],
-  "med": 12312,
+  "med": 12934,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-10&inbound=OKA-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 2978,
-   "hi": 6186,
-   "days": 12
+   "hi": 12312,
+   "days": 13
   },
   "mbase": {
    "avg": 4514,
@@ -31,7 +31,7 @@
    "month": 11
   },
   "rank": 1,
-  "n": 27
+  "n": 28
  },
  {
   "slug": "2026-10-16-kaohsiung-okinawa",
@@ -48,9 +48,9 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$5,970（7 天有紀錄），這張低 36%"
+   "11 月出發的票，每天最便宜的平均要 NT$5,984（7 天有紀錄），這張低 36%"
   ],
-  "med": 5457,
+  "med": 5152,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -60,7 +60,7 @@
    "days": 7
   },
   "mbase": {
-   "avg": 5970,
+   "avg": 5984,
    "days": 7,
    "month": 11
   },
@@ -69,32 +69,32 @@
  },
  {
   "slug": "2026-10-16-taichung-okinawa",
-  "title": "台中飛沖繩 NT$4,895 來回含稅｜台灣虎航 11/16 出發",
+  "title": "台中飛沖繩 NT$4,395 來回含稅｜台灣虎航 11/02 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 4895,
+  "price": 4395,
   "air": "台灣虎航",
-  "dep": "2026-11-16",
-  "ret": "2026-11-19",
+  "dep": "2026-11-02",
+  "ret": "2026-11-05",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,900（21 天有紀錄），這張低 51%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,854（21 天有紀錄），這張低 55%"
   ],
   "med": 11304,
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 5552,
+   "lo": 5457,
    "hi": 12614,
    "days": 36
   },
   "mbase": {
-   "avg": 9900,
+   "avg": 9854,
    "days": 21,
    "month": 11
   },
