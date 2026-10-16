@@ -48,9 +48,9 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$5,913（7 天有紀錄），這張低 43%"
+   "11 月出發的票，每天最便宜的平均要 NT$6,064（7 天有紀錄），這張低 44%"
   ],
-  "med": 4957,
+  "med": 5952,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -60,7 +60,7 @@
    "days": 7
   },
   "mbase": {
-   "avg": 5913,
+   "avg": 6064,
    "days": 7,
    "month": 11
   },
@@ -103,31 +103,31 @@
  },
  {
   "slug": "2026-10-16-taipei-fukuoka",
-  "title": "台北飛福岡 NT$7,020 來回含稅｜台灣虎航 11/03 出發",
+  "title": "台北飛福岡 NT$6,611 來回含稅｜台灣虎航 11/01 出發",
   "o": "台北",
   "c": "福岡",
   "_oiata": "TPE",
   "_diata": "FUK",
-  "price": 7020,
+  "price": 6611,
   "air": "台灣虎航",
-  "dep": "2026-11-03",
-  "ret": "2026-11-06",
+  "dep": "2026-11-01",
+  "ret": "2026-11-05",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "11 月出發的票，每天最便宜的平均要 NT$8,570（6 天有紀錄），這張低 18%"
+   "11 月出發的票，每天最便宜的平均要 NT$8,420（6 天有紀錄），這張低 21%"
   ],
   "med": 10918,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-01&inbound=FUK-TPE&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 7111,
+   "lo": 6620,
    "hi": 10501,
    "days": 7
   },
   "mbase": {
-   "avg": 8570,
+   "avg": 8420,
    "days": 6,
    "month": 11
   },
@@ -136,26 +136,26 @@
  },
  {
   "slug": "2026-10-16-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,168",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,577",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 9230,
+  "price": 8821,
   "air": "飛福岡再轉乘",
-  "fl_price": 7020,
+  "fl_price": 6611,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1105,
   "tr_mode": "九州新幹線",
-  "dep": "2026-11-03",
+  "dep": "2026-11-01",
   "ret": "",
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$1,168"
+   "比直飛省 NT$1,577"
   ],
   "med": 10398,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-01&inbound=FUK-TPE&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
  }
