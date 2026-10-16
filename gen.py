@@ -1365,6 +1365,7 @@ def topnav(cur=''):
     kinds = (link('/japan-flight-good-times/', '☀️ 早去晚回')
              + link('/deals/', '🔥 今日特價')
             + link('/japan-flight-baggage/', '🧳 廉航行李費')
+            + link('/japan-flight-seat/', '💺 選位要錢嗎')
             + link('/japan-ski-baggage/', '🎿 雪具託運')
             + link('/japan-ski-lift-ticket/', '🎟️ 雪票早鳥'))
 
@@ -1506,7 +1507,7 @@ _AD_MAP = [
     ('taiwan-holiday', 'activity2'), ('japan-holiday-calendar', 'activity2'),
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
     ('japan-travel-insurance', 'activity2'),
-    ('japan-flight-baggage', 'transport'),
+    ('japan-flight-baggage', 'transport'), ('japan-flight-seat', 'transport'),
     ('hotel-price-check', 'transfer'), ('threads-japan', 'activity2'),
     ('japan-flight-good-times', 'activity2'),
 ]
@@ -2921,12 +2922,238 @@ if os.path.exists('baggage.json'):
       + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
         f'<s>便宜票常常時段很爛，這裡只留好時段</s></a>'
       + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>每日更新</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-seat/")}"><b>💺 選位要錢嗎</b>'
+        f'<s>同一套拆開賣的邏輯，哪幾家收錢</s></a>'
       + f'<a class="ct" href="{U("/okinawa/")}"><b>沖繩機票</b><s>廉航與一般航空並列</s></a></div>'
       + '<h2>常見問題</h2>' + bg_html
       + '<p class="disc">行李費率與票種內容由各航空公司隨時調整，'
         '本頁數字查證於 ' + BG['checked'] + '，購票前請以航空公司官網為準。</p>'
       + foot())
     pages.append(('/japan-flight-baggage/', 0.7))
+
+
+# ---------- 選位 ----------
+# 「飛機選位」的搜尋意圖其實是兩件混在一起的事：哪家要收錢（可查證，看官網），
+# 以及坐哪裡比較好（多半是業者說法，彼此還會打架）。這頁把兩邊分開放，
+# 因為第二件事的媒體版本幾乎都只呈現單面。
+if os.path.exists('seat.json'):
+    ST = json.load(open('seat.json', encoding='utf-8'))
+    _STM = '<br><small style="color:var(--dim)">'
+
+    def _st_cell(v):
+        """None 是「官網沒寫」，不是「沒有」。兩者在頁面上要分得出來。"""
+        return html.escape(v) if v else '<span style="color:var(--dim)">未列</span>'
+
+    # 一般航空與廉航分開排，混在一起看不出規則差異在哪
+    _ST_AIR = sorted(ST['airlines'], key=lambda a: (a['cls'] != 'fsc',))
+    _strows = ''
+    for a in _ST_AIR:
+        _price = ('<br>'.join(f'{html.escape(l)} {html.escape(p)}' for l, p in a['paid'])
+                  if a['paid'] else '<span style="color:var(--dim)">官網未列金額</span>')
+        # 表格放摘要、卡片放全文：免費條件寫滿整段會把表格擠爆，手機上尤其。
+        _free = a.get('free_short') or a.get('free')
+        _strows += (f'<tr><td><b>{html.escape(a["name"])}</b>'
+                    f'{_STM}{"廉航" if a["cls"] == "lcc" else "一般航空"}'
+                    f'・{a["code"]}</small></td>'
+                    f'<td class="nm">{_st_cell(a.get("advance_short") or a.get("advance"))}</td>'
+                    f'<td class="nm">{_st_cell(_free)}</td>'
+                    f'<td class="nm">{_price}</td>'
+                    f'<td><a href="{a["src"]}" rel="nofollow noopener" target="_blank">'
+                    f'{html.escape(a["src_name"])}</a></td></tr>')
+
+    def _stcard(a):
+        _h = (f'<h3>{html.escape(a["name"])}<span class="tag">{a["code"]}</span></h3>')
+        _bits = []
+        if a.get('advance'):
+            _bits.append(f'<b>什麼時候能選</b>：{html.escape(a["advance"])}')
+        if a.get('free'):
+            _bits.append(f'<b>免費條件</b>：{html.escape(a["free"])}')
+        if a['paid']:
+            _bits.append('<b>付費級距</b>：'
+                         + '；'.join(f'{html.escape(l)} {html.escape(p)}' for l, p in a['paid']))
+        if a.get('paid_note'):
+            _bits.append(html.escape(a['paid_note']))
+        if a.get('route_note'):
+            _bits.append(html.escape(a['route_note']))
+        if a.get('exit_row'):
+            _bits.append(f'<b>緊急出口排</b>：{html.escape(a["exit_row"])}')
+        if a.get('checkin'):
+            _bits.append(f'<b>網路報到</b>：{html.escape(a["checkin"])}')
+        _mx = ''
+        if a.get('matrix'):
+            _m = a['matrix']
+            _mx = ('<div class="tw"><table><thead><tr><th>座位</th>'
+                   + ''.join(f'<th>{html.escape(c)}</th>' for c in _m['cols'])
+                   + '</tr></thead><tbody>'
+                   + ''.join('<tr><td><b>' + html.escape(r[0]) + '</b></td>'
+                             + ''.join(f'<td class="{"win" if v == "免費" else ""}">'
+                                       f'{html.escape(v)}</td>' for v in r[1:])
+                             + '</tr>' for r in _m['rows'])
+                   + '</tbody></table></div>')
+        return (_h + ''.join(f'<p class="lede">{b}</p>' for b in _bits) + _mx
+                + f'<p class="disc">出處：<a href="{a["src"]}" rel="nofollow noopener" '
+                  f'target="_blank">{html.escape(a["src_name"])}</a>，'
+                  f'查證於 {ST["checked"]}。</p>')
+
+    _stcards = ''
+    for _cls, _lbl in (('fsc', '一般航空'), ('lcc', '廉價航空')):
+        _grp = [a for a in ST['airlines'] if a['cls'] == _cls]
+        if _grp:
+            _stcards += f'<h3 class="grp">{_lbl}</h3>' + ''.join(_stcard(a) for a in _grp)
+
+    # 「你想優化哪一項」比「最好的位置」誠實：這些目標會互相衝突。
+    _stgoals = ''.join(
+        f'<tr><td><b>{html.escape(g["goal"])}</b></td>'
+        f'<td class="win nm">{html.escape(g["where"])}</td>'
+        f'<td class="nm">{html.escape(g["why"])}</td>'
+        f'<td class="nm">{html.escape(g["caveat"])}</td></tr>'
+        for g in ST['goals'])
+
+    _SF = ST['safety']
+    _stzone = ''.join(f'<tr><td><b>{html.escape(z)}</b></td>'
+                      f'<td class="{"win" if z == "機尾三分之一" else ""}">{p}%</td>'
+                      f'<td class="nm">—</td></tr>' for z, p in _SF['zones'])
+    _stseat = ''.join(f'<tr><td><b>{html.escape(s)}</b></td><td>{p}%</td>'
+                      f'<td class="nm">{html.escape(n)}</td></tr>'
+                      for s, p, n in _SF['seats'])
+
+    _stnews = ''.join(f'<li><b>{html.escape(t)}</b>　{html.escape(b)}</li>'
+                      for t, b in ST['news']['points'])
+
+    _st_paid = [a for a in ST['airlines'] if a['paid']]
+    _st_free = [a for a in ST['airlines'] if a.get('free') and '免費' in a['free']]
+
+    st_title = '台日航線選位：哪幾家要付錢、坐哪裡比較好'
+    st_desc = (f'飛日本的 {len(ST["airlines"])} 家航空公司各自什麼時候能選位、'
+               f'免費條件是什麼、付費座位多少錢，每一欄都附官方出處。'
+               f'另外把「最後一排別坐」那類說法和失事存活率的資料並排放，'
+               f'因為兩邊的結論相反。')
+
+    st_faq = [
+     ('不付錢選位會怎樣？',
+      '不會沒有位子，系統會在報到時分配。真正的代價是兩件事：同行的人可能被拆開坐，'
+      '以及剩下的位子多半是別人挑完不要的。想坐在一起又不想付錢，就只能賭班機沒客滿，'
+      '並且在開放網路報到的第一時間去選。'),
+     ('最後一排真的不能坐嗎？',
+      '要看你在意什麼。業者說法集中在舒適度：離重心最遠所以晃得明顯、緊鄰廚房與洗手間'
+      '所以吵且有異味、送餐最後才到、椅背後面是艙壁所以傾斜角度受限。'
+      '但若看失事存活率，現有資料反而指向機尾：TIME 分析 FAA 的事故資料庫，'
+      f'機尾三分之一死亡率 {_SF["zones"][0][1]}%，低於中段的 {_SF["zones"][1][1]}% 與'
+      f'前段的 {_SF["zones"][2][1]}%。兩種說法不衝突，因為講的是不同情境。'),
+     ('「機尾最安全」是 FAA 的研究嗎？',
+      f'不是。那是 TIME 自己去 FAA 的 CSRTG 事故資料庫裡撈資料算出來的，'
+      f'只有 {_SF["crashes"]} 場事故、涵蓋 {_SF["years"]} 年，'
+      f'篩選條件是同時有死亡與生還者、而且留有可分析的座位圖。'
+      f'TIME 自己的結論是「{_SF["quote"]}」，死活更取決於失事情況本身。'
+      f'這組數字可以參考，但不能當定論，更不該被寫成官方研究。'),
+     ('怕亂流要坐第幾排？',
+      '沒有通用排數。飛機遇亂流是繞重心轉動的，離重心越遠擺幅越大，'
+      '所以機翼上方或稍微偏前晃得最少、機尾最明顯，這點各方說法一致。'
+      '但機翼落在第幾排完全看機型，台日線從 A320 到 787 都有，'
+      '只能看訂位當下那架飛機的座位圖，照抄別人給的排數會選錯。'),
+     ('兩個人劃窗邊＋走道、留中間空位，這招有用嗎？',
+      '沒客滿才有用。客滿的話中間會被排進一位陌生人，你們兩個反而整段航程被隔開，'
+      '比劃在一起更差。台日線的連假、櫻花與紅葉季客滿是常態，這招要挑離峰才划算。'),
+     ('緊急出口排值得加價嗎？',
+      '腿部空間確實大，但限制也最多：扶手固定不能掀、椅背能倒的角度受限、'
+      '桌子收在扶手裡所以座位寬度略窄，攜帶嬰兒或需要協助的乘客不得乘坐，'
+      '部分航空還要求聽得懂組員指示。各家條件不同，加價前要看那一家自己的規定。'),
+    ]
+    st_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in st_faq)
+    st_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in st_faq]}, ensure_ascii=False)
+
+    write('japan-flight-seat/index.html',
+      head(st_title, st_desc, 'japan-flight-seat/',
+           '<script type="application/ld+json">' + st_ld + '</script>')
+      + crumbs([('首頁', '/'), ('選位', None)]) + topnav()
+      + '<h1>台日航線選位：哪幾家要付錢、坐哪裡比較好</h1>'
+      + '<p class="lede">「飛機選位」其實是兩個問題混在一起。'
+        '<b>哪家要收錢</b>查得到答案，看官網就有。'
+        '<b>坐哪裡比較好</b>則沒有單一答案，而且流傳的說法彼此矛盾。'
+        '這頁把兩邊分開。</p>'
+      + f'<div class="today"><div class="tday">選位規則查證於 {ST["checked"]}</div>'
+        f'<div class="tans">查了 {len(ST["airlines"])} 家飛台日的航空，'
+        f'其中 {len(_st_paid)} 家有公告付費選位的金額</div>'
+        f'<div class="tsub">不付費不會沒位子，但同行的人可能被拆開坐。'
+        f'下面每一欄都附航空公司官網出處。</div></div>'
+      + '<h2>哪幾家要付錢</h2>'
+      + '<p class="lede">只列出本站逐項對過官方頁面的航空公司。'
+        '「未列」是官網沒有寫，不是「沒有這項規定」。</p>'
+      + '<div class="tw"><table><thead><tr><th>航空公司</th><th>什麼時候能選</th>'
+        '<th>免費條件</th><th>付費價格</th><th>來源</th></tr></thead><tbody>'
+      + _strows + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(ST["currency_note"])}'
+        f'選位費用會隨票種、航線與促銷調整，購票前以官網為準。</p>'
+      + '<div class="tldr"><ul>'
+        '<li><b>「不選位就報到時再挑」這招，有幾家不成立。</b>台灣虎航官網寫明'
+        '「報到現場無法指定座位」，樂桃則是報到劃位後不受理改位。這兩家沒事先選，'
+        '座位就是系統給什麼算什麼，而且虎航明寫不保證同一訂位代號的旅客坐在一起。</li>'
+        '<li><b>有三家台北出發根本不能網路報到。</b>樂桃國際線只能用自動報到機，'
+        '而機器只設在成田、關西、那霸；捷星日本的國際線網路報到只開放成田出發的兩條航線；'
+        '泰越捷國際線完全不提供。這三家從台北飛都要到機場櫃檯。</li>'
+        '<li><b>國泰的免費條件最寬，但查不到台日段金額。</b>它官網寫明網路報到一開放，'
+        '偏好座位與一般座位就全部免費，連最便宜的 Light 票也適用。'
+        '可是它的費率表五個區全以香港為一端，台北到成田那段不在任何一區裡。</li>'
+        '<li><b>出口排的年齡門檻每家差很多。</b>國泰 12 歲、多數是 15 歲、'
+        '泰越捷要 16 歲而且還設 65 歲上限。帶小孩的話幾乎都不能坐，'
+        '不少家連「同行者有未滿 12 歲兒童」都不行。</li>'
+        '</ul></div>'
+      + '<h2>這幾家查不到，原因寫在這裡</h2>'
+      + '<p class="lede">「官網沒寫」和「官網寫明沒有」是兩件事。'
+        '查不到的就說查不到，不拿第三方整理來填。</p>'
+      + '<div class="tldr"><ul>'
+      + ''.join(f'<li><b>{html.escape(u["name"])}</b>　{html.escape(u["why"])}</li>'
+                for u in ST['unverified'])
+      + '</ul></div>'
+      + '<h2>各家的細節</h2>' + _stcards
+      + '<h2>坐哪裡比較好？先決定你要優化哪一項</h2>'
+      + '<p class="lede">這些目標會互相衝突，所以沒有「最好的位置」，只有取捨。'
+        '想睡的人該選的位子和想常起身的人剛好相反。</p>'
+      + '<div class="tw"><table><thead><tr><th>你在意的</th><th>選哪裡</th>'
+        '<th>為什麼</th><th>代價</th></tr></thead><tbody>'
+      + _stgoals + '</tbody></table></div>'
+      + '<h2>「最後一排千萬別坐」是誰說的</h2>'
+      + f'<p class="lede">這個說法近期在台灣媒體流傳，源頭是英國《鏡報》訪問'
+        f'{html.escape(ST["news"]["who"])}。他們提出的理由如下。</p>'
+      + '<div class="tldr"><ul>' + _stnews + '</ul></div>'
+      + f'<p class="disc">整理自 <a href="{ST["news"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(ST["news"]["src_name"])}</a>（{ST["news"]["date"]}），'
+        f'原始出處為{html.escape(ST["news"]["origin"])}。'
+        f'這些是業者對舒適度的經驗談，不是航空公司或主管機關的規定。</p>'
+      + (f'<p class="disc">{html.escape(ST["news"]["unchecked"])}</p>'
+         if ST['news'].get('unchecked') else '')
+      + f'<p class="lede">{html.escape(ST["news"]["balance"])}</p>'
+      + '<h2>但失事存活率的資料指向機尾</h2>'
+      + '<p class="lede">這組數字常被轉述成「FAA 研究」。它不是。'
+        f'是 TIME 自己去 {html.escape(_SF["db"])} 裡，'
+        f'撈出{html.escape(_SF["filter"])}來算，'
+        f'符合條件的只有 {_SF["crashes"]} 場、涵蓋 {_SF["years"]} 年。</p>'
+      + '<div class="tw"><table><thead><tr><th>機身區域</th><th>死亡率</th>'
+        '<th>備註</th></tr></thead><tbody>' + _stzone + '</tbody></table></div>'
+      + '<div class="tw"><table><thead><tr><th>座位位置</th><th>死亡率</th>'
+        '<th>備註</th></tr></thead><tbody>' + _stseat + '</tbody></table></div>'
+      + f'<p class="disc">資料來源：<a href="{_SF["src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(_SF["src_name"])}</a>。'
+        f'{html.escape(_SF["caveat"])}</p>'
+      + f'<div class="tldr"><ul><li><b>TIME 自己的結論是：{html.escape(_SF["quote"])}</b></li>'
+        f'<li>所以「機尾最晃」和「機尾存活率較高」兩句話可以同時成立，'
+        f'前者講整段航程的體感，後者講失事那一刻。</li>'
+        f'<li>要用這組數字說服自己坐機尾之前，先想清楚它只有 {_SF["crashes"]} 場事故。</li>'
+        f'</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
+        f'<s>選位之外另一筆被拆開賣的錢</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
+        f'<s>便宜票常常時段很爛，這裡只留好時段</s></a>'
+      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>每日更新</s></a></div>'
+      + '<h2>常見問題</h2>' + st_html
+      + f'<p class="disc">選位費用與規則由各航空公司隨時調整，'
+        f'本頁數字查證於 {ST["checked"]}，購票前請以航空公司官網為準。</p>'
+      + foot())
+    pages.append(('/japan-flight-seat/', 0.7))
 
 
 # ---------- 雪具託運 ----------
