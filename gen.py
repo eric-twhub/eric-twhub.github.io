@@ -1400,6 +1400,7 @@ def topnav(cur=''):
             + link('/japan-sms-roaming/', '✉️ 台灣門號收簡訊')
             + '<hr><b>錢的事</b>'
             + link('/japan-yen-exchange/', '💴 換日幣怎麼換')
+            + link('/japan-payment/', '📲 日本怎麼付錢')
             + '<hr><b>租車自駕</b>'
             + link('/japan-driving-licence/', '🚗 駕照日文譯本')
             + link('/japan-rentacar-noc/', '🚗 租車的 NOC')
@@ -1526,6 +1527,7 @@ _AD_MAP = [
     ('japan-travel-insurance', 'activity2'),
     ('japan-flight-baggage', 'transport'), ('japan-flight-seat', 'transport'),
     ('japan-yen-exchange', 'esim'),
+    ('japan-payment', 'esim'),
     ('japan-flight-fuji', 'activity2'),
     ('hotel-price-check', 'transfer'), ('threads-japan', 'activity2'),
     ('japan-flight-good-times', 'activity2'),
@@ -3642,6 +3644,174 @@ if os.path.exists('fx.json'):
         f'換匯前請以銀行官網為準。本頁刻意不寫當日匯率，因為那每天都在變。</p>'
       + foot())
     pages.append(('/japan-yen-exchange/', 0.7))
+
+
+# ---------- 日本的支付方式 ----------
+# 這題的中文整理幾乎都教人「怎麼註冊 PayPay」，但 PayPay 官方明寫海外門號不能用、
+# 在海外也無法新規註冊。台灣旅客真正該問的是「怎麼付到 PayPay 的收款碼」。
+if os.path.exists('pay.json'):
+    PY = json.load(open('pay.json', encoding='utf-8'))
+
+    _pyw = PY['wallets']
+    _pywlist = ''.join(f'<li><b>{html.escape(x)}</b></li>' for x in _pyw['list'])
+
+    _pyrate = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td>{html.escape(bk)}</td>'
+        f'<td>{html.escape(tm)}</td><td class="nm">{html.escape(kind)}</td>'
+        f'<td class="nm">{html.escape(disc)}</td>'
+        f'<td><a href="{src}" rel="nofollow noopener" target="_blank">官方</a></td></tr>'
+        for n, bk, tm, kind, disc, src in PY['rates']['rows'])
+
+    _pylim = ''.join(f'<li>{html.escape(x)}</li>' for x in PY['limits']['items'])
+
+    _IC = PY['ic']
+    _pyic = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(dep)}</td>'
+        f'<td class="nm">{html.escape(ch)}</td><td class="nm">{html.escape(where)}</td></tr>'
+        for n, dep, ch, where in _IC['tourist'])
+
+    _TC = PY['touch']
+    _pytouch = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td>'
+        f'<td class="{"win" if "查不到" not in when else ""} nm">{html.escape(when)}</td>'
+        f'<td class="nm">{html.escape(what)}</td>'
+        f'<td><a href="{src}" rel="nofollow noopener" target="_blank">官方</a></td></tr>'
+        for n, when, what, src in _TC['rows'])
+
+    py_title = '日本的支付方式怎麼用：PayPay、交通卡與感應信用卡'
+    py_desc = ('PayPay 台灣旅客註冊不了，官方給的路徑是用台灣的錢包掃它的收款碼。'
+               '這頁整理哪幾個錢包在 PayPay 官方清單上、各家用哪一種匯率、'
+               '交通系 IC 卡現在買不買得到，以及哪些鐵路可以直接刷感應信用卡。')
+
+    py_faq = [
+     ('台灣人可以註冊 PayPay 嗎？',
+      '不行。PayPay 官方說明寫明海外手機號碼無法使用，而且在海外無法新規註冊、'
+      '也無法完成本人確認。身分驗證只收個人編號卡、在留卡或特別永住者證明書，'
+      '也就是預設對象是在日居留者。官網也查不到任何短期訪日旅客專用的方案。'),
+     ('那在日本看到 PayPay 的收款碼怎麼付？',
+      '用台灣的電子支付 App 去掃。這是 PayPay 官方替外國旅客設計的路徑，'
+      '背後靠跨境網絡清算，台灣的業者全部走 HIVEX 這一個。'
+      '官方清單上有玉山錢包、一卡通、街口支付、全盈＋PAY、全支付與台新Pay＋。'),
+     ('悠遊付可以用嗎？',
+      '查不到。悠遊付不在 PayPay 官方的連携清單上，本站也查不到官方說明。'
+      '這是「未查到而且官方清單未列」，不等於官方明文不支援。'
+      '不過悠遊卡另有一條路：實體悠遊卡可以在沖繩約兩千家特約店感應付款。'),
+     ('「免海外交易手續費」是真的免費嗎？',
+      '要拆成兩件事。免掉的那 1.5% 不是這些業者收的費，而是你的信用卡發卡行在你'
+      '直接海外刷卡時會收的國外交易手續費。因為這些服務是先用信用卡儲值到錢包、'
+      '再從錢包付款，交易在帳上變成國內儲值，所以那筆費用不會發生。'
+      '但換匯本身用的是銀行賣出價，價差已經包在匯率裡。而且代價是同時失去'
+      '信用卡的海外回饋，旅日信用卡的海外加碼比那 1.5% 大一個量級。'),
+     ('Suica 和 PASMO 現在買得到嗎？',
+      '買得到。2023 年因為晶片取得困難停售過無記名卡，但記名式 2024 年 8 月恢復，'
+      '無記名也在 2025 年 3 月 1 日恢復販售。網路上大量整理還寫著停售中，那是舊資訊。'),
+     ('東京買的卡可以在大阪用嗎？',
+      '可以在大阪的區域內搭車，但不能用它從東京一路坐到大阪。全國互通指的是'
+      '各區域內都能用，不是可以跨區搭一趟。跨區要另外買票。'),
+     ('用手機嗶比較方便，台灣的手機可以嗎？',
+      'iPhone 可以。Apple 錢包能直接新增 Suica、PASMO 與 ICOCA，而且 JR 東日本的'
+      'Welcome Suica Mobile 官方問答明列入境日本前就能發行的國家包含台灣，'
+      '有效期是發行日起 180 天。海外購買的 Android 手機目前不行，因為需要'
+      'おサイフケータイ 支援；JR 東日本 2026 年 4 月的公告說 2027 年起的 Galaxy '
+      '才會支援，理由正是要讓旅客能用海外購買的手機做到這件事。'),
+     ('聽說現在可以直接刷信用卡進站？',
+      '是，而且範圍在擴大。關東 11 社局自 2026 年 3 月 25 日起相互利用，涵蓋 54 條'
+      '路線 729 站；JR 九州自 2026 年 4 月 1 日正式導入福岡地區 92 站。'
+      '但 JR 東日本查不到這項服務。要注意只收大人運賃，帶小孩的話兒童也收大人票價，'
+      '所以帶小孩反而不划算，而且進出站必須用同一張卡。'),
+    ]
+    py_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in py_faq)
+    py_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in py_faq]}, ensure_ascii=False)
+
+    write('japan-payment/index.html',
+      head(py_title, py_desc, 'japan-payment/',
+           '<script type="application/ld+json">' + py_ld + '</script>')
+      + crumbs([('首頁', '/'), ('支付方式', None)]) + topnav()
+      + '<h1>日本的支付方式怎麼用</h1>'
+      + '<p class="lede">多數中文整理教的是「怎麼註冊 PayPay」。'
+        '但官方明寫海外門號不能用、在海外也無法註冊。'
+        '台灣旅客真正該問的是另一個問題。</p>'
+      + f'<div class="today"><div class="tday">查證於 {PY["checked"]}</div>'
+        '<div class="tans">你不會註冊 PayPay，你是用台灣的錢包去掃它的收款碼</div>'
+        '<div class="tsub">這是 PayPay 官方替外國旅客設計的路徑，'
+        '台灣的業者全部走 HIVEX 這個跨境網絡。</div></div>'
+      + f'<h2>{html.escape(PY["premise"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PY["premise"]["body"])}</p>'
+      + f'<p class="lede">{html.escape(PY["premise"]["kyc"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PY["premise"]["answer"])}</b></li></ul></div>'
+      + f'<p class="disc">出處：<a href="{PY["premise"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">PayPay 官方說明</a>，查證於 {PY["checked"]}。</p>'
+      + f'<h2>{html.escape(_pyw["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_pyw["intro"])}</p>'
+      + f'<div class="tldr"><ul>{_pywlist}</ul></div>'
+      + f'<p class="disc">出處：<a href="{_pyw["src"]}" rel="nofollow noopener" '
+        f'target="_blank">PayPay 官方 HIVEX 說明頁</a>。</p>'
+      + f'<p class="lede">{html.escape(_pyw["easycard"])}</p>'
+      + f'<p class="lede">{html.escape(_pyw["okinawa"])}</p>'
+      + f'<p class="disc">出處：<a href="{_pyw["okinawa_src"]}" rel="nofollow noopener" '
+        f'target="_blank">悠遊卡公司官方問答</a>。</p>'
+      + f'<h2>{html.escape(PY["rates"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PY["rates"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>業者</th><th>參考銀行</th><th>時點</th>'
+        '<th>哪一種牌告</th><th>有無減碼</th><th>來源</th></tr></thead><tbody>'
+      + _pyrate + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(PY["rates"]["key"])}</p>'
+      + f'<p class="disc">{html.escape(PY["rates"]["note"])}</p>'
+      + f'<h2>{html.escape(PY["fee"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PY["fee"]["body"])}</p>'
+      + f'<p class="lede">{html.escape(PY["fee"]["how"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PY["fee"]["cost"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(PY["fee"]["unknown"])}</p>'
+      + f'<h2>{html.escape(PY["limits"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PY["limits"]["intro"])}</p>'
+      + f'<div class="tldr"><ul>{_pylim}</ul></div>'
+      + f'<p class="lede">{html.escape(PY["limits"]["step"])}</p>'
+      + f'<p class="disc">{html.escape(PY["limits"]["offline"])}</p>'
+      + f'<h2>{html.escape(_IC["title"])}</h2>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_IC["fix"])}</b></li></ul></div>'
+      + f'<p class="disc">出處：<a href="{_IC["fix_src"]}" rel="nofollow noopener" '
+        f'target="_blank">JR 東日本官方公告</a>。</p>'
+      + '<div class="tw"><table><thead><tr><th>卡種</th><th>押金與效期</th>'
+        '<th>怎麼儲值</th><th>哪裡買</th></tr></thead><tbody>'
+      + _pyic + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(_IC["gone"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_IC["cross"])}</b></li></ul></div>'
+      + f'<h2>{html.escape(PY["mobile"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PY["mobile"]["iphone"])}</p>'
+      + f'<p class="disc">出處：<a href="{PY["mobile"]["iphone_src"]}" rel="nofollow noopener" '
+        f'target="_blank">Welcome Suica Mobile 官方問答</a>。</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PY["mobile"]["android"])}</b></li></ul></div>'
+      + f'<p class="disc">出處：<a href="{PY["mobile"]["android_src"]}" rel="nofollow noopener" '
+        f'target="_blank">JR 東日本官方新聞稿</a>。</p>'
+      + f'<p class="lede">{html.escape(PY["mobile"]["charge"])}</p>'
+      + f'<h2>{html.escape(_TC["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_TC["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>業者</th><th>開始時間</th>'
+        '<th>範圍</th><th>來源</th></tr></thead><tbody>'
+      + _pytouch + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(_TC["brands"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_TC["catch"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(_TC["fee"])}{html.escape(_TC["nation"])}</p>'
+      + '<h2>這一頁查不到的</h2>'
+      + '<p class="lede">「官網沒寫」和「沒有這項」是兩件事。</p>'
+      + '<div class="tldr"><ul>'
+      + ''.join(f'<li>{html.escape(u)}</li>' for u in PY['unverified'])
+      + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-yen-exchange/")}"><b>💴 換日幣怎麼換</b>'
+        f'<s>該帶多少現金，怎麼換最省</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
+        f'<s>用錢包掃碼會失去的海外回饋</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📱 日本 eSIM</b>'
+        f'<s>掃碼付款要有網路</s></a></div>'
+      + '<h2>常見問題</h2>' + py_html
+      + f'<p class="disc">各業者的條件、活動與適用範圍隨時調整，本頁查證於 {PY["checked"]}，'
+        f'使用前請以各自官網為準。匯率每天變動，本頁只寫各家用哪一種牌告，不寫數字。</p>'
+      + foot())
+    pages.append(('/japan-payment/', 0.7))
 
 
 # ---------- 雪具託運 ----------
