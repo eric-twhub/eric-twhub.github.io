@@ -13671,6 +13671,12 @@ if _GT:
 # ---------- 旅日信用卡 ----------
 if os.path.exists('cards.json'):
     CD = json.load(open('cards.json', encoding='utf-8'))
+
+    def _cchk(c):
+        """這張卡的查證日期。逐張更新時只動那一張，不要套全域日期，
+        否則等於宣稱所有卡片都在同一天重查過。沒寫就沿用全域。"""
+        return c.get('checked') or CD['checked']
+
     # 店家券資料：卡片頁要用它算「這張卡在各店的實付價」，CP 要到後面才載入，
     # 這裡自己讀一份。先只產幣倍卡，版型確認後再放開。
     _CPS = (json.load(open('coupons.json', encoding='utf-8'))
@@ -14515,7 +14521,7 @@ if os.path.exists('cards.json'):
           + topnav()
           + f'<h1>{html.escape(c["name"])}　日本回饋怎麼算？</h1>'
           + f'<p class="lede">{html.escape(c["plan"])}　·　活動期間 {html.escape(c["period"])}</p>'
-          + f'<div class="today"><div class="tday">條件查證於 {CD["checked"]}'
+          + f'<div class="today"><div class="tday">條件查證於 {_cchk(c)}'
             f'　·　匯率 {_MIDC} 每日更新</div>'
             f'<div class="tans">實體消費最高 {c["total"]}%'
             + (f'，加碼刷到 {money(hit)} 就到頂' if hit else '，無加碼上限') + '</div>'
@@ -14570,7 +14576,7 @@ if os.path.exists('cards.json'):
             f'<s>改成出境後才退稅</s></a></div>'
           + _kcode_block(c['slug'])
           + '<h2>常見問題</h2>' + cf_html
-          + f'<p class="disc">本頁為公開資訊整理，非理財建議。條件查證於 {CD["checked"]}，'
+          + f'<p class="disc">本頁為公開資訊整理，非理財建議。條件查證於 {_cchk(c)}，'
             f'來源：<a href="{html.escape(c["src"])}" target="_blank" rel="noopener nofollow">'
             f'{html.escape(c["src_name"])}</a>。'
             f'發卡行可隨時調整條件、指定通路與上限，請以發卡行公告為準。'
