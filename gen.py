@@ -1598,6 +1598,12 @@ def _ad_group(kind, path, slot='foot'):
     u = path[:-len('index.html')].strip('/') if path.endswith('index.html') else path
     pg = (_ADS.get('pages') or {}).get(u)
     if pg and slot == _AD_PAGE_SLOT:
+        # use 指向既有的 groups，這樣商品清單只維護一份。
+        # 頁面自己寫的 title／sub／icon 會蓋過被指向那一組的。
+        if pg.get('use'):
+            base = dict((_ADS.get('groups') or {}).get(pg['use']) or {})
+            base.update({k: v for k, v in pg.items() if k != 'use'})
+            return base
         return pg
     return (_ADS.get('groups') or {}).get(kind) or {}
 
