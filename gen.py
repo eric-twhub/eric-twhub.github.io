@@ -1589,7 +1589,13 @@ _ADS = (json.load(open('ads.json', encoding='utf-8'))
 _AD_PAGE_SLOT = 'top'
 
 
-def _allow_note(vals, allow, what):
+def _hid(txt):
+    """同一頁小標的錨點。和目錄用的是同一套算法，所以標題改了連結也跟著對，
+    不會留下一個指向不存在位置的連結。"""
+    return 'h-' + hashlib.sha1(txt.encode('utf-8')).hexdigest()[:6]
+
+
+def _allow_note(vals, allow, what, extra=''):
     """這一頁的機種是不是全部在入境免稅額度內。
 
     只有 Apple 那頁會有超過額度的品項，其餘三頁全部在額度內。
@@ -1608,7 +1614,8 @@ def _allow_note(vals, allow, what):
             f'所以不會有超額要補稅的問題。買 iPhone 就不一樣，'
             f'高容量機種全部超過額度，'
             f'<a href="{U("/japan-worth-buying/")}">跨品類的對照</a>有並排。'
-            '</li></ul></div>')
+            + (f'</li><li><b>{extra}' if extra else '')
+            + '</li></ul></div>')
 
 
 def _ad_group(kind, path, slot='foot'):
@@ -11601,7 +11608,12 @@ if os.path.exists('panasonic.json') and os.path.exists('apple.json'):
       + f'<p class="disc">{html.escape(PN["_日本沒有定價"])}'
         f'{html.escape(PN["_twd_為_null_的意思"])}</p>'
       + _allow_note([_pex(r['jpy']) for r in PN['rows'] if r.get('jpy')],
-                    ALLOW, '那一支')
+                    ALLOW, '那一支',
+                    extra=('但這一頁真正的風險不是額度，是電壓。</b>'
+                           f'日本賣的是 {PN["voltage"]["jp"]}V 版、'
+                           f'台灣是 {PN["voltage"]["tw"]}V 版，型號代碼上看不出來。'
+                           f'買回來要嘛配變壓器、要嘛承擔風險，而那筆成本不在價差裡。'
+                           f'<a href="#{_hid("同一個型號，兩種電壓")}">往上看那一段</a>。'))
 
       + '<h2>點數：旗艦機種整個不給</h2>'
       + f'<p class="lede">別的品牌是點數高低的差別，Panasonic 的旗艦吹風機是'
