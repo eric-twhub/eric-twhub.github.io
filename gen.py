@@ -1589,6 +1589,28 @@ _ADS = (json.load(open('ads.json', encoding='utf-8'))
 _AD_PAGE_SLOT = 'top'
 
 
+def _allow_note(vals, allow, what):
+    """這一頁的機種是不是全部在入境免稅額度內。
+
+    只有 Apple 那頁會有超過額度的品項，其餘三頁全部在額度內。
+    全部在額度內的話，每一列都標同一個字只是雜訊，改成一句話講完，
+    並附上最高的那一台，讀者才看得出離上限還有多遠。
+    """
+    vals = [v for v in vals if v]
+    if not vals:
+        return ''
+    top = round(max(vals))
+    if top > allow:
+        return ''
+    return ('<div class="tldr"><ul><li><b>這一頁的機種全部在入境免稅額度內。</b>'
+            f'台灣入境旅客行李物品的免稅額是 {money(allow)}，'
+            f'而本頁退稅後金額最高的{what}也只有 {money(top)}，'
+            f'所以不會有超額要補稅的問題。買 iPhone 就不一樣，'
+            f'高容量機種全部超過額度，'
+            f'<a href="{U("/japan-worth-buying/")}">跨品類的對照</a>有並排。'
+            '</li></ul></div>')
+
+
 def _ad_group(kind, path, slot='foot'):
     """這一頁這個版位要用哪一組商品。頁面專屬的優先。
 
@@ -11028,6 +11050,7 @@ if os.path.exists('cameras.json') and os.path.exists('apple.json'):
       + '<p class="disc">退稅後金額為日本牌價除以 1.1 再換算台幣。'
         '日本的消費稅免稅只在有執照的實體免稅店成立，線上訂購不適用，'
         '所以日本側取實體連鎖的牌價而非網購專價。在庫狀況會變動，以店頭為準。</p>'
+      + _allow_note([_cex(r['jpy']) for r in _pair], ALLOW, '那一台')
 
       + '<h2>Luna Ultra：券刷得過與刷不過，差在這裡</h2>'
       + f'<p class="lede">Insta360 是這四台裡唯一沒被券的條款排除的品牌，'
@@ -11310,6 +11333,10 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
       + '<p class="disc">台灣特價是查證當日官網的售價，會隨檔期變動，'
         '原價是官網同時標示的建議售價。兩邊的盒裝配件與贈品不同，'
         '台灣官網多數型號另附贈品，所以這是機器本體的價差，不是等值品的價差。</p>'
+      + _allow_note([_dex(r['jpy'])
+                     for k in ('rows', 'rows_vacuum_pair', 'rows_vacuum_jp_only',
+                               'rows_purifier', 'rows_purifier_jp_only')
+                     for r in (DY.get(k) or []) if r.get('jpy')], ALLOW, '那一台')
 
       + '<h2>頭髮護理：逐台明細</h2>'
       + f'<p class="lede">日本售價是含 10% 消費稅的牌價，觀光客退稅後約當台幣如第四欄。'
@@ -11573,6 +11600,8 @@ if os.path.exists('panasonic.json') and os.path.exists('apple.json'):
                 f'{html.escape(r["bundle"])}</p>' for r in _pbun)
       + f'<p class="disc">{html.escape(PN["_日本沒有定價"])}'
         f'{html.escape(PN["_twd_為_null_的意思"])}</p>'
+      + _allow_note([_pex(r['jpy']) for r in PN['rows'] if r.get('jpy')],
+                    ALLOW, '那一支')
 
       + '<h2>點數：旗艦機種整個不給</h2>'
       + f'<p class="lede">別的品牌是點數高低的差別，Panasonic 的旗艦吹風機是'
