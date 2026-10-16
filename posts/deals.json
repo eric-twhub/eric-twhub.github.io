@@ -69,12 +69,12 @@
  },
  {
   "slug": "2026-10-16-taichung-okinawa",
-  "title": "台中飛沖繩 NT$4,895 來回含稅｜台灣虎航 11/16 出發",
+  "title": "台中飛沖繩 NT$4,332 來回含稅｜台灣虎航 11/16 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 4895,
+  "price": 4332,
   "air": "台灣虎航",
   "dep": "2026-11-16",
   "ret": "2026-11-19",
@@ -82,24 +82,24 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$10,113（23 天有紀錄），這張低 52%"
+   "11 月出發的票，每天最便宜的平均要 NT$10,064（23 天有紀錄），這張低 57%"
   ],
-  "med": 11330,
+  "med": 11408,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 5957,
-   "hi": 12806,
+   "hi": 12804,
    "days": 39
   },
   "mbase": {
-   "avg": 10113,
+   "avg": 10064,
    "days": 23,
    "month": 11
   },
   "rank": 1,
-  "n": 101
+  "n": 102
  },
  {
   "slug": "2026-10-16-taipei-fukuoka",
@@ -115,19 +115,19 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "11 月出發的票，每天最便宜的平均要 NT$8,346（6 天有紀錄），這張低 26%"
+   "11 月出發的票，每天最便宜的平均要 NT$8,413（6 天有紀錄），這張低 27%"
   ],
   "med": 10918,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-01&inbound=FUK-TPE&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 6620,
+   "lo": 7020,
    "hi": 10501,
    "days": 7
   },
   "mbase": {
-   "avg": 8346,
+   "avg": 8413,
    "days": 6,
    "month": 11
   },
