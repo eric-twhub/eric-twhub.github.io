@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-16-kaohsiung-okinawa",
- "generated": "2026-10-16 13:32",
+ "generated": "2026-10-16 13:51",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "okinawa",
@@ -26,9 +26,9 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$5,856（7 天有紀錄），這張低 42%"
+  "11 月出發的票，每天最便宜的平均要 NT$5,831（7 天有紀錄），這張低 42%"
  ],
- "med": 4957,
+ "med": 5395,
  "n_rt": 7,
  "others": [
   {
@@ -56,25 +56,6 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4895,
-   "dep": "2026-11-18",
-   "ret": "2026-11-21",
-   "dept": "09:45",
-   "rett": "14:00",
-   "rt": true,
-   "tr": 0,
-   "dur": 220,
-   "dur_to": 105,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-18&inbound=OKA-KHH&returnDate=2026-11-21&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
-  {
-   "o": "KHH",
-   "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
    "price": 4957,
    "dep": "2026-11-12",
    "ret": "2026-11-16",
@@ -86,6 +67,25 @@
    "dur_to": 85,
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-12&inbound=OKA-KHH&returnDate=2026-11-16&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "KHH",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 5395,
+   "dep": "2026-11-18",
+   "ret": "2026-11-21",
+   "dept": "09:45",
+   "rett": "14:00",
+   "rt": true,
+   "tr": 0,
+   "dur": 220,
+   "dur_to": 105,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-18&inbound=OKA-KHH&returnDate=2026-11-21&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]

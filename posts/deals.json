@@ -48,19 +48,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$5,856（7 天有紀錄），這張低 42%"
+   "11 月出發的票，每天最便宜的平均要 NT$5,831（7 天有紀錄），這張低 42%"
   ],
-  "med": 4957,
+  "med": 5395,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 4378,
-   "hi": 8852,
+   "hi": 8306,
    "days": 7
   },
   "mbase": {
-   "avg": 5856,
+   "avg": 5831,
    "days": 7,
    "month": 11
   },
@@ -69,32 +69,32 @@
  },
  {
   "slug": "2026-10-16-taichung-okinawa",
-  "title": "台中飛沖繩 NT$4,332 來回含稅｜台灣虎航 11/16 出發",
+  "title": "台中飛沖繩 NT$4,957 來回含稅｜台灣虎航 11/02 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 4332,
+  "price": 4957,
   "air": "台灣虎航",
-  "dep": "2026-11-16",
-  "ret": "2026-11-19",
+  "dep": "2026-11-02",
+  "ret": "2026-11-05",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$10,088（23 天有紀錄），這張低 57%"
+   "11 月出發的票，每天最便宜的平均要 NT$10,134（23 天有紀錄），這張低 51%"
   ],
   "med": 11330,
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 5457,
+   "lo": 5957,
    "hi": 12806,
    "days": 39
   },
   "mbase": {
-   "avg": 10088,
+   "avg": 10134,
    "days": 23,
    "month": 11
   },
@@ -115,19 +115,19 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "11 月出發的票，每天最便宜的平均要 NT$8,243（6 天有紀錄），這張低 26%"
+   "11 月出發的票，每天最便宜的平均要 NT$8,404（6 天有紀錄），這張低 27%"
   ],
   "med": 10918,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-01&inbound=FUK-TPE&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 6620,
+   "lo": 7020,
    "hi": 10501,
    "days": 7
   },
   "mbase": {
-   "avg": 8243,
+   "avg": 8404,
    "days": 6,
    "month": 11
   },
