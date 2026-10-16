@@ -18,7 +18,7 @@ FSC = {"BR", "CI", "JX", "JL", "NH", "NU", "CX", "KE", "UA", "AE",
        "HX", "MF", "OZ", "FM", "B7", "PR"}
 NAME = {"IT": "台灣虎航", "MM": "樂桃航空", "GK": "捷星日本", "TR": "酷航",
         "VZ": "泰越捷航空", "SL": "泰國獅子航空", "FD": "泰國亞洲航空",
-        "NQ": "Air Japan", "UO": "香港快運", "TW": "德威航空", "LJ": "真航空",
+        "UO": "香港快運", "TW": "德威航空", "LJ": "真航空",
         "BR": "長榮航空", "CI": "中華航空", "JX": "星宇航空", "JL": "日本航空",
         "NH": "全日空", "NU": "日本越洋航空", "AE": "華信航空", "MF": "廈門航空",
         "B7": "立榮航空", "OZ": "韓亞航空"}
@@ -139,6 +139,12 @@ def main():
     def money(n): return f"NT${round(n):,}"
 
     rows = json.load(open(SCAN, encoding="utf-8")) if os.path.exists(SCAN) else []
+    # 和 gen.py 的 CODE_FIX 一致：資料庫把 ANA 松山－羽田的 NH852／NH854 標成 NQ
+    # （Air Japan 是 ANA 的營運子公司，自有品牌航班 2026-03-29 已停飛，這些航班的
+    # 報到、登機與機場螢幕都是 NH）。不改的話圖卡會印出讀者買不到的「Air Japan 廉航」。
+    for _r in rows:
+        if _r.get("airline") == "NQ":
+            _r["airline"] = "NH"
 
     def pick(cands):
         """圖卡是要拿出去發的，數字必須有人能驗證：優先取 Trip.com 有的紀錄。

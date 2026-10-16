@@ -11,11 +11,23 @@ BASE=CFG['site'].get('base','').rstrip('/')
 def U(p): return BASE+p
 
 LCC={'IT':'台灣虎航','MM':'樂桃航空','GK':'捷星日本','TR':'酷航','IJ':'春秋航空日本','7G':'星悅航空',
- 'NQ':'Air Japan','AK':'馬來西亞亞航','D7':'全亞洲航空','XJ':'泰亞航X','FD':'泰國亞洲航空',
+ 'AK':'馬來西亞亞航','D7':'全亞洲航空','XJ':'泰亞航X','FD':'泰國亞洲航空',
  'SL':'泰國獅子航空','VZ':'泰越捷航空','BX':'釜山航空','7C':'濟州航空','LJ':'真航空',
  'TW':'德威航空','UO':'香港快運','Y8':'金鵬航空','HB':'大灣區航空','ZE':'易斯達航空','VJ':'越捷航空','5J':'宿霧太平洋航空'}
 FSC={'BR':'長榮航空','CI':'中華航空','JX':'星宇航空','JL':'日本航空','NH':'全日空','NU':'日本越洋航空',
  'CX':'國泰航空','KE':'大韓航空','UA':'聯合航空','AE':'華信航空','HX':'香港航空','MF':'廈門航空','OZ':'韓亞航空','FM':'上海航空','B7':'立榮航空','PR':'菲律賓航空'}
+# 票價資料庫的航空公司代碼對不上讀者買得到的東西時，在這裡正規化。
+# NQ→NH：NQ 是 Air Japan，ANA 的營運子公司。AirJapan 自有品牌航班（含台北桃園－
+# 成田）2026-03-29 起停止營運，ANA 繁中官網〈營運航空公司 (AirJapan)〉寫明由
+# AirJapan 營運的 ANA 航班「登機證顯示 ANA 航班號碼 (NH)。機場內的航班資訊螢幕顯示
+# NH」：https://www.ana.co.jp/zh/tw/guide/air-japan/
+# 實際資料裡掛 NQ 的 112 筆全是松山 13:30 與 16:50 那兩班，松山機場官網今日航班板
+# 上是「全日本空輸 NH852／NH854 羽田」（788/789），行程代碼也寫 NH＋TSAHND。
+# 不正規化的話，同一班飛機會被拆成「Air Japan 廉航」和「全日空 一般航空」兩家，
+# 讀者看到一個買不到的品牌，廉航／一般航空的價差比較也被 787 的票價拉歪。
+# 查證日 2026-10-16，來源：ANA 官網（上列）＋松山機場官網 https://www.tsa.gov.tw/flights/international/today
+# 哪天 AirJapan 品牌復飛、或資料裡出現 NQ 自己的班號，要回來重看這一條。
+CODE_FIX={'NQ':'NH'}
 ORI={'TPE':'台北桃園','TSA':'台北松山','RMQ':'台中','KHH':'高雄','TNN':'台南'}
 ORIGINS=[('taipei','台北',['TPE','TSA']),('taichung','台中',['RMQ']),
          ('kaohsiung','高雄',['KHH']),('tainan','台南',['TNN'])]
@@ -915,7 +927,7 @@ def load():
     for r in rows:
         d=r.get('destination','')
         if d not in DEST: continue
-        a=r.get('airline','')
+        a=CODE_FIX.get(r.get('airline',''), r.get('airline',''))
         k=(r.get('origin'),d,r.get('departure_at','')[:10],r.get('return_at','')[:10],a,r.get('price'))
         if k in seen: continue
         seen.add(k)
@@ -3154,6 +3166,208 @@ if os.path.exists('seat.json'):
         f'本頁數字查證於 {ST["checked"]}，購票前請以航空公司官網為準。</p>'
       + foot())
     pages.append(('/japan-flight-seat/', 0.7))
+
+
+# ---------- 搭飛機看富士山 ----------
+# 這題的中文資料幾乎都寫「羽田出發坐右邊」，但 JAL 官方說羽田往西有六條航路，
+# 北側四條看左、南側兩條看右，所以要看航線。而且 JAL 與 ANA 對同一城市對的
+# 答案有七條不一致，因為兩家走的航路不同。台日國際線則完全沒有官方依據。
+if os.path.exists('fuji.json'):
+    FJ = json.load(open('fuji.json', encoding='utf-8'))
+    _FJM = '<br><small style="color:var(--dim)">'
+
+    def _fj_list(xs):
+        return '、'.join(html.escape(x) for x in xs)
+
+    def _fj_group(g):
+        out = f'<h4>{html.escape(g["dir"])}</h4>'
+        if g.get('all_left'):
+            return out + ('<p class="lede"><b class="win">全部都是左側。</b>'
+                          + html.escape(g['all_left_why']) + '</p>')
+        bits = []
+        if g.get('left'):
+            bits.append(('左側', _fj_list(g['left'])))
+        if g.get('right'):
+            bits.append(('右側', _fj_list(g['right'])))
+        if g.get('none'):
+            bits.append(('看不到', _fj_list(g['none'])))
+        out += ('<div class="tw"><table><tbody>'
+                + ''.join(f'<tr><td><b>{l}</b></td><td class="nm">{v}</td></tr>'
+                          for l, v in bits)
+                + '</tbody></table></div>')
+        if g.get('none_why'):
+            out += f'<p class="disc">{html.escape(g["none_why"])}</p>'
+        return out
+
+    _fjair = ''
+    for a in FJ['airlines']:
+        _fjair += (f'<h3>{html.escape(a["name"])}<span class="tag">{a["code"]}</span></h3>'
+                   f'<p class="lede">{html.escape(a["note"])}</p>'
+                   + ''.join(_fj_group(g) for g in a['groups'])
+                   + (f'<p class="disc">{html.escape(a["disclaimer"])}</p>'
+                      if a.get('disclaimer') else '')
+                   + f'<p class="disc">出處：<a href="{a["src"]}" rel="nofollow noopener" '
+                     f'target="_blank">{html.escape(a["src_name"])}</a>，'
+                     f'查證於 {FJ["checked"]}。</p>')
+
+    _SE = FJ['season']
+    _fjbest = max(_SE['months'], key=lambda m: m[1])
+    _fjworst = min(_SE['months'], key=lambda m: m[1])
+    _fjmon = ''.join(
+        f'<tr><td><b>{html.escape(m)}</b></td>'
+        f'<td class="{"win" if p >= 50 else ""}">{p}%</td>'
+        f'<td class="nm">{"看得到的機率最高的一段" if p >= 50 else ("最難看到的一段" if p < 20 else "")}</td>'
+        f'</tr>' for m, p in _SE['months'])
+    _fjhour = ''.join(
+        f'<tr><td><b>{html.escape(h)}</b></td>'
+        f'<td class="{"win" if i == 0 else ""}">{a}%</td><td>{b}%</td></tr>'
+        for i, (h, a, b) in enumerate(_SE['hours']))
+
+    _CF = FJ['conflict']
+    _fjcf = ''.join(f'<tr><td class="nm">{html.escape(r)}</td>'
+                    f'<td class="nm">{html.escape(j)}</td>'
+                    f'<td class="nm">{html.escape(n)}</td></tr>'
+                    for r, j, n in _CF['rows'])
+
+    _LT = FJ['letters']
+    _fjlt = ''.join(f'<tr><td><b>{html.escape(m)}</b></td><td class="nm">{html.escape(s)}</td>'
+                    f'<td class="win">{html.escape(l)}</td><td>{html.escape(r)}</td></tr>'
+                    for m, s, l, r in _LT['rows'])
+
+    _fjtips = ''.join(f'<tr><td><b>{html.escape(q)}</b></td><td class="nm">{html.escape(a)}</td></tr>'
+                      for q, a in FJ['jl_tips']['rows'])
+
+    _IN = FJ['intl']
+
+    fj_title = '搭飛機看富士山：哪些航線看得到、該坐左邊還是右邊'
+    fj_desc = (f'日本航空、全日空、天馬航空三家官方的逐航線左右判定，'
+               f'加上富士市 35 年定點觀測的逐月與逐時段可見率'
+               f'（最高 {_fjbest[0]} {_fjbest[1]}%，最低 {_fjworst[0]} {_fjworst[1]}%）。'
+               f'台日國際線查不到官方依據，這頁說明為什麼。')
+
+    fj_faq = [
+     ('台灣飛東京，坐左邊還是右邊？',
+      '沒有官方答案。本站查過日本航空與全日空的官方查詢工具，實際讀取它們的機場選單，'
+      '裡面只有日本國內機場，沒有任何海外機場；中華航空、長榮航空、星宇航空官網也都'
+      '查不到富士山座位說明。中文圈流傳的「左去右回」只有部落格與社群說法，'
+      '方向上和日本航空說的航路幾何相容，但沒有官方背書，所以本站不寫成定論。'),
+     ('那回程是不是真的比較準？',
+      '在日本國內線是官方說法。日本航空官網寫明，從西邊飛回羽田的班機全部通過富士山南側，'
+      '所以一律從左側窗戶看得到。去程才要看走哪一條航路。至於台灣飛東京的國際線，'
+      '一樣沒有官方依據，不能直接套用。'),
+     ('為什麼有些整理說羽田出發一律坐右邊？',
+      '那是過度簡化。日本航空官網寫明羽田附近往西的航路有六條，以富士山為界，'
+      '北側四條從左側看得到、南側兩條從右側看得到。所以羽田出發要看你這班走哪一條，'
+      '官方自己的逐航線資料裡，羽田出發就同時有看左側、看右側與看不到三種。'),
+     ('日本航空和全日空的答案為什麼不一樣？',
+      '因為兩家走的航路不同。羽田到岡山、高松、松山、山口宇部、北九州、熊本、大分這幾條，'
+      '日本航空說幾乎從正上方飛過去所以看不到，全日空說看左側；鹿兒島與宮崎回羽田則相反。'
+      '這表示「這條航線就是坐哪一邊」的寫法本身有問題，要查你實際搭的那一家。'),
+     ('哪個月份、幾點的班機最容易看到？',
+      f'富士市從 1990 年起每天固定三個時間觀測，35 年通算下來，早上 8 點看到全山的比例是 '
+      f'{_SE["hours"][0][1]}%，中午 {_SE["hours"][1][1]}%，下午 4 點 {_SE["hours"][2][1]}%，'
+      f'而且 35 年每一年都是早上 8 點最高。月份方面 {_fjbest[0]} 最高 {_fjbest[1]}%，'
+      f'{_fjworst[0]} 最低只有 {_fjworst[1]}%，差了六倍。所以冬天的早班機機率最高。'),
+     ('天氣預報說晴天，就看得到嗎？',
+      '不一定，而且差很多。富士市官方寫明 5 月到 9 月即使平地晴天，也常因周邊的雲或霧'
+      '而看不到富士山。35 年累計起來，8 月有 582 個晴天但全山可見只有 158 天，約 27%；'
+      '12 月有 782 個晴天、全山可見 669 天，約 86%。同樣是晴天，冬天的命中率是夏天的三倍。'),
+     ('要坐機翼前面還是後面？',
+      '沒有官方答案。官方只說要避開機翼正上方，日本航空官網寫明沒有窗戶的座位與機翼正上方'
+      '的座位看不清楚外面，並說選位時可以確認是哪些。至於機翼蓋住第幾排，沒有通用數字，'
+      '同樣是 787，各家的排號配置都不同，只能在訂位的選位頁看那一班實際的座位圖。'),
+     ('靠窗就一定有窗嗎？',
+      '不一定。長榮官網直接公布了無窗座位編號：787-9 是 72A 與 72K，787-10 是 53A 與 53K，'
+      'A330-300 是 25A 與 25K。這些位置在座位圖上看起來靠窗，實際上沒有窗戶。'
+      '其他航空多半沒有公布，要在選位頁自己看。'),
+    ]
+    fj_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in fj_faq)
+    fj_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in fj_faq]}, ensure_ascii=False)
+
+    write('japan-flight-fuji/index.html',
+      head(fj_title, fj_desc, 'japan-flight-fuji/',
+           '<script type="application/ld+json">' + fj_ld + '</script>')
+      + crumbs([('首頁', '/'), ('看富士山', None)]) + topnav()
+      + '<h1>搭飛機看富士山：哪些航線看得到、該坐左邊還是右邊</h1>'
+      + '<p class="lede">網路上的整理多半寫「羽田出發坐右邊」。'
+        '但日本航空官網自己的逐航線資料裡，羽田出發同時有看左側、看右側與'
+        '<b>完全看不到</b>三種結果。這頁只放航空公司官方與氣象觀測的資料。</p>'
+      + f'<div class="today"><div class="tday">查證於 {FJ["checked"]}</div>'
+        f'<div class="tans">{_fjbest[0]}的早班機機率最高，'
+        f'{_SE["hours"][0][0]}看到全山的比例是 {_SE["hours"][0][1]}%</div>'
+        f'<div class="tsub">同一個觀測點，{_fjworst[0]}只有 {_fjworst[1]}%，'
+        f'下午 4 點降到 {_SE["hours"][2][1]}%。先挑月份與時段，再挑左右。</div></div>'
+      + '<h2>先看航路，不是看左右</h2>'
+      + f'<p class="lede">{html.escape(FJ["why"]["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(FJ["why"]["key"])}</b></li></ul></div>'
+      + f'<p class="disc">出處：<a href="{FJ["why"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(FJ["why"]["src_name"])}</a>。'
+        f'{html.escape(FJ["why"]["disclaimer"])}</p>'
+      + '<h2>台灣飛日本的航線呢？查不到官方依據</h2>'
+      + f'<p class="lede">{html.escape(_IN["body"])}這一節沒有表格，'
+        f'因為沒有可以放進表格的官方資料。以下是本站查過的地方。</p>'
+      + '<div class="tldr"><ul>'
+      + ''.join(f'<li>{html.escape(e)}</li>' for e in _IN['evidence'])
+      + '</ul></div>'
+      + f'<p class="lede">{html.escape(_IN["folk"])}</p>'
+      + f'<p class="lede">{html.escape(_IN["route"])}</p>'
+      + f'<p class="disc">{html.escape(_IN["why_vary"])}</p>'
+      + '<h2>日本國內線：三家官方的逐航線判定</h2>'
+      + '<p class="lede">只列出航空公司自己公布的。搭哪一家就看哪一家那一段，'
+        '因為兩家的答案在某些航線上不一樣，原因在下一節。</p>'
+      + _fjair
+      + '<h2>日本航空與全日空打架的那幾條</h2>'
+      + f'<p class="lede">{html.escape(_CF["body"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>航線</th><th>日本航空說</th>'
+        '<th>全日空說</th></tr></thead><tbody>' + _fjcf + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_CF["how"])}</b></li></ul></div>'
+      + '<h2>哪個月份、哪個時段機率最高</h2>'
+      + f'<p class="lede">{html.escape(_SE["how"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>月份</th><th>看到全山的比例</th>'
+        '<th>備註</th></tr></thead><tbody>' + _fjmon + '</tbody></table></div>'
+      + f'<p class="disc">全年合計 {_SE["year_rate"]}%。官方說法：'
+        f'{html.escape(_SE["official_says"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>觀測時間</th><th>看到全山</th>'
+        '<th>看到一部分或全部</th></tr></thead><tbody>' + _fjhour + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_SE["hours_says"])}</p>'
+      + f'<div class="tldr"><ul><li><b>平地晴天不等於看得到。</b>'
+        f'{html.escape(_SE["trap"])}</li></ul></div>'
+      + f'<p class="disc">資料來源：<a href="{_SE["src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(_SE["src_name"])}</a>，查證於 {FJ["checked"]}。'
+        f'{html.escape(_SE["caveat"])}</p>'
+      + '<h2>座位字母：A 一定是左邊，右邊不一定是 K</h2>'
+      + f'<p class="lede">{html.escape(_LT["rule"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_LT["warn"])}</b></li></ul></div>'
+      + '<div class="tw"><table><thead><tr><th>航空與機型</th><th>一排的字母</th>'
+        '<th>左側靠窗</th><th>右側靠窗</th></tr></thead><tbody>'
+      + _fjlt + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_LT["unverified"])}</p>'
+      + '<h2>機翼會擋住，但擋住第幾排沒有通用答案</h2>'
+      + f'<p class="lede">{html.escape(FJ["wing"]["official"])}'
+        f'{html.escape(FJ["wing"]["jl"])}</p>'
+      + f'<p class="lede">{html.escape(FJ["wing"]["no_rows"])}</p>'
+      + f'<div class="tldr"><ul><li><b>靠窗不一定有窗。</b>'
+        f'{html.escape(FJ["wing"]["eva"])}</li></ul></div>'
+      + '<h2>官方問答裡的其他細節</h2>'
+      + '<div class="tw"><table><tbody>' + _fjtips + '</tbody></table></div>'
+      + f'<p class="disc">出處：<a href="{FJ["jl_tips"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(FJ["jl_tips"]["src_name"])}</a>，'
+        f'查證於 {FJ["checked"]}。</p>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-flight-seat/")}"><b>💺 選位要錢嗎</b>'
+        f'<s>想指定靠窗，先看那家收不收錢</s></a>'
+      + f'<a class="ct" href="{U("/japan-flight-good-times/")}"><b>☀️ 早去晚回</b>'
+        f'<s>早班機機率最高，這裡只留好時段</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>廉航與一般航空並列</s></a></div>'
+      + '<h2>常見問題</h2>' + fj_html
+      + f'<p class="disc">航路會因氣象狀況與航管調整，各家官方都有這項免責說明，'
+        f'所以上面的左右判定是常態下的結果，不是保證。'
+        f'本頁查證於 {FJ["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-flight-fuji/', 0.7))
 
 
 # ---------- 雪具託運 ----------
