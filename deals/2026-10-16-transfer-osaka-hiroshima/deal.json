@@ -1,11 +1,11 @@
 {
  "schema": 1,
  "slug": "2026-10-16-transfer-osaka-hiroshima",
- "generated": "2026-10-16 16:38",
+ "generated": "2026-10-16 17:21",
  "kind": "transfer",
  "city": "hiroshima",
  "via": "osaka",
- "own": 17465,
+ "own": 17454,
  "fare": {
   "o": "TPE",
   "d": "OSA",
@@ -35,5 +35,5 @@
  "mode": "山陽新幹線",
  "tm": "約 1.5 小時",
  "total": 11672,
- "save": 5793
+ "save": 5782
 }
