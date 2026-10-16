@@ -1413,7 +1413,8 @@ def topnav(cur=''):
             + link('/japan-jttp/', '🛂 JTTP 快速通關')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制'))
 
-    shop = (link('/tokyo/street-fashion/', '👕 東京潮牌選物店')
+    shop = (link('/japan-worth-buying/', '💰 買什麼划算')
+            + link('/tokyo/street-fashion/', '👕 東京潮牌選物店')
             + link('/japan-coupon/', '🏷️ 購物折扣總覽')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
             + link('/apple-japan-price/', '🍎 台日 Apple 價差')
@@ -1515,6 +1516,7 @@ _AD_MAP = [
     ('okinawa/churasun6', 'activity2'), ('tokyo/worth-flying-for', 'activity2'),
     ('tokyo/street-fashion', 'activity2'), ('tokyo/hostel', 'transfer'),
     ('tokyo/budget-hotel', 'transfer'),
+    ('japan-worth-buying', 'esim'),
     ('japan-coupon', 'esim'), ('japan-bic-points', 'esim'),
     ('japan-camera-price', 'esim'), ('japan-dyson-price', 'esim'),
     ('japan-panasonic-dryer', 'esim'), ('apple-japan-price', 'esim'),
@@ -3824,6 +3826,213 @@ if os.path.exists('pay.json'):
         f'使用前請以各自官網為準。匯率每天變動，本頁只寫各家用哪一種牌告，不寫數字。</p>'
       + foot())
     pages.append(('/japan-payment/', 0.7))
+
+# ---------- 去日本買什麼划算 ----------
+# 這頁不是「必買清單」。社群上那種清單沒有價差也沒有出處，而且 AI 摘要就答得完。
+# 這裡只收本站已經逐項對過官方通路定價的品項，直接從那四個資料檔現算，
+# 所以會跟著它們每日更新，不另外維護一份數字。
+if all(os.path.exists(f) for f in
+       ('apple.json', 'cameras.json', 'dyson.json', 'panasonic.json')):
+    _WB_AP = json.load(open('apple.json', encoding='utf-8'))
+    _WB_RATE = _WB_AP['rate']['jpy_twd']
+    _WB_TAXR = 1 + _WB_AP['tax']['jp_consumption']
+    _WB_ALLOW = _WB_AP['tax']['tw_duty_free_allowance']
+
+    _WB_SRC = [
+      ('cameras.json', 'rows', '相機', '/japan-camera-price/',
+       lambda r: f"{r['brand']} {r['model']}"),
+      ('dyson.json', 'rows', 'Dyson 美髮', '/japan-dyson-price/',
+       lambda r: r['model']),
+      ('dyson.json', 'rows_vacuum_pair', 'Dyson 吸塵器', '/japan-dyson-price/',
+       lambda r: r.get('model', '')),
+      ('panasonic.json', 'rows', 'Panasonic 吹風機', '/japan-panasonic-dryer/',
+       lambda r: r['model']),
+    ]
+    _wb = []
+    for _f, _key, _cat, _page, _nm in _WB_SRC:
+        _d = json.load(open(_f, encoding='utf-8'))
+        for _r in _d.get(_key) or []:
+            if not _r.get('jpy') or not _r.get('twd'):
+                continue
+            _ex = round(_r['jpy'] / _WB_TAXR * _WB_RATE)
+            _wb.append((_r['twd'] - _ex, _cat, _nm(_r), _ex, _r['twd'], _page))
+    for _p in _WB_AP['products']:
+        if not _p.get('jpy') or not _p.get('twd'):
+            continue
+        _ex = round(_p['jpy'] / _WB_TAXR * _WB_RATE)
+        _wb.append((_p['twd'] - _ex, f"Apple {_p['cat']}",
+                    (_p['name'] + ' ' + (_p.get('spec') or '')).strip(),
+                    _ex, _p['twd'], '/apple-japan-price/'))
+    _wb.sort(reverse=True)
+
+    _wb_jp = [x for x in _wb if x[0] > 0]
+    _wb_tw = [x for x in _wb if x[0] < 0]
+    _wb_over = [x for x in _wb_jp if x[3] > _WB_ALLOW]
+    _wb_best_pct = max(_wb_jp, key=lambda x: x[0] / x[4]) if _wb_jp else None
+    _wb_best_abs = _wb_jp[0] if _wb_jp else None
+    # 榜首往下連續超過免稅額度的項數。不能寫成「省最多的 N 項」，
+    # 因為 _wb_over 是全部超額的筆數，兩者不是同一個東西。
+    _wb_lead = 0
+    for _x in _wb_jp:
+        if _x[3] > _WB_ALLOW:
+            _wb_lead += 1
+        else:
+            break
+
+    def _wb_row(x):
+        gap, cat, name, ex, twd, page = x
+        pct = round(gap / twd * 100)
+        over = ('<br><small style="color:var(--dim)">超過免稅額度</small>'
+                if ex > _WB_ALLOW else '')
+        return (f'<tr><td><b>{html.escape(name)}</b>'
+                f'<br><small style="color:var(--dim)">{html.escape(cat)}</small></td>'
+                f'<td>{money(ex)}{over}</td><td>{money(twd)}</td>'
+                f'<td class="win"><b>{money(gap)}</b>'
+                f'<br><small style="color:var(--dim)">{pct}%</small></td>'
+                f'<td><a href="{U(page)}">看這一類</a></td></tr>')
+
+    _wb_top = ''.join(_wb_row(x) for x in _wb_jp[:12])
+    _wb_lose = ''.join(
+        f'<tr><td><b>{html.escape(x[2])}</b>'
+        f'<br><small style="color:var(--dim)">{html.escape(x[1])}</small></td>'
+        f'<td>{money(x[3])}</td><td>{money(x[4])}</td>'
+        f'<td class="lose"><b>台灣便宜 {money(-x[0])}</b></td>'
+        f'<td><a href="{U(x[5])}">看這一類</a></td></tr>' for x in _wb_tw)
+
+    _WB_CAVEAT = [
+      ('Apple', '/apple-japan-price/',
+       '絕對金額最大的都在這裡，但百分比最小，而且高容量機種全部超過入境免稅額度。'
+       '手機關稅是 0%，可是超過額度的部分要補 5% 營業稅，所以帳面價差不是你真正省到的。'
+       'Apple 那一頁有把這筆稅算進去之後的淨值。'),
+      ('Dyson', '/japan-dyson-price/',
+       '百分比最高的一類，而且多數在免稅額度內。但同一個型號在兩地的盒裝配件與贈品不同，'
+       '台灣官網常附贈品，所以這是機器本體的價差，不是等值品的價差。'
+       '空氣清淨機那一類本站不給價差，因為兩地的型號代碼根本不同，相減沒有意義。'),
+      ('Panasonic 吹風機', '/japan-panasonic-dryer/',
+       '電壓不一樣，日本是 100V。買回來要嘛配變壓器，要嘛承擔風險，這筆成本不在價差裡。'
+       '另外台灣官方商城只標會員優惠價、日本採開放價格不公布建議售價，兩邊的定價邏輯本來就不同。'),
+      ('相機', '/japan-camera-price/',
+       '這一類反而有台灣比較便宜的機種。另外 DJI 台灣官方商城標示不從台灣本地出貨，'
+       '由買方自行處理進口報關，這會影響到貨與保固送修，不影響定價但影響你的體感。'),
+    ]
+    _wb_cav = ''.join(
+        f'<h3>{html.escape(n)}</h3><p class="lede">{html.escape(b)}</p>'
+        f'<p class="disc"><a href="{U(u)}">看這一類的完整對照</a></p>'
+        for n, u, b in _WB_CAVEAT)
+
+    wb_title = '去日本買什麼划算：只看算得出價差的'
+    wb_desc = (f'本站逐項對過官方通路定價的 {len(_wb)} 項商品，'
+               f'日本比較便宜的有 {len(_wb_jp)} 項。按免稅後的實際價差排序，'
+               f'並標出哪些超過入境免稅額度。不列藥妝與零食，因為那些沒有可比的官方定價。')
+
+    wb_faq = [
+     ('為什麼這頁沒有藥妝、零食、伴手禮？',
+      '因為算不出價差。本站比價的做法是兩邊都取官方通路的定價，再換算免稅後的金額。'
+      '藥妝與零食在台灣多半沒有對應的官方定價可比，同一支商品在不同通路的價格差很多，'
+      '規格與容量也常常不同。與其列一份沒有數字的清單，不如先空著。'),
+     ('省最多的是哪一項？',
+      f'以絕對金額算是 {html.escape(_wb_best_abs[2]) if _wb_best_abs else "—"}，'
+      f'但那一項的百分比只有 {round(_wb_best_abs[0] / _wb_best_abs[4] * 100) if _wb_best_abs else 0}%，'
+      f'而且超過入境免稅額度。以百分比算最高的是 '
+      f'{html.escape(_wb_best_pct[2]) if _wb_best_pct else "—"}，'
+      f'省 {round(_wb_best_pct[0] / _wb_best_pct[4] * 100) if _wb_best_pct else 0}%。'
+      f'這兩個不是同一項，所以「省最多」要先問你問的是哪一種。'),
+     ('超過免稅額度會怎樣？',
+      f'台灣入境旅客行李物品的免稅額是 {money(_WB_ALLOW)}，2024/6/26 起由 NT$20,000 調高。'
+      f'超過的部分要課稅，稅率依品項而定。以手機為例關稅是 0%，但超過額度的部分要補 '
+      f'5% 營業稅。本站只在 Apple 那一頁算到稅後淨值，其他品類沒有逐項查關稅率，'
+      f'所以這一頁只標示哪些超過額度，不代替你算稅。'),
+     ('價差是怎麼算的？',
+      f'日本價取實體連鎖的含稅牌價，除以 1.1 還原成免稅價，再用含換匯成本的匯率換成台幣，'
+      f'然後和台灣官方通路的價格相減。目前用的匯率是 {_WB_RATE}，'
+      f'已含約 {_WB_AP["rate"]["spread"] * 100:.1f}% 的換匯成本。'
+      f'日本側一律用實體店牌價而不用日本亞馬遜，因為消費稅免稅只在有執照的實體店成立，'
+      f'拿線上價去算免稅會算出一個買不到的數字。'),
+     ('點數有算進去嗎？',
+      '沒有。商品頁標示的點數要含稅結帳才拿得到，而免稅結帳不給點數也不能用點數折抵。'
+      '觀光客走免稅這條路時點數是零，所以價差只算免稅。各分頁仍然把點數列出來，'
+      '是為了讓你看出放棄免稅改走含稅能拿到多少。'),
+    ]
+    wb_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in wb_faq)
+    wb_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in wb_faq]}, ensure_ascii=False)
+
+    write('japan-worth-buying/index.html',
+      head(wb_title, wb_desc, 'japan-worth-buying/',
+           '<script type="application/ld+json">' + wb_ld + '</script>')
+      + crumbs([('首頁', '/'), ('買什麼划算', None)]) + topnav()
+      + '<h1>去日本買什麼划算</h1>'
+      + '<p class="lede">網路上的必買清單多半沒有數字。這一頁只收本站逐項對過'
+        '官方通路定價的品項，按<b>免稅後的實際價差</b>排序，並標出哪些超過入境免稅額度。'
+        '算不出價差的就不列。</p>'
+      + f'<div class="today"><div class="tday">價格更新於 {_WB_AP["updated"]}</div>'
+        f'<div class="tans">{len(_wb)} 項裡有 {len(_wb_jp)} 項日本比較便宜，'
+        f'其中 {len(_wb_over)} 項超過入境免稅額度</div>'
+        f'<div class="tsub">而且省最多的和省比例最高的不是同一批：'
+        f'排行榜前 {_wb_lead} 名全部超過額度，第 {_wb_lead + 1} 名才回到額度內。'
+        f'絕對金額看 Apple，百分比看 Dyson。</div></div>'
+      + '<h2>日本比較便宜的，省最多的在前面</h2>'
+      + '<div class="tw"><table><thead><tr><th>品項</th><th>日本免稅後</th>'
+        '<th>台灣</th><th>省下</th><th>細節</th></tr></thead><tbody>'
+      + _wb_top + '</tbody></table></div>'
+      + f'<p class="disc">共 {len(_wb_jp)} 項日本較便宜，上表只列前 {min(12, len(_wb_jp))} 項，'
+        f'完整對照在各自的分頁。日本價已還原成免稅價並用含 '
+        f'{_WB_AP["rate"]["spread"] * 100:.1f}% 換匯成本的匯率換算，點數不計入。</p>'
+      + (f'<h2>省最多的和最划算的不是同一批</h2>'
+         f'<p class="lede">「哪個最划算」要先問你問的是絕對金額還是比例，'
+         f'因為答案不一樣，而且差很遠。</p>'
+         f'<div class="tw"><table><thead><tr><th>問法</th><th>答案</th>'
+         f'<th>省下</th><th>比例</th><th>超過額度嗎</th></tr></thead><tbody>'
+         f'<tr><td><b>絕對金額最大</b></td>'
+         f'<td class="nm">{html.escape(_wb_best_abs[2])}'
+         f'<br><small style="color:var(--dim)">{html.escape(_wb_best_abs[1])}</small></td>'
+         f'<td class="win">{money(_wb_best_abs[0])}</td>'
+         f'<td>{round(_wb_best_abs[0] / _wb_best_abs[4] * 100)}%</td>'
+         f'<td class="lose">超過</td></tr>'
+         f'<tr><td><b>比例最高</b></td>'
+         f'<td class="nm">{html.escape(_wb_best_pct[2])}'
+         f'<br><small style="color:var(--dim)">{html.escape(_wb_best_pct[1])}</small></td>'
+         f'<td>{money(_wb_best_pct[0])}</td>'
+         f'<td class="win">{round(_wb_best_pct[0] / _wb_best_pct[4] * 100)}%</td>'
+         f'<td class="win">{"超過" if _wb_best_pct[3] > _WB_ALLOW else "在額度內"}</td></tr>'
+         f'</tbody></table></div>'
+         f'<div class="tldr"><ul><li><b>金額大的那一項，省下的比例反而最小。</b>'
+         f'而且它超過免稅額度，要補的稅會再吃掉一塊。'
+         f'比例最高的那一項金額雖然小，但不必處理課稅，也比較好塞進行李。</li></ul></div>'
+         if _wb_best_abs and _wb_best_pct else '')
+      + (('<h2>這幾項台灣反而便宜</h2>'
+          '<p class="lede">不是所有東西在日本都比較便宜。這幾項在台灣買就好，'
+          '省下的行李空間還能裝別的。</p>'
+          '<div class="tw"><table><thead><tr><th>品項</th><th>日本免稅後</th>'
+          '<th>台灣</th><th>結果</th><th>細節</th></tr></thead><tbody>'
+          + _wb_lose + '</tbody></table></div>') if _wb_tw else '')
+      + '<h2>每一類都有但書</h2>'
+      + '<p class="lede">價差只是帳面上的數字。下面這些條件會把它吃掉一部分，'
+        '或者讓兩邊根本不是同一個東西。</p>'
+      + _wb_cav
+      + '<h2>為什麼不列藥妝與零食</h2>'
+      + '<div class="tldr"><ul>'
+        '<li><b>不列藥妝、零食與伴手禮。</b>那些在台灣多半沒有對應的官方定價可比，'
+        '同一支商品在不同通路差很多，規格容量也常不同，算不出可以負責的價差。</li>'
+        '<li><b>不代替你算稅。</b>只標示哪些超過免稅額度。各品類的關稅率本站沒有逐項查過，'
+        '只有手機那一頁算到稅後淨值。</li>'
+        '<li><b>不收水貨與第三方賣家。</b>兩邊都只取品牌官方商城或官方授權的實體連鎖，'
+        '不然比到的不是同一個購買條件。</li>'
+        '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 免稅新制</b>'
+        f'<s>11/1 起退稅的做法變了</s></a>'
+      + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🎫 購物折扣券</b>'
+        f'<s>免稅之外還能再折</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
+        f'<s>回饋比價差更大一個量級</s></a></div>'
+      + '<h2>常見問題</h2>' + wb_html
+      + f'<p class="disc">價格與匯率每天變動，本頁的數字隨各分頁的資料更新，'
+        f'最後更新於 {_WB_AP["updated"]}。購買前請以各通路當下的標價為準。</p>'
+      + foot())
+    pages.append(('/japan-worth-buying/', 0.7))
 
 
 # ---------- 雪具託運 ----------
