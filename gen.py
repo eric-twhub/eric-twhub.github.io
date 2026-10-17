@@ -3716,6 +3716,17 @@ if os.path.exists('pay.json'):
         f'<td><a href="{src}" rel="nofollow noopener" target="_blank">官方</a></td></tr>'
         for n, when, what, src in _TC['rows'])
 
+    _PK = PY['perks']
+    _pksrc = ''.join(
+        f'<tr><td class="nm">{html.escape(n)}</td><td>{html.escape(d)}</td>'
+        f'<td><a href="{u}" rel="nofollow noopener" target="_blank">活動頁</a></td></tr>'
+        for n, d, u in _PK['srcs'])
+    _pkstore = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(w)}</td>'
+        f'<td><a href="{u}" rel="nofollow noopener" target="_blank">官網</a></td></tr>'
+        for n, w, u in _PK['stores']['rows'])
+
+
     py_title = '日本的支付方式怎麼用：PayPay、交通卡與感應信用卡'
     py_desc = ('PayPay 台灣旅客註冊不了，官方給的路徑是用台灣的錢包掃它的收款碼。'
                '這頁整理哪幾個錢包在 PayPay 官方清單上、各家用哪一種匯率、'
@@ -3808,6 +3819,27 @@ if os.path.exists('pay.json'):
       + f'<div class="tldr"><ul>{_pylim}</ul></div>'
       + f'<p class="lede">{html.escape(PY["limits"]["step"])}</p>'
       + f'<p class="disc">{html.escape(PY["limits"]["offline"])}</p>'
+      + f'<h2>{html.escape(_PK["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_PK["intro"])}</p>'
+      + f'<div class="tldr"><ul><li><b>官方原文：</b>{html.escape(_PK["quote"])}</li></ul></div>'
+      + f'<p class="lede">{html.escape(_PK["quote_where"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>活動</th><th>期間</th>'
+        '<th>來源</th></tr></thead><tbody>' + _pksrc + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(_PK["methods"])}</p>'
+      + f'<p class="lede">{html.escape(_PK["kyc"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_PK["nogeneral"])}</b></li>'
+        f'<li>{html.escape(_PK["coupon"])}</li></ul></div>'
+      + f'<h3>{html.escape(_PK["stores"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(_PK["stores"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>店家</th><th>官方怎麼寫</th>'
+        '<th>來源</th></tr></thead><tbody>' + _pkstore + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_PK["stores"]["note"])}</b></li></ul></div>'
+      + f'<p class="disc">各店的集點制度與申辦方式整理在'
+        f'<a href="{U("/japan-store-points/")}">日本店家集點</a>那一頁。</p>'
+      + f'<h3>{html.escape(_PK["tw"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(_PK["tw"]["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_PK["tw"]["key"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(_PK["tw"]["honest"])}</p>'
       + '<h2>交通卡的部分搬到另一頁了</h2>'
       + '<p class="lede">十張全國互通卡的區域與差別、旅客版的效期與退款、'
         '儲值管道與餘額上限，還有台灣發行的卡能不能在 Apple 錢包裡儲值，'
@@ -4408,6 +4440,13 @@ if os.path.exists('transit.json'):
         f'<td class="nm">{html.escape(note)}</td></tr>'
         for n, dep, fee, note in TR['refund']['rows'])
 
+    _PT = TR['points']
+    _trpt = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(a)}</td>'
+        f'<td class="{"win" if b == "有" else ("warn" if b in ("反向", "明文沒有") else "")}">'
+        f'{html.escape(b)}</td><td class="nm">{html.escape(c)}</td></tr>'
+        for n, a, b, c in TR['points']['stores']['rows'])
+
     _trq = ''.join(
         f'<tr><td><b>{html.escape(who)}</b></td><td class="nm">{html.escape(txt)}</td></tr>'
         for who, txt in TR['charge']['quotes'])
@@ -4646,6 +4685,30 @@ if os.path.exists('transit.json'):
       + f'<div class="tldr"><ul><li><b>{html.escape(TR["wallet"]["answer"])}</b></li>'
         f'<li>{html.escape(TR["wallet"]["refund_trap"])}</li></ul></div>'
       + _trcards
+      + f'<h2 id="{_hid(_PT["title"])}">{html.escape(_PT["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_PT["intro"])}</p>'
+      + f'<h3>{html.escape(_PT["jre"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(_PT["jre"]["body"])}</p>'
+      + f'<p class="lede">{html.escape(_PT["jre"]["stores"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_PT["jre"]["block"])}</b></li>'
+        f'<li>{html.escape(_PT["jre"]["gap"])}</li></ul></div>'
+      + f'<p class="disc">出處：<a href="{_PT["jre"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">JRE POINT 官方問答</a>。</p>'
+      + f'<h3>{html.escape(_PT["icoca"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(_PT["icoca"]["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_PT["icoca"]["reg"])}</b></li>'
+        f'<li>{html.escape(_PT["icoca"]["gap"])}</li></ul></div>'
+      + f'<p class="disc">出處：<a href="{_PT["icoca"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">JR 西日本 ICOCA 點數說明</a>。{html.escape(_PT["pasmo"])}</p>'
+      + f'<h3>{html.escape(_PT["stores"]["title"])}</h3>'
+      + '<div class="tw"><table><thead><tr><th>店家</th><th>收不收交通卡</th>'
+        '<th>有沒有加碼</th><th>官方怎麼寫</th></tr></thead><tbody>'
+      + _trpt + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_PT["stores"]["note"])}</b></li></ul></div>'
+      + f'<p class="disc">至於用行動支付在這些店划不划算，答案在'
+        f'<a href="{U("/japan-payment/")}">日本怎麼付錢</a>那一頁，'
+        f'結論和直覺相反。各店的集點制度與申辦方式則在'
+        f'<a href="{U("/japan-store-points/")}">日本店家集點</a>。</p>'
       + f'<h2 id="{_hid(TR["refund"]["title"])}">{html.escape(TR["refund"]["title"])}</h2>'
       + f'<p class="lede">{html.escape(TR["refund"]["intro"])}</p>'
       + '<div class="tw"><table><thead><tr><th>卡</th><th>押金</th>'
