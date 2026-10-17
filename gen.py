@@ -13895,10 +13895,22 @@ if os.path.exists('cards.json'):
     _CJS = ('<script>window.JCARD={mid:%s,fee:%s,cards:%s};'
             'window.jfmt=function(n){return Math.round(n).toLocaleString("en-US")};'
             'window.jbill=function(y){return y*JCARD.mid*(1+JCARD.fee/100)};'
-            'window.jback=function(c,y,mode){var b=jbill(y),v=c.base/100*b,cap=false;'
-            'if(mode!=="base"){c.tiers.filter(function(t){return t.scope===mode||t.scope==="any";})'
-            '.forEach(function(t){var x=t.rate/100*b;'
-            'if(t.cap&&x>t.cap){x=t.cap;cap=true;}v+=x;});}'
+            # 有些加碼的官方條款寫明那筆消費不算一般消費，所以連基本回饋都沒有
+            # （目前是交通卡儲值）。這條規則和 Python 端的 _back 必須一致，
+            # 不然同一頁的表格和試算器會給出不一樣的數字。
+            # sc 是使用者選的情境：即使因為沒有加碼而退回 base 模式，
+            # 要不要給基本回饋仍然看那個情境怎麼規定。
+            'window.jnb=function(c,sc){return sc&&sc!=="base"&&c.tiers.some(function(t){'
+            'return (t.scope===sc||t.scope==="any")&&t.no_base;});};'
+            'window.jnbwhy=function(c,sc){var f=c.tiers.filter(function(t){'
+            'return (t.scope===sc||t.scope==="any")&&t.no_base;})[0];'
+            'return f?(f.no_base_why||""):"";};'
+            'window.jback=function(c,y,mode,sc){var b=jbill(y),cap=false,'
+            'ts=mode==="base"?[]:c.tiers.filter(function(t){'
+            'return t.scope===mode||t.scope==="any";}),'
+            'v=jnb(c,sc||mode)?0:c.base/100*b;'
+            'ts.forEach(function(t){var x=t.rate/100*b;'
+            'if(t.cap&&x>t.cap){x=t.cap;cap=true;}v+=x;});'
             'return {v:v,cap:cap,bill:b};};'
             'window.jhas=function(c,mode){return mode==="base"||'
             'c.tiers.some(function(t){return t.scope===mode||t.scope==="any";});};'
@@ -13990,7 +14002,8 @@ if os.path.exists('cards.json'):
   var y=+$('pa').value||0, mode=$('ps').value;
   var r=JCARD.cards.filter(function(c){return jhas(c,mode)})
    .map(function(c){var o=jback(c,y,mode);
-     return {n:c.n,s:c.s,v:o.v,cap:o.cap,bill:o.bill,race:c.race,reg:c.reg,lv:c.lv};})
+     return {n:c.n,s:c.s,v:o.v,cap:o.cap,bill:o.bill,race:c.race,reg:c.reg,lv:c.lv,
+             nb:jnb(c,mode),nbw:jnbwhy(c,mode)};})
    .sort(function(a,b){return b.v-a.v});
   if(!r.length){$('pr').innerHTML='<div class="cv">這個類型目前沒有卡片有加碼</div>';return;}
   var bill=r[0].bill;
@@ -13999,10 +14012,13 @@ if os.path.exists('cards.json'):
     return '<div class="cl"><span>'+(i===0?'<b class="pw">最佳</b> ':'')+
       '<a href="'+%HUB%+'/'+x.s+'/">'+x.n+'</a>'+
       (x.cap?'<i class="pc">加碼已達上限</i>':'')+
-      (x.race?'<i class="pc">需搶登錄</i>':'')+'</span><b>NT$'+jfmt(x.v)+
+      (x.race?'<i class="pc">需搶登錄</i>':'')+
+      (x.nb?'<i class="pc">不疊基本回饋</i>':'')+'</span><b>NT$'+jfmt(x.v)+
       '<i class="pp">≈ ¥'+jfmt(x.v/JCARD.mid)+'</i></b></div>';
   }).join('')+(y?('<div class="cv jp">最佳卡實際負擔 NT$'+jfmt(bill-r[0].v)+
-    '　·　有效回饋率 '+(r[0].v/bill*100).toFixed(2)+'%</div>'):'<div class="cv">請輸入金額</div>');
+    '　·　有效回饋率 '+(r[0].v/bill*100).toFixed(2)+'%</div>'):'<div class="cv">請輸入金額</div>')
+  + r.filter(function(x){return x.nb&&x.nbw}).map(function(x){
+      return '<p class="disc">'+x.n+'：'+x.nbw+'，所以這一欄只有加碼本身。</p>';}).join('');
  }
  ['pa','ps'].forEach(function(i){var e=$(i);if(e){e.addEventListener('input',run);e.addEventListener('change',run);}});
  run();
@@ -14988,10 +15004,10 @@ if os.path.exists('cards.json'):
    if(lo&&lo.base!==undefined) c.base=lo.base;
    c.lvname=lvName(c0,sl);
    var ok=jhas(c,want), mode=ok?want:'base';
-   var o=jback(c,y,mode), at=jcapat(c,mode);
+   var o=jback(c,y,mode,want), at=jcapat(c,mode);
    // 沒登錄到／沒設定好的話就只剩基本回饋。有些沒加碼但基本高的卡，
    // 在這個情境下反而會贏過有上限的加碼卡，所以兩種都要算出來比。
-   var bo=jback(c,y,'base');
+   var bo=jback(c,y,'base',want);
    return {c:c,ok:ok,v:o.v,cap:o.cap,at:at,net:bill-o.v,
            bv:bo.v,rate:bill>0?o.v/bill*100:0};
   });
@@ -15014,7 +15030,8 @@ if os.path.exists('cards.json'):
         // 「不受影響」只是附註，不是拿來取代數字的
         return (r.bv===btop&&rows.length>1?'<span class="pw">最高</span>':'')
           +'<b>NT$'+jfmt(r.bv)+'</b>'
-          +(r.bv>=r.v?'<span class="pp">不受影響</span>':'');}) : '')
+          +(r.bv>=r.v?'<span class="pp">不受影響</span>':'')
+          +(jnb(r.c,want)?'<span class="pp">此類型不給基本回饋</span>':'');}) : '')
    + tr('有效回饋率',function(r){return r.rate.toFixed(2)+'%';})
    + tr('實際負擔',function(r){return 'NT$'+jfmt(r.net);})
    + tr('加碼上限',function(r){
@@ -15022,7 +15039,8 @@ if os.path.exists('cards.json'):
        return r.at? '刷到 NT$'+jfmt(r.at)+' 為止' : '無上限';})
    + tr('目前狀態',function(r){
        if(!r.ok) return '只有基本 '+r.c.base+'%';
-       if(r.cap) return '<i class="pc">已達上限，再刷只剩 '+r.c.base+'%</i>';
+       if(r.cap) return jnb(r.c,want)?'<i class="pc">已達上限，再刷沒有回饋</i>'
+         :'<i class="pc">已達上限，再刷只剩 '+r.c.base+'%</i>';
        return r.at? '未達上限' : '—';})
    + tr('加碼前提',function(r){
        if(!r.ok) return '—';
@@ -15326,7 +15344,7 @@ if os.path.exists('cards.json'):
   var p=+$('sp').value||0, cr=(+$('sc').value||0)/100,
       c=JCARD.cards[+$('sk').value], mode=$('sm').value;
   var free=p/1.1, after=free*(1-cr);
-  var o=jback(c,after,jhas(c,mode)?mode:'base');
+  var o=jback(c,after,jhas(c,mode)?mode:'base',mode);
   var net=o.bill-o.v, orig=p*JCARD.mid;
   $('s1').textContent='¥'+jfmt(p);
   $('s2').textContent='¥'+jfmt(free);
@@ -15573,7 +15591,7 @@ if os.path.exists('cards.json'):
   var y=+$('kq').value||0, use=$('ku').value==='1';
   var free=y/1.1, cr=use?crate(free):0, after=free*(1-cr/100);
   var rows=S.cards.map(function(c){
-   var bill=jbill(after), v=c.base/100*bill, cap=false;
+   var bill=jbill(after), v=(jnb(c,'shop')?0:c.base)/100*bill, cap=false;
    c.tiers.forEach(function(t){var x=t.rate/100*bill;
      if(t.cap&&x>t.cap){x=t.cap;cap=true;} v+=x;});
    return {n:c.n,s:c.s,bill:bill,v:v,net:bill-v,cap:cap,reg:c.reg};
