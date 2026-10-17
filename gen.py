@@ -14023,9 +14023,12 @@ if os.path.exists('cards.json'):
       (x.nw?'<i class="pc">含新戶加碼，既有卡友 NT$'+jfmt(x.ov)+'</i>':'')+'</span><b>NT$'+jfmt(x.v)+
       '<i class="pp">≈ ¥'+jfmt(x.v/JCARD.mid)+'</i></b></div>';
   }).join('')+(y?('<div class="cv jp">最佳卡實際負擔 NT$'+jfmt(bill-r[0].v)+
-    '　·　有效回饋率 '+(r[0].v/bill*100).toFixed(2)+'%</div>'):'<div class="cv">請輸入金額</div>')
+    '　·　有效回饋率 '+(r[0].v/bill*100).toFixed(2)+'%'+
+    (r[0].nw?'（既有卡友 '+(r[0].ov/bill*100).toFixed(2)+'%）':'')+
+    '</div>'):'<div class="cv">請輸入金額</div>')
   + r.filter(function(x){return x.nb&&x.nbw}).map(function(x){
-      return '<p class="disc">'+x.n+'：'+x.nbw+'，所以這一欄只有加碼本身。</p>';}).join('');
+      return '<p class="disc">'+x.n+'的回饋只有加碼本身，沒有基本回饋，依據是'+
+             x.nbw+'。</p>';}).join('');
  }
  ['pa','ps'].forEach(function(i){var e=$(i);if(e){e.addEventListener('input',run);e.addEventListener('change',run);}});
  run();
