@@ -1414,6 +1414,7 @@ def topnav(cur=''):
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制'))
 
     shop = (link('/japan-worth-buying/', '💰 買什麼划算')
+            + link('/japan-store-points/', '🎴 店家集點能用嗎')
             + link('/japan-medicine-limit/', '💊 藥妝能帶多少')
             + link('/tokyo/street-fashion/', '👕 東京潮牌選物店')
             + link('/japan-coupon/', '🏷️ 購物折扣總覽')
@@ -1518,6 +1519,7 @@ _AD_MAP = [
     ('tokyo/street-fashion', 'activity2'), ('tokyo/hostel', 'transfer'),
     ('tokyo/budget-hotel', 'transfer'),
     ('japan-worth-buying', 'esim'),
+    ('japan-store-points', 'esim'),
     ('japan-medicine-limit', 'esim'),
     ('japan-coupon', 'esim'), ('japan-bic-points', 'esim'),
     ('japan-camera-price', 'esim'), ('japan-dyson-price', 'esim'),
@@ -4242,6 +4244,152 @@ if os.path.exists('medicine.json'):
         f'實際通關以海關現場認定為準，有疑慮請走紅線申報。</p>'
       + foot())
     pages.append(('/japan-medicine-limit/', 0.7))
+
+# ---------- 店家集點與免稅 ----------
+# 做這頁的理由：11/1 退稅改成先付後退，變麻煩了，所以要問店家集點能不能補上。
+# 查完 13 家的結論和期待相反：沒有一家能在免稅時確定拿到點數。
+# 官方寫法分三級（明文二選一／保留式例示／完全沒寫），第三級一定要算繪成「未查到」。
+if os.path.exists('shoppoints.json'):
+    SP = json.load(open('shoppoints.json', encoding='utf-8'))
+    _SPD = '<span style="color:var(--dim)">官網未查到</span>'
+    _SP_CLS = {'明文二選一': 'lose', '保留式例示': '', '官網未查到': '', '不適用': ''}
+
+    _splv = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(who)}</td>'
+        f'<td class="nm">{html.escape(b)}</td></tr>'
+        for n, who, b in SP['levels']['rows'])
+
+    def _sp_row(s):
+        tf = s['taxfree']
+        cell = (_SPD if tf == '官網未查到'
+                else f'<span class="{_SP_CLS.get(tf, "")}">{html.escape(tf)}</span>')
+        return (f'<tr><td><b>{html.escape(s["name"])}</b>'
+                + (f'<br><small style="color:var(--dim)">{html.escape(s["jp"])}</small>'
+                   if s.get('jp') else '')
+                + f'</td><td class="nm">{html.escape(s["join"])}</td>'
+                f'<td class="nm">{html.escape(s["rate"])}</td>'
+                f'<td class="nm">{cell}<br><small style="color:var(--dim)">'
+                f'{html.escape(s["taxfree_note"])}</small></td>'
+                f'<td class="nm">{html.escape(s["tourist"]) if s.get("tourist") else "—"}</td>'
+                f'<td><a href="{s["src"]}" rel="nofollow noopener" target="_blank">官方</a></td>'
+                '</tr>')
+
+    _spstore = ''.join(_sp_row(s) for s in SP['stores'])
+    _sptrap = ''.join(f'<li><b>{html.escape(t)}。</b>{html.escape(b)}</li>'
+                      for t, b in SP['traps'])
+    _spunv = ''.join(f'<li>{html.escape(u)}</li>' for u in SP['unverified'])
+    _G, _M, _N = SP['gate'], SP['money'], SP['newrule']
+    _n_pick = sum(1 for s in SP['stores'] if s['taxfree'] == '明文二選一')
+    _n_blank = sum(1 for s in SP['stores'] if s['taxfree'] == '官網未查到')
+
+    sp_title = '日本店家的集點能補上退稅的麻煩嗎？13 家查下來多半不能'
+    sp_desc = (f'11/1 退稅改成先付後退之後，店家自己的會員與集點能不能補？'
+               f'查了 13 家的官方規約：{_n_pick} 家明文寫免稅與店家優惠二選一，'
+               f'{_n_blank} 家官網完全沒寫。另附一條會讓整趟免稅泡湯的入境細節。')
+
+    sp_faq = [
+     ('免稅的時候還能集點嗎？',
+      f'多數情況不行，或者查不到。13 家裡 {_n_pick} 家官方明文寫免稅與店家優惠二選一，'
+      f'1 家寫成「部分店舖與商品（免稅等）可能拿不到優惠」的保留式例示，'
+      f'{_n_blank} 家的規約與官方問答完全沒有提到免稅。'
+      '沒寫不等於不給，但也不等於給，所以本站不替店家下結論。'),
+     ('那哪一家寫得最清楚？',
+      '大國藥妝。它的官方問答有兩條直接對應，而且用的是絕對否定：免稅購物不累積樂天點數，'
+      '以及免稅與會員折扣價不能同時適用。沒有「依店舖而定」的保留。'),
+     ('唐吉訶德的旅客券和 majica 可以一起用嗎？',
+      '不行。那張券以免稅結帳為前提，所以券和免稅是綁在一起的，但券的注意事項明文寫'
+      '不可與其他折扣、服務以及 majica 卡併用。所以實際上是「免稅加旅客券」'
+      '或「免稅加 majica」二選一。不過那句日文沒有區分「不能用 majica 付款」和'
+      '「不能同時拿 majica 點數」，官網也沒有進一步解釋。'),
+     ('有沒有哪一家根本沒有集點？',
+      '有三家。COSMOS 官方問答寫明集點卡已於 2003 年 5 月廢止，理由是把相當於點數折扣的'
+      '部分直接反映到售價。寶可夢中心的實體店官方明文不發點數。'
+      'UNIQLO 與 GU 日本則是沒有點數制度，會員利益是幾張滿 5,000 折 500 的券。'),
+     ('用台灣的手機和信箱辦得起來嗎？',
+      '要看哪一家，而且卡住的地方不一樣。UNIQLO 與 GU 的規約直接寫會員限日本國內有住所者，'
+      '註冊必填還包含日本郵遞區號。鶴羽的規約把住址與電話列為必填。'
+      '札幌藥妝的數位卡要能收日本簡訊。ABC-MART 看起來最友善（走 email 不走簡訊），'
+      '但規約限定 59 個信箱網域，台灣常見的 yahoo.com.tw、hinet.net、pchome.com.tw 都不在上面。'),
+     ('11/1 新制之後，免稅結帳會不會變成有點數？',
+      '官方和店家都還沒說。稅務上結帳當下確實是以含稅價成立的課稅銷售，'
+      '但同一份官方文件仍然把店內那道程序稱為免稅販售手續，購入記錄照樣要送，'
+      '所以「算不算店家規章裡的免稅購買」是店家自己的定義問題。'
+      'Bic Camera 的條文到查證日原文未改，五家量販店也都沒有發過相關公告。'
+      '本站不替任何一方猜答案，11 月上路後會回查。'),
+     ('儲值到 majica 或 WAON 划算嗎？',
+      '要先知道錢帶不走。兩家的規約都寫明餘額原則上不能換現金也不能退款，'
+      'majica 還有兩年未用自動失效且不退的條款，WAON 的退款要扣手續費而且只限三種特殊情形。'
+      '點數也只能在日本國內用。所以要儲就只儲這一趟花得完的金額。'),
+     ('出示護照就有折扣的店多嗎？',
+      '比想像中少。13 家裡只有唐吉訶德與 AEON 有明確的訪日旅客限定券，'
+      '而唐吉訶德那張本身就要搭配免稅才成立。寶可夢中心的生日贈品可以用護照當生日證明，'
+      '但那是贈品不是折扣。其餘各家查不到任何以護照為條件的折扣。'),
+    ]
+    sp_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in sp_faq)
+    sp_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in sp_faq]}, ensure_ascii=False)
+
+    write('japan-store-points/index.html',
+      head(sp_title, sp_desc, 'japan-store-points/',
+           '<script type="application/ld+json">' + sp_ld + '</script>')
+      + crumbs([('首頁', '/'), ('店家集點', None)]) + topnav()
+      + '<h1>日本店家的集點，能補上退稅的麻煩嗎</h1>'
+      + f'<p class="lede">{html.escape(SP["lede"])}</p>'
+      + f'<div class="today"><div class="tday">條件查證於 {SP["checked"]}</div>'
+        f'<div class="tans">{html.escape(SP["headline"]["ans"])}</div>'
+        f'<div class="tsub">{html.escape(SP["headline"]["sub"])}</div></div>'
+      + f'<h2>{html.escape(_G["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_G["body"])}</p>'
+      + f'<blockquote class="q"><p>{html.escape(_G["quote"])}</p>'
+        f'<p class="zh">{html.escape(_G["zh"])}</p></blockquote>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_G["how"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(_G["why"])}'
+        f'　出處：<a href="{_G["src"]}" rel="nofollow noopener" target="_blank">'
+        f'UNIQLO 官方免稅說明</a>，查證於 {SP["checked"]}。</p>'
+      + f'<h2>{html.escape(SP["levels"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(SP["levels"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>強度</th><th>哪幾家</th>'
+        '<th>官方怎麼寫</th></tr></thead><tbody>' + _splv + '</tbody></table></div>'
+      + '<h2>13 家的對照</h2>'
+      + '<p class="lede">「官網未查到」是查過規約、說明頁與官方問答之後仍然沒有找到，'
+        '不是「不給點」。這兩件事在對照表上必須分得開。</p>'
+      + '<div class="tw"><table><thead><tr><th>店家</th><th>外國旅客辦不辦得了</th>'
+        '<th>點數</th><th>免稅時</th><th>旅客折扣</th><th>來源</th>'
+        '</tr></thead><tbody>' + _spstore + '</tbody></table></div>'
+      + '<h2>幾個容易踩到的</h2>'
+      + '<div class="tldr"><ul>' + _sptrap + '</ul></div>'
+      + f'<h2>{html.escape(_M["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_M["body"])}</p>'
+      + f'<p class="lede">{html.escape(_M["majica"])}{html.escape(_M["waon"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_M["advice"])}</b>'
+        f'{html.escape(_M["point"])}</li></ul></div>'
+      + f'<p class="disc">{html.escape(_M["fx"])}</p>'
+      + f'<h2>{html.escape(_N["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_N["q"])}</p>'
+      + f'<p class="lede">{html.escape(_N["tax"])}{html.escape(_N["but"])}</p>'
+      + f'<p class="lede">{html.escape(_N["shops"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_N["concl"])}</b></li></ul></div>'
+      + f'<p class="disc">出處：<a href="{_N["src"]}" rel="nofollow noopener" '
+        f'target="_blank">國稅庁・輸出物品販売場制度に関するＱ＆Ａ</a>，查證於 {SP["checked"]}。</p>'
+      + '<h2>查不到的那幾項</h2>'
+      + '<p class="lede">這些是查過官方規約、說明頁與問答之後仍然沒有的。'
+        '查不到不等於沒有。</p>'
+      + '<div class="tldr"><ul>' + _spunv + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
+        f'<s>先付後退怎麼走，手續費誰出</s></a>'
+      + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 購物折扣總覽</b>'
+        f'<s>21 家店的折價券</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
+        f'<s>回饋比店家點數大一個量級</s></a></div>'
+      + '<h2>常見問題</h2>' + sp_html
+      + f'<p class="disc">各店的會員條件、點數率與活動隨時調整，本頁查證於 {SP["checked"]}，'
+        f'辦卡或結帳前請以各店官網為準。'
+        f'免稅與店家優惠的關係以結帳當下店家的認定為準。</p>'
+      + foot())
+    pages.append(('/japan-store-points/', 0.7))
 
 
 # ---------- 雪具託運 ----------
