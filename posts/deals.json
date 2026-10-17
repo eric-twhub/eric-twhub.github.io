@@ -14,19 +14,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,555（7 天有紀錄），這張低 35%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,669（7 天有紀錄），這張低 36%"
   ],
   "med": 12937,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-10&inbound=OKA-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 2980,
+   "lo": 3380,
    "hi": 12312,
    "days": 11
   },
   "mbase": {
-   "avg": 4555,
+   "avg": 4669,
    "days": 7,
    "month": 11
   },
@@ -48,19 +48,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$6,053（7 天有紀錄），這張低 44%"
+   "11 月出發的票，每天最便宜的平均要 NT$6,045（7 天有紀錄），這張低 44%"
   ],
-  "med": 5398,
+  "med": 5558,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 4380,
-   "hi": 8858,
+   "lo": 4880,
+   "hi": 8713,
    "days": 7
   },
   "mbase": {
-   "avg": 6053,
+   "avg": 6045,
    "days": 7,
    "month": 11
   },
@@ -69,12 +69,12 @@
  },
  {
   "slug": "2026-10-17-taichung-okinawa",
-  "title": "台中飛沖繩 NT$4,335 來回含稅｜台灣虎航 11/09 出發",
+  "title": "台中飛沖繩 NT$3,880 來回含稅｜台灣虎航 11/09 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 4335,
+  "price": 3880,
   "air": "台灣虎航",
   "dep": "2026-11-09",
   "ret": "2026-11-12",
@@ -82,52 +82,52 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,887（22 天有紀錄），這張低 56%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,870（22 天有紀錄），這張低 61%"
   ],
-  "med": 11302,
+  "med": 11289,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 5558,
+   "lo": 5462,
    "hi": 12481,
    "days": 37
   },
   "mbase": {
-   "avg": 9887,
+   "avg": 9870,
    "days": 22,
    "month": 11
   },
   "rank": 1,
-  "n": 103
+  "n": 102
  },
  {
   "slug": "2026-10-17-taipei-fukuoka",
-  "title": "台北飛福岡 NT$7,025 來回含稅｜台灣虎航 11/03 出發",
+  "title": "台北飛福岡 NT$6,615 來回含稅｜台灣虎航 11/01 出發",
   "o": "台北",
   "c": "福岡",
   "_oiata": "TPE",
   "_diata": "FUK",
-  "price": 7025,
+  "price": 6615,
   "air": "台灣虎航",
-  "dep": "2026-11-03",
-  "ret": "2026-11-06",
+  "dep": "2026-11-01",
+  "ret": "2026-11-05",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "11 月出發的票，每天最便宜的平均要 NT$8,656（6 天有紀錄），這張低 19%"
+   "11 月出發的票，每天最便宜的平均要 NT$8,663（6 天有紀錄），這張低 24%"
   ],
   "med": 14219,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-01&inbound=FUK-TPE&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 7115,
+   "lo": 7332,
    "hi": 10501,
    "days": 6
   },
   "mbase": {
-   "avg": 8656,
+   "avg": 8663,
    "days": 6,
    "month": 11
   },
@@ -161,26 +161,26 @@
  },
  {
   "slug": "2026-10-17-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,161",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,571",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 9237,
+  "price": 8827,
   "air": "飛福岡再轉乘",
-  "fl_price": 7025,
+  "fl_price": 6615,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1106,
   "tr_mode": "九州新幹線",
-  "dep": "2026-11-03",
+  "dep": "2026-11-01",
   "ret": "",
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$1,161"
+   "比直飛省 NT$1,571"
   ],
   "med": 10398,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-01&inbound=FUK-TPE&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
  }
