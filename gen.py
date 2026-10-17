@@ -13905,6 +13905,12 @@ if os.path.exists('cards.json'):
             'window.jnbwhy=function(c,sc){var f=c.tiers.filter(function(t){'
             'return (t.scope===sc||t.scope==="any")&&t.no_base;})[0];'
             'return f?(f.no_base_why||""):"";};'
+            'window.jisnew=function(t){return /新戶|核卡/.test(t.label+(t.cond||""));};'
+            'window.jnew=function(c,mode){return mode!=="base"&&c.tiers.some(function(t){'
+            'return (t.scope===mode||t.scope==="any")&&jisnew(t);});};'
+            'window.jbackold=function(c,y,mode){var c2={};for(var k in c)c2[k]=c[k];'
+            'c2.tiers=c.tiers.filter(function(t){return !jisnew(t);});'
+            'return jback(c2,y,mode,mode);};'
             'window.jback=function(c,y,mode,sc){var b=jbill(y),cap=false,'
             'ts=mode==="base"?[]:c.tiers.filter(function(t){'
             'return t.scope===mode||t.scope==="any";}),'
@@ -14001,9 +14007,9 @@ if os.path.exists('cards.json'):
  function run(){
   var y=+$('pa').value||0, mode=$('ps').value;
   var r=JCARD.cards.filter(function(c){return jhas(c,mode)})
-   .map(function(c){var o=jback(c,y,mode);
+   .map(function(c){var o=jback(c,y,mode), od=jbackold(c,y,mode);
      return {n:c.n,s:c.s,v:o.v,cap:o.cap,bill:o.bill,race:c.race,reg:c.reg,lv:c.lv,
-             nb:jnb(c,mode),nbw:jnbwhy(c,mode)};})
+             nb:jnb(c,mode),nbw:jnbwhy(c,mode),nw:jnew(c,mode),ov:od.v};})
    .sort(function(a,b){return b.v-a.v});
   if(!r.length){$('pr').innerHTML='<div class="cv">這個類型目前沒有卡片有加碼</div>';return;}
   var bill=r[0].bill;
@@ -14013,7 +14019,8 @@ if os.path.exists('cards.json'):
       '<a href="'+%HUB%+'/'+x.s+'/">'+x.n+'</a>'+
       (x.cap?'<i class="pc">加碼已達上限</i>':'')+
       (x.race?'<i class="pc">需搶登錄</i>':'')+
-      (x.nb?'<i class="pc">不疊基本回饋</i>':'')+'</span><b>NT$'+jfmt(x.v)+
+      (x.nb?'<i class="pc">不疊基本回饋</i>':'')+
+      (x.nw?'<i class="pc">含新戶加碼，既有卡友 NT$'+jfmt(x.ov)+'</i>':'')+'</span><b>NT$'+jfmt(x.v)+
       '<i class="pp">≈ ¥'+jfmt(x.v/JCARD.mid)+'</i></b></div>';
   }).join('')+(y?('<div class="cv jp">最佳卡實際負擔 NT$'+jfmt(bill-r[0].v)+
     '　·　有效回饋率 '+(r[0].v/bill*100).toFixed(2)+'%</div>'):'<div class="cv">請輸入金額</div>')
@@ -14035,7 +14042,9 @@ if os.path.exists('cards.json'):
       '</div><p class="upd" id="pb"></p><div class="cres" id="pr"></div></div>'
       f'<p class="disc">以中間匯率 {_MIDC} 換算並加計 {_fx["typical"]}% 國外交易手續費；'
       f'回饋依台幣帳單金額計算。各層加碼需同時符合其條件才疊得上去，'
-      f'試算採全部符合的最高情境。點數型回饋以 1 點約 1 元估算。</p>' + _pjs)
+      f'試算採全部符合的最高情境，排序也依這個數字。含新戶限定加碼的卡會另外'
+      f'標出既有卡友的金額，那個數字通常會讓它掉到後面。'
+      f'點數型回饋以 1 點約 1 元估算。</p>' + _pjs)
 
     cc_faq = [
      ('海外刷卡的手續費是多少？',
