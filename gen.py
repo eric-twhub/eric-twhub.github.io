@@ -1401,6 +1401,7 @@ def topnav(cur=''):
             + '<hr><b>錢的事</b>'
             + link('/japan-yen-exchange/', '💴 換日幣怎麼換')
             + link('/japan-payment/', '📲 日本怎麼付錢')
+            + link('/japan-transit-card/', '🚃 交通卡怎麼儲值')
             + '<hr><b>租車自駕</b>'
             + link('/japan-driving-licence/', '🚗 駕照日文譯本')
             + link('/japan-rentacar-noc/', '🚗 租車的 NOC')
@@ -1534,6 +1535,7 @@ _AD_MAP = [
     ('japan-flight-baggage', 'transport'), ('japan-flight-seat', 'transport'),
     ('japan-yen-exchange', 'esim'),
     ('japan-payment', 'esim'),
+    ('japan-transit-card', 'transport'),
     ('japan-flight-fuji', 'activity2'),
     ('hotel-price-check', 'transfer'), ('threads-japan', 'activity2'),
     ('japan-flight-good-times', 'activity2'),
@@ -3705,11 +3707,6 @@ if os.path.exists('pay.json'):
 
     _pylim = ''.join(f'<li>{html.escape(x)}</li>' for x in PY['limits']['items'])
 
-    _IC = PY['ic']
-    _pyic = ''.join(
-        f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(dep)}</td>'
-        f'<td class="nm">{html.escape(ch)}</td><td class="nm">{html.escape(where)}</td></tr>'
-        for n, dep, ch, where in _IC['tourist'])
 
     _TC = PY['touch']
     _pytouch = ''.join(
@@ -3743,18 +3740,6 @@ if os.path.exists('pay.json'):
       '再從錢包付款，交易在帳上變成國內儲值，所以那筆費用不會發生。'
       '但換匯本身用的是銀行賣出價，價差已經包在匯率裡。而且代價是同時失去'
       '信用卡的海外回饋，旅日信用卡的海外加碼比那 1.5% 大一個量級。'),
-     ('Suica 和 PASMO 現在買得到嗎？',
-      '買得到。2023 年因為晶片取得困難停售過無記名卡，但記名式 2024 年 8 月恢復，'
-      '無記名也在 2025 年 3 月 1 日恢復販售。網路上大量整理還寫著停售中，那是舊資訊。'),
-     ('東京買的卡可以在大阪用嗎？',
-      '可以在大阪的區域內搭車，但不能用它從東京一路坐到大阪。全國互通指的是'
-      '各區域內都能用，不是可以跨區搭一趟。跨區要另外買票。'),
-     ('用手機嗶比較方便，台灣的手機可以嗎？',
-      'iPhone 可以。Apple 錢包能直接新增 Suica、PASMO 與 ICOCA，而且 JR 東日本的'
-      'Welcome Suica Mobile 官方問答明列入境日本前就能發行的國家包含台灣，'
-      '有效期是發行日起 180 天。海外購買的 Android 手機目前不行，因為需要'
-      'おサイフケータイ 支援；JR 東日本 2026 年 4 月的公告說 2027 年起的 Galaxy '
-      '才會支援，理由正是要讓旅客能用海外購買的手機做到這件事。'),
      ('聽說現在可以直接刷信用卡進站？',
       '是，而且範圍在擴大。關東 11 社局自 2026 年 3 月 25 日起相互利用，涵蓋 54 條'
       '路線 729 站；JR 九州自 2026 年 4 月 1 日正式導入福岡地區 92 站。'
@@ -3823,23 +3808,15 @@ if os.path.exists('pay.json'):
       + f'<div class="tldr"><ul>{_pylim}</ul></div>'
       + f'<p class="lede">{html.escape(PY["limits"]["step"])}</p>'
       + f'<p class="disc">{html.escape(PY["limits"]["offline"])}</p>'
-      + f'<h2>{html.escape(_IC["title"])}</h2>'
-      + f'<div class="tldr"><ul><li><b>{html.escape(_IC["fix"])}</b></li></ul></div>'
-      + f'<p class="disc">出處：<a href="{_IC["fix_src"]}" rel="nofollow noopener" '
-        f'target="_blank">JR 東日本官方公告</a>。</p>'
-      + '<div class="tw"><table><thead><tr><th>卡種</th><th>押金與效期</th>'
-        '<th>怎麼儲值</th><th>哪裡買</th></tr></thead><tbody>'
-      + _pyic + '</tbody></table></div>'
-      + f'<p class="lede">{html.escape(_IC["gone"])}</p>'
-      + f'<div class="tldr"><ul><li><b>{html.escape(_IC["cross"])}</b></li></ul></div>'
-      + f'<h2>{html.escape(PY["mobile"]["title"])}</h2>'
-      + f'<p class="lede">{html.escape(PY["mobile"]["iphone"])}</p>'
-      + f'<p class="disc">出處：<a href="{PY["mobile"]["iphone_src"]}" rel="nofollow noopener" '
-        f'target="_blank">Welcome Suica Mobile 官方問答</a>。</p>'
-      + f'<div class="tldr"><ul><li><b>{html.escape(PY["mobile"]["android"])}</b></li></ul></div>'
-      + f'<p class="disc">出處：<a href="{PY["mobile"]["android_src"]}" rel="nofollow noopener" '
-        f'target="_blank">JR 東日本官方新聞稿</a>。</p>'
-      + f'<p class="lede">{html.escape(PY["mobile"]["charge"])}</p>'
+      + '<h2>交通卡的部分搬到另一頁了</h2>'
+      + '<p class="lede">十張全國互通卡的區域與差別、旅客版的效期與退款、'
+        '儲值管道與餘額上限，還有台灣發行的卡能不能在 Apple 錢包裡儲值，'
+        '這些整理在交通卡那一頁。那裡也把「乘車互通十張、電子錢包互通九張」'
+        '這個差別講清楚了，那是本站原本漏掉的一點。</p>'
+      + f'<div class="tldr"><ul><li><b>最常被誤傳的一句是「海外發行的信用卡不能儲值 Suica」。</b>'
+        f'那句話有出處，但出處講的是 Suica App，不是 Apple 錢包。'
+        f'JR 東日本在同一頁明講兩者條件不同，JR 西日本的英文旅客頁甚至正面寫了條件。'
+        f'詳細的原文與出處在<a href="{U("/japan-transit-card/")}">交通卡那一頁</a>。</li></ul></div>'
       + f'<h2>{html.escape(_TC["title"])}</h2>'
       + f'<p class="lede">{html.escape(_TC["intro"])}</p>'
       + '<div class="tw"><table><thead><tr><th>業者</th><th>開始時間</th>'
@@ -4390,6 +4367,306 @@ if os.path.exists('shoppoints.json'):
         f'免稅與店家優惠的關係以結帳當下店家的認定為準。</p>'
       + foot())
     pages.append(('/japan-store-points/', 0.7))
+
+
+# ---------- 日本交通卡 ----------
+# 這題站上本來散在支付頁裡，但「怎麼儲值」與「搭哪張卡」是另一個問題。
+# 真正有價值的是三件事：乘車互通和電子錢包互通不是同一回事、
+# Apple 錢包那條路日本官方沒有排除海外發行的卡、以及退卡只能回原公司。
+if os.path.exists('transit.json'):
+    TR = json.load(open('transit.json', encoding='utf-8'))
+
+    _trkinds = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(iss)}</td>'
+        f'<td class="nm">{html.escape(area)}</td>'
+        f'<td><a href="{src}" rel="nofollow noopener" target="_blank">官網</a></td></tr>'
+        for n, iss, area, src in TR['kinds']['rows'])
+
+    _trtour = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td>{html.escape(dep)}</td>'
+        f'<td>{html.escape(exp)}</td>'
+        f'<td class="{"warn" if "不退" in ref else ""}">{html.escape(ref)}</td>'
+        f'<td class="nm">{html.escape(chg)}</td><td class="nm">{html.escape(buy)}</td></tr>'
+        for n, dep, exp, ref, chg, buy in TR['tourist']['rows'])
+
+    _trwhere = ''.join(
+        f'<tr><td><b>{html.escape(a)}</b></td>'
+        f'<td class="{"win" if b == "可以" else ""}">{html.escape(b)}</td>'
+        f'<td class="nm">{html.escape(c)}</td></tr>'
+        for a, b, c in TR['charge']['where']['rows'])
+
+    _trnon = ''.join(
+        f'<tr><td><b>{html.escape(a)}</b></td><td class="nm">{html.escape(b)}</td>'
+        f'<td class="nm">{html.escape(c)}</td></tr>'
+        for a, b, c in TR['charge']['noncash']['rows'])
+
+    # 退款那張表最重要的一欄是「在哪裡退」，不是手續費。
+    # 各社手續費幾乎一致，但跑錯公司是真的會白跑一趟。
+    _trref = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td>{html.escape(dep)}</td>'
+        f'<td class="{"warn" if "未查到" in fee else ""}">{html.escape(fee)}</td>'
+        f'<td class="nm">{html.escape(note)}</td></tr>'
+        for n, dep, fee, note in TR['refund']['rows'])
+
+    _trq = ''.join(
+        f'<tr><td><b>{html.escape(who)}</b></td><td class="nm">{html.escape(txt)}</td></tr>'
+        for who, txt in TR['charge']['quotes'])
+
+    # ── 搭哪張信用卡 ──
+    # 資料來自 cards.json，所以這一段會跟著那邊的查證日期一起更新，
+    # 不另外維護一份。只列有官方依據的，查不到的另外交代。
+    _trcards = ''
+    if os.path.exists('cards.json'):
+        _TRC = json.load(open('cards.json', encoding='utf-8'))
+        _trok = [c for c in _TRC['cards']
+                 if any(t['scope'] in ('transit', 'any') for t in c['tiers'])]
+        _trun = [c for c in _TRC['cards'] if c.get('transit_unknown')]
+
+        def _trrate(c):
+            ts = [t for t in c['tiers'] if t['scope'] in ('transit', 'any')]
+            base = 0 if any(t.get('no_base') for t in ts) else c['base']
+            return round(base + sum(t['rate'] for t in ts), 2)
+
+        def _trcap(c):
+            ts = [t for t in c['tiers'] if t['scope'] in ('transit', 'any')]
+            if any(t.get('cap_unknown') for t in ts):
+                return '官網未查到上限'
+            caps = [t for t in ts if t['cap']]
+            if not caps:
+                return '無上限'
+            hit = min(t['cap'] / (t['rate'] / 100) for t in caps)
+            return f'加碼到帳單 {money(round(hit))} 為止'
+
+        _trrows = ''.join(
+            f'<tr><td><a href="{U("/japan-credit-card/"+c["slug"]+"/")}">'
+            f'<b>{html.escape(c["name"])}</b></a></td>'
+            f'<td><b>{_trrate(c):g}%</b></td>'
+            f'<td class="nm">{html.escape(_trcap(c))}</td>'
+            f'<td class="nm">{html.escape(c.get("reg_short", ""))}</td></tr>'
+            for c in sorted(_trok, key=lambda x: -_trrate(x)))
+
+        _trcards = (
+            f'<h2 id="{_hid("搭哪張信用卡儲值")}">搭哪張信用卡儲值</h2>'
+            '<p class="lede">先講一件反直覺的事：儲值交通卡不一定算「一般消費」。'
+            '有的發卡行把它當成一般海外消費，有的在條款裡直接排除，兩種寫法都有。'
+            '所以不能拿卡片的帳面回饋率來推這筆拿得到多少。</p>'
+            '<div class="tw"><table><thead><tr><th>卡片</th><th>這一筆的回饋</th>'
+            '<th>上限</th><th>前提</th></tr></thead><tbody>'
+            + _trrows + '</tbody></table></div>'
+            + ''.join(
+                '<div class="tldr"><ul><li><b>'
+                + html.escape(c['name']) + '的加碼不疊基本回饋。</b>'
+                + html.escape(next(t['no_base_why'] for t in c['tiers']
+                                   if t.get('no_base_why')))
+                + '。</li></ul></div>'
+                for c in _trok
+                if any(t.get('no_base_why') for t in c['tiers']))
+            + (('<h3>這幾張本站查不到適不適用</h3>'
+                '<p class="lede">它們沒有列進上面那張表，但那不代表不能用。'
+                '「官網沒寫」和「不能用」是兩件事，所以本站不替它們填數字，'
+                '也不說它們沒有回饋。</p><div class="tldr"><ul>'
+                + ''.join(
+                    f'<li><b>{html.escape(c["name"])}</b>：'
+                    f'{html.escape(c["transit_unknown"])}'
+                    + (f'（<a href="{c["transit_unknown_src"]}" rel="nofollow noopener" '
+                       f'target="_blank">官方活動辦法</a>）' if c.get('transit_unknown_src') else '')
+                    + '</li>'
+                    for c in _trun)
+                + '</ul></div>') if _trun else '')
+            + f'<p class="disc">費率與條件查證於 {_TRC["checked"]}，'
+              f'逐金額的試算與完整條款在'
+              f'<a href="{U("/japan-credit-card/")}">旅日信用卡</a>那一頁，'
+              f'把消費類型切到「交通卡儲值」就會依金額重排。'
+              f'各行活動隨時調整，刷卡前請以發卡行官網為準。</p>')
+
+    tr_faq = [
+     ('第一次去日本，Suica、PASMO、ICOCA 要買哪一張？',
+      '乘車功能在全國互通的十張卡之間是通用的，所以買你第一天會用到的那一張就好，'
+      '東京買 Suica 或 PASMO、關西買 ICOCA、九州買 SUGOCA 都可以。'
+      '真正要注意的不是買錯牌子，是不能拿同一張卡跨區搭一趟，'
+      '而且退卡只能回發行的那家公司辦。'),
+     ('全國互通，那我可以拿東京買的卡從東京坐到大阪嗎？',
+      '不行。官方原文是各區域之間不能跨越使用，跨區要另外買紙票。'
+      '互通的意思是「各區域內都能用」，不是「可以跨區搭一趟」。'
+      '官方承認的例外只有三類：首都圈的 Suica 區與 PASMO 區之間、'
+      '九州 SUGOCA 區與はやかけん區的相互直通區間，以及定期券券面區間內。'),
+     ('聽說海外發行的信用卡不能儲值 Suica，是真的嗎？',
+      '那句話有出處，但出處講的是 Suica App，不是 Apple 錢包。'
+      'JR 東日本在同一頁明講「能設定到 Apple Pay（錢包）的卡，條件並不相同」，'
+      '等於把判斷讓給 Apple，而 Apple 自己的文件從頭到尾沒有提到發卡國家。'
+      'JR 西日本的英文旅客頁甚至正面寫了條件：卡片須由支援 Apple Pay 的國家或地區'
+      '發行、卡面有 VISA、Mastercard、JCB 或 American Express 標誌。'
+      '反過來 Google 錢包才是明文限日本發行的卡。'),
+     ('交通卡可以用信用卡儲值嗎？',
+      '實體卡在車站機器與店舖儲值，官方寫得很硬，就是只收現金。'
+      '旅客實際可用的非現金管道只有手機版一條。'
+      '自動儲值要綁日本發行的信用卡，短期旅客用不到。'),
+     ('餘額上限是多少？',
+      '有明文寫 20,000 円的有八張，包含 Suica、PASMO、ICOCA、TOICA、Kitaca、'
+      'manaca、nimoca 與 Welcome Suica Mobile。但 SUGOCA 與はやかけん兩家官網'
+      '查不到這個數字，PiTaPa 在互通區的儲值上限也查不到，所以不要寫成全部一律兩萬。'),
+     ('旅客版和一般卡該選哪個？',
+      '交換條件很一致：旅客版省掉 500 円押金，換來固定效期與餘額不退。'
+      '會把錢用完就選旅客版，會剩就選一般卡。'
+      '其中 Welcome Suica Mobile 的條件最好，效期 180 天比卡片版的 28 天長很多，'
+      '而且入境前就能發行，但它只有 iPhone 能用。'),
+     ('卡片用不完，餘額可以退嗎？',
+      '一般卡可以，算法是餘額減 220 円手續費再加回 500 円押金，'
+      '餘額不足 220 円時只退押金，不會倒付。'
+      '但有一個限制比手續費更容易害人白跑：各社只在自家區域、自家窗口辦退款，'
+      '東京買的 Suica 到大阪是退不了的。旅客版則一律不退餘額。'),
+     ('Suica 和 PASMO 現在買得到嗎？',
+      '買得到。2023 年停售過，記名式 2024 年 8 月 20 日公告恢復，'
+      '無記名 2025 年 2 月 18 日公告恢復，現在購買頁上已經沒有停售告示。'
+      '網路上大量整理還寫著停售中，那是舊資訊。'
+      '至於停售原因，常被寫成晶片短缺，但官方的網頁版公告裡找不到這個說法，'
+      '本站不把它當成官方說法。'),
+     ('用手機嗶比較方便，台灣的手機可以嗎？',
+      'iPhone 可以。Apple 錢包能直接新增 Suica、PASMO 與 ICOCA，'
+      '而 Welcome Suica Mobile 的官方問答明列入境日本前就能發行的國家包含台灣，'
+      '有效期是發行日起 180 天。海外購買的 Android 手機目前不行，因為需要 '
+      'おサイフケータイ 支援；JR 東日本 2026 年 4 月的公告說 2027 年起的 Galaxy '
+      '才會支援，理由正是要讓旅客能用海外購買的手機做到這件事，'
+      '等於官方確認現在辦不到。'),
+     ('PiTaPa 和其他九張差在哪？',
+      '其他九張都是先儲值後使用，只有 PiTaPa 是後付型，用多少之後從指定帳戶扣款。'
+      '它也被排除在電子錢包互通之外，而且是雙向的。'
+      '短期旅客實務上辦不到，因為要通過入會審查又要有日本本人名義的帳戶，'
+      '不過官方並沒有明文寫旅客不可申辦，這是從條件推出來的。'),
+    ]
+    tr_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in tr_faq)
+    tr_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in tr_faq]}, ensure_ascii=False)
+
+    _H = TR['headline']
+    write('japan-transit-card/index.html',
+      head('日本交通卡怎麼選、怎麼儲值、搭哪張信用卡',
+           '十張全國互通卡的區域與差別、旅客版效期與退款、儲值管道與餘額上限，'
+           '以及台灣發行的卡能不能在 Apple 錢包裡儲值。逐條對官方條文，查不到的就寫查不到。',
+           'japan-transit-card/',
+           '<script type="application/ld+json">' + tr_ld + '</script>')
+      + crumbs([('首頁', '/'), ('交通卡', None)]) + topnav()
+      + '<h1>日本交通卡怎麼選、怎麼儲值、搭哪張信用卡</h1>'
+      + f'<p class="lede">{html.escape(_H["sub"])}</p>'
+      + f'<div class="today"><div class="tday">查證於 {TR["checked"]}</div>'
+        f'<div class="tans">{html.escape(_H["a"])}</div>'
+        f'<div class="tsub">{html.escape(_H["q"])}</div></div>'
+      + f'<h2 id="{_hid(TR["kinds"]["title"])}">{html.escape(TR["kinds"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(TR["kinds"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>卡</th><th>發行者</th>'
+        '<th>主要區域</th><th>來源</th></tr></thead><tbody>'
+      + _trkinds + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(TR["kinds"]["note"])}</p>'
+      + f'<h3>{html.escape(TR["kinds"]["pitapa"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(TR["kinds"]["pitapa"]["body"])}</p>'
+      + f'<p class="lede">{html.escape(TR["kinds"]["pitapa"]["why"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(TR["kinds"]["pitapa"]["honest"])}</b></li></ul></div>'
+      + f'<p class="disc">出處：<a href="{TR["kinds"]["pitapa"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">PiTaPa 會員規約</a>。</p>'
+      + f'<h2 id="{_hid(TR["interop"]["title"])}">{html.escape(TR["interop"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(TR["interop"]["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>官方原文：</b>{html.escape(TR["interop"]["quote"])}</li></ul></div>'
+      + f'<p class="lede">{html.escape(TR["interop"]["where"])}</p>'
+      + f'<p class="disc">{html.escape(TR["interop"]["gap"])}'
+        f'{html.escape(TR["interop"]["tourist"])}</p>'
+      + f'<h2 id="{_hid(TR["cross"]["title"])}">{html.escape(TR["cross"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(TR["cross"]["body"])}</p>'
+      + f'<h3>{html.escape(TR["cross"]["exc_title"])}</h3>'
+      + '<div class="tldr"><ul>'
+      + ''.join(f'<li>{html.escape(x)}</li>' for x in TR['cross']['exc']) + '</ul></div>'
+      + f'<p class="lede">{html.escape(TR["cross"]["extra"])}</p>'
+      + f'<p class="disc">出處：<a href="{TR["cross"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">JR 東日本利用可能區域</a>。</p>'
+      + f'<h2 id="{_hid(TR["tourist"]["title"])}">{html.escape(TR["tourist"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(TR["tourist"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>卡種</th><th>押金</th><th>效期</th>'
+        '<th>餘額退不退</th><th>怎麼儲值</th><th>哪裡買</th></tr></thead><tbody>'
+      + _trtour + '</tbody></table></div>'
+      + f'<h3>{html.escape(TR["tourist"]["wsm"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(TR["tourist"]["wsm"]["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(TR["tourist"]["wsm"]["trap1"])}</b></li>'
+        f'<li><b>{html.escape(TR["tourist"]["wsm"]["trap2"])}</b></li></ul></div>'
+      + f'<p class="disc">出處：<a href="{TR["tourist"]["wsm"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">Welcome Suica Mobile 利用規約</a>。</p>'
+      + f'<p class="lede">{html.escape(TR["tourist"]["icoca_tourist"])}</p>'
+      + f'<p class="disc">出處：<a href="{TR["tourist"]["icoca_src"]}" rel="nofollow noopener" '
+        f'target="_blank">JR 西日本訪日旅客 ICOCA 頁</a>。</p>'
+      + f'<h3>{html.escape(TR["tourist"]["gone"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(TR["tourist"]["gone"]["pasmo"])}</p>'
+      + f'<p class="lede">{html.escape(TR["tourist"]["gone"]["kansai"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(TR["tourist"]["gone"]["kansai_honest"])}</b></li></ul></div>'
+      + f'<p class="lede">{html.escape(TR["tourist"]["sale"])}</p>'
+      + f'<h2 id="{_hid(TR["charge"]["title"])}">{html.escape(TR["charge"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(TR["charge"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>出處</th><th>官方原文</th>'
+        '</tr></thead><tbody>' + _trq + '</tbody></table></div>'
+      + f'<h3>{html.escape(TR["charge"]["where"]["title"])}</h3>'
+      + '<div class="tw"><table><thead><tr><th>管道</th><th>能不能儲</th>'
+        '<th>條件</th></tr></thead><tbody>' + _trwhere + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(TR["charge"]["where"]["pasmo_atm"])}</b></li></ul></div>'
+      + f'<h3>{html.escape(TR["charge"]["cap"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(TR["charge"]["cap"]["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(TR["charge"]["cap"]["gap"])}</b></li></ul></div>'
+      + f'<p class="lede">{html.escape(TR["charge"]["cap"]["teppay"])}</p>'
+      + f'<h3>{html.escape(TR["charge"]["noncash"]["title"])}</h3>'
+      + '<div class="tw"><table><thead><tr><th>管道</th><th>怎麼運作</th>'
+        '<th>旅客用不用得到</th></tr></thead><tbody>' + _trnon + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(TR["charge"]["noncash"]["icoca_time"])}'
+        f'{html.escape(TR["charge"]["noncash"]["undo"])}</p>'
+      + f'<h2 id="{_hid(TR["wallet"]["title"])}">{html.escape(TR["wallet"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(TR["wallet"]["intro"])}</p>'
+      + f'<h3>{html.escape(TR["wallet"]["jr"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(TR["wallet"]["jr"]["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>官方原文：</b>{html.escape(TR["wallet"]["jr"]["quote"])}</li></ul></div>'
+      + f'<p class="lede">{html.escape(TR["wallet"]["jr"]["mean"])}</p>'
+      + f'<p class="disc">出處：<a href="{TR["wallet"]["jr"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">Apple Pay Suica 官方問答</a>。{html.escape(TR["wallet"]["jr"]["gap"])}</p>'
+      + f'<h3>{html.escape(TR["wallet"]["west"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(TR["wallet"]["west"]["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(TR["wallet"]["west"]["caveat"])}</b></li></ul></div>'
+      + f'<p class="disc">出處：<a href="{TR["wallet"]["west"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">JR 西日本訪日旅客 Apple Pay 頁</a>。</p>'
+      + f'<p class="lede">{html.escape(TR["wallet"]["apple"])}</p>'
+      + f'<h3>{html.escape(TR["wallet"]["android"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(TR["wallet"]["android"]["body"])}</p>'
+      + f'<p class="disc">出處：<a href="{TR["wallet"]["android"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">JR 東日本官方新聞稿</a>。</p>'
+      + f'<h3>{html.escape(TR["wallet"]["google"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(TR["wallet"]["google"]["body"])}</p>'
+      + f'<p class="lede">{html.escape(TR["wallet"]["google"]["icoca"])}</p>'
+      + f'<p class="disc">出處：<a href="{TR["wallet"]["google"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">Google 錢包官方說明</a>。</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(TR["wallet"]["answer"])}</b></li>'
+        f'<li>{html.escape(TR["wallet"]["refund_trap"])}</li></ul></div>'
+      + _trcards
+      + f'<h2 id="{_hid(TR["refund"]["title"])}">{html.escape(TR["refund"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(TR["refund"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>卡</th><th>押金</th>'
+        '<th>退款手續費</th><th>在哪裡退、要注意什麼</th></tr></thead><tbody>'
+      + _trref + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(TR["refund"]["formula"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(TR["refund"]["tourist"])}</b></li>'
+        f'<li>{html.escape(TR["refund"]["tourist_exc"])}</li>'
+        f'<li>{html.escape(TR["refund"]["ten"])}</li></ul></div>'
+      + '<h2>這一頁查不到的</h2>'
+      + '<p class="lede">「官網沒寫」和「沒有這項」是兩件事。查不到的就說查不到。</p>'
+      + '<div class="tldr"><ul>'
+      + ''.join(f'<li>{html.escape(u)}</li>' for u in TR['unverified'])
+      + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-payment/")}"><b>📲 日本怎麼付錢</b>'
+        f'<s>掃碼付款、感應式信用卡進出站</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
+        f'<s>切到交通卡儲值看逐金額試算</s></a>'
+      + f'<a class="ct" href="{U("/japan-yen-exchange/")}"><b>💴 換日幣怎麼換</b>'
+        f'<s>儲值只收現金，所以還是要帶</s></a></div>'
+      + '<h2>常見問題</h2>' + tr_html
+      + f'<p class="disc">各社的條件、售價與停售狀態隨時調整，本頁查證於 {TR["checked"]}，'
+        f'出發前請以各自官網為準。金額一律標日圓，本頁不寫換算後的台幣，因為匯率每天在變。</p>'
+      + foot())
+    pages.append(('/japan-transit-card/', 0.7))
 
 
 # ---------- 雪具託運 ----------
