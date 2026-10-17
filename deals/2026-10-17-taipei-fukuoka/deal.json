@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-17-taipei-fukuoka",
- "generated": "2026-10-17 13:55",
+ "generated": "2026-10-17 14:34",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 6115,
-  "dep": "2026-11-01",
-  "ret": "2026-11-05",
+  "price": 7025,
+  "dep": "2026-11-03",
+  "ret": "2026-11-06",
   "dept": "06:45",
   "rett": "10:55",
   "rt": true,
@@ -21,15 +21,34 @@
   "dur": 300,
   "dur_to": 135,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-01&inbound=FUK-TPE&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
-  "11 月出發的票，每天最便宜的平均要 NT$8,590（6 天有紀錄），這張低 29%"
+  "11 月出發的票，每天最便宜的平均要 NT$8,656（6 天有紀錄），這張低 19%"
  ],
  "med": 14219,
  "n_rt": 12,
  "others": [
+  {
+   "o": "TPE",
+   "d": "FUK",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 7115,
+   "dep": "2026-11-01",
+   "ret": "2026-11-05",
+   "dept": "06:45",
+   "rett": "10:55",
+   "rt": true,
+   "tr": 0,
+   "dur": 300,
+   "dur_to": 135,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-01&inbound=FUK-TPE&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
   {
    "o": "TPE",
    "d": "FUK",
@@ -54,7 +73,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8129,
+   "price": 8629,
    "dep": "2026-11-15",
    "ret": "2026-11-20",
    "dept": "06:45",
@@ -66,24 +85,6 @@
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-15&inbound=FUK-TPE&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
-  },
-  {
-   "o": "TPE",
-   "d": "FUK",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 8130,
-   "dep": "2026-11-03",
-   "ret": "2026-11-06",
-   "dept": "06:45",
-   "rett": "10:55",
-   "rt": true,
-   "tr": 0,
-   "dur": 300,
-   "dur_to": 135,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE0311FUK06111?t=IT17936883001793700000000135TPEFUK17939625001793968800000165FUKTPE_e55952851aab8fd3d3471198b0124e1b_21286&search_date=14102026&expected_price_uuid=01a13971-6940-8040-a66e-0512f264820e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=eITuE37ANyiIHjPYpsFmew&expected_price_source=share&expected_price_currency=twd&expected_price=8130&marker=775639"
   }
  ]
 }
