@@ -13929,7 +13929,9 @@ if os.path.exists('cards.json'):
         json.dumps([{'n': c['name'], 's': c['slug'], 'base': c['base'],
                      'tiers': c['tiers'], 'race': c.get('reg_race', False),
                      'reg': c.get('reg_short', ''), 'lv': c.get('reg_level', ''),
-                     'levels': c.get('levels')}
+                     'levels': c.get('levels'),
+                     'tu': c.get('transit_unknown', ''),
+                     'tusrc': c.get('transit_unknown_src', '')}
                     for c in CD['cards']], ensure_ascii=False))
 
     _mopts = ''.join(f'<option value="{k}">{v}</option>' for k, v in MODES)
@@ -14028,7 +14030,18 @@ if os.path.exists('cards.json'):
     '</div>'):'<div class="cv">請輸入金額</div>')
   + r.filter(function(x){return x.nb&&x.nbw}).map(function(x){
       return '<p class="disc">'+x.n+'的回饋只有加碼本身，沒有基本回饋，依據是'+
-             x.nbw+'。</p>';}).join('');
+             x.nbw+'。</p>';}).join('')
+  // 從排行裡消失的卡要交代去哪了。直接不列等於告訴讀者「這張沒有回饋」，
+  // 但實際情況是官網沒寫，那是第三種狀態。
+  + (mode!=='transit'? '' : (function(){
+      var u=JCARD.cards.filter(function(c){return c.tu});
+      if(!u.length) return '';
+      return '<div class="tldr"><ul><li><b>另有 '+u.length+' 張卡本站查不到適不適用，沒有列進上面的排行。</b>'+
+        '「官網沒寫」和「不能用」是兩件事，所以不替它們填數字，也不說它們沒有回饋。</li>'+
+        u.map(function(c){return '<li>'+c.n+'：'+c.tu+
+          (c.tusrc?'（<a href="'+c.tusrc+'" rel="nofollow noopener" target="_blank">官方活動辦法</a>）':'')+
+          '</li>';}).join('')+'</ul></div>';
+    })());
  }
  ['pa','ps'].forEach(function(i){var e=$(i);if(e){e.addEventListener('input',run);e.addEventListener('change',run);}});
  run();
@@ -15048,7 +15061,9 @@ if os.path.exists('cards.json'):
    + tr('實際負擔',function(r){return 'NT$'+jfmt(r.net);})
    + tr('加碼上限',function(r){
        if(!r.ok) return '<i class="pc">此類型無加碼</i>';
-       return r.at? '刷到 NT$'+jfmt(r.at)+' 為止' : '無上限';})
+       if(r.at) return '刷到 NT$'+jfmt(r.at)+' 為止';
+       return r.c.tiers.some(function(t){return (t.scope===want||t.scope==='any')&&t.cap_unknown;})
+         ? '<i class="pc">官網未查到上限</i>' : '無上限';})
    + tr('目前狀態',function(r){
        if(!r.ok) return '只有基本 '+r.c.base+'%';
        if(r.cap) return jnb(r.c,want)?'<i class="pc">已達上限，再刷沒有回饋</i>'
