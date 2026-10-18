@@ -412,13 +412,14 @@
     {
      "what": "日本交通卡加碼 7%",
      "cycle": "monthly",
-     "day": 19,
+     "day": 18,
      "time": "16:00",
      "until": "",
      "quota": 10000,
      "quota_unit": "每月（每季 30,000）",
-     "valid": "當季，當季登錄一次即可，不用每月重登",
-     "url": "https://www.fubon.com/banking/event/credit_card/20170718A/index.html"
+     "valid": "當季，當季登錄一次即可，不用每月重登（例：10 月登錄成功，10 到 12 月的日本交通卡消費都算）",
+     "url": "https://www.fubon.com/banking/event/credit_card/20170718A/index.html",
+     "note": "官方 App 的活動名稱寫「最高6%」，但同一畫面的活動內容與官網都寫最高 10%。本站採官網與活動內容的 10%。"
     },
     {
      "what": "日韓泰加碼",
