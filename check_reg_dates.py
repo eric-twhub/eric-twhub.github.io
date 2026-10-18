@@ -34,9 +34,23 @@ SOURCES = [
             {'what': '日韓泰加碼', 'anchor': '日韓泰加碼3%'},
         ],
     },
+    {
+        'card': '聯邦吉鶴卡',
+        'url': 'https://activity.ubot.com.tw/2026JiHoCard/japan.htm',
+        'sections': [
+            {'what': '交通卡儲值 1.5%', 'anchor': '日本三大交通卡儲值1.5%-注意事項'},
+        ],
+    },
 ]
 
-MONTH_RE = re.compile(r'(\d{1,2})月：\s*(\d{4})/(\d{1,2})/(\d{1,2})\s*(\d{1,2}):(\d{2})\s*起')
+# 查過但沒納入的：
+#   中信 LINE Pay 卡  page_travel.html 回 302 轉址，直讀抓不到內容。
+#   永豐現金回饋 JCB   頁面上讀不到任何登錄日期文字，應是前端算繪。
+# 這兩家要改用瀏覽器才讀得到，不適合放在每輪票價更新裡跑。
+
+# 年份三碼是民國年（聯邦這樣寫），四碼是西元年（富邦這樣寫）。
+MONTH_RE = re.compile(
+    r'(\d{1,2})月：\s*(\d{3,4})/(\d{1,2})/(\d{1,2})\s*(\d{1,2}):(\d{2})\s*起')
 
 
 def fetch_text(url):
