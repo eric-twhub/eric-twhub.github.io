@@ -14658,7 +14658,7 @@ if os.path.exists('cards.json'):
     _rg_tr = ''.join(
         f'<tr><td><a href="{U("/japan-credit-card/" + r["c"]["slug"] + "/")}">'
         f'<b>{html.escape(r["c"]["name"])}</b></a></td>'
-        f'<td class="nm">{html.escape(r["e"]["what"])}</td>'
+        f'<td class="nm">{html.escape(r["e"]["what"])}{_rg_tag(r["e"])}</td>'
         f'<td class="nm">{html.escape(_rg_when(r["e"]))}</td>'
         f'<td class="nm{" win" if r["days"] <= 2 else ""}">{_rg_when_cell(r)}</td>'
         f'<td class="nm">'
@@ -14779,7 +14779,9 @@ if os.path.exists('cards.json'):
         f'　·　{TODAY} 的狀態</div>'
       + ('<div class="tans">今天有 <b>' + str(len(_rg_today)) + '</b> 個活動開放登錄</div>'
          '<div class="tsub">' + html.escape('、'.join(
-             f'{r["c"]["name"]}（{r["e"]["what"]}）' for r in _rg_today)) + '</div>'
+             f'{r["c"]["name"]}（{r["e"]["what"]}'
+             + ('，非日本' if r['e'].get('not_japan') else '') + '）'
+             for r in _rg_today)) + '</div>'
          if _rg_today else
          '<div class="tans">今天沒有活動開放登錄</div>'
          + ('<div class="tsub">最近的是 ' + html.escape(
