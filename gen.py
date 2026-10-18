@@ -14581,6 +14581,10 @@ if os.path.exists('cards.json'):
     # 有每季一次。錯過就是只剩基本回饋，所以單獨開一頁按日期排。
     _RG_WD = ['一', '二', '三', '四', '五', '六', '日']
 
+    def _rg_tag(e):
+        """活動名稱後面要不要加註記。本站只講日本，所以不是日本的活動要標出來。"""
+        return '（非日本）' if e.get('not_japan') else ''
+
     def _rg_all():
         out = []
         for c in CD['cards']:
@@ -14672,18 +14676,18 @@ if os.path.exists('cards.json'):
         e = r['e']
         if e['cycle'] == 'monthly':
             _rg_mark.setdefault(min(e['day'], calendar.monthrange(_rg_y, _rg_m)[1]),
-                                []).append(f'{r["c"]["name"]}　{e["what"]}')
+                                []).append(f'{r["c"]["name"]}　{e["what"]}{_rg_tag(e)}')
         elif e['cycle'] == 'weekly':
             for dd in range(1, calendar.monthrange(_rg_y, _rg_m)[1] + 1):
                 if datetime.date(_rg_y, _rg_m, dd).weekday() == e['weekday']:
                     _rg_mark.setdefault(dd, []).append(
-                        f'{r["c"]["name"]}　{e["what"]}')
+                        f'{r["c"]["name"]}　{e["what"]}{_rg_tag(e)}')
         elif e['cycle'] == 'quarterly':
             for x in e.get('dates', []):
                 yy, mm, dd = map(int, x['open'].split('-'))
                 if (yy, mm) == (_rg_y, _rg_m):
                     _rg_mark.setdefault(dd, []).append(
-                        f'{r["c"]["name"]}　{e["what"]}'
+                        f'{r["c"]["name"]}　{e["what"]}{_rg_tag(e)}'
                         + ('（已額滿）' if x.get('full') else ''))
 
     _rg_cells = ''
@@ -14710,16 +14714,19 @@ if os.path.exists('cards.json'):
                        for q, a in [
           ('旅日信用卡的加碼登錄都是幾號開放？',
            '各家不同。' + '；'.join(
-               f'{r["c"]["name"]}的{r["e"]["what"]}是{_rg_when(r["e"])}'
+               f'{r["c"]["name"]}的{r["e"]["what"]}{_rg_tag(r["e"])}'
+               f'是{_rg_when(r["e"])}'
                for r in _rg_rows if r['e']['cycle'] in ('monthly', 'weekly'))
            + '。'),
           ('沒登錄會怎樣？',
            '只剩那張卡的基本回饋。加碼層是獨立計算的，沒登錄就是不給，'
            '事後補登錄多數不能回溯到登錄前的消費。'),
           ('登錄一次就好，還是每個月都要登錄？',
-           '要看活動。聯邦吉鶴卡的行動支付加碼與玉山熊本熊卡是活動期間登錄一次即可；'
-           '台北富邦 J 卡是每季登錄一次；聯邦吉鶴卡的交通卡儲值與中信 LINE Pay 卡的'
-           '國外實體店加碼則是每月或每週都要重登。'),
+           '要看活動，連同一張卡都不一定一樣。聯邦吉鶴卡的行動支付加碼與'
+           '玉山熊本熊卡是活動期間登錄一次即可；台北富邦 J 卡的日本交通卡加碼與'
+           '日韓泰加碼是每季登錄一次，但同一張卡的亞洲精選加碼是每月都要重登；'
+           '聯邦吉鶴卡的交通卡儲值與中信 LINE Pay 卡的國外實體店加碼也是'
+           '每月或每週都要重登。'),
         ]]}, ensure_ascii=False)
 
     # 分享圖卡。張數與標題由 make_cardreg_cards.py 隨資料產生，這裡照著排。
@@ -14820,7 +14827,7 @@ if os.path.exists('cards.json'):
           + f'<p class="lede">{html.escape(c.get("reg", ""))}</p>'
           + '<div class="tldr"><ul>'
           + ''.join(
-              f'<li><b>{html.escape(e["what"])}。</b>'
+              f'<li><b>{html.escape(e["what"])}{_rg_tag(e)}。</b>'
               f'{html.escape(_rg_when(e))}。'
               + (f'名額 {e["quota"]:,} 名（{html.escape(e["quota_unit"])}）。'
                  if e.get('quota') else
@@ -14829,6 +14836,10 @@ if os.path.exists('cards.json'):
               + (f'資格：{html.escape(e["valid"])}。' if e.get('valid') else '')
               + (f'<br><small>路徑：{html.escape(e["path"])}</small>'
                  if e.get('path') else '')
+              + (f'<br><small>{html.escape(e["note"])}</small>'
+                 if e.get('note') else '')
+              + (f'<br><small>{html.escape(e["not_japan"])}</small>'
+                 if e.get('not_japan') else '')
               + (f'<br><a href="{e["url"]}" target="_blank" rel="nofollow noopener">'
                  f'官方登錄頁</a>' if e.get('url') else '')
               + ''.join(

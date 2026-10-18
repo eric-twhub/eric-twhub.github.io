@@ -59,6 +59,13 @@ jobs:
         continue-on-error: true
         run: python3 scan_tigerair.py
 
+      - name: 比對登錄日期
+        # reg_events 的日期是人工填的，填錯不會報錯，登錄日曆照樣算得出一個
+        # 看起來合理的日期，讀者就會在錯的那天去登錄。2026-10-18 踩過一次。
+        # 這支抓不到官網時只警告，只有真的對不起來才讓這輪停掉，
+        # 所以不加 continue-on-error：那會讓真正的錯誤也被吞掉。
+        run: python3 check_reg_dates.py
+
       - name: 更新日圓匯率
         run: python3 update_rate.py
 
