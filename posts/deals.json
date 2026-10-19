@@ -82,53 +82,53 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,694（21 天有紀錄），這張低 55%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,736（21 天有紀錄），這張低 55%"
   ],
-  "med": 11302,
+  "med": 11305,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 5465,
-   "hi": 12165,
+   "lo": 5965,
+   "hi": 12292,
    "days": 34
   },
   "mbase": {
-   "avg": 9694,
+   "avg": 9736,
    "days": 21,
    "month": 11
   },
   "rank": 1,
-  "n": 99
+  "n": 98
  },
  {
   "slug": "2026-10-19-taipei-fukuoka",
-  "title": "台北飛福岡 NT$5,318 來回含稅｜台灣虎航 11/03 出發",
+  "title": "台北飛福岡 NT$5,718 來回含稅｜台灣虎航 11/01 出發",
   "o": "台北",
   "c": "福岡",
   "_oiata": "TPE",
   "_diata": "FUK",
-  "price": 5318,
+  "price": 5718,
   "air": "台灣虎航",
-  "dep": "2026-11-03",
-  "ret": "2026-11-06",
+  "dep": "2026-11-01",
+  "ret": "2026-11-05",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$8,571（7 天有紀錄），這張低 38%"
+   "11 月出發的票，每天最便宜的平均要 NT$8,693（7 天有紀錄），這張低 34%"
   ],
   "med": 14219,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-01&inbound=FUK-TPE&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 5718,
+   "lo": 6174,
    "hi": 11092,
    "days": 7
   },
   "mbase": {
-   "avg": 8571,
+   "avg": 8693,
    "days": 7,
    "month": 11
   },
@@ -137,7 +137,7 @@
  },
  {
   "slug": "2026-10-19-transfer-tokyo-sendai",
-  "title": "飛東京轉乘去仙台，比直飛省 NT$2,496",
+  "title": "飛東京轉乘去仙台，比直飛省 NT$2,494",
   "o": "台灣",
   "c": "仙台",
   "via": "東京",
@@ -153,22 +153,22 @@
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$2,496"
+   "比直飛省 NT$2,494"
   ],
-  "med": 15138,
+  "med": 15136,
   "url": "https://www.aviasales.com/search/TPE3110NRT03111?t=GK17934567001793471400000185TPENRT17937447001793755800000245NRTTPE_4292b74ef2cbcdbfa97a6f0b3f098b33_20080&search_date=18102026&expected_price_uuid=01a14ca9-a4b9-8031-25c6-e90b759417e8&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=iM4nJAMASjdJieHHs1WKlQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7886&marker=775639",
   "hotelcity": "仙台",
   "cslug": "sendai"
  },
  {
   "slug": "2026-10-19-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$3,306",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$3,305",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
-  "price": 11150,
+  "price": 11149,
   "air": "飛大阪再轉乘",
-  "fl_price": 6892,
+  "fl_price": 6891,
   "fl_rt": true,
   "fl_to": "大阪",
   "tr_twd": 2129,
@@ -178,35 +178,35 @@
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$3,306"
+   "比直飛省 NT$3,305"
   ],
-  "med": 14456,
-  "url": "https://www.aviasales.com/search/KHH0411KIX12111?t=AK17937828001793797800000190KHHKIX17944926001794501000000200KIXKHH_6845f677d714ae91368730985aba259a_17867&search_date=19102026&expected_price_uuid=01a15301-9bd1-8030-edee-a91ce14e3f0b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LToUf37MT2-_QW4b__qoiw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6892&marker=775639",
+  "med": 14454,
+  "url": "https://www.aviasales.com/search/KHH0411KIX12111?t=AK17937828001793797800000190KHHKIX17944926001794501000000200KIXKHH_6845f677d714ae91368730985aba259a_17867&search_date=19102026&expected_price_uuid=01a15301-9bd1-8030-edee-a91ce14e3f0b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LToUf37MT2-_QW4b__qoiw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6891&marker=775639",
   "hotelcity": "廣島",
   "cslug": "hiroshima"
  },
  {
   "slug": "2026-10-19-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,866",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,466",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 7532,
+  "price": 7932,
   "air": "飛福岡再轉乘",
-  "fl_price": 5318,
+  "fl_price": 5718,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1107,
   "tr_mode": "九州新幹線",
-  "dep": "2026-11-03",
+  "dep": "2026-11-01",
   "ret": "",
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$2,866"
+   "比直飛省 NT$2,466"
   ],
   "med": 10398,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-01&inbound=FUK-TPE&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
  }

@@ -1,18 +1,18 @@
 {
  "schema": 1,
  "slug": "2026-10-19-transfer-osaka-hiroshima",
- "generated": "2026-10-19 16:57",
+ "generated": "2026-10-19 17:07",
  "kind": "transfer",
  "city": "hiroshima",
  "via": "osaka",
- "own": 14456,
+ "own": 14454,
  "fare": {
   "o": "KHH",
   "d": "OSA",
   "air": "AK",
   "airname": "馬來西亞亞航",
   "cls": "lcc",
-  "price": 6892,
+  "price": 6891,
   "dep": "2026-11-04",
   "ret": "2026-11-12",
   "dept": "09:00",
@@ -22,7 +22,7 @@
   "dur": 390,
   "dur_to": 190,
   "gate": "Farera",
-  "url": "https://www.aviasales.com/search/KHH0411KIX12111?t=AK17937828001793797800000190KHHKIX17944926001794501000000200KIXKHH_6845f677d714ae91368730985aba259a_17867&search_date=19102026&expected_price_uuid=01a15301-9bd1-8030-edee-a91ce14e3f0b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LToUf37MT2-_QW4b__qoiw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6892&marker=775639"
+  "url": "https://www.aviasales.com/search/KHH0411KIX12111?t=AK17937828001793797800000190KHHKIX17944926001794501000000200KIXKHH_6845f677d714ae91368730985aba259a_17867&search_date=19102026&expected_price_uuid=01a15301-9bd1-8030-edee-a91ce14e3f0b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LToUf37MT2-_QW4b__qoiw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6891&marker=775639"
  },
  "fare_rt": true,
  "jpy_text": "¥10,210",
@@ -34,6 +34,6 @@
  "route": "新大阪 → 廣島",
  "mode": "山陽新幹線",
  "tm": "約 1.5 小時",
- "total": 11150,
- "save": 3306
+ "total": 11149,
+ "save": 3305
 }
