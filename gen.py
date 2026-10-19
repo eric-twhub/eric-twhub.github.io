@@ -14331,7 +14331,13 @@ if os.path.exists('cards.json'):
                    f'<b>{html.escape(c["name"])}</b></a>{SMALL}{html.escape(c["plan"])}'
                    + ('　⚠ ' + html.escape(c['reg_short'])
                       if c.get('reg_level') not in (None, '', 'none')
-                      else '　· ' + html.escape(c.get('reg_short', ''))) + '</small></td>'
+                      else '　· ' + html.escape(c.get('reg_short', ''))
+                      )
+                   + ('<br>另有非日本加碼（'
+                      + '、'.join(html.escape(o['what']) for o in c['other_perks'])
+                      + '），不計入本表數字'
+                      if c.get('other_perks') else '')
+                   + '</small></td>'
                    f'<td><b>{c["total"]}%</b>{SMALL}基本 {c["base"]}%'
                    + (f' ＋ {len(_tiers(c,"shop"))} 層加碼' if _tiers(c, 'shop') else '')
                    + '</small></td>'
@@ -15112,6 +15118,25 @@ if os.path.exists('cards.json'):
           + ''.join(f'<li>{html.escape(x)}</li>' for x in c['exclude'])
           + '<li>結帳選台幣（DCC）：匯率差 3–5%，且多數銀行的海外加碼要求以外幣結帳。</li>'
           + '</ul></div>'
+          # 這張卡真的有、但不是日本的加碼。放在這裡是因為持卡人會想知道，
+          # 但刻意不進 tiers：本站每一個回饋數字講的都是日本，
+          # 混進別的地區會讓帳面最高與試算結果失真。
+          + (('<h2>這張卡的非日本加碼</h2>'
+              '<p class="lede">本站所有的回饋數字只算日本。'
+              '以下這幾項是同一張卡真的有的加碼，但適用地區不含日本，'
+              '所以不列入上面任何一個數字，也不列入比較表與試算。</p>'
+              + ''.join(
+                  '<div class="tldr"><ul>'
+                  f'<li><b>{html.escape(o["what"])}　{html.escape(o["rate"])}</b></li>'
+                  f'<li>適用地區：{html.escape(o["where"])}</li>'
+                  f'<li>{html.escape(o["how"])}</li>'
+                  f'<li>登錄：{html.escape(o["reg"])}</li>'
+                  f'<li>活動期間：{html.escape(o["period"])}</li>'
+                  '</ul></div>'
+                  f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow noopener" '
+                  f'target="_blank">官方活動頁</a>。</p>'
+                  for o in c['other_perks']))
+             if c.get('other_perks') else '')
           + '<h2>適合誰</h2>'
           + f'<p class="lede"><b>適合</b>：{html.escape(c["good"])}</p>'
           + f'<p class="lede"><b>不適合</b>：{html.escape(c["bad"])}</p>'

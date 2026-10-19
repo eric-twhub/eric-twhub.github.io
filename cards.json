@@ -448,6 +448,17 @@
      "valid": "當季，當季登錄一次即可（例：1 月登錄，1 到 3 月都算）",
      "url": "https://www.fubon.com/banking/event/credit_card/20170718A/index.html"
     }
+   ],
+   "other_perks": [
+    {
+     "what": "亞洲精選加碼",
+     "rate": "最高 6%",
+     "how": "當月於指定國家實體消費累積滿 NT$6,000，贈 NT$300 即享券乙張，每戶每月限一張。官方算成最高 6%，是這張券的 5% 加上基本權益最高 1%。",
+     "where": "中國大陸、香港、澳門、新加坡、馬來西亞、越南",
+     "reg": "每月 19 日 16:00 開放登錄至月底，每月限量 10,000 名。每月都要重新登錄，和同一張卡的交通卡、日韓泰兩檔（每季一次）不一樣。",
+     "period": "2026/4/1 – 2026/12/31",
+     "src": "https://www.fubon.com/banking/Personal/credit_card/all_card/omiyage/omiyage.htm"
+    }
    ]
   },
   {
