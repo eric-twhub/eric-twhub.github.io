@@ -1,0 +1,353 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="google-site-verification" content="lL18Diq98hRIL65-BKEiZ-mhQ2DNyf0WYwRpRBiT-Rk">
+<title>機場停車怎麼停最省？四種停法的價差與哪張卡有免費停車</title>
+<meta name="description" content="桃園機場航廈停車場每日 490 元，但官方的貨運區停車場只要 250 元還有免費接駁。機捷轉乘停車場 150 元但只有 113 格。15 張卡裡只有 5 張有免費停車，日本回饋高的那幾張全都沒有。">
+<link rel="canonical" href="https://eric-twhub.github.io/taiwan-airport-parking/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#c2410c">
+<meta property="og:title" content="機場停車怎麼停最省？四種停法的價差與哪張卡有免費停車">
+<meta property="og:description" content="桃園機場航廈停車場每日 490 元，但官方的貨運區停車場只要 250 元還有免費接駁。機捷轉乘停車場 150 元但只有 113 格。15 張卡裡只有 5 張有免費停車，日本回饋高的那幾張全都沒有。">
+<meta property="og:type" content="website"><meta property="og:url" content="https://eric-twhub.github.io/taiwan-airport-parking/">
+<meta property="og:image" content="https://eric-twhub.github.io/og/taiwan-airport-parking.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>*{box-sizing:border-box}
+/* 固定淺色主題：color-scheme 讓下拉選單與日期選擇器等原生元件也維持淺色，
+   否則使用者系統為深色模式時表單控制項會變黑，與頁面不一致 */
+:root{color-scheme:light;
+--bg:#f7f7f5;--card:#fff;--fg:#1a1a1a;--dim:#63605c;--line:#e5e3de;--acc:#c2410c;
+--hot:#dc2626;--lcc:#0f766e;--fsc:#4f46e5;--soft:#faf9f7}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 72px}
+a{color:var(--acc)}
+.crumb{font-size:.8rem;color:var(--dim);padding:16px 0 0}
+.crumb a{color:var(--dim);text-decoration:none}.crumb a:hover{color:var(--acc)}
+h1{font-size:1.95rem;margin:14px 0 8px;letter-spacing:-.025em;line-height:1.3}
+.lede{color:var(--dim);font-size:.95rem;margin:0 0 4px}
+.upd{color:var(--dim);font-size:.78rem;margin:6px 0 0}
+nav.top{position:sticky;top:0;z-index:30;background:var(--bg);padding:9px 0;margin-top:14px;
+border-bottom:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+nav.top>a{color:var(--dim);text-decoration:none;font-size:.86rem;white-space:nowrap;
+font-weight:500;padding:6px 10px;border-radius:7px}
+nav.top>a:hover,nav.top>a.cur{color:var(--acc);background:var(--soft)}
+/* 用 details 做下拉：不需 JS，鍵盤可操作，手機上也不會因 hover 失效 */
+/* 寬螢幕：面板錨在自己的項目下方，點哪個就在哪個下面展開 */
+nav.top details{position:relative}
+nav.top summary{list-style:none;cursor:pointer;font-size:.86rem;font-weight:500;color:var(--dim);
+padding:6px 10px;border-radius:7px;white-space:nowrap;user-select:none}
+nav.top summary::-webkit-details-marker{display:none}
+nav.top summary::after{content:"▾";margin-left:5px;font-size:.7rem;opacity:.6}
+nav.top summary:hover,nav.top details[open]>summary{color:var(--acc);background:var(--soft)}
+nav.top details[open]>summary::after{content:"▴"}
+/* 一律絕對定位：若改 static，展開時會把同列其他項目擠開、版面錯位 */
+/* 最右邊的分類往左展開，否則視窗接近斷點時面板會凸出畫面右緣 */
+nav.top>details.end>.dd{left:auto;right:0}
+.dd{position:absolute;top:calc(100% + 6px);left:0;min-width:220px;
+max-width:min(340px,calc(100vw - 32px));max-height:70vh;overflow-y:auto;
+background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px;
+box-shadow:0 10px 28px rgba(0,0,0,.14);display:flex;flex-direction:column;gap:1px;z-index:40}
+.dd a{display:block;padding:8px 11px;border-radius:7px;color:var(--fg);text-decoration:none;
+font-size:.87rem;white-space:nowrap}
+.dd a:hover{background:var(--soft);color:var(--acc)}
+.dd a.cur{color:var(--acc);font-weight:600}
+.dd b{display:block;padding:9px 11px 4px;font-size:.72rem;color:var(--dim);font-weight:600;
+letter-spacing:.05em}
+.dd hr{border:0;border-top:1px solid var(--line);margin:5px 0}
+/* 窄螢幕導覽列會換行，面板錨在各自的項目上時很容易被推出畫面左右緣；
+   改為錨定導覽列本身（position:sticky 已建立定位脈絡）並撐滿整列 */
+@media(max-width:767px){
+ nav.top details{position:static}
+ .dd{left:0;right:0;max-width:none;top:calc(100% + 4px)}
+ .dd a{white-space:normal}
+}
+/* 漢堡選單：只在窄螢幕出現，同時把四個分類的下拉收起來 */
+nav.top>details.burger{display:none}
+@media(max-width:767px){
+ nav.top>details.burger{display:block}
+ nav.top>details:not(.burger){display:none}
+}
+/* 漢堡面板內的分類標題 */
+.dd>details>summary{list-style:none;cursor:pointer;user-select:none;
+font-size:.9rem;font-weight:600;color:var(--fg);padding:10px 11px;border-radius:7px;
+display:flex;justify-content:space-between;align-items:center}
+.dd>details>summary::-webkit-details-marker{display:none}
+.dd>details>summary::after{content:"▾";font-size:.7rem;color:var(--dim)}
+.dd>details[open]>summary,.dd>details>summary:hover{color:var(--acc);background:var(--soft)}
+.dd>details[open]>summary::after{content:"▴"}
+/* 就地展開的子清單，沿用 .dd 的排版但不再是浮動面板 */
+.sub{display:flex;flex-direction:column;gap:1px;padding:1px 0 8px 12px}
+.sub a{display:block;padding:8px 11px;border-radius:7px;color:var(--fg);
+text-decoration:none;font-size:.86rem}
+.sub a:hover{background:var(--soft);color:var(--acc)}
+.sub a.cur{color:var(--acc);font-weight:600}
+.sub b{display:block;padding:9px 11px 4px;font-size:.72rem;color:var(--dim);
+font-weight:600;letter-spacing:.05em}
+.sub hr{border:0;border-top:1px solid var(--line);margin:5px 0}
+
+h2{font-size:1.28rem;margin:40px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--acc)}
+h3{font-size:1.02rem;margin:26px 0 8px}
+h3.grp{font-size:.78rem;letter-spacing:.12em;color:var(--dim);font-weight:700;margin:34px 0 0;text-transform:uppercase}
+h3 .tag{font-size:.7rem;font-weight:600;color:var(--dim);margin-left:7px;border:1px solid var(--line);border-radius:5px;padding:1px 5px;vertical-align:middle}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px;margin-top:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 14px;
+display:flex;flex-direction:column;gap:6px}
+.card.hot{border-color:var(--hot)}
+.rt{display:flex;align-items:center;gap:6px;font-size:.96rem;flex-wrap:wrap}
+.rt i{color:var(--dim);font-style:normal}
+.rt em{background:var(--hot);color:#fff;font-size:.66rem;padding:2px 6px;border-radius:4px;font-style:normal;font-weight:700}
+.pr{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.pr span{font-size:.68rem;font-weight:600;margin-left:6px;padding:2px 6px;border-radius:4px}
+.pr .rtx{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc)}
+.pr .owx{background:var(--line);color:var(--dim)}
+.mt{display:flex;gap:6px;flex-wrap:wrap;font-size:.78rem;color:var(--dim)}
+.tg{padding:1px 6px;border-radius:4px;font-size:.69rem;font-weight:600}
+.tg.lcc{background:color-mix(in srgb,var(--lcc) 15%,transparent);color:var(--lcc)}
+.tg.fsc{background:color-mix(in srgb,var(--fsc) 15%,transparent);color:var(--fsc)}
+.tg.other{background:var(--line);color:var(--dim)}
+.tg.gt{background:color-mix(in srgb,#b45309 16%,transparent);color:#b45309}.tg.hol{background:color-mix(in srgb,#be123c 15%,transparent);color:#be123c}
+.gate{font-size:.73rem;color:var(--dim);display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+padding-top:6px;border-top:1px dashed var(--line)}
+.gate b{color:var(--fg);font-weight:600}
+.gate span{padding:1px 6px;border-radius:4px;font-size:.66rem;font-weight:600}
+.gate.ga span{background:color-mix(in srgb,var(--lcc) 18%,transparent);color:var(--lcc)}
+.gate.gb span{background:var(--line);color:var(--dim)}
+.gate.gc span{background:color-mix(in srgb,var(--hot) 14%,transparent);color:var(--hot)}
+.dt{font-size:.81rem;color:var(--dim);font-variant-numeric:tabular-nums}
+.btn{margin-top:auto;display:block;text-align:center;background:var(--acc);color:#fff;
+text-decoration:none;padding:7px;border-radius:7px;font-size:.83rem;font-weight:600}
+.cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:9px;margin-top:12px}
+.ct{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;
+padding:12px 13px;text-decoration:none;color:var(--fg)}
+.ct:hover{border-color:var(--acc)}
+.ct b{display:block;font-size:1rem}
+.ct s{display:block;font-size:.74rem;color:var(--dim);text-decoration:none;margin-top:1px}
+.ct u{display:block;font-size:.95rem;color:var(--acc);text-decoration:none;font-weight:700;margin-top:6px}
+.ct u small{font-weight:400;font-size:.7rem;color:var(--dim)}
+.plinks{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.plink{flex:1 1 190px;text-align:center;border:1px solid var(--line);background:var(--card);
+color:var(--fg);text-decoration:none;padding:11px 13px;border-radius:9px;font-size:.88rem;font-weight:600}
+.plink:hover{border-color:var(--acc);color:var(--acc)}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-weight:600;font-size:.79rem}
+td b{color:var(--acc)}
+.today{background:linear-gradient(180deg,#fff,var(--soft));border:1px solid var(--line);
+ border-top:4px solid var(--acc);border-radius:12px;padding:19px 22px;margin-top:14px}
+.tday{font-size:.79rem;color:var(--dim);letter-spacing:.04em;font-weight:600}
+.tans{font-size:1.3rem;font-weight:800;line-height:1.42;margin-top:8px;letter-spacing:-.02em}
+.tsub{font-size:.93rem;color:var(--dim);line-height:1.7;margin-top:10px}
+.tbuf{font-size:.93rem;line-height:1.7;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.tbuf b{color:var(--acc)}
+.tldr{background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--acc);
+border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
+.tldr ul{margin:0;padding-left:2px}
+.tldr li{margin-bottom:9px;font-size:.94rem;line-height:1.75}
+.tldr li:last-child{margin-bottom:0}
+/* 規格／官方原文的引用塊：原文照抄，cite 放出處或中譯 */
+blockquote.q{margin:14px 0;padding:12px 16px;background:var(--card);
+border-left:3px solid var(--acc);border-radius:0 8px 8px 0;font-size:.9rem;line-height:1.75}
+blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem;color:var(--dim)}
+blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem;color:var(--dim)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
+.tw table{min-width:640px;font-size:.84rem}
+.tw th,.tw td{white-space:nowrap;padding:9px 11px}
+.tw td.win{color:var(--lcc);font-weight:700}
+/* 數字比左欄低、而且低的原因是條件限制時，用暖色標出來 */
+.tw td.warn{color:var(--acc);font-weight:700}
+/* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
+.tw td.nm{white-space:normal;line-height:1.55;min-width:150px;max-width:290px}
+/* 表格裡的日文原文（含中譯）：要換行，不然整張表會撐到好幾個螢幕寬 */
+.tw td.jq{white-space:normal;line-height:1.6;min-width:200px;max-width:420px;font-size:.88rem}
+.tw td.dimcell{color:var(--dim);opacity:.55}
+/* 頁內書籤：每頁的 h2 自動收成一排，讓人直接跳到要看的那一段 */
+.toc{margin:16px 0 6px;padding:11px 14px 12px;background:var(--soft);
+border:1px solid var(--line);border-radius:12px}
+.toc>b{display:block;font-size:.76rem;color:var(--dim);font-weight:600;
+margin-bottom:8px;letter-spacing:.02em}
+.toc>div{display:flex;flex-wrap:wrap;gap:7px}
+.toc a{font-size:.82rem;line-height:1.4;color:var(--fg);background:var(--card);
+border:1px solid var(--line);border-radius:999px;padding:5px 11px;
+text-decoration:none;white-space:nowrap}
+.toc a:hover{color:var(--acc);border-color:var(--acc)}
+@media(max-width:560px){.toc a{font-size:.78rem;padding:4px 9px}}
+/* 圖卡燈箱：原本點圖是另開分頁，一次只能看一張，要按上一頁才能看下一張 */
+.lbx{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.93);
+display:none;align-items:center;justify-content:center;padding:46px 16px 0}
+.lbx.on{display:flex}
+.lbx{overscroll-behavior:contain}
+.lbx figure{margin:0;max-width:min(96vw,720px);text-align:center}
+.lbx img{max-width:100%;max-height:76vh;width:auto;height:auto;display:block;
+margin:0 auto;border-radius:8px;background:#fff;transition:opacity .15s}
+.lbx figcaption{color:#fff;padding:11px 4px 10px;font-size:.88rem;line-height:1.5}
+.lbx figcaption b{display:block;font-weight:600}
+.lbx figcaption span{display:block;color:#a8a8a8;font-size:.78rem;margin-top:4px}
+.lbx button{position:absolute;background:rgba(255,255,255,.13);color:#fff;
+border:0;border-radius:999px;cursor:pointer;line-height:1;font-family:inherit;
+-webkit-tap-highlight-color:transparent}
+.lbx .lbc{top:12px;right:12px;width:38px;height:38px;font-size:1.4rem}
+.lbx .lbp,.lbx .lbn{top:50%;margin-top:-32px;width:44px;height:64px;
+font-size:1.9rem;border-radius:10px}
+.lbx .lbp{left:10px}
+.lbx .lbn{right:10px}
+.lbx button:hover{background:rgba(255,255,255,.27)}
+.lbx button[disabled]{opacity:.22;cursor:default}
+/* 圖兩側放不下按鈕時（手機、或很窄的視窗）移到底下，拇指構得到，
+   也不會壓在圖上。放不放得下由 JS 量圖的實際寬度決定，掛 nb 這個 class。 */
+.lbx.nb .lbp,.lbx.nb .lbn{top:auto;bottom:12px;margin-top:0;width:58px;
+height:40px;font-size:1.5rem;left:auto;right:auto}
+.lbx.nb .lbp{left:12px}
+.lbx.nb .lbn{right:12px}
+.lbx.nb figcaption{padding-bottom:58px}
+@media(max-width:560px){
+.lbx{padding:42px 8px 0}
+.lbx img{max-height:66vh}
+}
+/* 導覽列是 sticky，跳過去要留出它的高度，不然標題會被蓋住 */
+html{scroll-behavior:smooth}
+h2[id],h3[id],.thc[id]{scroll-margin-top:72px}
+
+/* 月曆：標出放假、建議請假，三國的假日名稱直接寫在格子裡 */
+.cal{margin:14px 0}
+.calm{margin:0 0 20px}
+.calm>b{display:block;font-size:1rem;margin:0 0 6px}
+.calg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.calg>.wd{font-size:.72rem;color:var(--dim);text-align:center;padding:1px 0 3px}
+.cd{min-height:64px;border:1px solid var(--line);border-radius:6px;padding:3px 4px;
+background:var(--card);font-size:.62rem;line-height:1.4;overflow:hidden}
+.cd.pad{border:0;background:none;min-height:0}
+.cd>i{display:block;font-style:normal;font-weight:700;font-size:.78rem;color:var(--dim)}
+.cd s{display:block;text-decoration:none;white-space:normal;word-break:break-all}
+.cd.we{background:#efeeea}
+.cd.hol{background:#fdecea;border-color:#f3c2b8}
+.cd.hol>i{color:var(--hot)}
+.cd.lv{background:#fff4e6;border-color:var(--acc);border-width:2px;padding:2px 3px}
+.cd.lv>i{color:var(--acc)}
+.cd.mk{background:#eef6fb;border-color:#b9d8ea}
+.cd.gone{opacity:.42}
+.cd .tag{display:inline-block;font-size:.58rem;font-weight:700;color:#fff;
+background:var(--acc);border-radius:3px;padding:0 3px;margin-top:1px}
+.callg{display:flex;flex-wrap:wrap;gap:8px 14px;margin:8px 0 14px;font-size:.78rem;
+color:var(--dim)}
+.callg span{display:flex;align-items:center;gap:5px}
+.callg u{display:inline-block;width:14px;height:14px;border-radius:4px;
+border:1px solid var(--line)}
+@media(max-width:560px){.cd{min-height:56px;font-size:.55rem;padding:2px 2px}
+.cd>i{font-size:.7rem}}
+
+/* 欄位少的表格不要被 min-width 逼出橫向捲動 */
+.tw.narrow table{min-width:0}
+/* 回饋計算機的並排比較表 */
+.cmp{width:100%;border-collapse:collapse}
+.cmp th,.cmp td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;
+ white-space:nowrap;vertical-align:baseline}
+.cmp th:first-child,.cmp td:first-child{text-align:left;color:var(--dim);font-weight:600}
+.cmp thead th{font-weight:700;border-bottom:2px solid var(--line);color:var(--fg)}
+.cmp thead th a{text-decoration:none}
+.cmp b{font-variant-numeric:tabular-nums;font-size:1.06rem}
+.tw td .pw,.cmp .pw{background:var(--acc);color:#fff;font-size:.68rem;padding:1px 6px;border-radius:4px;
+ font-weight:700;margin-right:5px;vertical-align:middle}
+.cmp .pc{font-style:normal;color:var(--hot)}
+.cmp .pp{font-style:normal;font-size:.76rem;color:var(--dim);font-weight:600;margin-left:6px}
+.tw td.lose{color:var(--acc);font-weight:700}
+.tw td.win b,.tw td.lose b{color:inherit}
+.cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
+background:var(--card);border:1px solid var(--line);border-radius:12px;
+text-decoration:none;color:var(--fg)}
+.cta:hover{border-color:var(--acc)}
+.cta .ci{font-size:1.5rem;flex:0 0 auto}
+.cta .ct{flex:1;display:flex;flex-direction:column;gap:2px}
+.cta .ct b{font-size:.98rem;font-weight:700}
+.cta .ct s{text-decoration:none;font-size:.82rem;color:var(--dim)}
+.cta .ca{color:var(--acc);font-weight:700;font-size:1.1rem;flex:0 0 auto}
+.cta .ca.pr{font-size:1.42rem;letter-spacing:-.03em;line-height:1.15;text-align:right}
+.cta .ca.pr small{display:block;font-size:.66rem;font-weight:600;color:var(--dim);letter-spacing:0}
+/* 廣告版位。明確標示，而且跟內文的卡片長得不一樣，
+   不要讓讀者以為那是我們查證過的資料。 */
+.adbox{margin:26px 0 0;border:1px solid var(--line);border-radius:14px;
+background:var(--soft);overflow:hidden}
+.adbox>.adhd{display:flex;align-items:center;gap:8px;padding:9px 15px;
+border-bottom:1px solid var(--line);background:var(--card)}
+.adbox>.adhd i{font-style:normal;font-size:.68rem;font-weight:700;letter-spacing:.08em;
+padding:2px 7px;border-radius:4px;background:var(--dim);color:var(--bg);flex:0 0 auto}
+.adbox>.adhd span{font-size:.78rem;color:var(--dim);line-height:1.5}
+.adbox>.adbd{padding:13px 15px 15px}
+.adbox .adt{font-size:1.02rem;font-weight:700;line-height:1.5;margin-bottom:3px}
+.adbox .ads{font-size:.86rem;color:var(--dim);line-height:1.7;margin-bottom:12px}
+.adgo{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:11px;
+background:var(--acc);color:#fff;text-decoration:none;font-weight:700;font-size:.97rem}
+.adgo:hover{filter:brightness(1.08)}
+.adgo .agi{font-size:1.3rem;flex:0 0 auto}
+.adgo .agt{flex:1;line-height:1.4}
+.adgo .agt s{display:block;text-decoration:none;font-size:.76rem;font-weight:500;
+opacity:.88;margin-top:2px}
+.adgo .aga{flex:0 0 auto;font-size:1.15rem}
+.adbox.mid,.adbox.top{margin:22px 0 28px}
+.adbox .adpl{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.adbox .adpl.one{grid-template-columns:1fr}
+.adbox .adp{display:flex;flex-direction:column;gap:5px;padding:11px 13px;
+background:var(--card);border:1px solid var(--line);border-radius:10px;
+text-decoration:none;color:var(--fg)}
+.adbox .adp:hover{border-color:var(--acc)}
+.adbox .adp b{font-size:.88rem;font-weight:700;line-height:1.45}
+.adbox .adp s{text-decoration:none;font-size:.76rem;color:var(--dim);line-height:1.5}
+.adbox .adp u{text-decoration:none;font-size:.75rem;color:var(--dim);
+display:flex;gap:8px;align-items:center;margin-top:auto;padding-top:3px}
+.adbox .adp u i{font-style:normal;color:var(--acc);font-weight:700}
+@media(max-width:560px){.adbox .adpl{grid-template-columns:1fr}}
+.adbox .adimg{display:block;text-decoration:none}
+.adbox .adimg img{display:block;width:100%;height:auto;aspect-ratio:1440/400}
+.adbox.img>.adbd{padding:0}
+.adbox .adbd2{padding:0 15px 2px}
+.adbox .adbd2 .adpl{margin-top:13px}
+.adbox .adfp{padding:0 15px 13px;font-size:.73rem;color:var(--dim);line-height:1.65}
+details.faq{background:var(--card);border:1px solid var(--line);border-radius:10px;
+margin-top:8px;padding:0}
+details.faq summary{cursor:pointer;padding:13px 15px;font-weight:600;font-size:.95rem;
+list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"＋";color:var(--acc);font-weight:700;flex:0 0 auto}
+details.faq[open] summary::after{content:"－"}
+details.faq summary:hover{color:var(--acc)}
+details.faq>div{padding:0 15px 14px;font-size:.9rem;color:var(--dim);line-height:1.8}
+.sf{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:12px;
+padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.sf label{display:flex;flex-direction:column;gap:5px;font-size:.78rem;color:var(--dim);flex:1 1 150px}
+.sf select,.sf input{font:inherit;font-size:.92rem;padding:9px 10px;border-radius:8px;
+border:1px solid var(--line);background:var(--card);color:var(--fg);width:100%}
+.sf button{font:inherit;font-weight:700;font-size:.92rem;padding:10px 22px;border:0;
+border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
+.sf button:hover{opacity:.9}
+@media(max-width:520px){.sf label{flex:1 1 100%}.sf button{width:100%}}
+.calc{margin-top:12px;padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.calc .sf{margin-top:0;padding:0;background:none;border:0}
+.calc .klv{margin-top:5px;font-size:.82rem}
+.cmp thead th .pp{display:block;margin:2px 0 0;font-weight:600}
+.cres{margin-top:14px;padding:16px 18px;background:var(--card);border:1px solid var(--line);
+ border-radius:10px}
+.cres .cl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+ padding:7px 0;font-size:.95rem;border-bottom:1px dashed var(--line)}
+.cres .cl:last-of-type{border-bottom:0}
+.cres .cl b{font-size:1.16rem;font-variant-numeric:tabular-nums}
+.cres .cl .pw{background:var(--acc);color:#fff;font-size:.7rem;padding:1px 7px;border-radius:4px;
+ font-weight:700;margin-right:4px}
+.cres .cl .pc{font-style:normal;font-size:.72rem;color:var(--hot);margin-left:8px}
+.cres .cl .pp{font-style:normal;font-size:.78rem;color:var(--dim);font-weight:600;margin-left:8px}
+.cres .cv{margin-top:12px;padding-top:12px;border-top:2px solid var(--line);
+ font-size:1.12rem;font-weight:800;line-height:1.5}
+.cres .cv.jp{color:var(--lcc)}.cres .cv.tw{color:var(--acc)}
+.widget{margin:12px 0 0;min-height:60px}
+.widget iframe{max-width:100%;border:0}
+.gatebar{margin:16px 0 0;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
+.disc{font-size:.76rem;color:var(--dim);margin:8px 0 0;line-height:1.6}
+.note{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:.79rem;color:var(--dim);line-height:1.85}
+.note a{color:var(--dim)}
+@media(max-width:520px){h1{font-size:1.5rem}.grid{grid-template-columns:1fr}}</style><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "開車去桃園機場，停哪裡最便宜？", "acceptedAnswer": {"@type": "Answer", "text": "停車費最低的是機場捷運的轉乘停車場，每日上限 150 元，但那五個離機場近的站加起來只有 113 格汽車位，而且要另外付機捷票價。不想賭車位的話，桃園機場自己的貨運區停車場每日上限 250 元，登記後有免費接駁到航廈，只有航廈停車場 490 元的一半。"}}, {"@type": "Question", "name": "社群說停機捷山鼻站出國 6 天只要 360 元，是真的嗎？", "acceptedAnswer": {"@type": "Answer", "text": "數字和站號都不對。山鼻站是 A10 不是 A14a，桃捷轉乘停車場全線 14 站都是每日上限 150 元，官網查不到任何 60 元的費率，6 天依官方費率推算是 900 元。誤解可能來自官網那句「每日最高上限150元，於每日24時後另計」，那是日曆日上限、過午夜重新起算，不是停幾天都只收 150。"}}, {"@type": "Question", "name": "哪張信用卡有免費機場停車？", "acceptedAnswer": {"@type": "Answer", "text": "本站追蹤的 15 張卡裡只有 5 張確定有：台北富邦 J 卡、聯邦吉鶴卡、永豐幣倍卡、第一銀行 iLEO 卡，以及台新 Richart 卡的原三商美邦御璽卡那一版。門檻幾乎都要把當次機票或團費刷在那張卡上，單筆 2 萬到 3 萬元；只有聯邦吉鶴卡是看一年期的一般消費累積。"}}, {"@type": "Question", "name": "日本回饋高的卡有沒有機場停車？", "acceptedAnswer": {"@type": "Answer", "text": "幾乎都沒有，而且有兩張是官網明文排除。玉山熊本熊卡的停車頁逐字寫「玉山熊本熊卡恕不適用此項優惠」，國泰世華 CUBE 卡的停車頁有兩處註記不適用。中信 LINE Pay 卡的指定卡別只有邀約制的鼎極卡。所以機票刷哪張、日本當地刷哪張，實際上是兩個不同的最佳化。"}}, {"@type": "Question", "name": "松山機場有信用卡免費停車嗎？", "acceptedAnswer": {"@type": "Answer", "text": "15 張全都沒有，而且這不是查不到。松山在市區，沒有機場外圍接駁停車場這種業態，所有銀行的合作停車場都只到桃園、台中、高雄。松山官方的解法是走預約，限第二停車場、每日上限 350 元、最少 3 天共 1,050 元，但每日限額 30 名。"}}, {"@type": "Question", "name": "民營停車場是把車交給對方開走嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不是。桃園這四家有官網的全部是自助停車加接駁，你自己把車停好再搭接駁車去航廈。其中三家主動強調免留鑰匙，只有平安在旺季滿場時可能要留鑰匙疊停，而且它把留鑰匙的名額直接標在訂位系統上。"}}, {"@type": "Question", "name": "停兩天用民營停車場划算嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不划算。桃園這四家全部低消三天，停不滿三天也以三天計費。短天數的話航廈停車場或貨運區停車場反而單純。"}}, {"@type": "Question", "name": "找民營停車場就能刷卡免費嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不一定，要兩邊都查。富士捷在官網逐字點名臺灣銀行等六家銀行，但平安出國停車場在官網主動否認：「目前完全沒有配合任何銀行的信用卡免費停車權益或優惠折抵」。銀行端有合作、停車場端也要有，才算得上。"}}]}</script><script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2">(function(){var s=document.createElement("script");s.async=1;s.setAttribute("data-cmp-ab","2");s.src='https://tpembars.com/NTcyMTY4.js?t=572168';document.head.appendChild(s);})();</script></head><body><div class="wrap"><div class="crumb"><a href="/">首頁</a> › <span>機場停車</span></div><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首頁", "item": "https://eric-twhub.github.io/"}, {"@type": "ListItem", "position": 2, "name": "機場停車", "item": null}]}</script><nav class="top"><a href="/" class=cur>首頁</a><a href="/deals/">🔥 機票特價</a><details name="topnav"><summary>✈️ 航班地區</summary><div class="dd"><b>日本地區</b><a href="/okinawa-islands/">沖繩・離島</a><a href="/kyushu/">九州</a><a href="/kansai/">關西</a><a href="/kanto/">關東</a><a href="/chubu/">中部・北陸</a><a href="/hokkaido/">北海道</a><a href="/tohoku/">東北</a><a href="/chugoku/">中國</a><a href="/shikoku/">四國</a><hr><b>台灣出發地</b><a href="/taipei/">從台北出發</a><a href="/taichung/">從台中出發</a><a href="/kaohsiung/">從高雄出發</a><a href="/tainan/">從台南出發</a></div></details><details name="topnav"><summary>🕐 航班類型</summary><div class="dd"><a href="/japan-flight-good-times/">☀️ 早去晚回</a><a href="/deals/">🔥 今日特價</a><a href="/japan-flight-baggage/">🧳 廉航行李費</a><a href="/japan-flight-seat/">💺 選位要錢嗎</a><a href="/japan-flight-fuji/">🗻 看富士山坐哪邊</a><a href="/japan-ski-baggage/">🎿 雪具託運</a><a href="/japan-ski-lift-ticket/">🎟️ 雪票早鳥</a></div></details><details name="topnav"><summary>🧭 行前準備</summary><div class="dd"><b>挑日期</b><a href="/japan-park-ticket/">🎢 樂園門票哪天便宜</a><a href="/japan-seasonal-event/">🎃 萬聖節與聖誕節</a><a href="/taiwan-holiday-2026/">📅 2026 請假攻略</a><a href="/taiwan-holiday-2027/">📅 2027 請假攻略</a><a href="/japan-holiday-calendar/">📅 三國連假撞期</a><hr><b>訂房與交通</b><a href="/hotel-price-check/">🏨 訂房比價</a><a href="/japan-airport-last-train/">🚉 機場末班車</a><hr><b>上網與門號</b><a href="/japan-esim/">📱 日本 eSIM 比較</a><a href="/japan-esim-native-roaming/">📱 原生還是漫遊</a><a href="/japan-sms-roaming/">✉️ 台灣門號收簡訊</a><hr><b>錢的事</b><a href="/japan-yen-exchange/">💴 換日幣怎麼換</a><a href="/japan-payment/">📲 日本怎麼付錢</a><a href="/japan-transit-card/">🚃 交通卡怎麼儲值</a><a href="/taiwan-airport-parking/">🅿️ 機場停車</a><hr><b>租車自駕</b><a href="/japan-driving-licence/">🚗 駕照日文譯本</a><a href="/japan-rentacar-noc/">🚗 租車的 NOC</a><a href="/japan-driving-habits/">🚗 開車習慣差在哪</a><hr><b>出事之前</b><a href="/japan-travel-insurance/">🛡️ 旅平險怎麼賠</a><a href="/japan-card-insurance/">💳 刷卡送的保險賠什麼</a><hr><b>新制度</b><a href="/japan-travel-rules/">📋 出境稅與住宿稅</a><a href="/japan-jttp/">🛂 JTTP 快速通關</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a></div></details><details name="topnav"><summary>🛍️ 旅日購物</summary><div class="dd"><a href="/japan-worth-buying/">💰 買什麼划算</a><a href="/japan-store-points/">🎴 店家集點能用嗎</a><a href="/japan-medicine-limit/">💊 藥妝能帶多少</a><a href="/tokyo/street-fashion/">👕 東京潮牌選物店</a><a href="/japan-coupon/">🏷️ 購物折扣總覽</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a><a href="/apple-japan-price/">🍎 台日 Apple 價差</a><a href="/japan-camera-price/">📷 雲台相機台日價差</a><a href="/japan-dyson-price/">💨 日本買 Dyson</a><a href="/japan-panasonic-dryer/">💇 日本買 Panasonic 吹風機</a><a href="/japan-bic-points/">🧮 Bic 點數率怎麼看</a><a href="/iphone-cost/">📉 iPhone 持有成本</a><a href="/iphone-card/">💰 買 iPhone 刷哪張卡</a><hr><b>各店折扣</b><a href="/japan-coupon/matsukiyo/">松本清 matsukiyo</a><a href="/japan-coupon/sundrug/">SUNDRUG 尚都樂客</a><a href="/japan-coupon/daikoku/">大國藥妝 DAIKOKU</a><a href="/japan-coupon/tsuruha/">鶴羽藥妝 TSURUHA</a><a href="/japan-coupon/sapporo-drug/">札幌藥妝</a><a href="/japan-coupon/bic-camera/">Bic Camera</a></div></details><details name="topnav" class=end><summary>💳 旅日信用卡</summary><div class="dd"><a href="/japan-credit-card/">💳 15 張卡比較</a><a href="/japan-card-calculator/">🧮 回饋計算機</a><a href="/japan-card-register/">📆 登錄日曆</a><a href="/japan-airline-card/">✈️ 買機票算國內還是國外</a><a href="/japan-airline-card/china-airlines/">✈️ 華航聯名卡</a><a href="/japan-airline-card/starlux/">✈️ 星宇聯名卡</a><a href="/japan-airline-card/eva-air/">✈️ 長榮聯名卡</a><hr><b>熱門卡片</b><a href="/japan-credit-card/firstbank-ileo/">第一銀行 iLEO 卡</a><a href="/japan-credit-card/ubot-jiho/">聯邦吉鶴卡</a><a href="/japan-credit-card/ctbc-uniopen/">中信 uniopen 聯名卡</a><a href="/japan-credit-card/sinopac-jcb/">永豐現金回饋 JCB 卡</a><a href="/japan-credit-card/esun-kumamon/">玉山熊本熊卡</a><a href="/japan-credit-card/sinopac-dual/">永豐幣倍卡</a></div></details><a href="/threads-japan/">🔥 日本熱搜</a><details class="burger"><summary>☰ 選單</summary><div class="dd"><details name="burgernav"><summary>✈️ 航班地區</summary><div class="sub"><b>日本地區</b><a href="/okinawa-islands/">沖繩・離島</a><a href="/kyushu/">九州</a><a href="/kansai/">關西</a><a href="/kanto/">關東</a><a href="/chubu/">中部・北陸</a><a href="/hokkaido/">北海道</a><a href="/tohoku/">東北</a><a href="/chugoku/">中國</a><a href="/shikoku/">四國</a><hr><b>台灣出發地</b><a href="/taipei/">從台北出發</a><a href="/taichung/">從台中出發</a><a href="/kaohsiung/">從高雄出發</a><a href="/tainan/">從台南出發</a></div></details><details name="burgernav"><summary>🕐 航班類型</summary><div class="sub"><a href="/japan-flight-good-times/">☀️ 早去晚回</a><a href="/deals/">🔥 今日特價</a><a href="/japan-flight-baggage/">🧳 廉航行李費</a><a href="/japan-flight-seat/">💺 選位要錢嗎</a><a href="/japan-flight-fuji/">🗻 看富士山坐哪邊</a><a href="/japan-ski-baggage/">🎿 雪具託運</a><a href="/japan-ski-lift-ticket/">🎟️ 雪票早鳥</a></div></details><details name="burgernav"><summary>🧭 行前準備</summary><div class="sub"><b>挑日期</b><a href="/japan-park-ticket/">🎢 樂園門票哪天便宜</a><a href="/japan-seasonal-event/">🎃 萬聖節與聖誕節</a><a href="/taiwan-holiday-2026/">📅 2026 請假攻略</a><a href="/taiwan-holiday-2027/">📅 2027 請假攻略</a><a href="/japan-holiday-calendar/">📅 三國連假撞期</a><hr><b>訂房與交通</b><a href="/hotel-price-check/">🏨 訂房比價</a><a href="/japan-airport-last-train/">🚉 機場末班車</a><hr><b>上網與門號</b><a href="/japan-esim/">📱 日本 eSIM 比較</a><a href="/japan-esim-native-roaming/">📱 原生還是漫遊</a><a href="/japan-sms-roaming/">✉️ 台灣門號收簡訊</a><hr><b>錢的事</b><a href="/japan-yen-exchange/">💴 換日幣怎麼換</a><a href="/japan-payment/">📲 日本怎麼付錢</a><a href="/japan-transit-card/">🚃 交通卡怎麼儲值</a><a href="/taiwan-airport-parking/">🅿️ 機場停車</a><hr><b>租車自駕</b><a href="/japan-driving-licence/">🚗 駕照日文譯本</a><a href="/japan-rentacar-noc/">🚗 租車的 NOC</a><a href="/japan-driving-habits/">🚗 開車習慣差在哪</a><hr><b>出事之前</b><a href="/japan-travel-insurance/">🛡️ 旅平險怎麼賠</a><a href="/japan-card-insurance/">💳 刷卡送的保險賠什麼</a><hr><b>新制度</b><a href="/japan-travel-rules/">📋 出境稅與住宿稅</a><a href="/japan-jttp/">🛂 JTTP 快速通關</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a></div></details><details name="burgernav"><summary>🛍️ 旅日購物</summary><div class="sub"><a href="/japan-worth-buying/">💰 買什麼划算</a><a href="/japan-store-points/">🎴 店家集點能用嗎</a><a href="/japan-medicine-limit/">💊 藥妝能帶多少</a><a href="/tokyo/street-fashion/">👕 東京潮牌選物店</a><a href="/japan-coupon/">🏷️ 購物折扣總覽</a><a href="/japan-tax-free-2026/">🧾 11/1 免稅新制</a><a href="/apple-japan-price/">🍎 台日 Apple 價差</a><a href="/japan-camera-price/">📷 雲台相機台日價差</a><a href="/japan-dyson-price/">💨 日本買 Dyson</a><a href="/japan-panasonic-dryer/">💇 日本買 Panasonic 吹風機</a><a href="/japan-bic-points/">🧮 Bic 點數率怎麼看</a><a href="/iphone-cost/">📉 iPhone 持有成本</a><a href="/iphone-card/">💰 買 iPhone 刷哪張卡</a><hr><b>各店折扣</b><a href="/japan-coupon/matsukiyo/">松本清 matsukiyo</a><a href="/japan-coupon/sundrug/">SUNDRUG 尚都樂客</a><a href="/japan-coupon/daikoku/">大國藥妝 DAIKOKU</a><a href="/japan-coupon/tsuruha/">鶴羽藥妝 TSURUHA</a><a href="/japan-coupon/sapporo-drug/">札幌藥妝</a><a href="/japan-coupon/bic-camera/">Bic Camera</a></div></details><details name="burgernav"><summary>💳 旅日信用卡</summary><div class="sub"><a href="/japan-credit-card/">💳 15 張卡比較</a><a href="/japan-card-calculator/">🧮 回饋計算機</a><a href="/japan-card-register/">📆 登錄日曆</a><a href="/japan-airline-card/">✈️ 買機票算國內還是國外</a><a href="/japan-airline-card/china-airlines/">✈️ 華航聯名卡</a><a href="/japan-airline-card/starlux/">✈️ 星宇聯名卡</a><a href="/japan-airline-card/eva-air/">✈️ 長榮聯名卡</a><hr><b>熱門卡片</b><a href="/japan-credit-card/firstbank-ileo/">第一銀行 iLEO 卡</a><a href="/japan-credit-card/ubot-jiho/">聯邦吉鶴卡</a><a href="/japan-credit-card/ctbc-uniopen/">中信 uniopen 聯名卡</a><a href="/japan-credit-card/sinopac-jcb/">永豐現金回饋 JCB 卡</a><a href="/japan-credit-card/esun-kumamon/">玉山熊本熊卡</a><a href="/japan-credit-card/sinopac-dual/">永豐幣倍卡</a></div></details></div></details></nav><h1>開車去機場，停哪裡？</h1><p class="lede">航廈停車場每日上限 490 元，但同樣是桃機官方的貨運區停車場只要 250 元，而且登記後有免費接駁到第一、第二航廈。</p><div class="today"><div class="tday">查證於 2026-10-20</div><div class="tans">桃園機場自己就有每日 250 元的選項，多數整理文不提它</div><div class="tsub">開車去機場，停哪裡？</div></div><div class="toc"><b>這一頁有</b><div><a href="#h-0c938f">先更正社群上傳最廣的那個說法</a><a href="#h-0ce7f2">桃園機場：四種停法的價差</a><a href="#h-f2929e">桃機官方的便宜選項，但很少人提</a><a href="#h-289a46">機捷轉乘：停車費最便宜，但車位是真的少</a><a href="#h-f3c999">桃園周邊的民營停車場</a><a href="#h-91b91b">信用卡的機場停車：和日本回饋幾乎互斥</a><a href="#h-bfc310">同樣是民營停車場，一家逐字點名銀行，一家明文否認</a><a href="#h-63e85e">另外三個機場</a><a href="#h-1c67a6">這一頁查不到的</a><a href="#h-c9db96">順便看看</a><a href="#h-1b3b6e">常見問題</a></div></div><aside class="adbox top" data-ad="auto"><div class="adhd"><i>廣告</i><span>以下為合作平台的推廣連結，點了會離開本站前往 KKday。本站可能獲得分潤，不影響你的價格。</span></div><div class="adbd"><div class="adt">日本行程與門票</div><div class="ads">在地一日遊、樂園門票與體驗</div><div class="adpl"><a class="adp" href="https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1=ad_taiwan-airport-parking_top_prod&amp;subid_2=&amp;t=https%253A%252F%252Fwww.kkday.com%252Fzh-tw%252Fproduct%252F2247" target="_blank" rel="nofollow noopener sponsored"><b>日本環球影城門票</b><s>大阪 USJ</s><u><i>★ 4.8</i><span>300K+ 人參加過</span></u></a><a class="adp" href="https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1=ad_taiwan-airport-parking_top_prod&amp;subid_2=&amp;t=https%253A%252F%252Fwww.kkday.com%252Fzh-tw%252Fproduct%252F19252" target="_blank" rel="nofollow noopener sponsored"><b>東京迪士尼樂園 &amp; 迪士尼海洋門票</b><s>兩園擇一或兩日</s><u><i>★ 4.8</i><span>300K+ 人參加過</span></u></a><a class="adp" href="https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1=ad_taiwan-airport-parking_top_prod&amp;subid_2=&amp;t=https%253A%252F%252Fwww.kkday.com%252Fzh-tw%252Fproduct%252F139872" target="_blank" rel="nofollow noopener sponsored"><b>日本吉卜力公園門票</b><s>標準／高級大散步券</s><u><i>★ 4.5</i><span>2K+ 人參加過</span></u></a><a class="adp" href="https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1=ad_taiwan-airport-parking_top_prod&amp;subid_2=&amp;t=https%253A%252F%252Fwww.kkday.com%252Fzh-tw%252Fproduct%252F25439" target="_blank" rel="nofollow noopener sponsored"><b>天橋立一日遊</b><s>京都伊根舟屋與遊船</s><u><i>★ 4.8</i><span>10K+ 人參加過</span></u></a></div><a class="adgo" href="https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1=ad_taiwan-airport-parking_top&amp;subid_2=&amp;t=https%253A%252F%252Fwww.kkday.com%252Fzh-tw%252Fproduct%252Fproductlist%253Fkeyword%253D%2525E6%252597%2525A5%2525E6%25259C%2525AC%252520%2525E9%252596%252580%2525E7%2525A5%2525A8" target="_blank" rel="nofollow noopener sponsored"><span class="agi">🎫</span><span class="agt">看 KKday 上全部的日本行程與門票<s>價格與供應狀況以該平台為準</s></span><span class="aga">→</span></a></div><p class="adfp">本站沒有販售這些商品，也沒有查證過上面的價格與庫存。商品名稱與評價查證於 2026-10-15，價格與方案會變動，以平台顯示為準。這一頁自己整理的資料在上面，廣告與那些資料沒有關係。</p></aside><h2 id="h-0c938f">先更正社群上傳最廣的那個說法</h2><p class="lede">有一則「出國 6 天停車費才 360 元」的貼文拿到一萬一千個讚、近七千次分享，說的是停在機場捷運的山鼻站再搭捷運進機場。這個做法本身存在，但那則貼文的三個細節都不對。</p><div class="tw"><table><thead><tr><th>貼文說的</th><th>官方資料</th></tr></thead><tbody><tr><td class="nm warn">山鼻站是 A14a</td><td class="nm">山鼻站是 A10。A14a 是機場旅館站，A15 才是大園站</td></tr><tr><td class="nm warn">24 小時收費上限 60 元</td><td class="nm">桃捷轉乘停車場全線 14 站同一費率，每日上限 150 元。官網查不到任何 60 元的費率，也查不到調降公告</td></tr><tr><td class="nm warn">出國 6 天 360 元</td><td class="nm">依官方每日上限推算是 900 元。360 元在官方資料裡沒有任何對應</td></tr></tbody></table></div><div class="tldr"><ul><li><b>誤解的來源很可能是上限那句話的後半段。官網原文是「每日最高上限150元，於每日24時後另計」，那是日曆日上限、過午夜重新起算，不是停幾天都只收 150。少看那半句，六天就會算成一天的錢。</b></li></ul></div><p class="disc">本站沒有去找能湊出 360 元的來源。查到的官方費率是多少就寫多少，貼文只拿來決定要查哪幾個地方。出處：<a href="https://www.tymetro.com.tw/tymetro-new/tw/_pages/travel-guide/transfer.html" rel="nofollow noopener" target="_blank">桃園捷運轉乘與停車資訊</a>。</p><h2 id="h-0ce7f2">桃園機場：四種停法的價差</h2><p class="lede">同樣停七天，最貴和最便宜差三千三百元。但便宜的那幾個各有代價，下面逐個講。</p><div class="tw"><table><thead><tr><th>停哪</th><th>費率</th><th>停 3 天</th><th>停 7 天</th><th>數字怎麼來的</th><th>代價</th></tr></thead><tbody><tr><td><b>機捷轉乘停車場</b></td><td class="nm">150 元／日，過午夜另計</td><td>NT$450</td><td>NT$1,050</td><td class="dimcell">推算</td><td class="nm">另加機捷票價，而且車位極少</td></tr><tr><td><b>桃園機場貨運區</b></td><td class="nm">250 元／日</td><td>NT$750</td><td>NT$1,750</td><td class="dimcell">推算</td><td class="nm">桃機官方，登記後免費接駁航廈</td></tr><tr><td><b>民營（大漁露天）</b></td><td class="nm">200 元／日，低消 3 天</td><td>NT$600</td><td>NT$1,400</td><td class="win">訂位系統實測</td><td class="nm">自助停車加接駁，要預約</td></tr><tr><td><b>民營（平安戶外）</b></td><td class="nm">200 元／日，低消 3 天</td><td>NT$600</td><td>NT$1,400</td><td class="win">3 天為官網明列</td><td class="nm">室內另計 350 元／日</td></tr><tr><td><b>桃園機場航廈停車場</b></td><td class="nm">490 元／日</td><td>NT$1,470</td><td>NT$3,430</td><td class="dimcell">推算</td><td class="nm">就在航廈旁，不用接駁</td></tr></tbody></table></div><div class="tldr"><ul><li><b>除了大漁的兩個數字是在它的訂位系統實際選日期算出來的、平安的 3 天是官網直接印出來的之外，其餘都是依每日上限推算，不是官方報價。四個機場的官網都只公布費率結構與每日上限，沒有列多日總價。</b></li><li>而且跨日怎麼重新起算，各家寫法不同。高雄機場明寫「逾日係自零時起計費」，桃捷明寫「於每日24時後另計」，但桃園機場與台中機場的官網沒有說明這一點。</li></ul></div><h2 id="h-f2929e">桃機官方的便宜選項，但很少人提</h2><p class="lede">貨運區停車場位於關務署臺北關前，小客車每半小時 10 元、每逾 15 分鐘加收 5 元，每日最高 250 元。出國旅客先到貨運 1 號停車場管理室登記，就能免費接駁到第一、第二航廈。</p><p class="lede">它的每日上限只有航廈停車場的一半，而且已經落在民營業者 200 到 350 元的區間裡。不用預約、不用把車交給民營業者、也不用轉乘，對只停三五天的人其實很有競爭力。多數整理文只比航廈停車場和民營業者，沒把它放進來。</p><p class="disc">有一點要說清楚：官網把它拆成「貨運區 1 號停車場」與「貨運區 3 號停車場」兩個分頁，但兩個分頁顯示的位置與費率文字完全相同，本站無法分辨兩座的差異，也查不到各自的車位數與室內露天。出處：<a href="https://web.taoyuan-airport.com/Parking" rel="nofollow noopener" target="_blank">桃園國際機場停車資訊</a>。</p><h2 id="h-289a46">機捷轉乘：停車費最便宜，但車位是真的少</h2><p class="lede">桃捷的轉乘停車場全線 14 站同一費率：汽車每小時 30 元、每日上限 150 元、過午夜另計，用悠遊卡或一卡通是每小時 25 元。另有一個容易漏掉的優惠：搭捷運出站後 1 小時內取車離場，可享當日當次的停車優惠。</p><p class="lede">離機場近、到航廈單程票價 25 元的有五站：A10 山鼻、A11 坑口、A15 大園、A16 橫山、A17 領航。</p><div class="tw"><table><thead><tr><th>站</th><th>汽車位</th><th>到航廈票價</th><th>到第一航廈</th><th>到第二航廈</th></tr></thead><tbody><tr><td><b>A10 山鼻</b></td><td class="warn"><b>21</b> 格</td><td>25 元</td><td class="nm">6 分</td><td class="nm">9 分</td></tr><tr><td><b>A11 坑口</b></td><td class=""><b>25</b> 格</td><td>25 元</td><td class="nm">3 分</td><td class="nm">官網未查</td></tr><tr><td><b>A15 大園</b></td><td class="warn"><b>19</b> 格</td><td>25 元</td><td class="nm">9 分</td><td class="nm">6 分</td></tr><tr><td><b>A16 橫山</b></td><td class=""><b>26</b> 格</td><td>25 元</td><td class="nm">12 分</td><td class="nm">官網未查</td></tr><tr><td><b>A17 領航</b></td><td class="warn"><b>22</b> 格</td><td>25 元</td><td class="nm">15 分</td><td class="nm">官網未查</td></tr></tbody></table></div><div class="tldr"><ul><li><b>這五站的汽車位加起來只有 113 格。全線 14 個轉乘停車場合計也只有約 430 格，其中 A20 興南只有 10 格。社群上說「被傳開之後一位難求」在規模上完全合理，連假更不必指望。桃捷官網另註明即時車位含迴轉用車位，實際可停以現場為準。</b></li></ul></div><p class="lede">另外有八站根本沒有停車場：A1 台北車站、A2 三重、A8 長庚醫院、A12 機場第一航廈、A13 機場第二航廈、A14a 機場旅館、A18 高鐵桃園、A22 老街溪。</p><p class="disc">還有一個容易混淆的地方：A10 站旁另有桃園市政府交通局的公有停車場，那是另一套費率規則，和桃捷的轉乘停車場不是同一個東西，而桃捷頁面沒有列那兩座的費率。</p><h2 id="h-f3c999">桃園周邊的民營停車場</h2><p class="lede">四家有官網或線上訂位系統的。這幾家有兩個共同點，而且官網都寫了，只是整理文很少提。</p><div class="tldr"><ul><li><b>四家全部低消三天。停不滿三天也以三天計費，所以短天數出國用這些反而不划算。</b></li><li><b>四家全部是自助停車加接駁，不是代客停車。其中三家主動強調免留鑰匙，只有平安在旺季滿場時可能要留，而且它把「留鑰匙」的名額直接標在訂位系統上。</b></li></ul></div><div class="tw"><table><thead><tr><th>業者</th><th>費率</th><th>停 3 天</th><th>停 7 天</th><th>車位型態</th><th>鑰匙</th><th>接駁</th><th>預約</th></tr></thead><tbody><tr><td><b>大漁</b></td><td class="nm">200 元／日，連假 250</td><td class="nm">600</td><td class="nm">1,400</td><td class="nm">露天（其餘區未開放）</td><td class="nm">免留鑰匙</td><td class="nm">無固定班次，人數集齊即發</td><td class="nm">官網訂位系統</td></tr><tr><td><b>平安</b></td><td class="nm">戶外 200／鐵皮棚 300／室內 350</td><td class="nm">600／900／1,050</td><td class="nm">1,400／2,100／2,450</td><td class="nm">三種可選</td><td class="nm">旺季可能要留鑰匙</td><td class="nm">手續完成後 7 到 15 分鐘到機場</td><td class="nm">官網線上預約單</td></tr><tr><td><b>富士捷</b></td><td class="nm">平日 15 元／半小時，當日上限 200</td><td class="nm">600</td><td class="nm">1,400</td><td class="nm">官網未說明</td><td class="nm">只留車不留鑰匙</td><td class="nm">24 小時，頻率未列</td><td class="nm">官網線上表單</td></tr><tr><td><b>晶順</b></td><td class="nm">戶外 200／車棚 280／室內 350</td><td class="nm">600／840／1,050</td><td class="nm">1,400／1,960／2,450</td><td class="nm">三種可選</td><td class="nm">免留鑰匙，歸國付款</td><td class="nm">24 小時，頻率未列</td><td class="nm">無線上表單，電話或臉書</td></tr></tbody></table></div><p class="lede">只有大漁的 3 天與 7 天是從它的訂位系統實際算出來的，平安的 3 天是官網直接印出來的。富士捷與晶順的官網都沒有多日總價，富士捷的預約頁還明寫「依現場實際公告收費標準以及車輛進出時間計價」，所以那兩家的數字是依日費率推算。</p><div class="tldr"><ul><li><b>接駁這一項四家寫得都很模糊。只有平安給出到航廈的行車時間（7 到 15 分鐘），大漁明說沒有固定發車時刻、人數集齊才發車，另外兩家完全沒列頻率。要趕早班機的話這是最該先問清楚的一項。</b></li></ul></div><p class="disc">社群上另外被提到兩家，但都沒有官網：盛駿只有臉書與 Instagram，連地址都對不起來；sisters.parking 的 Instagram 有結束營業公告。沒有官方費率可引，所以本站不列它們的價格。</p><h2 id="h-91b91b">信用卡的機場停車：和日本回饋幾乎互斥</h2><p class="lede">本站追蹤的 15 張卡裡，只有 5 張確定有免費機場停車天數。而日本回饋最高的那幾張，剛好一張都沒有，其中兩張還是官網明文排除。</p><h3>有免費停車天數的五張</h3><div class="tw"><table><thead><tr><th>卡片</th><th>天數</th><th>哪些機場</th><th>條件</th></tr></thead><tbody><tr><td><a href="/japan-credit-card/"><b>台北富邦 J 卡</b></a></td><td class="win">全年 2 次，每次最高 5 天</td><td class="nm">桃園、台中、高雄</td><td class="nm">刷當次機票全額或 80% 團費，單筆滿 NT$20,000，使用前 180 天內</td></tr><tr><td><a href="/japan-credit-card/"><b>聯邦吉鶴卡</b></a></td><td class="win">每年 2 次，每次最高 6 天</td><td class="nm">桃園、台中、高雄</td><td class="nm">看一年期的一般消費累積達 10 萬元，不是刷機票</td></tr><tr><td><a href="/japan-credit-card/"><b>永豐幣倍卡</b></a></td><td class="win">一年 2 次，每次最長 5 天</td><td class="nm">桃園、高雄</td><td class="nm">刷當次機票全額或 80% 團費，單筆滿 NT$20,000，刷卡後 90 天內用完</td></tr><tr><td><a href="/japan-credit-card/"><b>第一銀行 iLEO 卡</b></a></td><td class="win">每次最高 5 天，全年合計 15 天</td><td class="nm">桃園、高雄</td><td class="nm">停車日前六個月內刷當次機票或 80% 團費，皆需達 NT$20,000</td></tr><tr><td><a href="/japan-credit-card/"><b>台新 Richart 卡</b></a></td><td class="win">全年 2 次，每次最高 5 天</td><td class="nm">桃園、台中、高雄</td><td class="nm">限原三商美邦御璽卡那一版。使用前三個月內刷機票或團費合計達 NT$30,000</td></tr></tbody></table></div><h3>日本回饋高、但沒有停車的那幾張</h3><div class="tw"><table><thead><tr><th>卡片</th><th>停車</th><th>官網怎麼寫</th></tr></thead><tbody><tr><td><b>玉山熊本熊卡</b></td><td class="warn">官網明文排除</td><td class="nm">停車頁逐字寫「玉山熊本熊卡恕不適用此項優惠」。全卡友仍可用折扣價</td></tr><tr><td><b>國泰世華 CUBE 卡</b></td><td class="warn">官網明文排除</td><td class="nm">停車頁兩處註記 CUBE 卡不適用。可改用小樹點折抵，桃園大園 130 點換一天</td></tr><tr><td><b>中信 LINE Pay 卡</b></td><td class="">不適用</td><td class="nm">指定卡別只有 LINE Pay 鼎極卡，那是邀約制，近一年消費滿 36 萬才有機會</td></tr><tr><td><b>星展 eco 永續卡</b></td><td class="">沒有停車</td><td class="nm">只有機場接送優惠價，一年 4 次，那不是停車</td></tr><tr><td><b>玉山 Unicard</b></td><td class="">沒有免費天數</td><td class="nm">全卡友有折扣價：連勝與連統 250 元／天、大鵬與大程 8 折</td></tr><tr><td><b>滙豐 Live+</b></td><td class="">沒有免費天數</td><td class="nm">有特約停車場折扣：星威 7 折、大鵬 8 折，春節與連假不適用</td></tr></tbody></table></div><div class="tldr"><ul><li><b>所以會出現一個真實的取捨：機票要刷有停車權益的那張，但日本當地消費要刷回饋高的那張。這兩件事在目前的卡片上幾乎不重疊。</b></li><li>有一個例外值得注意：富邦 J 卡、聯邦吉鶴卡、永豐幣倍卡這三張，既有機場停車權益，也是本站記錄到日本交通卡儲值有回饋的那三張。</li></ul></div><p class="lede">松山機場是 15 張全都沒有，而且這不是查不到。松山在市區，沒有機場外圍接駁停車場這種業態，所有銀行的合作停車場都只到桃園、台中、高雄。</p><div class="tldr"><ul><li><b>還有一個跨年出國會踩到的細節：權益年度的認定基準各家不同。台新與國泰世華看出場日，第一銀行看進場日，永豐看進場年度。十二月底出發、一月初回來的話，要先確認算哪一年。</b></li><li>所有銀行都不提供車位預約保留。官網一致寫停滿為止、不另行公告，並建議提前三到四小時到場。</li></ul></div><p class="disc">各卡的日本回饋、加碼上限與登錄方式在<a href="/japan-credit-card/">旅日信用卡</a>那一頁，幾號開放登錄在<a href="/japan-card-register/">登錄日曆</a>。</p><aside class="adbox mid" data-ad="auto"><div class="adhd"><i>廣告</i><span>以下為合作平台的推廣連結，點了會離開本站前往 Klook。本站可能獲得分潤，不影響你的價格。</span></div><div class="adbd"><div class="adt">日本上網卡與 eSIM</div><div class="ads">落地就能用，不用現場找櫃台</div><div class="adpl"><a class="adp" href="https://affiliate.klook.com/redirect?aid=136311&amp;aff_adid=1501617&amp;k_site=https%3A%2F%2Fwww.klook.com%2Fzh-TW%2Factivity%2F109393-japan-esim-high-speed-internet-qr-code-voucher%2F" target="_blank" rel="nofollow noopener sponsored"><b>日本 eSIM 原生網路｜吃到飽，不穩就退</b><s>Softbank 5G／DOCOMO 4G LTE</s><u><i>★ 4.6</i><span>2M+ 人參加過</span></u></a><a class="adp" href="https://affiliate.klook.com/redirect?aid=136311&amp;aff_adid=1501617&amp;k_site=https%3A%2F%2Fwww.klook.com%2Fzh-TW%2Factivity%2F96247-4-esim-japan%2F" target="_blank" rel="nofollow noopener sponsored"><b>日本 4G/5G eSIM 高速上網</b><s>即買即取 QR code</s><u><i>★ 4.1</i><span>100K+ 人參加過</span></u></a><a class="adp" href="https://affiliate.klook.com/redirect?aid=136311&amp;aff_adid=1501617&amp;k_site=https%3A%2F%2Fwww.klook.com%2Fzh-TW%2Factivity%2F39586-4g-esim-japan%2F" target="_blank" rel="nofollow noopener sponsored"><b>日本 eSIM 卡</b><s>電子郵件寄送 QR Code</s><u><i>★ 4.4</i><span>60K+ 人參加過</span></u></a><a class="adp" href="https://affiliate.klook.com/redirect?aid=136311&amp;aff_adid=1501617&amp;k_site=https%3A%2F%2Fwww.klook.com%2Fzh-TW%2Factivity%2F79682-4g-lte-esim-japan-nttdocomo-unlimited-data-sakura-mobile%2F" target="_blank" rel="nofollow noopener sponsored"><b>日本 eSIM（NTT docomo／Sakura Mobile）</b><s>日系電信直營</s><u><i>★ 4.2</i><span>40K+ 人參加過</span></u></a></div><a class="adgo" href="https://affiliate.klook.com/redirect?aid=136311&amp;aff_adid=1501470&amp;k_site=https%3A%2F%2Fwww.klook.com%2Fzh-TW%2Fsearch%2F%3Fquery%3D%25E6%2597%25A5%25E6%259C%25AC%2520eSIM" target="_blank" rel="nofollow noopener sponsored"><span class="agi">📱</span><span class="agt">看 Klook 上全部的日本上網卡與 eSIM<s>價格與供應狀況以該平台為準</s></span><span class="aga">→</span></a></div><p class="adfp">本站沒有販售這些商品，也沒有查證過上面的價格與庫存。商品名稱與評價查證於 2026-10-15，價格與方案會變動，以平台顯示為準。這一頁自己整理的資料在上面，廣告與那些資料沒有關係。</p></aside><h2 id="h-bfc310">同樣是民營停車場，一家逐字點名銀行，一家明文否認</h2><p class="lede">富士捷在自己官網上寫出：臺灣銀行信用卡卡友在 2026 年 1 月 1 日至 12 月 31 日可享桃園機場外圍停車，最長 15 天；並列出它是台灣中小企業銀行、兆豐、台新、陽信、台中銀行的特約停車場。這是四家裡唯一把銀行名稱、起訖日與天數上限都寫出來的。</p><p class="lede">平安出國停車場則在官網主動否認：「平安出國停車場為獨立經營之民營停車場，目前【完全沒有配合】任何銀行的信用卡免費停車權益或優惠折抵，相關停車費用需由車主自行結清。」</p><div class="tldr"><ul><li><b>所以「找民營停車場就能刷卡免費」這個通則不成立。要用信用卡的停車權益，得先確認你的卡和那一家有沒有合作，兩邊都查。</b></li></ul></div><p class="disc">順帶一提，這兩邊的資料可以互相印證：富士捷官網說台新是特約銀行，而台新官網的合作停車場清單裡確實有「富士捷大園出國停車場」。</p><h2 id="h-63e85e">另外三個機場</h2><div class="tw"><table><thead><tr><th>機場</th><th>費率</th><th>每日上限</th><th>要注意的</th></tr></thead><tbody><tr><td><b>松山</b></td><td class="nm">尖峰每小時 40 元、離峰 10 元</td><td class="warn">沒有每日上限</td><td class="nm">四個機場裡唯一一個。官方的解法是走預約：限第二停車場，每日上限 350 元、最少 3 天共 1,050 元，但每日限額 30 名、要提前 4 到 18 天</td></tr><tr><td><b>高雄小港</b></td><td class="nm">每日上限 240 元</td><td class="">有</td><td class="nm">機場官網自己具名推薦大程（大鵬）與金山兩家外圍接駁停車場，但這兩家都沒有官網，價格查不到</td></tr><tr><td><b>台中</b></td><td class="nm">每日上限 300 元</td><td class="">有</td><td class="nm">官網完全沒有提到任何機場外接駁停車場，和高雄主動具名的做法不同。周邊也查不到有官網的業者</td></tr></tbody></table></div><div class="tldr"><ul><li><b>松山那個預約方案的限制要看清楚：必須在預約當日凌晨 00:00 之後進場，提前或延後都會讓優惠失效；預約時段內先離場又再進場也不能續享；預約沒到累積三次就不能再用。</b></li><li>高雄的狀況要照實說：機場官方具名推薦了兩家，但本站查不到那兩家的官網或線上訂位，網路上流傳的價格彼此矛盾，所以一個都不採用。</li></ul></div><h2 id="h-1c67a6">這一頁查不到的</h2><p class="lede">「官網沒寫」和「沒有這項」是兩件事。查不到的就說查不到。</p><div class="tldr"><ul><li>桃園貨運區 1 號與 3 號停車場的差異。官網兩個分頁顯示完全相同的位置與費率文字，也查不到各自的車位數與室內露天。</li><li>桃園機場有沒有官方的旅客預約制度。官網查無，網路流傳的第二航廈預約專案只出現在部落格，沒有官方頁面佐證。</li><li>富士捷、晶順、大漁的多日官方總價。只有大漁能從訂位系統算出來，富士捷的預約頁明寫依現場計價。</li><li>四家民營業者的接駁車發車頻率。只有平安寫出到航廈 7 到 15 分鐘，大漁寫明沒有固定班次，另外兩家完全沒列。</li><li>四家民營業者有沒有按車型分級的費率。官網都沒有寫轎車與休旅車的差價。</li><li>高雄大程（大鵬）與金山停車場的任何價格。機場官網具名推薦，但兩家都沒有官網。</li><li>高雄機場停車場的車位數與費率生效日期，官網都未公布。</li><li>台中國內航廈北側停車場目前是否開放。現行官網列出 96 位，但民航局較舊的公告說自 109 年 6 月 1 日起暫停對外營業改作旅客乘車處，兩者矛盾。</li><li>桃捷轉乘停車場 2023 年之後有沒有調整過費率。官網查不到調整公告，所以貼文說「收費也上漲了」本站無法證實也無法否證。</li><li>大漁在台中有沒有據點。官網全站查不到任何台中相關字樣，只寫「其他地區服務持續規劃中」。</li><li>永豐現金回饋 JCB 卡與永豐 DAWHO 大戶卡有沒有停車權益。永豐的停車頁按卡等級列名單，但官網沒有把這兩張卡歸到任何等級。</li></ul></div><h2 id="h-c9db96">順便看看</h2><div class="cities"><a class="ct" href="/japan-credit-card/"><b>💳 旅日信用卡</b><s>日本回饋高的那幾張沒有停車</s></a><a class="ct" href="/japan-card-register/"><b>📆 登錄日曆</b><s>加碼要先登錄，錯過只剩基本</s></a><a class="ct" href="/deals/"><b>🔥 機票特價</b><s>每日更新</s></a></div><h2 id="h-1b3b6e">常見問題</h2><details class="faq"><summary>開車去桃園機場，停哪裡最便宜？</summary><div>停車費最低的是機場捷運的轉乘停車場，每日上限 150 元，但那五個離機場近的站加起來只有 113 格汽車位，而且要另外付機捷票價。不想賭車位的話，桃園機場自己的貨運區停車場每日上限 250 元，登記後有免費接駁到航廈，只有航廈停車場 490 元的一半。</div></details><details class="faq"><summary>社群說停機捷山鼻站出國 6 天只要 360 元，是真的嗎？</summary><div>數字和站號都不對。山鼻站是 A10 不是 A14a，桃捷轉乘停車場全線 14 站都是每日上限 150 元，官網查不到任何 60 元的費率，6 天依官方費率推算是 900 元。誤解可能來自官網那句「每日最高上限150元，於每日24時後另計」，那是日曆日上限、過午夜重新起算，不是停幾天都只收 150。</div></details><details class="faq"><summary>哪張信用卡有免費機場停車？</summary><div>本站追蹤的 15 張卡裡只有 5 張確定有：台北富邦 J 卡、聯邦吉鶴卡、永豐幣倍卡、第一銀行 iLEO 卡，以及台新 Richart 卡的原三商美邦御璽卡那一版。門檻幾乎都要把當次機票或團費刷在那張卡上，單筆 2 萬到 3 萬元；只有聯邦吉鶴卡是看一年期的一般消費累積。</div></details><details class="faq"><summary>日本回饋高的卡有沒有機場停車？</summary><div>幾乎都沒有，而且有兩張是官網明文排除。玉山熊本熊卡的停車頁逐字寫「玉山熊本熊卡恕不適用此項優惠」，國泰世華 CUBE 卡的停車頁有兩處註記不適用。中信 LINE Pay 卡的指定卡別只有邀約制的鼎極卡。所以機票刷哪張、日本當地刷哪張，實際上是兩個不同的最佳化。</div></details><details class="faq"><summary>松山機場有信用卡免費停車嗎？</summary><div>15 張全都沒有，而且這不是查不到。松山在市區，沒有機場外圍接駁停車場這種業態，所有銀行的合作停車場都只到桃園、台中、高雄。松山官方的解法是走預約，限第二停車場、每日上限 350 元、最少 3 天共 1,050 元，但每日限額 30 名。</div></details><details class="faq"><summary>民營停車場是把車交給對方開走嗎？</summary><div>不是。桃園這四家有官網的全部是自助停車加接駁，你自己把車停好再搭接駁車去航廈。其中三家主動強調免留鑰匙，只有平安在旺季滿場時可能要留鑰匙疊停，而且它把留鑰匙的名額直接標在訂位系統上。</div></details><details class="faq"><summary>停兩天用民營停車場划算嗎？</summary><div>不划算。桃園這四家全部低消三天，停不滿三天也以三天計費。短天數的話航廈停車場或貨運區停車場反而單純。</div></details><details class="faq"><summary>找民營停車場就能刷卡免費嗎？</summary><div>不一定，要兩邊都查。富士捷在官網逐字點名臺灣銀行等六家銀行，但平安出國停車場在官網主動否認：「目前完全沒有配合任何銀行的信用卡免費停車權益或優惠折抵」。銀行端有合作、停車場端也要有，才算得上。</div></details><p class="disc">停車費率與信用卡權益隨時調整，本頁查證於 2026-10-20，出發前請以各停車場與發卡行官網為準。信用卡的停車權益幾乎都是年度版，多數標 2026 年全年，每年底要重查。</p><aside class="adbox" data-ad="auto"><div class="adhd"><i>廣告</i><span>以下為合作平台的推廣連結，點了會離開本站前往 KKday。本站可能獲得分潤，不影響你的價格。</span></div><div class="adbd"><div class="adt">日本機場接送</div><div class="ads">深夜抵達也有車，先訂好不用現場排</div><div class="adpl"><a class="adp" href="https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1=ad_taiwan-airport-parking_prod&amp;subid_2=&amp;t=https%253A%252F%252Fwww.kkday.com%252Fzh-tw%252Fproduct%252F129909" target="_blank" rel="nofollow noopener sponsored"><b>關西機場至大阪、京都、奈良、神戶</b><s>可選接機或送機</s><u><i>★ 4.9</i><span>20K+ 人參加過</span></u></a><a class="adp" href="https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1=ad_taiwan-airport-parking_prod&amp;subid_2=&amp;t=https%253A%252F%252Fwww.kkday.com%252Fzh-tw%252Fproduct%252F151505" target="_blank" rel="nofollow noopener sponsored"><b>東京成田・羽田・迪士尼・市區接送</b><s>可選中文或日文司機</s><u><i>★ 4.8</i><span>10K+ 人參加過</span></u></a><a class="adp" href="https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1=ad_taiwan-airport-parking_prod&amp;subid_2=&amp;t=https%253A%252F%252Fwww.kkday.com%252Fzh-tw%252Fproduct%252F138060" target="_blank" rel="nofollow noopener sponsored"><b>沖繩那霸機場至沖繩全島</b><s>含 JUNGLIA 接送</s><u><i>★ 4.9</i><span>2K+ 人參加過</span></u></a><a class="adp" href="https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1=ad_taiwan-airport-parking_prod&amp;subid_2=&amp;t=https%253A%252F%252Fwww.kkday.com%252Fzh-tw%252Fproduct%252F268770" target="_blank" rel="nofollow noopener sponsored"><b>關西機場・大阪伊丹機場接送</b><s>KIX／ITM 往返大阪</s><u><i>★ 4.8</i><span>5K+ 人參加過</span></u></a></div><a class="adgo" href="https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1=ad_taiwan-airport-parking&amp;subid_2=&amp;t=https%253A%252F%252Fwww.kkday.com%252Fzh-tw%252Fproduct%252Fproductlist%253Fkeyword%253D%2525E6%252597%2525A5%2525E6%25259C%2525AC%252520%2525E6%2525A9%25259F%2525E5%2525A0%2525B4%2525E6%25258E%2525A5%2525E9%252580%252581" target="_blank" rel="nofollow noopener sponsored"><span class="agi">🚕</span><span class="agt">看 KKday 上全部的日本機場接送<s>價格與供應狀況以該平台為準</s></span><span class="aga">→</span></a></div><p class="adfp">本站沒有販售這些商品，也沒有查證過上面的價格與庫存。商品名稱與評價查證於 2026-10-15，價格與方案會變動，以平台顯示為準。這一頁自己整理的資料在上面，廣告與那些資料沒有關係。</p></aside><p class="note">
+票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
+實際訂購由合作平台完成：機票／住宿／行程與一日遊／交通票／租車／機場接送 Trip.com、景點門票 KKday、網卡與 eSIM Klook。<br>
+本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
+最後更新 2026-10-20 00:23　·　<a href="/">回首頁</a>
+</p></div><script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toLowerCase(),a=f.dep.value,b=f.ret.value,t=b?"rt":"ow",u="https://tw.trip.com/flights/showfarefirst?dcity="+o+"&acity="+d+"&ddate="+a+(b?"&rdate="+b:"")+"&triptype="+t+"&class=y&quantity=1&locale=zh-TW&curr=TWD"+"&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1="+d;window.open(u,"_blank","noopener");return false;}</script><script>(function(){var n=document.querySelector("nav.top");if(!n)return;var d=[].slice.call(n.querySelectorAll(":scope>details"));function shut(x){d.forEach(function(o){if(o!==x)o.open=false})}d.forEach(function(o){o.addEventListener("toggle",function(){if(o.open)shut(o)})});document.addEventListener("click",function(e){if(!n.contains(e.target))shut(null);else if(e.target.closest&&e.target.closest(".dd a"))shut(null)});document.addEventListener("keydown",function(e){if(e.key==="Escape")shut(null)});})();</script><script>(function(){var L=[].slice.call(document.querySelectorAll('a[href$=".png"]')).filter(function(a){return a.querySelector("img")});if(!L.length)return;var gs=[],G=[];L.forEach(function(a){var p=a.parentElement,i=gs.indexOf(p);if(i<0){i=gs.length;gs.push(p);G.push([])}G[i].push(a);a.setAttribute("data-g",i);a.setAttribute("data-i",G[i].length-1)});var box,im,tt,nu,pv,nx,cur=[],at=0,back=null;function cap(a){var b=a.querySelector("b");return b?b.textContent:(a.querySelector("img").getAttribute("alt")||"")}function pre(i){if(cur[i]){var x=new Image();x.src=cur[i].href}}function show(i){at=i;var a=cur[i];im.style.opacity="0";im.onload=function(){im.style.opacity="1";place()};im.src=a.href;if(im.complete){im.style.opacity="1";place()}im.alt=a.querySelector("img").getAttribute("alt")||"";tt.textContent=cap(a);nu.textContent=(i+1)+" / "+cur.length;pv.disabled=(i===0);nx.disabled=(i===cur.length-1);pv.style.display=nx.style.display=(cur.length<2?"none":"");pre(i-1);pre(i+1)}function go(d){var i=at+d;if(i>=0&&i<cur.length)show(i)}function place(){var r=im.getBoundingClientRect();if(!r.width)return;if(r.left<62||innerWidth-r.right<62){box.classList.add("nb");pv.style.left="";nx.style.right="";return}box.classList.remove("nb");pv.style.left=Math.round(r.left-58)+"px";nx.style.right=Math.round(innerWidth-r.right-58)+"px"}var ky=0;function lock(){ky=window.pageYOffset;var b=document.body.style;b.position="fixed";b.top=(-ky)+"px";b.left="0";b.width="100%"}function unlock(){var b=document.body.style;b.position="";b.top="";b.left="";b.width="";var h=document.documentElement.style.scrollBehavior;document.documentElement.style.scrollBehavior="auto";window.scrollTo(0,ky);document.documentElement.style.scrollBehavior=h}function shut(){box.className="lbx";unlock();im.src="";if(back)try{back.focus({preventScroll:true})}catch(e){back.focus()}back=null}function build(){box=document.createElement("div");box.className="lbx";box.setAttribute("role","dialog");box.setAttribute("aria-modal","true");box.setAttribute("aria-label","圖卡");box.innerHTML='<button class="lbc" aria-label="關閉">\u00d7</button>'+'<button class="lbp" aria-label="上一張">\u2039</button>'+'<button class="lbn" aria-label="下一張">\u203a</button>'+'<figure><img alt=""><figcaption><b></b><span></span>'+'</figcaption></figure>';document.body.appendChild(box);im=box.querySelector("img");tt=box.querySelector("figcaption b");nu=box.querySelector("figcaption span");pv=box.querySelector(".lbp");nx=box.querySelector(".lbn");box.querySelector(".lbc").onclick=shut;pv.onclick=function(e){e.stopPropagation();go(-1)};nx.onclick=function(e){e.stopPropagation();go(1)};box.addEventListener("click",function(e){if(e.target===box||e.target.tagName==="FIGURE")shut()});var sx=null;box.addEventListener("touchstart",function(e){sx=e.touches[0].clientX},{passive:true});box.addEventListener("touchend",function(e){if(sx===null)return;var d=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(d)>45)go(d<0?1:-1)},{passive:true});addEventListener("resize",function(){if(box.className.indexOf("on")>=0)place()});document.addEventListener("keydown",function(e){if(box.className.indexOf("on")<0)return;if(e.key==="Escape")shut();else if(e.key==="ArrowLeft")go(-1);else if(e.key==="ArrowRight")go(1)})}document.addEventListener("click",function(e){var a=e.target.closest?e.target.closest('a[data-g]'):null;if(!a||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;e.preventDefault();if(!box)build();back=a;cur=G[+a.getAttribute("data-g")];lock();box.className="lbx on";show(+a.getAttribute("data-i"));box.querySelector(".lbc").focus()});})();</script></body></html>
