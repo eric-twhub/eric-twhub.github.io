@@ -9637,6 +9637,24 @@ if HOL:
             '那是台灣人一起出國；<b>住宿貴是因為日本放假或當地有祭典</b>，'
             '那是你在跟日本人搶同一批房間。兩個高峰不一定重疊。'
             f'<br><br>{html.escape(buf)}</div></div>'
+          # 一眼看完全年。下面幾張表各自回答不同的問題，但落在這一頁的人
+          # 第一個想知道的是「今年有哪些假、各幾天」，先給那個。
+          + ((f'<h2>{ys} 年{"剩下的" if len(twr) != len(twr_all) else ""}假期總表</h2>'
+             '<p class="lede">'
+             + ('含單日假日。' if any(p['base'] == 1 for p in lp) else '')
+             + '最後一欄是請一天假能換到幾天，詳細排法在下面。</p>'
+             '<div class="tw"><table><thead><tr><th>假期</th><th>日期</th>'
+             '<th>天數</th><th>請 1 天</th></tr></thead><tbody>'
+             + ''.join(
+                 f'<tr><td class="nm"><b>{html.escape(p["name"])}</b></td>'
+                 f'<td class="nm">{_dm(p["from"], p["to"])}</td>'
+                 f'<td><b>{p["base"]} 天</b></td>'
+                 + ((f'<td class="win"><b>{p["opts"][1]["tot"]} 天</b></td>')
+                    if p['opts'].get(1) and p['opts'][1]['tot'] > p['base']
+                    else '<td class="dimcell">延長不了</td>')
+                 + '</tr>' for p in lp)
+             + '</tbody></table></div>')
+             if lp else '')
           + (f'<h2>{ys} 年的連假，日本與中國同期在做什麼</h2>'
              + ('<p class="lede">今年已經過去的假期不列。'
                 f'{ys} 年整年共 {len(twr_all)} 段連假，'
