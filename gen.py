@@ -1402,6 +1402,7 @@ def topnav(cur=''):
             + link('/japan-yen-exchange/', '💴 換日幣怎麼換')
             + link('/japan-payment/', '📲 日本怎麼付錢')
             + link('/japan-transit-card/', '🚃 交通卡怎麼儲值')
+            + link('/taiwan-airport-parking/', '🅿️ 機場停車')
             + '<hr><b>租車自駕</b>'
             + link('/japan-driving-licence/', '🚗 駕照日文譯本')
             + link('/japan-rentacar-noc/', '🚗 租車的 NOC')
@@ -1536,6 +1537,7 @@ _AD_MAP = [
     ('japan-yen-exchange', 'esim'),
     ('japan-payment', 'esim'),
     ('japan-transit-card', 'transport'),
+    ('taiwan-airport-parking', 'transfer'),
     ('japan-flight-fuji', 'activity2'),
     ('hotel-price-check', 'transfer'), ('threads-japan', 'activity2'),
     ('japan-flight-good-times', 'activity2'),
@@ -4735,6 +4737,205 @@ if os.path.exists('transit.json'):
         f'出發前請以各自官網為準。金額一律標日圓，本頁不寫換算後的台幣，因為匯率每天在變。</p>'
       + foot())
     pages.append(('/japan-transit-card/', 0.7))
+
+
+# ---------- 機場停車 ----------
+# 這題社群上傳最廣的那個說法數字是錯的，而且錯得有跡可循：官方那句
+# 「每日最高上限150元，於每日24時後另計」少看後半段，六天就會算成一天的錢。
+# 頁面先更正它，再給四種停法的價差。
+if os.path.exists('parking.json'):
+    PK = json.load(open('parking.json', encoding='utf-8'))
+
+    _pkmyth = ''.join(
+        f'<tr><td class="nm warn">{html.escape(a)}</td>'
+        f'<td class="nm">{html.escape(b)}</td></tr>'
+        for a, b in PK['myth']['rows'])
+
+    # 價差表照官網怎麼寫就怎麼標。只有兩筆是官方自己列出總價的，
+    # 其餘是依每日上限推算，兩者不能混在一起看。
+    _pkcmp = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(r)}</td>'
+        f'<td>{money(int(str(d3).replace(",", "")))}</td>'
+        f'<td>{money(int(str(d7).replace(",", "")))}</td>'
+        f'<td class="{"win" if "實測" in src or "明列" in src else "dimcell"}">'
+        f'{html.escape(src)}</td>'
+        f'<td class="nm">{html.escape(note)}</td></tr>'
+        for n, r, d3, d7, src, note in PK['compare']['rows'])
+
+    _pkmrt = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td>'
+        f'<td class="{"warn" if int(sp) < 25 else ""}"><b>{sp}</b> 格</td>'
+        f'<td>{html.escape(fare)}</td><td class="nm">{html.escape(t12)}</td>'
+        f'<td class="nm">{html.escape(t13)}</td></tr>'
+        for n, sp, fare, t12, t13 in PK['mrt']['rows'])
+
+    _pkpri = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(r)}</td>'
+        f'<td class="nm">{html.escape(d3)}</td><td class="nm">{html.escape(d7)}</td>'
+        f'<td class="nm">{html.escape(ind)}</td><td class="nm">{html.escape(key)}</td>'
+        f'<td class="nm">{html.escape(sh)}</td><td class="nm">{html.escape(bk)}</td></tr>'
+        for n, r, d3, d7, ind, key, sh, bk in PK['private']['rows'])
+
+    _pkhave = ''.join(
+        f'<tr><td><a href="{U("/japan-credit-card/")}"><b>{html.escape(n)}</b></a></td>'
+        f'<td class="win">{html.escape(q)}</td><td class="nm">{html.escape(ap)}</td>'
+        f'<td class="nm">{html.escape(c)}</td></tr>'
+        for n, q, ap, c in PK['cards']['have'])
+
+    _pknone = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td>'
+        f'<td class="{"warn" if "排除" in st else ""}">{html.escape(st)}</td>'
+        f'<td class="nm">{html.escape(w)}</td></tr>'
+        for n, st, w in PK['cards']['none'])
+
+    _pkoth = ''.join(
+        f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(r)}</td>'
+        f'<td class="{"warn" if cap == "沒有每日上限" else ""}">{html.escape(cap)}</td>'
+        f'<td class="nm">{html.escape(note)}</td></tr>'
+        for n, r, cap, note in PK['others']['rows'])
+
+    pk_faq = [
+     ('開車去桃園機場，停哪裡最便宜？',
+      '停車費最低的是機場捷運的轉乘停車場，每日上限 150 元，但那五個離機場近的站'
+      '加起來只有 113 格汽車位，而且要另外付機捷票價。不想賭車位的話，'
+      '桃園機場自己的貨運區停車場每日上限 250 元，登記後有免費接駁到航廈，'
+      '只有航廈停車場 490 元的一半。'),
+     ('社群說停機捷山鼻站出國 6 天只要 360 元，是真的嗎？',
+      '數字和站號都不對。山鼻站是 A10 不是 A14a，桃捷轉乘停車場全線 14 站都是'
+      '每日上限 150 元，官網查不到任何 60 元的費率，6 天依官方費率推算是 900 元。'
+      '誤解可能來自官網那句「每日最高上限150元，於每日24時後另計」，'
+      '那是日曆日上限、過午夜重新起算，不是停幾天都只收 150。'),
+     ('哪張信用卡有免費機場停車？',
+      '本站追蹤的 15 張卡裡只有 5 張確定有：台北富邦 J 卡、聯邦吉鶴卡、永豐幣倍卡、'
+      '第一銀行 iLEO 卡，以及台新 Richart 卡的原三商美邦御璽卡那一版。'
+      '門檻幾乎都要把當次機票或團費刷在那張卡上，單筆 2 萬到 3 萬元；'
+      '只有聯邦吉鶴卡是看一年期的一般消費累積。'),
+     ('日本回饋高的卡有沒有機場停車？',
+      '幾乎都沒有，而且有兩張是官網明文排除。玉山熊本熊卡的停車頁逐字寫'
+      '「玉山熊本熊卡恕不適用此項優惠」，國泰世華 CUBE 卡的停車頁有兩處註記不適用。'
+      '中信 LINE Pay 卡的指定卡別只有邀約制的鼎極卡。所以機票刷哪張、'
+      '日本當地刷哪張，實際上是兩個不同的最佳化。'),
+     ('松山機場有信用卡免費停車嗎？',
+      '15 張全都沒有，而且這不是查不到。松山在市區，沒有機場外圍接駁停車場這種業態，'
+      '所有銀行的合作停車場都只到桃園、台中、高雄。松山官方的解法是走預約，'
+      '限第二停車場、每日上限 350 元、最少 3 天共 1,050 元，但每日限額 30 名。'),
+     ('民營停車場是把車交給對方開走嗎？',
+      '不是。桃園這四家有官網的全部是自助停車加接駁，你自己把車停好再搭接駁車去航廈。'
+      '其中三家主動強調免留鑰匙，只有平安在旺季滿場時可能要留鑰匙疊停，'
+      '而且它把留鑰匙的名額直接標在訂位系統上。'),
+     ('停兩天用民營停車場划算嗎？',
+      '不划算。桃園這四家全部低消三天，停不滿三天也以三天計費。'
+      '短天數的話航廈停車場或貨運區停車場反而單純。'),
+     ('找民營停車場就能刷卡免費嗎？',
+      '不一定，要兩邊都查。富士捷在官網逐字點名臺灣銀行等六家銀行，'
+      '但平安出國停車場在官網主動否認：「目前完全沒有配合任何銀行的信用卡'
+      '免費停車權益或優惠折抵」。銀行端有合作、停車場端也要有，才算得上。'),
+    ]
+    pk_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in pk_faq)
+    pk_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in pk_faq]}, ensure_ascii=False)
+
+    _H = PK['headline']
+    write('taiwan-airport-parking/index.html',
+      head('機場停車怎麼停最省？四種停法的價差與哪張卡有免費停車',
+           '桃園機場航廈停車場每日 490 元，但官方的貨運區停車場只要 250 元還有免費接駁。'
+           '機捷轉乘停車場 150 元但只有 113 格。15 張卡裡只有 5 張有免費停車，'
+           '日本回饋高的那幾張全都沒有。',
+           'taiwan-airport-parking/',
+           '<script type="application/ld+json">' + pk_ld + '</script>')
+      + crumbs([('首頁', '/'), ('機場停車', None)]) + topnav()
+      + '<h1>開車去機場，停哪裡？</h1>'
+      + f'<p class="lede">{html.escape(_H["sub"])}</p>'
+      + f'<div class="today"><div class="tday">查證於 {PK["checked"]}</div>'
+        f'<div class="tans">{html.escape(_H["a"])}</div>'
+        f'<div class="tsub">{html.escape(_H["q"])}</div></div>'
+      + f'<h2 id="{_hid(PK["myth"]["title"])}">{html.escape(PK["myth"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PK["myth"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>貼文說的</th>'
+        '<th>官方資料</th></tr></thead><tbody>' + _pkmyth + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PK["myth"]["why"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(PK["myth"]["honest"])}'
+        f'出處：<a href="{PK["myth"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">桃園捷運轉乘與停車資訊</a>。</p>'
+      + f'<h2 id="{_hid(PK["compare"]["title"])}">{html.escape(PK["compare"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PK["compare"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>停哪</th><th>費率</th><th>停 3 天</th>'
+        '<th>停 7 天</th><th>數字怎麼來的</th><th>代價</th></tr></thead><tbody>'
+      + _pkcmp + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PK["compare"]["note"])}</b></li>'
+        f'<li>{html.escape(PK["compare"]["crossday"])}</li></ul></div>'
+      + f'<h2 id="{_hid(PK["cargo"]["title"])}">{html.escape(PK["cargo"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PK["cargo"]["body"])}</p>'
+      + f'<p class="lede">{html.escape(PK["cargo"]["why"])}</p>'
+      + f'<p class="disc">{html.escape(PK["cargo"]["gap"])}'
+        f'出處：<a href="{PK["cargo"]["src"]}" rel="nofollow noopener" '
+        f'target="_blank">桃園國際機場停車資訊</a>。</p>'
+      + f'<h2 id="{_hid(PK["mrt"]["title"])}">{html.escape(PK["mrt"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PK["mrt"]["fee"])}</p>'
+      + f'<p class="lede">{html.escape(PK["mrt"]["near"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>站</th><th>汽車位</th><th>到航廈票價</th>'
+        '<th>到第一航廈</th><th>到第二航廈</th></tr></thead><tbody>'
+      + _pkmrt + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PK["mrt"]["catch"])}</b></li></ul></div>'
+      + f'<p class="lede">{html.escape(PK["mrt"]["nostation"])}</p>'
+      + f'<p class="disc">{html.escape(PK["mrt"]["separate"])}</p>'
+      + f'<h2 id="{_hid(PK["private"]["title"])}">{html.escape(PK["private"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PK["private"]["intro"])}</p>'
+      + '<div class="tldr"><ul>'
+      + ''.join(f'<li><b>{html.escape(x)}</b></li>' for x in PK['private']['common'])
+      + '</ul></div>'
+      + '<div class="tw"><table><thead><tr><th>業者</th><th>費率</th><th>停 3 天</th>'
+        '<th>停 7 天</th><th>車位型態</th><th>鑰匙</th><th>接駁</th>'
+        '<th>預約</th></tr></thead><tbody>' + _pkpri + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(PK["private"]["which"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PK["private"]["shuttle"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(PK["private"]["gone"])}</p>'
+      + f'<h2 id="{_hid(PK["cards"]["title"])}">{html.escape(PK["cards"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PK["cards"]["lead"])}</p>'
+      + '<h3>有免費停車天數的五張</h3>'
+      + '<div class="tw"><table><thead><tr><th>卡片</th><th>天數</th><th>哪些機場</th>'
+        '<th>條件</th></tr></thead><tbody>' + _pkhave + '</tbody></table></div>'
+      + '<h3>日本回饋高、但沒有停車的那幾張</h3>'
+      + '<div class="tw"><table><thead><tr><th>卡片</th><th>停車</th>'
+        '<th>官網怎麼寫</th></tr></thead><tbody>' + _pknone + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PK["cards"]["tension"])}</b></li>'
+        f'<li>{html.escape(PK["cards"]["overlap"])}</li></ul></div>'
+      + f'<p class="lede">{html.escape(PK["cards"]["tsa"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PK["cards"]["year"])}</b></li>'
+        f'<li>{html.escape(PK["cards"]["noreserve"])}</li></ul></div>'
+      + f'<p class="disc">各卡的日本回饋、加碼上限與登錄方式在'
+        f'<a href="{U("/japan-credit-card/")}">旅日信用卡</a>那一頁，'
+        f'幾號開放登錄在<a href="{U("/japan-card-register/")}">登錄日曆</a>。</p>'
+      + f'<h2 id="{_hid(PK["twosides"]["title"])}">{html.escape(PK["twosides"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(PK["twosides"]["yes"])}</p>'
+      + f'<p class="lede">{html.escape(PK["twosides"]["no"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PK["twosides"]["lesson"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(PK["twosides"]["cross"])}</p>'
+      + f'<h2 id="{_hid(PK["others"]["title"])}">{html.escape(PK["others"]["title"])}</h2>'
+      + '<div class="tw"><table><thead><tr><th>機場</th><th>費率</th>'
+        '<th>每日上限</th><th>要注意的</th></tr></thead><tbody>'
+      + _pkoth + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PK["others"]["tsa_note"])}</b></li>'
+        f'<li>{html.escape(PK["others"]["kao_note"])}</li></ul></div>'
+      + '<h2>這一頁查不到的</h2>'
+      + '<p class="lede">「官網沒寫」和「沒有這項」是兩件事。查不到的就說查不到。</p>'
+      + '<div class="tldr"><ul>'
+      + ''.join(f'<li>{html.escape(u)}</li>' for u in PK['unverified'])
+      + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
+        f'<s>日本回饋高的那幾張沒有停車</s></a>'
+      + f'<a class="ct" href="{U("/japan-card-register/")}"><b>📆 登錄日曆</b>'
+        f'<s>加碼要先登錄，錯過只剩基本</s></a>'
+      + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>每日更新</s></a></div>'
+      + '<h2>常見問題</h2>' + pk_html
+      + f'<p class="disc">停車費率與信用卡權益隨時調整，本頁查證於 {PK["checked"]}，'
+        f'出發前請以各停車場與發卡行官網為準。信用卡的停車權益幾乎都是年度版，'
+        f'多數標 2026 年全年，每年底要重查。</p>'
+      + foot())
+    pages.append(('/taiwan-airport-parking/', 0.7))
 
 
 # ---------- 雪具託運 ----------
