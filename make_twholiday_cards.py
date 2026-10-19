@@ -36,6 +36,20 @@ CSS = """
  font-weight:700;font-variant-numeric:tabular-nums}
 .lv i.g{color:#2f8f4f}
 .lv i.b{color:#8a847c;font-weight:500}
+.smh{display:flex;gap:10px;padding:0 0 9px;font-size:19px;color:#8a847c;
+ border-bottom:2px solid #1a1a1a}
+.smh span:first-child{flex:1 1 auto}
+.smh span.dt{flex:0 0 344px}
+.smh span.v{flex:0 0 86px;text-align:right}
+.sm{display:flex;gap:10px;align-items:baseline;padding:9px 0;
+ border-bottom:1px solid #e5e3de}
+.sm:last-child{border-bottom:0}
+.sm .nm{flex:1 1 auto;font-size:25px;font-weight:700;line-height:1.3}
+.sm .dt{flex:0 0 344px;font-size:21px;color:#63605c}
+.sm i{flex:0 0 86px;text-align:right;font-style:normal;font-size:24px;
+ font-weight:700}
+.sm i.g{color:#2f8f4f}
+.sm i.b{color:#8a847c;font-weight:500}
 .rn{padding:15px 0;border-bottom:1px solid #e5e3de}
 .rn:last-child{border-bottom:0}
 .rn b{display:block;font-size:30px;font-weight:700;line-height:1.3}
@@ -205,6 +219,33 @@ def build(d):
         '<div class="note">機票貴是因為台灣放假，住宿貴是因為日本放假或當地有祭典。'
         '兩個高峰不一定重疊，重疊的那幾段才是真的要避開。</div>', 'cover',
         f'{ys} 年的連假與請假', '封面與關鍵數字')
+
+    # ── 假期總表 ──
+    # 下面的請假表一張只放 6 列、要分兩張，回答的是「怎麼排」。
+    # 這一張放全部，回答的是「有哪些假」，分張就失去意義了，所以行高另外壓。
+    if leave:
+        srows = ('<div class="smh"><span>假期</span><span class="dt">日期</span>'
+                 '<span class="v">天數</span><span class="v">請1天</span></div>')
+        for p in leave:
+            o = p['opts'].get('1')
+            gain = o and o['tot'] > p['base']
+            _nm = '、'.join(_CARD_SHORT.get(x, x) for x in p['name'].split('、'))
+            srows += (f'<div class="sm"><div class="nm">{E(_nm)}</div>'
+                      f'<div class="dt">{_rng(p["from"], p["to"])}</div>'
+                      f'<i class="b">{p["base"]}</i>'
+                      + (f'<i class="g">{o["tot"]}</i>' if gain else '<i class="b">—</i>')
+                      + '</div>')
+        add('<div class="kick">用官方行事曆逐日算的</div>'
+            f'<h1>{ys} 年<br><em>假期總表</em></h1>'
+            + ('<div class="legend">含單日假日。右邊那欄是請 1 天能換到幾天，'
+               '破折號代表延長不了。</div>'
+               if any(x['base'] == 1 for x in leave) else
+               '<div class="legend">右邊那欄是請 1 天能換到幾天，'
+               '破折號代表延長不了。</div>')
+            + f'<div class="list">{srows}</div>', '',
+            f'{ys} 年{"剩下的" if d["partial"] else ""}假期總表',
+            f'{len(leave)} 段'
+            + ('，含單日假日' if any(x['base'] == 1 for x in leave) else ''))
 
     # ── 連假 × 日本／中國 ──
     for k, grp in enumerate(_chunk(runs, PER_RUN)):
