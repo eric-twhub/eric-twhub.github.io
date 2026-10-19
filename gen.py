@@ -4796,10 +4796,11 @@ if os.path.exists('parking.json'):
 
     pk_faq = [
      ('開車去桃園機場，停哪裡最便宜？',
-      '停車費最低的是機場捷運的轉乘停車場，每日上限 150 元，但那五個離機場近的站'
-      '加起來只有 113 格汽車位，而且要另外付機捷票價。不想賭車位的話，'
-      '桃園機場自己的貨運區停車場每日上限 250 元，登記後有免費接駁到航廈，'
-      '只有航廈停車場 490 元的一半。'),
+      '帳面最低的是機場捷運的轉乘停車場，桃捷官網寫每日上限 150 元。但那五個離機場'
+      '近的站加起來只有 113 格汽車位，要另外付機捷票價，直達車不停，首班車六點多，'
+      '而且桃園市交通局對同一批停車場沒有列每日上限，兩份官方資料對不起來。'
+      '不想賭這些的話，桃園機場自己的貨運區停車場每日上限 250 元，'
+      '登記後有免費接駁到航廈，只有航廈停車場 490 元的一半。'),
      ('社群說停機捷山鼻站出國 6 天只要 360 元，是真的嗎？',
       '數字和站號都不對。山鼻站是 A10 不是 A14a，桃捷轉乘停車場全線 14 站都是'
       '每日上限 150 元，官網查不到任何 60 元的費率，6 天依官方費率推算是 900 元。'
@@ -4878,7 +4879,11 @@ if os.path.exists('parking.json'):
       + '<div class="tw"><table><thead><tr><th>站</th><th>汽車位</th><th>到航廈票價</th>'
         '<th>到第一航廈</th><th>到第二航廈</th></tr></thead><tbody>'
       + _pkmrt + '</tbody></table></div>'
-      + f'<div class="tldr"><ul><li><b>{html.escape(PK["mrt"]["catch"])}</b></li></ul></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PK["mrt"]["conflict"])}</b></li></ul></div>'
+      + f'<p class="lede">{html.escape(PK["mrt"]["discount_catch"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(PK["mrt"]["catch"])}</b></li>'
+        f'<li>{html.escape(PK["mrt"]["service"])}</li></ul></div>'
+      + f'<p class="lede">{html.escape(PK["mrt"]["nearby"])}</p>'
       + f'<p class="lede">{html.escape(PK["mrt"]["nostation"])}</p>'
       + f'<p class="disc">{html.escape(PK["mrt"]["separate"])}</p>'
       + f'<h2 id="{_hid(PK["private"]["title"])}">{html.escape(PK["private"]["title"])}</h2>'
@@ -4919,6 +4924,7 @@ if os.path.exists('parking.json'):
       + _pkoth + '</tbody></table></div>'
       + f'<div class="tldr"><ul><li><b>{html.escape(PK["others"]["tsa_note"])}</b></li>'
         f'<li>{html.escape(PK["others"]["kao_note"])}</li></ul></div>'
+      + f'<p class="lede">{html.escape(PK["others"]["kao_mrt"])}</p>'
       + '<h2>這一頁查不到的</h2>'
       + '<p class="lede">「官網沒寫」和「沒有這項」是兩件事。查不到的就說查不到。</p>'
       + '<div class="tldr"><ul>'
