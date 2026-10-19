@@ -14,19 +14,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,861（7 天有紀錄），這張低 29%"
+   "11 月出發的票，每天最便宜的平均要 NT$5,013（7 天有紀錄），這張低 31%"
   ],
   "med": 12937,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-10&inbound=OKA-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 3838,
+   "lo": 4002,
    "hi": 12312,
    "days": 10
   },
   "mbase": {
-   "avg": 4861,
+   "avg": 5013,
    "days": 7,
    "month": 11
   },
@@ -35,12 +35,12 @@
  },
  {
   "slug": "2026-10-20-kaohsiung-okinawa",
-  "title": "高雄飛沖繩 NT$3,838 來回含稅｜台灣虎航 11/17 出發",
+  "title": "高雄飛沖繩 NT$3,882 來回含稅｜台灣虎航 11/17 出發",
   "o": "高雄",
   "c": "沖繩",
   "_oiata": "KHH",
   "_diata": "OKA",
-  "price": 3838,
+  "price": 3882,
   "air": "台灣虎航",
   "dep": "2026-11-17",
   "ret": "2026-11-20",
@@ -48,19 +48,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$6,483（7 天有紀錄），這張低 41%"
+   "11 月出發的票，每天最便宜的平均要 NT$6,430（7 天有紀錄），這張低 40%"
   ],
-  "med": 5965,
+  "med": 5963,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 4965,
+   "lo": 4882,
    "hi": 9391,
    "days": 7
   },
   "mbase": {
-   "avg": 6483,
+   "avg": 6430,
    "days": 7,
    "month": 11
   },
@@ -82,7 +82,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,763（21 天有紀錄），這張低 50%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,840（22 天有紀錄），這張低 51%"
   ],
   "med": 11305,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
@@ -91,11 +91,11 @@
   "usual": {
    "lo": 5563,
    "hi": 12165,
-   "days": 33
+   "days": 34
   },
   "mbase": {
-   "avg": 9763,
-   "days": 21,
+   "avg": 9840,
+   "days": 22,
    "month": 11
   },
   "rank": 1,
