@@ -34,8 +34,42 @@
   "n": 22
  },
  {
+  "slug": "2026-10-20-kaohsiung-okinawa",
+  "title": "高雄飛沖繩 NT$3,838 來回含稅｜台灣虎航 11/17 出發",
+  "o": "高雄",
+  "c": "沖繩",
+  "_oiata": "KHH",
+  "_diata": "OKA",
+  "price": 3838,
+  "air": "台灣虎航",
+  "dep": "2026-11-17",
+  "ret": "2026-11-20",
+  "stops": "直飛",
+  "cls": "lcc",
+  "reasons": [
+   "廉航低於 NT$6,000",
+   "11 月出發的票，每天最便宜的平均要 NT$6,498（7 天有紀錄），這張低 41%"
+  ],
+  "med": 5963,
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
+  "hotelcity": "那霸",
+  "cslug": "okinawa",
+  "usual": {
+   "lo": 5338,
+   "hi": 9391,
+   "days": 7
+  },
+  "mbase": {
+   "avg": 6498,
+   "days": 7,
+   "month": 11
+  },
+  "rank": 1,
+  "n": 7
+ },
+ {
   "slug": "2026-10-20-taichung-okinawa",
-  "title": "台中飛沖繩 NT$4,338 來回含稅｜台灣虎航 11/09 出發",
+  "title": "台中飛沖繩 NT$4,838 來回含稅｜台灣虎航 11/09 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
@@ -48,7 +82,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,739（21 天有紀錄），這張低 55%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,763（21 天有紀錄），這張低 50%"
   ],
   "med": 11302,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
@@ -60,46 +94,12 @@
    "days": 33
   },
   "mbase": {
-   "avg": 9739,
+   "avg": 9763,
    "days": 21,
    "month": 11
   },
   "rank": 1,
   "n": 97
- },
- {
-  "slug": "2026-10-20-kaohsiung-okinawa",
-  "title": "高雄飛沖繩 NT$4,338 來回含稅｜台灣虎航 11/17 出發",
-  "o": "高雄",
-  "c": "沖繩",
-  "_oiata": "KHH",
-  "_diata": "OKA",
-  "price": 4338,
-  "air": "台灣虎航",
-  "dep": "2026-11-17",
-  "ret": "2026-11-20",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$6,570（7 天有紀錄），這張低 34%"
-  ],
-  "med": 5963,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
-  "hotelcity": "那霸",
-  "cslug": "okinawa",
-  "usual": {
-   "lo": 5338,
-   "hi": 9391,
-   "days": 7
-  },
-  "mbase": {
-   "avg": 6570,
-   "days": 7,
-   "month": 11
-  },
-  "rank": 1,
-  "n": 7
  },
  {
   "slug": "2026-10-20-taipei-fukuoka",
