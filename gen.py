@@ -15056,10 +15056,17 @@ if os.path.exists('cards.json'):
                             "acceptedAnswer": {"@type": "Answer", "text": a}}
                            for q, a in cf]}, ensure_ascii=False)
 
+        # 通用句型。個別卡片可以用 seo_title／seo_desc 覆寫，
+        # 條件是那一頁在搜尋結果上有具體理由需要換個講法，
+        # 不是為了換而換。覆寫的理由寫在 cards.json 的 seo_why 裡。
         t_ = f'{c["name"]}日本回饋怎麼算？最高 {c["total"]}% 的上限與登錄方式'
         de = (f'{c["name"]}（{c["plan"]}）日本消費最高 {c["total"]}%，'
               + (f'加碼刷到約 {money(hit)} 到頂。' if hit else '無加碼上限。')
               + '含各金額實拿試算、加碼層級、登錄時間與不適用情況。')
+        if c.get('seo_title'):
+            t_ = c['seo_title'].format(total=c['total'], hit=money(hit) if hit else '')
+        if c.get('seo_desc'):
+            de = c['seo_desc'].format(total=c['total'], hit=money(hit) if hit else '')
 
         write(f'japan-credit-card/{c["slug"]}/index.html',
           head(t_, de, f'japan-credit-card/{c["slug"]}/',
