@@ -15265,6 +15265,9 @@ if os.path.exists('cards.json'):
             f'<td>+{t["rate"]}%</td>'
             f'<td>{(t["cap_unit"] + " " + money(t["cap"])) if t["cap"] else "未標示"}</td>'
             f'<td>{SCOPE_NAME[t["scope"]]}</td></tr>'
+            + (f'<tr><td colspan="4" class="nm"><small>⏱ 入帳時間：'
+               f'{html.escape(t["payout"])}</small></td></tr>'
+               if t.get('payout') else '')
             for t in c['tiers'])
 
         others = ''.join(

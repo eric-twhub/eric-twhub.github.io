@@ -701,10 +701,11 @@
      "cap": 450,
      "cap_unit": "每歸戶",
      "scope": "shop",
-     "cond": "需登錄，每週二開放 3,000 名；限面對面交易（含 Apple Pay／Google Pay／Samsung Pay），網購、條碼支付與第三方支付不計"
+     "cond": "需登錄，每週二開放 3,000 名登錄名額；限面對面交易（含 Apple Pay／Google Pay／Samsung Pay），網購、條碼支付與第三方支付不計。加碼 2.2% 另有回饋限量 20,000 名，額滿即不再提供回饋，這和登錄名額是兩道不同的限量。",
+     "payout": "基本 2.8% 於商店請款後 5 個營業日撥入，但加碼 2.2% 要等到 2027/2/25 起才陸續回饋。另外消費須於 2027/1/20 前請款入帳才列入計算。"
     }
    ],
-   "period": "2026/7/1 – 2026/9/30",
+   "period": "2026/10/1 – 2026/12/31",
    "reg": "需登錄，每週二開放 3,000 名，額滿為止",
    "reg_race": true,
    "src": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html",
@@ -733,7 +734,8 @@
      "quota": 3000,
      "quota_unit": "每週",
      "valid": "當週",
-     "url": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html"
+     "url": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html",
+     "cap_txt": "450 點／歸戶"
     },
     {
      "what": "Trip.com 5%、Airbnb 5%（限 Visa 卡）",
@@ -741,10 +743,11 @@
      "day": 6,
      "time": "10:00",
      "until": "",
-     "quota": 0,
-     "quota_unit": "未標示",
-     "valid": "未標示",
-     "url": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html"
+     "quota": 8000,
+     "quota_unit": "每月",
+     "valid": "當季，每季登錄一次即可。官方舉例：7 月登錄只能參加 7 到 9 月，要參加 10 到 12 月得重新登錄",
+     "url": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html",
+     "cap_txt": "100 點／戶／季"
     },
     {
      "what": "台灣虎航 10%（限 JCB 卡）",
@@ -752,10 +755,11 @@
      "day": 6,
      "time": "13:00",
      "until": "",
-     "quota": 0,
-     "quota_unit": "未標示",
-     "valid": "未標示",
-     "url": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html"
+     "quota": 5000,
+     "quota_unit": "每月",
+     "valid": "當季，每季登錄一次即可。官方舉例：7 月登錄只能參加 7 到 9 月，要參加 10 到 12 月得重新登錄",
+     "url": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html",
+     "cap_txt": "200 點／戶／季"
     }
    ],
    "parking": {
