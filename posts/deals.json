@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$5,917（7 天有紀錄），這張低 50%"
+   "11 月出發的票，每天最便宜的平均要 NT$5,852（7 天有紀錄），這張低 49%"
   ],
   "med": 4899,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
@@ -22,11 +22,11 @@
   "cslug": "okinawa",
   "usual": {
    "lo": 3999,
-   "hi": 9314,
+   "hi": 8859,
    "days": 7
   },
   "mbase": {
-   "avg": 5917,
+   "avg": 5852,
    "days": 7,
    "month": 11
   },
@@ -55,7 +55,7 @@
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 3999,
+   "lo": 4399,
    "hi": 12312,
    "days": 10
   },
@@ -103,12 +103,12 @@
  },
  {
   "slug": "2026-10-20-taipei-fukuoka",
-  "title": "台北飛福岡 NT$5,716 來回含稅｜台灣虎航 11/03 出發",
+  "title": "台北飛福岡 NT$5,771 來回含稅｜台灣虎航 11/03 出發",
   "o": "台北",
   "c": "福岡",
   "_oiata": "TPE",
   "_diata": "FUK",
-  "price": 5716,
+  "price": 5771,
   "air": "台灣虎航",
   "dep": "2026-11-03",
   "ret": "2026-11-06",
@@ -116,7 +116,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$8,484（6 天有紀錄），這張低 33%"
+   "11 月出發的票，每天最便宜的平均要 NT$8,494（6 天有紀錄），這張低 32%"
   ],
   "med": 14097,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
@@ -128,7 +128,7 @@
    "days": 6
   },
   "mbase": {
-   "avg": 8484,
+   "avg": 8494,
    "days": 6,
    "month": 11
   },
@@ -162,13 +162,13 @@
  },
  {
   "slug": "2026-10-20-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,470",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,415",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 7928,
+  "price": 7983,
   "air": "飛福岡再轉乘",
-  "fl_price": 5716,
+  "fl_price": 5771,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1106,
@@ -178,7 +178,7 @@
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$2,470"
+   "比直飛省 NT$2,415"
   ],
   "med": 10398,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
