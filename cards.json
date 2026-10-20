@@ -460,7 +460,10 @@
      "quota_unit": "每月（每季 30,000）",
      "valid": "當季，當季登錄一次即可，不用每月重登（例：10 月登錄成功，10 到 12 月的日本交通卡消費都算）",
      "url": "https://www.fubon.com/banking/event/credit_card/20170718A/index.html",
-     "note": "官方 App 的活動名稱寫「最高6%」，但同一畫面的活動內容與官網都寫最高 10%。本站採官網與活動內容的 10%。"
+     "note": "官方 App 的活動名稱寫「最高6%」，但同一畫面的活動內容與官網都寫最高 10%。本站採官網與活動內容的 10%。",
+     "rate_txt": "＋7%（合計最高 10%）",
+     "cap_txt": "200 元／戶",
+     "period": "2026/4/1 – 2026/12/31"
     },
     {
      "what": "亞洲精選加碼 5%",
@@ -473,7 +476,10 @@
      "valid": "當月，每月都要重新登錄",
      "not_japan": "這一檔的適用國家是中國大陸、香港、澳門、新加坡、馬來西亞與越南，不含日本。列在這裡是因為同一張卡在 18、19、20 連三天都有活動開放登錄，少列一檔容易以為只有兩天。",
      "note": "當月於指定國家實體消費累積滿 NT$6,000 贈 NT$300 即享券乙張，每戶每月限一張。官方算成最高 6%，是這張券的 5% 加上基本權益最高 1%。",
-     "url": "https://www.fubon.com/banking/Personal/credit_card/all_card/omiyage/omiyage.htm"
+     "url": "https://www.fubon.com/banking/Personal/credit_card/all_card/omiyage/omiyage.htm",
+     "rate_txt": "券 5%（合計最高 6%）",
+     "cap_txt": "300 元券／月",
+     "period": "2026/4/1 – 2026/12/31"
     },
     {
      "what": "日韓泰加碼",
@@ -484,7 +490,10 @@
      "quota": 20000,
      "quota_unit": "每月",
      "valid": "當季，當季登錄一次即可（例：1 月登錄，1 到 3 月都算）",
-     "url": "https://www.fubon.com/banking/event/credit_card/20170718A/index.html"
+     "url": "https://www.fubon.com/banking/event/credit_card/20170718A/index.html",
+     "rate_txt": "＋3%（合計最高 6%）",
+     "cap_txt": "1,000 元／戶／季",
+     "period": "2026/4/1 – 2026/12/31"
     }
    ],
    "other_perks": [

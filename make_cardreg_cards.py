@@ -29,6 +29,8 @@ CSS = """
 .lg{font-size:21px;color:#63605c;margin-top:16px}
 .lg i{font-style:normal;display:inline-block;width:17px;height:17px;border:3px solid #c2410c;
  border-radius:4px;margin-right:7px;vertical-align:-2px}
+.r5 .v{flex:0 0 250px}
+.r5 .v small{line-height:1.5}
 """
 
 
@@ -58,7 +60,7 @@ def build(d):
     today = datetime.date.today()
     y, m = today.year, today.month
     ev = events(d)
-    n = 4
+    n = 5
     note = f'登錄時間查證於 {d["checked"]}'
     out = []
 
@@ -152,6 +154,47 @@ def build(d):
              '<div class="sub">期間內登錄一次就有資格，但每季一次的那個名額最少。</div>'
              f'<div class="list">{rows}</div>' + K.foot(4, n, note))
     out.append(('reg-04.png', K.page(inner)))
+
+    # ── 5 同一張卡的不同檔期 ──
+    # 連著幾天開放的那幾檔最容易被當成同一套規則，但登錄週期、上限、
+    # 適用地區全都不一樣。只替有補上顯示欄位的卡產生，沒補的不硬湊。
+    multi = {}
+    for c, e in ev:
+        if e.get('rate_txt'):
+            multi.setdefault(c['name'], []).append(e)
+    for nm, es in list(multi.items()):
+        if len(es) < 2:
+            del multi[nm]
+    if multi:
+        blocks = ''
+        for nm, es in multi.items():
+            es = sorted(es, key=lambda x: (x.get('day', 99), x.get('time', '')))
+            for e in es:
+                cyc = ('每月要重登' if '每月都要' in (e.get('valid') or '')
+                       else '每季一次' if '當季' in (e.get('valid') or '')
+                       else when(e))
+                q = f'{e["quota"]:,} 名／{e.get("quota_unit", "")}' if e.get('quota') else ''
+                big, _, rest = e['rate_txt'].partition('（')
+                blocks += (
+                    f'<div class="row"><div class="no">{e["day"]}</div>'
+                    f'<div class="nm">{E(e["what"])}'
+                    f'<s>{E(e.get("time", ""))} 開放　·　{E(cyc)}'
+                    + (f'　·　{E(q)}' if q else '') + '</s></div>'
+                    f'<div class="v">{E(big.strip())}'
+                    f'<small>{E(rest.rstrip("）"))}<br>上限 {E(e["cap_txt"])}</small>'
+                    '</div></div>')
+        _nm = '、'.join(multi)
+        _pd = next(iter(next(iter(multi.values()))))['period']
+        inner = ('<div class="kick">連著幾天開放，規則卻不一樣</div>'
+                 f'<h1>同一張卡<br><em>三檔三種規則</em></h1>'
+                 f'<div class="sub">{E(_nm)}。開放日差一天，但登錄週期、'
+                 f'回饋上限與適用地區都不同，最容易記錯的是這裡。</div>'
+                 f'<div class="list r5">{blocks}</div>'
+                 f'<div class="note">使用期間（消費要落在這段）：{E(_pd)}。'
+                 f'三檔的登錄都到月底 23:59。亞洲精選的適用地區是中港澳星馬越，'
+                 f'不含日本。</div>'
+                 + K.foot(5, n, note))
+        out.append(('reg-05.png', K.page(inner, extra_css=CSS)))
     return out
 
 
@@ -170,7 +213,8 @@ if __name__ == '__main__':
     LB = [('reg-01.png', '加碼要先登錄', '而且各家不同天'),
           ('reg-02.png', '這個月要登錄的日子', '月曆一眼看完'),
           ('reg-03.png', '每月或每週要重登的', '錯過等下個月'),
-          ('reg-04.png', '登錄一次就好的', '與每季一次的')]
+          ('reg-04.png', '登錄一次就好的', '與每季一次的'),
+          ('reg-05.png', '同一張卡三檔三種規則', '開放日差一天，規則全不同')]
     json.dump([{'file': f, 'title': t, 'sub': s} for f, t, s in LB],
               open(os.path.join(OUT, 'index.json'), 'w', encoding='utf-8'),
               ensure_ascii=False, indent=1)
