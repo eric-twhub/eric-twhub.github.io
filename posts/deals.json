@@ -14,19 +14,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$6,091（7 天有紀錄），這張低 59%"
+   "11 月出發的票，每天最便宜的平均要 NT$5,722（7 天有紀錄），這張低 56%"
   ],
-  "med": 5962,
+  "med": 4899,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 4426,
+   "lo": 3999,
    "hi": 8859,
    "days": 7
   },
   "mbase": {
-   "avg": 6091,
+   "avg": 5722,
    "days": 7,
    "month": 11
   },
@@ -82,24 +82,24 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,809（23 天有紀錄），這張低 51%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,796（23 天有紀錄），這張低 51%"
   ],
-  "med": 11329,
+  "med": 11339,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 6462,
+   "lo": 7026,
    "hi": 12165,
    "days": 35
   },
   "mbase": {
-   "avg": 9809,
+   "avg": 9796,
    "days": 23,
    "month": 11
   },
   "rank": 1,
-  "n": 96
+  "n": 98
  },
  {
   "slug": "2026-10-20-taipei-fukuoka",
@@ -116,19 +116,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$8,418（6 天有紀錄），這張低 37%"
+   "11 月出發的票，每天最便宜的平均要 NT$8,575（6 天有紀錄），這張低 38%"
   ],
   "med": 14097,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 6571,
+   "lo": 7071,
    "hi": 10501,
    "days": 6
   },
   "mbase": {
-   "avg": 8418,
+   "avg": 8575,
    "days": 6,
    "month": 11
   },
@@ -137,7 +137,7 @@
  },
  {
   "slug": "2026-10-20-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$417",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$435",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
@@ -153,9 +153,9 @@
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$417"
+   "比直飛省 NT$435"
   ],
-  "med": 11328,
+  "med": 11346,
   "url": "https://www.aviasales.com/search/TPE0511KIX10111?t=GK17938932001793907000000170TPEKIX17943522001794360600000200KIXTPE_1702f46e5b7422e7007e11ed393f9097_16965&search_date=19102026&expected_price_uuid=01a153f5-b189-8030-edd2-6c60441ddba5&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=yR67qBLv5qufzLxzG9bdgg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6659&marker=775639",
   "hotelcity": "廣島",
   "cslug": "hiroshima"

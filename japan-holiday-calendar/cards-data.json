@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-20 12:53",
+ "generated": "2026-10-20 13:56",
  "checked": "2026-09-26",
  "leave": [
   {
@@ -980,7 +980,7 @@
  },
  "fare": {
   "base_median": 9409,
-  "base_n": 863,
+  "base_n": 873,
   "rows": [
    {
     "label": "台日同時連假",
