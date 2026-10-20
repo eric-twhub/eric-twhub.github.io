@@ -1,4 +1,7 @@
-"""比對發卡行官網的逐月登錄時間和 cards.json 裡的 reg_events。
+"""cards.json 的日期檢查，兩件事：
+
+一、比對發卡行官網的逐月登錄時間和 reg_events（要連網）。
+二、檢查每張卡的 period 有沒有過期（純本機日期比對，不連網）。
 
 reg_events 的日期是人工填的。填錯不會有任何錯誤訊息，登錄日曆照樣算得出一個
 看起來很合理的日期，讀者就會在錯的那天去登錄，而這些活動多半限量。
@@ -13,10 +16,19 @@ reg_events 的日期是人工填的。填錯不會有任何錯誤訊息，登錄
   抓到了而且日期對不起來 → 錯誤，離開碼 1。那是真的要修的資料錯誤。
 """
 
+import datetime
 import json
 import re
 import sys
 import urllib.request
+
+# 期間快到期的提前警告天數。給自己留時間回查，而不是過期當天才炸。
+EXPIRY_WARN_DAYS = 14
+
+# period 的寫法不統一，有「2026/7/1 – 2026/12/31」，也有
+# 「秋日遊 2026/10/1 – 2026/11/30；其餘方案依國泰世華公告」這種。
+# 所以不去解析格式，改成抓出字串裡所有完整日期、取最晚的那個當結束日。
+DATE_RE = re.compile(r'(20\d\d)/(\d{1,2})/(\d{1,2})')
 
 UA = 'Mozilla/5.0 (compatible; eric-twhub-checker/1.0)'
 
@@ -98,8 +110,39 @@ def read_schedule(chunk):
     return days.pop(), times.pop(), len(hits)
 
 
+def check_periods(cards, today):
+    """每張卡的 period 有沒有過期。
+
+    2026-10-20 踩到：中信 LINE Pay 卡的 period 還停在 2026/7/1 到 9/30，
+    已經過了三週，而比較表那一欄照樣顯示。登錄日期有人驗，活動期間沒有，
+    是做別的事時偶然翻到的。
+
+    這一段不連網，所以官網抓不到也不影響它。
+    """
+    bad, warn = [], []
+    for c in cards['cards']:
+        p = c.get('period') or ''
+        ds = [datetime.date(int(y), int(m), int(d))
+              for y, m, d in DATE_RE.findall(p)]
+        if not ds:
+            warn.append(f"{c['name']}：period 裡讀不出完整日期（{p or '空的'}），驗不了")
+            continue
+        end = max(ds)
+        left = (end - today).days
+        if left < 0:
+            bad.append(f"{c['name']}：活動期間寫到 {end}，已經過了 {-left} 天。"
+                       f"原文「{p}」")
+        elif left <= EXPIRY_WARN_DAYS:
+            warn.append(f"{c['name']}：活動期間 {end} 到期，剩 {left} 天，該回查了")
+        else:
+            print(f'  期間還在　{c["name"]}：到 {end}，剩 {left} 天')
+    return bad, warn
+
+
 def main():
     cards = json.load(open('cards.json', encoding='utf-8'))
+    today = datetime.date.today()
+    bad_period, warn_period = check_periods(cards, today)
     by_name = {c['name']: c for c in cards['cards']}
     problems, notes = [], []
 
@@ -145,13 +188,20 @@ def main():
 
     for n in notes:
         print(f'::warning::登錄日期比對：{n}')
+    for n in warn_period:
+        print(f'::warning::活動期間：{n}')
     for p in problems:
         print(f'::error::登錄日期對不起來：{p}')
+    for p in bad_period:
+        print(f'::error::活動期間已過期：{p}')
+
     if problems:
         print('\n修正 cards.json 的 reg_events 之後再推。'
               '同一頁常有好幾個活動的登錄日清單，確認你改的是對的那一個。')
-        return 1
-    return 0
+    if bad_period:
+        print('\n過期的卡要去發卡行官網查現行期間，把 cards.json 的 period 更新。'
+              '順便看回饋率、上限與名額有沒有一起改，換檔期時那幾項常常一起動。')
+    return 1 if (problems or bad_period) else 0
 
 
 if __name__ == '__main__':
