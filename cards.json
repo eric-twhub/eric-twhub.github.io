@@ -56,7 +56,13 @@
      "valid": "活動期間登錄一次即可（2025/12/31 前登錄過的要重登）",
      "url": "https://event.esunbank.com.tw/credit/kumamon-card/japan-discount.html"
     }
-   ]
+   ],
+   "parking": {
+    "has": false,
+    "status": "官網明文排除",
+    "why": "停車頁逐字寫「玉山熊本熊卡恕不適用此項優惠」。全卡友仍可用折扣價：連勝與連統 250 元／天、大鵬與大程 8 折。",
+    "src": "https://www.esunbank.com/zh-tw/personal/credit-card/benefit/airport-parking"
+   }
   },
   {
    "name": "星展 eco 永續卡",
@@ -105,7 +111,13 @@
    ],
    "seo_title": "星展 eco 永續卡日本 5% 上限 600 點，刷到 {hit} 就到頂",
    "seo_desc": "星展 eco 永續卡在日本的加碼 4% 上限是每期帳單 600 點，也就是刷到 {hit} 就不再加碼，再往上只剩基本 1%。含逐金額實拿試算、加碼條件與不適用情況。",
-   "seo_why": "2026-10-19：這一頁 28 天有 1,152 次曝光但只有 0.4% 點閱率，排名 8.7。實際看「星展eco永續卡 日本」的搜尋結果，上面是一整塊星展自己的廣告、三個星展官網結果、兩則社群與一個問答方塊，第 8 名等於在很下面，所以通用句型的標題吃不到點擊。改成直接給出上限數字，因為Dcard 與 Facebook 上吵的正是這個數字（有人被客服告知 800 點／刷 16,000，與官方的 600 點不符）。下次盤點看點閱率有沒有動，沒有的話代表是版面問題不是標題問題，就不要再改標題了。"
+   "seo_why": "2026-10-19：這一頁 28 天有 1,152 次曝光但只有 0.4% 點閱率，排名 8.7。實際看「星展eco永續卡 日本」的搜尋結果，上面是一整塊星展自己的廣告、三個星展官網結果、兩則社群與一個問答方塊，第 8 名等於在很下面，所以通用句型的標題吃不到點擊。改成直接給出上限數字，因為Dcard 與 Facebook 上吵的正是這個數字（有人被客服告知 800 點／刷 16,000，與官方的 600 點不符）。下次盤點看點閱率有沒有動，沒有的話代表是版面問題不是標題問題，就不要再改標題了。",
+   "parking": {
+    "has": false,
+    "status": "沒有停車",
+    "why": "星展的機場外圍停車頁只列六張高階卡，eco 永續卡不在內。它有的是機場接送優惠價，一年 4 次，那不是停車。",
+    "src": "https://www.dbs.com.tw/personal-zh/cards/dbs-cards-benefits/airport-parking.page"
+   }
   },
   {
    "name": "台新 Richart 卡",
@@ -131,7 +143,17 @@
    "reg_race": false,
    "total": 3.3,
    "reg_short": "免登錄，但每天要切 App",
-   "reg_level": "setup"
+   "reg_level": "setup",
+   "parking": {
+    "free": "全年 2 次，每次最高 5 天",
+    "airports": "桃園、台中、高雄",
+    "op": "全勝、偉詮、連統、日月亭平安、富士捷大園、連勝、中興嘟嘟房（桃園）；中興嘟嘟房台中機場二站（台中）；大程、大鵬（高雄）",
+    "cond": "使用前三個月內刷付當次旅遊的機票或團費合計達 NT$30,000 以上。透過行動支付付款不認列。消費門檻正附卡各自計算，天數不得相加。",
+    "period": "2026/1/1 – 2026/12/31，以出場日為準",
+    "src": "https://www.taishinbank.com.tw/TSB/personal/credit/intro/rights/oversea/right0101/",
+    "note": "只有「台新 Richart 卡（原三商美邦御璽卡）」這一版有。官網另列出八組沒有停車權益的卡號前八碼，手上是哪一版要自己對卡號。",
+    "has": true
+   }
   },
   {
    "name": "國泰世華 CUBE 卡",
@@ -246,6 +268,12 @@
      "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/cube-list#japanrewards",
      "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/cube#level"
     ]
+   },
+   "parking": {
+    "has": false,
+    "status": "官網明文排除",
+    "why": "停車頁兩處註記 CUBE 卡不適用，使用須知再寫一次。可改用小樹點折抵：桃園大園 130 點換一天、連統 145 點、大鵬與大程 155 點，限正卡。",
+    "src": "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/rights/airportparking"
    }
   },
   {
@@ -364,7 +392,17 @@
      "quota_unit": "名額不限",
      "url": "https://card.ubot.com.tw/eCard/activity_login/register_activity.aspx"
     }
-   ]
+   ],
+   "parking": {
+    "free": "每人每年 2 次，每次最高 6 天",
+    "airports": "桃園、台中、高雄",
+    "op": "大園出國、星威、偉詮、嘟嘟房（桃園）；嘟嘟房文昌、展伸（台中）；大程、大鵬（高雄）",
+    "cond": "看的是使用服務前一年的一般消費累積達 10 萬元，不是刷機票。消費會扣除這一年內已用掉的門檻金額。次數正附卡分開計算。用嘟嘟房桃園場要先電話報到。",
+    "period": "115/1/1 – 115/12/31",
+    "src": "https://card.ubot.com.tw/CardRights/Faq_q-6",
+    "note": "要保留一點：停車頁的適用名單是按卡等級寫的，沒有逐字出現「吉鶴卡」。本站是用官方卡名「聯邦 JCB 吉鶴晶緻卡」去對名單上的「晶緻卡」那一列，吉鶴卡自己的活動頁只寫「達指定消費金額」沒寫金額。用之前建議先向發卡行確認。",
+    "has": true
+   }
   },
   {
    "name": "台北富邦 J 卡",
@@ -459,7 +497,16 @@
      "period": "2026/4/1 – 2026/12/31",
      "src": "https://www.fubon.com/banking/Personal/credit_card/all_card/omiyage/omiyage.htm"
     }
-   ]
+   ],
+   "parking": {
+    "free": "全年 2 次，每次最高 5 天",
+    "airports": "桃園、台中、高雄",
+    "op": "星威（桃園）、展伸（台中）、大鵬與大程（高雄）",
+    "cond": "使用服務前 180 天內刷付當次機票全額或旅行社團費 80% 以上，且單筆達 NT$20,000。次數正附卡合併計算。同一筆機票或團費，機場接送與機場外圍停車只能二擇一。",
+    "period": "2026/1/1 – 2026/12/31",
+    "src": "https://www.fubon.com/banking/Personal/credit_card/airport_parking/airport_parking.htm",
+    "has": true
+   }
   },
   {
    "name": "玉山 Unicard",
@@ -492,7 +539,13 @@
      "label": "UP選百大通路加碼 3.5%",
      "detail": "訂閱 UP選後百大指定通路享 3.5%（歸戶上限 5,000 點／月）。但玉山的活動頁全篇沒有提到海外或日本，百大名單是國內通路，因此本站不把它算進日本回饋。如果你查到當期名單有日本店家，再自行加回去。"
     }
-   ]
+   ],
+   "parking": {
+    "has": false,
+    "status": "沒有免費天數",
+    "why": "玉山的停車頁是逐張卡點名，Unicard 不在任何一組。但全卡友有折扣價，持卡現場過卡即可，不必刷機票。",
+    "src": "https://www.esunbank.com/zh-tw/personal/credit-card/benefit/airport-parking"
+   }
   },
   {
    "name": "永豐現金回饋 JCB 卡",
@@ -565,7 +618,13 @@
      "url": "https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/cashcardJCB.html"
     }
    ],
-   "checked": "2026-10-16"
+   "checked": "2026-10-16",
+   "parking": {
+    "has": false,
+    "status": "官網未查到",
+    "why": "永豐的停車頁是按卡等級列名單，而產品頁、卡片總覽、收費一覽表三處都沒有標這張卡屬於哪個等級，所以本站無法判定。",
+    "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/card-right/airport-parking.html"
+   }
   },
   {
    "name": "永豐幣倍卡",
@@ -609,7 +668,16 @@
    ],
    "total": 8.0,
    "reg_short": "免登錄，但要設定＋資產達門檻",
-   "reg_level": "setup"
+   "reg_level": "setup",
+   "parking": {
+    "free": "一年 2 次，每次最長 5 天",
+    "airports": "桃園、高雄",
+    "op": "大園出國、連統出國（桃園）；大程國際（高雄）",
+    "cond": "刷本人當次機票全額或 80% 以上團費，單筆達 NT$20,000 且已請款，須在刷卡後 90 天內用掉。進出場要用當初刷機票的那張實體卡過卡，行動支付與虛擬卡不適用。",
+    "period": "2026/1/1 – 2026/12/31",
+    "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/card-right/airport-parking.html",
+    "has": true
+   }
   },
   {
    "name": "中信 LINE Pay 卡",
@@ -680,7 +748,13 @@
      "valid": "未標示",
      "url": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html"
     }
-   ]
+   ],
+   "parking": {
+    "has": false,
+    "status": "不適用",
+    "why": "2026 年的指定卡別只有 LINE Pay 鼎極卡，那是邀約制，官網寫近一年累積消費滿 36 萬才有機會獲邀。一般申辦得到的 LINE Pay 御璽卡與晶緻卡不在名單上。",
+    "src": "https://www.ctbcbank.com/twrbo/zh_tw/cc_index/cc_additional/cc_add_index/cc_add_airportparking.html"
+   }
   },
   {
    "name": "中信 uniopen 聯名卡",
@@ -716,7 +790,13 @@
    ],
    "total": 11.0,
    "reg_short": "免登錄",
-   "reg_level": "none"
+   "reg_level": "none",
+   "parking": {
+    "has": false,
+    "status": "不適用",
+    "why": "指定卡別只有 uniopen 世界卡，聯名卡是鈦金卡等級，不在任何一組。",
+    "src": "https://www.ctbcbank.com/twrbo/zh_tw/cc_index/cc_additional/cc_add_index/cc_add_airportparking.html"
+   }
   },
   {
    "name": "第一銀行 iLEO 卡",
@@ -828,7 +908,16 @@
     ]
    },
    "transit_unknown": "官方活動頁的新戶加碼 10% 與海外實體加碼 1% 都寫明「儲值不列入計算」，海外外幣加碼 1.5% 那一層則整頁沒有提到儲值。沒有提到不等於可以，因此本站不把這張卡算進交通卡儲值的回饋。",
-   "transit_unknown_src": "https://card.firstbank.com.tw/sites/card/zh_TW/1565698492326"
+   "transit_unknown_src": "https://card.firstbank.com.tw/sites/card/zh_TW/1565698492326",
+   "parking": {
+    "free": "每次最高 5 天，每一年度合計最多 15 天",
+    "airports": "桃園、高雄",
+    "op": "嘟嘟房桃園機場外圍（桃園）；大程與大鵬（高雄）",
+    "cond": "停車日前六個月內刷付當次全額國際機票或 80% 以上團費，金額皆需達 NT$20,000。嘟嘟房要先打服務專線由專人引導進場，沒走這個流程不適用。天數歸戶，主附卡合併。",
+    "period": "2026/1/1 – 2026/12/31，依進場日判斷",
+    "src": "https://card.firstbank.com.tw/sites/card/zh_TW/1565690685937",
+    "has": true
+   }
   },
   {
    "name": "永豐 DAWHO 大戶卡",
@@ -922,7 +1011,13 @@
      "valid": "需登錄，另要綁定 DAWHO 帳戶自動扣繳與電子帳單兩項設定",
      "url": "https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/DAWHO.html"
     }
-   ]
+   ],
+   "parking": {
+    "has": false,
+    "status": "官網未查到",
+    "why": "同上，停車頁按等級列，DAWHO 的產品頁只有全行通用的入口文字，沒有說這張卡適用，也沒標等級。",
+    "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/card-right/airport-parking.html"
+   }
   },
   {
    "name": "星展傳說對決聯名卡",
@@ -958,7 +1053,13 @@
     "其他行動支付（非 Apple Pay／Samsung Pay）不適用"
    ],
    "reg_short": "免登錄，但要綁自動扣繳",
-   "reg_level": "setup"
+   "reg_level": "setup",
+   "parking": {
+    "has": false,
+    "status": "沒有",
+    "why": "產品頁完整列出的權益裡沒有機場停車，也沒有機場接送。反過來停車費還被列在基本回饋的排除項目裡。",
+    "src": "https://www.dbs.com.tw/personal-zh/cards/dbs-aov/index.html"
+   }
   },
   {
    "name": "滙豐 Live+ 現金回饋卡",
@@ -1013,7 +1114,13 @@
    "reg_short": "免登錄，但自扣要 45 個工作天",
    "reg_level": "setup",
    "transit_unknown": "現金積點活動辦法的十二項排除清單裡沒有儲值或加值，但辦法也沒有說明交通卡儲值算不算一般消費，兩個方向都沒有依據。",
-   "transit_unknown_src": "https://www.hsbc.com.tw/content/dam/hsbc/tw/docs/credit-cards/live-plus/cashback-cash-points-method.pdf"
+   "transit_unknown_src": "https://www.hsbc.com.tw/content/dam/hsbc/tw/docs/credit-cards/live-plus/cashback-cash-points-method.pdf",
+   "parking": {
+    "has": false,
+    "status": "沒有免費天數",
+    "why": "滙豐把卡分三組，免費天數只給旅人卡與卓越理財卡，其餘信用卡是特約停車場折扣：星威 7 折、大鵬 8 折，農曆春節與連假不適用。",
+    "src": "https://www.hsbc.com.tw/credit-cards/benefits/airport-parking/"
+   }
   }
  ],
  "mpay": {

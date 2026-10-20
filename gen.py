@@ -14389,6 +14389,10 @@ if _GT:
 # ---------- 旅日信用卡 ----------
 if os.path.exists('cards.json'):
     CD = json.load(open('cards.json', encoding='utf-8'))
+    # 停車權益的查證日期和卡片回饋的不是同一天，分開標才不會讓讀者
+    # 以為停車那段也是最近查的。
+    PK_CHK = (json.load(open('parking.json', encoding='utf-8'))['checked']
+              if os.path.exists('parking.json') else CD['checked'])
 
     def _cchk(c):
         """這張卡的查證日期。逐張更新時只動那一張，不要套全域日期，
@@ -14562,6 +14566,8 @@ if os.path.exists('cards.json'):
                       + '、'.join(html.escape(o['what']) for o in c['other_perks'])
                       + '），不計入本表數字'
                       if c.get('other_perks') else '')
+                   + (f'<br>🅿️ 機場停車 {html.escape(c["parking"]["free"])}'
+                      if (c.get('parking') or {}).get('has') else '')
                    + '</small></td>'
                    f'<td><b>{c["total"]}%</b>{SMALL}基本 {c["base"]}%'
                    + (f' ＋ {len(_tiers(c,"shop"))} 層加碼' if _tiers(c, 'shop') else '')
@@ -15346,6 +15352,27 @@ if os.path.exists('cards.json'):
           # 這張卡真的有、但不是日本的加碼。放在這裡是因為持卡人會想知道，
           # 但刻意不進 tiers：本站每一個回饋數字講的都是日本，
           # 混進別的地區會讓帳面最高與試算結果失真。
+          + ((lambda _p: (
+              '<h2>這張卡的機場停車</h2>'
+              + ('<p class="lede">開車去機場的話，這張卡有免費停車天數。'
+                 '停車權益不是回饋率，所以不列入上面任何一個數字。</p>'
+                 '<div class="tldr"><ul>'
+                 f'<li><b>{html.escape(_p["free"])}</b></li>'
+                 f'<li>機場：{html.escape(_p["airports"])}</li>'
+                 f'<li>合作停車場：{html.escape(_p["op"])}</li>'
+                 f'<li>條件：{html.escape(_p["cond"])}</li>'
+                 f'<li>活動期間：{html.escape(_p["period"])}</li>'
+                 '</ul></div>'
+                 + (f'<p class="disc">{html.escape(_p["note"])}</p>'
+                    if _p.get('note') else '')
+                 if _p.get('has') else
+                 f'<p class="lede">這張卡<b>{html.escape(_p["status"])}</b>。'
+                 f'{html.escape(_p["why"])}</p>')
+              + f'<p class="disc">出處：<a href="{_p["src"]}" rel="nofollow noopener" '
+                f'target="_blank">發卡行官方頁</a>，查證於 {PK_CHK}。'
+                f'四個機場的停車場費率、哪幾家民營業者有官網，以及機捷轉乘的實際條件，'
+                f'整理在<a href="{U("/taiwan-airport-parking/")}">機場停車</a>那一頁。</p>')
+             )(c['parking']) if c.get('parking') else '')
           + (('<h2>這張卡的非日本加碼</h2>'
               '<p class="lede">本站所有的回饋數字只算日本。'
               '以下這幾項是同一張卡真的有的加碼，但適用地區不含日本，'
