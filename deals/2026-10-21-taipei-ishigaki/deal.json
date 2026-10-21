@@ -1,0 +1,52 @@
+{
+ "schema": 1,
+ "slug": "2026-10-21-taipei-ishigaki",
+ "generated": "2026-10-21 13:57",
+ "kind": "fare",
+ "origin": "taipei",
+ "city": "ishigaki",
+ "fare": {
+  "o": "TPE",
+  "d": "ISG",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 5406,
+  "dep": "2026-11-10",
+  "ret": "2026-11-14",
+  "dept": "18:20",
+  "rett": "09:25",
+  "rt": true,
+  "tr": 1,
+  "dur": 1575,
+  "dur_to": 140,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-10&inbound=ISG-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 14303,
+ "n_rt": 2,
+ "others": [
+  {
+   "o": "TPE",
+   "d": "ISG",
+   "air": "NH",
+   "airname": "全日空",
+   "cls": "fsc",
+   "price": 23200,
+   "dep": "2026-11-10",
+   "ret": "2026-11-14",
+   "dept": "16:50",
+   "rett": "15:50",
+   "rt": true,
+   "tr": 2,
+   "dur": 2360,
+   "dur_to": 370,
+   "gate": "Vayama",
+   "url": "https://www.aviasales.com/search/TSA1011ISG14111?t=NH17943294001794396600001060TSAHNDISG17946714001794745800001300ISGHNDTSA_9891ed151750830bdd653c199e6d8715_60742&search_date=14102026&expected_price_uuid=01a1397a-bc52-8040-6b2f-a25ccbbe9105&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=G7GQbrEBhXSv9YYVYpjxuQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=23200&marker=775639"
+  }
+ ]
+}
