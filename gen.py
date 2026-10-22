@@ -1438,6 +1438,7 @@ def topnav(cur=''):
         if os.path.exists('cards.json') else []
     card = (link('/japan-credit-card/', f'💳 {len(_cd) or ""} 張卡比較'.replace('  ', ' '))
             + link('/japan-card-calculator/', '🧮 回饋計算機')
+            + link('/japan-card-tracker/', '📊 疊卡進度表')
             + link('/japan-card-register/', '📆 登錄日曆')
             + link('/japan-airline-card/', '✈️ 買機票算國內還是國外')
             + link('/japan-airline-card/china-airlines/', '✈️ 華航聯名卡')
@@ -15700,6 +15701,233 @@ if os.path.exists('cards.json'):
             pages.append((f'/japan-credit-card/{c["slug"]}/flights/', 0.6))
 
     # ── 日幣回饋計算機 ──
+    # 疊卡進度表的前端。沿用計算機頁的 _CJS（window.JCARD、jback、jcapat、jhas、jnb）。
+    # 資料只存在使用者的 localStorage，本站收不到也看不到，這和站上不裝分析工具是同一件事。
+    TRACK_JS = _CJS + ("""<script>
+    (function(){
+    var KEY='jtrack1';
+    // localStorage 在無痕模式或封鎖網站資料時會丟例外，全部包起來，
+    // 失敗就退回只在這次瀏覽有效的記憶體狀態，頁面照常可用。
+    var MEM=null, OK=true;
+    function load(){
+      try{var s=localStorage.getItem(KEY);return s?JSON.parse(s):{v:1,own:{},custom:[]};}
+      catch(e){OK=false;return MEM||{v:1,own:{},custom:[]};}
+    }
+    function save(d){
+      MEM=d;
+      try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){OK=false;}
+      render();
+    }
+    var S=load();
+    var SC='shop';
+
+    function card(slug){
+      for(var i=0;i<JCARD.cards.length;i++) if(JCARD.cards[i].s===slug) return JCARD.cards[i];
+      return null;
+    }
+    // 邊際回饋率：已經刷掉 bill 元之後，下一塊錢實際拿得到幾趴。
+    // 觸頂的加碼層不再計入，這正是帳面回饋率看不出來的地方。
+    // NEW=false 代表已經持卡一段時間，拿不到新戶／核卡期間那幾層。
+    // 進度表的使用者多半已經持卡，所以預設是老客戶。
+    var NEW=false;
+    function mine(c,mode){return c.tiers.filter(function(t){
+      return (t.scope===mode||t.scope==='any')&&(NEW||!jisnew(t));});}
+    function marg(c,mode,bill){
+      if(mode==='base') return {rate:c.base,full:[]};
+      var ts=mine(c,mode);
+      var r=jnb(c,mode)?0:c.base, full=[];
+      ts.forEach(function(t){
+        if(t.cap&&t.rate/100*bill>=t.cap){full.push(t.label);}
+        else r+=t.rate;
+      });
+      return {rate:Math.round(r*100)/100,full:full};
+    }
+    // 還能刷多少台幣，下一層加碼才會觸頂。沒有未觸頂的加碼層就回 null。
+    function headroom(c,mode,bill){
+      if(mode==='base') return null;
+      var m=null;
+      mine(c,mode).filter(function(t){return t.cap;})
+        .forEach(function(t){
+          var at=t.cap/(t.rate/100);
+          if(at>bill&&(m===null||at<m)) m=at;
+        });
+      return m===null?null:m-bill;
+    }
+    function spent(rec,sc){return (rec&&rec[sc])?rec[sc]:0;}
+    // 剩餘額度欄。cap 是 0 有兩種意思：官方確認無上限，或官方根本沒寫。
+    // cards.json 用 cap_unknown 區分，這裡照著分，不要把「沒查到」寫成「無上限」。
+    function hrTxt(r){
+      if(r.custom) return r.hr===null?'無上限':'NT$'+jfmt(r.hr);
+      if(!r.has) return '—';
+      if(r.hr!==null) return 'NT$'+jfmt(r.hr);
+      var ts=mine(r.c,SC);
+      if(ts.some(function(t){return t.cap_unknown;})) return '官網未查到上限';
+      return ts.some(function(t){return t.cap;})?'已全部觸頂':'無上限';
+    }
+
+    function esc(s){return String(s).replace(/[&<>"]/g,function(x){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[x];});}
+
+    function rowsFor(sc){
+      var out=[];
+      Object.keys(S.own).forEach(function(slug){
+        var c=card(slug);
+        var jpy=spent(S.own[slug],sc);
+        if(!c){
+          // 站上已經不再收錄這張卡。不要讓它從清單裡靜靜消失，
+          // 使用者記的金額會跟著不見而且他不會知道發生什麼事。
+          out.push({gone:true,slug:slug,jpy:jpy});return;
+        }
+        var bill=jbill(jpy);
+        out.push({c:c,slug:slug,jpy:jpy,bill:bill,
+          has:mine(c,sc).length>0,tu:(sc==='transit'?(c.tu||''):''),
+        newonly:(!NEW&&jhas(c,sc)&&mine(c,sc).length===0),
+          m:marg(c,sc,bill),hr:headroom(c,sc,bill)});
+      });
+      (S.custom||[]).forEach(function(x){
+        var jpy=spent(x,sc), bill=jbill(jpy);
+        var hit=x.cap&&x.rate/100*bill>=x.cap;
+        out.push({custom:true,x:x,jpy:jpy,bill:bill,
+          m:{rate:hit?(x.after||0):x.rate,full:hit?[x.n]:[]},
+          hr:(x.cap?Math.max(0,x.cap/(x.rate/100)-bill):null)});
+      });
+      return out;
+    }
+
+    function render(){
+      var sc=SC, rows=rowsFor(sc);
+      // 排名只收「這個情境本站算得出來」的卡。查不到適用性的不排，
+      // 因為把未查證算成 0 或算成有，兩種都是在斷言沒查證的事。
+      var rank=rows.filter(function(r){return !r.gone&&!r.tu;})
+        .slice().sort(function(a,b){return b.m.rate-a.m.rate;});
+
+      var h='';
+      if(!rows.length){
+        h='<p class="lede">還沒有卡片。到下面「我的卡片」勾選你持有的，或自己新增一張。</p>';
+      }else{
+        h='<div class="tw"><table><thead><tr><th>卡</th><th>這個情境已刷（日幣）</th>'
+         +'<th>換算台幣帳單</th><th>下一筆的回饋率</th><th>還能刷多少到頂</th><th></th></tr></thead><tbody>';
+        rows.forEach(function(r){
+          if(r.gone){
+            h+='<tr><td colspan="6" class="nm"><b>'+esc(r.slug)+'</b>　'
+             +'本站已不再收錄這張卡，你記的 ¥'+jfmt(r.jpy)+' 保留在這裡。'
+             +' <button class="tbtn" data-del="'+esc(r.slug)+'">刪除</button></td></tr>';return;
+          }
+          var id=r.custom?('c:'+r.x.id):r.slug;
+          var nm=r.custom?esc(r.x.n):esc(r.c.n);
+          var tag=r.custom?'<span class="tag">你自己填的</span>':'';
+          var rate,note='';
+          if(r.tu){rate='<span class="nm">本站查不到</span>';note=esc(r.tu);}
+          else{
+            rate='<b>'+r.m.rate+'%</b>';
+            if(!r.custom&&r.newonly) note='這張的加碼只有新戶或核卡期間內才有，只算基本回饋';
+            else if(!r.custom&&!r.has) note='這張沒有這個情境的加碼，只有基本回饋';
+            else if(r.m.full.length){
+              note='已觸頂：'+esc(r.m.full.join('、'));
+              note+=(r.m.rate===0)?'。再刷沒有回饋':'。再刷只剩基本 '+r.m.rate+'%';
+            }
+          }
+          h+='<tr><td><b>'+nm+'</b>'+tag+(note?'<br><small class="nm">'+note+'</small>':'')+'</td>'
+           +'<td><input class="tin" type="number" min="0" step="1000" value="'+r.jpy+'" data-sp="'+esc(id)+'"></td>'
+           +'<td class="nm">NT$'+jfmt(r.bill)+'</td>'
+           +'<td>'+rate+'</td>'
+           +'<td class="nm">'+hrTxt(r)+'</td>'
+           +'<td class="nm"><button class="tbtn" data-rst="'+esc(id)+'">這期重新開始</button>'
+           +' <button class="tbtn" data-del="'+esc(id)+'">刪除</button></td></tr>';
+        });
+        h+='</tbody></table></div>';
+      }
+      document.getElementById('trows').innerHTML=h;
+
+      var nx='';
+      if(rank.length){
+        var top=rank[0];
+        nx='<div class="cv">下一筆刷 <b>'+(top.custom?esc(top.x.n):esc(top.c.n))+'</b>　'
+          +top.m.rate+'%</div>';
+        if(rank.length>1){
+          nx+='<p class="lede">接著是 '+rank.slice(1,4).map(function(r){
+            return (r.custom?esc(r.x.n):esc(r.c.n))+' '+r.m.rate+'%';}).join('、')+'。</p>';
+        }
+      }else{
+        nx='<div class="cv">還排不出來</div><p class="lede">'
+          +'勾選你持有的卡之後，這裡會依已刷金額算出下一筆該刷哪張。</p>';
+      }
+      document.getElementById('tnext').innerHTML=nx;
+      document.getElementById('twarn').style.display=OK?'none':'';
+    }
+
+    function setSp(id,v){
+      v=Math.max(0,Math.round(v||0));
+      if(id.slice(0,2)==='c:'){
+        (S.custom||[]).forEach(function(x){if('c:'+x.id===id) x[SC]=v;});
+      }else{
+        if(!S.own[id]) S.own[id]={};
+        S.own[id][SC]=v;
+      }
+      save(S);
+    }
+    document.addEventListener('input',function(e){
+      var t=e.target;
+      if(t.classList&&t.classList.contains('tin')) setSp(t.getAttribute('data-sp'),+t.value);
+    });
+    document.addEventListener('click',function(e){
+      var t=e.target;
+      if(!t.getAttribute) return;
+      var r=t.getAttribute('data-rst'), d=t.getAttribute('data-del');
+      if(r){setSp(r,0);}
+      if(d){
+        if(d.slice(0,2)==='c:'){S.custom=(S.custom||[]).filter(function(x){return 'c:'+x.id!==d;});}
+        else{delete S.own[d];}
+        save(S);
+      }
+      if(t.id==='tadd'){
+        var n=document.getElementById('tn').value.trim();
+        var rate=+document.getElementById('tr').value;
+        if(!n||!(rate>0)){alert('至少要填卡名和回饋率');return;}
+        S.custom=S.custom||[];
+        S.custom.push({id:Date.now().toString(36),n:n,rate:rate,
+          cap:+document.getElementById('tc').value||0,
+          after:+document.getElementById('ta').value||0,
+          unit:document.getElementById('tu').value.trim()});
+        ['tn','tr','tc','ta','tu'].forEach(function(k){document.getElementById(k).value='';});
+        save(S);
+      }
+      if(t.id==='tclr'){
+        if(confirm('這會清掉這個瀏覽器裡的全部紀錄，本站沒有備份，刪掉救不回來。確定？')){
+          try{localStorage.removeItem(KEY);}catch(e){}
+          S={v:1,own:{},custom:[]};MEM=null;save(S);
+        }
+      }
+    });
+    document.addEventListener('change',function(e){
+      var t=e.target;
+      if(t.id==='tsc'){SC=t.value;render();}
+      if(t.id==='tnew'){NEW=t.checked;render();}
+      if(t.classList&&t.classList.contains('tck')){
+        var s=t.getAttribute('data-own');
+        if(t.checked){S.own[s]=S.own[s]||{};}else{delete S.own[s];}
+        save(S);
+      }
+    });
+
+    // 勾選清單
+    (function(){
+      var h='';
+      JCARD.cards.forEach(function(c){
+        h+='<label class="tlb"><input type="checkbox" class="tck" data-own="'+esc(c.s)+'">'
+          +esc(c.n)+'</label>';
+      });
+      document.getElementById('tpick').innerHTML=h;
+      // 勾回已存的
+      Object.keys(S.own).forEach(function(s){
+        var el=document.querySelector('.tck[data-own="'+s+'"]');
+        if(el) el.checked=true;
+      });
+    })();
+    render();
+    })();
+    </script>""")
+
     _calc_js = _CJS + ("""
 <script>
 (function(){
@@ -15923,6 +16151,148 @@ if os.path.exists('cards.json'):
         '頁內卡片連結非聯盟連結。</p>'
       + _calc_js + foot())
     pages.append(('/japan-card-calculator/', 0.8))
+
+    # ── 疊卡進度表 ──────────────────────────────
+    # 社群上的疊卡攻略都在排「加碼回饋率」的順序，但每張卡的加碼都有上限，
+    # 上限一滿，那張卡的實際回饋就掉回基本回饋。所以真正要排的是邊際回饋率，
+    # 而那取決於你已經刷了多少。這一頁就是把帳面回饋率換成邊際回饋率。
+    # 記錄只存在使用者自己的瀏覽器，本站收不到，這和站上不裝分析工具是同一件事。
+    _TRK_CSS = ('<style>'
+      '.tlb{display:inline-flex;align-items:center;gap:6px;margin:0 12px 8px 0;'
+      'font-size:.88rem;white-space:nowrap}'
+      '.tin{width:110px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;'
+      'background:var(--bg);color:var(--fg);font-size:.9rem}'
+      '.tbtn{padding:3px 8px;border:1px solid var(--line);border-radius:6px;'
+      'background:var(--card);color:var(--dim);font-size:.74rem;cursor:pointer}'
+      '.tbtn:hover{color:var(--fg)}'
+      '.tnew{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:10px}'
+      '.tnew label{display:flex;flex-direction:column;gap:3px;font-size:.78rem;color:var(--dim)}'
+      '.tnew input{padding:5px 7px;border:1px solid var(--line);border-radius:7px;'
+      'background:var(--bg);color:var(--fg);font-size:.88rem;width:120px}'
+      '</style>')
+
+    # 這三個數字寫死過會過期（站上踩過兩次），從 cards.json 算出來。
+    _trk_nt = sum(len(c['tiers']) for c in CD['cards'])
+    _trk_nu = len({t.get('cap_unit') for c in CD['cards'] for t in c['tiers']
+                   if t.get('cap_unit')})
+    _trk_cnt = (f'{len(CD["cards"])} 張卡的 {_trk_nt} 層加碼用了 '
+                f'{_trk_nu} 種不同的上限單位')
+
+    _trk_faq = [
+      ('我記的資料會傳到你們那裡嗎？',
+       '不會。資料存在你自己瀏覽器的 localStorage 裡，不會送到任何伺服器，'
+       '本站看不到也收不到。本站刻意沒有裝任何分析工具，這一頁也一樣。'
+       '代價是本站完全沒有備份，清掉就救不回來。'),
+      ('換手機或換瀏覽器看得到嗎？',
+       '看不到。localStorage 綁在單一瀏覽器上，手機記的電腦看不到，'
+       '換瀏覽器或清除網站資料也會不見。無痕模式通常存不住，'
+       '這一頁偵測得到的話會在上面顯示提示。'),
+      ('為什麼要分實體消費和交通卡儲值？',
+       '因為上限是分開的。以台北富邦 J 卡為例，日韓泰實體消費加碼的上限是 1,000，'
+       '日本三大交通卡儲值加碼的上限是 200，兩個互不相干。'
+       '混在一起記會讓兩邊的剩餘額度都算錯。'),
+      ('為什麼有些卡顯示「本站查不到」？',
+       '交通卡儲值這個情境，有幾張卡的官方活動頁完全沒有提到儲值算不算。'
+       '沒提到不等於不給，也不等於給。本站不替它決定，所以那些卡不列入排名，'
+       '也不給數字。'),
+      ('上限什麼時候重置？',
+       '本站不知道，所以不自動重置。' + _trk_cnt + '，'
+       '有「每月」、有「每帳單週期」、有「活動期間」。'
+       '其中帳單週期取決於你的結帳日，每個人每家銀行都不一樣，本站沒有這個資訊。'
+       '猜錯會讓你以為還有額度，比不記更糟，所以改成手動按「這期重新開始」。'),
+      ('自己新增的卡和你們的卡有什麼不同？',
+       '本站的卡，數字來自官方活動頁、附查證日，條件改了本站會更新，'
+       '你下次打開就是新的。自己新增的卡，數字是你自己填的，'
+       '本站沒有查證也不會更新，所以會一直用你填的那組數字算。'
+       '表上會標示「你自己填的」。'),
+      ('日幣換台幣用什麼匯率？',
+       f'用本站每日更新的中間匯率，再加上 {_fx["typical"]}% 國外交易手續費。'
+       '你輸入的是累計日幣金額，換算時全部用今天的匯率，'
+       '所以和你的實際帳單會有小差距。上限是算在台幣回饋金額上的，'
+       '所以要先換算才比得出來。'),
+    ]
+    _trk_html = ''.join('<details class="faq"><summary>' + html.escape(q)
+                        + '</summary><div>' + html.escape(a) + '</div></details>'
+                        for q, a in _trk_faq)
+    _trk_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in _trk_faq]}, ensure_ascii=False)
+
+    write('japan-card-tracker/index.html',
+      head('日本疊卡進度表：記已刷金額，算下一筆該刷哪張',
+           f'疊卡攻略都在排加碼回饋率，但每張卡的加碼都有上限，刷滿就掉回基本回饋。'
+           f'這一頁記你每張卡已經刷了多少，算出下一筆的實際回饋率。'
+           f'收錄 {len(CD["cards"])} 張卡，也可以自己新增。資料只存在你的瀏覽器。',
+           'japan-card-tracker/',
+           '<script type="application/ld+json">' + _trk_ld + '</script>')
+      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), ('疊卡進度表', None)])
+      + topnav() + _TRK_CSS
+      + '<h1>日本疊卡進度表</h1>'
+      + '<p class="lede">疊卡攻略排的是加碼回饋率，但每張卡的加碼都有上限。'
+        '上限一滿，那張卡就掉回基本回饋，順序整個變了。'
+        '這一頁記你每張卡已經刷了多少，算出下一筆實際拿得到幾趴。</p>'
+      + f'<p class="upd">換算匯率 {_MIDC}（中間匯率）　·　'
+        f'國外交易手續費 {_fx["typical"]}%　·　卡片條件查證於 {CD["checked"]}</p>'
+
+      + '<div class="warn" id="twarn" style="display:none">'
+        '這個瀏覽器存不住資料（可能是無痕模式，或封鎖了網站資料）。'
+        '這一頁還是可以用，但關掉分頁就會歸零。</div>'
+
+      + '<div class="calc">'
+      + f'<div class="sf"><label>消費情境<select id="tsc">'
+      + ''.join(f'<option value="{k}">{v}</option>'
+                for k, v in MODES if k != 'base')
+      + '</select></label>'
+        '<label class="tlb"><input type="checkbox" id="tnew">我是新戶'
+        '（算進新戶與核卡期間的加碼）</label></div>'
+      + '<div id="trows"></div>'
+      + '<div class="cres" id="tnext"></div></div>'
+
+      + '<h2>我的卡片</h2>'
+      + f'<p class="lede">勾選你持有的。本站收錄 {len(CD["cards"])} 張，'
+        f'數字來自各家官方活動頁，條件改了本站會更新，你下次打開就是新的。</p>'
+      + '<div id="tpick" class="callg"></div>'
+
+      + '<h3>自己新增一張</h3>'
+      + '<p class="lede">站上沒收錄的卡可以自己加。'
+        '要注意這張卡的數字是你自己填的，本站沒有查證，也不會隨條件變動更新，'
+        '表上會標示「你自己填的」。</p>'
+      + '<div class="tnew">'
+        '<label>卡名<input id="tn" type="text" placeholder="例如 某某銀行某卡"></label>'
+        '<label>加碼回饋率 %<input id="tr" type="number" step="0.1" min="0" placeholder="5"></label>'
+        '<label>加碼上限 NT$<input id="tc" type="number" step="50" min="0" placeholder="500"></label>'
+        '<label>上限用完後 %<input id="ta" type="number" step="0.1" min="0" placeholder="1"></label>'
+        '<label>上限單位（備註用）<input id="tu" type="text" placeholder="每月"></label>'
+        '<button class="btn" id="tadd">新增</button></div>'
+
+      + '<h2>這一頁做不到的</h2>'
+      + '<div class="tldr"><ul>'
+        '<li><b>不會跨裝置同步。</b>資料綁在這個瀏覽器上，手機記的電腦看不到。</li>'
+        '<li><b>清掉就救不回來。</b>本站沒有你的資料，所以也沒有備份。</li>'
+        f'<li><b>上限不會自動重置。</b>{_trk_cnt}，'
+        '其中「每帳單週期」取決於你的結帳日，本站不知道，猜錯比不記更糟。'
+        '要自己按「這期重新開始」。</li>'
+        '<li><b>不會自動讀帳單。</b>金額要自己輸入，刷了沒輸入它不知道。</li>'
+        '<li><b>交通卡儲值那一欄，有幾張卡本站查不到適用性。</b>'
+        '官方活動頁沒提到儲值算不算，本站不替它決定，所以不列入排名。</li>'
+        '</ul></div>'
+      + '<p class="disc"><button class="tbtn" id="tclr">清除這個瀏覽器裡的全部紀錄</button></p>'
+
+      + '<h2>相關頁面</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
+        f'<s>單筆金額比三張卡</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張卡完整比較</b>'
+        f'<s>上限、登錄方式與適用範圍</s></a>'
+      + f'<a class="ct" href="{U("/japan-card-register/")}"><b>📆 登錄日曆</b>'
+        f'<s>哪幾張要搶登錄、什麼時候開放</s></a></div>'
+      + '<h2>常見問題</h2>' + _trk_html
+      + f'<p class="disc">回饋依台幣帳單金額計算，點數型回饋以 1 點約 1 元估算。'
+        f'卡片條件查證於 {CD["checked"]}，實際以發卡行為準。'
+        f'本頁為公開資訊整理，非理財建議。本站與各發卡行無合作關係，'
+        f'頁內卡片連結非聯盟連結。</p>'
+      + TRACK_JS + foot())
+    pages.append(('/japan-card-tracker/', 0.8))
 
     # ── 日本購物折扣：折價券 × 免稅 × 刷卡回饋 ──────────
     _FORM = {
