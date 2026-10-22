@@ -73,7 +73,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,815（21 天有紀錄），這張低 56%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,742（21 天有紀錄），這張低 55%"
   ],
   "med": 11252,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
@@ -85,7 +85,7 @@
    "days": 30
   },
   "mbase": {
-   "avg": 9815,
+   "avg": 9742,
    "days": 21,
    "month": 11
   },
@@ -94,12 +94,12 @@
  },
  {
   "slug": "2026-10-23-taipei-fukuoka",
-  "title": "台北飛福岡 NT$5,776 來回含稅｜台灣虎航 11/02 出發",
+  "title": "台北飛福岡 NT$5,320 來回含稅｜台灣虎航 11/02 出發",
   "o": "台北",
   "c": "福岡",
   "_oiata": "TPE",
   "_diata": "FUK",
-  "price": 5776,
+  "price": 5320,
   "air": "台灣虎航",
   "dep": "2026-11-02",
   "ret": "2026-11-09",
