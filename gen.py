@@ -1036,7 +1036,7 @@ font-weight:600;letter-spacing:.05em}
 .sub hr{border:0;border-top:1px solid var(--line);margin:5px 0}
 
 h2{font-size:1.28rem;margin:40px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--acc)}
-h3{font-size:1.02rem;margin:26px 0 8px}
+h3{font-size:1.02rem;margin:26px 0 8px}h4{font-size:.93rem;margin:18px 0 6px;color:var(--dim)}
 h3.grp{font-size:.78rem;letter-spacing:.12em;color:var(--dim);font-weight:700;margin:34px 0 0;text-transform:uppercase}
 h3 .tag{font-size:.7rem;font-weight:600;color:var(--dim);margin-left:7px;border:1px solid var(--line);border-radius:5px;padding:1px 5px;vertical-align:middle}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px;margin-top:12px}
@@ -5172,6 +5172,25 @@ if os.path.exists('ski-ticket.json'):
         + f'</td><td>{_pct(r[2], r[3], r[4])}</td></tr>'
         for r in _J['temp'])
 
+    # 10/20 發布的 3 か月予報。和寒候期予報 是不同文件、不同涵蓋期間，
+    # 所以分開呈現，不要讓讀者以為是同一份的更新版。
+    _M3 = _J['m3']
+    _m3snow = ''.join(
+        f'<tr><td><b>{html.escape(r[0])}</b>{_SM3}{html.escape(r[1])}</small></td>'
+        f'<td>{_pct(r[2], r[3], r[4])}</td>'
+        f'<td>{html.escape(r[5])}</td></tr>'
+        for r in _M3['snow'])
+    _m3temp = ''.join(
+        f'<tr><td><b>{html.escape(r[0])}</b>'
+        + (f'{_SM3}{html.escape(r[1])}</small>' if r[1] else '')
+        + f'</td><td>{_pct(r[2], r[3], r[4])}</td></tr>'
+        for r in _M3['temp'])
+    _JR = _J['rules']
+    _jrrows = ''.join(
+        f'<tr><td class="nm">{html.escape(r["doc"])}</td>'
+        f'<td class="jq">{html.escape(r["jp"])}</td>'
+        f'<td>{html.escape(r["zh"])}</td></tr>' for r in _JR['rows'])
+
     # 時間表。截止日與預報更新日交錯排，這是本頁的重點。
     _KIND = {'jma': ('預報', '#3f7ae0'), 'cut': ('截止', '#e07a3f'),
              'use': ('生效', 'var(--dim)')}
@@ -5286,7 +5305,9 @@ if os.path.exists('ski-ticket.json'):
           for i, t, sub in _SK_CARD)
       + '</div>'
       + f'<p class="disc">圖上的價格、折扣、截止日與降雪機率跟這一頁的表格一樣。'
-        f'気象庁 會在 {_J["next_rev"]} 修正寒候期予報，屆時圖會一起更新。</p>')
+        f'気象庁 已於 {_J["review"]["date"]} 檢討過寒候期予報 並決定不修正，'
+        f'所以降雪機率維持原樣。下一次更新是 {_J["next_rev"]} 的 3 か月予報，'
+        f'屆時圖會一起更新。</p>')
 
     _stfare = ''
     for _s, _n in _ST_CITY:
@@ -5420,6 +5441,39 @@ if os.path.exists('ski-ticket.json'):
       + f'<p class="disc">出處：<a href="{_J["src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(_J["src_name"])}</a>。{html.escape(_J["next_rev_note"])}</p>'
 
+      + f'<h3>{_J["review"]["date"]} 的檢討：官方決定不修正</h3>'
+      + f'<p class="lede">{html.escape(_J["review"]["what"])}</p>'
+      + f'<blockquote class="q">{html.escape(_J["review"]["quote"])}'
+        f'<cite>気象庁・3 か月予報「次回発表予定等」，{_J["review"]["checked"]} 查證</cite>'
+        f'</blockquote>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_J["review"]["mean"])}</b></li></ul></div>'
+
+      + f'<h3>{html.escape(_M3["title"])}</h3>'
+      + f'<p class="lede">気象庁 於 {_M3["issued"]} 發布，涵蓋 {_M3["period"]}。'
+        f'{html.escape(_M3["intro"])}</p>'
+      + f'<h4>{html.escape(_M3["snow_head"])}</h4>'
+      + '<div class="tw"><table><thead><tr><th>地區</th>'
+        '<th>偏少 · 平年並 · 偏多</th><th>怎麼讀</th></tr></thead><tbody>'
+      + _m3snow + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_M3["snow_gap"])}</b></li></ul></div>'
+      + f'<h4>{html.escape(_M3["temp_head"])}</h4>'
+      + '<div class="tw"><table><thead><tr><th>地區</th>'
+        '<th>偏低 · 平年並 · 偏高</th></tr></thead><tbody>'
+      + _m3temp + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(_M3["temp_note"])}</p>'
+      + f'<p class="disc">出處：<a href="{_M3["src"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(_M3["src_name"])}</a>。</p>'
+
+      + f'<h3>{html.escape(_JR["title"])}</h3>'
+      + f'<p class="lede">{html.escape(_JR["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>文件</th><th>官方原文</th>'
+        '<th>意思</th></tr></thead><tbody>' + _jrrows + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(_JR["why"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_JR["use"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(_JR["gap"])}'
+        f'出處：<a href="{_JR["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_JR["src_name"])}</a>。</p>'
+
       + f'<h2>{html.escape(ST["nino"]["t"])}</h2>'
       + ''.join(f'<h3>{html.escape(s[0])}</h3><p class="lede">{html.escape(s[1])}</p>'
                 for s in ST['nino']['said'])
@@ -5476,8 +5530,9 @@ if os.path.exists('ski-ticket.json'):
         f'<s>雪季的連假怎麼避</s></a></div>'
       + f'<p class="disc">本頁的票價、折扣與截止日查證於 {ST["checked"]}，'
         f'早鳥票售完即提前結束，購買前請以商品頁為準。'
-        f'気象庁 的寒候期予報 會在 {_J["next_rev"]} 配合 10 月的 3 か月予報 重新檢討，'
-        f'本頁屆時會重新對過。本站與文中任何售票通路沒有合作關係，本頁沒有分潤連結。'
+        f'気象庁 的寒候期予報 已於 {_J["review"]["date"]} 重新檢討並決定不修正'
+        f'（{_J["review"]["checked"]} 查證），降雪機率部分查證於該日。'
+        f'下一個轉折是 {_J["next_rev"]} 的 3 か月予報，本頁屆時會重新對過。本站與文中任何售票通路沒有合作關係，本頁沒有分潤連結。'
         f'{html.escape(ST["_方法"])}</p>'
       + foot())
     pages.append(('/japan-ski-lift-ticket/', 0.7))
