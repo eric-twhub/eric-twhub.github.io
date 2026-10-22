@@ -16217,6 +16217,16 @@ if os.path.exists('cards.json'):
     _trk_cnt = (f'{len(CD["cards"])} 張卡的 {_trk_nt} 層加碼用了 '
                 f'{_trk_nu} 種不同的上限單位')
 
+    # 儲滿一張交通卡會吃掉多少加碼額度。金額隨匯率每天變，所以當場算。
+    _km = next((x for x in CD['cards'] if x['slug'] == 'esun-kumamon'), None)
+    _kmt = next((t for t in (_km or {}).get('tiers', [])
+                 if t['scope'] in ('transit', 'any')), None) if _km else None
+    if _kmt:
+        _trk_sui = round(20000 * _MIDC * (1 + _fx['typical'] / 100))
+        _trk_suip = round(_trk_sui * _kmt['rate'] / 100)
+    else:
+        _trk_sui = _trk_suip = 0
+
     _trk_faq = [
       ('我記的資料會傳到你們那裡嗎？',
        '不會。資料存在你自己瀏覽器的 localStorage 裡，不會送到任何伺服器，'
@@ -16304,6 +16314,27 @@ if os.path.exists('cards.json'):
         '<label>上限用完後 %<input id="ta" type="number" step="0.1" min="0" placeholder="1"></label>'
         '<label>上限單位（備註用）<input id="tu" type="text" placeholder="每月"></label>'
         '<button class="btn" id="tadd">新增</button></div>'
+
+      + '<h2>上限的週期可以拿來用</h2>'
+      + '<p class="lede">上限既然綁在週期上，就可以刻意錯開。'
+        '社群上有人提過一種做法：如果不是當月出國，先在出國前的那個月把交通卡儲值刷掉，'
+        '這樣出國當月的額度就留給購物。</p>'
+      + (f'<p class="lede">以玉山熊本熊卡算：交通卡的餘額上限多數是 20,000 円，'
+         f'一次儲滿換成台幣帳單約 NT${_trk_sui:,}，'
+         f'用掉的加碼是 {_trk_suip} 點，而那一層每期的上限是 500 點。'
+         f'也就是一次儲滿大概用掉一半的額度。</p>' if _trk_sui else '')
+      + '<div class="tldr"><ul>'
+        '<li><b>但這招有兩個前提本站都沒有把握。</b>'
+        '一是那張卡的交通卡儲值到底算不算加碼，官方自己兩份文件講得不一樣，'
+        '本站照活動頁算但那有爭議。'
+        '二是「期」官方沒有定義，上下文看起來是帳單週期，而本站不知道你的結帳日。</li>'
+        '<li>交通卡的餘額上限是硬限制，儲不進去就是儲不進去。'
+        '本站查到明文寫 20,000 円的有八張，但不是每一張都查得到。</li>'
+        '</ul></div>'
+      + f'<p class="disc">各卡的交通卡儲值適用性、餘額上限與儲值管道，'
+        f'整理在<a href="{U("/japan-transit-card/")}">交通卡那一頁</a>；'
+        f'熊本熊那個官方文字衝突寫在'
+        f'<a href="{U("/japan-credit-card/esun-kumamon/")}">它自己的卡頁</a>。</p>'
 
       + '<h2>這一頁做不到的</h2>'
       + '<div class="tldr"><ul>'
