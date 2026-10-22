@@ -1103,6 +1103,21 @@ blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem
 .tw table{min-width:640px;font-size:.84rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
 .tw td.win{color:var(--lcc);font-weight:700}
+/* 左右兩欄對照的表，在手機上攤成卡片。這種表的重點就是兩欄並排看，
+   讓它橫向捲動等於在手機上看不到右邊那一欄，而右邊那欄常常才是結論。 */
+@media(max-width:760px){
+.cmpw{overflow:visible}
+.tw table.cmp2{min-width:0;width:100%;display:block}
+.cmp2 thead{display:none}
+.cmp2 tbody,.cmp2 tr,.cmp2 td{display:block;width:auto}
+.cmp2 tr{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:9px 11px;background:var(--card)}
+.cmp2 td{border:0;padding:3px 0;white-space:normal}
+.cmp2 td.nm{font-size:.94rem;margin-bottom:4px}
+.cmp2 td[data-l]::before{content:attr(data-l)"：";display:block;color:var(--dim);font-size:.76rem}
+/* 欄位少的表讓它換行就夠，不必攤成卡片 */
+.tw table.wrapt{min-width:0;width:100%}
+.tw table.wrapt th,.tw table.wrapt td{white-space:normal}
+}
 /* 數字比左欄低、而且低的原因是條件限制時，用暖色標出來 */
 .tw td.warn{color:var(--acc);font-weight:700}
 /* 商品名這種長字串要能換行，數字欄仍維持 nowrap */
@@ -18632,7 +18647,8 @@ if os.path.exists('teamlab.json'):
     ]
     _tl_rows = ''.join(
         f'<tr><td class="nm"><b>{html.escape(k)}</b></td>'
-        f'<td>{html.escape(a)}</td><td>{html.escape(b)}</td></tr>'
+        f'<td data-l="麻布台 無界">{html.escape(a)}</td>'
+        f'<td data-l="豊洲 Planets">{html.escape(b)}</td></tr>'
         for k, a, b in _tl_cmp)
 
     _tl_faq = [
@@ -18686,7 +18702,7 @@ if os.path.exists('teamlab.json'):
         f'只有官方票務網站買的電子票做得到。</div></div>'
 
       + f'<h2 id="{_hid("兩館差在哪")}">兩館差在哪</h2>'
-      + '<div class="tw"><table><thead><tr><th></th>'
+      + '<div class="tw cmpw"><table class="cmp2"><thead><tr><th></th>'
         f'<th>{html.escape(_tlb["name"])}（{html.escape(_tlb["area"])}）</th>'
         f'<th>{html.escape(_tlp["name"])}（{html.escape(_tlp["area"])}）</th>'
         '</tr></thead><tbody>' + _tl_rows + '</tbody></table></div>'
@@ -18695,13 +18711,13 @@ if os.path.exists('teamlab.json'):
       + '<p class="lede">兩館的票種名稱不一樣，所以分開列。'
         '標「浮動」的是官方寫明依日期變動的票種，這裡的數字是官方頁當時顯示的基準價。</p>'
       + f'<h3>{html.escape(_tlb["name"])}（{html.escape(_tlb["area"])}）</h3>'
-      + '<div class="tw"><table><thead><tr><th>票種</th><th>價格</th></tr></thead><tbody>'
+      + '<div class="tw"><table class="wrapt"><thead><tr><th>票種</th><th>價格</th></tr></thead><tbody>'
       + _tl_price(_tlb) + '</tbody></table></div>'
       + f'<blockquote class="q">{html.escape(_tlb["float_quote"])}'
         f'<br>{html.escape(_tlb["onsite_quote"])}'
         f'<cite>teamLab 無界 官方繁中頁</cite></blockquote>'
       + f'<h3>{html.escape(_tlp["name"])}（{html.escape(_tlp["area"])}）</h3>'
-      + '<div class="tw"><table><thead><tr><th>票種</th><th>價格</th></tr></thead><tbody>'
+      + '<div class="tw"><table class="wrapt"><thead><tr><th>票種</th><th>價格</th></tr></thead><tbody>'
       + _tl_price(_tlp) + '</tbody></table></div>'
       + f'<blockquote class="q">{html.escape(_tlp["onsite_quote"])}'
         f'<cite>teamLab Planets 官方繁中頁</cite></blockquote>'
