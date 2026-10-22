@@ -15975,8 +15975,8 @@ if os.path.exists('cards.json'):
         h='<p class="lede">還沒有卡片。到下面「我的卡片」勾選你持有的，或自己新增一張。</p>';
       }else{
         h='<div class="tw ttw"><table class="ttab"><thead><tr><th>卡</th>'
-         +'<th>這個情境已刷（日幣）</th><th>換算台幣帳單</th>'
-         +'<th>下一筆的回饋率</th><th>加碼額度</th><th></th></tr></thead><tbody>';
+         +'<th>已刷（日幣）</th><th>台幣帳單</th>'
+         +'<th>下一筆回饋率</th><th>加碼額度</th><th></th></tr></thead><tbody>';
         rows.forEach(function(r){
           if(r.gone){
             h+='<tr><td colspan="6" class="nm"><b>'+esc(r.slug)+'</b>　'
@@ -16017,7 +16017,7 @@ if os.path.exists('cards.json'):
            +'</td>'
            +'<td data-l="已刷（日幣）"><input class="tin" type="number" min="0" step="1000" value="'+r.jpy+'" data-sp="'+esc(id)+'"></td>'
            +'<td data-l="換算台幣帳單" class="nm">NT$'+jfmt(r.bill)+'</td>'
-           +'<td data-l="下一筆的回饋率">'+rate+'</td>'
+           +'<td data-l="下一筆回饋率">'+rate+'</td>'
            +'<td data-l="加碼額度">'+barHtml(r)+'</td>'
            +'<td data-l=""><button class="tbtn" data-rst="'+esc(id)+'">這期重新開始</button>'
            +' <button class="tbtn" data-del="'+esc(id)+'">刪除</button></td></tr>';
@@ -16377,6 +16377,7 @@ if os.path.exists('cards.json'):
       'font-size:.8rem;cursor:pointer}'
       '.treg input{margin:0;flex:0 0 auto}'
       '.ttab small.warn,.tdc .warn{color:var(--acc);font-weight:700}'
+      '.ttab td[data-l="加碼額度"]{white-space:normal;max-width:168px}'
       '.tdet{margin-top:9px}'
       '.tdet summary{cursor:pointer;font-size:.8rem;color:var(--lcc);font-weight:600;'
       'list-style:none}'
@@ -16403,10 +16404,10 @@ if os.path.exists('cards.json'):
       '.ttab td::before{content:attr(data-l);color:var(--dim);font-size:.8rem;'
       'flex:0 0 auto}'
       '.ttab td[data-l=""]::before{display:none}'
-      '.ttab td[data-l="\u5361"]{display:block}'
-      '.ttab td[data-l="\u5361"]::before{display:none}'
-      '.ttab td[data-l="\u52a0\u78bc\u984d\u5ea6"]{display:block}'
-      '.ttab td[data-l="\u52a0\u78bc\u984d\u5ea6"]::before{display:block;'
+      '.ttab td[data-l="卡"]{display:block}'
+      '.ttab td[data-l="卡"]::before{display:none}'
+      '.ttab td[data-l="加碼額度"]{display:block;max-width:100%}'
+      '.ttab td[data-l="加碼額度"]::before{display:block;'
       'margin-bottom:5px}'
       '}'
       '</style>')
