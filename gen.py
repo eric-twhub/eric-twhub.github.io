@@ -14487,6 +14487,10 @@ if os.path.exists('cards.json'):
     _chks = sorted({c.get('checked') or CD['checked'] for c in CD['cards']})
     _CDCHK = _chks[-1] if len(_chks) == 1 else f'{_chks[0]} 到 {_chks[-1]}'
     _CDYR = _chks[-1][:4]
+    if CD['checked'] != _chks[0]:
+        print(f'   ⚠ cards.json 的全域 checked 是 {CD["checked"]}，'
+              f'但逐卡最舊的是 {_chks[0]}。make_card*_cards.py 那幾支圖卡程式'
+              f'讀的是全域那個，改完逐卡要順手把它設成最舊的那一天。')
 
     def _cchk(c):
         """這張卡的查證日期。逐張更新時只動那一張，不要套全域日期，
