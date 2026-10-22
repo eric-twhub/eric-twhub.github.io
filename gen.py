@@ -1387,6 +1387,7 @@ def topnav(cur=''):
     # 訂完票之後才會看的東西。同一層放太多會找不到，所以分兩組小標。
     trip = ('<b>挑日期</b>'
             + link('/japan-park-ticket/', '🎢 樂園門票哪天便宜')
+            + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -1532,6 +1533,7 @@ _AD_MAP = [
     ('iphone-', 'esim'), ('japan-tax-free', 'esim'),
     ('japan-credit-card', 'transport'), ('japan-card', 'transport'),
     ('japan-airline-card', 'transport'),
+    ('japan-autumn-leaves', 'activity2'),
     ('japan-park-ticket', 'activity2'), ('japan-seasonal-event', 'activity2'), ('tigerair-nagoya', 'transfer'),
     ('taiwan-holiday', 'activity2'), ('japan-holiday-calendar', 'activity2'),
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
@@ -18289,6 +18291,211 @@ if os.path.exists('ginkgo.json'):
         f'出發前請以官方公告為準。本頁不評價再開發，只整理官方文件上的文字。</p>'
       + foot())
     pages.append(('/tokyo/ginkgo/', 0.7))
+
+
+# ---------- 紅葉見頃 × 逐日機票 ----------
+# 賞楓攻略都在寫哪裡漂亮，沒有人把見頃預測和逐日機票擺在一起。
+# 票價不寫進 autumn.json，在這裡從 tigerair-fares.json 當場算，
+# 所以每次重新產生網站都會跟著虎航官網更新。沒有那份資料就整段不輸出，
+# 不要留一個空表或寫死的舊數字。
+if os.path.exists('autumn.json') and 'HOL' in dir():
+    AU = json.load(open('autumn.json', encoding='utf-8'))
+    _auh = AU['headline']
+
+    _AU_RT = [('TPE-KIX', '台北 → 關西', '京都'),
+              ('TPE-NRT', '台北 → 成田', '東京'),
+              ('TPE-NGO', '台北 → 中部', '名古屋')]
+    _AU_LO, _AU_HI = '2026-11-02', '2026-12-13'      # 六個完整的週一到週日
+    _AU_DLO, _AU_DHI = '2026-11-13', '2026-12-06'    # 逐日表的範圍
+
+    # 日本的非上班日與假日名稱
+    _au_jp = {d['d']: (d.get('jp'), bool(d.get('jp_off')))
+              for d in HOL['days']}
+    # 兩家預測機構給的日期，標在逐日表上
+    _au_mark = collections.defaultdict(list)
+    for _r in AU['two']['rows']:
+        if _r['wni']:
+            _m, _d = _r['wni'].replace('日', '').split('月')
+            _au_mark[f'2026-{int(_m):02d}-{int(_d):02d}'].append(
+                _r['spot'] + '（WN）')
+        if _r['tenki']:
+            _m, _d = _r['tenki'].replace('日～', '').split('月')
+            _au_mark[f'2026-{int(_m):02d}-{int(_d):02d}'].append(
+                _r['spot'] + '（tenki 起）')
+
+    def _au_days(lo, hi):
+        a = datetime.date.fromisoformat(lo)
+        b = datetime.date.fromisoformat(hi)
+        while a <= b:
+            yield a
+            a += datetime.timedelta(days=1)
+
+    def _au_weeks(route):
+        """逐週中位數。只收那一週真的有抓到價格的天數，不補值。"""
+        v = TGF.get(route) or {}
+        out = []
+        a = datetime.date.fromisoformat(_AU_LO)
+        end = datetime.date.fromisoformat(_AU_HI)
+        while a <= end:
+            days = [a + datetime.timedelta(days=i) for i in range(7)]
+            ps = [v[d.isoformat()] for d in days if d.isoformat() in v]
+            if ps:
+                out.append({'a': a, 'b': days[-1], 'n': len(ps),
+                            'med': int(statistics.median(ps)),
+                            'lo': min(ps), 'hi': max(ps)})
+            a += datetime.timedelta(days=7)
+        return out
+
+    _au_wk = {r: (_au_weeks(r) if TGF else []) for r, _, _ in _AU_RT}
+    # 每條航線最貴與最便宜的那一週，用來寫結論。不自己挑視窗，讓資料講。
+    _au_sum = {}
+    for _r, _nm, _city in _AU_RT:
+        _w = _au_wk[_r]
+        if not _w:
+            continue
+        _hi = max(_w, key=lambda x: x['med'])
+        _lo = min(_w, key=lambda x: x['med'])
+        _au_sum[_r] = {'name': _nm, 'city': _city, 'hi': _hi, 'lo': _lo,
+                       'pct': round((_hi['med'] - _lo['med']) / _lo['med'] * 100)}
+
+    def _au_md(d):
+        return f'{d.month}/{d.day}'
+
+    _au_wkrows = ''
+    for _r, _nm, _city in _AU_RT:
+        for i, w in enumerate(_au_wk[_r]):
+            _top = w['med'] == max(x['med'] for x in _au_wk[_r])
+            _bot = w['med'] == min(x['med'] for x in _au_wk[_r])
+            _au_wkrows += (
+                '<tr>'
+                + (f'<td rowspan="{len(_au_wk[_r])}"><b>{html.escape(_nm)}</b>'
+                   f'{_SM3}{html.escape(_city)}</small></td>' if i == 0 else '')
+                + f'<td class="nm">{_au_md(w["a"])} – {_au_md(w["b"])}</td>'
+                + f'<td class="{"lose" if _top else ("win" if _bot else "")}">'
+                  f'<b>NT${w["med"]:,}</b></td>'
+                + f'<td class="nm"><small>NT${w["lo"]:,} – {w["hi"]:,}</small></td>'
+                + f'<td class="nm"><small>{w["n"]} 天</small></td></tr>')
+
+    _au_dayrows = ''
+    _W7 = '一二三四五六日'
+    for d in _au_days(_AU_DLO, _AU_DHI):
+        k = d.isoformat()
+        nm, off = _au_jp.get(k, (None, False))
+        _cells = ''
+        for _r, _, _ in _AU_RT:
+            p = (TGF.get(_r) or {}).get(k)
+            _cells += f'<td>{"NT$%s" % f"{p:,}" if p else "—"}</td>'
+        _au_dayrows += (
+            f'<tr{" style=background:var(--soft)" if off else ""}>'
+            f'<td class="nm">{_au_md(d)}（{_W7[d.weekday()]}）'
+            + (f'<br><small class="warn">{html.escape(nm)}</small>' if nm else '')
+            + '</td>' + _cells
+            + '<td class="nm"><small>'
+            + (html.escape('、'.join(_au_mark[k])) if _au_mark.get(k) else '')
+            + '</small></td></tr>')
+
+    _au_two = ''.join(
+        f'<tr><td><b>{html.escape(r["spot"])}</b>{_SM3}{html.escape(r["pref"])}</small></td>'
+        f'<td>{html.escape(r["tenki"]) if r["tenki"] else "<span class=nm>未列出</span>"}</td>'
+        f'<td>{html.escape(r["wni"]) if r["wni"] else "<span class=nm>未列出</span>"}</td>'
+        f'<td>{html.escape(r["w"]) if r["w"] else "—"}</td></tr>'
+        for r in AU['two']['rows'])
+
+    _au_plan = ''.join(f'<li>{html.escape(x)}</li>' for x in AU['plan']['rows'])
+    _au_unv = ''.join(f'<li>{html.escape(x)}</li>' for x in AU['unverified'])
+    _au_faq = ''.join('<details class="faq"><summary>' + html.escape(q)
+                      + '</summary><div>' + html.escape(a) + '</div></details>'
+                      for q, a in AU['faq'])
+    _au_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in AU['faq']]}, ensure_ascii=False)
+
+    # 結論句也從資料算，不要寫死
+    def _au_say(s):
+        # 週間落差不到 15% 的，看不出見頃效應，不要讓雜訊讀起來像發現
+        if s['pct'] < 15:
+            return (f'{s["name"]}整段期間的週中位數只差 {s["pct"]}%，'
+                    f'看不出明顯的見頃溢價')
+        return (f'{s["name"]}最貴的一週是 {_au_md(s["hi"]["a"])} 那週，'
+                f'中位 NT${s["hi"]["med"]:,}，'
+                f'比最便宜的 {_au_md(s["lo"]["a"])} 那週貴 {s["pct"]}%')
+    _au_lead = '；'.join(_au_say(x) for x in _au_sum.values()) + '。'
+
+    _TW, _FR, _HL = AU['two'], AU['fare'], AU['holiday']
+    _au_fare_html = ('' if not TGF else (
+        f'<h2 id="{_hid(_FR["title"])}">{html.escape(_FR["title"])}</h2>'
+        + f'<p class="lede">{html.escape(_FR["intro"])}</p>'
+        + f'<p class="disc">{html.escape(_FR["note"])}</p>'
+        + f'<div class="tldr"><ul><li><b>{html.escape(_au_lead)}</b></li></ul></div>'
+        + f'<h3>{html.escape(_FR["wkhead"])}</h3>'
+        + '<div class="tw"><table><thead><tr><th>航線</th><th>那一週</th>'
+          '<th>中位數</th><th>區間</th><th>有價格的天數</th></tr></thead><tbody>'
+        + _au_wkrows + '</tbody></table></div>'
+        + f'<h3>{html.escape(_FR["dayhead"])}</h3>'
+        + f'<p class="lede">{html.escape(_FR["daynote"])}</p>'
+        + '<div class="tw"><table><thead><tr><th>日期</th>'
+        + ''.join(f'<th>{html.escape(n)}</th>' for _, n, _ in _AU_RT)
+        + '<th>見頃預測</th></tr></thead><tbody>' + _au_dayrows
+        + '</tbody></table></div>'))
+    write('japan-autumn-leaves/index.html',
+      head('紅葉見頃對上逐日機票：哪幾天貴、兩家預測為什麼差那麼多',
+           '把日本気象協会 與 ウェザーニュース 的 2026 年見頃預想，'
+           '對上台灣虎航官網的逐日最低票價與日本的連假。'
+           '兩家給的日期量的不是同一件事，而日本三連休正好壓在京都的見頃上。',
+           'japan-autumn-leaves/',
+           '<script type="application/ld+json">' + _au_ld + '</script>')
+      + crumbs([('首頁', '/'), ('紅葉見頃與機票', None)]) + topnav()
+      + '<h1>紅葉見頃那幾天，機票貴多少</h1>'
+      + f'<p class="lede">{html.escape(AU["why"])}</p>'
+      + f'<div class="today"><div class="tday">見頃預測查證於 {AU["checked"]}'
+        f'　·　票價為虎航官網 {(_TGF.get("generated") or "")[:16]} 的抓取結果</div>'
+        f'<div class="tans">{html.escape(_auh["a"])}</div>'
+        f'<div class="tsub">{html.escape(_auh["q"])}　{html.escape(_auh["sub"])}</div></div>'
+
+      + f'<h2 id="{_hid(_TW["title"])}">{html.escape(_TW["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_TW["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_TW["key"])}</b></li></ul></div>'
+      + '<div class="tw"><table><thead><tr><th>地點</th>'
+        '<th>tenki.jp（見頃開始）</th><th>ウェザーニュース（見頃予想日）</th>'
+        '<th>備註</th></tr></thead><tbody>' + _au_two + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_TW["gap"])}</p>'
+      + f'<p class="lede">{html.escape(_TW["species"])}</p>'
+      + f'<p class="lede">{html.escape(_TW["trend"])}</p>'
+      + f'<p class="disc">出處：<a href="{_TW["src_tenki"]}" rel="nofollow noopener" '
+        f'target="_blank">{html.escape(_TW["src_tenki_name"])}</a>、'
+        f'<a href="{_TW["src_wni"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_TW["src_wni_name"])}</a>。</p>'
+
+      + _au_fare_html
+
+      + f'<h2 id="{_hid(_HL["title"])}">{html.escape(_HL["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_HL["body"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_HL["mean"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(_HL["other"])}'
+        f'完整的三國連假撞期在<a href="{U("/japan-holiday-calendar/")}">連假日曆</a>。</p>'
+
+      + f'<h2 id="{_hid(AU["plan"]["title"])}">{html.escape(AU["plan"]["title"])}</h2>'
+      + f'<div class="tldr"><ul>{_au_plan}</ul></div>'
+
+      + '<h2>這一頁查不到的</h2>'
+      + '<p class="lede">「官方沒寫」和「沒有這項」是兩件事。查不到的就說查不到。</p>'
+      + f'<div class="tldr"><ul>{_au_unv}</ul></div>'
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/ginkgo/")}"><b>🍂 神宮外苑銀杏並木</b>'
+        f'<s>銀杏比楓葉晚，而且絵画館在施工</s></a>'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 三國連假撞期</b>'
+        f'<s>見頃那兩週會不會撞到連假</s></a>'
+      + f'<a class="ct" href="{U("/hotel-price-check/")}"><b>🏨 訂房比價</b>'
+        f'<s>同一間房跨平台的實測價差</s></a></div>'
+      + '<h2>常見問題</h2>' + _au_faq
+      + f'<p class="disc">見頃預測查證於 {AU["checked"]}，'
+        f'票價為台灣虎航官網的每日最低票價，單程含稅、不含託運行李，'
+        f'抓取於 {(_TGF.get("generated") or "")[:16]}，每次重新產生網站時重算。'
+        f'預測會隨氣溫移動，票價隨時變動，出發前請以各自官方頁面為準。</p>'
+      + foot())
+    pages.append(('/japan-autumn-leaves/', 0.8))
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
