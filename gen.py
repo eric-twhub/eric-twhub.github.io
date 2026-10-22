@@ -17593,6 +17593,196 @@ if os.path.exists('hotelcase.json'):
       + foot())
     pages.append(('/kawaguchiko-hotel-case/', 0.7))
 
+
+# ---------- 雪場官網現場價 vs 早鳥票通路價 ----------
+# 雪票早鳥頁的折扣率是用通路標的「希望小売価格」算的，而那個數字是雪場官網價目表
+# 裡的哪一格，各家不一樣。逐一讀過 33 個雪場官網之後發現：有四個雪場的早鳥票
+# 比官網自己某些票種還貴，而且能讀到的官網裡超過半數自己的數字對不上。
+# 保證金用三態：None 是官網未查到，0 是官網明寫不收，數字是明寫要收。
+if os.path.exists('skiresort.json'):
+    SR = json.load(open('skiresort.json', encoding='utf-8'))
+    _srh = SR['headline']
+
+    def _dep(v):
+        if v is None:
+            return '<span class="nm"><small>官網未查到</small></span>'
+        return '明寫不收' if v == 0 else f'¥{v:,}'
+
+    def _yen(v):
+        return f'¥{v:,}' if v else '—'
+
+    def _sr_diff(r):
+        gap = r['early'] - r['site']
+        if gap > 0:
+            return 'win', f'現場便宜 ¥{gap:,}'
+        return 'lose', f'早鳥便宜 ¥{-gap:,}'
+
+    _sr_find = ''
+    for r in SR['finding']['rows']:
+        _cls, _txt = _sr_diff(r)
+        _sr_find += (
+            f'<tr><td><b>{html.escape(r["n"])}</b>{_SM3}{html.escape(r["jp"])}・'
+            f'{html.escape(r["pref"])}</small></td>'
+            f'<td>{_yen(r["early"])}</td>'
+            f'<td><b>{_yen(r["site"])}</b>{_SM3}{html.escape(r["when"])}</small></td>'
+            f'<td class="{_cls}"><b>{_txt}</b></td>'
+            f'<td>{html.escape(r["w"])}</td></tr>')
+
+    _sr_hon = ''.join(
+        f'<tr><td><b>{html.escape(r["n"])}</b>{_SM3}{html.escape(r["jp"])}・'
+        f'{html.escape(r["pref"])}</small></td>'
+        f'<td><b>{_yen(r["early"])}</b></td>'
+        f'<td>{_yen(r["chan"])}</td>'
+        f'<td class="{"win" if r["lo"] < r["early"] else ""}">'
+        f'{_yen(r["lo"])}{(" 到 " + _yen(r["hi"])) if r["hi"] != r["lo"] else ""}</td>'
+        f'<td>{_dep(r["dep"])}</td>'
+        f'<td class="nm"><small>{html.escape(r["season"])}</small></td>'
+        f'<td>{html.escape(r["note"])}</td></tr>'
+        for r in SR['honshu']['rows'])
+
+    _sr_base = ''.join(
+        f'<tr><td><b>{html.escape(r["n"])}</b></td>'
+        f'<td>{_yen(r["chan"])}</td>'
+        f'<td class="nm">{html.escape(r["kind"])}</td>'
+        f'<td>{html.escape(r["detail"])}</td>'
+        f'<td>{html.escape(r["w"])}</td></tr>'
+        for r in SR['base']['rows'])
+
+    _sr_dep = ''.join(
+        f'<tr><td><b>{html.escape(r["n"])}</b></td>'
+        f'<td>{_dep(r["yen"])}</td>'
+        f'<td>{html.escape(r["w"])}</td></tr>'
+        for r in SR['deposit']['rows'])
+
+    _sr_hk = ''.join(
+        f'<tr><td><b>{html.escape(r["n"])}</b>{_SM3}{html.escape(r["pref"])}</small></td>'
+        f'<td>' + ('<br>'.join(f'{html.escape(p[0])}　<b>{_yen(p[1])}</b>' for p in r['p'])
+                   or '<span class="nm">官網未查到</span>') + '</td>'
+        f'<td>{_dep(r["dep"])}</td>'
+        f'<td class="nm"><small>{html.escape(r["season"])}</small></td>'
+        f'<td>{html.escape(r["air"])}</td>'
+        f'<td>{html.escape(r["note"])}</td></tr>'
+        for r in SR['hokkaido_table']['rows'])
+
+    _sr_hkd = ''.join(
+        f'<tr><td><b>{html.escape(r["n"])}</b></td>'
+        f'<td class="lose">{html.escape(r["day"])}</td>'
+        f'<td>{html.escape(r["season"])}</td></tr>'
+        for r in SR['hokkaido']['rows'])
+
+    _sr_con = ''.join(
+        f'<tr><td><b>{html.escape(r["n"])}</b></td>'
+        f'<td>{html.escape(r["a"])}</td><td>{html.escape(r["b"])}</td>'
+        f'<td>{html.escape(r["w"])}</td></tr>'
+        for r in SR['contradict']['rows'])
+
+    _sr_un = ''.join(
+        f'<tr><td><b>{html.escape(r["n"])}</b>{_SM3}{html.escape(r["pref"])}</small></td>'
+        f'<td class="nm"><small>{html.escape(r["url"])}</small></td>'
+        f'<td>{html.escape(r["why"])}</td></tr>'
+        for r in SR['unreachable']['rows'])
+
+    _sr_unv = ''.join(f'<li>{html.escape(x)}</li>' for x in SR['unverified'])
+    _sr_faq = ''.join('<details class="faq"><summary>' + html.escape(q)
+                      + '</summary><div>' + html.escape(a) + '</div></details>'
+                      for q, a in SR['faq'])
+    _sr_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in SR['faq']]}, ensure_ascii=False)
+
+    _FD, _BS, _DP, _HK, _CT, _UR = (SR['finding'], SR['base'], SR['deposit'],
+                                    SR['hokkaido'], SR['contradict'], SR['unreachable'])
+    write('japan-ski-resort/index.html',
+      head('雪票早鳥真的比較便宜嗎：33 個雪場逐一查官網現場價',
+           '逐一讀雪場官方網站的價目表，和早鳥票通路標的原價並列。'
+           '至少四個雪場的早鳥票比官網自己某些票種還貴，'
+           '而通路標的「原價」是官網哪一格，各家不一樣。',
+           'japan-ski-resort/',
+           '<script type="application/ld+json">' + _sr_ld + '</script>')
+      + crumbs([('首頁', '/'), ('雪場官網價對照', None)]) + topnav()
+      + '<h1>雪票早鳥真的比較便宜嗎</h1>'
+      + f'<p class="lede">{html.escape(SR["why"])}</p>'
+      + f'<div class="today"><div class="tday">官網價查證於 {SR["checked"]}'
+        f'　·　{SR["season"]} 雪季</div>'
+        f'<div class="tans">{html.escape(_srh["a"])}</div>'
+        f'<div class="tsub">{html.escape(_srh["q"])}　{html.escape(_srh["sub"])}</div></div>'
+
+      + f'<h2 id="{_hid(_FD["title"])}">{html.escape(_FD["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_FD["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>雪場</th><th>早鳥價</th>'
+        '<th>官網比它便宜的票種</th><th>差額</th><th>怎麼回事</th>'
+        '</tr></thead><tbody>' + _sr_find + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_FD["note"])}</p>'
+
+      + f'<h2 id="{_hid(SR["honshu"]["title"])}">{html.escape(SR["honshu"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(SR["honshu"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>雪場</th><th>早鳥</th>'
+        '<th>通路標的原價</th><th>官網現場價</th><th>IC 保證金</th>'
+        '<th>雪季</th><th>備註</th></tr></thead><tbody>'
+      + _sr_hon + '</tbody></table></div>'
+
+      + f'<h2 id="{_hid(_BS["title"])}">{html.escape(_BS["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_BS["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>雪場</th><th>通路標的原價</th>'
+        '<th>那是哪一格</th><th>官網的完整價目</th><th>所以</th>'
+        '</tr></thead><tbody>' + _sr_base + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_BS["count"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(_BS["note"])}</p>'
+
+      + f'<h2 id="{_hid(_DP["title"])}">{html.escape(_DP["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_DP["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>雪場</th><th>保證金</th>'
+        '<th>官網怎麼寫</th></tr></thead><tbody>' + _sr_dep + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_DP["gap"])}</p>'
+
+      + f'<h2 id="{_hid(_HK["title"])}">{html.escape(_HK["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_HK["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>雪場</th><th>日票早鳥</th>'
+        '<th>季票早鳥</th></tr></thead><tbody>' + _sr_hkd + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_HK["concl"])}</b></li></ul></div>'
+      + f'<p class="lede">{html.escape(_HK["instead"])}</p>'
+      + f'<p class="disc">{html.escape(_HK["gap"])}</p>'
+      + f'<h3>{html.escape(SR["hokkaido_table"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(SR["hokkaido_table"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>雪場</th><th>官網定價</th>'
+        '<th>IC 保證金</th><th>雪季</th><th>新千歲怎麼去</th><th>備註</th>'
+        '</tr></thead><tbody>' + _sr_hk + '</tbody></table></div>'
+
+      + f'<h2 id="{_hid(_CT["title"])}">{html.escape(_CT["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_CT["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>雪場</th><th>官網說法一</th>'
+        '<th>官網說法二</th><th>備註</th></tr></thead><tbody>'
+      + _sr_con + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(_CT["ok"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_CT["why"])}</b></li></ul></div>'
+
+      + f'<h2 id="{_hid(_UR["title"])}">{html.escape(_UR["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_UR["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>雪場</th><th>本站試的網址</th>'
+        '<th>發生什麼事</th></tr></thead><tbody>' + _sr_un + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_UR["mean"])}</b></li></ul></div>'
+
+      + '<h2>這一頁查不到的</h2>'
+      + '<p class="lede">「官網沒寫」和「沒有這項」是兩件事。查不到的就說查不到。</p>'
+      + f'<div class="tldr"><ul>{_sr_unv}</ul></div>'
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-ski-lift-ticket/")}"><b>🎟️ 雪票早鳥</b>'
+        f'<s>24 個雪場的折扣、截止日與降雪預報</s></a>'
+      + f'<a class="ct" href="{U("/japan-ski-baggage/")}"><b>🎿 雪具託運</b>'
+        f'<s>板子怎麼帶過去，各航空的規定</s></a>'
+      + f'<a class="ct" href="{U("/sapporo/")}"><b>✈️ 札幌機票</b>'
+        f'<s>北海道雪場的門戶</s></a></div>'
+      + '<h2>常見問題</h2>' + _sr_faq
+      + f'<p class="disc">官網價查證於 {SR["checked"]}，'
+        f'早鳥價與通路原價引自雪票早鳥頁，查證於 2026-09-28，兩邊日期不同。'
+        f'雪場的價格、雪季期間與營業狀況隨時調整，出發前請以各雪場官網為準。'
+        f'金額一律標日圓，本頁不寫換算後的台幣，因為匯率每天在變。'
+        f'本站與文中任何售票通路沒有合作關係。</p>'
+      + foot())
+    pages.append(('/japan-ski-resort/', 0.8))
+
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
 LASTMOD=LASTMOD[:-2]+':'+LASTMOD[-2:]            # +0800 → +08:00（W3C Datetime 格式）
