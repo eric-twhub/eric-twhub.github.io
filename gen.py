@@ -1408,6 +1408,7 @@ def topnav(cur=''):
             + link('/japan-rentacar-noc/', '🚗 租車的 NOC')
             + link('/japan-driving-habits/', '🚗 開車習慣差在哪')
             + '<hr><b>出事之前</b>'
+            + link('/japan-hotel-check/', '🔎 日本凶宅網怎麼查')
             + link('/japan-travel-insurance/', '🛡️ 旅平險怎麼賠')
             + link('/japan-card-insurance/', '💳 刷卡送的保險賠什麼')
             + '<hr><b>新制度</b>'
@@ -1543,6 +1544,11 @@ _AD_MAP = [
     ('japan-flight-good-times', 'activity2'),
 ]
 _AD_SKIP = ('deals/', 'cards/', 'posts/')
+
+# 刻意不放廣告的頁。這兩頁談的是別人的死亡，把版位掛上去會變成另一回事。
+# 列在這裡是為了和「新頁面忘了加進 _AD_MAP」區分開，否則建置時的提醒會一直跳，
+# 跳久了就會被當成雜訊，真的漏掉的時候反而看不見。
+_NO_AD_OK = {'/japan-hotel-check/', '/kawaguchiko-hotel-case/'}
 
 
 def u_region(path):
@@ -17251,6 +17257,287 @@ if PC:
     print(f'   訂房比價頁：{_pc_n} 間實測（查證 {PC["checked"]}，'
           f'手機版便宜 {_pc_avg:.2f}%）')
 
+# ---------- 大島てる：訂日本住宿前查得到什麼 ----------
+# 中文世界對這個網站的說明偏少，而最常見的誤解是以為可以打飯店名稱搜尋。
+# 這一頁只做三件事：把操作寫清楚（搜尋框只吃地址）、把判讀寫清楚
+# （都會區密度本來就高、投稿未經查證、標記記的是事後才登錄的事）、
+# 以及講明日本法律實際規範到哪裡（不動產買賣租賃有規則，住宿官方未查到）。
+# 不放廣告。這一頁談的是別人的死亡，版位掛上去會變成另一回事，
+# 所以它和事件頁都登記在 _NO_AD_OK 裡，不是忘了加進 _AD_MAP。
+if os.path.exists('hotelcheck.json'):
+    HC = json.load(open('hotelcheck.json', encoding='utf-8'))
+    _hch = HC['headline']
+
+    _hc_facts = ''.join(f'<li>{html.escape(x)}</li>' for x in HC['site']['facts'])
+
+    _hc_steps = ''.join(
+        f'<div class="card"><b>{html.escape(s["n"])}. {html.escape(s["t"])}</b>'
+        f'<small>{html.escape(s["b"])}</small></div>'
+        for s in HC['how']['steps'])
+
+    _hc_points = ''.join(
+        f'<h3>{html.escape(p["t"])}</h3>'
+        f'<p class="lede">{html.escape(p["b"])}</p>'
+        for p in HC['read']['points'])
+
+    _hc_com = ''.join(
+        f'<tr><td class="jq">「{html.escape(c["q"])}」</td>'
+        f'<td>{html.escape(c["w"])}</td></tr>'
+        for c in HC['read']['comments'])
+
+    _hc_req = ''.join(
+        f'<blockquote class="q">{html.escape(q["q"])}'
+        f'<cite>{html.escape(q["w"])}</cite></blockquote>'
+        for q in HC['law']['re_quotes'])
+
+    _hc_tab = ''.join(
+        f'<tr><td>{html.escape(r["case"])}</td>'
+        f'<td>{html.escape(r["sale"])}</td>'
+        f'<td>{html.escape(r["rent"])}</td></tr>'
+        for r in HC['law']['table'])
+
+    _hc_docs = ''.join(
+        f'<tr><td>{html.escape(d["doc"])}</td><td>{html.escape(d["r"])}</td></tr>'
+        for d in HC['stay']['checked'])
+
+    _hc_two = ''.join(f'<li><b>{html.escape(x)}</b></li>'
+                      for x in HC['stay']['two'])
+
+    _hc_unv = ''.join(f'<li>{html.escape(x)}</li>' for x in HC['unverified'])
+
+    _hc_faq = ''.join('<details class="faq"><summary>' + html.escape(q)
+                      + '</summary><div>' + html.escape(a) + '</div></details>'
+                      for q, a in HC['faq'])
+    _hc_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in HC['faq']]}, ensure_ascii=False)
+
+    _LW, _ST = HC['law'], HC['stay']
+    write('japan-hotel-check/index.html',
+      head('日本凶宅網大島てる 怎麼查：住宿前查得到什麼，日本法律又規定了什麼',
+           '大島てる 只能用地址搜尋，打飯店名稱查不到。這一頁寫怎麼自己查、'
+           '查到標記該怎麼判讀，以及日本的告知義務實際規範到哪裡：'
+           '不動產買賣租賃有規則，住宿本站查不到任何規定。'
+           '另外，中文的凶宅和日文的事故物件範圍並不一樣。',
+           'japan-hotel-check/',
+           '<script type="application/ld+json">' + _hc_ld + '</script>')
+      + crumbs([('首頁', '/'), ('訂住宿前查得到什麼', None)]) + topnav()
+      + '<h1>日本凶宅網大島てる 怎麼查，查到了又代表什麼</h1>'
+      + f'<p class="lede">{html.escape(HC["why"])}</p>'
+      + f'<div class="today"><div class="tday">查證於 {HC["checked"]}</div>'
+        f'<div class="tans">{html.escape(_hch["a"])}</div>'
+        f'<div class="tsub">{html.escape(_hch["q"])}　{html.escape(_hch["sub"])}</div></div>'
+
+      + f'<h2 id="{_hid(HC["site"]["title"])}">{html.escape(HC["site"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(HC["site"]["intro"])}</p>'
+      + f'<h3>{html.escape(HC["site"]["term"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(HC["site"]["term"]["body"])}</p>'
+      + f'<p class="disc">{html.escape(HC["site"]["term"]["why"])}</p>'
+      + f'<div class="tldr"><ul>{_hc_facts}</ul></div>'
+      + f'<p class="lede">{html.escape(HC["site"]["volume"])}</p>'
+      + f'<p class="disc">{html.escape(HC["site"]["not"])}</p>'
+
+      + f'<h2 id="{_hid(HC["how"]["title"])}">{html.escape(HC["how"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(HC["how"]["intro"])}</p>'
+      + f'<div class="grid">{_hc_steps}</div>'
+      + f'<p class="lede">{html.escape(HC["how"]["icons"])}</p>'
+      + f'<p class="lede">{html.escape(HC["how"]["noaddr"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(HC["how"]["trap"])}</b></li></ul></div>'
+
+      + f'<h2 id="{_hid(HC["read"]["title"])}">{html.escape(HC["read"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(HC["read"]["intro"])}</p>'
+      + _hc_points
+      + f'<h3>{html.escape(HC["read"]["comments_title"])}</h3>'
+      + f'<p class="lede">{html.escape(HC["read"]["comments_intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>留言原文</th>'
+        '<th>在說什麼</th></tr></thead><tbody>' + _hc_com + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(HC["read"]["comments_note"])}</p>'
+
+      + f'<h2 id="{_hid(_LW["title"])}">{html.escape(_LW["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_LW["intro"])}</p>'
+      + f'<h3>{html.escape(_LW["re_title"])}</h3>'
+      + f'<p class="lede">{html.escape(_LW["re_body"])}</p>'
+      + f'<p class="lede">{html.escape(_LW["re_nature"])}</p>'
+      + _hc_req
+      + f'<p class="lede">{html.escape(_LW["re_scope"])}</p>'
+      + f'<h3>{html.escape(_LW["table_title"])}</h3>'
+      + '<div class="tw"><table><thead><tr><th>情形</th><th>買賣</th>'
+        '<th>租賃</th></tr></thead><tbody>' + _hc_tab + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_LW["table_note"])}</p>'
+      + f'<h3>{html.escape(_LW["ask"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(_LW["ask"]["body"])}</p>'
+      + f'<blockquote class="q">{html.escape(_LW["ask"]["quote"])}'
+        f'<cite>指引 4.(3)</cite></blockquote>'
+      + f'<h3>{html.escape(_LW["noweb"]["title"])}</h3>'
+      + f'<p class="lede">{html.escape(_LW["noweb"]["body"])}</p>'
+      + f'<blockquote class="q">{html.escape(_LW["noweb"]["quote"])}'
+        f'<cite>指引 3.(1)</cite></blockquote>'
+      + f'<p class="lede">{html.escape(_LW["noweb"]["why"])}</p>'
+      + f'<p class="lede">{html.escape(_LW["hide"])}</p>'
+      + f'<p class="disc">{html.escape(_LW["excluded"])}'
+        f'出處：<a href="{_LW["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_LW["src_name"])}</a>。</p>'
+
+      + f'<h2 id="{_hid(_ST["title"])}">{html.escape(_ST["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_ST["intro"])}</p>'
+      + f'<h3>{html.escape(_ST["checked_title"])}</h3>'
+      + '<div class="tw"><table><thead><tr><th>文件</th>'
+        '<th>查到什麼</th></tr></thead><tbody>' + _hc_docs + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(_ST["duty"])}</p>'
+      + f'<h3>{html.escape(_ST["minpaku_title"])}</h3>'
+      + f'<p class="lede">{html.escape(_ST["minpaku"])}</p>'
+      + f'<p class="lede">{html.escape(_ST["minpaku_last"])}</p>'
+      + f'<p class="lede">{html.escape(_ST["platform"])}</p>'
+      + f'<h3>{html.escape(_ST["concl_title"])}</h3>'
+      + f'<p class="lede">{html.escape(_ST["concl"])}</p>'
+      + f'<h3>{html.escape(_ST["two_title"])}</h3>'
+      + f'<div class="tldr"><ul>{_hc_two}</ul></div>'
+      + f'<p class="lede"><b>{html.escape(_ST["two_note"])}</b></p>'
+
+      + '<h2>這一頁查不到的</h2>'
+      + '<p class="lede">「官方沒寫」和「沒有這項」是兩件事。查不到的就說查不到。</p>'
+      + f'<div class="tldr"><ul>{_hc_unv}</ul></div>'
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/kawaguchiko-hotel-case/")}"><b>📰 山梨飯店事件進展</b>'
+        f'<s>逐則報導與出處的對照，偵查中</s></a>'
+      + f'<a class="ct" href="{U("/hotel-price-check/")}"><b>🏨 訂房比價</b>'
+        f'<s>同一間房跨平台的實測價差</s></a>'
+      + f'<a class="ct" href="{U("/japan-travel-rules/")}"><b>📋 去日本的新制度</b>'
+        f'<s>入境與在地規定的逐條整理</s></a></div>'
+      + '<h2>常見問題</h2>' + _hc_faq
+      + f'<p class="disc">本頁查證於 {HC["checked"]}。網站的介面與資料隨時變動，'
+        f'日本的法令與行政指引也可能修訂，使用前請以各自的官方頁面為準。'
+        f'本頁不評價任何特定住宿設施，也不替讀者判斷住宿安不安全。</p>'
+      + foot())
+    pages.append(('/japan-hotel-check/', 0.8))
+
+
+# ---------- 山梨飯店事件：報導整理 ----------
+# 偵查中的事件，所以這一頁的規矩比別頁嚴：每一列都標出是哪一家報導、哪一天，
+# 報導之間矛盾的地方原樣並列不做調和，沒有人被追訴的罪名就不用那個詞。
+# 不寫住宿設施名稱，不寫當事人姓名，不放廣告。
+if os.path.exists('hotelcase.json'):
+    KC = json.load(open('hotelcase.json', encoding='utf-8'))
+    _kch = KC['headline']
+
+    _kc_state = ''.join(
+        f'<tr><td class="nm">{html.escape(r["k"])}</td>'
+        f'<td>{html.escape(r["v"])}</td></tr>' for r in KC['state']['rows'])
+
+    _kc_tl = ''.join(
+        f'<tr><td class="nm">{html.escape(r["d"])}</td>'
+        f'<td>{html.escape(r["w"])}</td>'
+        f'<td class="nm"><small>{html.escape(r["s"])}</small></td></tr>'
+        for r in KC['timeline']['rows'])
+
+    _kc_cause = ''.join(
+        f'<tr><td class="nm">{html.escape(r["s"])}</td>'
+        f'<td class="jq">「{html.escape(r["q"])}」</td>'
+        f'<td>{html.escape(r["w"])}</td></tr>' for r in KC['cause']['rows'])
+
+    _kc_conf = ''.join(
+        f'<tr><td class="nm">{html.escape(r["t"])}</td>'
+        f'<td>{html.escape(r["a"])}</td><td>{html.escape(r["b"])}</td>'
+        f'<td>{html.escape(r["w"])}</td></tr>' for r in KC['conflict']['rows'])
+
+    _kc_pol = ''.join(f'<li>{html.escape(x)}</li>' for x in KC['policy']['rows'])
+    _kc_next = ''.join(f'<li>{html.escape(x)}</li>' for x in KC['next']['rows'])
+    _kc_unv = ''.join(f'<li>{html.escape(x)}</li>' for x in KC['unverified'])
+
+    _kc_src = ''.join(
+        f'<li><a href="{s["u"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(s["n"])}</a>　{html.escape(s["zh"])}'
+        f'<br><small class="jq">{html.escape(s["t"])}</small></li>'
+        for s in KC['sources'])
+
+    _kc_faq = ''.join('<details class="faq"><summary>' + html.escape(q)
+                      + '</summary><div>' + html.escape(a) + '</div></details>'
+                      for q, a in KC['faq'])
+    _kc_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in KC['faq']]}, ensure_ascii=False)
+
+    _RL = KC['relation']
+    write('kawaguchiko-hotel-case/index.html',
+      head('山梨飯店事件目前確定了什麼：報導整理與日本凶宅網的標記',
+           '2026 年 10 月山梨県富士河口湖町一間住宿設施內發現一名台灣籍女性死亡。'
+           '這一頁整理到 10/21 的報導：逮捕與送檢的罪名都只涉及持有刀械，'
+           '沒有任何報導提到有人因這起死亡被追訴。偵查中。',
+           'kawaguchiko-hotel-case/',
+           '<script type="application/ld+json">' + _kc_ld + '</script>')
+      + crumbs([('首頁', '/'), ('山梨飯店事件', None)]) + topnav()
+      + '<h1>山梨飯店事件目前確定了什麼</h1>'
+      + f'<p class="lede">{html.escape(_kch["sub"])}</p>'
+      + f'<div class="today"><div class="tday">報導整理到 {KC["latest"]}'
+        f'　·　查證於 {KC["checked"]}</div>'
+        f'<div class="tans">{html.escape(_kch["a"])}</div>'
+        f'<div class="tsub">{html.escape(_kch["q"])}</div></div>'
+
+      + f'<h2 id="{_hid(KC["state"]["title"])}">{html.escape(KC["state"]["title"])}</h2>'
+      + '<div class="tw"><table><thead><tr><th>項目</th>'
+        '<th>報導與發表的內容</th></tr></thead><tbody>'
+      + _kc_state + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(KC["state"]["note"])}</b></li></ul></div>'
+
+      + f'<h2 id="{_hid(KC["timeline"]["title"])}">{html.escape(KC["timeline"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(KC["timeline"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>時間</th><th>內容</th>'
+        '<th>出處</th></tr></thead><tbody>' + _kc_tl + '</tbody></table></div>'
+
+      + f'<h2 id="{_hid(KC["cause"]["title"])}">{html.escape(KC["cause"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(KC["cause"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>報導</th><th>原文</th>'
+        '<th>怎麼寫的</th></tr></thead><tbody>' + _kc_cause + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(KC["cause"]["note"])}</p>'
+
+      + f'<h2 id="{_hid(KC["conflict"]["title"])}">{html.escape(KC["conflict"]["title"])}</h2>'
+      + f'<p class="lede">{html.escape(KC["conflict"]["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>項目</th><th>一方的報導</th>'
+        '<th>另一方的報導</th><th>本站的看法</th></tr></thead><tbody>'
+      + _kc_conf + '</tbody></table></div>'
+
+      + f'<h2 id="{_hid(_RL["title"])}">{html.escape(_RL["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_RL["body"])}</p>'
+      + f'<p class="lede">{html.escape(_RL["mark"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_RL["point"])}</b></li></ul></div>'
+      + f'<p class="lede">{html.escape(_RL["link"])}'
+        f'<a href="{U("/japan-hotel-check/")}">日本凶宅網大島てる 怎麼查，'
+        f'查到了又代表什麼</a>。</p>'
+
+      + f'<h2 id="{_hid(KC["policy"]["title"])}">{html.escape(KC["policy"]["title"])}</h2>'
+      + f'<div class="tldr"><ul>{_kc_pol}</ul></div>'
+
+      + f'<h2 id="{_hid(KC["next"]["title"])}">{html.escape(KC["next"]["title"])}</h2>'
+      + f'<div class="tldr"><ul>{_kc_next}</ul></div>'
+      + f'<p class="disc">{html.escape(KC["next"]["note"])}</p>'
+
+      + '<h2>出處</h2>'
+      + f'<p class="lede">本頁的報導內容都來自下面這六則，'
+        f'日文標題照原樣列出，方便自己回頭核對。'
+        f'大島てる 站上那一筆標記則是本站於 {KC["checked"]} 直接在站上確認的，'
+        f'不在這六則報導裡。</p>'
+      + f'<div class="tldr"><ul>{_kc_src}</ul></div>'
+
+      + '<h2>這一頁查不到的</h2>'
+      + f'<div class="tldr"><ul>{_kc_unv}</ul></div>'
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-hotel-check/")}"><b>🔎 日本凶宅網怎麼查</b>'
+        f'<s>大島てる 的用法與日本的告知規定</s></a>'
+      + f'<a class="ct" href="{U("/japan-travel-insurance/")}"><b>🛡 旅平險怎麼賠</b>'
+        f'<s>什麼情況才會賠的逐條對照</s></a>'
+      + f'<a class="ct" href="{U("/japan-travel-rules/")}"><b>📋 去日本的新制度</b>'
+        f'<s>入境與在地規定的逐條整理</s></a></div>'
+      + '<h2>常見問題</h2>' + _kc_faq
+      + f'<p class="disc">本頁整理到 {KC["latest"]} 的公開報導，查證於 {KC["checked"]}，'
+        f'整理的全部是報導內容，本站沒有向警方、住宿設施或旅行社查證。'
+        f'偵查進行中，罪名與死因都可能變動，最新狀況請以各報導與警方發表為準。</p>'
+      + foot())
+    pages.append(('/kawaguchiko-hotel-case/', 0.7))
+
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
 LASTMOD=LASTMOD[:-2]+':'+LASTMOD[-2:]            # +0800 → +08:00（W3C Datetime 格式）
@@ -17319,7 +17606,8 @@ write('sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n'
 _noad = []
 for _u, _pr in pages:
     _f = _page_file(_u)
-    if not _f.endswith('.html') or _u.startswith('/deals/'):
+    if not _f.endswith('.html') or _u.startswith('/deals/') \
+            or _u in _NO_AD_OK:
         continue
     try:
         _c = open(_f, encoding='utf-8').read()
