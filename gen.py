@@ -14482,6 +14482,12 @@ if os.path.exists('cards.json'):
     PK_CHK = (json.load(open('parking.json', encoding='utf-8'))['checked']
               if os.path.exists('parking.json') else CD['checked'])
 
+    # 全域的 checked 會比逐卡的舊（逐卡複查時不該去動它），拿它當頁面上的
+    # 「查證於」等於宣稱所有卡都是那天查的。從逐卡算出來，差一天也看得出來。
+    _chks = sorted({c.get('checked') or CD['checked'] for c in CD['cards']})
+    _CDCHK = _chks[-1] if len(_chks) == 1 else f'{_chks[0]} 到 {_chks[-1]}'
+    _CDYR = _chks[-1][:4]
+
     def _cchk(c):
         """這張卡的查證日期。逐張更新時只動那一張，不要套全域日期，
         否則等於宣稱所有卡片都在同一天重查過。沒寫就沿用全域。"""
@@ -14598,6 +14604,7 @@ if os.path.exists('cards.json'):
                      'tiers': c['tiers'], 'race': c.get('reg_race', False),
                      'reg': c.get('reg_short', ''), 'lv': c.get('reg_level', ''),
                      'levels': c.get('levels'),
+                     'areas': c.get('areas', ''), 'period': c.get('period', ''),
                      'tu': c.get('transit_unknown', ''),
                      'tusrc': c.get('transit_unknown_src', '')}
                     for c in CD['cards']], ensure_ascii=False))
@@ -15119,7 +15126,7 @@ if os.path.exists('cards.json'):
               for i, c in enumerate(_rgk, 1))
           + '</div>'
           + f'<p class="disc">圖上的登錄時間與名額跟這一頁的表格一樣，'
-            f'查證於 {CD["checked"]}。</p>')
+            f'查證於 {_CDCHK}。</p>')
 
     _rg_title = '旅日信用卡登錄日曆：哪張卡幾號開放登錄，錯過只剩基本回饋'
     _rg_desc = (f'{len(set(r["c"]["slug"] for r in _rg_rows))} 張旅日信用卡、'
@@ -15134,7 +15141,7 @@ if os.path.exists('cards.json'):
       + '<h1>旅日信用卡登錄日曆</h1>'
       + '<p class="lede">加碼要先登錄，而且各家開放的時間都不一樣。'
         '沒登錄就是只剩基本回饋，補登錄多數不能回溯。</p>'
-      + f'<div class="today"><div class="tday">條件查證於 {CD["checked"]}'
+      + f'<div class="today"><div class="tday">條件查證於 {_CDCHK}'
         f'　·　{TODAY} 的狀態</div>'
       + ('<div class="tans">今天有 <b>' + str(len(_rg_today)) + '</b> 個活動開放登錄</div>'
          '<div class="tsub">' + html.escape('、'.join(
@@ -15239,7 +15246,7 @@ if os.path.exists('cards.json'):
         f'<s>輸入金額看每張卡實拿</s></a>'
       + f'<a class="ct" href="{U("/japan-card-tracker/")}"><b>📊 疊卡進度表</b>'
         f'<s>記已刷金額，算下一筆該刷哪張</s></a>' + '</div>'
-      + f'<p class="disc">本頁為公開資訊整理，登錄時間與名額查證於 {CD["checked"]}，'
+      + f'<p class="disc">本頁為公開資訊整理，登錄時間與名額查證於 {_CDCHK}，'
         f'來源為各發卡行官方活動頁。銀行可隨時調整，請以官方公告為準。'
         f'本站與各發卡行無合作關係。</p>'
       + foot())
@@ -15247,7 +15254,7 @@ if os.path.exists('cards.json'):
 
     _best = max(CD['cards'], key=lambda c: c['total'])
     _race = [c['name'] for c in CD['cards'] if c.get('reg_race')]
-    cc_title = f'旅日信用卡怎麼挑？{CD["checked"][:4]} 下半年 {len(CD["cards"])} 張卡回饋與上限整理'
+    cc_title = f'旅日信用卡怎麼挑？{_CDYR} 下半年 {len(CD["cards"])} 張卡回饋與上限整理'
     cc_desc = (f'{len(CD["cards"])} 張旅日信用卡比較：回饋率、加碼上限換算成刷多少到頂、'
                f'限量登錄時間、國外交易手續費與 DCC 陷阱。輸入日幣金額即可試算。')
 
@@ -15258,7 +15265,7 @@ if os.path.exists('cards.json'):
       + '<h1>旅日信用卡怎麼挑？</h1>'
       + '<p class="lede">帳面最高回饋幾乎都是多層加碼疊出來的，而且各有上限。'
         '比較數字之前，先看「刷到多少就到頂」和「要不要搶登錄」。</p>'
-      + f'<div class="today"><div class="tday">條件查證於 {CD["checked"]}'
+      + f'<div class="today"><div class="tday">條件查證於 {_CDCHK}'
         f'　·　{len(CD["cards"])} 張卡，各附發卡行官方來源　·　匯率 {_MIDC} 每日更新</div>'
         f'<div class="tans">帳面最高是 {html.escape(_best["name"])} 的 {_best["total"]}%，'
         f'但那是 {len(_tiers(_best,"shop"))} 層加碼全部同時成立的數字</div>'
@@ -15315,7 +15322,7 @@ if os.path.exists('cards.json'):
       + '<h2>常見問題</h2>' + cc_html
       + f'<p class="disc">本頁為公開資訊整理，非理財或投資建議。'
         f'各卡條件、指定通路、回饋上限與登錄規則由發卡行隨時調整，'
-        f'表中內容查證於 {CD["checked"]}，申辦或消費前請以發卡行公告為準。'
+        f'表中內容查證於 {_CDCHK}，申辦或消費前請以發卡行公告為準。'
         f'本站與上述發卡行無合作關係，頁內卡片連結非聯盟連結。</p>'
       + foot())
     pages.append(('/japan-credit-card/', 0.8))
@@ -15635,7 +15642,7 @@ if os.path.exists('cards.json'):
               + topnav()
               + f'<h1>{html.escape(c["name"])}在日本哪些店刷最划算？</h1>'
               + f'<p class="lede">折價券、免稅、刷卡回饋是三件事，疊起來才是實付價。'
-                f'下面用 ¥100,000 為例逐家算。條件查證於 {CD["checked"]}。</p>'
+                f'下面用 ¥100,000 為例逐家算。條件查證於 {_CDCHK}。</p>'
               + f'<div class="today"><div class="tday">這張卡的日本實體消費</div>'
                 f'<div class="tans">既有卡友最高 {_oldrate(c, "shop")}%</div>'
                 f'<div class="tsub">{html.escape(c["base_note"])}。'
@@ -15671,7 +15678,7 @@ if os.path.exists('cards.json'):
               + f'<a class="ct" href="{U("/japan-credit-card/")}">'
                 f'<b>💳 {len(CD["cards"])} 張卡比較</b><s>哪張在日本最划算</s></a></div>'
               + f'<p class="disc">本頁為公開資訊整理，非理財建議。'
-                f'卡片條件查證於 {CD["checked"]}，券的幅度查證於 {_CPS["checked"]}，'
+                f'卡片條件查證於 {_CDCHK}，券的幅度查證於 {_CPS["checked"]}，'
                 f'以發卡行與店家公告為準。</p>'
               + foot())
             pages.append((f'/japan-credit-card/{c["slug"]}/shopping/', 0.6))
@@ -15719,7 +15726,7 @@ if os.path.exists('cards.json'):
               + f'<h1>{html.escape(c["name"])}買機票划算嗎？</h1>'
               + f'<p class="lede">機票是線上消費，多數卡的日本加碼限實體消費、疊不上去，'
                 f'而刷外幣要收 {_fx["typical"]}% 國外交易手續費。'
-                f'回饋扣掉手續費才是真正拿到的。條件查證於 {CD["checked"]}。</p>'
+                f'回饋扣掉手續費才是真正拿到的。條件查證於 {_CDCHK}。</p>'
               + f'<div class="today"><div class="tday">以外幣結帳買機票</div>'
                 f'<div class="tans">{"＋" if _net >= 0 else "－"}{abs(_net)}%</div>'
                 f'<div class="tsub">回饋 {_orate}% 減手續費 {_fx["typical"]}%。'
@@ -15776,7 +15783,7 @@ if os.path.exists('cards.json'):
               + f'<a class="ct" href="{U("/japan-airline-card/")}"><b>🧾 這筆算國內還是國外</b>'
                 f'<s>台幣付也可能收 1.5%</s></a></div>'
               + f'<p class="disc">本頁為公開資訊整理，非理財建議。'
-                f'條件查證於 {CD["checked"]}，來源：'
+                f'條件查證於 {_CDCHK}，來源：'
                 f'<a href="{html.escape(c["src"])}" target="_blank" rel="noopener nofollow">'
                 f'{html.escape(c["src_name"])}</a>'
                 + (f'；逐平台費率查證於 {_PF["checked"]}，來源：'
@@ -15844,6 +15851,25 @@ if os.path.exists('cards.json'):
       return m===null?null:m-bill;
     }
     function spent(rec,sc){return (rec&&rec[sc])?rec[sc]:0;}
+    // 額度＝第一層加碼觸頂時的台幣帳單金額。用 mine() 算，才和 headroom()
+    // 同一個基準（會跟著排掉名額已滿與新戶限定的層）。
+    function capat(r){
+      if(r.custom) return r.x.cap?r.x.cap/(r.x.rate/100):0;
+      var m=0;
+      mine(r.c,SC).filter(function(t){return t.cap;}).forEach(function(t){
+        var x=t.cap/(t.rate/100); if(!m||x<m)m=x;});
+      return m;
+    }
+    // 沒有上限、或官網查不到上限的，不要畫進度條：一條空的條看起來像「還沒用」，
+    // 但那兩種情況根本沒有額度這回事。
+    function barHtml(r){
+      var cap=capat(r);
+      if(!cap) return '<span class="nm">'+hrTxt(r)+'</span>';
+      var used=Math.min(r.bill,cap), pct=Math.round(used/cap*100);
+      return '<div class="tbar"><i style="width:'+pct+'%"></i></div>'
+        +'<small class="nm">已計入 NT$'+jfmt(used)+'／額度 NT$'+jfmt(cap)+'</small>'
+        +'<br><b class="win">剩餘 NT$'+jfmt(Math.max(0,cap-used))+'</b>';
+    }
     // 剩餘額度欄。cap 是 0 有兩種意思：官方確認無上限，或官方根本沒寫。
     // cards.json 用 cap_unknown 區分，這裡照著分，不要把「沒查到」寫成「無上限」。
     function hrTxt(r){
@@ -15871,6 +15897,8 @@ if os.path.exists('cards.json'):
         var bill=jbill(jpy);
         out.push({c:c,slug:slug,jpy:jpy,bill:bill,
           has:mine(c,sc).length>0,tu:(sc==='transit'?(c.tu||''):''),
+          areas:c.areas||'',period:c.period||'',reg:c.reg||'',lv:c.lv||'',
+          regdone:!!(S.own[slug]&&S.own[slug].reg),
         newonly:(!NEW&&jhas(c,sc)&&mine(c,sc).length===0),
           sold:gone(c,sc).map(function(t){return t.label;}),
           m:marg(c,sc,bill),hr:headroom(c,sc,bill)});
@@ -15896,8 +15924,9 @@ if os.path.exists('cards.json'):
       if(!rows.length){
         h='<p class="lede">還沒有卡片。到下面「我的卡片」勾選你持有的，或自己新增一張。</p>';
       }else{
-        h='<div class="tw"><table><thead><tr><th>卡</th><th>這個情境已刷（日幣）</th>'
-         +'<th>換算台幣帳單</th><th>下一筆的回饋率</th><th>還能刷多少到頂</th><th></th></tr></thead><tbody>';
+        h='<div class="tw ttw"><table class="ttab"><thead><tr><th>卡</th>'
+         +'<th>這個情境已刷（日幣）</th><th>換算台幣帳單</th>'
+         +'<th>下一筆的回饋率</th><th>加碼額度</th><th></th></tr></thead><tbody>';
         rows.forEach(function(r){
           if(r.gone){
             h+='<tr><td colspan="6" class="nm"><b>'+esc(r.slug)+'</b>　'
@@ -15911,8 +15940,6 @@ if os.path.exists('cards.json'):
           if(r.tu){rate='<span class="nm">本站查不到</span>';note=esc(r.tu);}
           else{
             rate='<b>'+r.m.rate+'%</b>';
-            if(!r.custom&&r.sold&&r.sold.length)
-              note='不含「'+esc(r.sold.join('、'))+'」，這一期名額已滿，現在登錄不到';
             if(!r.custom&&r.newonly) note='這張的加碼只有新戶或核卡期間內才有，只算基本回饋';
             else if(!r.custom&&!r.has) note='這張沒有這個情境的加碼，只有基本回饋';
             else if(r.m.full.length){
@@ -15920,12 +15947,28 @@ if os.path.exists('cards.json'):
               note+=(r.m.rate===0)?'。再刷沒有回饋':'。再刷只剩基本 '+r.m.rate+'%';
             }
           }
-          h+='<tr><td><b>'+nm+'</b>'+tag+(note?'<br><small class="nm">'+note+'</small>':'')+'</td>'
-           +'<td><input class="tin" type="number" min="0" step="1000" value="'+r.jpy+'" data-sp="'+esc(id)+'"></td>'
-           +'<td class="nm">NT$'+jfmt(r.bill)+'</td>'
-           +'<td>'+rate+'</td>'
-           +'<td class="nm">'+hrTxt(r)+'</td>'
-           +'<td class="nm"><button class="tbtn" data-rst="'+esc(id)+'">這期重新開始</button>'
+          // 名額已滿和上面的觸頂／新戶可能同時成立，所以不併進同一條 note
+          var sold=(!r.custom&&r.sold&&r.sold.length)
+            ?'<br><small class="warn">不含「'+esc(r.sold.join('、'))+'」，這一期名額已滿</small>':'';
+          var meta='';
+          if(!r.custom){
+            if(r.areas) meta+='<br><small class="nm">適用：'+esc(r.areas)+'</small>';
+            if(r.period) meta+='<br><small class="nm">活動期間 '+esc(r.period)+'</small>';
+          }
+          h+='<tr><td data-l="卡"><b>'+nm+'</b>'+tag+meta
+           +(note?'<br><small class="nm">'+note+'</small>':'')+sold
+           +((r.custom||r.lv==='none')?''
+             :'<label class="treg"><input type="checkbox" data-reg="'+esc(id)+'"'
+              +(r.regdone?' checked':'')+'><span>'
+              +(r.lv==='setup'?'已完成前置設定':'已完成銀行活動登錄')+'</span></label>')
+           +(r.reg&&!r.custom
+             ?((r.lv==='none')?'<br>':'')+'<small class="nm">'+esc(r.reg)+'</small>':'')
+           +'</td>'
+           +'<td data-l="已刷（日幣）"><input class="tin" type="number" min="0" step="1000" value="'+r.jpy+'" data-sp="'+esc(id)+'"></td>'
+           +'<td data-l="換算台幣帳單" class="nm">NT$'+jfmt(r.bill)+'</td>'
+           +'<td data-l="下一筆的回饋率">'+rate+'</td>'
+           +'<td data-l="加碼額度">'+barHtml(r)+'</td>'
+           +'<td data-l=""><button class="tbtn" data-rst="'+esc(id)+'">這期重新開始</button>'
            +' <button class="tbtn" data-del="'+esc(id)+'">刪除</button></td></tr>';
         });
         h+='</tbody></table></div>';
@@ -15962,6 +16005,15 @@ if os.path.exists('cards.json'):
     document.addEventListener('input',function(e){
       var t=e.target;
       if(t.classList&&t.classList.contains('tin')) setSp(t.getAttribute('data-sp'),+t.value);
+    });
+    // 登錄狀態只是給使用者自己記的，本站無從得知他有沒有真的登錄成功，
+    // 所以不拿它去改任何回饋率的計算。
+    document.addEventListener('change',function(e){
+      var t=e.target, rg=t.getAttribute?t.getAttribute('data-reg'):null;
+      if(rg===null||t.type!=='checkbox') return;
+      if(rg.slice(0,2)==='c:') return;
+      if(!S.own[rg]) S.own[rg]={};
+      S.own[rg].reg=t.checked; save(S);
     });
     document.addEventListener('click',function(e){
       var t=e.target;
@@ -16230,7 +16282,7 @@ if os.path.exists('cards.json'):
         '</div><div class="tw" id="kcmp"></div>'
         '<div class="cres"><div class="cv" id="kv">—</div></div></div>'
       + f'<p class="disc">回饋依台幣帳單金額計算，點數型回饋以 1 點約 1 元估算。'
-        f'試算採各層加碼條件都符合的最高情境，實際以發卡行為準。條件查證於 {CD["checked"]}。</p>'
+        f'試算採各層加碼條件都符合的最高情境，實際以發卡行為準。條件查證於 {_CDCHK}。</p>'
       # 這一頁算的是「這一筆刷哪張」，上限用掉之後的順序是另一個問題
       + f'<div class="tldr"><ul><li><b>這一頁算的是單筆消費刷哪張最划算。</b>'
         f'實際在日本刷的時候，加碼額度會一張一張用完，順序跟著變。'
@@ -16267,6 +16319,32 @@ if os.path.exists('cards.json'):
       '.tnew label{display:flex;flex-direction:column;gap:3px;font-size:.78rem;color:var(--dim)}'
       '.tnew input{padding:5px 7px;border:1px solid var(--line);border-radius:7px;'
       'background:var(--bg);color:var(--fg);font-size:.88rem;width:120px}'
+      '.tbar{height:7px;border-radius:4px;background:var(--line);overflow:hidden;'
+      'margin:0 0 5px}'
+      '.tbar i{display:block;height:100%;background:var(--lcc)}'
+      '.treg{display:flex;align-items:center;gap:6px;margin-top:8px;'
+      'font-size:.8rem;cursor:pointer}'
+      '.treg input{margin:0;flex:0 0 auto}'
+      # 窄螢幕把每一列變成一張卡。用 data-l 當標籤，不另外產一份 HTML，
+      # 兩份版面各自維護遲早會對不起來。
+      '@media(max-width:760px){'
+      '.ttw{overflow:visible}'
+      '.tw table.ttab{min-width:0;width:100%;font-size:.88rem}'
+      '.ttab thead{display:none}'
+      '.ttab,.ttab tbody,.ttab tr,.ttab td{display:block;width:auto}'
+      '.ttab tr{border:1px solid var(--line);border-radius:12px;margin:0 0 12px;'
+      'padding:11px 13px;background:var(--card)}'
+      '.ttab td{border:0;padding:5px 0;display:flex;justify-content:space-between;'
+      'align-items:center;gap:12px}'
+      '.ttab td::before{content:attr(data-l);color:var(--dim);font-size:.8rem;'
+      'flex:0 0 auto}'
+      '.ttab td[data-l=""]::before{display:none}'
+      '.ttab td[data-l="\u5361"]{display:block}'
+      '.ttab td[data-l="\u5361"]::before{display:none}'
+      '.ttab td[data-l="\u52a0\u78bc\u984d\u5ea6"]{display:block}'
+      '.ttab td[data-l="\u52a0\u78bc\u984d\u5ea6"]::before{display:block;'
+      'margin-bottom:5px}'
+      '}'
       '</style>')
 
     # 這三個數字寫死過會過期（站上踩過兩次），從 cards.json 算出來。
@@ -16341,7 +16419,7 @@ if os.path.exists('cards.json'):
         '上限一滿，那張卡就掉回基本回饋，順序整個變了。'
         '這一頁記你每張卡已經刷了多少，算出下一筆實際拿得到幾趴。</p>'
       + f'<p class="upd">換算匯率 {_MIDC}（中間匯率）　·　'
-        f'國外交易手續費 {_fx["typical"]}%　·　卡片條件查證於 {CD["checked"]}</p>'
+        f'國外交易手續費 {_fx["typical"]}%　·　卡片條件查證於 {_CDCHK}</p>'
 
       + '<div class="warn" id="twarn" style="display:none">'
         '這個瀏覽器存不住資料（可能是無痕模式，或封鎖了網站資料）。'
@@ -16417,7 +16495,7 @@ if os.path.exists('cards.json'):
         f'<s>哪幾張要搶登錄、什麼時候開放</s></a></div>'
       + '<h2>常見問題</h2>' + _trk_html
       + f'<p class="disc">回饋依台幣帳單金額計算，點數型回饋以 1 點約 1 元估算。'
-        f'卡片條件查證於 {CD["checked"]}，實際以發卡行為準。'
+        f'卡片條件查證於 {_CDCHK}，實際以發卡行為準。'
         f'本頁為公開資訊整理，非理財建議。本站與各發卡行無合作關係，'
         f'頁內卡片連結非聯盟連結。</p>'
       + TRACK_JS + foot())
@@ -16944,7 +17022,7 @@ if os.path.exists('cards.json'):
               + f'<h1>在{html.escape(st["name"])} 刷哪張卡最划算？</h1>'
               + f'<p class="lede">{html.escape(st["jp"])}　·　{html.escape(st["cat"])}　·　'
                 f'輸入金額就知道每張卡實拿多少。'
-                f'卡片條件查證於 {CD["checked"]}，折扣幅度查證於 {CP["checked"]}</p>'
+                f'卡片條件查證於 {_CDCHK}，折扣幅度查證於 {CP["checked"]}</p>'
               + _store_card_calc(st)
               + ('' if st.get('kind') == 'card' else
                  f'<div class="today"><div class="tday">常見折扣 {html.escape(st["rate"])}'
@@ -17028,7 +17106,7 @@ if os.path.exists('cards.json'):
 
         print(f'   日本購物折扣頁：{len(CP["stores"])} 家店')
 
-    print(f'   旅日信用卡：{len(CD["cards"])} 張卡頁 ＋ 比較頁 ＋ 計算機（查證 {CD["checked"]}）')
+    print(f'   旅日信用卡：{len(CD["cards"])} 張卡頁 ＋ 比較頁 ＋ 計算機（查證 {_CDCHK}）')
 
 # ---------- 東京平價住宿（跨區比較）----------
 if HS:

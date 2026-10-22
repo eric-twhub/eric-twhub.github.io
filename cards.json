@@ -73,7 +73,9 @@
     "why": "停車頁逐字寫「玉山熊本熊卡恕不適用此項優惠」。全卡友仍可用折扣價：連勝與連統 250 元／天、大鵬與大程 8 折。",
     "src": "https://www.esunbank.com/zh-tw/personal/credit-card/benefit/airport-parking"
    },
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "日本",
+   "areas_note": "活動本身就是日本專屬，加碼限指定日本商店"
   },
   {
    "name": "星展 eco 永續卡",
@@ -132,7 +134,9 @@
     "why": "星展的機場外圍停車頁只列六張高階卡，eco 永續卡不在內。它有的是機場接送優惠價，一年 4 次，那不是停車。",
     "src": "https://www.dbs.com.tw/personal-zh/cards/dbs-cards-benefits/airport-parking.page"
    },
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "官方 66 國名單（含日本）",
+   "areas_note": "名單上日本代碼為 JPN；加碼限當地實體面對面且以當地外幣結帳"
   },
   {
    "name": "台新 Richart 卡",
@@ -191,7 +195,9 @@
      "src": "https://www.taishinbank.com.tw/TSB/personal/digital/E-Payment/Electronic-Payment/introduction/"
     }
    ],
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "不限國家",
+   "areas_note": "官方以「交易幣別為外幣，或交易國別非台灣」認定海外消費，實際依商家拋送資訊為準"
   },
   {
    "name": "國泰世華 CUBE 卡",
@@ -317,7 +323,9 @@
     "why": "停車頁兩處註記 CUBE 卡不適用，使用須知再寫一次。可改用小樹點折抵：桃園大園 130 點換一天、連統 145 點、大鵬與大程 155 點，限正卡。",
     "src": "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/rights/airportparking"
    },
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "日本",
+   "areas_note": "秋日遊 2026/10/1–11/30 限日本實體消費；指定人氣愛店與 IP 專賣店也限日本"
   },
   {
    "name": "聯邦吉鶴卡",
@@ -457,7 +465,9 @@
     }
    ],
    "total_note": "官方的算式是「基本 2.5% ＋ 行動支付 2.5% ＋ 11 大人氣通路 3% ＋ 新戶 3%」等於 11%，交通卡儲值那 1.5% 不在這個 11% 裡面。本站把官方的行動支付 2.5% 拆成「行動支付 1.5%」與「前月帳單滿 NT$30,000 再加 1%」兩列，加總一樣是 11%，拆開是因為那 1% 有自己的前提條件。",
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "日本",
+   "areas_note": "各層加碼都寫明日本實體店家；另有一層指定國家海外加碼未列入本站數字"
   },
   {
    "name": "台北富邦 J 卡",
@@ -586,7 +596,9 @@
     "src": "https://www.fubon.com/banking/Personal/credit_card/airport_parking/airport_parking.htm",
     "has": true
    },
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "日本、韓國、泰國",
+   "areas_note": "官方定義「商店登記之國別碼為日本、韓國或泰國」；交通卡加碼限日本三大卡"
   },
   {
    "name": "玉山 Unicard",
@@ -686,7 +698,9 @@
    },
    "checked": "2026-10-22",
    "transit_unknown": "玉山的「不提供消費回饋之消費項目公告」把「儲值卡 (原電子票證) 儲值金 (含自動儲值) 及電子支付儲值 (含自動儲值) 儲值金」列為不提供回饋，而 Unicard 的活動頁沒有像同行的熊本熊卡那樣把交通卡儲值列進加碼名單。但那份公告沒有提到日本，也沒有明文寫 Suica／PASMO，所以它涵不涵蓋日本的交通卡，官方文字沒有直接講。兩個方向都沒有確定的依據，因此本站不把這張卡算進交通卡儲值的回饋，也不說它沒有。",
-   "transit_unknown_src": "https://event.esunbank.com.tw/credit/notice/index.html"
+   "transit_unknown_src": "https://event.esunbank.com.tw/credit/notice/index.html",
+   "areas": "日本",
+   "areas_note": "「國外實體」百大指定消費清單第一項就是日本"
   },
   {
    "name": "永豐現金回饋 JCB 卡",
@@ -768,7 +782,9 @@
     "status": "官網未查到",
     "why": "永豐的停車頁是按卡等級列名單，而產品頁、卡片總覽、收費一覽表三處都沒有標這張卡屬於哪個等級，所以本站無法判定。",
     "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/card-right/airport-parking.html"
-   }
+   },
+   "areas": "日本（3%）、日本韓國泰國（5%）",
+   "areas_note": "兩層的範圍不一樣：日本加碼限交易地為日本且幣別為日幣；季度加碼涵蓋日韓泰"
   },
   {
    "name": "永豐幣倍卡",
@@ -830,7 +846,9 @@
     "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/card-right/airport-parking.html",
     "has": true
    },
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "不限國家",
+   "areas_note": "基本回饋看的是國內或國外；精選通路加碼按通路名單認定，不按國家"
   },
   {
    "name": "中信 LINE Pay 卡",
@@ -916,7 +934,9 @@
     "why": "2026 年的指定卡別只有 LINE Pay 鼎極卡，那是邀約制，官網寫近一年累積消費滿 36 萬才有機會獲邀。一般申辦得到的 LINE Pay 御璽卡與晶緻卡不在名單上。",
     "src": "https://www.ctbcbank.com/twrbo/zh_tw/cc_index/cc_additional/cc_add_index/cc_add_airportparking.html"
    },
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "不限國家",
+   "areas_note": "官方認定的是「國外實體商店消費」，沒有限定哪些國家"
   },
   {
    "name": "中信 uniopen 聯名卡",
@@ -961,7 +981,9 @@
     "src": "https://www.ctbcbank.com/twrbo/zh_tw/cc_index/cc_additional/cc_add_index/cc_add_airportparking.html"
    },
    "transit_unknown": "交通卡儲值算不算一般消費，要看中信的信用卡約定條款總則。2026-10-22 這一輪重查時那兩個總則頁都回 HTTP 202、零位元組，讀不到內容，所以官方怎麼寫本站查不到，不替它填。",
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "不限國家",
+   "areas_note": "官方認定的是「國外實體商店」，沒有限定哪些國家"
   },
   {
    "name": "第一銀行 iLEO 卡",
@@ -1086,7 +1108,9 @@
     "src": "https://card.firstbank.com.tw/sites/card/zh_TW/1565690685937",
     "has": true
    },
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "不限國家",
+   "areas_note": "基本與加碼都以「海外外幣消費」認定；指定通路那層按通路名單不按國家"
   },
   {
    "name": "永豐 DAWHO 大戶卡",
@@ -1197,7 +1221,9 @@
      "why_out": "只適用國內的悠遊卡，日本的 Suica、PASMO、ICOCA 刷不到，所以不列入本站的日本回饋數字。"
     }
    ],
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "不限國家",
+   "areas_note": "以外幣結帳的國外一般消費都算，沒有限定國家"
   },
   {
    "name": "星展傳說對決聯名卡",
@@ -1244,7 +1270,9 @@
     "why": "產品頁完整列出的權益裡沒有機場停車，也沒有機場接送。反過來停車費還被列在基本回饋的排除項目裡。",
     "src": "https://www.dbs.com.tw/personal-zh/cards/dbs-aov/index.html"
    },
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "日本、韓國、泰國、新加坡、美洲、歐洲",
+   "areas_note": "須於當地實體商店消費"
   },
   {
    "name": "滙豐 Live+ 現金回饋卡",
@@ -1314,7 +1342,9 @@
     "why": "滙豐把卡分三組，免費天數只給旅人卡與卓越理財卡，其餘信用卡是特約停車場折扣：星威 7 折、大鵬 8 折，農曆春節與連假不適用。",
     "src": "https://www.hsbc.com.tw/credit-cards/benefits/airport-parking/"
    },
-   "checked": "2026-10-22"
+   "checked": "2026-10-22",
+   "areas": "三大通路不限國家；餐飲加碼限 7 國（含日本）",
+   "areas_note": "三大通路 3% 條款未限國家，官方範例就列了香港迪士尼；精選國家餐飲 1% 限日本、新加坡、馬來西亞、越南、菲律賓、印度、斯里蘭卡當地實體交易"
   }
  ],
  "mpay": {
