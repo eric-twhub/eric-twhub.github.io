@@ -60,23 +60,23 @@
  },
  {
   "slug": "2026-10-22-taichung-okinawa",
-  "title": "台中飛沖繩 NT$4,003 來回含稅｜台灣虎航 11/02 出發",
+  "title": "台中飛沖繩 NT$4,339 來回含稅｜台灣虎航 11/16 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 4003,
+  "price": 4339,
   "air": "台灣虎航",
-  "dep": "2026-11-02",
-  "ret": "2026-11-05",
+  "dep": "2026-11-16",
+  "ret": "2026-11-19",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,746（21 天有紀錄），這張低 59%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,764（21 天有紀錄），這張低 56%"
   ],
   "med": 11252,
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
@@ -85,7 +85,7 @@
    "days": 30
   },
   "mbase": {
-   "avg": 9746,
+   "avg": 9764,
    "days": 21,
    "month": 11
   },
@@ -108,38 +108,13 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 14097,
+  "med": 16540,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": null,
   "mbase": null,
   "rank": 1,
-  "n": 10
- },
- {
-  "slug": "2026-10-22-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,866",
-  "o": "台灣",
-  "c": "熊本",
-  "via": "福岡",
-  "price": 7532,
-  "air": "飛福岡再轉乘",
-  "fl_price": 5320,
-  "fl_rt": true,
-  "fl_to": "福岡",
-  "tr_twd": 1106,
-  "tr_mode": "九州新幹線",
-  "dep": "2026-11-02",
-  "ret": "",
-  "stops": "九州新幹線",
-  "cls": "transfer",
-  "reasons": [
-   "比直飛省 NT$2,866"
-  ],
-  "med": 10398,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW",
-  "hotelcity": "熊本",
-  "cslug": "kumamoto"
+  "n": 6
  }
 ]
