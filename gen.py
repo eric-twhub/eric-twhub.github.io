@@ -15363,6 +15363,20 @@ if os.path.exists('cards.json'):
             + (f'<tr><td colspan="4" class="nm"><small>⏱ 入帳時間：'
                f'{html.escape(t["payout"])}</small></td></tr>'
                if t.get('payout') else '')
+            # 官方自己兩份文件講得不一樣的時候，兩段原文都列，不替它調和。
+            # 本站算的時候依哪一份，寫在 what 裡。
+            + ((f'<tr><td colspan="4" class="nm"><small>'
+                f'<b class="warn">⚠ {html.escape(t["conflict"]["what"])}</b><br>'
+                f'適用：{html.escape(t["conflict"]["yes"])}<br>'
+                f'不適用：{html.escape(t["conflict"]["no"])}<br>'
+                f'{html.escape(t["conflict"]["gap"])}'
+                f'（查證於 {t["conflict"]["checked"]}，'
+                f'<a href="{t["conflict"]["src_yes"]}" rel="nofollow noopener" '
+                f'target="_blank">活動頁</a>、'
+                f'<a href="{t["conflict"]["src_no"]}" rel="nofollow noopener" '
+                f'target="_blank">非一般消費公告</a>）'
+                f'</small></td></tr>')
+               if t.get('conflict') else '')
             for t in c['tiers'])
 
         others = ''.join(
@@ -15483,18 +15497,20 @@ if os.path.exists('cards.json'):
                 f'四個機場的停車場費率、哪幾家民營業者有官網，以及機捷轉乘的實際條件，'
                 f'整理在<a href="{U("/taiwan-airport-parking/")}">機場停車</a>那一頁。</p>')
              )(c['parking']) if c.get('parking') else '')
-          + (('<h2>這張卡的非日本加碼</h2>'
-              '<p class="lede">本站所有的回饋數字只算日本。'
-              '以下這幾項是同一張卡真的有的加碼，但適用地區不含日本，'
-              '所以不列入上面任何一個數字，也不列入比較表與試算。</p>'
+          + (('<h2>這張卡有、但不列入上面數字的</h2>'
+              '<p class="lede">以下這幾項同一張卡真的有，但因為各自的理由'
+              '沒有算進上面的回饋率，也不列入比較表與試算。'
+              '不列入的理由逐項寫在下面。</p>'
               + ''.join(
                   '<div class="tldr"><ul>'
                   f'<li><b>{html.escape(o["what"])}　{html.escape(o["rate"])}</b></li>'
-                  f'<li>適用地區：{html.escape(o["where"])}</li>'
+                  f'<li>適用範圍：{html.escape(o["where"])}</li>'
                   f'<li>{html.escape(o["how"])}</li>'
                   f'<li>登錄：{html.escape(o["reg"])}</li>'
                   f'<li>活動期間：{html.escape(o["period"])}</li>'
-                  '</ul></div>'
+                  + (f'<li><b>為什麼不列入：</b>{html.escape(o["why_out"])}</li>'
+                     if o.get('why_out') else '')
+                  + '</ul></div>'
                   f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow noopener" '
                   f'target="_blank">官方活動頁</a>。</p>'
                   for o in c['other_perks']))
