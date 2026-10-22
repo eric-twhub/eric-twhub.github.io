@@ -18423,6 +18423,26 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
                 + '；'.join(_au_say(x) for x in _au_sum.values()) + '。')
 
     _TW, _FR, _HL, _SN = AU['two'], AU['fare'], AU['holiday'], AU['snapshot']
+    # 含 11/23（勤労感謝の日）那一週在各航線的排名。票價每天重算，
+    # 所以連「那一週貴不貴」這個結論也要當場算，不能寫死在文案裡。
+    _au_h23, _au_h23r = [], []
+    for _r, _nm, _ in _AU_RT:
+        _w = _au_wk.get(_r) or []
+        _hit = [x for x in _w if x['a'] <= datetime.date(2026, 11, 23) <= x['b']]
+        if not _hit or len(_w) < 2:
+            continue
+        _rank = sorted(_w, key=lambda x: -x['med']).index(_hit[0]) + 1
+        _au_h23.append(f'{_nm} 第 {_rank} 貴（共 {len(_w)} 週）')
+        _au_h23r.append(_rank / len(_w))
+    if not _au_h23r:
+        _au_h23v = ''
+    elif sum(_au_h23r) / len(_au_h23r) <= 0.34:
+        _au_h23v = '這一週在各航線都排在偏貴的那一端，和日曆上的擁擠方向一致。'
+    elif sum(_au_h23r) / len(_au_h23r) >= 0.67:
+        _au_h23v = '這一週在各航線都排在偏便宜的那一端，和日曆上的擁擠方向相反。'
+    else:
+        _au_h23v = '這一週在各航線的位置分散，看不出一致的方向。'
+
     _au_snap = ''.join(
         f'<tr><td class="nm"><b>{html.escape(r["when"])}</b></td>'
         f'<td>{html.escape(r["what"])}</td></tr>' for r in _SN['rows'])
@@ -18484,8 +18504,11 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
       + f'<h2 id="{_hid(_HL["title"])}">{html.escape(_HL["title"])}</h2>'
       + f'<p class="lede">{html.escape(_HL["body"])}</p>'
       + f'<p class="lede">{html.escape(_HL["mean"])}</p>'
-      + (f'<div class="tldr"><ul><li><b>{html.escape(_HL["but"])}</b></li></ul></div>'
-         if TGF else '')
+      + ((f'<p class="lede">{html.escape(_HL["but_lead"])}'
+          f'{html.escape("、".join(_au_h23))}。</p>'
+          + f'<div class="tldr"><ul><li><b>{html.escape(_au_h23v)}</b></li></ul></div>'
+          + f'<p class="disc">{html.escape(_HL["but_tail"])}</p>')
+         if (TGF and _au_h23) else '')
       + f'<p class="lede">{html.escape(_HL["hotel"])}</p>'
       + f'<p class="disc">{html.escape(_HL["other"])}'
         f'完整的三國連假撞期在<a href="{U("/japan-holiday-calendar/")}">連假日曆</a>。</p>'
