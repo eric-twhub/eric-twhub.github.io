@@ -94,12 +94,12 @@
  },
  {
   "slug": "2026-10-22-taipei-fukuoka",
-  "title": "台北飛福岡 NT$5,320 來回含稅｜台灣虎航 11/02 出發",
+  "title": "台北飛福岡 NT$5,264 來回含稅｜台灣虎航 11/02 出發",
   "o": "台北",
   "c": "福岡",
   "_oiata": "TPE",
   "_diata": "FUK",
-  "price": 5320,
+  "price": 5264,
   "air": "台灣虎航",
   "dep": "2026-11-02",
   "ret": "2026-11-09",
@@ -119,13 +119,13 @@
  },
  {
   "slug": "2026-10-22-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,866",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,922",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 7532,
+  "price": 7476,
   "air": "飛福岡再轉乘",
-  "fl_price": 5320,
+  "fl_price": 5264,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1106,
@@ -135,7 +135,7 @@
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$2,866"
+   "比直飛省 NT$2,922"
   ],
   "med": 10398,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW",
