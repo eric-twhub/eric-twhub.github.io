@@ -15208,7 +15208,9 @@ if os.path.exists('cards.json'):
       + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張卡比較</b>'
         f'<s>回饋、上限與實拿試算</s></a>'
       + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
-        f'<s>輸入金額看每張卡實拿</s></a></div>'
+        f'<s>輸入金額看每張卡實拿</s></a>'
+      + f'<a class="ct" href="{U("/japan-card-tracker/")}"><b>📊 疊卡進度表</b>'
+        f'<s>記已刷金額，算下一筆該刷哪張</s></a>' + '</div>'
       + f'<p class="disc">本頁為公開資訊整理，登錄時間與名額查證於 {CD["checked"]}，'
         f'來源為各發卡行官方活動頁。銀行可隨時調整，請以官方公告為準。'
         f'本站與各發卡行無合作關係。</p>'
@@ -15276,6 +15278,8 @@ if os.path.exists('cards.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
         f'<s>輸入日幣金額，換算回饋</s></a>'
+      + f'<a class="ct" href="{U("/japan-card-tracker/")}"><b>📊 疊卡進度表</b>'
+        f'<s>記已刷金額，算下一筆該刷哪張</s></a>'
       + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 買 iPhone 台灣還日本划算</b>'
         f'<s>可填入你的回饋率試算</s></a>'
       + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
@@ -15435,6 +15439,18 @@ if os.path.exists('cards.json'):
             '<th>實拿回饋</th><th>有效回饋率</th><th>實際負擔</th>'
             '</tr></thead><tbody>' + rows + '</tbody></table></div>'
           + '<p class="disc">回饋以台幣帳單金額計算；點數型回饋以 1 點約 1 元估算。</p>'
+          # 讀者剛看完「刷到多少到頂」，這裡接得上。沒有上限的卡不出現，
+          # 不然會變成到處都掛同一句的泛稱連結。
+          + (f'<div class="tldr"><ul><li><b>刷到約 {money(hit)} 之後加碼就沒了，'
+             f'剩下的刷在這張只剩 {c["base"]}%，該換別張。</b>'
+             f'<a href="{U("/japan-card-tracker/")}">疊卡進度表</a>'
+             f'可以記每張卡已經刷多少，依剩餘額度算出下一筆該刷哪張。</li></ul></div>'
+             if hit else
+             f'<div class="tldr"><ul><li><b>這張沒有加碼上限，不會刷到一半掉回基本回饋。</b>'
+             f'但你手上其他卡多半有，它們的加碼用完之後順序就會變，'
+             f'到時候該不該換到這張要比的是各卡的基本回饋，不是帳面最高。'
+             f'<a href="{U("/japan-card-tracker/")}">疊卡進度表</a>會把這件事算出來。'
+             f'</li></ul></div>')
           + fare_cta('tokyo', '算完回饋，順便看機票')
           + '<h2>怎麼啟用</h2><div class="tldr"><ul>'
           + ''.join(f'<li>{html.escape(x)}</li>' for x in c['steps'])
@@ -16140,6 +16156,11 @@ if os.path.exists('cards.json'):
         '<div class="cres"><div class="cv" id="kv">—</div></div></div>'
       + f'<p class="disc">回饋依台幣帳單金額計算，點數型回饋以 1 點約 1 元估算。'
         f'試算採各層加碼條件都符合的最高情境，實際以發卡行為準。條件查證於 {CD["checked"]}。</p>'
+      # 這一頁算的是「這一筆刷哪張」，上限用掉之後的順序是另一個問題
+      + f'<div class="tldr"><ul><li><b>這一頁算的是單筆消費刷哪張最划算。</b>'
+        f'實際在日本刷的時候，加碼額度會一張一張用完，順序跟著變。'
+        f'<a href="{U("/japan-card-tracker/")}">疊卡進度表</a>'
+        f'可以記每張卡累計刷了多少，算出下一筆的實際回饋率。</li></ul></div>'
       + fare_cta('tokyo', '算完回饋，順便看機票')
       + '<h2>常見問題</h2>' + kc_html
       + '<h2>相關頁面</h2><div class="cities">'
@@ -16222,7 +16243,7 @@ if os.path.exists('cards.json'):
                        for q, a in _trk_faq]}, ensure_ascii=False)
 
     write('japan-card-tracker/index.html',
-      head('日本疊卡進度表：記已刷金額，算下一筆該刷哪張',
+      head('日本刷卡順序怎麼排｜疊卡進度表：記已刷金額，算下一筆該刷哪張',
            f'疊卡攻略都在排加碼回饋率，但每張卡的加碼都有上限，刷滿就掉回基本回饋。'
            f'這一頁記你每張卡已經刷了多少，算出下一筆的實際回饋率。'
            f'收錄 {len(CD["cards"])} 張卡，也可以自己新增。資料只存在你的瀏覽器。',
