@@ -368,6 +368,85 @@
     }
    ],
    "icon": "🎿"
+  },
+  "japan-autumn-leaves": {
+   "checked": "2026-10-22",
+   "title": "京都賞楓行程與車票",
+   "sub": "嵯峨野小火車是嵐山那段的經典路線，最後一項是本頁高尾山走的線",
+   "brand": "KKday",
+   "search": "https://www.kkday.com/zh-tw/product/productlist?keyword=%E5%B5%90%E5%B1%B1%20%E8%B3%9E%E6%A5%93",
+   "items": [
+    {
+     "id": "131948",
+     "name": "嵯峨野小火車（嵐山小火車）車票",
+     "note": "本頁的嵐山那一段",
+     "star": "4.7",
+     "booked": "20K+",
+     "url": "https://www.kkday.com/zh-tw/product/131948"
+    },
+    {
+     "id": "546301",
+     "name": "京都秋季賞楓一日遊｜金閣寺・嵐山夜楓點燈・嵯峨野小火車",
+     "note": "含夜楓點燈，官網查不到評價",
+     "url": "https://www.kkday.com/zh-tw/product/546301"
+    },
+    {
+     "id": "12189",
+     "name": "京都嵐山半日遊｜小火車・保津川遊船・京馬車",
+     "note": "一人成團方案",
+     "star": "4.7",
+     "booked": "6K+",
+     "url": "https://www.kkday.com/zh-tw/product/12189"
+    },
+    {
+     "id": "573958",
+     "name": "東京 京王線一日券",
+     "note": "本頁的高尾山走這條線。訂購數少，評價僅 1 則",
+     "star": "3.0",
+     "booked": "75+",
+     "url": "https://www.kkday.com/zh-tw/product/573958"
+    }
+   ],
+   "icon": "🍁"
+  },
+  "tokyo/ginkgo": {
+   "checked": "2026-10-22",
+   "title": "東京交通票券",
+   "sub": "並木是公共道路不用門票，會花到錢的是交通",
+   "brand": "KKday",
+   "search": "https://www.kkday.com/zh-tw/product/productlist?keyword=%E6%9D%B1%E4%BA%AC%20%E5%9C%B0%E9%90%B5%20%E4%B8%80%E6%97%A5%E5%88%B8",
+   "items": [
+    {
+     "id": "5989",
+     "name": "東京地鐵乘車周遊券｜一日／二日／三日券",
+     "note": "外苑前與青山一丁目都在銀座線上。官網查不到評價",
+     "url": "https://www.kkday.com/zh-tw/product/5989"
+    },
+    {
+     "id": "18551",
+     "name": "東京利木津巴士｜羽田・成田往東京市區",
+     "note": "從機場進市區用的，不是到外苑",
+     "star": "4.7",
+     "booked": "20K+",
+     "url": "https://www.kkday.com/zh-tw/product/18551"
+    },
+    {
+     "id": "2048",
+     "name": "SKY HOP BUS 觀光巴士｜一日／兩日券",
+     "note": "東京市區自由上下車。本站沒有查證它停不停外苑",
+     "star": "4.3",
+     "booked": "2K+",
+     "url": "https://www.kkday.com/zh-tw/product/2048"
+    }
+   ],
+   "icon": "🚇"
+  },
+  "japan-card-tracker": {
+   "use": "transport",
+   "checked": "2026-10-22",
+   "title": "日本鐵路周遊券",
+   "sub": "這一頁算的是刷卡回饋，交通支出也可以用周遊券壓，兩者是不同的路",
+   "icon": "🎫"
   }
  },
  "_頁面專屬商品": "pages 覆寫 groups：某些頁面講的就是某一支商品，放通用清單等於答非所問。63 ANGEL 沒有列在這裡，那一頁本來就有票券比較區塊（兩家對照、附價格比較），廣告版位再放一次是重複。富士山頁放的不是單一商品而是主題商品組（一日遊、河口湖巴士、樂園門票），因為那頁講的是搭飛機看富士山，讀者的下一步是到當地。pages 底下可以放自己的 checked，日期跟著那一組走，不要套全域日期。另一種用法是 use：指向既有的 groups，只覆寫標題與圖示，商品清單仍維護一份。japan-payment 用這種方式把上網卡提到上版位，因為那頁講掃碼付款，而掃碼要有網路，輪替預設配到的機場接送跟主題搭不上。",
