@@ -15865,6 +15865,7 @@ if os.path.exists('cards.json'):
     }
     // 沒有上限、或官網查不到上限的，不要畫進度條：一條空的條看起來像「還沒用」，
     // 但那兩種情況根本沒有額度這回事。
+    var OPEN={};
     var SCN={shop:'實體消費',transit:'交通卡儲值',any:'實體與交通卡'};
     function capTxt(t){
       if(!t.cap) return t.cap_unknown?'　官網未查到上限':'　無上限';
@@ -15909,8 +15910,7 @@ if os.path.exists('cards.json'):
         h+='</ul>';
       }
       h+='<p><a href="/japan-credit-card/'+esc(c.s)+'/">看這張卡的完整說明</a></p>';
-      return '<details class="tdet"><summary>查看這張卡的回饋條件</summary>'
-        +'<div class="tdc">'+h+'</div></details>';
+      return h;
     }
     function barHtml(r){
       var cap=capat(r);
@@ -16013,7 +16013,9 @@ if os.path.exists('cards.json'):
               +(r.lv==='setup'?'已完成前置設定':'已完成銀行活動登錄')+'</span></label>')
            +(r.reg&&!r.custom
              ?((r.lv==='none')?'<br>':'')+'<small class="nm">'+esc(r.reg)+'</small>':'')
-           +detailHtml(r)
+           +(r.custom?''
+             :'<button class="tdbtn" type="button" data-det="'+esc(id)+'">'
+              +(OPEN[id]?'\u25be':'\u25b8')+' 查看這張卡的回饋條件</button>')
            +'</td>'
            +'<td data-l="已刷（日幣）"><input class="tin" type="number" min="0" step="1000" value="'+r.jpy+'" data-sp="'+esc(id)+'"></td>'
            +'<td data-l="換算台幣帳單" class="nm">NT$'+jfmt(r.bill)+'</td>'
@@ -16021,6 +16023,11 @@ if os.path.exists('cards.json'):
            +'<td data-l="加碼額度">'+barHtml(r)+'</td>'
            +'<td data-l=""><button class="tbtn" data-rst="'+esc(id)+'">這期重新開始</button>'
            +' <button class="tbtn" data-del="'+esc(id)+'">刪除</button></td></tr>';
+          // 跨欄的明細列。放在表格裡才能跟著該張卡一起排序與重畫，
+          // 桌機上就能用整個表寬，不再被卡片欄的 248px 綁住。
+          var det=r.custom?'':detailHtml(r);
+          if(det) h+='<tr class="tdrow"'+(OPEN[id]?'':' hidden')
+            +'><td colspan="6"><div class="tdc">'+det+'</div></td></tr>';
         });
         h+='</tbody></table></div>';
       }
@@ -16069,6 +16076,8 @@ if os.path.exists('cards.json'):
     document.addEventListener('click',function(e){
       var t=e.target;
       if(!t.getAttribute) return;
+      var dt=t.getAttribute('data-det');
+      if(dt){OPEN[dt]=!OPEN[dt]; render(); return;}
       var r=t.getAttribute('data-rst'), d=t.getAttribute('data-del');
       if(r){setSp(r,0);}
       if(d){
@@ -16378,15 +16387,17 @@ if os.path.exists('cards.json'):
       '.treg input{margin:0;flex:0 0 auto}'
       '.ttab small.warn,.tdc .warn{color:var(--acc);font-weight:700}'
       '.ttab td[data-l="加碼額度"]{white-space:normal;max-width:168px}'
-      '.tdet{margin-top:9px}'
-      '.tdet summary{cursor:pointer;font-size:.8rem;color:var(--lcc);font-weight:600;'
-      'list-style:none}'
-      '.tdet summary::-webkit-details-marker{display:none}'
-      '.tdet summary::before{content:"\u25b8 ";display:inline}'
-      '.tdet[open] summary::before{content:"\u25be "}'
-      '.tdc{font-size:.8rem;margin-top:7px;border-left:2px solid var(--line);'
-      'padding-left:11px;white-space:normal;max-width:540px}'
+      '.tdbtn{display:block;margin-top:9px;padding:0;border:0;background:none;'
+      'font-family:inherit;font-size:.8rem;color:var(--lcc);font-weight:600;'
+      'cursor:pointer;text-align:left}'
+      '.tdrow>td{padding:0 0 14px;border-top:0}'
+      '.tdc{font-size:.8rem;border-left:2px solid var(--line);'
+      'padding-left:11px;white-space:normal}'
+      # 跨欄之後用的是整個表寬，長條文就不會擠在 248px 的卡片欄裡。
+      # 再給一個上限，免得在很寬的螢幕上一行拉到太長反而難讀。
+      '.tdrow .tdc{max-width:72ch}'
       '.tdc p{margin:8px 0 3px}'
+      '.tdc>:first-child{margin-top:0}'
       '.tdc ul{margin:3px 0 8px;padding-left:17px}'
       '.tdc li{margin:5px 0;line-height:1.65}'
       # 窄螢幕把每一列變成一張卡。用 data-l 當標籤，不另外產一份 HTML，
@@ -16398,6 +16409,12 @@ if os.path.exists('cards.json'):
       '.ttab,.ttab tbody,.ttab tr,.ttab td{display:block;width:auto}'
       '.ttab tr{border:1px solid var(--line);border-radius:12px;margin:0 0 12px;'
       'padding:11px 13px;background:var(--card)}'
+      '.ttab tr:has(+tr.tdrow:not([hidden])){margin-bottom:0;border-bottom:0;'
+      'border-bottom-left-radius:0;border-bottom-right-radius:0}'
+      '.ttab tr.tdrow:not([hidden]){border-top:0;padding-top:0;'
+      'border-top-left-radius:0;border-top-right-radius:0}'
+      '.ttab tr.tdrow>td{padding:0 0 4px;display:block}'
+      '.ttab tr.tdrow>td::before{display:none}'
       '.ttab td{border:0;padding:5px 0;display:flex;justify-content:space-between;'
       'align-items:center;gap:12px;white-space:normal}'
       '.tw table.ttab .tdc{max-width:100%}'
