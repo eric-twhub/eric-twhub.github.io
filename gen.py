@@ -18413,16 +18413,19 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
 
     # 結論句也從資料算，不要寫死
     def _au_say(s):
-        # 週間落差不到 15% 的，看不出見頃效應，不要讓雜訊讀起來像發現
-        if s['pct'] < 15:
-            return (f'{s["name"]}整段期間的週中位數只差 {s["pct"]}%，'
-                    f'看不出明顯的見頃溢價')
-        return (f'{s["name"]}最貴的一週是 {_au_md(s["hi"]["a"])} 那週，'
-                f'中位 NT${s["hi"]["med"]:,}，'
-                f'比最便宜的 {_au_md(s["lo"]["a"])} 那週貴 {s["pct"]}%')
-    _au_lead = '；'.join(_au_say(x) for x in _au_sum.values()) + '。'
+        # 只描述這份快照長什麼樣，不宣稱原因。本站查兩次得到不同的高點，
+        # 單一時點看不出見頃溢價，理由寫在下面那一段。
+        return (f'{s["name"]}目前最貴的一週是 {_au_md(s["hi"]["a"])} 那週'
+                f'（中位 NT${s["hi"]["med"]:,}），'
+                f'最便宜的是 {_au_md(s["lo"]["a"])} 那週'
+                f'（NT${s["lo"]["med"]:,}），差 {s["pct"]}%')
+    _au_lead = ('這是查證當下的樣子，不是趨勢：'
+                + '；'.join(_au_say(x) for x in _au_sum.values()) + '。')
 
-    _TW, _FR, _HL = AU['two'], AU['fare'], AU['holiday']
+    _TW, _FR, _HL, _SN = AU['two'], AU['fare'], AU['holiday'], AU['snapshot']
+    _au_snap = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(r["when"])}</b></td>'
+        f'<td>{html.escape(r["what"])}</td></tr>' for r in _SN['rows'])
     _au_fare_html = ('' if not TGF else (
         f'<h2 id="{_hid(_FR["title"])}">{html.escape(_FR["title"])}</h2>'
         + f'<p class="lede">{html.escape(_FR["intro"])}</p>'
@@ -18469,9 +18472,21 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
 
       + _au_fare_html
 
+      + (f'<h2 id="{_hid(_SN["title"])}">{html.escape(_SN["title"])}</h2>'
+         + f'<p class="lede">{html.escape(_SN["body"])}</p>'
+         + '<div class="tw"><table><thead><tr><th>查的時間</th>'
+           '<th>得到的答案</th></tr></thead><tbody>' + _au_snap
+         + '</tbody></table></div>'
+         + f'<div class="tldr"><ul><li><b>{html.escape(_SN["concl"])}</b></li></ul></div>'
+         + f'<p class="lede">{html.escape(_SN["why"])}</p>'
+         + f'<p class="lede"><b>{html.escape(_SN["use"])}</b></p>' if TGF else '')
+
       + f'<h2 id="{_hid(_HL["title"])}">{html.escape(_HL["title"])}</h2>'
       + f'<p class="lede">{html.escape(_HL["body"])}</p>'
-      + f'<div class="tldr"><ul><li><b>{html.escape(_HL["mean"])}</b></li></ul></div>'
+      + f'<p class="lede">{html.escape(_HL["mean"])}</p>'
+      + (f'<div class="tldr"><ul><li><b>{html.escape(_HL["but"])}</b></li></ul></div>'
+         if TGF else '')
+      + f'<p class="lede">{html.escape(_HL["hotel"])}</p>'
       + f'<p class="disc">{html.escape(_HL["other"])}'
         f'完整的三國連假撞期在<a href="{U("/japan-holiday-calendar/")}">連假日曆</a>。</p>'
 
