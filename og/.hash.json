@@ -33,8 +33,8 @@
  "japan-card-insurance": "61a605cfec0fd50d",
  "japan-esim": "27309a3706bb8492",
  "deals-2026-10-22-taipei-okinawa": "a5596ac3ea0d4d44",
+ "deals-2026-10-22-kaohsiung-okinawa": "a3a246dde89916d5",
  "deals-2026-10-22-taichung-okinawa": "2283000d898adedb",
- "deals-2026-10-22-kaohsiung-okinawa": "4540ba789764a0f8",
  "deals-2026-10-22-taipei-fukuoka": "4290d6790d43f23b",
  "deals-2026-10-22-transfer-fukuoka-kumamoto": "2d594fe7a78c87b0",
  "apple-japan-price": "28d0f5c59012c52d",
@@ -128,5 +128,6 @@
  "hotel-price-check": "7e227d2021197b88",
  "japan-hotel-check": "e43cb6fe200d07ec",
  "kawaguchiko-hotel-case": "cdaf7b021f878683",
+ "japan-ski-resort": "6870874bb496df58",
  "default": "4d963435e4937aea"
 }
