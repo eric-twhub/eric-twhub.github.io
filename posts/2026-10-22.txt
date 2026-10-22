@@ -1,4 +1,4 @@
-台日機票速報 2026-10-22 — 共 4 則
+台日機票速報 2026-10-22 — 共 5 則
 ====================================================
 ⚠️ 發文前務必點「查證連結」確認價格仍在，並截圖存證。
    票價變動快，昨日的好票今天常已失效；對不上就不要發。
@@ -20,20 +20,6 @@
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW
 ----------------------------------------------------
-✈️【高雄 → 沖繩】NT$3,839 來回含稅
-
-　🛫 台灣虎航｜直飛
-　📅 2026-11-17 – 2026-11-20
-　💡 廉航低於 NT$6,000
-
-#日本機票 #沖繩機票 #高雄出發 #便宜機票 #日本自由行
-#機票特價 #廉航 #省錢旅遊 #小資旅行 #日本旅遊
-
-　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
-　　 https://eric-twhub.github.io/deals/2026-10-22-kaohsiung-okinawa/
-　🔍 查證用，發文前自己開，不要貼出去：
-　　 https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW
-----------------------------------------------------
 ✈️【台中 → 沖繩】NT$4,003 來回含稅
 
 　🛫 台灣虎航｜直飛
@@ -48,12 +34,40 @@
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW
 ----------------------------------------------------
-✈️【台灣 → 熊本】NT$8,332 總計
+✈️【高雄 → 沖繩】NT$4,403 來回含稅
+
+　🛫 台灣虎航｜直飛
+　📅 2026-11-17 – 2026-11-20
+　💡 廉航低於 NT$6,000
+
+#日本機票 #沖繩機票 #高雄出發 #便宜機票 #日本自由行
+#機票特價 #廉航 #省錢旅遊 #小資旅行 #日本旅遊
+
+　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
+　　 https://eric-twhub.github.io/deals/2026-10-22-kaohsiung-okinawa/
+　🔍 查證用，發文前自己開，不要貼出去：
+　　 https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW
+----------------------------------------------------
+✈️【台北 → 福岡】NT$5,320 來回含稅
+
+　🛫 台灣虎航｜直飛
+　📅 2026-11-02 – 2026-11-09
+　💡 廉航低於 NT$6,000
+
+#日本機票 #福岡機票 #台北出發 #便宜機票 #日本自由行
+#機票特價 #廉航 #省錢旅遊 #小資旅行 #日本旅遊
+
+　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
+　　 https://eric-twhub.github.io/deals/2026-10-22-taipei-fukuoka/
+　🔍 查證用，發文前自己開，不要貼出去：
+　　 https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW
+----------------------------------------------------
+✈️【台灣 → 熊本】NT$7,532 總計
 
 　🛫 飛福岡再轉乘｜九州新幹線
-　📅 2026-11-01
-　💡 比直飛省 NT$2,066
-　🧮 組成：機票飛福岡 NT$6,120（來回含稅） ＋ 九州新幹線 NT$1,106×2
+　📅 2026-11-02
+　💡 比直飛省 NT$2,866
+　🧮 組成：機票飛福岡 NT$5,320（來回含稅） ＋ 九州新幹線 NT$1,106×2
 
 #日本機票 #熊本機票 #台灣出發 #便宜機票 #日本自由行
 #機票特價 #轉乘方案 #省錢旅遊 #小資旅行 #日本旅遊
