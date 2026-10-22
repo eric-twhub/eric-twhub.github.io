@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-22-taipei-okinawa",
- "generated": "2026-10-22 17:01",
+ "generated": "2026-10-22 18:27",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -26,10 +26,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$4,754（8 天有紀錄），這張低 37%"
+  "11 月出發的票，每天最便宜的平均要 NT$4,601（9 天有紀錄），這張低 35%"
  ],
  "med": 12937,
- "n_rt": 26,
+ "n_rt": 28,
  "others": [
   {
    "o": "TPE",
@@ -56,6 +56,25 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
+   "price": 3383,
+   "dep": "2026-11-09",
+   "ret": "2026-11-14",
+   "dept": "18:20",
+   "rett": "09:45",
+   "rt": true,
+   "tr": 0,
+   "dur": 175,
+   "dur_to": 80,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-09&inbound=OKA-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
    "price": 4403,
    "dep": "2026-11-25",
    "ret": "2026-11-29",
@@ -68,24 +87,6 @@
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-25&inbound=OKA-TPE&returnDate=2026-11-29&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
-  },
-  {
-   "o": "TPE",
-   "d": "OKA",
-   "air": "FD",
-   "airname": "泰國亞洲航空",
-   "cls": "lcc",
-   "price": 4749,
-   "dep": "2026-11-05",
-   "ret": "2026-11-12",
-   "dept": "13:30",
-   "rett": "09:45",
-   "rt": true,
-   "tr": 0,
-   "dur": 180,
-   "dur_to": 85,
-   "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TPE0511OKA12111?t=IT17938854001793894100000085TPEOKA17944767001794478800000095OKATPE_cdf739ff9241fba422996b55f8a891e9_12093&search_date=21102026&expected_price_uuid=01a15cad-e633-8040-2719-8113a9a94b6e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ICcnxYzk4LejrN9sZLB3tQ&expected_price_source=share&expected_price_currency=twd&expected_price=4749&marker=775639"
   }
  ]
 }
