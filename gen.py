@@ -1103,8 +1103,13 @@ blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem
 .tw table{min-width:640px;font-size:.84rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
 .tw td.win{color:var(--lcc);font-weight:700}
-/* 左右兩欄對照的表，在手機上攤成卡片。這種表的重點就是兩欄並排看，
-   讓它橫向捲動等於在手機上看不到右邊那一欄，而右邊那欄常常才是結論。 */
+/* 左右兩欄對照的表。格子裡裝的是整句話不是數字，所以不套 .tw 的 nowrap，
+   不然表會撐得比容器寬，桌機也一樣會切掉右邊那一欄。 */
+.tw table.cmp2{min-width:0}
+.tw table.cmp2 th,.tw table.cmp2 td{white-space:normal}
+.cmp2 td.nm{white-space:nowrap}
+/* 手機上再進一步攤成卡片：兩欄並排是這種表的重點，
+   讓它橫向捲動等於在手機上看不到右邊那一欄。 */
 @media(max-width:760px){
 .cmpw{overflow:visible}
 .tw table.cmp2{min-width:0;width:100%;display:block}
