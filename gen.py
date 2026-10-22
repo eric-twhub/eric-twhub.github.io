@@ -15511,6 +15511,9 @@ if os.path.exists('cards.json'):
             '<th>實拿回饋</th><th>有效回饋率</th><th>實際負擔</th>'
             '</tr></thead><tbody>' + rows + '</tbody></table></div>'
           + '<p class="disc">回饋以台幣帳單金額計算；點數型回饋以 1 點約 1 元估算。</p>'
+          + (f'<div class="tldr"><ul><li><b>這張卡的「1 點約 1 元」本站沒有官方依據</b><br>'
+             f'{html.escape(c["points_unknown"])}</li></ul></div>'
+             if c.get('points_unknown') else '')
           # 讀者剛看完「刷到多少到頂」，這裡接得上。沒有上限的卡不出現，
           # 不然會變成到處都掛同一句的泛稱連結。
           + (f'<div class="tldr"><ul><li><b>刷到約 {money(hit)} 之後加碼就沒了，'
