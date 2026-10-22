@@ -1552,7 +1552,8 @@ _AD_SKIP = ('deals/', 'cards/', 'posts/')
 # 刻意不放廣告的頁。這兩頁談的是別人的死亡，把版位掛上去會變成另一回事。
 # 列在這裡是為了和「新頁面忘了加進 _AD_MAP」區分開，否則建置時的提醒會一直跳，
 # 跳久了就會被當成雜訊，真的漏掉的時候反而看不見。
-_NO_AD_OK = {'/japan-hotel-check/', '/kawaguchiko-hotel-case/'}
+_NO_AD_OK = {'/japan-hotel-check/', '/kawaguchiko-hotel-case/',
+             '/tokyo/teamlab/'}
 
 
 def u_region(path):
@@ -18596,6 +18597,169 @@ if os.path.exists('ginkgo.json'):
         f'出發前請以官方公告為準。本頁不評價再開發，只整理官方文件上的文字。</p>'
       + foot())
     pages.append(('/tokyo/ginkgo/', 0.7))
+
+# ---------- teamLab 兩館 ----------
+if os.path.exists('teamlab.json'):
+    TL = json.load(open('teamlab.json', encoding='utf-8'))
+    _tlb = next(h for h in TL['halls'] if h['slug'] == 'borderless')
+    _tlp = next(h for h in TL['halls'] if h['slug'] == 'planets')
+
+    def _tl_price(h):
+        # 麻布台的成人票是浮動價，標示出來；豊洲是固定價。
+        # 兩館的票種名稱也不一樣，所以各自列表不做成同一張對照表。
+        return ''.join(
+            f'<tr><td>{html.escape(t["who"])}'
+            + (f'{SMALL}{html.escape(t["note"])}</small>' if t.get('note') else '')
+            + '</td><td>'
+            + ('<b>免費</b>' if t['yen'] == 0 else f'<b>¥{t["yen"]:,}</b>')
+            + ('<b class="warn">　浮動</b>' if t.get('float') else '')
+            + '</td></tr>' for t in h['tickets'])
+
+    def _tl_li(xs):
+        return '<ul>' + ''.join(f'<li>{html.escape(x)}</li>' for x in xs) + '</ul>'
+
+    # 兩館差在哪。只放會改變「訂哪一館、怎麼訂」的欄位。
+    _tl_cmp = [
+      ('展期', _tlb['run'], _tlp['run']),
+      ('成人票', f'¥{_tlb["tickets"][0]["yen"]:,}（浮動價，依日期而異）',
+                 f'¥{_tlp["tickets"][0]["yen"]:,}（固定）'),
+      ('現場買得到嗎', _tlb['onsite'], _tlp['onsite']),
+      ('官方認可的通路', '官方票務網站與 KLOOK', '官方票務網站（DMM 經營）'),
+      ('改期', _tlb['change'], _tlp['change']),
+      ('再入場', _tlb['reentry'], _tlp['reentry']),
+      ('休館日', _tlb['closed'], _tlp['closed']),
+      ('最近的車站', _tlb['access'][0], _tlp['access'][0]),
+    ]
+    _tl_rows = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(k)}</b></td>'
+        f'<td>{html.escape(a)}</td><td>{html.escape(b)}</td></tr>'
+        for k, a, b in _tl_cmp)
+
+    _tl_faq = [
+     ('teamLab 兩館有什麼不一樣？',
+      f'麻布台的 teamLab 無界是常設展，豊洲的 teamLab Planets 官方寫明到 {_tlp["run"][-7:]}。'
+      f'票價制度也不同：無界的成人票是浮動價，依日期而異；Planets 是固定 ¥{_tlp["tickets"][0]["yen"]:,}。'
+      f'現場售票也不一樣，無界現場買得到但要多付 200 日圓，Planets 現場完全不售票。'),
+     ('teamLab 的票可以退嗎？',
+      '兩館原則上都不能退票。但官方票務網站買的電子票可以改日期與時段，最多三次，'
+      '須在入場開始時間的 2 小時前完成。透過旅行社、便利商店或其他平台買的，'
+      '要找各該銷售點，官方不受理。'),
+     ('在 Klook 或 KKday 買 teamLab 的票可以嗎？',
+      f'兩館的官方說法不一樣。麻布台那一館官方寫「{_tlb["channel_quote"]}」，'
+      f'等於把 KLOOK 列為正式通路。豊洲那一館的官方頁則把 KLOOK 和 Ctrip、HIS GO 一起'
+      f'歸在「其他門票」，連停車優惠的受理櫃台都和官方票分開。'
+      f'不論在哪買，要改日期時段只有官方票做得到。'),
+     ('去 teamLab Planets 要注意什麼？',
+      '要赤腳，入館前鞋襪全脫。成人也可能被水浸濕到膝蓋，建議帶替換衣物。'
+      '部分地板是鏡面，穿裙子或闊腿褲可能走光，館內有免費五分短褲可借，尺寸 XS 到 6L。'
+      '穿無法固定腳跟的涼鞋或高跟鞋會有作品不能體驗，館方提供免費租借鞋子。'),
+     ('遲到還能進去嗎？',
+      f'{html.escape(TL["late"]["planets"])} 麻布台那一館{html.escape(TL["late"]["borderless"])} '
+      f'{html.escape(TL["late"]["so"])}'),
+    ]
+    _tl_faq_html = ''.join('<details class="faq"><summary>' + html.escape(q)
+                           + '</summary><div>' + html.escape(a) + '</div></details>'
+                           for q, a in _tl_faq)
+    _tl_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in _tl_faq]}, ensure_ascii=False)
+
+    write('tokyo/teamlab/index.html',
+      head('teamLab 兩館怎麼分：麻布台常設、豊洲到 2027 年末，票價與改期規則都不同',
+           '台灣人最常訂錯的是把麻布台的 teamLab 無界和豊洲的 teamLab Planets 搞混。'
+           '兩館的展期、票價制度、現場售票、官方認可的購票通路、遲到的處理都不一樣。'
+           '全部引官方繁體中文頁原文。',
+           'tokyo/teamlab/',
+           '<script type="application/ld+json">' + _tl_ld + '</script>')
+      + crumbs([('首頁', '/'), ('東京', '/kanto/'), ('teamLab 兩館', None)]) + topnav()
+      + '<h1>teamLab 兩館怎麼分，訂哪一個</h1>'
+      + '<p class="lede">東京有兩個 teamLab，名字像、票分開賣、規則不一樣，'
+        '而且訂錯了不能退。這一頁把兩館會影響決定的差別逐項列出來，數字與引文'
+        '全部出自官方繁體中文頁。</p>'
+      + f'<div class="today"><div class="tday">查證於 {TL["checked"]}</div>'
+        f'<div class="tans">豊洲的 Planets 只到 2027 年末</div>'
+        f'<div class="tsub">麻布台的無界是常設展，官方沒有寫結束日期；'
+        f'豊洲的 Planets 官方寫明展期是 {html.escape(_tlp["run"])}。'
+        f'想去 Planets 的人要把這個日期放進行程規劃。</div>'
+        f'<div class="tbuf">兩館都不能退票。要保留改期的彈性，'
+        f'只有官方票務網站買的電子票做得到。</div></div>'
+
+      + f'<h2 id="{_hid("兩館差在哪")}">兩館差在哪</h2>'
+      + '<div class="tw"><table><thead><tr><th></th>'
+        f'<th>{html.escape(_tlb["name"])}（{html.escape(_tlb["area"])}）</th>'
+        f'<th>{html.escape(_tlp["name"])}（{html.escape(_tlp["area"])}）</th>'
+        '</tr></thead><tbody>' + _tl_rows + '</tbody></table></div>'
+
+      + f'<h2 id="{_hid("票價")}">票價</h2>'
+      + '<p class="lede">兩館的票種名稱不一樣，所以分開列。'
+        '標「浮動」的是官方寫明依日期變動的票種，這裡的數字是官方頁當時顯示的基準價。</p>'
+      + f'<h3>{html.escape(_tlb["name"])}（{html.escape(_tlb["area"])}）</h3>'
+      + '<div class="tw"><table><thead><tr><th>票種</th><th>價格</th></tr></thead><tbody>'
+      + _tl_price(_tlb) + '</tbody></table></div>'
+      + f'<blockquote class="q">{html.escape(_tlb["float_quote"])}'
+        f'<br>{html.escape(_tlb["onsite_quote"])}'
+        f'<cite>teamLab 無界 官方繁中頁</cite></blockquote>'
+      + f'<h3>{html.escape(_tlp["name"])}（{html.escape(_tlp["area"])}）</h3>'
+      + '<div class="tw"><table><thead><tr><th>票種</th><th>價格</th></tr></thead><tbody>'
+      + _tl_price(_tlp) + '</tbody></table></div>'
+      + f'<blockquote class="q">{html.escape(_tlp["onsite_quote"])}'
+        f'<cite>teamLab Planets 官方繁中頁</cite></blockquote>'
+
+      + f'<h2 id="{_hid("訂哪裡")}">訂哪裡：兩館的官方說法不一樣</h2>'
+      + f'<p class="lede">{html.escape(_tlb["channel_so"])}</p>'
+      + f'<blockquote class="q">{html.escape(_tlb["channel_quote"])}'
+        f'<cite>teamLab 無界 官方繁中頁</cite></blockquote>'
+      + f'<div class="tldr"><ul>'
+        f'<li><b>{html.escape(_tlp["parking_note"])}</b></li>'
+        f'<li>{html.escape(_tlp["change_quote"])}'
+        f'　在別處買的票，官方不受理改期。</li></ul></div>'
+
+      + f'<h2 id="{_hid("改期與退票")}">改期與退票</h2>'
+      + '<p class="lede">兩館的規則一樣：原則上不退票，但官方票務網站買的電子票'
+        '最多可以改三次日期與時段。豊洲那一館另外列出了五種改不了的情況。</p>'
+      + _tl_li(_tlp['change_no'])
+      + f'<p class="lede">另外，{html.escape(TL["resale"]["quote"])}'
+        f'（{html.escape(_tlp["name"])}官方注意事項）{html.escape(TL["resale"]["so"])}</p>'
+
+      + f'<h2 id="{_hid(TL["late"]["t"])}">{html.escape(TL["late"]["t"])}</h2>'
+      + f'<div class="tldr"><ul>'
+        f'<li><b>{html.escape(_tlp["name"])}</b>：{html.escape(TL["late"]["planets"])}</li>'
+        f'<li><b>{html.escape(_tlb["name"])}</b>：{html.escape(TL["late"]["borderless"])}</li>'
+        f'<li>{html.escape(TL["late"]["so"])}</li></ul></div>'
+
+      + f'<h2 id="{_hid("豊洲那一館的館內規則特別多")}">豊洲那一館的館內規則特別多</h2>'
+      + '<p class="lede">這一館要赤腳、會踩水、有鏡面地板，規則比麻布台那一館多很多，'
+        '而且會影響當天該穿什麼。</p>'
+      + _tl_li(_tlp['quirks'])
+      + f'<p class="lede">{html.escape(_tlp["pay_note"])}</p>'
+
+      + f'<h2 id="{_hid("麻布台那一館的特點")}">麻布台那一館的特點</h2>'
+      + _tl_li(_tlb['quirks'])
+
+      + f'<h2 id="{_hid("怎麼去")}">怎麼去</h2>'
+      + f'<h3>{html.escape(_tlb["name"])}</h3>'
+      + f'<p class="lede">{html.escape(_tlb["addr"])}</p>'
+      + _tl_li(_tlb['access'])
+      + f'<p class="lede"><b>{html.escape(_tlb["access_note"])}</b></p>'
+      + f'<h3>{html.escape(_tlp["name"])}</h3>'
+      + f'<p class="lede">{html.escape(_tlp["addr"])}</p>'
+      + _tl_li(_tlp['access'])
+      + f'<p class="lede">{html.escape(_tlp["access_note"])}</p>'
+
+      + '<h2>本站查不到的</h2>'
+      + '<div class="tldr"><ul>'
+      + ''.join(f'<li><b>{html.escape(u["what"])}</b><br>{html.escape(u["why"])}</li>'
+                for u in TL['unverified'])
+      + '</ul></div>'
+
+      + '<h2>常見問題</h2>' + _tl_faq_html
+      + f'<p class="disc">本頁查證於 {TL["checked"]}，票價、營業時間、休館日與館內規則'
+        f'全部引自兩館的官方繁體中文頁。官方頁是前端算繪的，內容隨時會改，'
+        f'出發前請以官方頁與售票網站為準。本頁不販售門票，也沒有任何平台的推廣連結。</p>'
+      + foot())
+    pages.append(('/tokyo/teamlab/', 0.7))
+
 
 
 # ---------- 紅葉見頃 × 逐日機票 ----------
