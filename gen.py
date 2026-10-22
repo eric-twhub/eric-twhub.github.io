@@ -14507,7 +14507,10 @@ if os.path.exists('cards.json'):
         return jpy * _MIDC * (1 + _fx['typical'] / 100)
 
     def _tiers(c, scope):
-        return [t for t in c['tiers'] if t['scope'] in (scope, 'any')]
+        # 名額已滿、這一期登錄不到的加碼不列入任何試算。帳面上的 total 仍是
+        # 官方算式，差額由 nowmax() 在標題與比較表說明，不要讓兩邊各算各的。
+        return [t for t in c['tiers']
+                if t['scope'] in (scope, 'any') and not t.get('sold_out')]
 
     def _has(c, mode):
         return mode == 'base' or bool(_tiers(c, mode))
@@ -14555,6 +14558,10 @@ if os.path.exists('cards.json'):
         return round(min(t['cap'] / (t['rate'] / 100) for t in ts)) if ts else 0
 
     _CJS = ('<script>window.JCARD={mid:%s,fee:%s,cards:%s};'
+            # 這一層算不算進這個情境。sold_out 是這一期名額已滿、現在登錄不到，
+            # 和 Python 端的 _tiers 必須一致，不然同一頁會給出兩個數字。
+            'window.jok=function(t,mode){return (t.scope===mode||t.scope==="any")'
+            '&&!t.sold_out;};'
             'window.jfmt=function(n){return Math.round(n).toLocaleString("en-US")};'
             'window.jbill=function(y){return y*JCARD.mid*(1+JCARD.fee/100)};'
             # 有些加碼的官方條款寫明那筆消費不算一般消費，所以連基本回饋都沒有
@@ -14563,29 +14570,28 @@ if os.path.exists('cards.json'):
             # sc 是使用者選的情境：即使因為沒有加碼而退回 base 模式，
             # 要不要給基本回饋仍然看那個情境怎麼規定。
             'window.jnb=function(c,sc){return sc&&sc!=="base"&&c.tiers.some(function(t){'
-            'return (t.scope===sc||t.scope==="any")&&t.no_base;});};'
+            'return jok(t,sc)&&t.no_base;});};'
             'window.jnbwhy=function(c,sc){var f=c.tiers.filter(function(t){'
-            'return (t.scope===sc||t.scope==="any")&&t.no_base;})[0];'
+            'return jok(t,sc)&&t.no_base;})[0];'
             'return f?(f.no_base_why||""):"";};'
             'window.jisnew=function(t){return /新戶|核卡/.test(t.label+(t.cond||""));};'
             'window.jnew=function(c,mode){return mode!=="base"&&c.tiers.some(function(t){'
-            'return (t.scope===mode||t.scope==="any")&&jisnew(t);});};'
+            'return jok(t,mode)&&jisnew(t);});};'
             'window.jbackold=function(c,y,mode){var c2={};for(var k in c)c2[k]=c[k];'
             'c2.tiers=c.tiers.filter(function(t){return !jisnew(t);});'
             'return jback(c2,y,mode,mode);};'
             'window.jback=function(c,y,mode,sc){var b=jbill(y),cap=false,'
-            'ts=mode==="base"?[]:c.tiers.filter(function(t){'
-            'return t.scope===mode||t.scope==="any";}),'
+            'ts=mode==="base"?[]:c.tiers.filter(function(t){return jok(t,mode);}),'
             'v=jnb(c,sc||mode)?0:c.base/100*b;'
             'ts.forEach(function(t){var x=t.rate/100*b;'
             'if(t.cap&&x>t.cap){x=t.cap;cap=true;}v+=x;});'
             'return {v:v,cap:cap,bill:b};};'
             'window.jhas=function(c,mode){return mode==="base"||'
-            'c.tiers.some(function(t){return t.scope===mode||t.scope==="any";});};'
+            'c.tiers.some(function(t){return jok(t,mode);});};'
             # 第一個上限在哪個台幣帳單金額卡住；沒有上限回 0。
             # 各層的 cap 各自獨立計算，所以取最小的那個
             'window.jcapat=function(c,mode){if(mode==="base")return 0;var m=0;'
-            'c.tiers.filter(function(t){return (t.scope===mode||t.scope==="any")&&t.cap;})'
+            'c.tiers.filter(function(t){return jok(t,mode)&&t.cap;})'
             '.forEach(function(t){var x=t.cap/(t.rate/100);if(!m||x<m)m=x;});return m;};</script>') % (
         _MIDC, _fx['typical'],
         json.dumps([{'n': c['name'], 's': c['slug'], 'base': c['base'],
@@ -14661,7 +14667,10 @@ if os.path.exists('cards.json'):
                       + '這一期名額已滿'
                       if soldout(c) else '')
                    + '</small></td>'
-                   f'<td><b>{c["total"]}%</b>{SMALL}基本 {c["base"]}%'
+                   + (f'<td><b class="warn">{nowmax(c)}%</b>{SMALL}'
+                      f'官方算式 {c["total"]}%，扣掉已額滿的那層<br>基本 {c["base"]}%'
+                      if soldout(c) else
+                      f'<td><b>{c["total"]}%</b>{SMALL}基本 {c["base"]}%')
                    + (f' ＋ {len(_tiers(c,"shop"))} 層加碼' if _tiers(c, 'shop') else '')
                    + '</small></td>'
                    + (f'<td class="warn"><b>{_old:g}%</b>{SMALL}'
@@ -15411,8 +15420,9 @@ if os.path.exists('cards.json'):
 
         others = ''.join(
             f'<tr><td><a href="{U("/japan-credit-card/"+o["slug"]+"/")}">{html.escape(o["name"])}</a></td>'
-            f'<td>{o["total"]}%</td>'
-            f'<td>{money(round(_back(o, 100000, "shop")[0]))}</td></tr>'
+            + (f'<td><b class="warn">{nowmax(o)}%</b>{SMALL}官方 {o["total"]}%，'
+               f'有一層已額滿</small></td>' if soldout(o) else f'<td>{o["total"]}%</td>')
+            + f'<td>{money(round(_back(o, 100000, "shop")[0]))}</td></tr>'
             for o in sorted(CD['cards'], key=lambda x: -x['total']) if o['slug'] != c['slug'])
 
         cf = [
@@ -15562,8 +15572,10 @@ if os.path.exists('cards.json'):
           + '<h2>跟其他卡比（日幣 10 萬為例）</h2>'
           + '<div class="tw"><table><thead><tr><th>卡片</th><th>實體消費最高</th>'
             '<th>¥100,000 實拿</th></tr></thead><tbody>'
-          + f'<tr><td><b>{html.escape(c["name"])}</b>（本頁）</td><td>{c["total"]}%</td>'
-            f'<td class="win"><b>{money(round(_back(c, 100000, "shop")[0]))}</b></td></tr>'
+          + f'<tr><td><b>{html.escape(c["name"])}</b>（本頁）</td>'
+          + (f'<td><b class="warn">{nowmax(c)}%</b>{SMALL}官方 {c["total"]}%，'
+             f'有一層已額滿</small></td>' if soldout(c) else f'<td>{c["total"]}%</td>')
+          + f'<td class="win"><b>{money(round(_back(c, 100000, "shop")[0]))}</b></td></tr>'
           + others + '</tbody></table></div>'
           + '<div class="cities">'
           + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
@@ -15806,7 +15818,10 @@ if os.path.exists('cards.json'):
     // 進度表的使用者多半已經持卡，所以預設是老客戶。
     var NEW=false;
     function mine(c,mode){return c.tiers.filter(function(t){
-      return (t.scope===mode||t.scope==='any')&&(NEW||!jisnew(t));});}
+      return jok(t,mode)&&(NEW||!jisnew(t));});}
+    // 被名額已滿擋掉的層，要講出來，不然使用者只看到數字變小不知道為什麼
+    function gone(c,mode){return c.tiers.filter(function(t){
+      return (t.scope===mode||t.scope==='any')&&t.sold_out;});}
     function marg(c,mode,bill){
       if(mode==='base') return {rate:c.base,full:[]};
       var ts=mine(c,mode);
@@ -15857,6 +15872,7 @@ if os.path.exists('cards.json'):
         out.push({c:c,slug:slug,jpy:jpy,bill:bill,
           has:mine(c,sc).length>0,tu:(sc==='transit'?(c.tu||''):''),
         newonly:(!NEW&&jhas(c,sc)&&mine(c,sc).length===0),
+          sold:gone(c,sc).map(function(t){return t.label;}),
           m:marg(c,sc,bill),hr:headroom(c,sc,bill)});
       });
       (S.custom||[]).forEach(function(x){
@@ -15895,6 +15911,8 @@ if os.path.exists('cards.json'):
           if(r.tu){rate='<span class="nm">本站查不到</span>';note=esc(r.tu);}
           else{
             rate='<b>'+r.m.rate+'%</b>';
+            if(!r.custom&&r.sold&&r.sold.length)
+              note='不含「'+esc(r.sold.join('、'))+'」，這一期名額已滿，現在登錄不到';
             if(!r.custom&&r.newonly) note='這張的加碼只有新戶或核卡期間內才有，只算基本回饋';
             else if(!r.custom&&!r.has) note='這張沒有這個情境的加碼，只有基本回饋';
             else if(r.m.full.length){
