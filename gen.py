@@ -16407,6 +16407,7 @@ if os.path.exists('cards.json'):
       '.tw table.ttab{min-width:0;width:100%;font-size:.88rem}'
       '.ttab thead{display:none}'
       '.ttab,.ttab tbody,.ttab tr,.ttab td{display:block;width:auto}'
+      '.ttab tr.tdrow[hidden]{display:none}'
       '.ttab tr{border:1px solid var(--line);border-radius:12px;margin:0 0 12px;'
       'padding:11px 13px;background:var(--card)}'
       '.ttab tr:has(+tr.tdrow:not([hidden])){margin-bottom:0;border-bottom:0;'
