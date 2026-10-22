@@ -4523,7 +4523,7 @@ if os.path.exists('transit.json'):
                 '<div class="tldr"><ul><li><b>'
                 + html.escape(c['name']) + '的加碼不疊基本回饋。</b>'
                 + html.escape(next(t['no_base_why'] for t in c['tiers']
-                                   if t.get('no_base_why')))
+                                   if t.get('no_base_why')).rstrip('。'))
                 + '。</li></ul></div>'
                 for c in _trok
                 if any(t.get('no_base_why') for t in c['tiers']))
@@ -15437,14 +15437,14 @@ if os.path.exists('cards.json'):
 
         cf = [
          (f'{c["name"]}在日本刷卡回饋多少？',
-          f'{c["base_note"]}。'
+          f'{c["base_note"].rstrip("。")}。'
           + (''.join(f'另有{t["label"]} {t["rate"]}%（{t["cond"]}）。' for t in c['tiers']))
           + (f'實體消費全部加碼同時成立時合計最高 {c["total"]}%，'
              f'但台幣帳單刷到約 {money(hit)} 加碼就到頂，超過的部分只剩 {c["base"]}%。'
              if hit else f'合計最高 {c["total"]}%。')),
          (f'{c["name"]}要登錄嗎？', c['reg'] + '。'),
          (f'什麼情況拿不到{c["name"]}的加碼？',
-          '；'.join(c['exclude']) + '。另外結帳時若選台幣（DCC），'
+          '；'.join(x.rstrip('。') for x in c['exclude']) + '。另外結帳時若選台幣（DCC），'
           '不只匯率差 3–5%，多數銀行的海外加碼也要求以外幣結帳。'),
          (f'{c["name"]}適合什麼人？', f'適合：{c["good"]} 不適合：{c["bad"]}'),
         ]
@@ -15484,7 +15484,7 @@ if os.path.exists('cards.json'):
                 + f'這一期名額已滿，現在登錄不到，上面的 {c["total"]}% 要等下一期'
                   f'開放登錄才拿得到。</div>')
                if soldout(c) else '')
-            + f'<div class="tsub">{html.escape(c["base_note"])}。'
+            + f'<div class="tsub">{html.escape(c["base_note"].rstrip("。"))}。'
             + (f'另有 {len(c["tiers"])} 層加碼，各有條件與上限，需同時符合才疊得上去。'
                if c['tiers'] else '') + '</div>'
             + (f'<div class="tbuf">{html.escape(c["total_note"])}</div>'
@@ -15651,7 +15651,7 @@ if os.path.exists('cards.json'):
                 f'下面用 ¥100,000 為例逐家算。條件查證於 {_CDCHK}。</p>'
               + f'<div class="today"><div class="tday">這張卡的日本實體消費</div>'
                 f'<div class="tans">既有卡友最高 {_oldrate(c, "shop")}%</div>'
-                f'<div class="tsub">{html.escape(c["base_note"])}。'
+                f'<div class="tsub">{html.escape(c["base_note"].rstrip("。"))}。'
                 f'刷日幣會再收 {_fx["typical"]}% 國外交易手續費，回饋以台幣帳單計算，'
                 f'所以回饋率不等於淨省。</div>'
                 f'<div class="tbuf">{html.escape(c["reg"])}</div></div>'
