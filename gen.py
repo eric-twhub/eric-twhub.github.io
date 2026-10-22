@@ -2546,6 +2546,15 @@ def best(fs,rt=None):
 def money(n): return f'NT${n:,}'
 
 
+def soldout(c):
+    return [t for t in c['tiers'] if t.get('sold_out')]
+
+
+def nowmax(c):
+    # 扣掉這一期已經額滿、現在登錄不到的加碼之後，實際還拿得到的上限。
+    return round(c['total'] - sum(t['rate'] for t in soldout(c)), 1)
+
+
 def capv(t):
     # 官方以點數為單位的上限不要算繪成 NT$。OPENPOINT 與 LINE POINTS 雖然
     # 1 點折抵 1 元，數字一樣，但寫成「NT$500 上限」是在轉述官方沒說的事。
@@ -14647,6 +14656,10 @@ if os.path.exists('cards.json'):
                       if c.get('other_perks') else '')
                    + (f'<br>🅿️ 機場停車 {html.escape(c["parking"]["free"])}'
                       if (c.get('parking') or {}).get('has') else '')
+                   + (f'<br><b class="warn">⚠ 現在只拿得到 {nowmax(c)}%</b>，'
+                      + '、'.join(html.escape(t['label']) for t in soldout(c))
+                      + '這一期名額已滿'
+                      if soldout(c) else '')
                    + '</small></td>'
                    f'<td><b>{c["total"]}%</b>{SMALL}基本 {c["base"]}%'
                    + (f' ＋ {len(_tiers(c,"shop"))} 層加碼' if _tiers(c, 'shop') else '')
@@ -15445,7 +15458,13 @@ if os.path.exists('cards.json'):
             f'　·　匯率 {_MIDC} 每日更新</div>'
             f'<div class="tans">實體消費最高 {c["total"]}%'
             + (f'，加碼刷到 {money(hit)} 就到頂' if hit else '，無加碼上限') + '</div>'
-            f'<div class="tsub">{html.escape(c["base_note"])}。'
+            + ((f'<div class="tbuf"><b class="warn">⚠ 現在實際只拿得到 '
+                f'{nowmax(c)}%</b>：'
+                + '、'.join(html.escape(t['label']) for t in soldout(c))
+                + f'這一期名額已滿，現在登錄不到，上面的 {c["total"]}% 要等下一期'
+                  f'開放登錄才拿得到。</div>')
+               if soldout(c) else '')
+            + f'<div class="tsub">{html.escape(c["base_note"])}。'
             + (f'另有 {len(c["tiers"])} 層加碼，各有條件與上限，需同時符合才疊得上去。'
                if c['tiers'] else '') + '</div>'
             + (f'<div class="tbuf">{html.escape(c["total_note"])}</div>'
