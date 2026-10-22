@@ -165,7 +165,9 @@ def build(d, today):
     fnote = f'票價與截止日查證於 {d["checked"]}，售完即提前結束'
     out = []
     deepest = max(tk, key=off)
-    soon = sorted({t['cut'] for t in tk})[0]
+    _cuts = sorted({t['cut'] for t in tk})
+    soon = next((c for c in _cuts
+                 if datetime.date.fromisoformat(c) >= today), _cuts[-1])
     soon_n = sum(1 for t in tk if t['cut'] == soon)
     days = (datetime.date.fromisoformat(soon) - today).days
 

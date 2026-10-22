@@ -5410,7 +5410,13 @@ if os.path.exists('ski-ticket.json'):
 
     _st_n = len(ST['tickets'])
     _st_max = max(round((t['was'] - t['now']) / t['was'] * 100) for t in ST['tickets'])
-    _st_930 = [t['n'] for t in ST['tickets'] if t['cut'] == '2026-09-30']
+    _st_today = datetime.date.today()
+    _st_cuts = sorted({t['cut'] for t in ST['tickets']})
+    _st_next = next((c for c in _st_cuts
+                     if datetime.date.fromisoformat(c) >= _st_today), None)
+    _st_next_n = sum(1 for t in ST['tickets'] if t['cut'] == _st_next)
+    _st_gone = [t['n'] for t in ST['tickets']
+                if datetime.date.fromisoformat(t['cut']) < _st_today]
 
     st_title = (f'日本雪票早鳥 {ST["season"]}：{_st_n} 個雪場的折扣與截止日，'
                 f'對上気象庁 的降雪預報')
@@ -5436,7 +5442,11 @@ if os.path.exists('ski-ticket.json'):
         f'但訂購當天 23:59 過後「理由の如何を問わず」不受理取消。'
         f'而気象庁 9 月 18 日的寒候期予報 給東・西日本日本海側的「降雪量偏少」機率是 '
         f'<b>50%</b>，北日本日本海側是 40% 對 40%。'
-        f'最近的一道截止日是 <b>2026-09-30</b>，那天結束的有 {len(_st_930)} 個雪場。</div></div>'
+        + (f'最近的一道截止日是 <b>{_st_next}</b>，那天結束的有 {_st_next_n} 個雪場。'
+           if _st_next else '本頁收錄的早鳥票截止日都已經過了。')
+        + (f'另外有 {len(_st_gone)} 個雪場的早鳥票已經截止，下面的表格保留它們的'
+           f'原價與折扣，當作下一季的參考。' if _st_gone else '')
+        + '</div></div>'
 
       + '<h2>先把四個誤解拆掉</h2>' + _mythrows
 
