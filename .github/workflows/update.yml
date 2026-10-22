@@ -85,9 +85,22 @@ jobs:
         run: python3 gen.py
 
       - name: 產生社群分享縮圖（og:image）
+        # 2026-10-22 這一步卡了 26 分 48 秒、一行輸出都沒有，吃掉整個 job 的
+        # 30 分鐘額度被砍掉。正常只要 17 秒，卡住的是 apt 抓套件那段（-qq 是
+        # 靜默的，所以「完全沒輸出」就代表還沒跑到我們自己的程式）。
+        timeout-minutes: 6
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq fonts-noto-cjk >/dev/null
+          # 字型本來就在 runner 上就不要碰網路。裝不成也往下走：底下的檔案
+          # 大小檢查會抓到豆腐字，那比在這裡卡死 27 分鐘好判斷。
+          if fc-list 2>/dev/null | grep -qi "Noto Sans CJK"; then
+            echo "  已有 Noto Sans CJK，略過安裝"
+          else
+            APT="-o Acquire::Retries=3 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20"
+            timeout 120 sudo apt-get update -qq $APT \
+              || echo "::warning::apt-get update 逾時或失敗，繼續往下走"
+            timeout 180 sudo apt-get install -y -qq $APT fonts-noto-cjk >/dev/null \
+              || echo "::warning::字型安裝逾時或失敗，下面的大小檢查會抓到"
+          fi
           fc-cache -f >/dev/null 2>&1 || true
           python3 make_og_cards.py
           # 中文沒算進去會整片豆腐字，用檔案大小粗略檢查有沒有算繪內容
