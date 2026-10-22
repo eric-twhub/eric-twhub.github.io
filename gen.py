@@ -1517,6 +1517,7 @@ _AD_MAP = [
     ('japan-airport-last-train', 'transfer'),
     ('japan-esim', 'esim'), ('japan-sms', 'esim'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
+    ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
     ('okinawa/churasun6', 'activity2'), ('tokyo/worth-flying-for', 'activity2'),
     ('tokyo/street-fashion', 'activity2'), ('tokyo/hostel', 'transfer'),
@@ -17790,6 +17791,134 @@ if os.path.exists('skiresort.json'):
         f'本站與文中任何售票通路沒有合作關係。</p>'
       + foot())
     pages.append(('/japan-ski-resort/', 0.8))
+
+
+# ---------- 神宮外苑銀杏並木 ----------
+# 中文介紹多半抄來抄去，連並木到哪裡為止都寫錯（官方寫的終點是外苑中央広場的
+# 圓周道路，不是絵画館）。而最影響行程的事是絵画館 在修復：休館期間 2026-10-21
+# 才剛從 2027 年 5 月末延到 8 月末，連東京観光財団 的頁面都還掛著舊日期。
+# いちょう祭り 本站查不到任何官方公告，三態處理：不寫有，也不寫沒有。
+if os.path.exists('ginkgo.json'):
+    GK = json.load(open('ginkgo.json', encoding='utf-8'))
+    _gkh = GK['headline']
+    _GA, _GW, _GN = GK['gallery'], GK['where'], GK['numbers']
+    _GF, _GS, _GR, _GC = GK['festival'], GK['season'], GK['redev'], GK['access']
+
+    _gk_num = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(r["k"])}</b></td>'
+        f'<td><b>{html.escape(r["v"])}</b></td>'
+        f'<td class="jq">{html.escape(r["jp"])}</td>'
+        f'<td>{html.escape(r["w"]) if r["w"] else "—"}</td></tr>'
+        for r in _GN['rows'])
+
+    _gk_red = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(r["k"])}</b></td>'
+        f'<td class="jq">{html.escape(r["jp"])}</td>'
+        f'<td>{html.escape(r["w"]) if r["w"] else "—"}</td></tr>'
+        for r in _GR['rows'])
+
+    _gk_st = ''.join(
+        f'<tr><td class="nm">{html.escape(r["line"])}</td>'
+        f'<td>{html.escape(r["st"])}</td></tr>' for r in _GC['stations'])
+
+    _gk_unv = ''.join(f'<li>{html.escape(x)}</li>' for x in GK['unverified'])
+    _gk_faq = ''.join('<details class="faq"><summary>' + html.escape(q)
+                      + '</summary><div>' + html.escape(a) + '</div></details>'
+                      for q, a in GK['faq'])
+    _gk_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in GK['faq']]}, ensure_ascii=False)
+
+    write('tokyo/ginkgo/index.html',
+      head('神宮外苑銀杏並木：146 棵 300 公尺，絵画館休館到 2027 年 8 月',
+           '數字與引文全部出自明治神宮外苑官網。並木的終點是外苑中央広場的圓周道路，'
+           '不是絵画館；而絵画館 正在保存修理工事，休館期間 2026-10-21 剛延長。'
+           'いちょう祭り 本站查不到官方公告。',
+           'tokyo/ginkgo/',
+           '<script type="application/ld+json">' + _gk_ld + '</script>')
+      + crumbs([('首頁', '/'), ('東京', '/kanto/'), ('神宮外苑銀杏並木', None)]) + topnav()
+      + '<h1>神宮外苑銀杏並木怎麼看</h1>'
+      + f'<p class="lede">{html.escape(GK["why"])}</p>'
+      + f'<div class="today"><div class="tday">查證於 {GK["checked"]}</div>'
+        f'<div class="tans">{html.escape(_gkh["a"])}</div>'
+        f'<div class="tsub">{html.escape(_gkh["q"])}　{html.escape(_gkh["sub"])}</div></div>'
+
+      + f'<h2 id="{_hid(_GA["title"])}">{html.escape(_GA["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_GA["body"])}</p>'
+      + f'<blockquote class="q">{html.escape(_GA["quote"])}'
+        f'<cite>{html.escape(_GA["quote_src"])}</cite></blockquote>'
+      + f'<p class="lede">{html.escape(_GA["why"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_GA["changed"])}</b></li>'
+        f'<li>{html.escape(_GA["stale"])}</li></ul></div>'
+      + f'<p class="lede">{html.escape(_GA["gap"])}</p>'
+      + f'<p class="disc">{html.escape(_GA["conflict"])}'
+        f'出處：<a href="{_GA["src"]}" rel="nofollow noopener" target="_blank">'
+        f'明治神宮外苑・休館期間変更のお知らせ</a>，'
+        f'<a href="{_GA["src_old"]}" rel="nofollow noopener" target="_blank">'
+        f'2025 年 3 月的原公告</a>。</p>'
+
+      + f'<h2 id="{_hid(_GW["title"])}">{html.escape(_GW["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_GW["body"])}</p>'
+      + f'<blockquote class="q">{html.escape(_GW["quote"])}'
+        f'<cite>明治神宮外苑・いちょう並木</cite></blockquote>'
+      + f'<p class="lede">{html.escape(_GW["mean"])}</p>'
+      + f'<p class="lede">{html.escape(_GW["extra"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_GW["why"])}</b></li></ul></div>'
+
+      + f'<h2 id="{_hid(_GN["title"])}">{html.escape(_GN["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_GN["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>項目</th><th>數字</th>'
+        '<th>官方原文</th><th>備註</th></tr></thead><tbody>'
+      + _gk_num + '</tbody></table></div>'
+      + f'<p class="disc">出處：<a href="{_GN["src"]}" rel="nofollow noopener" '
+        f'target="_blank">明治神宮外苑・いちょう並木</a>。</p>'
+
+      + f'<h2 id="{_hid(_GF["title"])}">{html.escape(_GF["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_GF["body"])}</p>'
+      + f'<p class="lede">{html.escape(_GF["detail"])}</p>'
+      + f'<p class="lede">{html.escape(_GF["third"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_GF["concl"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(_GF["traffic"])}</p>'
+
+      + f'<h2 id="{_hid(_GS["title"])}">{html.escape(_GS["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_GS["body"])}</p>'
+      + f'<p class="lede">{html.escape(_GS["tokyo"])}</p>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_GS["note"])}</b></li></ul></div>'
+      + f'<p class="disc">{html.escape(_GS["caveat"])}</p>'
+
+      + f'<h2 id="{_hid(_GR["title"])}">{html.escape(_GR["title"])}</h2>'
+      + f'<p class="lede">{html.escape(_GR["intro"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>項目</th><th>事業者官網原文</th>'
+        '<th>備註</th></tr></thead><tbody>' + _gk_red + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(_GR["gap"])}'
+        f'出處：<a href="{_GR["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_GR["src_name"])}</a>。</p>'
+
+      + f'<h2 id="{_hid(_GC["title"])}">{html.escape(_GC["title"])}</h2>'
+      + '<div class="tw"><table><thead><tr><th>路線</th><th>車站</th>'
+        '</tr></thead><tbody>' + _gk_st + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li><b>{html.escape(_GC["gap"])}</b></li></ul></div>'
+      + f'<p class="lede">{html.escape(_GC["fee"])}</p>'
+      + f'<p class="disc">{html.escape(_GC["rule"])}</p>'
+
+      + '<h2>這一頁查不到的</h2>'
+      + '<p class="lede">「官方沒寫」和「沒有這項」是兩件事。查不到的就說查不到。</p>'
+      + f'<div class="tldr"><ul>{_gk_unv}</ul></div>'
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 三國連假撞期</b>'
+        f'<s>見頃那兩週會不會撞到日本連假</s></a>'
+      + f'<a class="ct" href="{U("/hotel-price-check/")}"><b>🏨 訂房比價</b>'
+        f'<s>同一間房跨平台的實測價差</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/worth-flying-for/")}"><b>🍜 東京值得再飛一次的店</b>'
+        f'<s>查證過的清單</s></a></div>'
+      + '<h2>常見問題</h2>' + _gk_faq
+      + f'<p class="disc">本頁查證於 {GK["checked"]}，數字與引文出自明治神宮外苑官網'
+        f'與再開發事業主體官網。休館期間、活動與工程進度隨時變動，'
+        f'出發前請以官方公告為準。本頁不評價再開發，只整理官方文件上的文字。</p>'
+      + foot())
+    pages.append(('/tokyo/ginkgo/', 0.7))
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
