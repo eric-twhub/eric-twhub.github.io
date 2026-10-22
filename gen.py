@@ -2545,6 +2545,12 @@ def best(fs,rt=None):
 
 def money(n): return f'NT${n:,}'
 
+
+def capv(t):
+    # 官方以點數為單位的上限不要算繪成 NT$。OPENPOINT 與 LINE POINTS 雖然
+    # 1 點折抵 1 元，數字一樣，但寫成「NT$500 上限」是在轉述官方沒說的事。
+    return f'{t["cap"]:,} 點' if t.get('cap_pt') else money(t['cap'])
+
 # 行李費用（城市頁的比價要用，完整說明另有專頁）
 BAG = json.load(open('baggage.json', encoding='utf-8')) if os.path.exists('baggage.json') else None
 
@@ -15356,9 +15362,11 @@ if os.path.exists('cards.json'):
                      f'<td>{money(round(b-v))}</td></tr>')
 
         trows = ''.join(
-            f'<tr><td><b>{html.escape(t["label"])}</b>{SMALL}{html.escape(t["cond"])}</small></td>'
+            f'<tr><td><b>{html.escape(t["label"])}</b>'
+            + ('<b class="warn">（名額已滿，現在登錄不到）</b>' if t.get('sold_out') else '')
+            + f'{SMALL}{html.escape(t["cond"])}</small></td>'
             f'<td>+{t["rate"]}%</td>'
-            f'<td>{(t["cap_unit"] + " " + money(t["cap"])) if t["cap"] else "未標示"}</td>'
+            f'<td>{(t["cap_unit"] + " " + capv(t)) if t["cap"] else "未標示"}</td>'
             f'<td>{SCOPE_NAME[t["scope"]]}</td></tr>'
             + (f'<tr><td colspan="4" class="nm"><small>⏱ 入帳時間：'
                f'{html.escape(t["payout"])}</small></td></tr>'
@@ -15371,12 +15379,21 @@ if os.path.exists('cards.json'):
                 f'不適用：{html.escape(t["conflict"]["no"])}<br>'
                 f'{html.escape(t["conflict"]["gap"])}'
                 f'（查證於 {t["conflict"]["checked"]}，'
-                f'<a href="{t["conflict"]["src_yes"]}" rel="nofollow noopener" '
-                f'target="_blank">活動頁</a>、'
-                f'<a href="{t["conflict"]["src_no"]}" rel="nofollow noopener" '
-                f'target="_blank">非一般消費公告</a>）'
-                f'</small></td></tr>')
+                + (f'<a href="{t["conflict"]["src_yes"]}" rel="nofollow noopener" '
+                   f'target="_blank">兩段都出自同一頁</a>）'
+                   if t["conflict"]["src_yes"] == t["conflict"]["src_no"] else
+                   (f'<a href="{t["conflict"]["src_yes"]}" rel="nofollow noopener" '
+                    f'target="_blank">活動頁</a>、'
+                    f'<a href="{t["conflict"]["src_no"]}" rel="nofollow noopener" '
+                    f'target="_blank">非一般消費公告</a>）'))
+                + f'</small></td></tr>')
                if t.get('conflict') else '')
+            # 本站原本把適用範圍記窄了的，要寫出來，不要默默改掉
+            + (f'<tr><td colspan="4" class="nm"><small>📍 {html.escape(t["scope_note"])}'
+               f'</small></td></tr>' if t.get('scope_note') else '')
+            # 「這一層有沒有疊到基本回饋」官方沒寫的時候，不要替它決定
+            + (f'<tr><td colspan="4" class="nm"><small>❓ {html.escape(t["base_unknown"])}'
+               f'</small></td></tr>' if t.get('base_unknown') else '')
             for t in c['tiers'])
 
         others = ''.join(
@@ -15431,6 +15448,8 @@ if os.path.exists('cards.json'):
             f'<div class="tsub">{html.escape(c["base_note"])}。'
             + (f'另有 {len(c["tiers"])} 層加碼，各有條件與上限，需同時符合才疊得上去。'
                if c['tiers'] else '') + '</div>'
+            + (f'<div class="tbuf">{html.escape(c["total_note"])}</div>'
+               if c.get('total_note') else '')
             + ((f'<div class="tbuf">⚠ '
                 + ('部分加碼需<b>搶限量登錄</b>' if c.get('reg_monthly')
                    else '加碼需<b>搶限量登錄</b>')
@@ -15504,15 +15523,18 @@ if os.path.exists('cards.json'):
               + ''.join(
                   '<div class="tldr"><ul>'
                   f'<li><b>{html.escape(o["what"])}　{html.escape(o["rate"])}</b></li>'
-                  f'<li>適用範圍：{html.escape(o["where"])}</li>'
-                  f'<li>{html.escape(o["how"])}</li>'
-                  f'<li>登錄：{html.escape(o["reg"])}</li>'
-                  f'<li>活動期間：{html.escape(o["period"])}</li>'
+                  + (f'<li>適用範圍：{html.escape(o["where"])}</li>'
+                     if o.get('where') else '')
+                  + f'<li>{html.escape(o["how"])}</li>'
+                  + (f'<li>登錄：{html.escape(o["reg"])}</li>'
+                     if o.get('reg') else '')
+                  + (f'<li>活動期間：{html.escape(o["period"])}</li>'
+                     if o.get('period') else '')
                   + (f'<li><b>為什麼不列入：</b>{html.escape(o["why_out"])}</li>'
                      if o.get('why_out') else '')
                   + '</ul></div>'
-                  f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow noopener" '
-                  f'target="_blank">官方活動頁</a>。</p>'
+                  + (f'<p class="disc">出處：<a href="{o["src"]}" rel="nofollow noopener" '
+                     f'target="_blank">官方活動頁</a>。</p>' if o.get('src') else '')
                   for o in c['other_perks']))
              if c.get('other_perks') else '')
           + '<h2>適合誰</h2>'
