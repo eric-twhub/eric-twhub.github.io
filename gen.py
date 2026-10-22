@@ -14605,6 +14605,9 @@ if os.path.exists('cards.json'):
                      'reg': c.get('reg_short', ''), 'lv': c.get('reg_level', ''),
                      'levels': c.get('levels'),
                      'areas': c.get('areas', ''), 'period': c.get('period', ''),
+                     'anote': c.get('areas_note', ''), 'exc': c.get('exclude', []),
+                     'op': [{'w': o['what'], 'y': o.get('why_out', '')}
+                            for o in (c.get('other_perks') or [])],
                      'tu': c.get('transit_unknown', ''),
                      'tusrc': c.get('transit_unknown_src', '')}
                     for c in CD['cards']], ensure_ascii=False))
@@ -15862,6 +15865,53 @@ if os.path.exists('cards.json'):
     }
     // 沒有上限、或官網查不到上限的，不要畫進度條：一條空的條看起來像「還沒用」，
     // 但那兩種情況根本沒有額度這回事。
+    var SCN={shop:'實體消費',transit:'交通卡儲值',any:'實體與交通卡'};
+    function capTxt(t){
+      if(!t.cap) return t.cap_unknown?'　官網未查到上限':'　無上限';
+      return '　上限 '+(t.cap_unit?esc(t.cap_unit)+' ':'')
+        +(t.cap_pt?jfmt(t.cap)+' 點':'NT$'+jfmt(t.cap));
+    }
+    // 摺起來的那一段。重點是把「這一層為什麼沒算進去」講清楚：
+    // 表上只看得到一個變小的數字，看不出是觸頂、名額已滿還是新戶限定。
+    function detailHtml(r){
+      if(r.custom||!r.c) return '';
+      var c=r.c, inn=mine(c,SC), h='';
+      h+='<p>基本回饋 '+c.base+'%'+(jnb(c,SC)?'（這個情境官方寫明不算一般消費，連基本回饋都沒有）':'')+'</p>';
+      if(inn.length){
+        h+='<p><b>這個情境算得到的加碼</b></p><ul>';
+        inn.forEach(function(t){
+          h+='<li><b>'+esc(t.label)+' +'+t.rate+'%</b>'+capTxt(t)
+            +(r.m.full.indexOf(t.label)>=0?'　<span class="warn">已觸頂</span>':'')
+            +(t.cond?'<br><small class="nm">'+esc(t.cond)+'</small>':'')+'</li>';
+        });
+        h+='</ul>';
+      }
+      var out=[];
+      c.tiers.forEach(function(t){
+        if(inn.indexOf(t)>=0) return;
+        var why=t.sold_out?'這一期名額已滿，現在登錄不到'
+          :((!NEW&&jisnew(t))?'只有新戶或核卡期間內才有，勾上面的「我是新戶」才會算進去'
+            :'不屬於目前選的情境，這一層算的是'+(SCN[t.scope]||t.scope));
+        out.push('<li>'+esc(t.label)+' +'+t.rate+'%　<small class="nm">'+why+'</small></li>');
+      });
+      if(out.length) h+='<p><b>沒算進去的</b></p><ul>'+out.join('')+'</ul>';
+      if(c.anote) h+='<p><b>適用範圍</b><br><small class="nm">'+esc(c.anote)+'</small></p>';
+      if(c.exc&&c.exc.length){
+        h+='<p><b>什麼情況拿不到</b></p><ul>';
+        c.exc.forEach(function(x){h+='<li><small class="nm">'+esc(x)+'</small></li>';});
+        h+='</ul>';
+      }
+      // 這張卡真的有、但不列入上面數字的權益。不列出來等於在說它沒有。
+      if(c.op&&c.op.length){
+        h+='<p><b>這張卡有、但不列入計算的</b></p><ul>';
+        c.op.forEach(function(o){
+          h+='<li>'+esc(o.w)+(o.y?'<br><small class="nm">'+esc(o.y)+'</small>':'')+'</li>';});
+        h+='</ul>';
+      }
+      h+='<p><a href="/japan-credit-card/'+esc(c.s)+'/">看這張卡的完整說明</a></p>';
+      return '<details class="tdet"><summary>查看這張卡的回饋條件</summary>'
+        +'<div class="tdc">'+h+'</div></details>';
+    }
     function barHtml(r){
       var cap=capat(r);
       if(!cap) return '<span class="nm">'+hrTxt(r)+'</span>';
@@ -15963,6 +16013,7 @@ if os.path.exists('cards.json'):
               +(r.lv==='setup'?'已完成前置設定':'已完成銀行活動登錄')+'</span></label>')
            +(r.reg&&!r.custom
              ?((r.lv==='none')?'<br>':'')+'<small class="nm">'+esc(r.reg)+'</small>':'')
+           +detailHtml(r)
            +'</td>'
            +'<td data-l="已刷（日幣）"><input class="tin" type="number" min="0" step="1000" value="'+r.jpy+'" data-sp="'+esc(id)+'"></td>'
            +'<td data-l="換算台幣帳單" class="nm">NT$'+jfmt(r.bill)+'</td>'
@@ -16325,6 +16376,17 @@ if os.path.exists('cards.json'):
       '.treg{display:flex;align-items:center;gap:6px;margin-top:8px;'
       'font-size:.8rem;cursor:pointer}'
       '.treg input{margin:0;flex:0 0 auto}'
+      '.tdet{margin-top:9px}'
+      '.tdet summary{cursor:pointer;font-size:.8rem;color:var(--lcc);font-weight:600;'
+      'list-style:none}'
+      '.tdet summary::-webkit-details-marker{display:none}'
+      '.tdet summary::before{content:"\u25b8 ";display:inline}'
+      '.tdet[open] summary::before{content:"\u25be "}'
+      '.tdc{font-size:.8rem;margin-top:7px;border-left:2px solid var(--line);'
+      'padding-left:11px;white-space:normal;max-width:540px}'
+      '.tdc p{margin:8px 0 3px}'
+      '.tdc ul{margin:3px 0 8px;padding-left:17px}'
+      '.tdc li{margin:5px 0;line-height:1.65}'
       # 窄螢幕把每一列變成一張卡。用 data-l 當標籤，不另外產一份 HTML，
       # 兩份版面各自維護遲早會對不起來。
       '@media(max-width:760px){'
@@ -16335,7 +16397,8 @@ if os.path.exists('cards.json'):
       '.ttab tr{border:1px solid var(--line);border-radius:12px;margin:0 0 12px;'
       'padding:11px 13px;background:var(--card)}'
       '.ttab td{border:0;padding:5px 0;display:flex;justify-content:space-between;'
-      'align-items:center;gap:12px}'
+      'align-items:center;gap:12px;white-space:normal}'
+      '.tw table.ttab .tdc{max-width:100%}'
       '.ttab td::before{content:attr(data-l);color:var(--dim);font-size:.8rem;'
       'flex:0 0 auto}'
       '.ttab td[data-l=""]::before{display:none}'
