@@ -55,10 +55,37 @@ SOURCES = [
     },
 ]
 
-# 查過但沒納入的：
-#   中信 LINE Pay 卡  page_travel.html 回 302 轉址，直讀抓不到內容。
-#   永豐現金回饋 JCB   頁面上讀不到任何登錄日期文字，應是前端算繪。
-# 這兩家要改用瀏覽器才讀得到，不適合放在每輪票價更新裡跑。
+# 中信的開放時間寫法和富邦不同（「每週二 00:00開放」「每月6號10:00開放登錄」），
+# 所以另外一組規則。同一頁有六個「每月6號」，一樣要先用標題切段。
+CTBC = {
+    'card': '中信 LINE Pay 卡',
+    'url': ('https://www.ctbcbank.com/content/dam/minisite/long/'
+            'creditcard/LINEPay/page_travel.html'),
+    'sections': [
+        {'what': '不限國別國外實體店 5%', 'anchor': '不限國別國外實體店',
+         'weekday': 1, 'time': '00:00'},
+        {'what': 'Trip.com 5%、Airbnb 5%（限 Visa 卡）', 'anchor': 'Trip.com享',
+         'day': 6, 'time': '10:00'},
+        {'what': '台灣虎航 10%（限 JCB 卡）', 'anchor': '台灣虎航享',
+         'day': 6, 'time': '13:00'},
+    ],
+}
+
+CTBC_WEEK = re.compile(r'每週([一二三四五六日])開放([\d,]+)名')
+CTBC_MONTH = re.compile(
+    r'每月(\d{1,2})號\s*(上午|下午)?\s*(\d{1,2}):(\d{2})\s*開放登錄')
+WD = '一二三四五六日'
+
+# 永豐是每季一次，日期逐季列在頁面上，格式和前兩家都不一樣。
+SINOPAC = {
+    'card': '永豐現金回饋 JCB 卡',
+    'what': '日韓泰每季滿 2 萬加碼 5%',
+    'url': ('https://bank.sinopac.com/sinopacBT/personal/credit-card/'
+            'introduction/bankcard/cashcardJCB.html'),
+}
+SINOPAC_RE = re.compile(
+    r'\[(20\d\d)第([一二三四])季\]\s*(20\d\d)/(\d{1,2})/(\d{1,2})\s*'
+    r'(上午|下午)?(\d{1,2}):(\d{2})開放登錄')
 
 # 年份三碼是民國年（聯邦這樣寫），四碼是西元年（富邦這樣寫）。
 MONTH_RE = re.compile(
@@ -66,6 +93,9 @@ MONTH_RE = re.compile(
 
 
 def fetch_text(url):
+    # 預設就會跟隨轉址，但這一點要寫出來：中信那頁回 302，之前沒跟就拿到
+    # 空的內容，因此被誤判成「要開瀏覽器才讀得到」。實際上跟完轉址就有，
+    # 而且連燈箱裡的活動條款都在靜態 HTML 裡。
     req = urllib.request.Request(url, headers={'User-Agent': UA})
     with urllib.request.urlopen(req, timeout=30) as r:
         raw = r.read().decode('utf-8', 'replace')
@@ -139,6 +169,87 @@ def check_periods(cards, today):
     return bad, warn
 
 
+def check_ctbc(card):
+    """中信：週檔看星期幾，月檔看幾號。回傳 (problems, notes)。"""
+    bad, note = [], []
+    try:
+        text = fetch_text(CTBC['url'])
+    except Exception as e:
+        return [], [f"{CTBC['card']}：抓不到官網（{type(e).__name__}），這次驗不了"]
+    chunks, missing = section_slices(text, CTBC['sections'])
+    for s in missing:
+        note.append(f"{CTBC['card']}：頁面上找不到「{s['anchor']}」，"
+                    f"可能改版了，「{s['what']}」這次驗不了")
+    events = {e['what']: e for e in (card.get('reg_events') or [])}
+    for sec in CTBC['sections']:
+        chunk = chunks.get(sec['what'])
+        ev = events.get(sec['what'])
+        if chunk is None or ev is None:
+            if chunk is not None and ev is None:
+                note.append(f"{CTBC['card']}／{sec['what']}：官網有，cards.json 沒有")
+            continue
+        if 'weekday' in sec:
+            m = CTBC_WEEK.search(chunk)
+            if not m:
+                note.append(f"{CTBC['card']}／{sec['what']}：讀不出每週開放的星期與名額")
+                continue
+            wd = WD.index(m.group(1))
+            quota = int(m.group(2).replace(',', ''))
+            if ev.get('weekday') != wd:
+                bad.append(f"{CTBC['card']}／{sec['what']}：官網是每週{m.group(1)}，"
+                           f"cards.json 寫的是每週{WD[ev.get('weekday', 0)]}")
+            elif ev.get('quota') != quota:
+                bad.append(f"{CTBC['card']}／{sec['what']}：官網每週 {quota:,} 名，"
+                           f"cards.json 寫的是 {ev.get('quota'):,} 名")
+            else:
+                print(f"  對得上　{CTBC['card']}／{sec['what']}："
+                      f"每週{m.group(1)}，{quota:,} 名")
+            # 開放時刻印在卡片標題之前，切段後不在這一段裡，所以這一項驗不到。
+            note.append(f"{CTBC['card']}／{sec['what']}：開放時刻（cards.json 記 "
+                        f"{ev.get('time')}）印在標題之前，切段後讀不到，這一項沒驗")
+        else:
+            m = CTBC_MONTH.search(chunk)
+            if not m:
+                note.append(f"{CTBC['card']}／{sec['what']}：讀不出每月開放時間")
+                continue
+            h = int(m.group(3))
+            # 官網寫「下午1:00」，要換算成 24 小時制才比得了
+            if m.group(2) == '下午' and h < 12:
+                h += 12
+            day, t_ = int(m.group(1)), f'{h:02d}:{m.group(4)}'
+            if ev.get('day') != day or ev.get('time') != t_:
+                bad.append(f"{CTBC['card']}／{sec['what']}：官網是每月 {day} 號 {t_}，"
+                           f"cards.json 寫的是每月 {ev.get('day')} 號 {ev.get('time')}")
+            else:
+                print(f"  對得上　{CTBC['card']}／{sec['what']}：每月 {day} 號 {t_}")
+    return bad, note
+
+
+def check_sinopac(card):
+    """永豐：每季一次，逐季列在頁面上，比對 reg_events 的 dates 陣列。"""
+    try:
+        text = fetch_text(SINOPAC['url'])
+    except Exception as e:
+        return [], [f"{SINOPAC['card']}：抓不到官網（{type(e).__name__}），這次驗不了"]
+    found = {}
+    for m in SINOPAC_RE.finditer(text):
+        found[f'{m.group(1)}-{m.group(4):0>2}-{m.group(5):0>2}'] = m.group(0)
+    if not found:
+        return [], [f"{SINOPAC['card']}：頁面上讀不出任何季度開放日期，可能改版了"]
+    ev = next((e for e in (card.get('reg_events') or [])
+               if e['what'] == SINOPAC['what']), None)
+    if ev is None:
+        return [], [f"{SINOPAC['card']}：cards.json 沒有「{SINOPAC['what']}」這一筆"]
+    ours = {x['open'] for x in (ev.get('dates') or [])}
+    miss = sorted(set(found) - ours)
+    if miss:
+        return [], [f"{SINOPAC['card']}：官網有這幾季但 cards.json 沒記："
+                    + '、'.join(miss)]
+    print(f"  對得上　{SINOPAC['card']}／{SINOPAC['what']}："
+          f"官網列的 {len(found)} 季都在 cards.json 裡")
+    return [], []
+
+
 def main():
     cards = json.load(open('cards.json', encoding='utf-8'))
     today = datetime.date.today()
@@ -185,6 +296,15 @@ def main():
                     f"每月 {ev.get('day')} 日 {ev.get('time')}")
             else:
                 print(f"  對得上　{src['card']}／{s['what']}：每月 {day} 日 {time_}")
+
+    for getter, nm in ((check_ctbc, CTBC['card']), (check_sinopac, SINOPAC['card'])):
+        card = by_name.get(nm)
+        if card is None:
+            notes.append(f'cards.json 裡沒有「{nm}」，略過')
+            continue
+        b2, n2 = getter(card)
+        problems += b2
+        notes += n2
 
     for n in notes:
         print(f'::warning::登錄日期比對：{n}')
