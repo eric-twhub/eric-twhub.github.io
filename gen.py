@@ -16376,6 +16376,7 @@ if os.path.exists('cards.json'):
       '.treg{display:flex;align-items:center;gap:6px;margin-top:8px;'
       'font-size:.8rem;cursor:pointer}'
       '.treg input{margin:0;flex:0 0 auto}'
+      '.ttab small.warn,.tdc .warn{color:var(--acc);font-weight:700}'
       '.tdet{margin-top:9px}'
       '.tdet summary{cursor:pointer;font-size:.8rem;color:var(--lcc);font-weight:600;'
       'list-style:none}'
