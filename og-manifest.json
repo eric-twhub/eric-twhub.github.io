@@ -206,26 +206,32 @@
   {
    "slug": "deals-2026-10-22-taipei-okinawa",
    "url": "/deals/2026-10-22-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,988 來回含稅｜台灣虎航 11/18 出發",
-   "title": "台北飛沖繩 NT$2,988 來回含稅｜台灣虎航 11/18 出發"
+   "h1": "台北飛沖繩 NT$2,983 來回含稅｜台灣虎航 11/18 出發",
+   "title": "台北飛沖繩 NT$2,983 來回含稅｜台灣虎航 11/18 出發"
+  },
+  {
+   "slug": "deals-2026-10-22-kaohsiung-okinawa",
+   "url": "/deals/2026-10-22-kaohsiung-okinawa/",
+   "h1": "高雄飛沖繩 NT$3,839 來回含稅｜台灣虎航 11/17 出發",
+   "title": "高雄飛沖繩 NT$3,839 來回含稅｜台灣虎航 11/17 出發"
   },
   {
    "slug": "deals-2026-10-22-taichung-okinawa",
    "url": "/deals/2026-10-22-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$4,011 來回含稅｜台灣虎航 11/02 出發",
-   "title": "台中飛沖繩 NT$4,011 來回含稅｜台灣虎航 11/02 出發"
+   "h1": "台中飛沖繩 NT$4,339 來回含稅｜台灣虎航 11/16 出發",
+   "title": "台中飛沖繩 NT$4,339 來回含稅｜台灣虎航 11/16 出發"
   },
   {
    "slug": "deals-2026-10-22-taipei-fukuoka",
    "url": "/deals/2026-10-22-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$4,929 來回含稅｜台灣虎航 11/02 出發",
-   "title": "台北飛福岡 NT$4,929 來回含稅｜台灣虎航 11/02 出發"
+   "h1": "台北飛福岡 NT$5,264 來回含稅｜台灣虎航 11/02 出發",
+   "title": "台北飛福岡 NT$5,264 來回含稅｜台灣虎航 11/02 出發"
   },
   {
    "slug": "deals-2026-10-22-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-10-22-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,247",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,247"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,922",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,922"
   },
   {
    "slug": "apple-japan-price",
@@ -237,7 +243,7 @@
    "slug": "iphone-duo",
    "url": "/iphone-duo/",
    "h1": "iPhone Duo 在日本買划算嗎？",
-   "title": "iPhone Duo 日本買划算嗎？四種容量實算，扣掉入境補稅還省 NT$5,758"
+   "title": "iPhone Duo 日本買划算嗎？四種容量實算，扣掉入境補稅還省 NT$6,361"
   },
   {
    "slug": "japan-camera-price",
@@ -760,6 +766,18 @@
    "url": "/hotel-price-check/",
    "h1": "Booking 同一間房，手機版比桌機版便宜 9%",
    "title": "Booking 訂房比價｜同一間房，手機版比桌機版便宜 9.1%"
+  },
+  {
+   "slug": "japan-hotel-check",
+   "url": "/japan-hotel-check/",
+   "h1": "日本凶宅網大島てる 怎麼查，查到了又代表什麼",
+   "title": "日本凶宅網大島てる 怎麼查：住宿前查得到什麼，日本法律又規定了什麼"
+  },
+  {
+   "slug": "kawaguchiko-hotel-case",
+   "url": "/kawaguchiko-hotel-case/",
+   "h1": "山梨飯店事件目前確定了什麼",
+   "title": "山梨飯店事件目前確定了什麼：報導整理與日本凶宅網的標記"
   }
  ]
 }
