@@ -5488,6 +5488,12 @@ if os.path.exists('ski-ticket.json'):
         f'出處：<a href="{ST["tickets_src"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(ST["tickets_src_name"])}</a>，查證於 {ST["checked"]}。'
         f'售完即止，本表不代表現在還買得到。</p>'
+      + '<div class="tldr"><ul><li><b>這一欄的折扣率要配著另一頁看。</b>'
+        f'上面的原價是通路標的「希望小売価格」，而那個數字是雪場官網價目表裡的'
+        f'哪一格，各家不一樣。本站 2026-10-22 逐一讀了 33 個雪場官網，'
+        f'發現至少四個雪場的早鳥票比官網自己某些票種還貴。'
+        f'對照表在<a href="{U("/japan-ski-resort/")}">雪場官網現場價那一頁</a>。'
+        '</li></ul></div>'
       + _sk_cards
 
       + f'<h2>{html.escape(ST["gap"]["t"])}</h2>'
@@ -5520,6 +5526,8 @@ if os.path.exists('ski-ticket.json'):
       + f'<ul class="lede">{_unver}</ul>'
 
       + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-ski-resort/")}"><b>🏔 雪場官網現場價</b>'
+        f'<s>早鳥票不一定比較便宜，33 個雪場逐一對過</s></a>'
       + f'<a class="ct" href="{U("/japan-ski-baggage/")}"><b>🎿 雪具託運</b>'
         f'<s>九家航空，門檻最低只有 79 公分</s></a>'
       + f'<a class="ct" href="{U("/threads-japan/")}"><b>🔥 Threads 日本熱搜</b>'
