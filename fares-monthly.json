@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-22 06:13",
+ "generated": "2026-10-22 07:30",
  "origin": "TPE",
  "dests": [
   "TYO",
@@ -20,18 +20,18 @@
   "2026-10": {
    "n": 9,
    "median": 10517,
-   "low": 5243,
+   "low": 5246,
    "enough": true
   },
   "2026-11": {
-   "n": 39,
-   "median": 7515,
+   "n": 38,
+   "median": 7532,
    "low": 4627,
    "enough": true
   },
   "2026-12": {
-   "n": 25,
-   "median": 10070,
+   "n": 24,
+   "median": 10045,
    "low": 5163,
    "enough": true
   },
@@ -43,7 +43,7 @@
   },
   "2027-02": {
    "n": 14,
-   "median": 14812,
+   "median": 14815,
    "low": 6387,
    "enough": true
   },

@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,862（9 天有紀錄），這張低 39%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,754（8 天有紀錄），這張低 37%"
   ],
   "med": 12937,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
@@ -23,15 +23,15 @@
   "usual": {
    "lo": 3383,
    "hi": 12312,
-   "days": 12
+   "days": 11
   },
   "mbase": {
-   "avg": 4862,
-   "days": 9,
+   "avg": 4754,
+   "days": 8,
    "month": 11
   },
   "rank": 1,
-  "n": 28
+  "n": 26
  },
  {
   "slug": "2026-10-22-kaohsiung-okinawa",
@@ -73,7 +73,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,859（23 天有紀錄），這張低 59%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,748（21 天有紀錄），這張低 59%"
   ],
   "med": 11145,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
@@ -81,25 +81,25 @@
   "cslug": "okinawa",
   "usual": {
    "lo": 7910,
-   "hi": 11879,
-   "days": 33
+   "hi": 11826,
+   "days": 31
   },
   "mbase": {
-   "avg": 9859,
-   "days": 23,
+   "avg": 9748,
+   "days": 21,
    "month": 11
   },
   "rank": 1,
-  "n": 92
+  "n": 90
  },
  {
   "slug": "2026-10-22-taipei-fukuoka",
-  "title": "台北飛福岡 NT$4,920 來回含稅｜台灣虎航 11/02 出發",
+  "title": "台北飛福岡 NT$4,864 來回含稅｜台灣虎航 11/02 出發",
   "o": "台北",
   "c": "福岡",
   "_oiata": "TPE",
   "_diata": "FUK",
-  "price": 4920,
+  "price": 4864,
   "air": "台灣虎航",
   "dep": "2026-11-02",
   "ret": "2026-11-09",
@@ -119,13 +119,13 @@
  },
  {
   "slug": "2026-10-22-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$3,266",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$3,322",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 7132,
+  "price": 7076,
   "air": "飛福岡再轉乘",
-  "fl_price": 4920,
+  "fl_price": 4864,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1106,
@@ -135,7 +135,7 @@
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$3,266"
+   "比直飛省 NT$3,322"
   ],
   "med": 10398,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW",
