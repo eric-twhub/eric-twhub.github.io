@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-23-taipei-fukuoka",
- "generated": "2026-10-23 04:51",
+ "generated": "2026-10-23 13:58",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5320,
+  "price": 5755,
   "dep": "2026-11-02",
   "ret": "2026-11-09",
   "dept": "06:45",
