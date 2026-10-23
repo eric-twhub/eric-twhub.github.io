@@ -1,11 +1,11 @@
 {
  "schema": 1,
  "slug": "2026-10-24-transfer-tokyo-sendai",
- "generated": "2026-10-24 03:40",
+ "generated": "2026-10-24 04:41",
  "kind": "transfer",
  "city": "sendai",
  "via": "tokyo",
- "own": 17749,
+ "own": 17752,
  "fare": {
   "o": "TPE",
   "d": "TYO",
@@ -40,5 +40,5 @@
  "mode": "東北新幹線",
  "tm": "約 1.5 小時",
  "total": 12590,
- "save": 5159
+ "save": 5162
 }
