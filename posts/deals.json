@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,612（9 天有紀錄），這張低 35%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,634（8 天有紀錄），這張低 35%"
   ],
   "med": 11194,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
@@ -23,15 +23,15 @@
   "usual": {
    "lo": 3403,
    "hi": 6059,
-   "days": 10
+   "days": 9
   },
   "mbase": {
-   "avg": 4612,
-   "days": 9,
+   "avg": 4634,
+   "days": 8,
    "month": 11
   },
   "rank": 1,
-  "n": 26
+  "n": 24
  },
  {
   "slug": "2026-10-23-taichung-okinawa",
