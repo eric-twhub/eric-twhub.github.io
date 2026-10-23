@@ -11266,6 +11266,15 @@ print(f'   Deal 貼文 {len(deals_out)} 則　→ posts/{TODAY}.txt（FB/IG 文�
 print(f'   城市頁 {len(CITIES)}（{sum(1 for c in CITIES if by_city.get(c[0]))} 個有票價）')
 print(f'   地區頁 {len(REGIONS)}　首頁 1　sitemap.xml / robots.txt')
 print(f'   票價 {len(deals)} 筆 · 超值票 {len(hot)} 筆 · 全站最低 {money(allbest)}')
+# workflow 的 commit 訊息要和頁面上「共 N 筆票價」同一個口徑。原本它用的是
+# scan_all.json 的原始筆數，那還沒濾掉不在 DEST 的目的地、也還沒去重。
+# 把 load() 之後的數字寫出去給 workflow 讀，不要在 workflow 裡重算一次，
+# 那等於把過濾與去重的規則抄第二份，日後一定漂移。
+try:
+    with open('/tmp/fare_count.txt', 'w') as _fc:
+        _fc.write(str(len(deals)))
+except OSError as e:
+    print(f'   （寫 /tmp/fare_count.txt 失敗，commit 訊息會退回原始筆數：{e}）')
 
 
 # ---------- 台日 Apple 價差比較頁 ----------
