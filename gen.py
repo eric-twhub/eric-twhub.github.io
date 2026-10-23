@@ -10629,6 +10629,11 @@ document.addEventListener('DOMContentLoaded',function(){
       'padding:4px 12px;overflow-x:auto}'
       '.tw table{min-width:0}'
       '.tw th,.tw td{white-space:normal;border-bottom:2px solid #E6E1D8}'
+      '.tw td{font-size:.95rem}'
+      '.tw th{font-size:.86rem}'
+      '.tw small{font-size:.86rem}'
+      '.disc{font-size:.88rem}'
+      '.tday{font-size:.84rem}'
       # 五欄的表在 375px 用固定版面會窄到一行一個字，所以改成攤平成卡片：
       # 每一列變一張卡，第一欄當標題，其餘各自帶 data-l 當標籤。
       '@media(max-width:760px){'
