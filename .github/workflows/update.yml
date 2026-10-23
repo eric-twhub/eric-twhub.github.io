@@ -118,6 +118,11 @@ jobs:
       - name: 產生圖卡
         # 月曆卡只在早班產出。圖卡會進版控以取得固定網址，每天一次即可，
         # 跑滿三班會讓 git 歷史多出三倍的二進位檔。
+        #
+        # 2026-10-24 這一步卡了 22 分鐘、一行輸出都沒有，吃掉整個 job 的
+        # 30 分鐘額度被砍。和 og:image 那次同一個病：卡在 apt 抓字型。
+        # 給它自己的上限，不要再拖垮整個 job。
+        timeout-minutes: 12
         run: |
           H=$(TZ=Asia/Taipei date '+%H')
           DISPATCH=0
@@ -126,8 +131,17 @@ jobs:
           if [ "$H" != "09" ] && [ "$DISPATCH" != "1" ]; then
             echo "非早班（現在 $H 時），略過圖卡"; exit 0
           fi
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq fonts-noto-cjk >/dev/null
+          # 字型已在 runner 上就不要碰網路。裝不成也往下走：底下的檔案大小
+          # 檢查會抓到豆腐字，那比在這裡卡死好判斷。
+          if fc-list 2>/dev/null | grep -qi "Noto Sans CJK"; then
+            echo "  已有 Noto Sans CJK，略過安裝"
+          else
+            APT="-o Acquire::Retries=3 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20"
+            timeout 120 sudo apt-get update -qq $APT \
+              || echo "::warning::apt-get update 逾時或失敗，繼續往下走"
+            timeout 180 sudo apt-get install -y -qq $APT fonts-noto-cjk >/dev/null \
+              || echo "::warning::字型安裝逾時或失敗，下面的大小檢查會抓到"
+          fi
           fc-cache -f >/dev/null 2>&1 || true
           python3 make_calendar_cards.py
           # 持有成本卡的內容幾乎不隨每日票價變動，每天重產只會讓 git 多出
