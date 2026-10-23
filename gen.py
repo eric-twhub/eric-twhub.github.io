@@ -921,10 +921,14 @@ for _it in _FO['items']:
 _ovr_hit = collections.Counter()
 
 
+# 票價的唯一來源。scan.py／scan.json 是 2026-09-10 的初版原型，月份寫死、
+# token 只讀 .env、CI 沒跑它，已於 2026-10-23 從這裡移除。
+SCAN_SRC = '/tmp/scan_all.json'
+
+
 def load():
     rows=[]
-    for f in ('/tmp/scan_all.json','/tmp/scan.json'):
-        if os.path.exists(f): rows+=json.load(open(f))
+    if os.path.exists(SCAN_SRC): rows+=json.load(open(SCAN_SRC))
     seen,out=set(),[]
     for r in rows:
         d=r.get('destination','')

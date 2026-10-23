@@ -1,3 +1,16 @@
+"""本機診斷用，不進 CI，產出的 /tmp/scan.json 也不再被 gen.py 讀。
+
+這是 2026-09-10 初版靜態站的原型，後來被 scan_all.py 取代。兩者的差別：
+
+- 這支用 destination='JP' 一次查整個日本；scan_all.py 逐機場查（約 40 個航點）。
+- 這支的 MONTHS 寫死在 2026-09／2026-10；scan_all.py 用 _months(2) 從今天算。
+- 這支只從 .env 讀 token，沒有環境變數後備，在 CI 會直接 StopIteration。
+
+留著是因為底下那幾個統計（航空公司分佈、未分類代碼、涵蓋目的地）在查
+「某個航點是不是真的沒有航班」時還有用，見記憶 route-verification。
+要重新啟用就得先改掉上面三點，而且要先確認它比 scan_all.py 多抓到什麼，
+不然只是多花 API 呼叫。2026-10-23 從 gen.py 的 load() 移除。
+"""
 import json, urllib.request, urllib.parse, urllib.error, collections, time
 
 TOK = next(l.split('=',1)[1].strip() for l in open('.env',encoding='utf-8')
