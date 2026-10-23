@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-23-taipei-fukuoka",
- "generated": "2026-10-23 15:35",
+ "generated": "2026-10-23 17:14",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5817,
+  "price": 5355,
   "dep": "2026-11-02",
   "ret": "2026-11-09",
   "dept": "06:45",
@@ -27,8 +27,8 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 16540,
- "n_rt": 6,
+ "med": 14413,
+ "n_rt": 8,
  "others": [
   {
    "o": "TPE",
@@ -51,6 +51,24 @@
   {
    "o": "TPE",
    "d": "FUK",
+   "air": "TW",
+   "airname": "德威航空",
+   "cls": "lcc",
+   "price": 8747,
+   "dep": "2026-11-05",
+   "ret": "2026-11-12",
+   "dept": "14:25",
+   "rett": "10:55",
+   "rt": true,
+   "tr": 1,
+   "dur": 1505,
+   "dur_to": 185,
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/TPE0511FUK12111?t=IT17938887001793972700001340TPECJUFUK17944809001794487200000165FUKTPE_82b143a03c3b7946cd7c8690d6fa99e4_21763&search_date=23102026&expected_price_uuid=01a167b4-ba53-8040-6b74-34f2687db9b7&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=8VB5qsUWRRk2nUv5A7tv3A&expected_price_source=share&expected_price_currency=twd&expected_price=8747&marker=775639"
+  },
+  {
+   "o": "TPE",
+   "d": "FUK",
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
@@ -65,24 +83,6 @@
    "dur_to": 190,
    "gate": "Gotogate",
    "url": "https://www.aviasales.com/search/TPE2611FUK30111?t=MM17956749001795698000000325TPEOKAFUK17960577001796120400001105FUKOKATPE_552f841e0691b7a2d11fb6478f145d5b_28241&search_date=17102026&expected_price_uuid=01a14975-8ac9-8040-6d57-09bcb829244c&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ClidVj60FV8MsMens_uPog&expected_price_source=share&expected_price_currency=twd&expected_price=11092&marker=775639"
-  },
-  {
-   "o": "TPE",
-   "d": "FUK",
-   "air": "NH",
-   "airname": "全日空",
-   "cls": "fsc",
-   "price": 21989,
-   "dep": "2026-11-04",
-   "ret": "2026-11-11",
-   "dept": "16:50",
-   "rett": "09:45",
-   "rt": true,
-   "tr": 2,
-   "dur": 1295,
-   "dur_to": 290,
-   "gate": "Ubfly",
-   "url": "https://www.aviasales.com/search/TSA0411FUK11111?t=NH17938110001793866800000870TSAHNDFUK17943903001794412200000425FUKHNDTSA_cf4580fbaf3fe8440b58529f5a6bf2c5_55712&search_date=21102026&expected_price_uuid=01a160bb-98bb-8030-24b6-4353d5962e4f&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=B8qnVfrc16fNFY9EnaqR2w&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=21989&marker=775639"
   }
  ]
 }
