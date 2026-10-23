@@ -18208,10 +18208,12 @@ if os.path.exists('hotelcase.json'):
     _kc_next = ''.join(f'<li>{html.escape(x)}</li>' for x in KC['next']['rows'])
     _kc_unv = ''.join(f'<li>{html.escape(x)}</li>' for x in KC['unverified'])
 
+    # 中文媒體的來源沒有日文標題，zh 就不給，標題直接印一次
     _kc_src = ''.join(
         f'<li><a href="{s["u"]}" rel="nofollow noopener" target="_blank">'
-        f'{html.escape(s["n"])}</a>　{html.escape(s["zh"])}'
-        f'<br><small class="jq">{html.escape(s["t"])}</small></li>'
+        f'{html.escape(s["n"])}</a>　{html.escape(s.get("zh") or s["t"])}'
+        + (f'<br><small class="jq">{html.escape(s["t"])}</small>' if s.get('zh') else '')
+        + '</li>'
         for s in KC['sources'])
 
     _kc_faq = ''.join('<details class="faq"><summary>' + html.escape(q)
@@ -18226,7 +18228,8 @@ if os.path.exists('hotelcase.json'):
     write('kawaguchiko-hotel-case/index.html',
       head('山梨飯店事件目前確定了什麼：報導整理與日本凶宅網的標記',
            '2026 年 10 月山梨県富士河口湖町一間住宿設施內發現一名台灣籍女性死亡。'
-           '這一頁整理到 10/21 的報導：逮捕與送檢的罪名都只涉及持有刀械，'
+           f'這一頁整理到 {KC["latest"][5:].replace("-", "/")} 的報導：'
+           '逮捕與送檢的罪名都只涉及持有刀械，'
            '沒有任何報導提到有人因這起死亡被追訴。偵查中。',
            'kawaguchiko-hotel-case/',
            '<script type="application/ld+json">' + _kc_ld + '</script>')
