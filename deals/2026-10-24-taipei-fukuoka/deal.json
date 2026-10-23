@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-24-taipei-fukuoka",
- "generated": "2026-10-24 02:58",
+ "generated": "2026-10-24 03:09",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 14411,
+ "med": 14408,
  "n_rt": 8,
  "others": [
   {
@@ -54,7 +54,7 @@
    "air": "TW",
    "airname": "德威航空",
    "cls": "lcc",
-   "price": 8745,
+   "price": 8742,
    "dep": "2026-11-05",
    "ret": "2026-11-12",
    "dept": "14:25",
@@ -64,7 +64,7 @@
    "dur": 1505,
    "dur_to": 185,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE0511FUK12111?t=IT17938887001793972700001340TPECJUFUK17944809001794487200000165FUKTPE_82b143a03c3b7946cd7c8690d6fa99e4_21763&search_date=23102026&expected_price_uuid=01a167b4-ba53-8040-6b74-34f2687db9b7&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=8VB5qsUWRRk2nUv5A7tv3A&expected_price_source=share&expected_price_currency=twd&expected_price=8745&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE0511FUK12111?t=IT17938887001793972700001340TPECJUFUK17944809001794487200000165FUKTPE_82b143a03c3b7946cd7c8690d6fa99e4_21763&search_date=23102026&expected_price_uuid=01a167b4-ba53-8040-6b74-34f2687db9b7&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=8VB5qsUWRRk2nUv5A7tv3A&expected_price_source=share&expected_price_currency=twd&expected_price=8742&marker=775639"
   },
   {
    "o": "TPE",

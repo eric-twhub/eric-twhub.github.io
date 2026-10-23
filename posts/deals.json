@@ -108,7 +108,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 14411,
+  "med": 14408,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
@@ -119,7 +119,7 @@
  },
  {
   "slug": "2026-10-24-transfer-tokyo-sendai",
-  "title": "飛東京轉乘去仙台，比直飛省 NT$5,165",
+  "title": "飛東京轉乘去仙台，比直飛省 NT$5,159",
   "o": "台灣",
   "c": "仙台",
   "via": "東京",
@@ -135,22 +135,22 @@
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$5,165"
+   "比直飛省 NT$5,159"
   ],
-  "med": 17755,
+  "med": 17749,
   "url": "https://www.aviasales.com/search/TPE0211NRT07111?t=GK17936022001793616900000185TPENRT17940903001794101400000245NRTTPE_95a6c82ceb0c633059ba7d1ed3834649_19945&search_date=19102026&expected_price_uuid=01a15390-4a1c-8030-ee9f-a3a858fb52b0&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3ZW4iuo09yI_q2KTxCk6Ig&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7796&marker=775639",
   "hotelcity": "仙台",
   "cslug": "sendai"
  },
  {
   "slug": "2026-10-24-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$5,618",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$5,614",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
-  "price": 10877,
+  "price": 10875,
   "air": "飛大阪再轉乘",
-  "fl_price": 6583,
+  "fl_price": 6581,
   "fl_rt": true,
   "fl_to": "大阪",
   "tr_twd": 2147,
@@ -160,10 +160,10 @@
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$5,618"
+   "比直飛省 NT$5,614"
   ],
-  "med": 16495,
-  "url": "https://www.aviasales.com/search/TPE0511KIX10111?t=GK17938581001793870400000145TPEKIX17943522001794360600000200KIXTPE_b1d93c2b0cc9d2ab7a1ad11b5e52e676_16384&search_date=23102026&expected_price_uuid=01a167b6-7e14-8040-208d-445cea46f5a5&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=FNl3Vy9niYZ05hzV66BMBg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6583&marker=775639",
+  "med": 16489,
+  "url": "https://www.aviasales.com/search/TPE0511KIX10111?t=GK17938581001793870400000145TPEKIX17943522001794360600000200KIXTPE_b1d93c2b0cc9d2ab7a1ad11b5e52e676_16384&search_date=23102026&expected_price_uuid=01a167b6-7e14-8040-208d-445cea46f5a5&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=FNl3Vy9niYZ05hzV66BMBg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6581&marker=775639",
   "hotelcity": "廣島",
   "cslug": "hiroshima"
  }
