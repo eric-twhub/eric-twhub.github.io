@@ -1,23 +1,23 @@
 [
  {
   "slug": "2026-10-23-taipei-okinawa",
-  "title": "台北飛沖繩 NT$3,003 來回含稅｜台灣虎航 11/18 出發",
+  "title": "台北飛沖繩 NT$3,403 來回含稅｜台灣虎航 11/10 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 3003,
+  "price": 3403,
   "air": "台灣虎航",
-  "dep": "2026-11-18",
-  "ret": "2026-11-25",
+  "dep": "2026-11-10",
+  "ret": "2026-11-14",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,667（9 天有紀錄），這張低 36%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,663（9 天有紀錄），這張低 27%"
   ],
   "med": 11194,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-10&inbound=OKA-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
@@ -26,7 +26,7 @@
    "days": 10
   },
   "mbase": {
-   "avg": 4667,
+   "avg": 4663,
    "days": 9,
    "month": 11
   },
@@ -48,7 +48,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,554（23 天有紀錄），這張低 54%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,579（23 天有紀錄），這張低 54%"
   ],
   "med": 11252,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
@@ -60,7 +60,7 @@
    "days": 31
   },
   "mbase": {
-   "avg": 9554,
+   "avg": 9579,
    "days": 23,
    "month": 11
   },
@@ -69,12 +69,12 @@
  },
  {
   "slug": "2026-10-23-kaohsiung-okinawa",
-  "title": "高雄飛沖繩 NT$4,364 來回含稅｜台灣虎航 11/17 出發",
+  "title": "高雄飛沖繩 NT$4,436 來回含稅｜台灣虎航 11/17 出發",
   "o": "高雄",
   "c": "沖繩",
   "_oiata": "KHH",
   "_diata": "OKA",
-  "price": 4364,
+  "price": 4436,
   "air": "台灣虎航",
   "dep": "2026-11-17",
   "ret": "2026-11-20",
@@ -83,7 +83,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 4364,
+  "med": 4436,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
