@@ -181,7 +181,6 @@ def _klook_adid(group=None):
             return str(row['id'])
     return str(p.get('adid_default', ''))
 
-
 def klook(target, group=None):
     """把任何 Klook 網址包成分潤連結。
 
@@ -196,7 +195,6 @@ def klook(target, group=None):
         return target
     return (t.replace('{adid}', _klook_adid(group))
              .replace('{k}', urllib.parse.quote(target, safe='')))
-
 
 def kkday(target, s1='', s2=''):
     """把任何 KKday 網址包成聯盟網分潤連結。
@@ -215,7 +213,6 @@ def kkday(target, s1='', s2=''):
              .replace('{s2}', urllib.parse.quote(str(s2), safe=''))
              .replace('{t}', twice))
 
-
 def _monetise(u, s1='', s2=''):
     """fallback 版位本來就指向 KKday／Klook，只是沒帶分潤參數。
     在這裡依網域統一補上，免得每個 fallback 各自記得要包一次。
@@ -227,7 +224,6 @@ def _monetise(u, s1='', s2=''):
     if 'klook.com' in u:
         return klook(u, 'fallback')
     return u
-
 
 def plink(kind,city='',**kw):
     p=P[kind]; t=p.get('template','')
@@ -291,7 +287,6 @@ def fare_cta(slug, headline, sub_prefix='', before=None):
             f'<span class="ct"><b>{html.escape(headline)}</b><s>{html.escape(sub)}</s></span>'
             f'<span class="ca pr">{money(b["price"])}<small>近期最低</small></span></a>')
 
-
 def ez_url(slug=''):
     """易遊網的該航線查詢頁。
 
@@ -309,7 +304,6 @@ def ez_url(slug=''):
         return _monetise_ez(u, slug)
     return u
 
-
 def _monetise_ez(u, slug=''):
     """易遊網的分潤連結。聯盟網的轉址格式與 KKday 同形式：目標網址雙重編碼。"""
     p = P.get('flight2') or {}
@@ -319,7 +313,6 @@ def _monetise_ez(u, slug=''):
     return (t.replace('{s1}', 'compare')
              .replace('{s2}', urllib.parse.quote(str(slug), safe=''))
              .replace('{t}', twice))
-
 
 def compare_line(city_name='', slug=''):
     p = P.get('flight2')
@@ -368,7 +361,6 @@ def _flight_card_block(x):
           f'其他卡看<a href="{U("/japan-credit-card/")}">旅日信用卡比較</a>，'
           f'或用<a href="{U("/japan-card-calculator/")}">回饋計算機</a>。</p>')
 
-
 def _card_bonus_block(st):
     """券之外還有刷卡回饋。折扣券頁只講券，等於少講了一段同樣能省的錢。
 
@@ -409,7 +401,6 @@ def _card_bonus_block(st):
           f'{html.escape(cb["src_name"])}</a>，條件以發卡行公告為準。'
           f'各卡比較看<a href="{U("/japan-credit-card/")}">旅日信用卡</a>。</p>')
 
-
 def _rate_basis(st):
     """說明折扣率是怎麼決定的。
 
@@ -431,7 +422,6 @@ def _rate_basis(st):
                 '官方頁沒有寫分級依據是金額還是商品類別，'
                 f'下表一律以最高的 {st["max"]}% 試算，<b>你實際拿到的可能更低</b>。')
     return f'該店為單一費率 {st["max"]}%。'
-
 
 def _visa_block(st):
     """這家店有沒有被 Visa Select 優選回饋涵蓋。
@@ -470,7 +460,6 @@ def _visa_block(st):
                 f'<p class="disc">{html.escape(st_["建議"])}</p>')
     return out
 
-
 def _cat_tiers_block(st):
     """折扣率依商品類別分級的店，把類別列出來。
 
@@ -488,7 +477,6 @@ def _cat_tiers_block(st):
             '上面的試算用的是最高那一檔，買別的品項要往下對。</p>'
             f'<div class="tw narrow"><table><tr><th>折扣</th><th>適用商品</th></tr>'
             f'{rows}</table></div>')
-
 
 def _exclude_block(st):
     """明文不適用折扣券的品項。這是最容易讓人算錯預算的一格。"""
@@ -509,7 +497,6 @@ def _exclude_block(st):
         out += f'<p class="disc"><b>另外：</b>{html.escape(st["no_stack"])}</p>'
     return out
 
-
 GATE_FILTER = ('<div class="bar gatebar"><b>訂票通路</b>'
   '<button class="chip" id="gfAll" onclick="gf(0)">全部平台</button>'
   '<button class="chip" id="gfTw" onclick="gf(1)">只看台灣可訂 / 國際平台</button>'
@@ -526,7 +513,6 @@ GATE_FILTER = ('<div class="bar gatebar"><b>訂票通路</b>'
 # 沒有對應城市的頁面不顯示 widget，避免在福島頁顯示東京的行程
 TICKETS = json.load(open('tickets.json', encoding='utf-8'))
 
-
 def _ticket_link(it, slug):
     """依商品所屬平台包分潤連結。
 
@@ -538,7 +524,6 @@ def _ticket_link(it, slug):
         return klook(it['url'], 'ticket')
     return kkday(it['url'], 'ticket', slug)
 
-
 def ticket_cards(items, slug):
     return ''.join(
         f'<a class="ct" href="{html.escape(_ticket_link(it, slug))}" target="_blank" '
@@ -548,7 +533,6 @@ def ticket_cards(items, slug):
         + (f'　·　{html.escape(it["note"])}' if it.get('note') else '')
         + '</s></a>'
         for it in items)
-
 
 def adbox_tickets(items, slug, title, sub, note=''):
     """把指定的票券包成廣告版位的樣子。
@@ -584,7 +568,6 @@ def adbox_tickets(items, slug, title, sub, note=''):
             + (f'<p class="adfp">{html.escape(note)}</p>' if note else '')
             + '</aside>')
 
-
 def ticket_block(slug, name):
     """城市頁的門票區塊。
 
@@ -605,7 +588,6 @@ def ticket_block(slug, name):
             f'透過這些連結完成購買時本站可獲得分潤，不影響你的價格。'
             f'售價與庫存以 {P["activity2"]["brand"]} 頁面為準，本站不另外標價。</p>')
 
-
 KLOOK_CITY = {
  'tokyo':28, 'osaka':29, 'okinawa':6484, 'fukuoka':5209, 'nagoya':71,
  'sapporo':133938, 'sendai':17384, 'hakodate':119753, 'kobe':135,
@@ -624,7 +606,6 @@ def span_of(fs):
         return ''
     a, b = ds[0], ds[-1]
     return f"{a[5:7].lstrip('0')}/{a[8:10].lstrip('0')}–{b[5:7].lstrip('0')}/{b[8:10].lstrip('0')}"
-
 
 def faq_block(name, fs, codes):
     """由現有票價資料自動生成常見問題，並輸出 FAQPage 結構化資料。
@@ -715,7 +696,6 @@ def faq_block(name, fs, codes):
     return (f'<h2>關於{name}機票的常見問題</h2>{html_qa}'
             f'<script type="application/ld+json">{ld}</script>')
 
-
 def klook_tours(slug, name):
     """依頁面城市顯示 Klook 行程 widget（繁中／TWD）"""
     cid = KLOOK_CITY.get(slug)
@@ -725,7 +705,6 @@ def klook_tours(slug, name):
             f'<p class="lede">由 Klook 提供，繁體中文介面、台幣計價，可直接預訂。</p>'
             f'<div class="widget">{tpl.replace("{city_id}", str(cid))}</div>'
             '<p class="disc">透過此區塊完成預訂時本站可獲得分潤，不影響你的價格。</p>')
-
 
 def search_form(title, note, def_o='TPE', def_d='TYO'):
     """自製繁中搜尋表單，送往 Trip.com 繁中／TWD 搜尋頁。
@@ -855,7 +834,6 @@ LB_JS = ('<script>(function(){'
          'show(+a.getAttribute("data-i"));'
          'box.querySelector(".lbc").focus()});})();</script>')
 
-
 def widget_block(kind,title,note,**kw):
     code=(W.get(kind) or '').strip()
     if not code: return ''          # 未設定嵌入碼時整區不顯示，不留空殼
@@ -883,7 +861,6 @@ _TGF = (json.load(open('tigerair-fares.json', encoding='utf-8'))
 TGF = _TGF.get('fares') or {}
 _tgf_hit, _tgf_gap, _tgf_log = collections.Counter(), [], []
 
-
 def _tiger_price(x):
     """這班虎航在官網的價格。來回是去程加回程，查不到就回 None。
 
@@ -900,12 +877,10 @@ def _tiger_price(x):
     back = (TGF.get(f"{x['d']}-{x['o']}") or {}).get(x['ret'])
     return (None, False) if back is None else (out + back, True)
 
-
 def tiger_url(o, d, dep, ret):
     q = f'outbound={o}-{d}&departureDate={dep}'
     q += (f'&inbound={d}-{o}&returnDate={ret}&type=return' if ret else '&type=oneWay')
     return f'https://booking.tigerairtw.com/?{q}&adult=1&language=zh-TW'
-
 
 # 手動查證過的票價，蓋掉資料庫那筆。資料庫的快照可能是幾天前的，而且不是
 # 每條航線在每個通路都有艙位，對不上航空公司官網時以官網為準。
@@ -920,11 +895,9 @@ for _it in _FO['items']:
     FARE_OVR[(_it['air'], _it['o'], _it['d'], _it['dep'], _it.get('ret', ''))] = _it
 _ovr_hit = collections.Counter()
 
-
 # 票價的唯一來源。scan.py／scan.json 是 2026-09-10 的初版原型，月份寫死、
 # token 只讀 .env、CI 沒跑它，已於 2026-10-23 從這裡移除。
 SCAN_SRC = '/tmp/scan_all.json'
-
 
 def load():
     rows=[]
@@ -1082,13 +1055,13 @@ padding:12px 13px;text-decoration:none;color:var(--fg)}
 .plink{flex:1 1 190px;text-align:center;border:1px solid var(--line);background:var(--card);
 color:var(--fg);text-decoration:none;padding:11px 13px;border-radius:9px;font-size:.88rem;font-weight:600}
 .plink:hover{border-color:var(--acc);color:var(--acc)}
-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.87rem}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.95rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--dim);font-weight:600;font-size:.79rem}
 td b{color:var(--acc)}
 .today{background:linear-gradient(180deg,#fff,var(--soft));border:1px solid var(--line);
  border-top:4px solid var(--acc);border-radius:12px;padding:19px 22px;margin-top:14px}
-.tday{font-size:.79rem;color:var(--dim);letter-spacing:.04em;font-weight:600}
+.tday{font-size:.84rem;color:var(--dim);letter-spacing:.04em;font-weight:600}
 .tans{font-size:1.3rem;font-weight:800;line-height:1.42;margin-top:8px;letter-spacing:-.02em}
 .tsub{font-size:.93rem;color:var(--dim);line-height:1.7;margin-top:10px}
 .tbuf{font-size:.93rem;line-height:1.7;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
@@ -1104,7 +1077,9 @@ border-left:3px solid var(--acc);border-radius:0 8px 8px 0;font-size:.9rem;line-
 blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem;color:var(--dim)}
 blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem;color:var(--dim)}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
-.tw table{min-width:640px;font-size:.84rem}
+.tw table{min-width:640px;font-size:.95rem}
+.tw th{font-size:.86rem}
+.tw small{font-size:.86rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
 .tw td.win{color:var(--lcc);font-weight:700}
 /* 左右兩欄對照的表。格子裡裝的是整句話不是數字，所以不套 .tw 的 nowrap，
@@ -1313,7 +1288,7 @@ border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
 .widget{margin:12px 0 0;min-height:60px}
 .widget iframe{max-width:100%;border:0}
 .gatebar{margin:16px 0 0;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
-.disc{font-size:.76rem;color:var(--dim);margin:8px 0 0;line-height:1.6}
+.disc{font-size:.88rem;color:var(--dim);margin:8px 0 0;line-height:1.6}
 .note{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:.79rem;color:var(--dim);line-height:1.85}
 .note a{color:var(--dim)}
 @media(max-width:520px){h1{font-size:1.5rem}.grid{grid-template-columns:1fr}}'''
@@ -1330,12 +1305,10 @@ DRIVE = ('<script nowprocket data-noptimize="1" data-cfasync="false" '
 # make_og_cards.py 產好之後下一次建置就換成自己的。
 OG_SLUGS = {f[:-4] for f in os.listdir('og')} if os.path.isdir('og') else set()
 
-
 def _og_slug(path):
     """URL 路徑轉成圖檔名：/japan-esim/ → japan-esim，首頁 → home"""
     p = (path or '').strip('/')
     return p.replace('/', '-') if p else 'home'
-
 
 def _og_img(path):
     """這頁的 og:image 網址。
@@ -1345,7 +1318,6 @@ def _og_img(path):
     """
     s = _og_slug(path)
     return f'{SITE}{BASE}/og/{s if s in OG_SLUGS else "default"}.png'
-
 
 def head(title,desc,path,extra=''):
     can=f'{SITE}{BASE}/{path}' if path else f'{SITE}{BASE}/'
@@ -1502,7 +1474,6 @@ def topnav(cur=''):
             + burger
             + '</nav>')
 
-
 def _partner_line():
     """頁尾的合作平台宣告，直接從 partners.json 產生。
 
@@ -1519,7 +1490,6 @@ def _partner_line():
         if b:
             by_brand.setdefault(b, []).append(name)
     return '、'.join(f'{"／".join(v)} {b}' for b, v in by_brand.items())
-
 
 # ---------- 廣告版位 ----------
 # 站上的資料都是旅日用的，所以放旅遊相關的廣告。規則有三條：
@@ -1579,12 +1549,10 @@ _AD_SKIP = ('deals/', 'cards/', 'posts/')
 _NO_AD_OK = {'/japan-hotel-check/', '/kawaguchiko-hotel-case/',
              '/tokyo/teamlab/'}
 
-
 def u_region(path):
     """地區頁回地區名，其餘回空字串。"""
     u = path[:-len('index.html')].strip('/') if path.endswith('index.html') else path
     return REGNAME.get(u, '')
-
 
 def _ad_city(path):
     """城市頁與航線頁回 (城市名, 訂房用的城市名)，其餘回 None。
@@ -1594,7 +1562,6 @@ def _ad_city(path):
     slug = u.rsplit('/', 1)[-1]
     c = CITY.get(slug)
     return (c[1], c[4]) if c else None
-
 
 def _ad_kind_for(path):
     """這一頁該配哪一種廣告。沒對到的不放，不要硬塞。"""
@@ -1620,21 +1587,17 @@ def _ad_kind_for(path):
         return 'activity2'          # 首頁
     return None
 
-
 _ADS = (json.load(open('ads.json', encoding='utf-8'))
         if os.path.exists('ads.json') else {'groups': {}, 'checked': ''})
-
 
 # 頁面專屬商品放哪一個版位。只放一個：三個版位都放同一支門票，
 # 等於同一頁跟讀者推銷三次一樣的東西。
 _AD_PAGE_SLOT = 'top'
 
-
 def _hid(txt):
     """同一頁小標的錨點。和目錄用的是同一套算法，所以標題改了連結也跟著對，
     不會留下一個指向不存在位置的連結。"""
     return 'h-' + hashlib.sha1(txt.encode('utf-8')).hexdigest()[:6]
-
 
 def _allow_note(vals, allow, what, extra=''):
     """這一頁的機種是不是全部在入境免稅額度內。
@@ -1658,7 +1621,6 @@ def _allow_note(vals, allow, what, extra=''):
             + (f'</li><li><b>{extra}' if extra else '')
             + '</li></ul></div>')
 
-
 def _ad_group(kind, path, slot='foot'):
     """這一頁這個版位要用哪一組商品。頁面專屬的優先。
 
@@ -1677,12 +1639,10 @@ def _ad_group(kind, path, slot='foot'):
         return pg
     return (_ADS.get('groups') or {}).get(kind) or {}
 
-
 def _ad_adid(slot, img=False):
     """版位對應的 Klook 廣告單元代號。頁尾那個叫 adbox，不是 adbox_foot，
     兩邊要寫成一樣，不然會靜靜地退回預設單元，數字全部併在一起。"""
     return ('adbox' if slot == 'foot' else 'adbox_' + slot) + ('_img' if img else '')
-
 
 def _ad_products(g, track):
     """實際商品清單。泛稱「日本上網卡與 eSIM」讀者不知道會看到什麼，
@@ -1711,12 +1671,10 @@ def _ad_products(g, track):
     one = ' one' if len(g['items']) == 1 else ''
     return f'<div class="adpl{one}">{cells}</div>'
 
-
 # 圖片橫幅與文字版的對照實驗。上版位一半頁面給圖、一半維持文字，
 # 同一頁的版本不會變（照路徑算的），讀者重整不會看到不一樣的東西。
 # 比的時候要用同一個位置的兩組數字比，不要拿上版位的圖去比頁尾的文字。
 _AD_IMG_KINDS = {'esim', 'activity2', 'transfer', 'car', 'transport', 'hotel'}
-
 
 def _ad_use_img(path, slot):
     """這一頁的這個版位要不要用圖片版。只有上版位參與實驗。"""
@@ -1727,7 +1685,6 @@ def _ad_use_img(path, slot):
         return False
     h = hashlib.sha1(path.encode('utf-8')).hexdigest()
     return int(h[:8], 16) % 2 == 0
-
 
 def adbox(kind, path, slot='foot'):
     """廣告區塊。track 帶頁面路徑與版位，才分得出哪一頁、哪個位置有人點。"""
@@ -1858,7 +1815,6 @@ def _reg_window(c):
             + (f'<br><small>路徑：{html.escape(path)}</small>' if path else '')
             + '</div>')
 
-
 def _reg_link_row(c):
     """登錄入口。行動支付與交通卡是兩個不同的頁面，不要混為一談。"""
     ls = c.get('reg_links') or []
@@ -1873,7 +1829,6 @@ def _hh(t):
     """'HH:MM' → 小時整數；缺值回 None"""
     return int(t[:2]) if t and len(t) >= 5 and t[:2].isdigit() else None
 
-
 def arr_min(x):
     """抵達日本的當地時間，以出發日零時起算的分鐘數。
 
@@ -1883,7 +1838,6 @@ def arr_min(x):
     if not t or not x.get('dur_to'):
         return None
     return int(t[:2]) * 60 + int(t[3:5]) + x['dur_to'] + 60   # +60 為台日時差
-
 
 def good_times(x):
     """不浪費假期的班次。三個條件要同時成立：
@@ -1901,7 +1855,6 @@ def good_times(x):
         return False
     dm = int(t[:2]) * 60 + int(t[3:5])
     return dm >= 5 * 60 and a <= 12 * 60 and 18 <= rh <= 23
-
 
 # ---------- 日本連假 ----------
 # 台灣旅客多半不知道日本的國定假日，而連假是日本人自己出遊的日子，
@@ -1940,7 +1893,6 @@ if os.path.exists('holidays.json'):
                        if x.get(k + '_off') is not None), default='')
                for k in ('jp', 'tw', 'cn')}
 
-
 def jp_run(d):
     """這個日期（YYYY-MM-DD）落在哪一段日本連假裡，沒有就回 None"""
     if not d:
@@ -1950,13 +1902,11 @@ def jp_run(d):
             return r
     return None
 
-
 def _in_run(d, runs):
     for r in runs:
         if r['start'] <= d <= r['end']:
             return r
     return None
-
 
 def jp_badge(*dates):
     """票價卡上的連假標籤。
@@ -1980,7 +1930,6 @@ def jp_badge(*dates):
             return (f'<span class="tg gt" title="{html.escape(nm)}：'
                     f'日本自己放假，住宿貴但機票未必">🗾 日本連假</span>')
     return ''
-
 
 def jp_runs_block(n=4, heading=None, key='jp'):
     """列出接下來幾段連假。
@@ -2020,7 +1969,6 @@ def jp_runs_block(n=4, heading=None, key='jp'):
             '<p class="disc">依日本內閣府公開的國定假日資料計算，'
             '把週六、週日與國定假日視為非上班日，取連續三天以上的區間。'
             '日本的補假（振替休日）已一併計入。</p>')
-
 
 def fare_card(x,hot=False):
     tag={'lcc':'廉航','fsc':'一般航空'}.get(x['cls'],'其他')
@@ -2074,7 +2022,6 @@ def cta(kind, city_name, hotel_city, headline, sub, track='', ci='', co=''):
             f'<span class="ci">{p["icon"]}</span>'
             f'<span class="ct"><b>{html.escape(headline)}</b><s>{html.escape(sub)}</s></span>'
             f'<span class="ca">→</span></a>')
-
 
 def partner_links(city_name, hotel_city, slug=None):
     """保留給尚未改為情境式配置的頁面（航線頁、deal 貼文），至多兩個連結。"""
@@ -2157,16 +2104,13 @@ def write_deal_data(slug, payload):
           json.dumps(dict(schema=1, slug=slug, generated=NOWS, **payload),
                      ensure_ascii=False, indent=1))
 
-
 PAGE_HASH = {}          # 產生路徑 → 內容雜湊，給 sitemap 判斷這頁到底有沒有變
 PAGE_META = {}          # 產生路徑 → {title, h1, fare}，給 og 圖卡用
-
 
 _TOC_RE = re.compile(r'<h2(?![^>]*\bclass=)([^>]*)>(.*?)</h2>', re.S)
 # 不是段落標題、但也想進書籤的東西（例如熱搜頁那 11 則），
 # 在元素上標 data-toc="要顯示的字"，位置照文件順序排進同一排。
 _TOC_EXTRA = re.compile(r'<\w+[^>]*\bid="([^"]+)"[^>]*\bdata-toc="([^"]*)"')
-
 
 def _toc(content):
     """把頁面裡的 h2 收成一排書籤，插在第一個 h2 前面。
@@ -2219,10 +2163,8 @@ def _toc(content):
         first = st if first < 0 else min(first, st)
     return content[:first] + toc + content[first:] if first > 0 else content
 
-
 _AFF_RE = re.compile(r'affiliate\.klook|affclkr|trip\.com|kkday\.com'
                      r'|booking\.com|agoda\.com|sfGo\(')
-
 
 def _trim_note(content):
     """頁尾那兩段聲明，只留這一頁真的用得上的。
@@ -2249,7 +2191,6 @@ def _trim_note(content):
         content = content[:a] + msg + content[b:]
     return (content.replace('<!--f-->', '').replace('<!--/f-->', '')
                    .replace('<!--a-->', '').replace('<!--/a-->', ''))
-
 
 # ---------- 日文加註繁中 ----------
 # 頁面上出現的日文（店名、方案名、官方原文）在後面補上中文。對照表在 ja-zh.json。
@@ -2357,7 +2298,6 @@ _AD2_PAIR = {'esim': 'activity2', 'activity2': 'esim', 'car': 'esim',
 # 那霸的頁面配到 JR Pass 會讓人覺得是亂配的。
 _AD_ROTATE = ['esim', 'activity2', 'transfer', 'car', 'transport']
 
-
 def _ad_other(used):
     for k in _AD_ROTATE:
         if k not in used:
@@ -2366,7 +2306,6 @@ def _ad_other(used):
 # 收尾性質的段落，插在它們前面等於跟頁尾那個版位擠在一起
 _AD2_SKIP_H2 = ('整理成圖片', '常見問題', '資料來源', '這一頁', '其他選擇',
                 '延伸閱讀', '出處', '更新紀錄', '相關頁面')
-
 
 def _ad_second(path, content, used):
     """長頁面的第二個版位，插在內容過半後的第一個 h2 之前。
@@ -2412,7 +2351,6 @@ def _ad_second(path, content, used):
     used.append(k2)
     return content[:i] + box + content[i:]
 
-
 def _ad_top(path, content, used):
     """頁面上方的版位，放在第一個 h2 之前。
 
@@ -2430,7 +2368,6 @@ def _ad_top(path, content, used):
         return content, used
     i = m.start()
     return content[:i] + box + content[i:], used + [k]
-
 
 def _ad_inject(path, content):
     """把廣告區塊放進頁尾聲明之前。
@@ -2453,7 +2390,6 @@ def _ad_inject(path, content):
     content = _ad_second(path, content, used)
     content, used = _ad_top(path, content, used)
     return content
-
 
 def write(path,content):
     d=os.path.dirname(path)
@@ -2550,7 +2486,6 @@ def sort_key(fs):
         return (2, 10 ** 9)
     return (0 if lbl == '來回' else 1, b['price'])
 
-
 def best_labeled(fs):
     """取最低價，優先來回；沒有來回票才退回單程。
 
@@ -2563,22 +2498,18 @@ def best_labeled(fs):
     o = best(fs, False)
     return (o, '單程') if o else (None, '')
 
-
 def best(fs,rt=None):
     p=[x for x in fs if (rt is None or x['rt']==rt)]
     return min(p,key=lambda x:x['price']) if p else None
 
 def money(n): return f'NT${n:,}'
 
-
 def soldout(c):
     return [t for t in c['tiers'] if t.get('sold_out')]
-
 
 def nowmax(c):
     # 扣掉這一期已經額滿、現在登錄不到的加碼之後，實際還拿得到的上限。
     return round(c['total'] - sum(t['rate'] for t in soldout(c)), 1)
-
 
 def capv(t):
     # 官方以點數為單位的上限不要算繪成 NT$。OPENPOINT 與 LINE POINTS 雖然
@@ -2862,12 +2793,11 @@ for slug,name,codes,reg,hotelcity in CITIES:
             + '</a>' for s,n,_,r,_ in sib)+'</div>')
 
     write(f'{slug}/index.html', head(title,desc,f'{slug}/')
-        + crumbs([('首頁','/'),(REGNAME[reg],f'/{reg}/'),(f'{name}機票',None)])
-        + topnav(reg) + f'<h1>{name}機票</h1>' + intro
+        + topnav(reg)
+        + crumbs([('首頁','/'),(REGNAME[reg],f'/{reg}/'),(f'{name}機票',None)]) + f'<h1>{name}機票</h1>' + intro
         + f'<p class="upd">更新於 {NOWS}　·　共 {len(fs)} 筆票價</p>'
         + cmp_block + body + foot())
     pages.append((f'/{slug}/',0.8 if fs else 0.5))
-
 
 # ---------- 廉航行李費 ----------
 # 城市頁的比價只到「票價」為止，但廉航最低票價是不含託運的。
@@ -2981,7 +2911,7 @@ if os.path.exists('baggage.json'):
     write('japan-flight-baggage/index.html',
       head(bg_title, bg_desc, 'japan-flight-baggage/',
            '<script type="application/ld+json">' + bg_ld + '</script>')
-      + crumbs([('首頁', '/'), ('廉航行李費', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('廉航行李費', None)])
       + '<h1>廉航加了行李，還比較便宜嗎？</h1>'
       + '<p class="lede">比票價的時候，廉航幾乎一定贏。但廉航的最低票價<b>不含託運行李</b>：'
         '那是「只能帶手提行李」的價格。把行李費加回去，價差會縮水多少？</p>'
@@ -3051,7 +2981,6 @@ if os.path.exists('baggage.json'):
         '本頁數字查證於 ' + BG['checked'] + '，購票前請以航空公司官網為準。</p>'
       + foot())
     pages.append(('/japan-flight-baggage/', 0.7))
-
 
 # ---------- 選位 ----------
 # 「飛機選位」的搜尋意圖其實是兩件混在一起的事：哪家要收錢（可查證，看官網），
@@ -3189,7 +3118,7 @@ if os.path.exists('seat.json'):
     write('japan-flight-seat/index.html',
       head(st_title, st_desc, 'japan-flight-seat/',
            '<script type="application/ld+json">' + st_ld + '</script>')
-      + crumbs([('首頁', '/'), ('選位', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('選位', None)])
       + '<h1>台日航線選位：哪幾家要付錢、坐哪裡比較好</h1>'
       + '<p class="lede">「飛機選位」其實是兩個問題混在一起。'
         '<b>哪家要收錢</b>查得到答案，看官網就有。'
@@ -3275,7 +3204,6 @@ if os.path.exists('seat.json'):
         f'本頁數字查證於 {ST["checked"]}，購票前請以航空公司官網為準。</p>'
       + foot())
     pages.append(('/japan-flight-seat/', 0.7))
-
 
 # ---------- 搭飛機看富士山 ----------
 # 這題的中文資料幾乎都寫「羽田出發坐右邊」，但 JAL 官方說羽田往西有六條航路，
@@ -3406,7 +3334,7 @@ if os.path.exists('fuji.json'):
     write('japan-flight-fuji/index.html',
       head(fj_title, fj_desc, 'japan-flight-fuji/',
            '<script type="application/ld+json">' + fj_ld + '</script>')
-      + crumbs([('首頁', '/'), ('看富士山', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('看富士山', None)])
       + '<h1>搭飛機看富士山：哪些航線看得到、該坐左邊還是右邊</h1>'
       + '<p class="lede">網路上的整理多半寫「羽田出發坐右邊」。'
         '但日本航空官網自己的逐航線資料裡，羽田出發同時有看左側、看右側與'
@@ -3487,7 +3415,6 @@ if os.path.exists('fuji.json'):
         f'本頁查證於 {FJ["checked"]}。</p>'
       + foot())
     pages.append(('/japan-flight-fuji/', 0.7))
-
 
 # ---------- 換日幣 ----------
 # 換匯的成本幾乎都藏在匯率裡，不在手續費。多數整理只比手續費，所以結論是錯的。
@@ -3651,7 +3578,7 @@ if os.path.exists('fx.json'):
     write('japan-yen-exchange/index.html',
       head(fx_title, fx_desc, 'japan-yen-exchange/',
            '<script type="application/ld+json">' + fx_ld + '</script>')
-      + crumbs([('首頁', '/'), ('換日幣', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('換日幣', None)])
       + '<h1>換日幣怎麼換最省</h1>'
       + f'<p class="lede">{html.escape(FX["lede"])}</p>'
       + f'<div class="today"><div class="tday">費率與條件查證於 {FX["checked"]}</div>'
@@ -3740,7 +3667,6 @@ if os.path.exists('fx.json'):
       + foot())
     pages.append(('/japan-yen-exchange/', 0.7))
 
-
 # ---------- 日本的支付方式 ----------
 # 這題的中文整理幾乎都教人「怎麼註冊 PayPay」，但 PayPay 官方明寫海外門號不能用、
 # 在海外也無法新規註冊。台灣旅客真正該問的是「怎麼付到 PayPay 的收款碼」。
@@ -3759,7 +3685,6 @@ if os.path.exists('pay.json'):
 
     _pylim = ''.join(f'<li>{html.escape(x)}</li>' for x in PY['limits']['items'])
 
-
     _TC = PY['touch']
     _pytouch = ''.join(
         f'<tr><td><b>{html.escape(n)}</b></td>'
@@ -3777,7 +3702,6 @@ if os.path.exists('pay.json'):
         f'<tr><td><b>{html.escape(n)}</b></td><td class="nm">{html.escape(w)}</td>'
         f'<td><a href="{u}" rel="nofollow noopener" target="_blank">官網</a></td></tr>'
         for n, w, u in _PK['stores']['rows'])
-
 
     py_title = '日本的支付方式怎麼用：PayPay、交通卡與感應信用卡'
     py_desc = ('PayPay 台灣旅客註冊不了，官方給的路徑是用台灣的錢包掃它的收款碼。'
@@ -3818,7 +3742,7 @@ if os.path.exists('pay.json'):
     write('japan-payment/index.html',
       head(py_title, py_desc, 'japan-payment/',
            '<script type="application/ld+json">' + py_ld + '</script>')
-      + crumbs([('首頁', '/'), ('支付方式', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('支付方式', None)])
       + '<h1>日本的支付方式怎麼用</h1>'
       + '<p class="lede">多數中文整理教的是「怎麼註冊 PayPay」。'
         '但官方明寫海外門號不能用、在海外也無法註冊。'
@@ -4088,7 +4012,7 @@ if all(os.path.exists(f) for f in
     write('japan-worth-buying/index.html',
       head(wb_title, wb_desc, 'japan-worth-buying/',
            '<script type="application/ld+json">' + wb_ld + '</script>')
-      + crumbs([('首頁', '/'), ('買什麼划算', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('買什麼划算', None)])
       + '<h1>去日本買什麼划算</h1>'
       + '<p class="lede">網路上的必買清單多半沒有數字。這一頁只收本站逐項對過'
         '官方通路定價的品項，按<b>免稅後的實際價差</b>排序，並標出哪些超過入境免稅額度。'
@@ -4237,7 +4161,7 @@ if os.path.exists('medicine.json'):
     write('japan-medicine-limit/index.html',
       head(md_title, md_desc, 'japan-medicine-limit/',
            '<script type="application/ld+json">' + md_ld + '</script>')
-      + crumbs([('首頁', '/'), ('藥妝帶多少', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('藥妝帶多少', None)])
       + '<h1>從日本帶藥妝回台灣，哪些有數量上限</h1>'
       + '<p class="lede">買十組面膜、囤一堆眼藥水之前，先知道哪些有上限。'
         '這一頁每個數字都標出法源與修正日期，因為這類規定改過，'
@@ -4395,7 +4319,7 @@ if os.path.exists('shoppoints.json'):
     write('japan-store-points/index.html',
       head(sp_title, sp_desc, 'japan-store-points/',
            '<script type="application/ld+json">' + sp_ld + '</script>')
-      + crumbs([('首頁', '/'), ('店家集點', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('店家集點', None)])
       + '<h1>日本店家的集點，能補上退稅的麻煩嗎</h1>'
       + f'<p class="lede">{html.escape(SP["lede"])}</p>'
       + f'<div class="today"><div class="tday">條件查證於 {SP["checked"]}</div>'
@@ -4451,7 +4375,6 @@ if os.path.exists('shoppoints.json'):
         f'免稅與店家優惠的關係以結帳當下店家的認定為準。</p>'
       + foot())
     pages.append(('/japan-store-points/', 0.7))
-
 
 # ---------- 日本交通卡 ----------
 # 這題站上本來散在支付頁裡，但「怎麼儲值」與「搭哪張卡」是另一個問題。
@@ -4643,7 +4566,7 @@ if os.path.exists('transit.json'):
            '以及台灣發行的卡能不能在 Apple 錢包裡儲值。逐條對官方條文，查不到的就寫查不到。',
            'japan-transit-card/',
            '<script type="application/ld+json">' + tr_ld + '</script>')
-      + crumbs([('首頁', '/'), ('交通卡', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('交通卡', None)])
       + '<h1>日本交通卡怎麼選、怎麼儲值、搭哪張信用卡</h1>'
       + f'<p class="lede">{html.escape(_H["sub"])}</p>'
       + f'<div class="today"><div class="tday">查證於 {TR["checked"]}</div>'
@@ -4788,7 +4711,6 @@ if os.path.exists('transit.json'):
       + foot())
     pages.append(('/japan-transit-card/', 0.7))
 
-
 # ---------- 機場停車 ----------
 # 這題社群上傳最廣的那個說法數字是錯的，而且錯得有跡可循：官方那句
 # 「每日最高上限150元，於每日24時後另計」少看後半段，六天就會算成一天的錢。
@@ -4896,7 +4818,7 @@ if os.path.exists('parking.json'):
            '日本回饋高的那幾張全都沒有。',
            'taiwan-airport-parking/',
            '<script type="application/ld+json">' + pk_ld + '</script>')
-      + crumbs([('首頁', '/'), ('機場停車', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('機場停車', None)])
       + '<h1>開車去機場，停哪裡？</h1>'
       + f'<p class="lede">{html.escape(_H["sub"])}</p>'
       + f'<div class="today"><div class="tday">查證於 {PK["checked"]}</div>'
@@ -4992,7 +4914,6 @@ if os.path.exists('parking.json'):
         f'多數標 2026 年全年，每年底要重查。</p>'
       + foot())
     pages.append(('/taiwan-airport-parking/', 0.7))
-
 
 # ---------- 雪具託運 ----------
 # 「雪具託運」是明確的搜尋意圖，而且季節性強（雪季 12 月起，現在正在訂機票）。
@@ -5138,7 +5059,7 @@ if os.path.exists('ski.json'):
     write('japan-ski-baggage/index.html',
       head(sk_title, sk_desc, 'japan-ski-baggage/',
            '<script type="application/ld+json">' + sk_ld + '</script>')
-      + crumbs([('首頁', '/'), ('雪具託運規則', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('雪具託運規則', None)])
       + '<h1>帶雪具去日本，行李要怎麼算？</h1>'
       + f'<p class="lede">{html.escape(SK["intro"])}</p>'
       + f'<div class="today"><div class="tday">{_skn_cn}家航空的條款逐項對過官網，'
@@ -5452,7 +5373,7 @@ if os.path.exists('ski-ticket.json'):
     write('japan-ski-lift-ticket/index.html',
       head(st_title, st_desc, 'japan-ski-lift-ticket/',
            '<script type="application/ld+json">' + st_ld + '</script>')
-      + crumbs([('首頁', '/'), ('雪票早鳥與降雪預報', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('雪票早鳥與降雪預報', None)])
       + '<h1>雪票早鳥便宜多少，什麼時候截止，退不退得掉</h1>'
       + f'<p class="lede">{html.escape(ST["intro"])}</p>'
       + _st_css
@@ -5696,8 +5617,8 @@ if os.path.exists('tigerair-nagoya.json'):
     write('tigerair-nagoya/index.html',
       head(tn_title, tn_desc, 'tigerair-nagoya/',
            '<script type="application/ld+json">' + tn_ld + '</script>')
-      + crumbs([('首頁', '/'), ('名古屋機票', '/nagoya/'), (f'{_tn_air}班表', None)])
       + topnav()
+      + crumbs([('首頁', '/'), ('名古屋機票', '/nagoya/'), (f'{_tn_air}班表', None)])
       + f'<h1>{html.escape(_tn_air)}飛{_tn_city}，班次怎麼看？</h1>'
       + f'<p class="lede">桃園與台中都有直飛。以下是官方班表的完整時刻與營運日，'
         f'夏季與冬季兩版分開列。同一個航班號換季之後時間會變。</p>'
@@ -6003,7 +5924,7 @@ if os.path.exists('lasttrain.json'):
     write('japan-airport-last-train/index.html',
       head(lt_title, lt_desc, 'japan-airport-last-train/',
            '<script type="application/ld+json">' + lt_ld + '</script>')
-      + crumbs([('首頁', '/'), ('機場末班車', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('機場末班車', None)])
       + '<h1>落地之後，還回得去市區嗎？</h1>'
       + f'<p class="lede">{html.escape(LT["intro"])}</p>'
       + f'<div class="today"><div class="tday">七個機場的末班車，逐班對過各家官方時刻表，'
@@ -6206,7 +6127,7 @@ if EG:
     write('japan-esim-native-roaming/index.html',
       head(eg_title, eg_desc, 'japan-esim-native-roaming/',
            '<script type="application/ld+json">' + eg_ld + '</script>')
-      + crumbs([('首頁', '/'), ('eSIM 原生還是漫遊', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('eSIM 原生還是漫遊', None)])
       + '<h1>你買的日本 eSIM，是日本的網路還是繞回香港的？</h1>'
       + f'<p class="lede">{html.escape(EG["thesis"])}</p>'
       + f'<div class="today"><div class="tday">技術說明對照 GSMA 漫遊規格與日本總務省原文，'
@@ -6335,7 +6256,7 @@ if RS2:
     write('japan-sms-roaming/index.html',
       head(rs_title, rs_desc, 'japan-sms-roaming/',
            '<script type="application/ld+json">' + rs_ld + '</script>')
-      + crumbs([('首頁', '/'), ('台灣門號在日本收簡訊', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('台灣門號在日本收簡訊', None)])
       + '<h1>在日本，收得到台灣的簡訊驗證碼嗎？</h1>'
       + f'<p class="lede">{html.escape(RS2["thesis"])}</p>'
       + f'<div class="today"><div class="tday">三家電信與 docomo 的官方說法，'
@@ -6506,7 +6427,7 @@ if DRV:
     write('japan-driving-licence/index.html',
       head(dv_title, dv_desc, 'japan-driving-licence/',
            '<script type="application/ld+json">' + dv_ld + '</script>')
-      + crumbs([('首頁', '/'), ('日本租車・駕照譯本', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('日本租車・駕照譯本', None)])
       + '<h1>台灣駕照能在日本租車嗎？國際駕照不能用</h1>'
       + f'<p class="lede">{html.escape(DRV["thesis"])}</p>'
       + f'<div class="today"><div class="tday">日本台灣交流協會與公路局的官方頁面，'
@@ -6609,7 +6530,7 @@ if DH:
            '含喇叭、方向燈提前距離、車距、超車道與隧道的規定。',
            'japan-driving-habits/',
            '<script type="application/ld+json">' + dh_ld + '</script>')
-      + crumbs([('首頁', '/'), ('日本自駕・開車習慣', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('日本自駕・開車習慣', None)])
       + '<h1>在日本開車，哪些是法規，哪些只是習慣</h1>'
       + '<div class="today">'
         f'<div class="tday">法令原文查證於 {DH["checked"]}</div>'
@@ -6781,7 +6702,7 @@ if NOC:
     write('japan-rentacar-noc/index.html',
       head(nc_title, nc_desc, 'japan-rentacar-noc/',
            '<script type="application/ld+json">' + nc_ld + '</script>')
-      + crumbs([('首頁', '/'), ('日本租車・NOC', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('日本租車・NOC', None)])
       + '<h1>日本租車：買了免責補償，為什麼還是要賠錢？</h1>'
       + f'<p class="lede">{html.escape(NOC["thesis"])}</p>'
       + f'<div class="today"><div class="tday">豐田、日本租車、ORIX 三家的官方條款原文，'
@@ -6953,7 +6874,7 @@ if INS:
     write('japan-travel-insurance/index.html',
       head(in_title, in_desc, 'japan-travel-insurance/',
            '<script type="application/ld+json">' + in_ld + '</script>')
-      + crumbs([('首頁', '/'), ('旅平險怎麼賠', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('旅平險怎麼賠', None)])
       + '<h1>旅平險，什麼情況才真的會賠？</h1>'
       + f'<p class="lede">{html.escape(INS["thesis"])}</p>'
       + f'<p class="disc"><b>先說清楚：</b>{html.escape(INS["disclaimer"])}</p>'
@@ -7220,7 +7141,7 @@ if os.path.exists('japan-rules.json'):
     write('japan-travel-rules/index.html',
       head(jr_title, jr_desc, 'japan-travel-rules/',
            '<script type="application/ld+json">' + jr_ld + '</script>')
-      + crumbs([('首頁', '/'), ('去日本的新制度', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('去日本的新制度', None)])
       + '<h1>去日本前，這幾條新制真的會動到你的錢</h1>'
       + f'<p class="lede">{html.escape(JR["_起因"])}</p>'
       + '<div class="today">'
@@ -7381,7 +7302,7 @@ if os.path.exists('threads-hub.json'):
     write('threads-japan/index.html',
       head(th_title, th_desc, 'threads-japan/', th_ld and
            '<script type="application/ld+json">' + th_ld + '</script>')
-      + crumbs([('首頁', '/'), ('Threads 日本熱搜', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('Threads 日本熱搜', None)])
       + '<h1>Threads 上的日本旅遊話題</h1>'
       + '<div class="today">'
         f'<div class="tday">更新於 {TH["checked"]}</div>'
@@ -7701,7 +7622,7 @@ if os.path.exists('tokyo-picks.json'):
     write('tokyo/worth-flying-for/index.html',
       head(tp_title, tp_desc, 'tokyo/worth-flying-for/',
            '<script type="application/ld+json">' + tp_ld + '</script>')
-      + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('值得再飛一次的店', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('值得再飛一次的店', None)])
       + '<h1>東京有哪家店，值得你為它再飛一次</h1>'
       + f'<p class="lede">{html.escape(TP["_說明"])}</p>'
       + '<div class="today">'
@@ -7965,7 +7886,7 @@ if SH:
     write('tokyo/street-fashion/index.html',
       head(sh_title, sh_desc, 'tokyo/street-fashion/',
            '<script type="application/ld+json">' + sh_ld + '</script>')
-      + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('潮牌與選物店', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('潮牌與選物店', None)])
       + '<h1>那份東京潮牌清單，逐家查完是這樣</h1>'
       + '<p class="lede">Threads 上有人問東京男生必逛，最紅的一則回覆列了十六家店、'
         '被分享一百多次。這頁不重寫那份清單，而是把每一家的官方資料查出來，'
@@ -8144,7 +8065,7 @@ if os.path.exists('angel63.json'):
     write('tokyo/63angel/index.html',
       head(ag_title, ag_desc, 'tokyo/63angel/',
            '<script type="application/ld+json">' + ag_ld + '</script>')
-      + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('63 ANGEL', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('63 ANGEL', None)])
       + '<h1>63 ANGEL 訂位前要知道的幾件事</h1>'
       + f'<p class="lede">{html.escape(AG["_說明"])}'
         f'台幣以中間匯率 {_ag_rate} 換算，每日自動更新。</p>'
@@ -8410,8 +8331,8 @@ if os.path.exists('angel63.json'):
 
         write('tokyo/63angel/talents/index.html',
           head(tl_title, tl_desc, 'tokyo/63angel/talents/', _tl_css)
-          + crumbs([('首頁', '/'), ('東京', '/tokyo/'),
-                    ('63 ANGEL', '/tokyo/63angel/'), ('有哪些女孩', None)]) + topnav()
+          + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'),
+                    ('63 ANGEL', '/tokyo/63angel/'), ('有哪些女孩', None)])
           + f'<h1>63 ANGEL 有哪些女孩</h1>'
           + f'<p class="lede">{html.escape(_TL["_說明"])}</p>'
           + '<div class="today">'
@@ -8504,7 +8425,7 @@ if os.path.exists('churasun6.json'):
     write('okinawa/churasun6/index.html',
       head(_cs_title, _cs_desc, 'okinawa/churasun6/',
            '<script type="application/ld+json">' + _cs_ld + '</script>')
-      + crumbs([('首頁', '/'), ('沖繩', '/okinawa/'), ('ちゅらさん6', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('沖繩', '/okinawa/'), ('ちゅらさん6', None)])
       + '<h1>ちゅらさん6 沖繩，訂位前要知道的幾件事</h1>'
       + f'<p class="lede">{html.escape(CS["_說明"])}'
         f'台幣以中間匯率 {_cs_rate} 換算，每日自動更新。</p>'
@@ -8628,7 +8549,7 @@ if os.path.exists('superspark.json'):
     write('tokyo/superspark/index.html',
       head(_ss_title, _ss_desc, 'tokyo/superspark/',
            '<script type="application/ld+json">' + _ss_ld + '</script>')
-      + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('SUPER SPARK', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('SUPER SPARK', None)])
       + '<h1>SUPER SPARK TOKYO，訂位前要知道的幾件事</h1>'
       + f'<p class="lede">{html.escape(SS["_說明"])}'
         f'台幣以中間匯率 {_ss_rate} 換算，每日自動更新。</p>'
@@ -8831,7 +8752,7 @@ if os.path.exists('jttp.json'):
     write('japan-jttp/index.html',
       head(tt_title, tt_desc, 'japan-jttp/',
            '<script type="application/ld+json">' + tt_ld + '</script>')
-      + crumbs([('首頁', '/'), ('JTTP 快速通關', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('JTTP 快速通關', None)])
       + '<h1>JTTP 申請前，先確認這三件事</h1>'
       + '<p class="lede">這頁只整理日本出入國在留管理廳與國稅庁的官方公告，'
         '不採用部落格的申請心得。心得會過期，條文不會。</p>'
@@ -9056,7 +8977,6 @@ if HOL:
         prev = p['opts'].get(L - 1, {}).get('tot', p['base']) if L > 1 else p['base']
         return 'win' if cur['tot'] - prev >= 2 else 'nm'
 
-
     def _md(d):
         return f'{int(d[5:7])}/{int(d[8:10])}'
 
@@ -9261,7 +9181,7 @@ if HOL:
     write('japan-holiday-calendar/index.html',
       head(hc_title, hc_desc, 'japan-holiday-calendar/',
            '<script type="application/ld+json">' + hc_ld + '</script>')
-      + crumbs([('首頁', '/'), ('三國連假日曆', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('三國連假日曆', None)])
       + '<h1>哪幾天最好避開？三國的假期排在一起看</h1>'
       + '<p class="lede">台灣的連假決定你什麼時候能出發，日本的連假決定你到了之後住宿多貴。'
         '中國的黃金週則是在搶同一批機位。三邊排在一起才看得出來哪幾天真的該避開。</p>'
@@ -9422,7 +9342,6 @@ if HOL:
     _CONF = {'fixed': ('每年固定', 'win'),
              'announced': ('官方已公布', 'win'),
              'est': ('推估', 'warn')}
-
 
     # 格子裡放不下全名，只有這兩個要縮。縮寫只用在月曆上，表格仍用全名。
     _CAL_SHORT = {'臺灣光復暨金門古寧頭大捷紀念日': '光復節',
@@ -9952,8 +9871,8 @@ if HOL:
         write(f'taiwan-holiday-{ys}/index.html',
           head(title, desc, f'taiwan-holiday-{ys}/',
                '<script type="application/ld+json">' + faq_ld + '</script>')
-          + crumbs([('首頁', '/'), ('三國連假日曆', '/japan-holiday-calendar/'),
-                    (f'{ys} 年請假攻略', None)]) + topnav()
+          + topnav() + crumbs([('首頁', '/'), ('三國連假日曆', '/japan-holiday-calendar/'),
+                    (f'{ys} 年請假攻略', None)])
           + f'<h1>{ys} 年台灣連假：請幾天假，可以連休幾天</h1>'
           + '<p class="lede">請假排法是用行政院人事行政總處的官方行事曆逐日算出來的，'
             '不是手打的表，補班日也扣掉了。'
@@ -10078,7 +9997,6 @@ if HOL:
 
     print(f'   去日本的新制度：住宿稅 {len(_lt["cities"])} 套算法、'
           f'行動電源 {len(_pb["rules"])} 條（查證 {JR["checked"]}）')
-
 
 # ---------- 刷卡送的保險：逐卡對照 ----------
 # 這頁的價值在跨來源對照：十家銀行各自把保額散在不同頁面、不同卡等分組裡，
@@ -10259,8 +10177,8 @@ if os.path.exists('card-insurance.json'):
     write('japan-card-insurance/index.html',
       head(ci_title, ci_desc, 'japan-card-insurance/',
            '<script type="application/ld+json">' + ci_ld + '</script>')
-      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
-                ('刷卡送的保險', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
+                ('刷卡送的保險', None)])
       + '<h1>刷卡送的旅平險，你那張卡實際賠什麼？</h1>'
       + '<p class="lede">十家銀行把保額散在各自的頁面、各自的卡等分組裡，'
         '沒有一個地方能回答「我這張卡在日本受傷看醫生賠多少」。這頁把十五張卡拉到同一張表上。</p>'
@@ -10332,8 +10250,6 @@ if os.path.exists('card-insurance.json'):
         '實際保障以你那張卡當年度的保險證為準。查證於' + CI['checked'] + '。</p>'
       + foot())
     pages.append(('/japan-card-insurance/', 0.7))
-
-
 
 
 
@@ -10629,11 +10545,7 @@ document.addEventListener('DOMContentLoaded',function(){
       'padding:4px 12px;overflow-x:auto}'
       '.tw table{min-width:0}'
       '.tw th,.tw td{white-space:normal;border-bottom:2px solid #E6E1D8}'
-      '.tw td{font-size:.95rem}'
-      '.tw th{font-size:.86rem}'
-      '.tw small{font-size:.86rem}'
-      '.disc{font-size:.88rem}'
-      '.tday{font-size:.84rem}'
+
       # 五欄的表在 375px 用固定版面會窄到一行一個字，所以改成攤平成卡片：
       # 每一列變一張卡，第一欄當標題，其餘各自帶 data-l 當標籤。
       '@media(max-width:760px){'
@@ -10690,7 +10602,7 @@ document.addEventListener('DOMContentLoaded',function(){
     write('japan-esim/index.html',
       head(ep_title, ep_desc, 'japan-esim/',
            '<script type="application/ld+json">' + ep_ld + '</script>' + CUTE)
-      + crumbs([('首頁', '/'), ('日本 eSIM 比較', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('日本 eSIM 比較', None)])
       + ESHERO
       + '<h1>日本 eSIM 的「NT$11 起」，起的是什麼？</h1>'
       + f'<p class="lede">{html.escape(_ES["_頁面設計"]["主張"])}</p>'
@@ -10784,7 +10696,6 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
-
 # ---------- 地區頁（導覽用，非 SEO 主力）----------
 for reg,rname in REGIONS:
     cs=[c for c in CITIES if c[3]==reg]
@@ -10800,7 +10711,7 @@ for reg,rname in REGIONS:
            if by_city.get(s) else '<u style="color:var(--dim);font-weight:400;font-size:.8rem">查詢票價</u>')
         + '</a>' for s,nm,codes,_,_ in cs)
     write(f'{reg}/index.html', head(title,desc,f'{reg}/')
-        + crumbs([('首頁','/'),(f'{rname}機票',None)]) + topnav(reg)
+        + topnav(reg) + crumbs([('首頁','/'),(f'{rname}機票',None)])
         + f'<h1>{rname}機票</h1><p class="lede">台灣飛{rname}共 {len(cs)} 個航點'
         + (f'，目前最低 <b>{money(b)}</b>。' if b else '。') + '點選城市查看詳細票價。</p>'
         + f'<p class="upd">更新於 {NOWS}</p><div class="cities">{cards}</div>' + foot())
@@ -10862,8 +10773,8 @@ for (oslug,cslug),fs in by_route.items():
            f'<a class="ct" href="{U(f"/{cslug}/")}"><b>{cname}機票總覽</b><s>比較所有出發地</s></a>'
            f'<a class="ct" href="{U(f"/{oslug}/")}"><b>{oname}飛日本</b><s>看所有目的地</s></a></div>')
     write(f'{oslug}/{cslug}/index.html', head(title,desc,f'{oslug}/{cslug}/')
-        + crumbs([('首頁','/'),(f'{oname}出發',f'/{oslug}/'),(f'{oname}飛{cname}機票',None)])
-        + topnav(reg) + f'<h1>{oname}飛{cname}機票</h1>' + intro
+        + topnav(reg)
+        + crumbs([('首頁','/'),(f'{oname}出發',f'/{oslug}/'),(f'{oname}飛{cname}機票',None)]) + f'<h1>{oname}飛{cname}機票</h1>' + intro
         + f'<p class="upd">更新於 {NOWS}　·　共 {len(fs)} 筆票價</p>' + body + foot())
     pages.append((f'/{oslug}/{cslug}/',0.9))
 
@@ -10886,7 +10797,7 @@ for oslug,oname,codes in ORIGINS:
                 f'<s>{REGNAME[CITY[c][3]]}</s>'
                 f'<u>{money(bb["price"])}<small> 起 · {lbl}含稅 · {len(sub)} 筆</small></u></a>')
     write(f'{oslug}/index.html', head(title,desc,f'{oslug}/')
-        + crumbs([('首頁','/'),(f'{oname}飛日本機票',None)]) + topnav()
+        + topnav() + crumbs([('首頁','/'),(f'{oname}飛日本機票',None)])
         + f'<h1>{oname}飛日本機票</h1>'
         + f'<p class="lede">{oname}出發飛日本共 <b>{len(dests)}</b> 個航點，'
           f'目前最低 <b>{money(b["price"])}</b>（{"來回" if b["rt"] else "單程"}含稅）。'
@@ -10917,7 +10828,7 @@ for reg,rname in REGIONS:
 _ALLTC = min((x['price'] for x in deals
               if x.get('gate') == 'Trip.com' and x['rt']), default=None)
 write('index.html', head(title,desc,'')
-  + crumbs([('首頁',None)]) + topnav()
+  + topnav() + crumbs([('首頁',None)])
   + f'<h1>台日機票速報</h1>'
   + f'<p class="lede">台灣飛日本 <b>{len(CITIES)}</b> 個城市的便宜機票整理，價格含稅含手續費。'
     f'目前最低 <b>{money(allbest)}</b> 來回含稅'
@@ -11001,7 +10912,6 @@ def month_base(rts, month):
     daily = [min(v) for v in by.values()]
     return round(statistics.mean(daily)), len(daily)
 
-
 def usual_range(rts):
     """這條航線「平常最低要多少」。
 
@@ -11018,11 +10928,9 @@ def usual_range(rts):
     k = max(1, len(daily) // 10)
     return daily[k], daily[-k - 1], len(daily)
 
-
 def rank_among(price, rts):
     """在本站近期紀錄中排第幾低（1 為最低）"""
     return sum(1 for x in rts if x['price'] < price) + 1
-
 
 def deal_slug(o,c,d,p):
     """一天一航線一則。slug 不含價格，否則每次執行價格一變就會多出一個
@@ -11064,8 +10972,8 @@ for (oslug,cslug),(b,reasons,med,rts) in sorted(pick_deals().items(),key=lambda 
     body+=f'<h2>延伸閱讀</h2><div class="cities">{rl}</div>'
     write(f'{DEALDIR}/{slug}/index.html',
         head(title,desc,f'{DEALDIR}/{slug}/',f'<script type="application/ld+json">{ld}</script>')
-        + crumbs([('首頁','/'),('機票特價',f'/{DEALDIR}/'),(f'{oname}飛{cname}',None)])
-        + topnav(reg) + f'<h1>{title}</h1>'
+        + topnav(reg)
+        + crumbs([('首頁','/'),('機票特價',f'/{DEALDIR}/'),(f'{oname}飛{cname}',None)]) + f'<h1>{title}</h1>'
         + f'<p class="upd">發布於 {NOWS}　·　票價隨時變動，請以訂購頁面為準</p>' + body + foot())
     pages.append((f'/{DEALDIR}/{slug}/',0.9))
     write_deal_data(slug, dict(
@@ -11131,8 +11039,8 @@ for cslug in CITY:
                 f'<a class="ct" href="{U(f"/{DEALDIR}/")}"><b>看更多特價</b><s>每日更新</s></a></div>')
         write(f'{DEALDIR}/{slug}/index.html',
             head(title,desc,f'{DEALDIR}/{slug}/',f'<script type="application/ld+json">{ld}</script>')
-            + crumbs([('首頁','/'),('機票特價',f'/{DEALDIR}/'),(title,None)])
-            + topnav(reg) + f'<h1>{title}</h1>'
+            + topnav(reg)
+            + crumbs([('首頁','/'),('機票特價',f'/{DEALDIR}/'),(title,None)]) + f'<h1>{title}</h1>'
             + f'<p class="upd">發布於 {NOWS}</p>' + body + foot())
         pages.append((f'/{DEALDIR}/{slug}/',0.9))
         write_deal_data(slug, dict(
@@ -11233,7 +11141,6 @@ def _card_stamp_warn():
         if open(stamp).read().strip() != now:
             print(f'   ⚠ {label}圖卡比資料舊了，請重跑 python3 {mod_name}.py')
 
-
 # 廣告商品與 KKday 特殊商品清單的回查提醒。
 # 商品會下架、評分會變、prod_mid 也可能被改到 1% 的特殊清單上，
 # 那會讓分潤從 3.5% 掉到 1% 而且不會有任何通知。一季一次是下限。
@@ -11265,7 +11172,6 @@ for _af, _alabel, _acycle, _ahow in (
     elif _age >= _acycle - 15:
         print(f'   · {_alabel}再 {_acycle - _age} 天該回查了（上次 {_ac}）')
 
-
 import glob as _glob
 _today_slugs={d['slug'] for d in deals_out}
 _past=[]
@@ -11289,7 +11195,7 @@ write(f'{DEALDIR}/index.html',
   head(f'機票特價｜台灣飛日本便宜機票每日更新（{TODAY}）',
        f'台灣飛日本的機票特價整理，{TODAY} 共 {len(deals_out)} 則，含稅價格、航空公司與出發日期。',
        f'{DEALDIR}/')
-  + crumbs([('首頁','/'),('機票特價',None)]) + topnav()
+  + topnav() + crumbs([('首頁','/'),('機票特價',None)])
   + f'<h1>機票特價</h1><p class="lede">低於門檻、或明顯低於該航線平常最低價的票，今日共 <b>{len(deals_out)}</b> 則。</p>'
   + f'<p class="upd">更新於 {NOWS}</p><h2>{TODAY} 特價</h2><div class="cities">{items_today}</div>'
   + past_html + jp_runs_block(4, key='tw') + foot())
@@ -11301,7 +11207,6 @@ def _tigerair_booking(o, d, dep, ret):
     q = f'outbound={o}-{d}&departureDate={dep}'
     q += (f'&inbound={d}-{o}&returnDate={ret}&type=return' if ret else '&type=oneWay')
     return f'https://booking.tigerairtw.com/?{q}&adult=1&language=zh-TW'
-
 
 OWN_BOOKING = {'台灣虎航': _tigerair_booking}
 
@@ -11373,7 +11278,6 @@ try:
         _fc.write(str(len(deals)))
 except OSError as e:
     print(f'   （寫 /tmp/fare_count.txt 失敗，commit 訊息會退回原始筆數：{e}）')
-
 
 # ---------- 台日 Apple 價差比較頁 ----------
 if os.path.exists('apple.json'):
@@ -11489,7 +11393,6 @@ if os.path.exists('apple.json'):
     faq_ld=json.dumps({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
         {"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faq]},
         ensure_ascii=False)
-
 
     _berows=''.join(
         f'<tr><td><b>{html.escape(p["name"])}</b>{SMALL}{html.escape(p["spec"])}</small></td>'
@@ -11658,7 +11561,7 @@ if os.path.exists('apple.json'):
 
     write('apple-japan-price/index.html',
       head(title,desc,'apple-japan-price/','<script type="application/ld+json">'+faq_ld+'</script>')
-      + crumbs([('首頁','/'),('日本買 iPhone 價差比較',None)]) + topnav()
+      + topnav() + crumbs([('首頁','/'),('日本買 iPhone 價差比較',None)])
       + '<h1>日本買 iPhone 比較便宜嗎？</h1>'
       + f'<p class="lede">把 <b>{html.escape(EV.get("name",""))}</b>新品的台日官方定價全部換算比較，'
         f'並試算<b>退稅後</b>的實際價格。</p>'
@@ -11784,9 +11687,9 @@ if os.path.exists('apple.json'):
               f'含日台預購與開賣時間、日版的差異與申報規定。')
         write('iphone-duo/index.html',
           head(_t, _d, 'iphone-duo/')
+          + topnav()
           + crumbs([('首頁', '/'), ('台日 Apple 價差', '/apple-japan-price/'),
                     ('iPhone Duo', None)])
-          + topnav()
           + '<h1>iPhone Duo 在日本買划算嗎？</h1>'
           + f'<p class="lede">售價核對於 {AP["price_checked"]}　·　'
             f'匯率 {RATE}（含約 {AP["rate"]["spread"]*100:.1f}% 換匯成本，每日更新）</p>'
@@ -11948,8 +11851,8 @@ if os.path.exists('cameras.json') and os.path.exists('apple.json'):
     write('japan-camera-price/index.html',
       head(_ct, _cd, 'japan-camera-price/',
            '<script type="application/ld+json">' + _cfaq_ld + '</script>')
-      + crumbs([('首頁', '/'), ('日本雲台相機價差', None)])
       + topnav()
+      + crumbs([('首頁', '/'), ('日本雲台相機價差', None)])
       + '<h1>日本買 Osmo Pocket 與 Luna Ultra，划算嗎？</h1>'
       + f'<p class="lede">售價核對於 {CMS["checked"]}　·　'
         f'匯率 {RATE}（含約 {AP["rate"]["spread"]*100:.1f}% 換匯成本，每日更新）'
@@ -12261,8 +12164,8 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
     write('japan-dyson-price/index.html',
       head(_dt_title, _dt_desc, 'japan-dyson-price/',
            '<script type="application/ld+json">' + _dfaq_ld + '</script>')
-      + crumbs([('首頁', '/'), ('日本買 Dyson', None)])
       + topnav()
+      + crumbs([('首頁', '/'), ('日本買 Dyson', None)])
       + '<h1>日本買 Dyson，到底省多少？</h1>'
       + f'<p class="lede">售價核對於 {DY["checked"]}　·　'
         f'匯率 {RATE}（含約 {AP["rate"]["spread"]*100:.1f}% 換匯成本，每日更新）'
@@ -12506,8 +12409,8 @@ if os.path.exists('panasonic.json') and os.path.exists('apple.json'):
     write('japan-panasonic-dryer/index.html',
       head(_pt_title, _pt_desc, 'japan-panasonic-dryer/',
            '<script type="application/ld+json">' + _pfaq_ld + '</script>')
-      + crumbs([('首頁', '/'), ('日本買 Panasonic 吹風機', None)])
       + topnav()
+      + crumbs([('首頁', '/'), ('日本買 Panasonic 吹風機', None)])
       + '<h1>日本買 Panasonic 吹風機，省多少、代價是什麼？</h1>'
       + f'<p class="lede">售價核對於 {PN["checked"]}　·　'
         f'匯率 {RATE}（含約 {AP["rate"]["spread"]*100:.1f}% 換匯成本，每日更新）'
@@ -12705,8 +12608,8 @@ if os.path.exists('bic-points.json'):
     write('japan-bic-points/index.html',
       head(_bt, _bd, 'japan-bic-points/',
            '<script type="application/ld+json">' + _bfaq_ld + '</script>')
-      + crumbs([('首頁', '/'), ('Bic Camera 點數率', None)])
       + topnav()
+      + crumbs([('首頁', '/'), ('Bic Camera 點數率', None)])
       + '<h1>Bic 的點數，免稅買就沒有</h1>'
       + f'<p class="lede">規則取自 <a href="{BP["src"]}" rel="nofollow noopener" '
         f'target="_blank">{html.escape(BP["src_name"])}</a>，'
@@ -12866,9 +12769,9 @@ if os.path.exists('airline-card.json'):
     write('japan-airline-card/index.html',
       head(_att, _atd, 'japan-airline-card/',
            '<script type="application/ld+json">' + _afaq_ld + '</script>')
+      + topnav()
       + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
                 ('買機票刷哪張卡', None)])
-      + topnav()
       + '<h1>買機票刷哪張卡，先看這筆算國內還是國外</h1>'
       + f'<p class="lede">判斷規則取自發卡行官方說明，航空公司的部分取自各家官網，'
         f'核對於 {AC["checked"]}</p>'
@@ -13128,9 +13031,9 @@ if os.path.exists('cobrand-cards.json'):
 
         write(_p + 'index.html',
           head(_t, _d, _p, '<script type="application/ld+json">' + _faq_ld + '</script>')
+          + topnav()
           + crumbs([('首頁', '/'), ('買機票刷哪張卡', '/japan-airline-card/'),
                     (A['short'] + '聯名卡', None)])
-          + topnav()
           + f'<h1>{html.escape(A["short"])}聯名卡，飛日本的人實際拿到什麼</h1>'
           + f'<p class="lede">卡片權益取自 {_srcs}，'
             f'哩程兌換取自 <a href="{A["award_src"]}" rel="nofollow noopener" target="_blank">'
@@ -13535,7 +13438,7 @@ if os.path.exists('cobrand-cards.json'):
         write('iphone-cost/index.html',
           head(_ktitle, _kdesc, 'iphone-cost/',
                '<script type="application/ld+json">' + _kfaq_ld + '</script>')
-          + crumbs([('首頁', '/'), ('iPhone 持有成本試算', None)]) + topnav()
+          + topnav() + crumbs([('首頁', '/'), ('iPhone 持有成本試算', None)])
           + '<h1>iPhone 一個月其實花你多少？</h1>'
           + '<p class="lede">手機不是消耗品，買價不等於花掉的錢，'
             '真正的成本是<b>買價減掉你之後賣掉的價錢</b>。'
@@ -13749,7 +13652,7 @@ if os.path.exists('cobrand-cards.json'):
         write('iphone-card/index.html',
           head(_ititle, _idesc, 'iphone-card/',
                '<script type="application/ld+json">' + _ifaq_ld + '</script>')
-          + crumbs([('首頁', '/'), ('買 iPhone 刷哪張卡', None)]) + topnav()
+          + topnav() + crumbs([('首頁', '/'), ('買 iPhone 刷哪張卡', None)])
           + '<h1>買 iPhone 刷哪張卡？</h1>'
           + '<p class="lede">網路上的攻略都在比回饋率。但真正讓人「照著做卻拿不到」的，'
             '不是選錯卡，是<b>三個沒人講清楚的機制</b>：哪天扣款、這個通路算不算、'
@@ -13926,7 +13829,7 @@ if os.path.exists('cobrand-cards.json'):
     write('japan-tax-free-2026/index.html',
       head(tf_title, tf_desc, 'japan-tax-free-2026/',
            '<script type="application/ld+json">' + tf_ld + '</script>')
-      + crumbs([('首頁', '/'), ('日本免稅新制', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('日本免稅新制', None)])
       + '<h1>2026/11/1 起，日本免稅改成「出境後才退錢」</h1>'
       + '<p class="lede">很多人看到消息以為日本要取消免稅。不是，免稅還在，'
         '改的是你什麼時候拿到那 10%。</p>'
@@ -14081,7 +13984,7 @@ if os.path.exists('seasonal.json'):
     write('japan-seasonal-event/index.html',
       head(_se_title, _se_desc, 'japan-seasonal-event/',
            '<script type="application/ld+json">' + _se_ld + '</script>')
-      + crumbs([('首頁', '/'), ('萬聖節與聖誕節', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('萬聖節與聖誕節', None)])
       + '<h1>日本的萬聖節與聖誕節，哪裡在辦</h1>'
       + f'<p class="lede">{html.escape(SE["_判準"])}</p>'
       + f'<div class="today"><div class="tday">活動日期查證於 {SE["checked"]}'
@@ -14381,7 +14284,7 @@ if os.path.exists('park-ticket.json'):
     write('japan-park-ticket/index.html',
       head(_pt_title, _pt_desc, 'japan-park-ticket/',
            '<script type="application/ld+json">' + _pt_ld + '</script>')
-      + crumbs([('首頁', '/'), ('樂園門票價格', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('樂園門票價格', None)])
       + '<h1>日本樂園門票，怎麼買比較便宜？</h1>'
       + '<p class="lede">一日護照採浮動價格制，同一張票不同日期差很多。'
         '這一頁把官網每一天的價格攤開來，看得出規律再決定哪天去。</p>'
@@ -14560,7 +14463,7 @@ if _GT:
            f'最低 {money(_lo["price"])}。含與最便宜班次的價差對照，每日更新。',
            'japan-flight-good-times/',
            '<script type="application/ld+json">' + gt_ld + '</script>')
-      + crumbs([('首頁', '/'), ('早去晚回', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('早去晚回', None)])
       + '<h1>不浪費假期的日本機票</h1>'
       + '<p class="lede">最便宜的票，時段幾乎都很差。這頁只留下'
         '<b>去程早上出發、回程晚上才走</b>的班次。</p>'
@@ -15281,8 +15184,8 @@ if os.path.exists('cards.json'):
     write('japan-card-register/index.html',
       head(_rg_title, _rg_desc, 'japan-card-register/',
            '<script type="application/ld+json">' + _rg_ld + '</script>')
-      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
-                ('登錄日曆', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
+                ('登錄日曆', None)])
       + '<h1>旅日信用卡登錄日曆</h1>'
       + '<p class="lede">加碼要先登錄，而且各家開放的時間都不一樣。'
         '沒登錄就是只剩基本回饋，補登錄多數不能回溯。</p>'
@@ -15406,7 +15309,7 @@ if os.path.exists('cards.json'):
     write('japan-credit-card/index.html',
       head(cc_title, cc_desc, 'japan-credit-card/',
            '<script type="application/ld+json">' + cc_ld + '</script>')
-      + crumbs([('首頁', '/'), ('旅日信用卡', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('旅日信用卡', None)])
       + '<h1>旅日信用卡怎麼挑？</h1>'
       + '<p class="lede">帳面最高回饋幾乎都是多層加碼疊出來的，而且各有上限。'
         '比較數字之前，先看「刷到多少就到頂」和「要不要搶登錄」。</p>'
@@ -15612,8 +15515,8 @@ if os.path.exists('cards.json'):
         write(f'japan-credit-card/{c["slug"]}/index.html',
           head(t_, de, f'japan-credit-card/{c["slug"]}/',
                '<script type="application/ld+json">' + cf_ld + '</script>')
-          + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), (c['name'], None)])
           + topnav()
+          + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), (c['name'], None)])
           + f'<h1>{html.escape(c["name"])}　日本回饋怎麼算？</h1>'
           + f'<p class="lede">{html.escape(c["plan"])}　·　活動期間 {html.escape(c["period"])}</p>'
           + f'<div class="today"><div class="tday">條件查證於 {_cchk(c)}'
@@ -15785,9 +15688,9 @@ if os.path.exists('cards.json'):
                    f'含松本清、大國藥妝、Bic Camera 等 {len(_CPS["stores"])} 家常見店家。')
             write(f'japan-credit-card/{c["slug"]}/shopping/index.html',
               head(_t2, _d2, f'japan-credit-card/{c["slug"]}/shopping/')
+              + topnav()
               + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
                         (c['name'], f'/japan-credit-card/{c["slug"]}/'), ('日本購物', None)])
-              + topnav()
               + f'<h1>{html.escape(c["name"])}在日本哪些店刷最划算？</h1>'
               + f'<p class="lede">折價券、免稅、刷卡回饋是三件事，疊起來才是實付價。'
                 f'下面用 ¥100,000 為例逐家算。條件查證於 {_CDCHK}。</p>'
@@ -15868,9 +15771,9 @@ if os.path.exists('cards.json'):
                    f'{abs(_net)}%。{_verdict}。含不同票價的淨值試算與不適用項目。')
             write(f'japan-credit-card/{c["slug"]}/flights/index.html',
               head(_t3, _d3, f'japan-credit-card/{c["slug"]}/flights/')
+              + topnav()
               + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
                         (c['name'], f'/japan-credit-card/{c["slug"]}/'), ('買機票', None)])
-              + topnav()
               + f'<h1>{html.escape(c["name"])}買機票划算嗎？</h1>'
               + f'<p class="lede">機票是線上消費，多數卡的日本加碼限實體消費、疊不上去，'
                 f'而刷外幣要收 {_fx["typical"]}% 國外交易手續費。'
@@ -16467,8 +16370,8 @@ if os.path.exists('cards.json'):
            f'國外交易手續費）、實拿回饋、有效回饋率，以及各卡的加碼上限會在哪個金額卡住。'
            f'收錄 {len(CD["cards"])} 張旅日信用卡，匯率每日更新。', 'japan-card-calculator/',
            '<script type="application/ld+json">' + kc_ld + '</script>')
-      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), ('回饋計算機', None)])
       + topnav()
+      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), ('回饋計算機', None)])
       + '<h1>日本刷卡回饋計算機</h1>'
       + '<p class="lede">在店裡看到日圓標價，想知道刷下去實際負擔多少、哪張卡回饋最多。'
         f'最多可以挑三張並排比，順便看加碼上限會在哪個金額卡住。目前收錄 {len(CD["cards"])} 張卡。</p>'
@@ -16640,8 +16543,8 @@ if os.path.exists('cards.json'):
            f'收錄 {len(CD["cards"])} 張卡，也可以自己新增。資料只存在你的瀏覽器。',
            'japan-card-tracker/',
            '<script type="application/ld+json">' + _trk_ld + '</script>')
-      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), ('疊卡進度表', None)])
-      + topnav() + _TRK_CSS
+      + topnav()
+      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), ('疊卡進度表', None)]) + _TRK_CSS
       + '<h1>日本疊卡進度表</h1>'
       + '<p class="lede">疊卡攻略排的是加碼回饋率，但每張卡的加碼都有上限。'
         '上限一滿，那張卡就掉回基本回饋，順序整個變了。'
@@ -16967,7 +16870,7 @@ if os.path.exists('cards.json'):
                f'收錄 {len(CP["stores"])} 家店與 {len(CD["cards"])} 張信用卡。',
                'japan-coupon/',
                '<script type="application/ld+json">' + cp_ld + '</script>')
-          + crumbs([('首頁', '/'), ('日本購物折扣', None)]) + topnav()
+          + topnav() + crumbs([('首頁', '/'), ('日本購物折扣', None)])
           + '<h1>日本購物折扣怎麼疊才對？</h1>'
           + '<p class="lede">折價券、免稅、刷卡回饋是三件事，而且不是把百分比相加。'
             '順序錯了，算出來的實付價會差很多。</p>'
@@ -17245,8 +17148,8 @@ if os.path.exists('cards.json'):
                    f'國外交易手續費，輸入金額即可試算。',
                    f'japan-coupon/{st["slug"]}/',
                    '<script type="application/ld+json">' + sf_ld + '</script>')
-              + crumbs([('首頁', '/'), ('日本購物折扣', '/japan-coupon/'), (st['name'], None)])
               + topnav()
+              + crumbs([('首頁', '/'), ('日本購物折扣', '/japan-coupon/'), (st['name'], None)])
               + f'<h1>在{html.escape(st["name"])} 刷哪張卡最划算？</h1>'
               + f'<p class="lede">{html.escape(st["jp"])}　·　{html.escape(st["cat"])}　·　'
                 f'輸入金額就知道每張卡實拿多少。'
@@ -17516,7 +17419,7 @@ if HS:
            f'附各家的弱點、櫃檯開門時間，以及同一間房在六個訂房通路的價差。',
            'tokyo/hostel/',
            '<script type="application/ld+json">' + _hs_ld + '</script>')
-      + crumbs([('首頁', '/'), ('東京機票', '/tokyo/'), ('東京平價住宿', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('東京機票', '/tokyo/'), ('東京平價住宿', None)])
       + '<h1>東京平價住宿：8 個區實查比較</h1>'
       + f'<p class="lede">同樣是 8 分出頭的住宿，在池袋要 {money(6633)}，在上野只要 '
         f'{money(_hs_lo["total"])}。<b>決定價格的是區域，不是住宿本身。</b>'
@@ -17791,7 +17694,7 @@ if BH:
            f'{BH["checked"]} 實查 {len(_bh_all)} 家，附每一家的弱點與官網比價。',
            'tokyo/budget-hotel/',
            '<script type="application/ld+json">' + _bh_ld + '</script>')
-      + crumbs([('首頁', '/'), ('東京機票', '/tokyo/'), ('東京便宜旅館', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('東京機票', '/tokyo/'), ('東京便宜旅館', None)])
       + '<h1>東京便宜旅館：有自己一間房，但衛浴共用</h1>'
       + f'<p class="lede">不想睡床位，也不想付商務飯店的錢。這中間有一層很少人寫的選擇：'
         f'<b>共用衛浴的私人房</b>。{_bh_n} 晚 {money(_bh_best["total"])} 上下，'
@@ -18017,7 +17920,7 @@ if PC:
            f'以及返利網要多少回饋才划得來的計算公式。',
            'hotel-price-check/',
            '<script type="application/ld+json">' + _pc_ld + '</script>')
-      + crumbs([('首頁', '/'), ('訂房比價', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('訂房比價', None)])
       + f'<h1>Booking 同一間房，手機版比桌機版便宜 {_pc_avg:.0f}%</h1>'
       + f'<p class="lede">在 <b>Booking.com</b> 上，同一間飯店、同一組日期、'
         f'同一個沒登入的瀏覽器，只是把視窗縮成手機尺寸，價格就少 {_pc_avg:.2f}%。'
@@ -18191,7 +18094,7 @@ if os.path.exists('hotelcheck.json'):
            '另外，中文的凶宅和日文的事故物件範圍並不一樣。',
            'japan-hotel-check/',
            '<script type="application/ld+json">' + _hc_ld + '</script>')
-      + crumbs([('首頁', '/'), ('訂住宿前查得到什麼', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('訂住宿前查得到什麼', None)])
       + '<h1>日本凶宅網大島てる 怎麼查，查到了又代表什麼</h1>'
       + f'<p class="lede">{html.escape(HC["why"])}</p>'
       + f'<div class="today"><div class="tday">查證於 {HC["checked"]}</div>'
@@ -18282,7 +18185,6 @@ if os.path.exists('hotelcheck.json'):
       + foot())
     pages.append(('/japan-hotel-check/', 0.8))
 
-
 # ---------- 山梨飯店事件：報導整理 ----------
 # 偵查中的事件，所以這一頁的規矩比別頁嚴：每一列都標出是哪一家報導、哪一天，
 # 報導之間矛盾的地方原樣並列不做調和，沒有人被追訴的罪名就不用那個詞。
@@ -18340,7 +18242,7 @@ if os.path.exists('hotelcase.json'):
            '沒有任何報導提到有人因這起死亡被追訴。偵查中。',
            'kawaguchiko-hotel-case/',
            '<script type="application/ld+json">' + _kc_ld + '</script>')
-      + crumbs([('首頁', '/'), ('山梨飯店事件', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('山梨飯店事件', None)])
       + '<h1>山梨飯店事件目前確定了什麼</h1>'
       + f'<p class="lede">{html.escape(_kch["sub"])}</p>'
       + f'<div class="today"><div class="tday">報導整理到 {KC["latest"]}'
@@ -18409,7 +18311,6 @@ if os.path.exists('hotelcase.json'):
         f'偵查進行中，罪名與死因都可能變動，最新狀況請以各報導與警方發表為準。</p>'
       + foot())
     pages.append(('/kawaguchiko-hotel-case/', 0.7))
-
 
 # ---------- 雪場官網現場價 vs 早鳥票通路價 ----------
 # 雪票早鳥頁的折扣率是用通路標的「希望小売価格」算的，而那個數字是雪場官網價目表
@@ -18517,7 +18418,7 @@ if os.path.exists('skiresort.json'):
            '而通路標的「原價」是官網哪一格，各家不一樣。',
            'japan-ski-resort/',
            '<script type="application/ld+json">' + _sr_ld + '</script>')
-      + crumbs([('首頁', '/'), ('雪場官網價對照', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('雪場官網價對照', None)])
       + '<h1>雪票早鳥真的比較便宜嗎</h1>'
       + f'<p class="lede">{html.escape(SR["why"])}</p>'
       + f'<div class="today"><div class="tday">官網價查證於 {SR["checked"]}'
@@ -18600,7 +18501,6 @@ if os.path.exists('skiresort.json'):
       + foot())
     pages.append(('/japan-ski-resort/', 0.8))
 
-
 # ---------- 神宮外苑銀杏並木 ----------
 # 中文介紹多半抄來抄去，連並木到哪裡為止都寫錯（官方寫的終點是外苑中央広場的
 # 圓周道路，不是絵画館）。而最影響行程的事是絵画館 在修復：休館期間 2026-10-21
@@ -18645,7 +18545,7 @@ if os.path.exists('ginkgo.json'):
            'いちょう祭り 本站查不到官方公告。',
            'tokyo/ginkgo/',
            '<script type="application/ld+json">' + _gk_ld + '</script>')
-      + crumbs([('首頁', '/'), ('東京', '/kanto/'), ('神宮外苑銀杏並木', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/kanto/'), ('神宮外苑銀杏並木', None)])
       + '<h1>神宮外苑銀杏並木怎麼看</h1>'
       + f'<p class="lede">{html.escape(GK["why"])}</p>'
       + f'<div class="today"><div class="tday">查證於 {GK["checked"]}</div>'
@@ -18803,7 +18703,7 @@ if os.path.exists('teamlab.json'):
            '全部引官方繁體中文頁原文。',
            'tokyo/teamlab/',
            '<script type="application/ld+json">' + _tl_ld + '</script>')
-      + crumbs([('首頁', '/'), ('東京', '/kanto/'), ('teamLab 兩館', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/kanto/'), ('teamLab 兩館', None)])
       + '<h1>teamLab 兩館怎麼分，訂哪一個</h1>'
       + '<p class="lede">東京有兩個 teamLab，名字像、票分開賣、規則不一樣，'
         '而且訂錯了不能退。這一頁把兩館會影響決定的差別逐項列出來，數字與引文'
@@ -18890,7 +18790,6 @@ if os.path.exists('teamlab.json'):
         f'出發前請以官方頁與售票網站為準。本頁不販售門票，也沒有任何平台的推廣連結。</p>'
       + foot())
     pages.append(('/tokyo/teamlab/', 0.7))
-
 
 
 # ---------- 紅葉見頃 × 逐日機票 ----------
@@ -19068,7 +18967,7 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
            '兩家給的日期量的不是同一件事，而日本三連休正好壓在京都的見頃上。',
            'japan-autumn-leaves/',
            '<script type="application/ld+json">' + _au_ld + '</script>')
-      + crumbs([('首頁', '/'), ('紅葉見頃與機票', None)]) + topnav()
+      + topnav() + crumbs([('首頁', '/'), ('紅葉見頃與機票', None)])
       + '<h1>紅葉見頃那幾天，機票貴多少</h1>'
       + f'<p class="lede">{html.escape(AU["why"])}</p>'
       + f'<div class="today"><div class="tday">見頃預測查證於 {AU["checked"]}'
