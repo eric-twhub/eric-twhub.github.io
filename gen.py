@@ -10367,9 +10367,9 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
         f'{_ESM}{len(p["plans"])} 個方案'
         + (f'　·　{p["rating"]} 分（{p["reviews"]:,} 則評價）' if p.get('rating') else '')
         + '</small></td>'
-        f'<td class="{"win" if p["clue_weight"] == "偏原生" else ("lose" if p["clue_weight"] == "偏漫遊" else "")}">'
+        f'<td data-l="原生還是漫遊" class="{"win" if p["clue_weight"] == "偏原生" else ("lose" if p["clue_weight"] == "偏漫遊" else "")}">'
         f'<b>{html.escape(p["clue_weight"])}</b></td>'
-        f'<td>{html.escape(p["profile_clue"])}</td></tr>' for p in EP)
+        f'<td data-l="線索">{html.escape(p["profile_clue"])}</td></tr>' for p in EP)
 
     # 總流量型「天數幾乎不加價」的實例，直接從資料撈，不寫死
     _tot = [q for p in EP if p['id'] == '109393' for q in p['plans']
@@ -10387,13 +10387,13 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
 
     _ep_terms = ''.join(
         f'<tr><td class="nm"><b>{html.escape(p["name"])}</b></td>'
-        f'<td>{_yn(p.get("data_only"))}</td>'
-        f'<td>{_yn(p.get("hotspot"))}'
+        f'<td data-l="純數據">{_yn(p.get("data_only"))}</td>'
+        f'<td data-l="可開熱點">{_yn(p.get("hotspot"))}'
         + (f'{_ESM}{html.escape(p["hotspot_note"])}</small>' if p.get('hotspot_note') else '')
         + '</td>'
-        f'<td class="{"win" if p.get("throttle") else ""}">'
+        f'<td data-l="超量降速" class="{"win" if p.get("throttle") else ""}">'
         f'{_thr(p)}</td>'
-        f'<td class="{"lose" if p.get("conflict") else ""}">'
+        f'<td data-l="退款" class="{"lose" if p.get("conflict") else ""}">'
         f'{html.escape(p.get("refund_short") or "—")}</td></tr>' for p in EP)
 
     _ep_obs = ''.join(
@@ -10520,18 +10520,19 @@ document.addEventListener('DOMContentLoaded',function(){
         # 用區間寬度反映「這個星等有多可信」。寬的那條就是沒什麼資訊量
         w = it['ci_width']
         cls = 'win' if w <= 0.05 else ('lose' if w >= 0.30 else '')
-        return ('<td class="' + cls + '">' if cls else '<td>') + \
+        return ('<td data-l="95% 區間" class="' + cls + '">' if cls
+                else '<td data-l="95% 區間">') + \
                f'{it["ci"][0]:.2f} – {it["ci"][1]:.2f}' + \
                '<br><small>寬 ' + f'{w:.2f}' + '</small></td>'
 
     _ra_rows = ''.join(
         '<tr><td class="nm"><b>' + html.escape(it['name']) + '</b><br>'
         '<small>' + html.escape(it['clue'] or '') + '</small></td>'
-        '<td><b>' + str(it['rating']) + '</b></td>'
-        '<td>' + f'{it["reviews"]:,}' + '</td>'
+        '<td data-l="星等"><b>' + str(it['rating']) + '</b></td>'
+        '<td data-l="則數">' + f'{it["reviews"]:,}' + '</td>'
         + _ra_bar(it)
-        + ('<td><b>NT$' + str(it['price_5d_1gb']) + '</b></td>'
-           if it['price_5d_1gb'] else '<td class="dimcell">沒有這個組合</td>')
+        + ('<td data-l="5 天每天 1GB"><b>NT$' + str(it['price_5d_1gb']) + '</b></td>'
+           if it['price_5d_1gb'] else '<td data-l="5 天每天 1GB" class="dimcell">沒有這個組合</td>')
         + '</tr>' for it in _ra_items)
 
     _ra_tbl = ('<div class="tw"><table><tr><th>商品</th><th>星等</th><th>則數</th>'
@@ -10594,10 +10595,95 @@ document.addEventListener('DOMContentLoaded',function(){
         f'逐頁查證於 {_ES["checked"]}。'
         f'Klook 的價格與方案隨時可能調整，下單前以商品頁為準。</p>')
 
+    # /japan-esim/ 的可愛風樣式。只放在這一頁的 head extra 裡，不影響其餘 430 頁。
+    # 風格規格來自 Threads 上公開分享的提示詞：和紙白底、3px 墨灰粗框、大圓角、
+    # 平塗不用漸層、珊瑚粉／山吹黃／水色／若竹綠、Huninn 字型、SVG 自繪插圖。
+    # 這是對照組：11/05 的 GSC 回查要比它和其餘頁的表現，所以只動這一頁。
+    CUTE = (
+      '<link rel="preconnect" href="https://fonts.googleapis.com">'
+      '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+      '<link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">'
+      '<style>'
+      ':root{--washi:#FFFCF6;--sumi:#3E3A39;--coral:#F2A497;--yama:#F6D27A;'
+      '--mizu:#A8D3E6;--waka:#B9DAA5}'
+      'body{background:var(--washi);color:var(--sumi);'
+      "font-family:'Huninn','Noto Sans TC',system-ui,sans-serif;line-height:1.85}"
+      # 標題與內文
+      'h1{font-size:1.72rem;line-height:1.46}'
+      'h2{display:flex;align-items:flex-start;gap:9px;border:0;padding:0;margin:40px 0 10px}'
+      'h2::before{content:"";width:15px;height:15px;border:2px solid var(--sumi);'
+      'border-radius:5px;background:var(--mizu);flex:0 0 auto;margin-top:.42em}'
+      'h3{font-size:1rem}'
+      # 重點框
+      '.today{border:3px solid var(--sumi);border-radius:20px;background:#fff;padding:16px 18px}'
+      '.tday{color:#6b6765}'
+      '.tans{font-size:1.12rem}'
+      '.tbuf{background:#FEF8E7;border:2px solid var(--sumi);border-radius:13px;'
+      'padding:9px 12px;margin-top:11px}'
+      # 計算器
+      '.calc{border:3px solid var(--sumi);border-radius:20px;background:#fff;padding:16px 18px}'
+      '.sf input{border:3px solid var(--sumi);border-radius:13px;background:#fff;'
+      'color:var(--sumi);font-family:inherit}'
+      # 表格：粗框會把密集表格撐高，所以只加圓角與底色，框線維持細的
+      '.tw{border:3px solid var(--sumi);border-radius:18px;background:#fff;'
+      'padding:4px 12px;overflow-x:auto}'
+      '.tw table{min-width:0}'
+      '.tw th,.tw td{white-space:normal;border-bottom:2px solid #E6E1D8}'
+      # 五欄的表在 375px 用固定版面會窄到一行一個字，所以改成攤平成卡片：
+      # 每一列變一張卡，第一欄當標題，其餘各自帶 data-l 當標籤。
+      '@media(max-width:760px){'
+      '.tw{overflow:visible;padding:0;border:0;background:none}'
+      '.tw table,.tw tbody,.tw tr,.tw td{display:block;width:auto}'
+      '.tw thead{display:none}'
+      '.tw tr{border:3px solid var(--sumi);border-radius:16px;background:#fff;'
+      'padding:11px 14px;margin:0 0 12px}'
+      '.tw td{border:0;padding:4px 0;word-break:break-word}'
+      '.tw td.nm{font-size:1rem;margin-bottom:5px}'
+      '.tw td[data-l]::before{content:attr(data-l)"：";display:block;'
+      'color:#6b6765;font-size:.76rem}'
+      '}'
+      # 卡片連結
+      '.cities .ct{border:3px solid var(--sumi);border-radius:16px;background:#fff}'
+      '.cities .ct:hover{background:var(--yama)}'
+      # FAQ
+      '.faq{border:3px solid var(--sumi);border-radius:16px;background:#fff;'
+      'margin:10px 0;padding:2px 14px}'
+      '.faq summary{font-weight:700}'
+      # 分享圖卡網格
+      '.bgk a{border:3px solid var(--sumi);border-radius:14px}'
+      # 插圖輕輕動，並支援「減少動態效果」
+      '@keyframes esbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}'
+      '.eshero{text-align:center;margin:18px 0 4px}'
+      '.eshero svg{animation:esbob 3.4s ease-in-out infinite}'
+      '@media(prefers-reduced-motion:reduce){*,*::before,*::after{'
+      'animation:none!important;transition:none!important}}'
+      '@media(max-width:480px){h1{font-size:1.46rem}}'
+      '</style>')
+
+    # 手機收訊＋鳥居＋巴士。平塗、3px 墨灰粗框、不用漸層。
+    ESHERO = ('<div class="eshero"><svg viewBox="0 0 300 170" width="264" height="150" '
+      'role="img" aria-label="手機收到日本訊號，旁邊是鳥居與巴士">'
+      '<g fill="none" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round" '
+      'stroke-linecap="round">'
+      '<rect x="112" y="34" width="76" height="118" rx="15" fill="#fff"/>'
+      '<rect x="121" y="46" width="58" height="88" rx="8" fill="#A8D3E6"/>'
+      '<line x1="141" y1="142" x2="159" y2="142"/>'
+      '<path d="M150 62v46"/><path d="M136 76l14-14 14 14"/>'
+      '<path d="M96 60a34 34 0 0 0 0 48"/><path d="M84 50a50 50 0 0 0 0 68"/>'
+      '<path d="M204 60a34 34 0 0 1 0 48"/><path d="M216 50a50 50 0 0 1 0 68"/>'
+      '<path d="M26 118V74"/><path d="M48 118V74"/>'
+      '<path d="M14 70h46" stroke="#F2A497" fill="#F2A497" stroke-width="7"/>'
+      '<path d="M18 82h38"/>'
+      '<rect x="236" y="96" width="54" height="30" rx="13" fill="#F6D27A"/>'
+      '<circle cx="250" cy="128" r="5" fill="#fff"/>'
+      '<circle cx="276" cy="128" r="5" fill="#fff"/><path d="M248 104h14"/>'
+      '</g></svg></div>')
+
     write('japan-esim/index.html',
       head(ep_title, ep_desc, 'japan-esim/',
-           '<script type="application/ld+json">' + ep_ld + '</script>')
+           '<script type="application/ld+json">' + ep_ld + '</script>' + CUTE)
       + crumbs([('首頁', '/'), ('日本 eSIM 比較', None)]) + topnav()
+      + ESHERO
       + '<h1>日本 eSIM 的「NT$11 起」，起的是什麼？</h1>'
       + f'<p class="lede">{html.escape(_ES["_頁面設計"]["主張"])}</p>'
       + f'<div class="today"><div class="tday">五個商品、232 個方案的台幣價，'
