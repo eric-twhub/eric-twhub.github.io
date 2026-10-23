@@ -10645,6 +10645,9 @@ document.addEventListener('DOMContentLoaded',function(){
       # 卡片連結
       '.cities .ct{border:3px solid var(--sumi);border-radius:16px;background:#fff}'
       '.cities .ct:hover{background:var(--yama)}'
+      '#eout a{color:var(--sumi);font-weight:700;text-decoration:none;'
+      'border-bottom:2px solid transparent;transition:border-color .15s}'
+      '#eout a:hover,#eout a:focus-visible{border-bottom-color:var(--coral)}'
       # FAQ
       '.faq{border:3px solid var(--sumi);border-radius:16px;background:#fff;'
       'margin:10px 0;padding:2px 14px}'
