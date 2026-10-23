@@ -736,6 +736,30 @@ SF_JS = ('<script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toL
 
 # details 原生不會互斥、也不會因為點別處而收起來；沒有這段，
 # 展開兩個分類就會兩片面板疊在一起，而且一直留在畫面上。
+TBL_JS = ('<script>(function(){'
+          # 四欄以上的表在 375px 一定塞不下，攤成卡片才讀得到右邊的欄位。
+          # 二到三欄的表通常放得下，不動它們，免得白白變高。
+          'var MIN=2;'
+          'document.querySelectorAll(".tw table").forEach(function(t){'
+          'var hr=t.querySelector("thead tr")||t.querySelector("tr");if(!hr)return;'
+          # 表頭不在 thead 裡的（裸 <tr><th>），CSS 的 thead 規則抓不到，
+          # 標起來讓 CSS 自己藏
+          'if(!hr.closest("thead"))hr.setAttribute("data-hdr","1");'
+          'var hs=[].slice.call(hr.cells).map(function(c){'
+          'return (c.textContent||"").replace(/\\s+/g," ").trim();});'
+          'if(hs.length<MIN)return;'
+          # 第一欄在卡片裡當標題，不加標籤
+          'var rows=t.querySelectorAll("tbody tr");'
+          'if(!rows.length)rows=[].slice.call(t.querySelectorAll("tr")).filter(function(x){'
+          'return x!==hr;});'
+          'rows.forEach(function(r){'
+          '[].slice.call(r.cells).forEach(function(c,i){'
+          'if(i===0||!hs[i]||c.hasAttribute("data-l"))return;'
+          'c.setAttribute("data-l",hs[i]);});});'
+          't.classList.add("cardize");});'
+          '})();</script>')
+
+
 NAV_JS = ('<script>(function(){var n=document.querySelector("nav.top");if(!n)return;'
           'var d=[].slice.call(n.querySelectorAll(":scope>details"));'
           'function shut(x){d.forEach(function(o){if(o!==x)o.open=false})}'
@@ -1081,6 +1105,18 @@ blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem
 .tw th{font-size:.86rem}
 .tw small{font-size:.86rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
+@media(max-width:760px){
+.tw:has(>table.cardize){overflow:visible;padding:0}
+table.cardize{min-width:0;width:100%;display:block}
+table.cardize thead,table.cardize tr[data-hdr]{display:none}
+table.cardize tbody,table.cardize tr,table.cardize td{display:block;width:auto}
+table.cardize tr{border:1px solid var(--line);border-radius:12px;background:var(--card);
+padding:10px 13px;margin:0 0 10px}
+table.cardize td{border:0;padding:4px 0;white-space:normal;word-break:break-word}
+table.cardize td:first-child{font-size:1rem;margin-bottom:4px}
+table.cardize td[data-l]::before{content:attr(data-l)"：";display:block;
+color:var(--dim);font-size:.78rem;font-weight:400}
+}
 .tw td.win{color:var(--lcc);font-weight:700}
 /* 左右兩欄對照的表。格子裡裝的是整句話不是數字，所以不套 .tw 的 nowrap，
    不然表會撐得比容器寬，桌機也一樣會切掉右邊那一欄。 */
@@ -1787,7 +1823,7 @@ def foot():
 <!--/f--><!--a-->實際訂購由合作平台完成：{_partner_line()}。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
 <!--/a-->最後更新 {NOWS}　·　<a href="{U("/")}">回首頁</a>
-</p></div>{SF_JS}{NAV_JS}{LB_JS}</body></html>'''
+</p></div>{SF_JS}{NAV_JS}{TBL_JS}{LB_JS}</body></html>'''
 
 def _reg_window(c):
     """每月要重搶的登錄活動，現在是不是開放中。
