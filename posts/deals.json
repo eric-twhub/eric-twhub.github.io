@@ -1,23 +1,23 @@
 [
  {
   "slug": "2026-10-25-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,997 來回含稅｜台灣虎航 11/18 出發",
+  "title": "台北飛沖繩 NT$3,397 來回含稅｜台灣虎航 11/10 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 2997,
+  "price": 3397,
   "air": "台灣虎航",
-  "dep": "2026-11-18",
-  "ret": "2026-11-25",
+  "dep": "2026-11-10",
+  "ret": "2026-11-14",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,680（9 天有紀錄），這張低 36%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,731（9 天有紀錄），這張低 28%"
   ],
   "med": 11194,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-10&inbound=OKA-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
@@ -26,7 +26,7 @@
    "days": 10
   },
   "mbase": {
-   "avg": 4680,
+   "avg": 4731,
    "days": 9,
    "month": 11
   },
@@ -49,7 +49,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 5376,
+  "med": 5660,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -60,23 +60,23 @@
  },
  {
   "slug": "2026-10-25-taichung-okinawa",
-  "title": "台中飛沖繩 NT$4,857 來回含稅｜台灣虎航 11/23 出發",
+  "title": "台中飛沖繩 NT$4,995 來回含稅｜台灣虎航 11/02 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 4857,
+  "price": 4995,
   "air": "台灣虎航",
-  "dep": "2026-11-23",
-  "ret": "2026-11-26",
+  "dep": "2026-11-02",
+  "ret": "2026-11-05",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,795（23 天有紀錄），這張低 50%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,819（23 天有紀錄），這張低 49%"
   ],
   "med": 11244,
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
@@ -85,7 +85,7 @@
    "days": 30
   },
   "mbase": {
-   "avg": 9795,
+   "avg": 9819,
    "days": 23,
    "month": 11
   },
