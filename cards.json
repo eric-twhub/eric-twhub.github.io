@@ -34,11 +34,14 @@
      "cap": 500,
      "cap_unit": "每歸戶每期",
      "scope": "any",
-     "cond": "需登錄，活動期間登錄一次即可；名單含 Suica／PASMO 儲值、租車、東京迪士尼、環球影城、Bic Camera、松本清、UNIQLO 等",
+     "cond": "需登錄，活動期間登錄一次即可。官方活動頁逐類列出：交通住宿是交通IC卡儲值（SUICA、PASMO、ICOCA）、自駕租車、JR 鐵路購票、日本航空、樂天旅遊；樂園購票是東京迪士尼樂園、東京華納兄弟哈利波特影城、日本環球影城、豪斯登堡、九州非洲獅樂園、名古屋樂高樂園、吉伊卡哇樂園；美食探店是勝烈亭、敘敘苑、牛角、力丸燒肉、六歌仙燒肉、shake shack、DOUTOR Coffee、Fuglen、鳥貴族、一蘭拉麵、松屋、SUKIYA、壽司郎、藏壽司、人形町今半；購物血拼是 Bic Camera、松本清、唐吉訶德、大國藥妝、無印良品、日本 MITSUI 與 LaLaport購物園區、UNIQLO、GU、Montbell、Alpen",
      "store_scope": [
       "bic-camera",
       "matsukiyo",
-      "uniqlo"
+      "don-quijote",
+      "daikoku",
+      "uniqlo",
+      "alpen"
      ],
      "partial_list": true,
      "conflict": {
@@ -375,9 +378,12 @@
      "cap": 600,
      "cap_unit": "活動期間",
      "scope": "shop",
-     "cond": "便利商店、遊樂園、百貨公司、量販等指定通路",
-     "store_scope": [],
-     "partial_list": true
+     "cond": "官方逐家列出，沒有寫「等」：便利商店 7-ELEVEN、FamilyMart、LAWSON；遊樂園 東京迪士尼、大阪環球影城；百貨公司 永旺、三越、高島屋；量販 BIC CAMERA、Yodobashi、唐吉訶德。認列看收單機構登錄的特店名稱（SEVEN-ELEVEN／FAMILYMART／LAWSON／TOKYO DISNEY RESORT／USJ／AEON／MITSUKOSHI／TAKASHIMAYA／BIC CAMERA／YODOBASHI／DONQUIJOTE），帳單明細要顯示得出來才算。消費幣別需為日圓或消費國別為日本，不含網路交易",
+     "store_scope": [
+      "bic-camera",
+      "don-quijote"
+     ],
+     "partial_list": false
     },
     {
      "label": "新戶加碼",
@@ -416,6 +422,10 @@
     "網路交易與交通類交易不適用行動支付加碼",
     "官方註明行動支付加碼不適用 QUICPay 交易",
     "交通卡儲值不算一般消費，那筆沒有日幣消費 2.5%",
+    "11 大通路的 3%，上限 600 元是整個活動期間共用，不是每月。刷到約 2 萬元就到頂",
+    "11 大通路的遊樂園那一項，在迪士尼或環球影城的官方網站買門票不算回饋；園區外的街邊店（例如 DISNEY STORE）與附屬飯店也不算",
+    "11 大通路要帳單明細顯示得出官方認定的特店名稱才算，百貨或車站內的櫃位可能顯示成別的名字",
+    "停卡後回饋金歸零",
     "各層加碼各有上限，且需同時符合條件才疊得上去"
    ],
    "total": 11.0,
