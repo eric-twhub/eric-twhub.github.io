@@ -739,7 +739,14 @@ SF_JS = ('<script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toL
 TBL_JS = ('<script>(function(){'
           # 四欄以上的表在 375px 一定塞不下，攤成卡片才讀得到右邊的欄位。
           # 二到三欄的表通常放得下，不動它們，免得白白變高。
-          'var MIN=2;'
+          'var MIN=2,L=[];'
+          # 容器寬度在 .wrap 的上限以上就固定了，所以「這張表塞不塞得下」
+          # 在桌機是一個定值。從 .wrap 自己算，不要寫死 1080／1048，
+          # 改了 .wrap 這裡要跟著對。
+          'var wr=document.querySelector(".wrap"),MQW=1080,CAP=1048;'
+          'if(wr){var cs=getComputedStyle(wr),mw=parseFloat(cs.maxWidth);'
+          'if(mw>0){MQW=Math.round(mw);'
+          'CAP=mw-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);}}'
           'document.querySelectorAll(".tw table").forEach(function(t){'
           'var hr=t.querySelector("thead tr")||t.querySelector("tr");if(!hr)return;'
           # 表頭不在 thead 裡的（裸 <tr><th>），CSS 的 thead 規則抓不到，
@@ -761,7 +768,16 @@ TBL_JS = ('<script>(function(){'
           'var n=hs.length-1;'
           't.style.setProperty("--cw",n>=5||n===3?3:(n>=2?2:1));'
           't.style.setProperty("--cm",n>=2?2:1);'
-          't.classList.add("cardize");});'
+          # 原生寬度要在攤成卡片之前量。格子是 nowrap，所以這個寬度跟視窗
+          # 無關，量一次就一直有效。
+          'L.push({t:t,wide:t.scrollWidth>CAP+1});});'
+          # 視窗 1080 以下一律卡片；以上只有塞不進容器的那幾張才攤開。
+          # 兩個條件沒辦法寫成同一條媒體查詢，所以改由這裡掛 class。
+          'var mq=matchMedia("(max-width:"+MQW+"px)");'
+          'function sync(){L.forEach(function(o){'
+          'o.t.classList.toggle("cardz",mq.matches||o.wide);});}'
+          'if(mq.addEventListener)mq.addEventListener("change",sync);'
+          'sync();'
           '})();</script>')
 
 
@@ -1110,34 +1126,33 @@ blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem
 .tw th{font-size:.86rem}
 .tw small{font-size:.86rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
-/* 斷點對齊 .wrap 的 1080px：視窗再寬內容區也不會超過 1048px，
-   所以 1080 以上容器寬度是固定的，以下才會被視窗壓窄。訂在這裡，
-   平板直向與分割視窗（760–1080）不會再拿到一張看不到右半邊的表。 */
-@media(max-width:1080px){
-.tw:has(>table.cardize){overflow:visible;padding:0}
-table.cardize{min-width:0;width:100%;display:block}
-table.cardize thead,table.cardize tr[data-hdr]{display:none}
-table.cardize tbody,table.cardize tr,table.cardize td{display:block;width:auto}
-table.cardize tr{border:1px solid var(--line);border-radius:12px;background:var(--card);
+/* 卡片版面沒有媒體查詢，由 TBL_JS 掛 .cardz 決定：視窗在 .wrap 的上限
+   （1080px）以下一律卡片，以上只有原生寬度塞不進容器的那幾張才攤開。
+   1080 以上容器永遠是 1048px，所以「塞不塞得下」在桌機是一個定值。
+   橫向捲動不等於看得到，而右邊那一欄常常才是結論。 */
+.tw:has(>table.cardz){overflow:visible;padding:0}
+table.cardz{min-width:0;width:100%;display:block}
+table.cardz thead,table.cardz tr[data-hdr]{display:none}
+table.cardz tbody,table.cardz tr,table.cardz td{display:block;width:auto}
+table.cardz tr{border:1px solid var(--line);border-radius:12px;background:var(--card);
 padding:10px 13px;margin:0 0 10px}
-table.cardize td{border:0;padding:4px 0;white-space:normal;word-break:break-word;
+table.cardz td{border:0;padding:4px 0;white-space:normal;word-break:break-word;
 text-align:left}
-table.cardize td:first-child{font-size:1rem;margin-bottom:4px}
+table.cardz td:first-child{font-size:1rem;margin-bottom:4px}
 /* 空標籤不要印出孤零零的全形冒號。進度表的操作欄就是 data-l=""， */
 /* 它自己那條 display:none 的特異性低於這一條，會被蓋掉。 */
-table.cardize td[data-l]:not([data-l=""])::before{content:attr(data-l)"：";display:block;
+table.cardz td[data-l]:not([data-l=""])::before{content:attr(data-l)"：";display:block;
 color:var(--dim);font-size:.78rem;font-weight:400}
-}
-/* 卡片在平板上有一整排空白，所以格子改成並排。手機維持單欄。
+/* 卡片在寬螢幕有一整排空白，所以格子改成並排。手機維持單欄。
    信用卡回饋記錄（.ttab）有自己的卡片版面（進度條、勾選、按鈕），排進格線會散掉，
    所以排除。 */
-@media(min-width:600px) and (max-width:1080px){
-table.cardize:not(.ttab) tr{display:grid;
+@media(min-width:600px){
+table.cardz:not(.ttab) tr{display:grid;
 grid-template-columns:repeat(var(--cm,2),minmax(0,1fr));gap:1px 24px;align-items:start}
-table.cardize:not(.ttab) td:first-child{grid-column:1/-1}
+table.cardz:not(.ttab) td:first-child{grid-column:1/-1}
 }
-@media(min-width:880px) and (max-width:1080px){
-table.cardize:not(.ttab) tr{grid-template-columns:repeat(var(--cw,2),minmax(0,1fr))}
+@media(min-width:880px){
+table.cardz:not(.ttab) tr{grid-template-columns:repeat(var(--cw,2),minmax(0,1fr))}
 }
 .tw td.win{color:var(--lcc);font-weight:700}
 /* 左右兩欄對照的表。格子裡裝的是整句話不是數字，所以不套 .tw 的 nowrap，
