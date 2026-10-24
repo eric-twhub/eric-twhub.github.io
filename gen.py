@@ -756,6 +756,11 @@ TBL_JS = ('<script>(function(){'
           '[].slice.call(r.cells).forEach(function(c,i){'
           'if(i===0||!hs[i]||c.hasAttribute("data-l"))return;'
           'c.setAttribute("data-l",hs[i]);});});'
+          # 卡片裡的格子要排成幾欄，看這張表有幾個值欄。寫死三欄的話
+          # 兩欄表會空一整欄出來。
+          'var n=hs.length-1;'
+          't.style.setProperty("--cw",n>=5||n===3?3:(n>=2?2:1));'
+          't.style.setProperty("--cm",n>=2?2:1);'
           't.classList.add("cardize");});'
           '})();</script>')
 
@@ -1105,7 +1110,10 @@ blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem
 .tw th{font-size:.86rem}
 .tw small{font-size:.86rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
-@media(max-width:760px){
+/* 斷點對齊 .wrap 的 1080px：視窗再寬內容區也不會超過 1048px，
+   所以 1080 以上容器寬度是固定的，以下才會被視窗壓窄。訂在這裡，
+   平板直向與分割視窗（760–1080）不會再拿到一張看不到右半邊的表。 */
+@media(max-width:1080px){
 .tw:has(>table.cardize){overflow:visible;padding:0}
 table.cardize{min-width:0;width:100%;display:block}
 table.cardize thead,table.cardize tr[data-hdr]{display:none}
@@ -1115,8 +1123,21 @@ padding:10px 13px;margin:0 0 10px}
 table.cardize td{border:0;padding:4px 0;white-space:normal;word-break:break-word;
 text-align:left}
 table.cardize td:first-child{font-size:1rem;margin-bottom:4px}
-table.cardize td[data-l]::before{content:attr(data-l)"：";display:block;
+/* 空標籤不要印出孤零零的全形冒號。進度表的操作欄就是 data-l=""， */
+/* 它自己那條 display:none 的特異性低於這一條，會被蓋掉。 */
+table.cardize td[data-l]:not([data-l=""])::before{content:attr(data-l)"：";display:block;
 color:var(--dim);font-size:.78rem;font-weight:400}
+}
+/* 卡片在平板上有一整排空白，所以格子改成並排。手機維持單欄。
+   疊卡進度表（.ttab）有自己的卡片版面（進度條、勾選、按鈕），排進格線會散掉，
+   所以排除。 */
+@media(min-width:600px) and (max-width:1080px){
+table.cardize:not(.ttab) tr{display:grid;
+grid-template-columns:repeat(var(--cm,2),minmax(0,1fr));gap:1px 24px;align-items:start}
+table.cardize:not(.ttab) td:first-child{grid-column:1/-1}
+}
+@media(min-width:880px) and (max-width:1080px){
+table.cardize:not(.ttab) tr{grid-template-columns:repeat(var(--cw,2),minmax(0,1fr))}
 }
 .tw td.win{color:var(--lcc);font-weight:700}
 /* 左右兩欄對照的表。格子裡裝的是整句話不是數字，所以不套 .tw 的 nowrap，
@@ -1124,9 +1145,9 @@ color:var(--dim);font-size:.78rem;font-weight:400}
 .tw table.cmp2{min-width:0}
 .tw table.cmp2 th,.tw table.cmp2 td{white-space:normal}
 .cmp2 td.nm{white-space:nowrap}
-/* 手機上再進一步攤成卡片：兩欄並排是這種表的重點，
-   讓它橫向捲動等於在手機上看不到右邊那一欄。 */
-@media(max-width:760px){
+/* 1080px 以下攤成卡片：兩欄並排是這種表的重點，
+   讓它橫向捲動等於看不到右邊那一欄，平板直向一樣會中。 */
+@media(max-width:1080px){
 .cmpw{overflow:visible}
 .tw table.cmp2{min-width:0;width:100%;display:block}
 .cmp2 thead{display:none}
@@ -10585,7 +10606,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
       # 五欄的表在 375px 用固定版面會窄到一行一個字，所以改成攤平成卡片：
       # 每一列變一張卡，第一欄當標題，其餘各自帶 data-l 當標籤。
-      '@media(max-width:760px){'
+      '@media(max-width:1080px){'
       '.tw{overflow:visible;padding:0;border:0;background:none}'
       '.tw table,.tw tbody,.tw tr,.tw td{display:block;width:auto}'
       '.tw thead{display:none}'
@@ -16487,7 +16508,7 @@ if os.path.exists('cards.json'):
       '.tdc li{margin:5px 0;line-height:1.65}'
       # 窄螢幕把每一列變成一張卡。用 data-l 當標籤，不另外產一份 HTML，
       # 兩份版面各自維護遲早會對不起來。
-      '@media(max-width:760px){'
+      '@media(max-width:1080px){'
       '.ttw{overflow:visible}'
       '.tw table.ttab{min-width:0;width:100%;font-size:.88rem}'
       '.ttab thead{display:none}'
