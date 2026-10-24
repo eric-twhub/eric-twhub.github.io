@@ -1129,7 +1129,7 @@ table.cardize td[data-l]:not([data-l=""])::before{content:attr(data-l)"：";disp
 color:var(--dim);font-size:.78rem;font-weight:400}
 }
 /* 卡片在平板上有一整排空白，所以格子改成並排。手機維持單欄。
-   疊卡進度表（.ttab）有自己的卡片版面（進度條、勾選、按鈕），排進格線會散掉，
+   信用卡回饋記錄（.ttab）有自己的卡片版面（進度條、勾選、按鈕），排進格線會散掉，
    所以排除。 */
 @media(min-width:600px) and (max-width:1080px){
 table.cardize:not(.ttab) tr{display:grid;
@@ -1493,7 +1493,7 @@ def topnav(cur=''):
         if os.path.exists('cards.json') else []
     card = (link('/japan-credit-card/', f'💳 {len(_cd) or ""} 張卡比較'.replace('  ', ' '))
             + link('/japan-card-calculator/', '🧮 回饋計算機')
-            + link('/japan-card-tracker/', '📊 疊卡進度表')
+            + link('/japan-card-tracker/', '📊 信用卡回饋記錄')
             + link('/japan-card-register/', '📆 登錄日曆')
             + link('/japan-airline-card/', '✈️ 買機票算國內還是國外')
             + link('/japan-airline-card/china-airlines/', '✈️ 華航聯名卡')
@@ -15350,7 +15350,7 @@ if os.path.exists('cards.json'):
         f'<s>回饋、上限與實拿試算</s></a>'
       + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
         f'<s>輸入金額看每張卡實拿</s></a>'
-      + f'<a class="ct" href="{U("/japan-card-tracker/")}"><b>📊 疊卡進度表</b>'
+      + f'<a class="ct" href="{U("/japan-card-tracker/")}"><b>📊 信用卡回饋記錄</b>'
         f'<s>記已刷金額，算下一筆該刷哪張</s></a>' + '</div>'
       + f'<p class="disc">本頁為公開資訊整理，登錄時間與名額查證於 {_CDCHK}，'
         f'來源為各發卡行官方活動頁。銀行可隨時調整，請以官方公告為準。'
@@ -15419,7 +15419,7 @@ if os.path.exists('cards.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
         f'<s>輸入日幣金額，換算回饋</s></a>'
-      + f'<a class="ct" href="{U("/japan-card-tracker/")}"><b>📊 疊卡進度表</b>'
+      + f'<a class="ct" href="{U("/japan-card-tracker/")}"><b>📊 信用卡回饋記錄</b>'
         f'<s>記已刷金額，算下一筆該刷哪張</s></a>'
       + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 買 iPhone 台灣還日本划算</b>'
         f'<s>可填入你的回饋率試算</s></a>'
@@ -15621,13 +15621,13 @@ if os.path.exists('cards.json'):
           # 不然會變成到處都掛同一句的泛稱連結。
           + (f'<div class="tldr"><ul><li><b>刷到約 {money(hit)} 之後加碼就沒了，'
              f'剩下的刷在這張只剩 {c["base"]}%，該換別張。</b>'
-             f'<a href="{U("/japan-card-tracker/")}">疊卡進度表</a>'
+             f'<a href="{U("/japan-card-tracker/")}">信用卡回饋記錄</a>'
              f'可以記每張卡已經刷多少，依剩餘額度算出下一筆該刷哪張。</li></ul></div>'
              if hit else
              f'<div class="tldr"><ul><li><b>這張沒有加碼上限，不會刷到一半掉回基本回饋。</b>'
              f'但你手上其他卡多半有，它們的加碼用完之後順序就會變，'
              f'到時候該不該換到這張要比的是各卡的基本回饋，不是帳面最高。'
-             f'<a href="{U("/japan-card-tracker/")}">疊卡進度表</a>會把這件事算出來。'
+             f'<a href="{U("/japan-card-tracker/")}">信用卡回饋記錄</a>會把這件事算出來。'
              f'</li></ul></div>')
           + fare_cta('tokyo', '算完回饋，順便看機票')
           + '<h2>怎麼啟用</h2><div class="tldr"><ul>'
@@ -15904,7 +15904,7 @@ if os.path.exists('cards.json'):
             pages.append((f'/japan-credit-card/{c["slug"]}/flights/', 0.6))
 
     # ── 日幣回饋計算機 ──
-    # 疊卡進度表的前端。沿用計算機頁的 _CJS（window.JCARD、jback、jcapat、jhas、jnb）。
+    # 信用卡回饋記錄的前端。沿用計算機頁的 _CJS（window.JCARD、jback、jcapat、jhas、jnb）。
     # 資料只存在使用者的 localStorage，本站收不到也看不到，這和站上不裝分析工具是同一件事。
     TRACK_JS = _CJS + ("""<script>
     (function(){
@@ -16078,7 +16078,7 @@ if os.path.exists('cards.json'):
 
       var h='';
       if(!rows.length){
-        h='<p class="lede">還沒有卡片。到下面「我的卡片」勾選你持有的，或自己新增一張。</p>';
+        h='<p class="lede">還沒有設定。<a href="#mycards">點這裡勾選你持有的卡</a>。</p>';
       }else{
         h='<div class="tw ttw"><table class="ttab"><thead><tr><th>卡</th>'
          +'<th>已刷（日幣）</th><th>台幣帳單</th>'
@@ -16452,7 +16452,7 @@ if os.path.exists('cards.json'):
       # 這一頁算的是「這一筆刷哪張」，上限用掉之後的順序是另一個問題
       + f'<div class="tldr"><ul><li><b>這一頁算的是單筆消費刷哪張最划算。</b>'
         f'實際在日本刷的時候，加碼額度會一張一張用完，順序跟著變。'
-        f'<a href="{U("/japan-card-tracker/")}">疊卡進度表</a>'
+        f'<a href="{U("/japan-card-tracker/")}">信用卡回饋記錄</a>'
         f'可以記每張卡累計刷了多少，算出下一筆的實際回饋率。</li></ul></div>'
       + fare_cta('tokyo', '算完回饋，順便看機票')
       + '<h2>常見問題</h2>' + kc_html
@@ -16468,14 +16468,21 @@ if os.path.exists('cards.json'):
       + _calc_js + foot())
     pages.append(('/japan-card-calculator/', 0.8))
 
-    # ── 疊卡進度表 ──────────────────────────────
-    # 社群上的疊卡攻略都在排「加碼回饋率」的順序，但每張卡的加碼都有上限，
+    # ── 信用卡回饋記錄 ──────────────────────────────
+    # 社群上的刷卡攻略都在排「加碼回饋率」的順序，但每張卡的加碼都有上限，
     # 上限一滿，那張卡的實際回饋就掉回基本回饋。所以真正要排的是邊際回饋率，
     # 而那取決於你已經刷了多少。這一頁就是把帳面回饋率換成邊際回饋率。
     # 記錄只存在使用者自己的瀏覽器，本站收不到，這和站上不裝分析工具是同一件事。
     _TRK_CSS = ('<style>'
       '.tlb{display:inline-flex;align-items:center;gap:6px;margin:0 12px 8px 0;'
       'font-size:.88rem;white-space:nowrap}'
+      # 勾選清單原本靠 flex-wrap 排，每一列的第二欄停在不同的位置，
+      # 看起來像沒對齊。改成格線，欄位數依寬度自己長。
+      '#tpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));'
+      'gap:2px 14px}'
+      '#tpick .tlb{margin:0;white-space:normal;align-items:flex-start;'
+      'line-height:1.45;padding:3px 0}'
+      '#tpick .tlb input{margin:1px 0 0;flex:0 0 auto}'
       '.tin{width:110px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;'
       'background:var(--bg);color:var(--fg);font-size:.9rem}'
       '.tbtn{padding:3px 8px;border:1px solid var(--line);border-radius:6px;'
@@ -16595,16 +16602,16 @@ if os.path.exists('cards.json'):
                        for q, a in _trk_faq]}, ensure_ascii=False)
 
     write('japan-card-tracker/index.html',
-      head('日本刷卡順序怎麼排｜疊卡進度表：記已刷金額，算下一筆該刷哪張',
-           f'疊卡攻略都在排加碼回饋率，但每張卡的加碼都有上限，刷滿就掉回基本回饋。'
+      head('日本刷卡順序怎麼排｜信用卡回饋記錄：記已刷金額，算下一筆該刷哪張',
+           f'網路上的刷卡攻略都在排加碼回饋率，但每張卡的加碼都有上限，刷滿就掉回基本回饋。'
            f'這一頁記你每張卡已經刷了多少，算出下一筆的實際回饋率。'
            f'收錄 {len(CD["cards"])} 張卡，也可以自己新增。資料只存在你的瀏覽器。',
            'japan-card-tracker/',
            '<script type="application/ld+json">' + _trk_ld + '</script>')
       + topnav()
-      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), ('疊卡進度表', None)]) + _TRK_CSS
-      + '<h1>日本疊卡進度表</h1>'
-      + '<p class="lede">疊卡攻略排的是加碼回饋率，但每張卡的加碼都有上限。'
+      + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), ('信用卡回饋記錄', None)]) + _TRK_CSS
+      + '<h1>日本信用卡回饋記錄</h1>'
+      + '<p class="lede">網路上的刷卡攻略排的是加碼回饋率，但每張卡的加碼都有上限。'
         '上限一滿，那張卡就掉回基本回饋，順序整個變了。'
         '這一頁記你每張卡已經刷了多少，算出下一筆實際拿得到幾趴。</p>'
       + f'<p class="upd">換算匯率 {_MIDC}（中間匯率）　·　'
@@ -16624,7 +16631,7 @@ if os.path.exists('cards.json'):
       + '<div id="trows"></div>'
       + '<div class="cres" id="tnext"></div></div>'
 
-      + '<h2>我的卡片</h2>'
+      + '<h2 id="mycards">我的卡片</h2>'
       + f'<p class="lede">勾選你持有的。本站收錄 {len(CD["cards"])} 張，'
         f'數字來自各家官方活動頁，條件改了本站會更新，你下次打開就是新的。</p>'
       + '<div id="tpick" class="callg"></div>'
