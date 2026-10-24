@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-24-taipei-fukuoka",
- "generated": "2026-10-24 18:32",
+ "generated": "2026-10-24 19:57",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 13575,
+ "med": 13863,
  "n_rt": 10,
  "others": [
   {
