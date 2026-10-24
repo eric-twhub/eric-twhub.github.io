@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-24-taipei-fukuoka",
- "generated": "2026-10-24 04:41",
+ "generated": "2026-10-24 10:44",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5755,
+  "price": 5745,
   "dep": "2026-11-02",
   "ret": "2026-11-09",
   "dept": "06:45",
@@ -27,8 +27,8 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 14409,
- "n_rt": 8,
+ "med": 13575,
+ "n_rt": 10,
  "others": [
   {
    "o": "TPE",
@@ -51,10 +51,28 @@
   {
    "o": "TPE",
    "d": "FUK",
+   "air": "AK",
+   "airname": "馬來西亞亞航",
+   "cls": "lcc",
+   "price": 8505,
+   "dep": "2026-11-02",
+   "ret": "2026-11-06",
+   "dept": "12:00",
+   "rett": "16:20",
+   "rt": true,
+   "tr": 0,
+   "dur": 310,
+   "dur_to": 140,
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/TPE0211FUK06111?t=AK17936208001793632800000140TPEFUK17939820001793988600000170FUKTPE_d3db64d3ef5fa6169edc00a9df17aa21_20967&search_date=24102026&expected_price_uuid=01a16b70-25f3-8030-ebc5-037bad4f108e&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=JK2P-vPEkdZEdOxG3WPskA&expected_price_source=share&expected_price_currency=twd&expected_price=8505&marker=775639"
+  },
+  {
+   "o": "TPE",
+   "d": "FUK",
    "air": "TW",
    "airname": "德威航空",
    "cls": "lcc",
-   "price": 8743,
+   "price": 8742,
    "dep": "2026-11-05",
    "ret": "2026-11-12",
    "dept": "14:25",
@@ -64,25 +82,7 @@
    "dur": 1505,
    "dur_to": 185,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE0511FUK12111?t=IT17938887001793972700001340TPECJUFUK17944809001794487200000165FUKTPE_82b143a03c3b7946cd7c8690d6fa99e4_21763&search_date=23102026&expected_price_uuid=01a167b4-ba53-8040-6b74-34f2687db9b7&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=8VB5qsUWRRk2nUv5A7tv3A&expected_price_source=share&expected_price_currency=twd&expected_price=8743&marker=775639"
-  },
-  {
-   "o": "TPE",
-   "d": "FUK",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 11092,
-   "dep": "2026-11-26",
-   "ret": "2026-11-30",
-   "dept": "06:35",
-   "rett": "16:55",
-   "rt": true,
-   "tr": 2,
-   "dur": 1430,
-   "dur_to": 190,
-   "gate": "Gotogate",
-   "url": "https://www.aviasales.com/search/TPE2611FUK30111?t=MM17956749001795698000000325TPEOKAFUK17960577001796120400001105FUKOKATPE_552f841e0691b7a2d11fb6478f145d5b_28241&search_date=17102026&expected_price_uuid=01a14975-8ac9-8040-6d57-09bcb829244c&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ClidVj60FV8MsMens_uPog&expected_price_source=share&expected_price_currency=twd&expected_price=11092&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE0511FUK12111?t=IT17938887001793972700001340TPECJUFUK17944809001794487200000165FUKTPE_82b143a03c3b7946cd7c8690d6fa99e4_21763&search_date=23102026&expected_price_uuid=01a167b4-ba53-8040-6b74-34f2687db9b7&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=8VB5qsUWRRk2nUv5A7tv3A&expected_price_source=share&expected_price_currency=twd&expected_price=8742&marker=775639"
   }
  ]
 }

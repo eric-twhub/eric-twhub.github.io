@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-24-taichung-okinawa",
- "generated": "2026-10-24 04:41",
+ "generated": "2026-10-24 10:44",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4864,
+  "price": 4857,
   "dep": "2026-11-23",
   "ret": "2026-11-26",
   "dept": "07:10",
@@ -26,10 +26,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$9,527（22 天有紀錄），這張低 49%"
+  "11 月出發的票，每天最便宜的平均要 NT$9,862（23 天有紀錄），這張低 51%"
  ],
- "med": 11271,
- "n_rt": 86,
+ "med": 11385,
+ "n_rt": 85,
  "others": [
   {
    "o": "RMQ",
@@ -37,26 +37,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4936,
-   "dep": "2026-11-16",
-   "ret": "2026-11-19",
-   "dept": "07:10",
-   "rett": "21:05",
-   "rt": true,
-   "tr": 0,
-   "dur": 180,
-   "dur_to": 90,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
-  {
-   "o": "RMQ",
-   "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 5007,
+   "price": 4995,
    "dep": "2026-11-02",
    "ret": "2026-11-05",
    "dept": "07:10",
@@ -75,9 +56,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5936,
-   "dep": "2026-11-09",
-   "ret": "2026-11-12",
+   "price": 5426,
+   "dep": "2026-11-16",
+   "ret": "2026-11-19",
    "dept": "07:10",
    "rett": "21:05",
    "rt": true,
@@ -85,8 +66,26 @@
    "dur": 180,
    "dur_to": 90,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
+  },
+  {
+   "o": "RMQ",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 7910,
+   "dep": "2026-10-26",
+   "ret": "2026-10-29",
+   "dept": "07:10",
+   "rett": "21:05",
+   "rt": true,
+   "tr": 0,
+   "dur": 180,
+   "dur_to": 90,
+   "gate": "Trip.com",
+   "url": "https://www.aviasales.com/search/RMQ2610OKA29101?t=IT17929986001793007600000090RMQOKA17933079001793309700000090OKARMQ_c22163bf4cbfb1d0fe5e0768c79d253f_20512&search_date=19102026&expected_price_uuid=01a1529f-38f7-8030-2cb2-da2612e5fedd&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=7910&marker=775639"
   }
  ]
 }
