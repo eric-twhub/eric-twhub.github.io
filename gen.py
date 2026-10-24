@@ -14008,7 +14008,11 @@ if os.path.exists('seasonal.json'):
             cls = {'now': 'win', 'soon': '', 'past': 'lose'}[st]
             out += (f'<tr><td><b>{html.escape(it["name"])}</b>'
                     f'{_se_sm}{html.escape(it["place"])}</small></td>'
-                    f'<td class="nm">{_se_d(it["from"])} – {_se_d(it["to"])}</td>'
+                    # 跨年的活動只印月日會讓人以為是同一年（丸之內做到
+                    # 2027/2/14、USJ 做到 2027/1/17），結束年份不同就把年份印出來
+                    f'<td class="nm">{_se_d(it["from"])} – '
+                    f'{it["to"][:4] + " 年 " if it["to"][:4] != it["from"][:4] else ""}'
+                    f'{_se_d(it["to"])}</td>'
                     f'<td class="{cls}"><b>{label}</b></td>'
                     f'<td class="nm">{html.escape(it["note"])}'
                     f'{_se_sm}出處：<a href="{it["src"]}" target="_blank" '
