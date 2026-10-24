@@ -744,6 +744,9 @@ TBL_JS = ('<script>(function(){'
           # 在桌機是一個定值。從 .wrap 自己算，不要寫死 1080／1048，
           # 改了 .wrap 這裡要跟著對。
           'var wr=document.querySelector(".wrap"),MQW=1080,CAP=1048;'
+          # 整頁宣告要卡片的（.wrap.cards），不量寬度，每一張都攤開。
+          # 同一頁一半卡片一半表格比較難讀，由那一頁自己決定要不要統一。
+          'var ALL=!!(wr&&wr.classList.contains("cards"));'
           'if(wr){var cs=getComputedStyle(wr),mw=parseFloat(cs.maxWidth);'
           'if(mw>0){MQW=Math.round(mw);'
           'CAP=mw-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);}}'
@@ -770,7 +773,7 @@ TBL_JS = ('<script>(function(){'
           't.style.setProperty("--cm",n>=2?2:1);'
           # 原生寬度要在攤成卡片之前量。格子是 nowrap，所以這個寬度跟視窗
           # 無關，量一次就一直有效。
-          'L.push({t:t,wide:t.scrollWidth>CAP+1});});'
+          'L.push({t:t,wide:ALL||t.scrollWidth>CAP+1});});'
           # 視窗 1080 以下一律卡片；以上只有塞不進容器的那幾張才攤開。
           # 兩個條件沒辦法寫成同一條媒體查詢，所以改由這裡掛 class。
           'var mq=matchMedia("(max-width:"+MQW+"px)");'
@@ -1392,7 +1395,7 @@ def _og_img(path):
     s = _og_slug(path)
     return f'{SITE}{BASE}/og/{s if s in OG_SLUGS else "default"}.png'
 
-def head(title,desc,path,extra=''):
+def head(title,desc,path,extra='',wrap_cls=''):
     can=f'{SITE}{BASE}/{path}' if path else f'{SITE}{BASE}/'
     return f'''<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -1410,7 +1413,7 @@ def head(title,desc,path,extra=''):
 <meta property="og:image" content="{_og_img(path)}">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<style>{CSS}</style>{extra}{DRIVE}</head><body><div class="wrap">'''
+<style>{CSS}</style>{extra}{DRIVE}</head><body><div class="wrap{' ' + wrap_cls if wrap_cls else ''}">'''
 
 def crumbs(items,root='/'):
     # 只有一項的麵包屑沒有意義：它顯示不出任何路徑，而首頁的那一項文字又正好和
@@ -5996,7 +5999,8 @@ if os.path.exists('lasttrain.json'):
 
     write('japan-airport-last-train/index.html',
       head(lt_title, lt_desc, 'japan-airport-last-train/',
-           '<script type="application/ld+json">' + lt_ld + '</script>')
+           '<script type="application/ld+json">' + lt_ld + '</script>',
+           wrap_cls='cards')
       + topnav() + crumbs([('首頁', '/'), ('機場末班車', None)])
       + '<h1>落地之後，還回得去市區嗎？</h1>'
       + f'<p class="lede">{html.escape(LT["intro"])}</p>'
