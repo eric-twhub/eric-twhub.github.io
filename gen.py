@@ -744,9 +744,10 @@ TBL_JS = ('<script>(function(){'
           # 在桌機是一個定值。從 .wrap 自己算，不要寫死 1080／1048，
           # 改了 .wrap 這裡要跟著對。
           'var wr=document.querySelector(".wrap"),MQW=1080,CAP=1048;'
-          # 整頁宣告要卡片的（.wrap.cards），不量寬度，每一張都攤開。
-          # 同一頁一半卡片一半表格比較難讀，由那一頁自己決定要不要統一。
-          'var ALL=!!(wr&&wr.classList.contains("cards"));'
+          # 整頁宣告要卡片的（.wrap.cards）：四欄以上不量寬度就攤開，
+          # 同一頁一半卡片一半表格比較難讀。三欄以下的小表維持表格，
+          # 它們本來就一眼掃得完，攤成卡片只會把頁面拉長。
+          'var ALL=!!(wr&&wr.classList.contains("cards")),ALLMIN=4;'
           'if(wr){var cs=getComputedStyle(wr),mw=parseFloat(cs.maxWidth);'
           'if(mw>0){MQW=Math.round(mw);'
           'CAP=mw-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);}}'
@@ -773,7 +774,7 @@ TBL_JS = ('<script>(function(){'
           't.style.setProperty("--cm",n>=2?2:1);'
           # 原生寬度要在攤成卡片之前量。格子是 nowrap，所以這個寬度跟視窗
           # 無關，量一次就一直有效。
-          'L.push({t:t,wide:ALL||t.scrollWidth>CAP+1});});'
+          'L.push({t:t,wide:(ALL&&hs.length>=ALLMIN)||t.scrollWidth>CAP+1});});'
           # 視窗 1080 以下一律卡片；以上只有塞不進容器的那幾張才攤開。
           # 兩個條件沒辦法寫成同一條媒體查詢，所以改由這裡掛 class。
           'var mq=matchMedia("(max-width:"+MQW+"px)");'
