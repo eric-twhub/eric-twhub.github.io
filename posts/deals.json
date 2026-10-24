@@ -34,31 +34,6 @@
   "n": 26
  },
  {
-  "slug": "2026-10-24-kaohsiung-okinawa",
-  "title": "高雄飛沖繩 NT$4,426 來回含稅｜台灣虎航 11/17 出發",
-  "o": "高雄",
-  "c": "沖繩",
-  "_oiata": "KHH",
-  "_diata": "OKA",
-  "price": 4426,
-  "air": "台灣虎航",
-  "dep": "2026-11-17",
-  "ret": "2026-11-20",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000"
-  ],
-  "med": 5176,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
-  "hotelcity": "那霸",
-  "cslug": "okinawa",
-  "usual": null,
-  "mbase": null,
-  "rank": 1,
-  "n": 2
- },
- {
   "slug": "2026-10-24-taichung-okinawa",
   "title": "台中飛沖繩 NT$4,857 來回含稅｜台灣虎航 11/23 出發",
   "o": "台中",
@@ -93,29 +68,29 @@
   "n": 87
  },
  {
-  "slug": "2026-10-24-taipei-fukuoka",
-  "title": "台北飛福岡 NT$5,745 來回含稅｜台灣虎航 11/02 出發",
-  "o": "台北",
-  "c": "福岡",
-  "_oiata": "TPE",
-  "_diata": "FUK",
-  "price": 5745,
+  "slug": "2026-10-24-kaohsiung-okinawa",
+  "title": "高雄飛沖繩 NT$4,926 來回含稅｜台灣虎航 11/17 出發",
+  "o": "高雄",
+  "c": "沖繩",
+  "_oiata": "KHH",
+  "_diata": "OKA",
+  "price": 4926,
   "air": "台灣虎航",
-  "dep": "2026-11-02",
-  "ret": "2026-11-09",
+  "dep": "2026-11-17",
+  "ret": "2026-11-20",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 13863,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW",
-  "hotelcity": "福岡",
-  "cslug": "fukuoka",
+  "med": 5426,
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
+  "hotelcity": "那霸",
+  "cslug": "okinawa",
   "usual": null,
   "mbase": null,
   "rank": 1,
-  "n": 10
+  "n": 2
  },
  {
   "slug": "2026-10-24-transfer-tokyo-sendai",
