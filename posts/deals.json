@@ -93,6 +93,31 @@
   "n": 2
  },
  {
+  "slug": "2026-10-24-taipei-fukuoka",
+  "title": "台北飛福岡 NT$5,745 來回含稅｜台灣虎航 11/02 出發",
+  "o": "台北",
+  "c": "福岡",
+  "_oiata": "TPE",
+  "_diata": "FUK",
+  "price": 5745,
+  "air": "台灣虎航",
+  "dep": "2026-11-02",
+  "ret": "2026-11-09",
+  "stops": "直飛",
+  "cls": "lcc",
+  "reasons": [
+   "廉航低於 NT$6,000"
+  ],
+  "med": 13863,
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW",
+  "hotelcity": "福岡",
+  "cslug": "fukuoka",
+  "usual": null,
+  "mbase": null,
+  "rank": 1,
+  "n": 10
+ },
+ {
   "slug": "2026-10-24-transfer-tokyo-sendai",
   "title": "飛東京轉乘去仙台，比直飛省 NT$5,350",
   "o": "台灣",
