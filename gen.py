@@ -14041,11 +14041,16 @@ if os.path.exists('seasonal.json'):
        '查證當天找不到官方公告。川崎 La Cittadella 的官網首頁、TOPICS 與'
        '站內搜尋都沒有萬聖節字樣，不確定今年是否續辦；池袋萬聖節的官網連不上。'
        '這一頁只收官方寫明日期的活動，沒有就不列，免得有人白跑。'),
-      ('其他城市的點燈活動呢？',
-       '多數要到 11 月才公布當年日期。查證當天（'
-       + SE['checked'] + '）六本木之丘官網只有飯店餐廳的聖誕餐，'
-       '沒有點燈的公告頁；川崎 La Cittadella 的首頁也沒有萬聖節公告。'
-       '沒有官方日期的活動這一頁不收，等公布了再補。'),
+      ('東京的點燈活動公布了嗎？',
+       '東京這邊陸續出來了：六本木之丘與另外四個之丘的聯合檔期是 11/5 到 12/25，'
+       '丸之內燈飾是 11/12 到 2027/2/14，東京中城是 11/26 到 12/25。'
+       '上面的表格都列了期間與出處。青之洞窟澀谷、讀賣樂園、名花之里、'
+       '日比谷的聖誕市集本站還沒查到今年的官方公告，查到再補。'),
+      ('12 月 31 日去東京迪士尼有跨年活動嗎？',
+       '2026 年沒有。官方活動頁逐字寫「於 2026 年 12 月 31 日，東京迪士尼樂園、'
+       '東京迪士尼海洋無舉辦『跨年之夜』」。新年特別活動是 2027/1/1 到 1/11。'
+       'USJ 相反，官方聖誕頁裡掛著「NO LIMIT! 跨年倒數 2027」。'
+       '兩園的安排不一樣，不要拿其中一邊的經驗套到另一邊。'),
     ]
     _se_ld = json.dumps({
       "@context": "https://schema.org", "@type": "FAQPage",
@@ -14118,12 +14123,14 @@ if os.path.exists('seasonal.json'):
       + '<div class="tw"><table><thead><tr><th>活動</th><th>期間</th>'
         '<th>狀態</th><th>說明與出處</th></tr></thead><tbody>'
       + _se_rows(_se_c['items']) + '</tbody></table></div>'
+      + (('<div class="tldr"><ul>'
+          + ''.join('<li>' + html.escape(x) + '</li>' for x in _se_c['after'])
+          + '</ul></div>') if _se_c.get('after') else '')
 
       + '<h2>這一頁還沒有的</h2>'
       + '<div class="tldr"><ul>'
       + ''.join(f'<li>{html.escape(x)}</li>' for x in SE['_待查'])
       + ''.join(f'<li>{html.escape(x)}</li>' for x in SE.get('_查不到的', []))
-      + '<li>查證當天六本木之丘官網只有飯店餐廳的聖誕餐，沒有點燈的公告頁。</li>'
       + '</ul></div>'
 
       + '<div class="cities">'
