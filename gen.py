@@ -18374,10 +18374,11 @@ if os.path.exists('hotelcase.json'):
       + f'<p class="disc">{html.escape(KC["next"]["note"])}</p>'
 
       + '<h2>出處</h2>'
-      + f'<p class="lede">本頁的報導內容都來自下面這六則，'
+      # 則數跟著 sources 走。寫死過「六則」，後來補到十幾則還留在頁面上。
+      + f'<p class="lede">本頁的報導內容都來自下面這 {len(KC["sources"])} 則，'
         f'日文標題照原樣列出，方便自己回頭核對。'
-        f'大島てる 站上那一筆標記則是本站於 {KC["checked"]} 直接在站上確認的，'
-        f'不在這六則報導裡。</p>'
+        f'大島てる 站上那一筆標記則是本站於 {_RL.get("mark_checked", KC["checked"])} '
+        f'直接在站上確認的，不在這些報導裡。</p>'
       + f'<div class="tldr"><ul>{_kc_src}</ul></div>'
 
       + '<h2>這一頁查不到的</h2>'
