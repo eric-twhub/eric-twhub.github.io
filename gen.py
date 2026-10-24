@@ -737,20 +737,13 @@ SF_JS = ('<script>function sfGo(f){var o=f.o.value.toLowerCase(),d=f.d.value.toL
 # details 原生不會互斥、也不會因為點別處而收起來；沒有這段，
 # 展開兩個分類就會兩片面板疊在一起，而且一直留在畫面上。
 TBL_JS = ('<script>(function(){'
-          # 四欄以上的表在 375px 一定塞不下，攤成卡片才讀得到右邊的欄位。
-          # 二到三欄的表通常放得下，不動它們，免得白白變高。
+          # 表頭至少要兩欄才有「欄位標籤」可言，一欄的表不處理。
           'var MIN=2,L=[];'
-          # 容器寬度在 .wrap 的上限以上就固定了，所以「這張表塞不塞得下」
-          # 在桌機是一個定值。從 .wrap 自己算，不要寫死 1080／1048，
-          # 改了 .wrap 這裡要跟著對。
-          'var wr=document.querySelector(".wrap"),MQW=1080,CAP=1048;'
-          # 整頁宣告要卡片的（.wrap.cards）：四欄以上不量寬度就攤開，
+          # 整頁宣告要卡片的（.wrap.cards）：四欄以上不管塞不塞得下都攤開，
           # 同一頁一半卡片一半表格比較難讀。三欄以下的小表維持表格，
           # 它們本來就一眼掃得完，攤成卡片只會把頁面拉長。
+          'var wr=document.querySelector(".wrap");'
           'var ALL=!!(wr&&wr.classList.contains("cards")),ALLMIN=4;'
-          'if(wr){var cs=getComputedStyle(wr),mw=parseFloat(cs.maxWidth);'
-          'if(mw>0){MQW=Math.round(mw);'
-          'CAP=mw-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);}}'
           'document.querySelectorAll(".tw table").forEach(function(t){'
           'var hr=t.querySelector("thead tr")||t.querySelector("tr");if(!hr)return;'
           # 表頭不在 thead 裡的（裸 <tr><th>），CSS 的 thead 規則抓不到，
@@ -772,16 +765,20 @@ TBL_JS = ('<script>(function(){'
           'var n=hs.length-1;'
           't.style.setProperty("--cw",n>=5||n===3?3:(n>=2?2:1));'
           't.style.setProperty("--cm",n>=2?2:1);'
-          # 原生寬度要在攤成卡片之前量。格子是 nowrap，所以這個寬度跟視窗
-          # 無關，量一次就一直有效。
-          'L.push({t:t,wide:(ALL&&hs.length>=ALLMIN)||t.scrollWidth>CAP+1});});'
-          # 視窗 1080 以下一律卡片；以上只有塞不進容器的那幾張才攤開。
-          # 兩個條件沒辦法寫成同一條媒體查詢，所以改由這裡掛 class。
-          'var mq=matchMedia("(max-width:"+MQW+"px)");'
+          'L.push({t:t,w:t.parentElement,all:ALL&&hs.length>=ALLMIN});});'
+          # 唯一的判準是「這張表塞不塞得進它的容器」，沒有斷點。先拿掉
+          # 卡片 class 量一次，量完再決定要不要加回去：攤成卡片之後
+          # scrollWidth 量到的是卡片不是表格，隔著 class 量會永遠說塞得下。
+          # 拿掉與加回在同一個同步工作裡做完，中間不會重繪，所以不會閃。
           'function sync(){L.forEach(function(o){'
-          'o.t.classList.toggle("cardz",mq.matches||o.wide);});}'
-          'if(mq.addEventListener)mq.addEventListener("change",sync);'
+          'o.t.classList.remove("cardz");'
+          'if(o.all||o.t.scrollWidth>o.w.clientWidth+1)o.t.classList.add("cardz");});}'
+          # 容器寬度會跟著視窗變，所以每次 resize 都要重算。
+          'var tm;addEventListener("resize",function(){'
+          'clearTimeout(tm);tm=setTimeout(sync,120);});'
           'sync();'
+          # 字體還沒換好之前量到的是備用字型的寬度，差一點點就會判錯。
+          'if(document.fonts&&document.fonts.ready)document.fonts.ready.then(sync);'
           '})();</script>')
 
 
@@ -1126,7 +1123,7 @@ border-left:3px solid var(--acc);border-radius:0 8px 8px 0;font-size:.9rem;line-
 blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem;color:var(--dim)}
 blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem;color:var(--dim)}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
-.tw table{min-width:640px;font-size:.95rem}
+.tw table{font-size:.95rem}
 .tw th{font-size:.86rem}
 .tw small{font-size:.86rem}
 .tw th,.tw td{white-space:nowrap;padding:9px 11px}
@@ -1261,7 +1258,8 @@ border:1px solid var(--line)}
 @media(max-width:560px){.cd{min-height:56px;font-size:.55rem;padding:2px 2px}
 .cd>i{font-size:.7rem}}
 
-/* 欄位少的表格不要被 min-width 逼出橫向捲動 */
+/* 欄位少的表格不要被 min-width 逼出橫向捲動。.tw table 已經不設下限，
+   這條現在只是把那個意圖留在原處。 */
 .tw.narrow table{min-width:0}
 /* 回饋計算機的並排比較表 */
 .cmp{width:100%;border-collapse:collapse}
