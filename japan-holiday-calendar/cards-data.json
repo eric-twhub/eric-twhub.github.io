@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-24 18:58",
+ "generated": "2026-10-24 19:11",
  "checked": "2026-09-26",
  "leave": [
   {
@@ -984,7 +984,7 @@
   "rows": [
    {
     "label": "台日同時連假",
-    "n": 3,
+    "n": 1,
     "median": null,
     "pct": null
    },
