@@ -1112,7 +1112,8 @@ table.cardize thead,table.cardize tr[data-hdr]{display:none}
 table.cardize tbody,table.cardize tr,table.cardize td{display:block;width:auto}
 table.cardize tr{border:1px solid var(--line);border-radius:12px;background:var(--card);
 padding:10px 13px;margin:0 0 10px}
-table.cardize td{border:0;padding:4px 0;white-space:normal;word-break:break-word}
+table.cardize td{border:0;padding:4px 0;white-space:normal;word-break:break-word;
+text-align:left}
 table.cardize td:first-child{font-size:1rem;margin-bottom:4px}
 table.cardize td[data-l]::before{content:attr(data-l)"：";display:block;
 color:var(--dim);font-size:.78rem;font-weight:400}
