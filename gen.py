@@ -1512,6 +1512,7 @@ def topnav(cur=''):
             + link('/japan-card-calculator/', '🧮 回饋計算機')
             + link('/japan-card-tracker/', '📊 信用卡回饋記錄')
             + link('/japan-card-register/', '📆 登錄日曆')
+            + link('/japan-card-labels/', '🏷️ 可列印小抄')
             + link('/japan-airline-card/', '✈️ 買機票算國內還是國外')
             + link('/japan-airline-card/china-airlines/', '✈️ 華航聯名卡')
             + link('/japan-airline-card/starlux/', '✈️ 星宇聯名卡')
@@ -15456,6 +15457,8 @@ if os.path.exists('cards.json'):
         f'<s>輸入日幣金額，換算回饋</s></a>'
       + f'<a class="ct" href="{U("/japan-card-tracker/")}"><b>📊 信用卡回饋記錄</b>'
         f'<s>記已刷金額，算下一筆該刷哪張</s></a>'
+      + f'<a class="ct" href="{U("/japan-card-labels/")}"><b>🏷️ 可列印小抄</b>'
+        f'<s>貼在卡背，印出來就不用翻手機</s></a>'
       + f'<a class="ct" href="{U("/apple-japan-price/")}"><b>🍎 買 iPhone 台灣還日本划算</b>'
         f'<s>可填入你的回饋率試算</s></a>'
       + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
@@ -15467,6 +15470,214 @@ if os.path.exists('cards.json'):
         f'本站與上述發卡行無合作關係，頁內卡片連結非聯盟連結。</p>'
       + foot())
     pages.append(('/japan-credit-card/', 0.8))
+
+    # ── 可列印的小抄標籤 ──
+    # 一張標籤 45.7 × 68.6 mm（Kodak MS100 的紙），540×810 px、300dpi 純黑白。
+    # 文案放在 card-labels.json，百分比、加碼上限與「刷到多少就滿」全部在這裡
+    # 從 cards.json 現算。數字只寫在一個地方，比較表改了標籤就跟著改。
+    LB = json.load(open('card-labels.json', encoding='utf-8'))
+
+    def _lb_g(x):
+        return f'{x:g}'
+
+    def _lb_cycle(unit):
+        # cap_unit 的寫法各行不同，收斂成標籤上放得下的四個詞。
+        u = unit or ''
+        if '核卡' in u: return ''
+        if '活動期間' in u: return '整檔'
+        if '曆月' in u: return '每個曆月'
+        if '季' in u: return '每季'
+        if '帳單週期' in u: return '每期'
+        if '月' in u: return '每月'
+        if '期' in u: return '每期'
+        return ''
+
+    def _lb_end(c):
+        ds = re.findall(r'(\d{4})/(\d{1,2})/(\d{1,2})', c.get('period', ''))
+        if not ds:
+            return ''
+        y, m, d = max((int(a), int(b), int(x)) for a, b, x in ds)
+        return f'{y}/{m}/{d}'
+
+    def _lb_mode(base, tiers, mode):
+        ts = [t for t in tiers if t.get('scope') in (mode, 'any')]
+        if not ts:
+            return base
+        # 官方寫明不算一般消費的那幾層（交通卡儲值）連基本回饋都沒有
+        b = 0 if any(t.get('no_base') for t in ts) else base
+        return round(b + sum(t['rate'] for t in ts), 2)
+
+    def _lb_lvbase(c, key):
+        o = next((x for x in c.get('levels', {}).get('options', [])
+                  if x['key'] == key), None)
+        if o is None or o.get('base') is None:
+            raise SystemExit(f'card-labels.json：{c["slug"]} 沒有等級 {key} 的底％')
+        return o['base']
+
+    def _lb_records():
+        out = []
+        for L in LB['labels']:
+            c = next((x for x in CD['cards'] if x['slug'] == L['slug']), None)
+            if c is None:
+                raise SystemExit(f'card-labels.json：cards.json 裡沒有 {L["slug"]}')
+            key = L.get('key')
+            if key:
+                opt = next((o for o in c['levels']['options'] if o['key'] == key), None)
+                if opt is None:
+                    raise SystemExit(f'card-labels.json：{L["slug"]} 沒有等級 {key}')
+                src = opt.get('tiers', [])
+                base = c['base'] if opt.get('base') is None else opt['base']
+                top = round(base + sum(t['rate'] for t in src), 2)
+            else:
+                skip = set(L.get('skip', []))
+                src = [t for t in c['tiers'] if t['label'] not in skip]
+                base = c['base']
+                top = max(_lb_mode(base, src, 'shop'), _lb_mode(base, src, 'transit'))
+
+            def tok(s, hit=None, rate=None, _c=c, _src=src, _base=base):
+                if not s:
+                    return s
+                s = s.replace('{{shop}}', _lb_g(_lb_mode(_base, _src, 'shop')))
+                s = s.replace('{{transit}}', _lb_g(_lb_mode(_base, _src, 'transit')))
+                if hit:
+                    s = s.replace('{{hit}}', f'{hit:,} 元')
+                if rate is not None:
+                    s = s.replace('{{sum}}', _lb_g(round(_base + rate, 2)))
+                return re.sub(r'\{\{lv:(\w+)\}\}',
+                              lambda m: _lb_g(_lb_lvbase(_c, m.group(1))), s)
+
+            rows = []
+            for spec in L.get('tiers', []):
+                t = next((x for x in src if x['label'] == spec['label']), None)
+                if t is None:
+                    raise SystemExit(
+                        f'card-labels.json：{L["slug"]} 對不到加碼層「{spec["label"]}」')
+                # 一律無條件捨去，照這個數字刷才不會超過上限。
+                # 用整數算：450 / 2.2% 是 20454.5，四捨五入會變成刷爆上限的 20455。
+                hit = t['cap'] * 1000 // round(t['rate'] * 10) if t['cap'] else 0
+                if spec.get('t'):
+                    title = tok(spec['t'], hit, t['rate'])
+                else:
+                    title = f'＋{t["rate"]:g}% {spec.get("name") or t["label"]}'
+                if spec.get('d'):
+                    detail = tok(spec['d'], hit, t['rate'])
+                else:
+                    cyc = spec.get('cycle', _lb_cycle(t.get('cap_unit')))
+                    # cap 是 0 代表官方沒寫，不是沒有上限。這兩件事不能算繪成同一句。
+                    parts = [f'{cyc}刷到 {hit:,} 元就滿' if hit
+                             else '官方沒有寫上限，本站查不到']
+                    if spec.get('extra'):
+                        parts.append(spec['extra'])
+                    detail = '・'.join(parts)
+                rows.append([title, detail])
+            for t, d in L.get('rows', []):
+                rows.append([tok(t), tok(d)])
+
+            rec = {'n': c['name'], 'top': f'{_lb_g(top)}%',
+                   'base': f'底 {_lb_g(base)}%', 'baseNote': L['baseNote'],
+                   'tiers': rows, 'act': L['act'], 'warn': L['warn'],
+                   'end': L.get('endPrefix', '') + _lb_end(c),
+                   'slug': c['slug']}
+            if L.get('who'):
+                rec['who'] = L['who']
+            if L.get('topNote'):
+                rec['topNote'] = tok(L['topNote'])
+            if L.get('shops'):
+                rec['shops'] = L['shops']
+            out.append(rec)
+        return out
+
+    _LBR = _lb_records()
+    _LBFOOT = f'結帳選日圓　國外手續費約 {CD["fx_fee"]["typical"]:g}%'
+    write('japan-card-labels/label.js', open('card-label.js', encoding='utf-8').read())
+
+    _lb_css = (
+      '<style>'
+      '.lbk{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:16px 0}'
+      '.lbk figure{margin:0}'
+      '.lbk .slip{border:1px solid var(--line);border-radius:8px;overflow:hidden;'
+      'background:#fff;aspect-ratio:540/810}'
+      '.lbk img{display:block;width:100%;height:auto}'
+      '.lbk figcaption{padding:8px 2px 0;font-size:.8rem;line-height:1.6}'
+      '.lbk figcaption b{display:block;font-size:.88rem}'
+      '.lbk figcaption s{display:block;text-decoration:none;color:var(--dim)}'
+      '.lbk figcaption u{display:block;text-decoration:none;color:var(--dim);'
+      'margin-top:4px}'
+      # 兩欄切到 190px 寬時，標籤上的字在螢幕上已經看不清楚了，
+      # 所以斷點抓在「一欄還有 500px 以上」的地方，不是抓在手機寬度。
+      '@media(max-width:900px){.lbk{grid-template-columns:repeat(2,1fr)}}'
+      '@media(max-width:560px){.lbk{grid-template-columns:1fr}}'
+      '</style>')
+
+    _lb_grid = '<div class="lbk">' + ''.join(
+        f'<figure><div class="slip">'
+        f'<img data-lb="{i}" alt="{html.escape(r["n"])}'
+        + (f'（{html.escape(r["who"])}）' if r.get('who') else '')
+        + f' 的日本回饋標籤" width="540" height="810" loading="lazy"></div>'
+          f'<figcaption><b>{html.escape(r["n"])}</b>'
+        + (f'<s>{html.escape(r["who"])}</s>' if r.get('who') else '')
+        + f'<s>日本最高 {r["top"]}　·　{html.escape(r["base"])}</s>'
+        + ''.join(f'<u>{html.escape(t)}：{html.escape(d)}</u>' for t, d in r['tiers'])
+        + f'<u>要做：{html.escape(r["act"])}</u>'
+          f'<u>小心：{html.escape(r["warn"])}</u>'
+          f'<u>到 {html.escape(r["end"])}</u></figcaption></figure>'
+        for i, r in enumerate(_LBR)) + '</div>'
+
+    _lb_js = ('<script>window.LABELS=' + json.dumps(_LBR, ensure_ascii=False)
+              + ';window.FOOTLINE=' + json.dumps(_LBFOOT, ensure_ascii=False)
+              + ';window.CHECKED=' + json.dumps(CD['checked'].replace('-', '/'))
+              + ';window.SITE=' + json.dumps(SITE.split('//')[-1])
+              + ';</script><script src="' + U('/japan-card-labels/label.js')
+              + '" defer></script>')
+
+    _lb_cards = len({r['slug'] for r in _LBR})
+    lb_title = f'旅日信用卡小抄：{len(_LBR)} 張可列印的標籤，貼在卡片上'
+    lb_desc = (f'{_lb_cards} 張旅日信用卡做成 {len(_LBR)} 張小抄，新戶舊戶與資產等級分開。'
+               f'每張寫底％、各層加碼刷到多少就滿、出門前要先做什麼、哪裡會踩空。'
+               f'45.7 × 68.6 mm，可直接列印或存成圖片。')
+
+    write('japan-card-labels/index.html',
+      head(lb_title, lb_desc, 'japan-card-labels/', _lb_css)
+      + topnav() + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
+                           ('可列印小抄', None)])
+      + '<h1>旅日信用卡小抄</h1>'
+      + '<p class="lede">在日本結帳的三秒內想知道的只有三件事：這張刷下去幾%、'
+        '還能刷多少加碼才不會滿、有沒有漏做什麼。把這三件事印成一張貼在卡背，'
+        '就不用當場翻手機。</p>'
+      + f'<div class="today"><div class="tday">條件查證於 {_CDCHK}'
+        f'　·　{_lb_cards} 張卡，{len(_LBR)} 張標籤</div>'
+        f'<div class="tans">同一張卡的新戶與舊戶、資產等級條件不一樣的，各做一張</div>'
+        f'<div class="tsub">標籤上的百分比與「刷到多少就滿」都是從'
+        f'<a href="{U("/japan-credit-card/")}">比較表</a>那份資料現算的，'
+        f'兩邊不會對不起來。</div></div>'
+      + '<h2>怎麼用</h2>'
+      + '<div class="tldr"><ul>'
+        '<li><b>先對身分那一行。</b>標題底下有身分的那幾張是同一張卡的不同版本，'
+        '新戶和舊戶、大戶和大大拿到的數字差很多，貼錯就白貼。</li>'
+        '<li><b>「刷到多少就滿」是台幣帳單金額。</b>用官方的回饋上限除以加碼％算的，'
+        '小數往下取整，照這個數字刷不會超過上限。超過的部分只剩底％。</li>'
+        '<li><b>手機長按圖片存到相簿，</b>再用標籤機或相印機的 App 列印。'
+        '電腦上用右鍵另存圖片。一張做成 45.7 × 68.6 mm 的滿版，列印時不要再縮放。</li>'
+        '<li><b>上下各留了約 2mm 的白邊，</b>剪的時候貼著白邊剪，剪歪一點也不會切到字。</li>'
+        '</ul></div>'
+      + f'<h2>{len(_LBR)} 張標籤</h2>'
+      + f'<p class="lede">圖是在你的瀏覽器上畫出來的，黑白、沒有背景色，'
+        f'用熱感應標籤機印最省墨。下面每張圖底下的文字和圖上的一樣。</p>'
+      + _lb_grid
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張卡比較</b>'
+        f'<s>回饋、上限與實拿試算</s></a>'
+      + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
+        f'<s>輸入日幣金額看每張卡實拿</s></a>'
+      + f'<a class="ct" href="{U("/japan-card-register/")}"><b>📆 登錄日曆</b>'
+        f'<s>哪幾天要搶登錄</s></a></div>'
+      + f'<p class="disc">本頁為公開資訊整理，非理財或投資建議。'
+        f'各卡條件、指定通路、回饋上限與登錄規則由發卡行隨時調整，'
+        f'標籤內容查證於 {_CDCHK}，刷卡前請以發卡行公告為準。'
+        f'本站與上述發卡行無合作關係。</p>'
+      + foot() + _lb_js)
+    pages.append(('/japan-card-labels/', 0.7))
+
 
     # ── 每張卡的獨立介紹頁 ──
     _YEN = [10000, 30000, 50000, 100000, 200000, 500000]
