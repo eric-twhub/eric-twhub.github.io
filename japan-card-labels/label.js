@@ -146,7 +146,7 @@ function run(ctx,c,k,draw){
 
   // 要做／小心
   const tagW=r(S.tagW),tagH=r(S.tagH);
-  for(const [tag,txt] of [["要做",c.act],["小心",c.warn]]){
+  for(const [tag,txt] of [["要做",c.act],["注意",c.warn]]){
     if(!txt)continue;
     y+=r(17);
     if(draw){
