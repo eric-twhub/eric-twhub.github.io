@@ -60,23 +60,23 @@
  },
  {
   "slug": "2026-10-25-taichung-okinawa",
-  "title": "台中飛沖繩 NT$4,995 來回含稅｜台灣虎航 11/02 出發",
+  "title": "台中飛沖繩 NT$5,426 來回含稅｜台灣虎航 11/23 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 4995,
+  "price": 5426,
   "air": "台灣虎航",
-  "dep": "2026-11-02",
-  "ret": "2026-11-05",
+  "dep": "2026-11-23",
+  "ret": "2026-11-26",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,659（23 天有紀錄），這張低 48%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,681（23 天有紀錄），這張低 44%"
   ],
   "med": 11244,
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
@@ -85,7 +85,7 @@
    "days": 29
   },
   "mbase": {
-   "avg": 9659,
+   "avg": 9681,
    "days": 23,
    "month": 11
   },
