@@ -1,389 +1,399 @@
 {
- "_說明": "選擇標準：① 有繁體中文 ② 台灣使用者熟悉 ③ 才看分潤率。信任度優先於分潤率，導流到陌生平台的轉換率損失，遠大於分潤率差距。",
- "_連結標示原則": "每個連結都標明會前往哪個平台（參考 Skyscanner 做法），讓使用者點擊前就知道目的地。",
- "marker": "775639",
- "site": {
-  "url": "https://eric-twhub.github.io",
-  "base": "",
-  "name": "台日機票速報",
-  "_base說明": "根目錄站（<帳號>.github.io）填空字串；專案站填 /repo名稱"
- },
- "partners": {
-  "flight": {
-   "brand": "Trip.com",
-   "icon": "✈️",
-   "label": "查看票價",
-   "rate": "國際機票 0.5%（完成 300 筆後 0.8%）",
-   "cookie": "網站 30 天／App 7 天",
-   "why": "繁中介面、TWD 計價、台灣有電視廣告與客服。分潤上限也高於 Aviasales",
-   "template": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828713",
-   "fallback": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD",
-   "affiliate": {
-    "Allianceid": "10585044",
-    "SID": "331341333",
-    "trip_sub3": "D19828713",
-    "_note": "Trip.com 聯盟平台產生；Allianceid=帳戶、SID=網站（台日機票速報）、trip_sub3=該連結識別碼。trip_sub1 留給本站填目的地代碼，用來看哪個航點帶來成交。"
-   },
-   "rate_table": {
-    "_source": "Trip.com 聯盟平台 › 幫助 › 佣金獎勵計劃，查證於 2026-09-16",
-    "酒店": "5%（0–199 筆）／6%（200–999）／7%（1000+）",
-    "機票_國際": "0.5%（0–299 筆）／0.8%（300+）",
-    "機票_中國國內": "USD 0.6 每張",
-    "機票+酒店": "2%（0–99）／2.25%（100–999）／2.5%（1000+）",
-    "火車票": "2%",
-    "當地玩樂": "4%（門票與演出 1.5%）",
-    "預售券": "5%",
-    "租車服務": "5%",
-    "機場接送": "5%",
-    "郵輪": "5%",
-    "_註": "機票分潤極低，站上的收益重心不應放在機票本身；同一個 Allianceid／SID 可用於酒店等其他品類，不必另外申請。"
-   }
+  "_說明": "選擇標準：① 有繁體中文 ② 台灣使用者熟悉 ③ 才看分潤率。信任度優先於分潤率，導流到陌生平台的轉換率損失，遠大於分潤率差距。",
+  "_連結標示原則": "每個連結都標明會前往哪個平台（參考 Skyscanner 做法），讓使用者點擊前就知道目的地。",
+  "marker": "775639",
+  "site": {
+    "url": "https://eric-twhub.github.io",
+    "base": "",
+    "name": "台日機票速報",
+    "_base說明": "根目錄站（<帳號>.github.io）填空字串；專案站填 /repo名稱"
   },
-  "hotel": {
-   "brand": "Trip.com",
-   "icon": "🏨",
-   "label": "找{q}住宿",
-   "rate": "5%（0–199 筆）／6%（200–999）／7%（1000+）",
-   "cookie": "網站 30 天／App 7 天",
-   "why": "與機票同一個聯盟帳號，不必另外申請；酒店 5% 起跳，一筆三晚訂房的分潤約等於 19 張機票。",
-   "note": "cookie 僅 1 天，文案要引導立即訂房",
-   "template": "https://tw.trip.com/hotels/list?city={cid}&optionId={cid}&optionType=City&optionName={q}&display={q}&checkin={ci}&checkout={co}&crn=1&adult=2&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
-   "fallback": "https://www.agoda.com/zh-tw/search?city={q}",
-   "city_ids": {
-    "_note": "Trip.com 飯店列表需要數字城市 ID，公開 HTML 抓不到（整頁 JS 算繪），只能從聯盟後台的「酒店頁面」產生器取得。每個都用 city=<id> 實際打開驗過標題。沒有 ID 的城市自動退回 Agoda 的關鍵字連結。",
-    "東京": 228,
-    "大阪": 219,
-    "那霸": 92573,
-    "福岡": 248,
-    "札幌": 641,
-    "名古屋": 360
-   },
-   "_dates": "連結會帶上該頁最低票價的去回日期，落地就是那幾晚的房價，不必再自己選日期。沒有票價可帶時退回不帶日期的列表頁。",
-   "_agoda_fallback": {
-    "角色": "沒有 Trip.com 城市 ID 時的備援連結，非聯盟連結（未申請）",
-    "若要申請": "Affiliates.One 上的條件：完成購買獎金 4.5% CPS、Cookie 1 天、獎金確認 90 天",
-    "比較": "Trip.com 酒店 5% 起、Cookie 30 天，兩項都勝過 Agoda，所以主線維持 Trip.com",
-    "價格 API": "Agoda 有 Affiliate Lite／Long Tail Search API，但要走認證流程（選合作模式 → 與其團隊對接 → 取得站台憑證 → 送認證 → 測試通過），不是自助註冊，現階段流量規模談不下來",
-    "查證": "2026-09-16"
-   }
-  },
-  "activity": {
-   "brand": "Trip.com",
-   "icon": "🎫",
-   "label": "訂{q}行程與門票",
-   "rate": "4%（門票與演出 1.5%）",
-   "cookie": "網站 30 天／App 7 天",
-   "why": "與機票、住宿同一個聯盟帳號；當地玩樂 4%，是機票的八倍。",
-   "template": "https://tw.trip.com/things-to-do/list?pagetype=city&keyword={q}&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
-   "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword={q}"
-  },
-  "esim": {
-   "brand": "Klook",
-   "icon": "📱",
-   "label": "買日本網卡 / eSIM",
-   "rate": "待後台確認（核准後以 Klook 後台顯示為準）",
-   "cookie": "7-30 天",
-   "why": "台灣人買日本網卡的首選平台，商品選擇最多",
-   "template": "https://affiliate.klook.com/redirect?aid=136311&aff_adid={adid}&k_site={k}",
-   "fallback": "https://www.klook.com/zh-TW/search/?query=日本%20eSIM%20網卡",
-   "_status": "2026-09-23 已申請並取得分潤連結。template 的 {k} 放 URL-encoded 的 Klook 目標網址，{adid} 放廣告單元 ID。",
-   "apply": "https://affiliate.klook.com/",
-   "apply_note": "官方直接申請（不必一定走聯盟網路）。條件：必須擁有網站或部落格，本站符合。多個網站可各自取得獨立的 Affiliate ID。聯絡信箱 affiliate@klook.com。Klook 持有台灣旅行業執照 甲 03950。查證於 2026-09-23。",
-   "rate_hearsay": "第三方（Involve Asia 部落格）稱 eSIM 20%、行程與飯店 6.5%、多數品項 5%、禮品卡 2%；cookie 30 天（飯店與租車 7 天）；審核約 2 個工作天。★ 這組數字非官方來源，核准後要以後台實際費率為準。",
-   "aid": "136311",
-   "adid_default": "1446215",
-   "target_default": "https://www.klook.com/zh-TW/search/?query=日本 eSIM 網卡",
-   "tracking_note": "實測 aff_sid 會被 redirect 清空（回傳 aff_sid=），不能用來分頁追蹤。要分辨哪一頁帶來的點擊，得在 Klook 後台另建廣告單元取得不同的 aff_adid，做法同 Trip.com 的 D19828713／D19828818。",
-   "adids": {
-    "_說明": "Klook 的廣告單元 ID，用來分辨點擊來自站上哪一種版位。在 Klook 後台各開一個單元拿到 ID 之後填進來，留空就退回 adid_default，連結照常可用。",
-    "_為什麼不能用網址參數": "aff_sid 會被 redirect 清空（實測回傳 aff_sid=），所以分頁追蹤只能靠不同的 aff_adid，沒有別的辦法。",
-    "_分組依據": "2026-09-27 掃全站 64 條 Klook 連結的實際目標分出來的，不是憑感覺切。",
-    "esim_cta": {
-     "id": "1460241",
-     "n": 37,
-     "what": "各頁的 eSIM CTA，目標是搜尋「日本 eSIM 網卡」"
+  "partners": {
+    "flight": {
+      "brand": "Trip.com",
+      "icon": "✈️",
+      "label": "查看票價",
+      "rate": "國際機票 0.5%（完成 300 筆後 0.8%）",
+      "cookie": "網站 30 天／App 7 天",
+      "why": "繁中介面、TWD 計價、台灣有電視廣告與客服。分潤上限也高於 Aviasales",
+      "template": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828713",
+      "fallback": "https://tw.trip.com/flights/showfarefirst?dcity={o}&acity={d}&ddate={dep}&rdate={ret}&triptype={tt}&class=y&quantity=1&locale=zh-TW&curr=TWD",
+      "affiliate": {
+        "Allianceid": "10585044",
+        "SID": "331341333",
+        "trip_sub3": "D19828713",
+        "_note": "Trip.com 聯盟平台產生；Allianceid=帳戶、SID=網站（台日機票速報）、trip_sub3=該連結識別碼。trip_sub1 留給本站填目的地代碼，用來看哪個航點帶來成交。"
+      },
+      "rate_table": {
+        "_source": "Trip.com 聯盟平台 › 幫助 › 佣金獎勵計劃，查證於 2026-09-16",
+        "酒店": "5%（0–199 筆）／6%（200–999）／7%（1000+）",
+        "機票_國際": "0.5%（0–299 筆）／0.8%（300+）",
+        "機票_中國國內": "USD 0.6 每張",
+        "機票+酒店": "2%（0–99）／2.25%（100–999）／2.5%（1000+）",
+        "火車票": "2%",
+        "當地玩樂": "4%（門票與演出 1.5%）",
+        "預售券": "5%",
+        "租車服務": "5%",
+        "機場接送": "5%",
+        "郵輪": "5%",
+        "_註": "機票分潤極低，站上的收益重心不應放在機票本身；同一個 Allianceid／SID 可用於酒店等其他品類，不必另外申請。"
+      }
     },
-    "esim_page": {
-     "id": "1460248",
-     "n": 10,
-     "what": "/japan-esim/ 比較頁上的指定商品連結"
+    "hotel": {
+      "brand": "Trip.com",
+      "icon": "🏨",
+      "label": "找{q}住宿",
+      "rate": "5%（0–199 筆）／6%（200–999）／7%（1000+）",
+      "cookie": "網站 30 天／App 7 天",
+      "why": "與機票同一個聯盟帳號，不必另外申請；酒店 5% 起跳，一筆三晚訂房的分潤約等於 19 張機票。",
+      "note": "cookie 僅 1 天，文案要引導立即訂房",
+      "template": "https://tw.trip.com/hotels/list?city={cid}&optionId={cid}&optionType=City&optionName={q}&display={q}&checkin={ci}&checkout={co}&crn=1&adult=2&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+      "fallback": "https://www.agoda.com/zh-tw/search?city={q}",
+      "city_ids": {
+        "_note": "Trip.com 飯店列表需要數字城市 ID，公開 HTML 抓不到（整頁 JS 算繪），只能從聯盟後台的「酒店頁面」產生器取得。每個都用 city=<id> 實際打開驗過標題。沒有 ID 的城市自動退回 Agoda 的關鍵字連結。",
+        "東京": 228,
+        "大阪": 219,
+        "那霸": 92573,
+        "福岡": 248,
+        "札幌": 641,
+        "名古屋": 360
+      },
+      "_dates": "連結會帶上該頁最低票價的去回日期，落地就是那幾晚的房價，不必再自己選日期。沒有票價可帶時退回不帶日期的列表頁。",
+      "_agoda_fallback": {
+        "角色": "沒有 Trip.com 城市 ID 時的備援連結，非聯盟連結（未申請）",
+        "若要申請": "Affiliates.One 上的條件：完成購買獎金 4.5% CPS、Cookie 1 天、獎金確認 90 天",
+        "比較": "Trip.com 酒店 5% 起、Cookie 30 天，兩項都勝過 Agoda，所以主線維持 Trip.com",
+        "價格 API": "Agoda 有 Affiliate Lite／Long Tail Search API，但要走認證流程（選合作模式 → 與其團隊對接 → 取得站台憑證 → 送認證 → 測試通過），不是自助註冊，現階段流量規模談不下來",
+        "查證": "2026-09-16"
+      }
     },
-    "coupon": {
-     "id": "1460249",
-     "n": 9,
-     "what": "信用卡各卡頁的 Klook 優惠碼區塊，目標是搜尋「日本」"
+    "activity": {
+      "brand": "Trip.com",
+      "icon": "🎫",
+      "label": "訂{q}行程與門票",
+      "rate": "4%（門票與演出 1.5%）",
+      "cookie": "網站 30 天／App 7 天",
+      "why": "與機票、住宿同一個聯盟帳號；當地玩樂 4%，是機票的八倍。",
+      "template": "https://tw.trip.com/things-to-do/list?pagetype=city&keyword={q}&curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+      "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword={q}"
+    },
+    "esim": {
+      "brand": "Klook",
+      "icon": "📱",
+      "label": "買日本網卡 / eSIM",
+      "rate": "待後台確認（核准後以 Klook 後台顯示為準）",
+      "cookie": "7-30 天",
+      "why": "台灣人買日本網卡的首選平台，商品選擇最多",
+      "template": "https://affiliate.klook.com/redirect?aid=136311&aff_adid={adid}&k_site={k}",
+      "fallback": "https://www.klook.com/zh-TW/search/?query=日本%20eSIM%20網卡",
+      "_status": "2026-09-23 已申請並取得分潤連結。template 的 {k} 放 URL-encoded 的 Klook 目標網址，{adid} 放廣告單元 ID。",
+      "apply": "https://affiliate.klook.com/",
+      "apply_note": "官方直接申請（不必一定走聯盟網路）。條件：必須擁有網站或部落格，本站符合。多個網站可各自取得獨立的 Affiliate ID。聯絡信箱 affiliate@klook.com。Klook 持有台灣旅行業執照 甲 03950。查證於 2026-09-23。",
+      "rate_hearsay": "第三方（Involve Asia 部落格）稱 eSIM 20%、行程與飯店 6.5%、多數品項 5%、禮品卡 2%；cookie 30 天（飯店與租車 7 天）；審核約 2 個工作天。★ 這組數字非官方來源，核准後要以後台實際費率為準。",
+      "aid": "136311",
+      "adid_default": "1446215",
+      "target_default": "https://www.klook.com/zh-TW/search/?query=日本 eSIM 網卡",
+      "tracking_note": "實測 aff_sid 會被 redirect 清空（回傳 aff_sid=），不能用來分頁追蹤。要分辨哪一頁帶來的點擊，得在 Klook 後台另建廣告單元取得不同的 aff_adid，做法同 Trip.com 的 D19828713／D19828818。",
+      "adids": {
+        "_說明": "Klook 的廣告單元 ID，用來分辨點擊來自站上哪一種版位。在 Klook 後台各開一個單元拿到 ID 之後填進來，留空就退回 adid_default，連結照常可用。",
+        "_為什麼不能用網址參數": "aff_sid 會被 redirect 清空（實測回傳 aff_sid=），所以分頁追蹤只能靠不同的 aff_adid，沒有別的辦法。",
+        "_分組依據": "2026-09-27 掃全站 64 條 Klook 連結的實際目標分出來的，不是憑感覺切。",
+        "esim_cta": {
+          "id": "1460241",
+          "n": 37,
+          "what": "各頁的 eSIM CTA，目標是搜尋「日本 eSIM 網卡」"
+        },
+        "esim_page": {
+          "id": "1460248",
+          "n": 10,
+          "what": "/japan-esim/ 比較頁上的指定商品連結"
+        },
+        "coupon": {
+          "id": "1460249",
+          "n": 9,
+          "what": "信用卡各卡頁的 Klook 優惠碼區塊，目標是搜尋「日本」"
+        },
+        "transfer": {
+          "id": "1460250",
+          "n": 7,
+          "what": "/japan-airport-last-train/ 的機場接送"
+        },
+        "ticket": {
+          "id": "1460252",
+          "n": 1,
+          "what": "門票與演出，目前只有 63 ANGEL"
+        },
+        "fallback": {
+          "id": "",
+          "n": 0,
+          "what": "其他自動補上的 Klook 連結，正常情況不會有"
+        },
+        "_參數實測": "2026-09-28 用 curl 追轉址測參數（這部分與上面的誤判無關，結果仍然成立）：aff_sid、aff_pid、utm_content 傳值進去會被清成空值；aff_sub、aff_sub1、aff_label、affsub5、sub_id 會被原樣帶到目的網址，但沒有證據顯示 Klook 會記進報表。轉址輸出的目的網址固定有 aff_sid、aff_pid、utm_term、utm_content 四個槽。",
+        "_下一步": "成效頁的「憑證列表」有一欄叫「夥伴參數」，代表這個維度存在，只是不知道怎麼從連結填值。要問 Klook（affiliate_tw@klook.com）兩件事：① 標籤1/2/3 會不會出現在報表，如果會，要怎麼在連結裡帶值；② 同一個網域能不能註冊多個「網站」以取得不同的 aff_adid。apply_note 裡官方寫過「多個網站可各自取得獨立的 Affiliate ID」，但沒說同網域的不同區塊算不算。",
+        "_新單元": {
+          "aff_adid": "1460241",
+          "建立日": "2026-09-28",
+          "備註": "五個廣告共用，與舊的 adid_default 1446215 並存。站上尚未改用。"
+        },
+        "_結論": "可行。2026-09-28 在後台用「建立新文字連結」各建一則，五則各自拿到不同的 aff_adid。先前以為不行，是因為那幾次都按「更新並生成編碼」改同一則廣告的標籤1，本來就是同一則。要新增一定要按「建立新文字連結」。",
+        "_填入日": "2026-09-28",
+        "_比較起算日": "2026-09-28。此日之前的點擊全部併在 adid_default 1446215，沒有分組，所以 esim_cta 對 esim_page 的比較要從這天開始算，不要把舊資料混進來。",
+        "_新增組別怎麼做": "後台「我的廣告 → 文字連結 → 建立新文字連結」，標籤1 填代號，活動網址隨便填一個同類的（實際去向由站上連結的 k_site 決定），產生後把 aff_adid 填進這裡對應的 id。",
+        "adbox": {
+          "id": "1501469",
+          "n": 0,
+          "what": "各頁「頁尾」的廣告版位（Klook 那幾頁）。ID 留空時併入 adid_default。"
+        },
+        "adbox_mid": {
+          "id": "1501470",
+          "n": 0,
+          "what": "各頁「中段」的廣告版位。與 adbox、adbox_top 分開才比得出上中下哪個位置有人點，這正是放三個版位要回答的問題。"
+        },
+        "adbox_top": {
+          "id": "1501471",
+          "n": 0,
+          "what": "各頁「上方」的廣告版位（第一個段落標題之前）。後台「建立新文字連結」、標籤1 填 adbox_top，再把 aff_adid 填進來。"
+        },
+        "_adbox填入日": "2026-10-15。五組都已建立：adbox 1501469（頁尾）、adbox_mid 1501470（中段）、adbox_top 1501471（上方文字版）、adbox_top_img 1501620（上方圖片版）、adbox_prod 1501617（個別商品）。此日之前站上沒有廣告版位，這幾組的數字從一開始就是乾淨的。",
+        "adbox_top_img": {
+          "id": "1501620",
+          "n": 0,
+          "what": "上版位的「圖片橫幅」版本。與 adbox_top（文字版）各佔一半頁面，兩組的點擊一比就知道圖片有沒有比較有用。後台「建立新文字連結」、標籤1 填 adbox_top_img。"
+        },
+        "adbox_prod": {
+          "id": "1501617",
+          "n": 0,
+          "what": "廣告版位裡的「個別商品」連結（點的是某一支 eSIM 商品，不是搜尋頁）。與點整個版位的 adbox_* 分開，才知道讀者是被商品吸引還是隨手點版位。"
+        },
+        "adbox_grid": {
+          "id": "",
+          "n": 0,
+          "what": "/japan-card-labels/ 標籤格線裡每四張插一格的廣告（點整個版位的「看全部的…」）。ID 留空時併入 adid_default。"
+        },
+        "adbox_grid_prod": {
+          "id": "",
+          "n": 0,
+          "what": "標籤格線廣告裡的個別商品連結。與 adbox_grid 分開，才知道讀者是被商品吸引還是隨手點版位。"
+        }
+      },
+      "_要比什麼": "最值得比的是 esim_cta 對 esim_page：前者是同一個搜尋連結重複 37 次散在各頁，後者是比較頁上 10 條指定商品。兩邊的點擊數一比，就知道「做深的專頁」與「到處放的 CTA」哪個真的有用。這個答案會決定之後要多做專頁還是多鋪版位。"
+    },
+    "transport": {
+      "brand": "Trip.com",
+      "icon": "🚄",
+      "label": "買 JR Pass 與日本交通票",
+      "rate": "2%",
+      "cookie": "網站 30 天／App 7 天",
+      "why": "火車票 2%。日本鐵路票券本來就是看完機票的下一步。",
+      "template": "https://tw.trip.com/trains/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+      "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword=JR%20PASS%20{q}"
+    },
+    "car": {
+      "brand": "Trip.com",
+      "icon": "🚗",
+      "label": "租{q}的車",
+      "rate": "5%",
+      "cookie": "網站 30 天／App 7 天",
+      "why": "租車 5%，非都會區航點（北海道、九州、離島）用得上。",
+      "template": "https://tw.trip.com/carhire/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+      "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20租車"
     },
     "transfer": {
-     "id": "1460250",
-     "n": 7,
-     "what": "/japan-airport-last-train/ 的機場接送"
+      "brand": "Trip.com",
+      "icon": "🚕",
+      "label": "訂{q}機場接送",
+      "rate": "5%",
+      "cookie": "網站 30 天／App 7 天",
+      "why": "機場接送 5%。",
+      "template": "https://tw.trip.com/airport-transfers/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
+      "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20機場接送"
     },
-    "ticket": {
-     "id": "1460252",
-     "n": 1,
-     "what": "門票與演出，目前只有 63 ANGEL"
+    "flight2": {
+      "brand": "易遊網",
+      "icon": "🔍",
+      "label": "比價",
+      "rate": "CPS 3.5%（公開頁面數字，未分商品類別；待後台確認）",
+      "cookie": "30 天（公開頁面數字）",
+      "why": "台灣最大 OTA，含旅行社切位票（Trip.com 與 Aviasales 都看不到的貨源）",
+      "network": "聯盟網 Affiliates.One（offer 3256）",
+      "template": "TODO_加入聯盟網後貼上_易遊網_分潤連結",
+      "fallback": "https://flight.eztravel.com.tw/activity/cheap-flights-to-japan/",
+      "route_template": "https://flight.eztravel.com.tw/tickets-tpe-{code}",
+      "city_codes": {
+        "tokyo": "TYO",
+        "osaka": "OSA",
+        "okinawa": "OKA",
+        "fukuoka": "FUK",
+        "nagoya": "NGO",
+        "sapporo": "SPK",
+        "sendai": "SDJ",
+        "hakodate": "HKD",
+        "kobe": "UKB",
+        "kanazawa": "KMQ",
+        "toyama": "TOY",
+        "niigata": "KIJ",
+        "shizuoka": "FSZ",
+        "hiroshima": "HIJ",
+        "okayama": "OKJ",
+        "yonago": "YGJ",
+        "takamatsu": "TAK",
+        "matsuyama": "MYJ",
+        "kochi": "KCZ",
+        "kitakyushu": "KKJ",
+        "saga": "HSG",
+        "kumamoto": "KMJ",
+        "oita": "OIT",
+        "miyazaki": "KMI",
+        "kagoshima": "KOJ",
+        "nagasaki": "NGS",
+        "ishigaki": "ISG",
+        "miyakojima": "MMY",
+        "akita": "AXT",
+        "aomori": "AOJ",
+        "morioka": "HNA",
+        "fukushima": "FKS",
+        "wakkanai": "WKJ"
+      },
+      "_代碼來源": "易遊網的路線頁用城市代碼不是機場代碼（東京 TYO 不是 NRT、札幌 SPK 不是 CTS、大阪 OSA 不是 KIX）。多機場城市不能靠位置猜：宮古島的 codes 是 ['MMY','SHI']，SHI 是下地島機場，所以四個多機場城市用明確對照表。",
+      "_查證": {
+        "日期": "2026-09-24",
+        "方法": "易遊網用 Incapsula 擋自動存取（curl 與 WebFetch 都拿到空白，瀏覽器跳 CAPTCHA，沒有去解）。改用 Google 收錄狀況驗證：搜尋結果帶回的標題是路線專屬的（如「台北TPE-福岡FUK 便宜機票」），足以證明該頁存在且內容正確。",
+        "已逐一查證": [
+          "FUK",
+          "HIJ",
+          "HKD",
+          "HSG",
+          "ISG",
+          "KMQ",
+          "KOJ",
+          "NGO",
+          "OKA",
+          "OKJ",
+          "OSA",
+          "SDJ",
+          "SPK",
+          "TYO"
+        ],
+        "未逐一查證": [
+          "AOJ",
+          "AXT",
+          "FKS",
+          "FSZ",
+          "HNA",
+          "KCZ",
+          "KIJ",
+          "KKJ",
+          "KMI",
+          "KMJ",
+          "MMY",
+          "MYJ",
+          "NGS",
+          "OIT",
+          "TAK",
+          "TOY",
+          "UKB",
+          "WKJ",
+          "YGJ"
+        ],
+        "未查證的依據": "這批路線頁是系統性產生的。連台北飛愛丁堡 EDI 這種沒有直飛的航線都有專頁，沖繩飛石垣 OKA-ISG、高雄飛石垣 KHH-ISG 也有。判斷涵蓋率是完整的。若日後發現某條 404，把該 slug 從 city_codes 移除即可自動退回總覽頁。"
+      },
+      "_分潤狀態": "尚未接上。聯盟網的易遊網推廣連結要用你的帳號產生，我拿不到。拿到之後把 template 填成與 KKday 同形式的轉址網址，route_template 的結果包進去即可。",
+      "apply": "https://pub.affiliates.one/zh-TW/affiliates/offers/3256",
+      "_公開頁面條件": {
+        "_來源": "https://blog.affiliates.one/zh-TW/blog/post/eztravel-affiliate-program，查證於 2026-09-24",
+        "完成購買獎金": "CPS 3.5%",
+        "Cookie天數": "30 天",
+        "獎金確認時間": "60 天內",
+        "商品類別": "頁面沒有分機票／訂房／團體／自由行，只列一個 3.5%",
+        "_原頁註記": "「以上資料僅供參考，詳細請依照會員後台為主」。所以這組數字不能當定案。"
+      },
+      "_待後台確認_最關鍵": "機票到底算不算 3.5%。機票毛利本來就只有 1–2%，OTA 很少在機票上給到 3.5%（Trip.com 國際機票才 0.5%）。後台十之八九會有分類費率或排除清單，廉航票尤其可能被排除。若機票真的有 3.5%，那是 Trip.com 的 7 倍，這個版位的定位要整個重想。不再只是『再比一次價』的註腳，而可能該變成主要機票出口之一。",
+      "_入口踩過的坑": "兩層坑。① 聯盟網部落格給的是舊網域 network.affiliates.one/affiliates/offers/3256，該網域對任何路徑都 301 到 pub.affiliates.one 根目錄，路徑整段丟失，只會看到後台首頁。② 換成 pub.affiliates.one/zh-TW/affiliates/offers/3256 之後回 401。未過審的廠商不能用網址直接開 offer 頁。結論：直達網址只有過審後才有用，要申請一律走後台廠商列表搜尋，跟 KKday 當初同一個流程。",
+      "_offer編號未經確認": "3256 抄自聯盟網部落格，那篇沒有日期。後台是 SPA，亂編的 offers/99999999 也回 200，所以從站外無法驗證這個編號還有效或就是易遊網。登入後若不是易遊網，改在廠商列表搜「易遊網」或「ezTravel」；搜不到則可能已退出聯盟網，屆時把 network／apply／費率欄位清掉，版位維持非分潤連結即可。切位票的編輯理由本來就獨立成立。"
     },
-    "fallback": {
-     "id": "",
-     "n": 0,
-     "what": "其他自動補上的 Klook 連結，正常情況不會有"
+    "activity2": {
+      "brand": "KKday",
+      "icon": "🎫",
+      "label": "在 KKday 找{q}行程",
+      "rate": "全品項 3.5%（行程導覽／美食生鮮／活動展覽／體驗活動，四類同價）",
+      "cookie": "30 天",
+      "why": "台灣最大的在地行程平台，日本商品數與知名度都在 Trip.com 之上。Trip.com 的行程分潤 4%、門票僅 1.5%、火車票 2%，這幾項是站上最弱的費率，KKday 是唯一有機會打贏的替代品。但要換要先看後台實際費率。",
+      "network": "聯盟網 Affiliates.One",
+      "template": "https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1={s1}&subid_2={s2}&t={t}",
+      "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword={q}",
+      "_status": "2026-09-24 聯盟網過審並取得推廣連結。",
+      "_encoding": "{t} 是目標網址『雙重』URL-encode（空白先變 + 再編成 %2B）。與 Klook 的 k_site 只編一層不同，編錯會整條掉回 KKday 首頁。",
+      "_verified": {
+        "日期": "2026-09-24",
+        "方法": "curl 追 301 Location，測原始連結與自組連結各一條",
+        "自組連結可用": "是，t 參數沒有簽章驗證，任何 kkday.com 網址都能包，可 template 化",
+        "中文關鍵字": "正常，東京 一日遊 正確編成 %E6%9D%B1%E4%BA%AC%20%E4%B8%80%E6%97%A5%E9%81%8A",
+        "轉址後 KKday 收到": "cid=2318、ud1=109820（我們的發布者 ID）、ud2=<每次點擊不同的雜湊>、vtm_channel=affiliatescomtw",
+        "subid 去向": "subid_1/subid_2 不會傳進 KKday 網址，只留在聯盟網那一層。要確認後台報表有沒有依 subid 拆分，才算真的能分頁追蹤。"
+      },
+      "_風險_轉址網域": "affclkr.online。不是品牌網域，.online + affclkr（affiliate clicker）正是廣告攔截清單會鎖的命名特徵。若被 uBlock／AdGuard／Pi-hole 擋掉，點擊會靜默消失而不是報錯。聯盟網後台的「備用轉跳網址」可能就是為此而設，待查。",
+      "_fallback版位是死的": "2026-09-24 實測：整站生成後 kkday.com 出現 0 次、agoda.com 0 次。activity／transport 的 KKday fallback 與 hotel 的 Agoda fallback 從來沒被觸發過，因為 Trip.com 的 template 每次都成功、所有城市也都有 Trip.com 城市 ID。所以『接上分潤就有收入』是錯的，KKday 要賺錢必須主動配置版位，不能靠 fallback。",
+      "rate_table": {
+        "_source": "聯盟網 Affiliates.One › KKday 電商頁，查證於 2026-09-24",
+        "行程導覽": "3.5%",
+        "美食生鮮": "3.5%",
+        "活動展覽": "3.5%",
+        "體驗活動": "3.5%",
+        "交通票_JR_Pass": "1%：JR Pass for Whole Japan、Tokyo Metro Ticket、北海道巴士票、JR 東日本各區域 Pass 全都在特殊商品清單上。輸給 Trip.com 火車票 2%。",
+        "成效歸屬": "最終點擊",
+        "成效確認": "90 天",
+        "獎金確認": "90 天",
+        "註冊／訂單時間": "5 分鐘內"
+      },
+      "_成效標準": "『訂單成立，消費者消費並使用後，即為一筆有效訂單』。不是訂了就算，要等旅客實際去玩完。加上 90 天成效確認，一筆二月出發的行程，分潤可能要到五月才確認。Trip.com 那邊的認列條件我還沒查，不能直接說誰比較寬。",
+      "_可用工具": "Ad Link 轉址、自訂連結、促銷優惠（促銷優惠可能可以接到 /japan-coupon/）",
+      "_對照_TripCom": {
+        "行程／當地玩樂": "Trip.com 4% ＞ KKday 3.5% → 維持 Trip.com",
+        "門票與演出": "Trip.com 1.5% ＜ KKday 3.5% → 換 KKday。teamLab／USJ Studio Pass／東京迪士尼／晴空塔／SHIBUYA SKY／富士急都不在特殊清單上，確認維持 3.5%。",
+        "火車票": "Trip.com 2% ＞ KKday 1%（JR Pass 全國版在特殊清單上）→ 維持 Trip.com",
+        "Cookie": "Trip.com 網站 30 天、KKday 30 天，打平"
+      },
+      "_特殊商品清單": "已取得並存成 kkday-1pct.json（14,637 筆 prod_mid）。清單上的商品分潤砍到 1%，清單外才是 3.5%。放任何 KKday 指定商品連結前，先用 prod_mid 驗過。",
+      "_關鍵字搜尋頁的問題": "我們現在的連結指向 productlist?keyword=，落地是一個混雜 3.5% 與 1% 的清單，使用者買到哪一種我們控制不了。要真的拿到 3.5%，得連到指定商品頁並逐一對 kkday-1pct.json 驗過。"
     },
-    "_參數實測": "2026-09-28 用 curl 追轉址測參數（這部分與上面的誤判無關，結果仍然成立）：aff_sid、aff_pid、utm_content 傳值進去會被清成空值；aff_sub、aff_sub1、aff_label、affsub5、sub_id 會被原樣帶到目的網址，但沒有證據顯示 Klook 會記進報表。轉址輸出的目的網址固定有 aff_sid、aff_pid、utm_term、utm_content 四個槽。",
-    "_下一步": "成效頁的「憑證列表」有一欄叫「夥伴參數」，代表這個維度存在，只是不知道怎麼從連結填值。要問 Klook（affiliate_tw@klook.com）兩件事：① 標籤1/2/3 會不會出現在報表，如果會，要怎麼在連結裡帶值；② 同一個網域能不能註冊多個「網站」以取得不同的 aff_adid。apply_note 裡官方寫過「多個網站可各自取得獨立的 Affiliate ID」，但沒說同網域的不同區塊算不算。",
-    "_新單元": {
-     "aff_adid": "1460241",
-     "建立日": "2026-09-28",
-     "備註": "五個廣告共用，與舊的 adid_default 1446215 並存。站上尚未改用。"
-    },
-    "_結論": "可行。2026-09-28 在後台用「建立新文字連結」各建一則，五則各自拿到不同的 aff_adid。先前以為不行，是因為那幾次都按「更新並生成編碼」改同一則廣告的標籤1，本來就是同一則。要新增一定要按「建立新文字連結」。",
-    "_填入日": "2026-09-28",
-    "_比較起算日": "2026-09-28。此日之前的點擊全部併在 adid_default 1446215，沒有分組，所以 esim_cta 對 esim_page 的比較要從這天開始算，不要把舊資料混進來。",
-    "_新增組別怎麼做": "後台「我的廣告 → 文字連結 → 建立新文字連結」，標籤1 填代號，活動網址隨便填一個同類的（實際去向由站上連結的 k_site 決定），產生後把 aff_adid 填進這裡對應的 id。",
-    "adbox": {
-     "id": "1501469",
-     "n": 0,
-     "what": "各頁「頁尾」的廣告版位（Klook 那幾頁）。ID 留空時併入 adid_default。"
-    },
-    "adbox_mid": {
-     "id": "1501470",
-     "n": 0,
-     "what": "各頁「中段」的廣告版位。與 adbox、adbox_top 分開才比得出上中下哪個位置有人點，這正是放三個版位要回答的問題。"
-    },
-    "adbox_top": {
-     "id": "1501471",
-     "n": 0,
-     "what": "各頁「上方」的廣告版位（第一個段落標題之前）。後台「建立新文字連結」、標籤1 填 adbox_top，再把 aff_adid 填進來。"
-    },
-    "_adbox填入日": "2026-10-15。五組都已建立：adbox 1501469（頁尾）、adbox_mid 1501470（中段）、adbox_top 1501471（上方文字版）、adbox_top_img 1501620（上方圖片版）、adbox_prod 1501617（個別商品）。此日之前站上沒有廣告版位，這幾組的數字從一開始就是乾淨的。",
-    "adbox_top_img": {
-     "id": "1501620",
-     "n": 0,
-     "what": "上版位的「圖片橫幅」版本。與 adbox_top（文字版）各佔一半頁面，兩組的點擊一比就知道圖片有沒有比較有用。後台「建立新文字連結」、標籤1 填 adbox_top_img。"
-    },
-    "adbox_prod": {
-     "id": "1501617",
-     "n": 0,
-     "what": "廣告版位裡的「個別商品」連結（點的是某一支 eSIM 商品，不是搜尋頁）。與點整個版位的 adbox_* 分開，才知道讀者是被商品吸引還是隨手點版位。"
+    "hotel2": {
+      "brand": "Agoda",
+      "icon": "🏨",
+      "label": "找{q}的住宿",
+      "rate": "分級：每月 50 筆以下 4%、50–299 筆 4.5%、300 筆以上 5%（官方頁，查證 2026-10-15）",
+      "cookie": "待後台確認",
+      "why": "Trip.com 的飯店列表要數字城市 ID，只有六個城市拿得到，其餘 27 個城市頁等於沒有住宿版位。Agoda 走關鍵字就能帶城市，而且站上實測東京住宿用的就是這個價格帶的平台。",
+      "apply": "https://partners.agoda.com/",
+      "apply_note": "自家聯盟，不走聯盟網。必須先有網站（本站符合），不限國家，官方寫明旅遊相關且針對飯店的網站通過機會好。付款為銀行匯款，最低門檻 US$200，未達累積到下月；以旅客「退房」後的次月計算，15 日前付款。查證 2026-10-15。",
+      "_status": "2026-10-15 已送出申請，走手動驗證（後台沒有自動驗證選項），官方寫約七個工作天。核准後到後台「行銷工具 → 文字連結」取連結格式，填進 template，再把 _ad_kind_for 裡沒有 Trip.com 城市 ID 的城市從 transfer 改回 hotel（走 hotel2）。在那之前那 27 頁配的是機場接送。",
+      "template": "TODO_核准後貼上_Agoda_分潤連結",
+      "fallback": "https://www.agoda.com/zh-tw/search?city={q}",
+      "_預計回覆": "約 2026-10-26（2026-10-15 送出，七個工作天，未計台灣與泰國的假日）"
     }
-   },
-   "_要比什麼": "最值得比的是 esim_cta 對 esim_page：前者是同一個搜尋連結重複 37 次散在各頁，後者是比較頁上 10 條指定商品。兩邊的點擊數一比，就知道「做深的專頁」與「到處放的 CTA」哪個真的有用。這個答案會決定之後要多做專頁還是多鋪版位。"
   },
-  "transport": {
-   "brand": "Trip.com",
-   "icon": "🚄",
-   "label": "買 JR Pass 與日本交通票",
-   "rate": "2%",
-   "cookie": "網站 30 天／App 7 天",
-   "why": "火車票 2%。日本鐵路票券本來就是看完機票的下一步。",
-   "template": "https://tw.trip.com/trains/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
-   "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword=JR%20PASS%20{q}"
+  "_已排除及原因": {
+    "Aviasales": "1.1-1.5%。俄系比價站，台灣使用者不認識，有被誤認為詐騙的風險",
+    "Yesim": "18% 分潤很高，但台灣沒有知名度、無繁中，實際轉換率會極低。（註：此條的「無繁中」尚未複查，Saily 那條已證實會過期，這條要另外查過才算數。）",
+    "Saily": "15%。2026-09-29 複查：原本記的排除理由是「台灣沒知名度、無繁中」，「無繁中」已經過期，Saily 現在有完整繁體中文站（saily.com/zh-tw/，商品頁與條款都翻了）。維持排除的理由改成兩條：一是台灣知名度仍低；二是立場衝突，本站已依官方文件判定它是漫遊 profile（見 esim.json 的 profile_guide.verified_cases），一邊寫「不是原生」一邊掛它的分潤連結，說服力會歸零。",
+    "GetYourGuide": "8%，歐美平台，台灣人訂日本行程不會用",
+    "DiscoverCars": "23-54% 分潤最高，但台灣人租日本車不會用這個平台",
+    "Omio": "6%，歐洲交通平台，不是台灣人買 JR Pass 的管道",
+    "Vio.com": "40-64%，台灣無知名度",
+    "Booking.com": "訂房可考慮，但機票分潤是 €1.5 固定且 cookie 只有 One session"
   },
-  "car": {
-   "brand": "Trip.com",
-   "icon": "🚗",
-   "label": "租{q}的車",
-   "rate": "5%",
-   "cookie": "網站 30 天／App 7 天",
-   "why": "租車 5%，非都會區航點（北海道、九州、離島）用得上。",
-   "template": "https://tw.trip.com/carhire/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
-   "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20租車"
+  "widgets": {
+    "_說明": "Klook 行程 widget（Travelpayouts 產生）。{city_id} 由 gen.py 依頁面自動帶入。",
+    "_sub_id": "若要分頁面追蹤成效，請在 Travelpayouts widget 設定頁填 SUB ID 後重新產生，把新網址貼回這裡（勿自行猜測參數格式，猜錯會導致完全無法追蹤）",
+    "klook_tours": "<script async src=\"https://tpembd.com/content?currency=TWD&trs=572168&shmarker=775639&locale=zh-TW&city_id={city_id}&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497\" charset=\"utf-8\"></script>",
+    "_費率": {
+      "來源": "Travelpayouts 合作夥伴信，2026-10-17 收到",
+      "Tours & Sightseeing": "12%，2026/10/1 至 10/31",
+      "Activities & Experiences": "12%，2026/10/1 至 10/31",
+      "Hotels": "8%，至 2026/12/31",
+      "_這個_widget_屬於哪一類": "klook_tours 帶 category=4，屬 Tours & Sightseeing，所以目前是 12%，11/1 起掉回原費率。",
+      "_原費率": "未查到。信裡只說 10/1 前的訂單按「previous rate」計算，沒有寫原費率是多少，要到 Travelpayouts 後台看。",
+      "_結算規則": "信中明寫：10/1 之前成立的訂單按舊費率計算，即使狀態仍是 Pending。所以 10 月的 12% 只認訂單成立日，不認入帳日。"
+    }
   },
-  "transfer": {
-   "brand": "Trip.com",
-   "icon": "🚕",
-   "label": "訂{q}機場接送",
-   "rate": "5%",
-   "cookie": "網站 30 天／App 7 天",
-   "why": "機場接送 5%。",
-   "template": "https://tw.trip.com/airport-transfers/?curr=TWD&locale=zh-TW&Allianceid=10585044&SID=331341333&trip_sub1={sub}&trip_sub3=D19828818",
-   "fallback": "https://www.klook.com/zh-TW/search/?query={q}%20機場接送"
-  },
-  "flight2": {
-   "brand": "易遊網",
-   "icon": "🔍",
-   "label": "比價",
-   "rate": "CPS 3.5%（公開頁面數字，未分商品類別；待後台確認）",
-   "cookie": "30 天（公開頁面數字）",
-   "why": "台灣最大 OTA，含旅行社切位票（Trip.com 與 Aviasales 都看不到的貨源）",
-   "network": "聯盟網 Affiliates.One（offer 3256）",
-   "template": "TODO_加入聯盟網後貼上_易遊網_分潤連結",
-   "fallback": "https://flight.eztravel.com.tw/activity/cheap-flights-to-japan/",
-   "route_template": "https://flight.eztravel.com.tw/tickets-tpe-{code}",
-   "city_codes": {
-    "tokyo": "TYO",
-    "osaka": "OSA",
-    "okinawa": "OKA",
-    "fukuoka": "FUK",
-    "nagoya": "NGO",
-    "sapporo": "SPK",
-    "sendai": "SDJ",
-    "hakodate": "HKD",
-    "kobe": "UKB",
-    "kanazawa": "KMQ",
-    "toyama": "TOY",
-    "niigata": "KIJ",
-    "shizuoka": "FSZ",
-    "hiroshima": "HIJ",
-    "okayama": "OKJ",
-    "yonago": "YGJ",
-    "takamatsu": "TAK",
-    "matsuyama": "MYJ",
-    "kochi": "KCZ",
-    "kitakyushu": "KKJ",
-    "saga": "HSG",
-    "kumamoto": "KMJ",
-    "oita": "OIT",
-    "miyazaki": "KMI",
-    "kagoshima": "KOJ",
-    "nagasaki": "NGS",
-    "ishigaki": "ISG",
-    "miyakojima": "MMY",
-    "akita": "AXT",
-    "aomori": "AOJ",
-    "morioka": "HNA",
-    "fukushima": "FKS",
-    "wakkanai": "WKJ"
-   },
-   "_代碼來源": "易遊網的路線頁用城市代碼不是機場代碼（東京 TYO 不是 NRT、札幌 SPK 不是 CTS、大阪 OSA 不是 KIX）。多機場城市不能靠位置猜：宮古島的 codes 是 ['MMY','SHI']，SHI 是下地島機場，所以四個多機場城市用明確對照表。",
-   "_查證": {
-    "日期": "2026-09-24",
-    "方法": "易遊網用 Incapsula 擋自動存取（curl 與 WebFetch 都拿到空白，瀏覽器跳 CAPTCHA，沒有去解）。改用 Google 收錄狀況驗證：搜尋結果帶回的標題是路線專屬的（如「台北TPE-福岡FUK 便宜機票」），足以證明該頁存在且內容正確。",
-    "已逐一查證": [
-     "FUK",
-     "HIJ",
-     "HKD",
-     "HSG",
-     "ISG",
-     "KMQ",
-     "KOJ",
-     "NGO",
-     "OKA",
-     "OKJ",
-     "OSA",
-     "SDJ",
-     "SPK",
-     "TYO"
-    ],
-    "未逐一查證": [
-     "AOJ",
-     "AXT",
-     "FKS",
-     "FSZ",
-     "HNA",
-     "KCZ",
-     "KIJ",
-     "KKJ",
-     "KMI",
-     "KMJ",
-     "MMY",
-     "MYJ",
-     "NGS",
-     "OIT",
-     "TAK",
-     "TOY",
-     "UKB",
-     "WKJ",
-     "YGJ"
-    ],
-    "未查證的依據": "這批路線頁是系統性產生的。連台北飛愛丁堡 EDI 這種沒有直飛的航線都有專頁，沖繩飛石垣 OKA-ISG、高雄飛石垣 KHH-ISG 也有。判斷涵蓋率是完整的。若日後發現某條 404，把該 slug 從 city_codes 移除即可自動退回總覽頁。"
-   },
-   "_分潤狀態": "尚未接上。聯盟網的易遊網推廣連結要用你的帳號產生，我拿不到。拿到之後把 template 填成與 KKday 同形式的轉址網址，route_template 的結果包進去即可。",
-   "apply": "https://pub.affiliates.one/zh-TW/affiliates/offers/3256",
-   "_公開頁面條件": {
-    "_來源": "https://blog.affiliates.one/zh-TW/blog/post/eztravel-affiliate-program，查證於 2026-09-24",
-    "完成購買獎金": "CPS 3.5%",
-    "Cookie天數": "30 天",
-    "獎金確認時間": "60 天內",
-    "商品類別": "頁面沒有分機票／訂房／團體／自由行，只列一個 3.5%",
-    "_原頁註記": "「以上資料僅供參考，詳細請依照會員後台為主」。所以這組數字不能當定案。"
-   },
-   "_待後台確認_最關鍵": "機票到底算不算 3.5%。機票毛利本來就只有 1–2%，OTA 很少在機票上給到 3.5%（Trip.com 國際機票才 0.5%）。後台十之八九會有分類費率或排除清單，廉航票尤其可能被排除。若機票真的有 3.5%，那是 Trip.com 的 7 倍，這個版位的定位要整個重想。不再只是『再比一次價』的註腳，而可能該變成主要機票出口之一。",
-   "_入口踩過的坑": "兩層坑。① 聯盟網部落格給的是舊網域 network.affiliates.one/affiliates/offers/3256，該網域對任何路徑都 301 到 pub.affiliates.one 根目錄，路徑整段丟失，只會看到後台首頁。② 換成 pub.affiliates.one/zh-TW/affiliates/offers/3256 之後回 401。未過審的廠商不能用網址直接開 offer 頁。結論：直達網址只有過審後才有用，要申請一律走後台廠商列表搜尋，跟 KKday 當初同一個流程。",
-   "_offer編號未經確認": "3256 抄自聯盟網部落格，那篇沒有日期。後台是 SPA，亂編的 offers/99999999 也回 200，所以從站外無法驗證這個編號還有效或就是易遊網。登入後若不是易遊網，改在廠商列表搜「易遊網」或「ezTravel」；搜不到則可能已退出聯盟網，屆時把 network／apply／費率欄位清掉，版位維持非分潤連結即可。切位票的編輯理由本來就獨立成立。"
-  },
-  "activity2": {
-   "brand": "KKday",
-   "icon": "🎫",
-   "label": "在 KKday 找{q}行程",
-   "rate": "全品項 3.5%（行程導覽／美食生鮮／活動展覽／體驗活動，四類同價）",
-   "cookie": "30 天",
-   "why": "台灣最大的在地行程平台，日本商品數與知名度都在 Trip.com 之上。Trip.com 的行程分潤 4%、門票僅 1.5%、火車票 2%，這幾項是站上最弱的費率，KKday 是唯一有機會打贏的替代品。但要換要先看後台實際費率。",
-   "network": "聯盟網 Affiliates.One",
-   "template": "https://affclkr.online/track/clicks/2652/c627c2bc9b0424dcf183ec23d62e9e452c674fc963b2a0f90566b70771401de3c021e7e5593c99616c?subid_1={s1}&subid_2={s2}&t={t}",
-   "fallback": "https://www.kkday.com/zh-tw/product/productlist?keyword={q}",
-   "_status": "2026-09-24 聯盟網過審並取得推廣連結。",
-   "_encoding": "{t} 是目標網址『雙重』URL-encode（空白先變 + 再編成 %2B）。與 Klook 的 k_site 只編一層不同，編錯會整條掉回 KKday 首頁。",
-   "_verified": {
-    "日期": "2026-09-24",
-    "方法": "curl 追 301 Location，測原始連結與自組連結各一條",
-    "自組連結可用": "是，t 參數沒有簽章驗證，任何 kkday.com 網址都能包，可 template 化",
-    "中文關鍵字": "正常，東京 一日遊 正確編成 %E6%9D%B1%E4%BA%AC%20%E4%B8%80%E6%97%A5%E9%81%8A",
-    "轉址後 KKday 收到": "cid=2318、ud1=109820（我們的發布者 ID）、ud2=<每次點擊不同的雜湊>、vtm_channel=affiliatescomtw",
-    "subid 去向": "subid_1/subid_2 不會傳進 KKday 網址，只留在聯盟網那一層。要確認後台報表有沒有依 subid 拆分，才算真的能分頁追蹤。"
-   },
-   "_風險_轉址網域": "affclkr.online。不是品牌網域，.online + affclkr（affiliate clicker）正是廣告攔截清單會鎖的命名特徵。若被 uBlock／AdGuard／Pi-hole 擋掉，點擊會靜默消失而不是報錯。聯盟網後台的「備用轉跳網址」可能就是為此而設，待查。",
-   "_fallback版位是死的": "2026-09-24 實測：整站生成後 kkday.com 出現 0 次、agoda.com 0 次。activity／transport 的 KKday fallback 與 hotel 的 Agoda fallback 從來沒被觸發過，因為 Trip.com 的 template 每次都成功、所有城市也都有 Trip.com 城市 ID。所以『接上分潤就有收入』是錯的，KKday 要賺錢必須主動配置版位，不能靠 fallback。",
-   "rate_table": {
-    "_source": "聯盟網 Affiliates.One › KKday 電商頁，查證於 2026-09-24",
-    "行程導覽": "3.5%",
-    "美食生鮮": "3.5%",
-    "活動展覽": "3.5%",
-    "體驗活動": "3.5%",
-    "交通票_JR_Pass": "1%：JR Pass for Whole Japan、Tokyo Metro Ticket、北海道巴士票、JR 東日本各區域 Pass 全都在特殊商品清單上。輸給 Trip.com 火車票 2%。",
-    "成效歸屬": "最終點擊",
-    "成效確認": "90 天",
-    "獎金確認": "90 天",
-    "註冊／訂單時間": "5 分鐘內"
-   },
-   "_成效標準": "『訂單成立，消費者消費並使用後，即為一筆有效訂單』。不是訂了就算，要等旅客實際去玩完。加上 90 天成效確認，一筆二月出發的行程，分潤可能要到五月才確認。Trip.com 那邊的認列條件我還沒查，不能直接說誰比較寬。",
-   "_可用工具": "Ad Link 轉址、自訂連結、促銷優惠（促銷優惠可能可以接到 /japan-coupon/）",
-   "_對照_TripCom": {
-    "行程／當地玩樂": "Trip.com 4% ＞ KKday 3.5% → 維持 Trip.com",
-    "門票與演出": "Trip.com 1.5% ＜ KKday 3.5% → 換 KKday。teamLab／USJ Studio Pass／東京迪士尼／晴空塔／SHIBUYA SKY／富士急都不在特殊清單上，確認維持 3.5%。",
-    "火車票": "Trip.com 2% ＞ KKday 1%（JR Pass 全國版在特殊清單上）→ 維持 Trip.com",
-    "Cookie": "Trip.com 網站 30 天、KKday 30 天，打平"
-   },
-   "_特殊商品清單": "已取得並存成 kkday-1pct.json（14,637 筆 prod_mid）。清單上的商品分潤砍到 1%，清單外才是 3.5%。放任何 KKday 指定商品連結前，先用 prod_mid 驗過。",
-   "_關鍵字搜尋頁的問題": "我們現在的連結指向 productlist?keyword=，落地是一個混雜 3.5% 與 1% 的清單，使用者買到哪一種我們控制不了。要真的拿到 3.5%，得連到指定商品頁並逐一對 kkday-1pct.json 驗過。"
-  },
-  "hotel2": {
-   "brand": "Agoda",
-   "icon": "🏨",
-   "label": "找{q}的住宿",
-   "rate": "分級：每月 50 筆以下 4%、50–299 筆 4.5%、300 筆以上 5%（官方頁，查證 2026-10-15）",
-   "cookie": "待後台確認",
-   "why": "Trip.com 的飯店列表要數字城市 ID，只有六個城市拿得到，其餘 27 個城市頁等於沒有住宿版位。Agoda 走關鍵字就能帶城市，而且站上實測東京住宿用的就是這個價格帶的平台。",
-   "apply": "https://partners.agoda.com/",
-   "apply_note": "自家聯盟，不走聯盟網。必須先有網站（本站符合），不限國家，官方寫明旅遊相關且針對飯店的網站通過機會好。付款為銀行匯款，最低門檻 US$200，未達累積到下月；以旅客「退房」後的次月計算，15 日前付款。查證 2026-10-15。",
-   "_status": "2026-10-15 已送出申請，走手動驗證（後台沒有自動驗證選項），官方寫約七個工作天。核准後到後台「行銷工具 → 文字連結」取連結格式，填進 template，再把 _ad_kind_for 裡沒有 Trip.com 城市 ID 的城市從 transfer 改回 hotel（走 hotel2）。在那之前那 27 頁配的是機場接送。",
-   "template": "TODO_核准後貼上_Agoda_分潤連結",
-   "fallback": "https://www.agoda.com/zh-tw/search?city={q}",
-   "_預計回覆": "約 2026-10-26（2026-10-15 送出，七個工作天，未計台灣與泰國的假日）"
-  }
- },
- "_已排除及原因": {
-  "Aviasales": "1.1-1.5%。俄系比價站，台灣使用者不認識，有被誤認為詐騙的風險",
-  "Yesim": "18% 分潤很高，但台灣沒有知名度、無繁中，實際轉換率會極低。（註：此條的「無繁中」尚未複查，Saily 那條已證實會過期，這條要另外查過才算數。）",
-  "Saily": "15%。2026-09-29 複查：原本記的排除理由是「台灣沒知名度、無繁中」，「無繁中」已經過期，Saily 現在有完整繁體中文站（saily.com/zh-tw/，商品頁與條款都翻了）。維持排除的理由改成兩條：一是台灣知名度仍低；二是立場衝突，本站已依官方文件判定它是漫遊 profile（見 esim.json 的 profile_guide.verified_cases），一邊寫「不是原生」一邊掛它的分潤連結，說服力會歸零。",
-  "GetYourGuide": "8%，歐美平台，台灣人訂日本行程不會用",
-  "DiscoverCars": "23-54% 分潤最高，但台灣人租日本車不會用這個平台",
-  "Omio": "6%，歐洲交通平台，不是台灣人買 JR Pass 的管道",
-  "Vio.com": "40-64%，台灣無知名度",
-  "Booking.com": "訂房可考慮，但機票分潤是 €1.5 固定且 cookie 只有 One session"
- },
- "widgets": {
-  "_說明": "Klook 行程 widget（Travelpayouts 產生）。{city_id} 由 gen.py 依頁面自動帶入。",
-  "_sub_id": "若要分頁面追蹤成效，請在 Travelpayouts widget 設定頁填 SUB ID 後重新產生，把新網址貼回這裡（勿自行猜測參數格式，猜錯會導致完全無法追蹤）",
-  "klook_tours": "<script async src=\"https://tpembd.com/content?currency=TWD&trs=572168&shmarker=775639&locale=zh-TW&city_id={city_id}&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497\" charset=\"utf-8\"></script>",
-  "_費率": {
-   "來源": "Travelpayouts 合作夥伴信，2026-10-17 收到",
-   "Tours & Sightseeing": "12%，2026/10/1 至 10/31",
-   "Activities & Experiences": "12%，2026/10/1 至 10/31",
-   "Hotels": "8%，至 2026/12/31",
-   "_這個_widget_屬於哪一類": "klook_tours 帶 category=4，屬 Tours & Sightseeing，所以目前是 12%，11/1 起掉回原費率。",
-   "_原費率": "未查到。信裡只說 10/1 前的訂單按「previous rate」計算，沒有寫原費率是多少，要到 Travelpayouts 後台看。",
-   "_結算規則": "信中明寫：10/1 之前成立的訂單按舊費率計算，即使狀態仍是 Pending。所以 10 月的 12% 只認訂單成立日，不認入帳日。"
-  }
- },
- "_兩套_Klook_不要搞混": "站上同時存在兩個 Klook 方案，費率各自計算，看到任何 Klook 費率公告前要先分清楚是哪一套。一、Klook 官方直接方案（partners.esim 的 template，affiliate.klook.com/redirect?aid=136311）：廣告框的 eSIM 走這條，費率至今未確認，rate 欄仍寫「待後台確認」。二、Travelpayouts 的 Klook 方案（widgets.klook_tours，campaign_id=137、shmarker=775639）：城市頁與航線頁的行程 widget 走這條，適用 Travelpayouts 公告的費率。Travelpayouts 發的費率信只適用第二套，不要拿去套用在 eSIM 廣告框上。"
+  "_兩套_Klook_不要搞混": "站上同時存在兩個 Klook 方案，費率各自計算，看到任何 Klook 費率公告前要先分清楚是哪一套。一、Klook 官方直接方案（partners.esim 的 template，affiliate.klook.com/redirect?aid=136311）：廣告框的 eSIM 走這條，費率至今未確認，rate 欄仍寫「待後台確認」。二、Travelpayouts 的 Klook 方案（widgets.klook_tours，campaign_id=137、shmarker=775639）：城市頁與航線頁的行程 widget 走這條，適用 Travelpayouts 公告的費率。Travelpayouts 發的費率信只適用第二套，不要拿去套用在 eSIM 廣告框上。"
 }

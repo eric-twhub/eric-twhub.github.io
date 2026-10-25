@@ -15621,9 +15621,64 @@ if os.path.exists('cards.json'):
       # 所以斷點抓在「一欄還有 500px 以上」的地方，不是抓在手機寬度。
       '@media(max-width:900px){.lbk{grid-template-columns:repeat(2,1fr)}}'
       '@media(max-width:560px){.lbk{grid-template-columns:1fr}}'
+      # 格線裡的廣告格。做成和標籤一樣的 540:810，整排才不會高低不齊。
+      '.lbad{display:flex;flex-direction:column;aspect-ratio:540/810;'
+      'border:1px solid var(--line);border-radius:8px;background:var(--card);'
+      'padding:16px 14px;overflow:hidden}'
+      '.lbad .tg{align-self:flex-start;font-size:.66rem;font-weight:700;'
+      'background:var(--line);color:var(--dim);border-radius:4px;padding:1px 7px}'
+      # 廣告標籤釘在上緣，其餘內容在剩下的空間置中：
+      # 靠 margin-top:auto 把商品推到底部，中間會空掉一大塊。
+      '.lbad .ti{display:block;font-size:.92rem;font-weight:700;line-height:1.45;'
+      'margin-top:auto}'
+      '.lbad .tx{display:block;font-size:.76rem;color:var(--dim);line-height:1.6;'
+      'margin-top:5px}'
+      '.lbad .pr{display:block;margin-top:14px;text-decoration:none;'
+      'border-top:1px solid var(--line);padding-top:11px}'
+      '.lbad .pr i{display:block;font-style:normal;font-weight:700;font-size:.85rem;'
+      'line-height:1.45;color:var(--fg)}'
+      '.lbad .pr s,.lbad .pr u{display:block;text-decoration:none;font-size:.74rem;'
+      'color:var(--dim);line-height:1.55;margin-top:4px}'
+      '.lbad .mo{display:block;font-size:.76rem;margin-top:9px;margin-bottom:auto}'
       '</style>')
 
-    _lb_grid = '<div class="lbk">' + ''.join(
+    # 格線裡每四張標籤插一格廣告。四組商品輪著放，六格不會重複同一支。
+    _LB_ADKINDS = ['esim', 'transport', 'activity2', 'transfer']
+
+    def _lb_adcell(i):
+        kind = _LB_ADKINDS[i % len(_LB_ADKINDS)]
+        g = (_ADS.get('groups') or {}).get(kind) or {}
+        items = g.get('items') or []
+        if not items:
+            return ''
+        it = items[(i // len(_LB_ADKINDS)) % len(items)]
+        icon = _AD_KIND[kind][0]
+        kk = g.get('brand') == 'KKday'
+        href = (kkday(it['url'], 'adbox_grid_prod') if kk
+                else klook(it['url'], 'adbox_grid_prod'))
+        more = (kkday(g['search'], 'adbox_grid') if kk
+                else klook(g['search'], 'adbox_grid')) if g.get('search') else ''
+        meta = '　·　'.join(
+            x for x in [('★ ' + it['star']) if it.get('star') else '',
+                        (it['booked'] + ' 人參加過') if it.get('booked') else ''] if x)
+        return (
+            '<figure><div class="lbad">'
+            '<span class="tg">廣告</span>'
+            f'<b class="ti">{icon} {html.escape(g.get("title") or "")}</b>'
+            f'<s class="tx">{html.escape(g.get("sub") or "")}</s>'
+            f'<a class="pr" href="{html.escape(href)}" target="_blank" '
+            f'rel="nofollow noopener sponsored"><i>{html.escape(it["name"])}</i>'
+            + (f'<s>{html.escape(it["note"])}</s>' if it.get('note') else '')
+            + (f'<u>{html.escape(meta)}</u>' if meta else '')
+            + '</a>'
+            + (f'<a class="mo" href="{html.escape(more)}" target="_blank" '
+               f'rel="nofollow noopener sponsored">看 {html.escape(g["brand"])} '
+               f'上全部的{html.escape(g.get("title") or "")} →</a>' if more else '')
+            + '</div><figcaption><b>廣告</b>'
+              '<s>合作平台的推廣連結，點了會離開本站。'
+              '本站可能獲得分潤，不影響你的價格。</s></figcaption></figure>')
+
+    _lb_cells = [
         f'<figure><a class="slip">'
         f'<img data-lb="{i}" alt="{html.escape(r["n"])}'
         + (f'（{html.escape(r["who"])}）' if r.get('who') else '')
@@ -15643,7 +15698,13 @@ if os.path.exists('cards.json'):
           f'<a href="{html.escape(r["src"])}" target="_blank" '
           f'rel="nofollow noopener">{html.escape(r["src_name"])}</a>'
           f'公告為準。</u></figcaption></figure>'
-        for i, r in enumerate(_LBR)) + '</div>'
+        for i, r in enumerate(_LBR)]
+    _lb_out = []
+    for i, cell in enumerate(_lb_cells):
+        _lb_out.append(cell)
+        if (i + 1) % 4 == 0 and i + 1 < len(_lb_cells):
+            _lb_out.append(_lb_adcell(i // 4))
+    _lb_grid = '<div class="lbk">' + ''.join(_lb_out) + '</div>'
 
     _lb_js = ('<script>window.LABELS=' + json.dumps(_LBR, ensure_ascii=False)
               + ';window.SITE=' + json.dumps(SITE.split('//')[-1])
