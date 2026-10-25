@@ -1,23 +1,23 @@
 [
  {
   "slug": "2026-10-25-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,997 來回含稅｜台灣虎航 11/18 出發",
+  "title": "台北飛沖繩 NT$3,397 來回含稅｜台灣虎航 11/10 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 2997,
+  "price": 3397,
   "air": "台灣虎航",
-  "dep": "2026-11-18",
-  "ret": "2026-11-25",
+  "dep": "2026-11-10",
+  "ret": "2026-11-14",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,680（9 天有紀錄），這張低 36%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,731（9 天有紀錄），這張低 28%"
   ],
   "med": 11194,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-10&inbound=OKA-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
@@ -26,7 +26,7 @@
    "days": 10
   },
   "mbase": {
-   "avg": 4680,
+   "avg": 4731,
    "days": 9,
    "month": 11
   },
@@ -73,44 +73,44 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,819（23 天有紀錄），這張低 49%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,840（24 天有紀錄），這張低 49%"
   ],
-  "med": 11244,
+  "med": 11207,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 7910,
    "hi": 11688,
-   "days": 30
+   "days": 31
   },
   "mbase": {
-   "avg": 9819,
-   "days": 23,
+   "avg": 9840,
+   "days": 24,
    "month": 11
   },
   "rank": 1,
-  "n": 87
+  "n": 85
  },
  {
   "slug": "2026-10-25-transfer-tokyo-sendai",
-  "title": "飛東京轉乘去仙台，比直飛省 NT$5,350",
+  "title": "飛東京轉乘去仙台，比直飛省 NT$5,356",
   "o": "台灣",
   "c": "仙台",
   "via": "東京",
-  "price": 12399,
+  "price": 12393,
   "air": "飛東京再轉乘",
   "fl_price": 7593,
   "fl_rt": true,
   "fl_to": "東京",
-  "tr_twd": 2403,
+  "tr_twd": 2400,
   "tr_mode": "東北新幹線",
   "dep": "2026-11-03",
   "ret": "",
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$5,350"
+   "比直飛省 NT$5,356"
   ],
   "med": 17749,
   "url": "https://www.aviasales.com/search/TPE0311NRT07111?t=GK17936886001793703300000185TPENRT17940903001794101400000245NRTTPE_58bd29e96a7b87d6e5383659bbb9a834_18718&search_date=24102026&expected_price_uuid=01a16c19-c50a-8030-a9ca-4d304c42d9ee&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=mB0mjRW6qNN-S6anp2ddXg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7593&marker=775639",
@@ -119,23 +119,23 @@
  },
  {
   "slug": "2026-10-25-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$5,604",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$5,608",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
-  "price": 10885,
+  "price": 10881,
   "air": "飛大阪再轉乘",
   "fl_price": 6581,
   "fl_rt": true,
   "fl_to": "大阪",
-  "tr_twd": 2152,
+  "tr_twd": 2150,
   "tr_mode": "山陽新幹線",
   "dep": "2026-11-05",
   "ret": "",
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$5,604"
+   "比直飛省 NT$5,608"
   ],
   "med": 16489,
   "url": "https://www.aviasales.com/search/TPE0511KIX10111?t=GK17938581001793870400000145TPEKIX17943522001794360600000200KIXTPE_b1d93c2b0cc9d2ab7a1ad11b5e52e676_16384&search_date=23102026&expected_price_uuid=01a167b6-7e14-8040-208d-445cea46f5a5&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=FNl3Vy9niYZ05hzV66BMBg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6581&marker=775639",
@@ -144,23 +144,23 @@
  },
  {
   "slug": "2026-10-25-transfer-tokyo-fukushima",
-  "title": "飛東京轉乘去福島，比直飛省 NT$7,293",
+  "title": "飛東京轉乘去福島，比直飛省 NT$7,297",
   "o": "台灣",
   "c": "福島",
   "via": "東京",
-  "price": 11387,
+  "price": 11383,
   "air": "飛東京再轉乘",
   "fl_price": 7593,
   "fl_rt": true,
   "fl_to": "東京",
-  "tr_twd": 1897,
+  "tr_twd": 1895,
   "tr_mode": "東北新幹線",
   "dep": "2026-11-03",
   "ret": "",
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$7,293"
+   "比直飛省 NT$7,297"
   ],
   "med": 18680,
   "url": "https://www.aviasales.com/search/TPE0311NRT07111?t=GK17936886001793703300000185TPENRT17940903001794101400000245NRTTPE_58bd29e96a7b87d6e5383659bbb9a834_18718&search_date=24102026&expected_price_uuid=01a16c19-c50a-8030-a9ca-4d304c42d9ee&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=mB0mjRW6qNN-S6anp2ddXg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7593&marker=775639",
