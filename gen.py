@@ -15586,7 +15586,9 @@ if os.path.exists('cards.json'):
                    # 不要拿別的方案的日期來充數。
                    'end': L['end'] if L.get('end')
                    else L.get('endPrefix', '到 ') + _lb_end(c),
-                   'slug': c['slug']}
+                   'slug': c['slug'],
+                   # 圖上放不下連結，所以每張圖底下都掛這張卡的官方活動頁
+                   'src': c['src'], 'src_name': c['src_name']}
             if L.get('who'):
                 rec['who'] = L['who']
             if L.get('topNote'):
@@ -15635,7 +15637,11 @@ if os.path.exists('cards.json'):
            + '</u>' if r.get('pay') else '')
         + f'<u>要做：{html.escape(r["act"])}</u>'
           f'<u>注意：{html.escape(r["warn"])}</u>'
-          f'<u>{html.escape(r["end"])}</u></figcaption></figure>'
+          f'<u>{html.escape(r["end"])}</u>'
+          f'<u>條款以<a href="{html.escape(r["src"])}" target="_blank" '
+          f'rel="nofollow noopener">{html.escape(r["src_name"])}</a>公告為準'
+          f'　·　<a href="{U("/japan-credit-card/" + r["slug"] + "/")}">'
+          f'本站的詳細介紹</a></u></figcaption></figure>'
         for i, r in enumerate(_LBR)) + '</div>'
 
     _lb_js = ('<script>window.LABELS=' + json.dumps(_LBR, ensure_ascii=False)
@@ -15666,7 +15672,8 @@ if os.path.exists('cards.json'):
       + f'<h2>{len(_LBR)} 張標籤</h2>'
       + f'<p class="lede">先找到你那張卡，標題底下有身分的那幾張是同一張卡的不同版本，'
         f'貼之前先對那一行。圖是在你的瀏覽器上畫出來的，黑白、沒有背景色，'
-        f'用熱感應標籤機印最省墨。每張圖底下的文字和圖上的一樣。</p>'
+        f'用熱感應標籤機印最省墨。每張圖底下的文字和圖上的一樣，最後一行是'
+        f'那張卡的官方活動頁，銀行的公告和這裡寫的不一樣時以官方為準。</p>'
       + _lb_grid
       + '<h2>怎麼用</h2>'
       + '<div class="tldr"><ul>'
