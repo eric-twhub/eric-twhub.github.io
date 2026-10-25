@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-25 10:39",
+ "generated": "2026-10-25 11:05",
  "origin": "TPE",
  "dests": [
   "TYO",
@@ -18,8 +18,8 @@
  "min_n": 8,
  "months": {
   "2026-10": {
-   "n": 6,
-   "median": 7114,
+   "n": 5,
+   "median": 6851,
    "low": 5401,
    "enough": false
   },
