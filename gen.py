@@ -15591,7 +15591,6 @@ if os.path.exists('cards.json'):
         return out
 
     _LBR = _lb_records()
-    _LBFOOT = f'結帳選日圓　國外手續費約 {CD["fx_fee"]["typical"]:g}%'
     write('japan-card-labels/label.js', open('card-label.js', encoding='utf-8').read())
 
     _lb_css = (
@@ -15627,7 +15626,6 @@ if os.path.exists('cards.json'):
         for i, r in enumerate(_LBR)) + '</div>'
 
     _lb_js = ('<script>window.LABELS=' + json.dumps(_LBR, ensure_ascii=False)
-              + ';window.FOOTLINE=' + json.dumps(_LBFOOT, ensure_ascii=False)
               + ';window.CHECKED=' + json.dumps(CD['checked'].replace('-', '/'))
               + ';window.SITE=' + json.dumps(SITE.split('//')[-1])
               + ';</script><script src="' + U('/japan-card-labels/label.js')
@@ -15662,6 +15660,14 @@ if os.path.exists('cards.json'):
         '<li><b>手機長按圖片存到相簿，</b>再用標籤機或相印機的 App 列印。'
         '電腦上用右鍵另存圖片。一張做成 45.7 × 68.6 mm 的滿版，列印時不要再縮放。</li>'
         '<li><b>上下各留了約 2mm 的白邊，</b>剪的時候貼著白邊剪，剪歪一點也不會切到字。</li>'
+        f'<li><b>這兩件事每張卡都一樣，所以沒印在標籤上：</b>'
+        f'結帳一律選日圓，選台幣是 DCC，匯率通常差 3–5%，而且多數銀行的海外加碼'
+        f'要求以外幣結帳；另外不管刷哪張，國外交易手續費約 '
+        f'{CD["fx_fee"]["typical"]:g}%（美國運通約 {CD["fx_fee"]["amex"]:g}%）照收，'
+        f'上面的回饋率沒有扣掉它。</li>'
+        f'<li><b>標籤右下角的「查於 {_CDCHK.replace("-", "/")}」是條款的查證日，</b>'
+        f'不是活動到期日。左下角那個才是活動到期日。'
+        f'銀行隨時會改，過了幾個月就回來看這一頁有沒有換新的。</li>'
         '</ul></div>'
       + f'<h2>{len(_LBR)} 張標籤</h2>'
       + f'<p class="lede">圖是在你的瀏覽器上畫出來的，黑白、沒有背景色，'
