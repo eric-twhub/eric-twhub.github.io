@@ -887,9 +887,39 @@ def widget_block(kind,title,note,**kw):
     return (f'<h2>{title}</h2><p class="lede">{note}</p>'
             f'<div class="widget">{code}</div>')
 
-def plabel(kind,city_name=''):
+# 網域換算平台名。從 fallback 網址判斷，不要再寫死一份平台名：
+# 2026-10-25 發現 12 個城市的住宿按鈕寫「到 Trip.com」卻連去 Agoda。
+_BRAND_BY_HOST = {'agoda.com': 'Agoda', 'booking.com': 'Booking',
+                  'trip.com': 'Trip.com', 'klook.com': 'Klook',
+                  'kkday.com': 'KKday'}
+
+
+def _host_brand(url):
+    h = urllib.parse.urlparse(url or '').netloc.lower()
+    for dom, b in _BRAND_BY_HOST.items():
+        if h == dom or h.endswith('.' + dom):
+            return b
+    return ''
+
+
+def pbrand(kind, city=''):
+    """這條連結實際會送去哪個平台。
+
+    Trip.com 的飯店列表要數字城市 ID，沒有 ID 的城市在 plink 裡會退回
+    fallback 網址（Agoda 的關鍵字搜尋）。直接拿 partners.json 的 brand
+    當文案，那些城市就會出現「到 Trip.com 找○○住宿」卻連去 Agoda 的按鈕。
+    """
+    p = P.get(kind) or {}
+    t = p.get('template') or ''
+    if '{cid}' in t and not (p.get('city_ids') or {}).get(city):
+        return _host_brand(p.get('fallback')) or p.get('brand', '')
+    return p.get('brand', '')
+
+
+def plabel(kind,city_name='',city_key=None):
     p=P[kind]
-    return f"{p['icon']} 到 {p['brand']} {p['label'].replace('{q}',city_name)}"
+    b=pbrand(kind, city_key if city_key is not None else city_name)
+    return f"{p['icon']} 到 {b} {p['label'].replace('{q}',city_name)}"
 
 # 找到便宜機票之後要給的刷卡建議。特價頁在 CD 載入之前就產生了，所以這兩份
 # 都在這裡先讀：FC 是逐通路的回饋率，_FXF 只取國外交易手續費那個數字。
@@ -2110,7 +2140,8 @@ def partner_links(city_name, hotel_city, slug=None):
     keys = ['hotel', 'esim']
     ls = ''.join(
         f'<a class="plink" href="{html.escape(plink(k,hotel_city))}" target="_blank" '
-        f'rel="nofollow noopener sponsored">{plabel(k,city_name)}</a>' for k in keys)
+        f'rel="nofollow noopener sponsored">{plabel(k,city_name,hotel_city)}</a>'
+        for k in keys)
     return (f'<div class="plinks">{ls}</div>'
             '<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>')
 
@@ -2802,7 +2833,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
     if fs:
         # 沒有城市 ID 的城市會退回 Agoda，文案就不能寫 Trip.com
         _has_cid = hotelcity in ((P['hotel'].get('city_ids') or {}))
-        _hb = P['hotel']['brand'] if _has_cid else 'Agoda'
+        _hb = pbrand('hotel', hotelcity)
         # 沒有房價資料可放（Hotellook API 已下線），但可以把日期帶過去：
         # 落地就是他正在看的那幾晚，比一個靜態的「最低房價」更貼近實際要訂的東西
         _hr = br or bo
