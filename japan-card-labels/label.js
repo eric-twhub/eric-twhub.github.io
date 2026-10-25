@@ -3,7 +3,9 @@
    所以字級是用毫米回推的，不是目測的。
    資料與頁尾那兩行由頁面上的 LABELS／FOOTLINE／CHECKED／SITE 提供，
    都是 gen.py 從 cards.json 現算出來的，這支檔案裡不寫任何數字。*/
-const W=540,H=810,PAD=20;
+// 左右也要留裁切空間。PAD 只有 20px（1.7mm）時，剪歪一點或套進卡套，
+// 最左邊那個字（「到」、要做那幾個標籤）就被吃掉了。
+const W=540,H=810,PAD=30;
 // 上下留白：剪刀有歪掉的空間，不會切到字
 const MT=26,MB=26;
 const FF='"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
