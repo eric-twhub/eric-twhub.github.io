@@ -15626,7 +15626,6 @@ if os.path.exists('cards.json'):
         for i, r in enumerate(_LBR)) + '</div>'
 
     _lb_js = ('<script>window.LABELS=' + json.dumps(_LBR, ensure_ascii=False)
-              + ';window.CHECKED=' + json.dumps(CD['checked'].replace('-', '/'))
               + ';window.SITE=' + json.dumps(SITE.split('//')[-1])
               + ';</script><script src="' + U('/japan-card-labels/label.js')
               + '" defer></script>')
@@ -15651,6 +15650,11 @@ if os.path.exists('cards.json'):
         f'<div class="tsub">標籤上的百分比與「刷到多少就滿」都是從'
         f'<a href="{U("/japan-credit-card/")}">比較表</a>那份資料現算的，'
         f'兩邊不會對不起來。</div></div>'
+      + f'<h2>{len(_LBR)} 張標籤</h2>'
+      + f'<p class="lede">先找到你那張卡，標題底下有身分的那幾張是同一張卡的不同版本，'
+        f'貼之前先對那一行。圖是在你的瀏覽器上畫出來的，黑白、沒有背景色，'
+        f'用熱感應標籤機印最省墨。每張圖底下的文字和圖上的一樣。</p>'
+      + _lb_grid
       + '<h2>怎麼用</h2>'
       + '<div class="tldr"><ul>'
         '<li><b>先對身分那一行。</b>標題底下有身分的那幾張是同一張卡的不同版本，'
@@ -15665,14 +15669,10 @@ if os.path.exists('cards.json'):
         f'要求以外幣結帳；另外不管刷哪張，國外交易手續費約 '
         f'{CD["fx_fee"]["typical"]:g}%（美國運通約 {CD["fx_fee"]["amex"]:g}%）照收，'
         f'上面的回饋率沒有扣掉它。</li>'
-        f'<li><b>標籤右下角的「查於 {_CDCHK.replace("-", "/")}」是條款的查證日，</b>'
-        f'不是活動到期日。左下角那個才是活動到期日。'
-        f'銀行隨時會改，過了幾個月就回來看這一頁有沒有換新的。</li>'
+        f'<li><b>標籤上只有活動到期日，沒有查證日。</b>'
+        f'這一批的條款查證於 {_CDCHK}，銀行隨時會改，'
+        f'過了幾個月就回來看這一頁有沒有換新的。</li>'
         '</ul></div>'
-      + f'<h2>{len(_LBR)} 張標籤</h2>'
-      + f'<p class="lede">圖是在你的瀏覽器上畫出來的，黑白、沒有背景色，'
-        f'用熱感應標籤機印最省墨。下面每張圖底下的文字和圖上的一樣。</p>'
-      + _lb_grid
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張卡比較</b>'
         f'<s>回饋、上限與實拿試算</s></a>'

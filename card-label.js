@@ -169,16 +169,11 @@ function run(ctx,c,k,draw){
   if(draw){
     const fy=H-MB-r(S.footH);
     ctx.fillStyle="#000";ctx.fillRect(PAD,fy,CW,Math.max(1,r(2)));
-    // 「結帳選日圓、手續費 1.5%」每張都一樣，寫在標籤上只是佔掉字級，
-    // 那句話放在網站的使用說明裡。頁尾留活動到期日與查證日就夠。
+    // 頁尾只留活動到期日。「結帳選日圓、手續費 1.5%」每張都一樣，
+    // 查證日對拿著卡的人也沒有動作可做，兩者都放在網站的使用說明裡。
     ctx.font=f(700,r(S.foot));
     ctx.fillText(c.end,PAD,fy+r(34));
-    const endW=ctx.measureText(c.end).width;
-    const chk="查於 "+CHECKED;
-    ctx.textAlign="right";
-    ctx.font=f(400,fitFont(ctx,chk,CW-endW-r(16),400,r(S.footDate)));
-    ctx.fillText(chk,W-PAD,fy+r(34));
-    ctx.textAlign="left";
+
   }
   return y;
 }
