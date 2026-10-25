@@ -15638,10 +15638,11 @@ if os.path.exists('cards.json'):
         + f'<u>要做：{html.escape(r["act"])}</u>'
           f'<u>注意：{html.escape(r["warn"])}</u>'
           f'<u>{html.escape(r["end"])}</u>'
-          f'<u>條款以<a href="{html.escape(r["src"])}" target="_blank" '
-          f'rel="nofollow noopener">{html.escape(r["src_name"])}</a>公告為準'
-          f'　·　<a href="{U("/japan-credit-card/" + r["slug"] + "/")}">'
-          f'本站的詳細介紹</a></u></figcaption></figure>'
+          f'<u>更多<a href="{U("/japan-credit-card/" + r["slug"] + "/")}">'
+          f'{html.escape(r["n"])}</a>詳細介紹，條款以'
+          f'<a href="{html.escape(r["src"])}" target="_blank" '
+          f'rel="nofollow noopener">{html.escape(r["src_name"])}</a>'
+          f'公告為準。</u></figcaption></figure>'
         for i, r in enumerate(_LBR)) + '</div>'
 
     _lb_js = ('<script>window.LABELS=' + json.dumps(_LBR, ensure_ascii=False)
