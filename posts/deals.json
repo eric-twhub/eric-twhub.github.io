@@ -35,12 +35,12 @@
  },
  {
   "slug": "2026-10-25-kaohsiung-okinawa",
-  "title": "高雄飛沖繩 NT$4,426 來回含稅｜台灣虎航 11/17 出發",
+  "title": "高雄飛沖繩 NT$4,926 來回含稅｜台灣虎航 11/17 出發",
   "o": "高雄",
   "c": "沖繩",
   "_oiata": "KHH",
   "_diata": "OKA",
-  "price": 4426,
+  "price": 4926,
   "air": "台灣虎航",
   "dep": "2026-11-17",
   "ret": "2026-11-20",
@@ -49,7 +49,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 5376,
+  "med": 5626,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -60,23 +60,23 @@
  },
  {
   "slug": "2026-10-25-taichung-okinawa",
-  "title": "台中飛沖繩 NT$5,426 來回含稅｜台灣虎航 11/23 出發",
+  "title": "台中飛沖繩 NT$4,995 來回含稅｜台灣虎航 11/02 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 5426,
+  "price": 4995,
   "air": "台灣虎航",
-  "dep": "2026-11-23",
-  "ret": "2026-11-26",
+  "dep": "2026-11-02",
+  "ret": "2026-11-05",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,681（23 天有紀錄），這張低 44%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,659（23 天有紀錄），這張低 48%"
   ],
   "med": 11244,
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
@@ -85,7 +85,7 @@
    "days": 29
   },
   "mbase": {
-   "avg": 9681,
+   "avg": 9659,
    "days": 23,
    "month": 11
   },
@@ -119,7 +119,7 @@
  },
  {
   "slug": "2026-10-25-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$5,608",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$3,909",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
@@ -135,9 +135,9 @@
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$5,608"
+   "比直飛省 NT$3,909"
   ],
-  "med": 16489,
+  "med": 14790,
   "url": "https://www.aviasales.com/search/TPE0511KIX10111?t=GK17938581001793870400000145TPEKIX17943522001794360600000200KIXTPE_b1d93c2b0cc9d2ab7a1ad11b5e52e676_16384&search_date=23102026&expected_price_uuid=01a167b6-7e14-8040-208d-445cea46f5a5&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=FNl3Vy9niYZ05hzV66BMBg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6581&marker=775639",
   "hotelcity": "廣島",
   "cslug": "hiroshima"
