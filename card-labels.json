@@ -30,7 +30,7 @@
     {
       "slug": "ubot-jiho", "variant": "new",
       "who": "新戶（前 6 個月沒有聯邦卡）",
-      "topNote": "下面四層全中才有",
+      "topNote": "下面 4 項符合",
       "baseNote": "日幣一般消費，無上限",
       "tiers": [
         {"label": "新戶加碼", "name": "新戶加碼"},
@@ -45,7 +45,7 @@
     {
       "slug": "ubot-jiho", "variant": "old", "skip": ["新戶加碼"],
       "who": "既有卡友",
-      "topNote": "下面三層全中才有",
+      "topNote": "下面 3 項符合",
       "baseNote": "日幣一般消費，無上限",
       "tiers": [
         {"label": "11 大人氣通路加碼", "name": "11 大通路",
@@ -141,7 +141,7 @@
     },
     {
       "endPrefix": "到 秋日遊 ", "slug": "cathay-cube", "key": "autumn", "variant": "l3",
-      "who": "秋日遊・Level 3 財富管理貴賓",
+      "who": "秋日遊・貴賓 Level 3",
       "topNote": "指定愛店",
       "baseNote": "秋日遊期間的日本實體消費",
       "tiers": [{"label": "指定人氣愛店加碼", "name": "指定人氣愛店",
@@ -154,7 +154,7 @@
     },
     {
       "endPrefix": "到 秋日遊 ", "slug": "cathay-cube", "key": "autumn", "variant": "l2",
-      "who": "秋日遊・Level 2 有帳戶並登入 App",
+      "who": "秋日遊・帳戶 Level 2",
       "topNote": "指定愛店",
       "baseNote": "秋日遊期間的日本實體消費",
       "tiers": [{"label": "指定人氣愛店加碼", "name": "指定人氣愛店",
@@ -167,7 +167,7 @@
     },
     {
       "endPrefix": "到 秋日遊 ", "slug": "cathay-cube", "key": "autumn", "variant": "l1",
-      "who": "秋日遊・Level 1 只持卡",
+      "who": "秋日遊・持卡 Level 1",
       "topNote": "指定愛店",
       "baseNote": "秋日遊期間的日本實體消費",
       "tiers": [{"label": "指定人氣愛店加碼", "name": "指定人氣愛店",
@@ -181,7 +181,7 @@
     {
       "slug": "cathay-cube", "key": "l3", "variant": "trip-l3",
       "end": "趣旅行期限依國泰世華公告",
-      "who": "趣旅行・Level 3 財富管理貴賓",
+      "who": "趣旅行・貴賓 Level 3",
       "topNote": "12/1 起貼這張",
       "baseNote": "日本實體消費，這個方案看權益等級",
       "tiers": [],
@@ -191,7 +191,7 @@
     {
       "slug": "cathay-cube", "key": "l2", "variant": "trip-l2",
       "end": "趣旅行期限依國泰世華公告",
-      "who": "趣旅行・Level 2 有帳戶並登入 App",
+      "who": "趣旅行・帳戶 Level 2",
       "topNote": "12/1 起貼這張",
       "baseNote": "日本實體消費，這個方案看權益等級",
       "tiers": [],
@@ -201,7 +201,7 @@
     {
       "slug": "cathay-cube", "key": "l1", "variant": "trip-l1",
       "end": "趣旅行期限依國泰世華公告",
-      "who": "趣旅行・Level 1 只持卡",
+      "who": "趣旅行・持卡 Level 1",
       "topNote": "12/1 起貼這張",
       "baseNote": "日本實體消費，這個方案看權益等級",
       "tiers": [],

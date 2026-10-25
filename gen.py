@@ -15547,7 +15547,10 @@ if os.path.exists('cards.json'):
                               lambda m: _lb_g(_lb_lvbase(_c, m.group(1))), s)
 
             rows = []
-            for spec in L.get('tiers', []):
+            # 兩層以上就編號，讀者才數得出「下面 N 項」是哪幾項。
+            # 只編真正的加碼層，後面補的 rows（CUBE 的免稅店、12/1 之後）不編。
+            nmb = len(L.get('tiers', [])) >= 2
+            for ti, spec in enumerate(L.get('tiers', []), 1):
                 t = next((x for x in src if x['label'] == spec['label']), None)
                 if t is None:
                     raise SystemExit(
@@ -15559,6 +15562,8 @@ if os.path.exists('cards.json'):
                     title = tok(spec['t'], hit, t['rate'])
                 else:
                     title = f'＋{t["rate"]:g}% {spec.get("name") or t["label"]}'
+                if nmb:
+                    title = f'{ti}. {title}'
                 if spec.get('d'):
                     detail = tok(spec['d'], hit, t['rate'])
                 else:
@@ -15622,7 +15627,7 @@ if os.path.exists('cards.json'):
         + f'<s>日本最高 {r["top"]}　·　{html.escape(r["base"])}</s>'
         + ''.join(f'<u>{html.escape(t)}：{html.escape(d)}</u>' for t, d in r['tiers'])
         + f'<u>要做：{html.escape(r["act"])}</u>'
-          f'<u>小心：{html.escape(r["warn"])}</u>'
+          f'<u>注意：{html.escape(r["warn"])}</u>'
           f'<u>{html.escape(r["end"])}</u></figcaption></figure>'
         for i, r in enumerate(_LBR)) + '</div>'
 
@@ -15659,7 +15664,9 @@ if os.path.exists('cards.json'):
       + '<h2>怎麼用</h2>'
       + '<div class="tldr"><ul>'
         '<li><b>先對身分那一行。</b>標題底下有身分的那幾張是同一張卡的不同版本，'
-        '新戶和舊戶、大戶和大大拿到的數字差很多，貼錯就白貼。</li>'
+        '新戶和舊戶、大戶和大大拿到的數字差很多，貼錯就白貼。'
+        '國泰 CUBE 的 Level 1／2／3 是權益等級，分別是只持卡、有臺幣帳戶並登入 App、'
+        '財富管理貴賓，在 CUBE App 裡看得到。</li>'
         '<li><b>「刷到多少就滿」是台幣帳單金額。</b>用官方的回饋上限除以加碼％算的，'
         '小數往下取整，照這個數字刷不會超過上限。超過的部分只剩基本回饋。</li>'
         '<li><b>手機長按圖片存到相簿，</b>再用標籤機或相印機的 App 列印。'
