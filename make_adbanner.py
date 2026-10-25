@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-"""廣告版位的圖片橫幅（1440×400，顯示時寬度 100%）。
+"""廣告版位的圖片（兩種尺寸）。
+
+橫幅 banner-<kind>.jpg：1440×400，給整頁寬的廣告區塊用。
+卡片 card-<kind>.jpg：540×360，給 /japan-card-labels/ 標籤格線裡那種
+直式格子用。橫幅的 3.6:1 塞進 0.667 的格子會變成一條細線，所以另做一組。
 
 為什麼自己做而不是用聯盟後台的素材：後台的 banner 尺寸固定、配色是對方的，
 擺進來像外掛的東西。這組用站上的色票與字級做，橘色主色與站上的 --acc 同一個。
@@ -16,6 +20,7 @@ import os, sys, json, subprocess, tempfile, shutil
 import html as htm
 
 W, H = 1440, 400
+CW, CH = 540, 360          # 直式格子上半部的圖
 OUT = 'ads'
 E = htm.escape
 
@@ -56,6 +61,39 @@ body{width:1440px;height:400px;overflow:hidden;
 """
 
 
+# 直式格子裡的圖。寬度只有橫幅的三分之一，所以圖示與標題改成上下疊，
+# 而且不放「到 X 看」的按鈕：那一行在 HTML 裡是真的連結，印在圖上會變成
+# 兩個看起來都能點、實際只有一個能點的東西。
+CARD_CSS = """
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:540px;height:360px;overflow:hidden;
+ font-family:"Noto Sans CJK TC","Noto Sans TC","PingFang TC","Hiragino Sans",sans-serif;
+ -webkit-font-smoothing:antialiased}
+.c{width:540px;height:360px;display:flex;flex-direction:column;justify-content:center;
+ padding:0 42px;background:linear-gradient(140deg,#c2410c 0%,#9a3412 60%,#7c2d12 100%);
+ color:#fff;position:relative;overflow:hidden}
+.c::after{content:"";position:absolute;right:-80px;top:-110px;width:330px;height:330px;
+ border-radius:50%;background:rgba(255,255,255,.07)}
+.c::before{content:"";position:absolute;left:-90px;bottom:-140px;width:260px;height:260px;
+ border-radius:50%;background:rgba(255,255,255,.05)}
+.ic{font-size:76px;line-height:1;position:relative;z-index:1;
+ filter:drop-shadow(0 5px 12px rgba(0,0,0,.22))}
+.t{font-size:40px;font-weight:800;letter-spacing:-.01em;line-height:1.25;
+ margin-top:20px;position:relative;z-index:1}
+.s{font-size:22px;margin-top:12px;opacity:.9;line-height:1.5;position:relative;z-index:1}
+"""
+
+
+def card_page(kind):
+    icon, title, sub, brand = BANNERS[kind]
+    return ('<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'
+            f'<style>{CARD_CSS}</style></head><body><div class="c">'
+            f'<div class="ic">{icon}</div>'
+            f'<div class="t">{E(title)}</div>'
+            f'<div class="s">{E(sub)}</div>'
+            '</div></body></html>')
+
+
 def page(kind):
     icon, title, sub, brand = BANNERS[kind]
     return ('<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'
@@ -82,31 +120,38 @@ def chrome():
     sys.exit('找不到 Chrome，設環境變數 CHROME 指到執行檔')
 
 
+def shoot(ch, tmp, name, src, w, h, prefix):
+    """name 同時當暫存檔名與輸出檔名，所以 prefix 不同的兩輪不會互相覆蓋。"""
+    f = os.path.join(tmp, prefix + '-' + name + '.html')
+    open(f, 'w', encoding='utf-8').write(src)
+    png = os.path.join(tmp, f'{prefix}-{name}.png')
+    subprocess.run([ch, '--headless', '--disable-gpu', '--hide-scrollbars',
+                    '--force-device-scale-factor=1', f'--window-size={w},{h}',
+                    f'--screenshot={os.path.abspath(png)}',
+                    f'file://{os.path.abspath(f)}'],
+                   capture_output=True, timeout=90)
+    if not os.path.exists(png):
+        sys.exit(f'{name} 沒有產生出來')
+    jpg = os.path.join(OUT, f'{prefix}-{name}.jpg')
+    if shutil.which('sips'):
+        subprocess.run(['sips', '-s', 'format', 'jpeg',
+                        '-s', 'formatOptions', '88', png,
+                        '--out', jpg], capture_output=True, timeout=60)
+    if not os.path.exists(jpg):      # 沒有 sips 就退回 PNG，別整個失敗
+        jpg = os.path.join(OUT, f'{prefix}-{name}.png')
+        shutil.copy(png, jpg)
+    print(f'   {os.path.basename(jpg)}  {os.path.getsize(jpg)//1024} KB')
+
+
 def main():
     ch = chrome()
     os.makedirs(OUT, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
         for kind in BANNERS:
-            f = os.path.join(tmp, kind + '.html')
-            open(f, 'w', encoding='utf-8').write(page(kind))
-            png = os.path.join(tmp, f'{kind}.png')
-            subprocess.run([ch, '--headless', '--disable-gpu', '--hide-scrollbars',
-                            '--force-device-scale-factor=1', f'--window-size={W},{H}',
-                            f'--screenshot={os.path.abspath(png)}',
-                            f'file://{os.path.abspath(f)}'],
-                           capture_output=True, timeout=90)
-            if not os.path.exists(png):
-                sys.exit(f'{kind} 沒有產生出來')
-            jpg = os.path.join(OUT, f'banner-{kind}.jpg')
-            if shutil.which('sips'):
-                subprocess.run(['sips', '-s', 'format', 'jpeg',
-                                '-s', 'formatOptions', '88', png,
-                                '--out', jpg], capture_output=True, timeout=60)
-            if not os.path.exists(jpg):      # 沒有 sips 就退回 PNG，別整個失敗
-                jpg = os.path.join(OUT, f'banner-{kind}.png')
-                shutil.copy(png, jpg)
-            print(f'   {os.path.basename(jpg)}  {os.path.getsize(jpg)//1024} KB')
-    print(f'完成 {len(BANNERS)} 張，輸出到 {OUT}/')
+            shoot(ch, tmp, kind, page(kind), W, H, 'banner')
+        for kind in BANNERS:
+            shoot(ch, tmp, kind, card_page(kind), CW, CH, 'card')
+    print(f'完成 {len(BANNERS) * 2} 張，輸出到 {OUT}/')
 
 
 if __name__ == '__main__':

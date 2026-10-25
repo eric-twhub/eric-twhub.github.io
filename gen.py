@@ -15622,24 +15622,22 @@ if os.path.exists('cards.json'):
       '@media(max-width:900px){.lbk{grid-template-columns:repeat(2,1fr)}}'
       '@media(max-width:560px){.lbk{grid-template-columns:1fr}}'
       # 格線裡的廣告格。做成和標籤一樣的 540:810，整排才不會高低不齊。
+      # 上半是圖（標題與副標都印在圖上，不在 HTML 再寫一次），下半是商品。
       '.lbad{display:flex;flex-direction:column;aspect-ratio:540/810;'
       'border:1px solid var(--line);border-radius:8px;background:var(--card);'
-      'padding:16px 14px;overflow:hidden}'
-      '.lbad .tg{align-self:flex-start;font-size:.66rem;font-weight:700;'
-      'background:var(--line);color:var(--dim);border-radius:4px;padding:1px 7px}'
-      # 廣告標籤釘在上緣，其餘內容在剩下的空間置中：
-      # 靠 margin-top:auto 把商品推到底部，中間會空掉一大塊。
-      '.lbad .ti{display:block;font-size:.92rem;font-weight:700;line-height:1.45;'
-      'margin-top:auto}'
-      '.lbad .tx{display:block;font-size:.76rem;color:var(--dim);line-height:1.6;'
-      'margin-top:5px}'
-      '.lbad .pr{display:block;margin-top:14px;text-decoration:none;'
-      'border-top:1px solid var(--line);padding-top:11px}'
+      'overflow:hidden}'
+      '.lbad .im{display:block;position:relative;line-height:0}'
+      '.lbad .im img{display:block;width:100%;height:auto;aspect-ratio:540/360}'
+      '.lbad .tg{position:absolute;left:10px;top:10px;font-size:.66rem;'
+      'font-weight:700;line-height:1.6;background:rgba(0,0,0,.55);color:#fff;'
+      'border-radius:4px;padding:1px 7px}'
+      '.lbad .pr{display:block;margin-top:auto;padding:14px;text-decoration:none}'
       '.lbad .pr i{display:block;font-style:normal;font-weight:700;font-size:.85rem;'
       'line-height:1.45;color:var(--fg)}'
       '.lbad .pr s,.lbad .pr u{display:block;text-decoration:none;font-size:.74rem;'
       'color:var(--dim);line-height:1.55;margin-top:4px}'
-      '.lbad .mo{display:block;font-size:.76rem;margin-top:9px;margin-bottom:auto}'
+      '.lbad .mo{display:block;font-size:.76rem;margin:0 14px 14px;'
+      'margin-bottom:auto;padding-bottom:14px}'
       '</style>')
 
     # 格線裡每四張標籤插一格廣告。四組商品輪著放，六格不會重複同一支。
@@ -15652,7 +15650,6 @@ if os.path.exists('cards.json'):
         if not items:
             return ''
         it = items[(i // len(_LB_ADKINDS)) % len(items)]
-        icon = _AD_KIND[kind][0]
         kk = g.get('brand') == 'KKday'
         href = (kkday(it['url'], 'adbox_grid_prod') if kk
                 else klook(it['url'], 'adbox_grid_prod'))
@@ -15661,11 +15658,17 @@ if os.path.exists('cards.json'):
         meta = '　·　'.join(
             x for x in [('★ ' + it['star']) if it.get('star') else '',
                         (it['booked'] + ' 人參加過') if it.get('booked') else ''] if x)
+        title = g.get('title') or ''
+        # 標題與副標都在圖上，HTML 這邊不再寫一次：同一句在 45mm 寬的格子裡
+        # 出現兩遍，而副標是寫給整頁寬版位的場面話，擺這裡不知道在講誰。
         return (
             '<figure><div class="lbad">'
-            '<span class="tg">廣告</span>'
-            f'<b class="ti">{icon} {html.escape(g.get("title") or "")}</b>'
-            f'<s class="tx">{html.escape(g.get("sub") or "")}</s>'
+            f'<a class="im" href="{html.escape(more or href)}" target="_blank" '
+            f'rel="nofollow noopener sponsored">'
+            f'<img src="{U("/ads/card-" + kind + ".jpg")}" '
+            f'alt="廣告：{html.escape(title)}，前往 {html.escape(g["brand"])}" '
+            f'width="540" height="360" loading="lazy">'
+            '<span class="tg">廣告</span></a>'
             f'<a class="pr" href="{html.escape(href)}" target="_blank" '
             f'rel="nofollow noopener sponsored"><i>{html.escape(it["name"])}</i>'
             + (f'<s>{html.escape(it["note"])}</s>' if it.get('note') else '')
@@ -15673,10 +15676,8 @@ if os.path.exists('cards.json'):
             + '</a>'
             + (f'<a class="mo" href="{html.escape(more)}" target="_blank" '
                f'rel="nofollow noopener sponsored">看 {html.escape(g["brand"])} '
-               f'上全部的{html.escape(g.get("title") or "")} →</a>' if more else '')
-            + '</div><figcaption><b>廣告</b>'
-              '<s>合作平台的推廣連結，點了會離開本站。'
-              '本站可能獲得分潤，不影響你的價格。</s></figcaption></figure>')
+               f'上全部的{html.escape(title)} →</a>' if more else '')
+            + '</div></figure>')
 
     _lb_cells = [
         f'<figure><a class="slip">'
