@@ -146,7 +146,7 @@ function run(ctx,c,k,draw){
 
   // 要做／小心
   const tagW=r(S.tagW),tagH=r(S.tagH);
-  for(const [tag,txt] of [["刷法",c.pay],["要做",c.act],["注意",c.warn]]){
+  for(const [tag,txt,sub] of [["刷法",c.pay,c.payNote],["要做",c.act],["注意",c.warn]]){
     if(!txt)continue;
     y+=r(17);
     if(draw){
@@ -161,6 +161,14 @@ function run(ctx,c,k,draw){
     for(const ln of wrap(ctx,txt,CW-tagW-r(13))){
       if(draw){ctx.fillStyle="#000";ctx.fillText(ln,x,y2+r(27))}
       y2+=r(S.bodyStep);
+    }
+    // 「不算」的那半句用小字，不然整段一樣大，看不出哪裡開始是排除項
+    if(sub){
+      ctx.font=f(400,r(S.tierSub));
+      for(const ln of wrap(ctx,sub,CW-tagW-r(13))){
+        if(draw){ctx.fillStyle="#000";ctx.fillText(ln,x,y2+r(23))}
+        y2+=r(S.tierSubStep);
+      }
     }
     y=Math.max(y+tagH,y2);
   }

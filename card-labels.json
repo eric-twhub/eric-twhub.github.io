@@ -25,7 +25,8 @@
       ],
       "act": "免登錄；1% 海外實體要先設 iLEO 自動扣繳加電子帳單",
       "warn": "10% 另限從未持有本行卡且未開數位帳戶的人，不得與其他專案併用",
-      "pay": "1% 海外實體限實體卡，其餘官方沒寫"
+      "pay": "1% 海外實體限實體卡",
+      "payNote": "其餘層官方沒寫刷法"
     },
     {
       "slug": "firstbank-ileo",
@@ -45,7 +46,8 @@
       ],
       "act": "免登錄；1% 海外實體要設 iLEO 自動扣繳加電子帳單，沒設就沒有",
       "warn": "紙本與電子帳單併行不算。儲值官方明文不列入",
-      "pay": "1% 海外實體限實體卡，其餘官方沒寫"
+      "pay": "1% 海外實體限實體卡",
+      "payNote": "其餘層官方沒寫刷法"
     },
     {
       "slug": "ubot-jiho",
@@ -61,7 +63,7 @@
         {
           "label": "11 大人氣通路加碼",
           "name": "11 大通路",
-          "d": "整檔刷到 {{hit}}就滿・三大超商、唐吉訶德、迪士尼、USJ 等 11 家"
+          "d": "整檔刷到 {{hit}}就滿・店名見網站"
         },
         {
           "label": "行動支付加碼",
@@ -73,8 +75,9 @@
         }
       ],
       "act": "1.5% 行動支付要登錄，期間內一次即可",
-      "warn": "不含網路交易，樂園官網買票不算",
-      "pay": "1.5% 要用 Apple／Google Pay，QUICPay 不算"
+      "warn": "樂園門票要現場刷，不含網路交易",
+      "pay": "1.5% 要用 Apple／Google Pay",
+      "payNote": "官方寫 QUICPay 不適用；但這張是 JCB，Apple Pay 在日本可能被走成 QUICPay，官方沒說"
     },
     {
       "slug": "ubot-jiho",
@@ -101,8 +104,9 @@
         }
       ],
       "act": "1.5% 行動支付要登錄，期間內一次即可",
-      "warn": "不含網路交易，樂園官網買票不算",
-      "pay": "1.5% 要用 Apple／Google Pay，QUICPay 不算"
+      "warn": "樂園門票要現場刷，不含網路交易",
+      "pay": "1.5% 要用 Apple／Google Pay",
+      "payNote": "官方寫 QUICPay 不適用；但這張是 JCB，Apple Pay 在日本可能被走成 QUICPay，官方沒說"
     },
     {
       "slug": "ctbc-uniopen",
@@ -115,7 +119,8 @@
       ],
       "act": "免登錄，刷下去就有",
       "warn": "網購不算",
-      "pay": "實體卡或 Apple／Google／Samsung Pay；條碼與第三方支付不算"
+      "pay": "實體卡或 Apple／Google／Samsung Pay",
+      "payNote": "條碼與第三方支付不算"
     },
     {
       "slug": "sinopac-jcb",
@@ -134,7 +139,8 @@
       ],
       "act": "5% 每季搶登錄限 5,000 名；3% 要電子帳單加自動扣繳",
       "warn": "5% 2026 第四季已額滿，下次 2027/3/25 10:00 開放",
-      "pay": "5% 要面對面刷，第三方支付不算；3% 網購也算"
+      "pay": "5% 要面對面刷；3% 網購也算",
+      "payNote": "5% 走第三方支付不算"
     },
     {
       "slug": "esun-kumamon",
@@ -185,7 +191,8 @@
       ],
       "act": "每月開放登錄：交通卡 18 日、日韓泰 20 日，16:00，當季登一次即可",
       "warn": "日韓泰明文排除儲值，兩層不會疊在同一筆",
-      "pay": "7% 交通卡要用 Apple Pay 且限 iPhone 8 以上；3% 要面對面刷"
+      "pay": "7% 交通卡要用 Apple Pay；3% 要面對面刷",
+      "payNote": "交通卡那筆限 iPhone 8 以上"
     },
     {
       "slug": "sinopac-dawho",
@@ -247,7 +254,8 @@
       ],
       "act": "免登錄；1% 自動扣繳要先申請，約 45 個工作天才生效",
       "warn": "藥妝、電器量販、超市不在三大通路，只有 0.88%",
-      "pay": "要直接刷這張卡，走行動支付可能只剩 0.88%"
+      "pay": "要直接刷這張卡",
+      "payNote": "走行動支付可能只剩 0.88%"
     },
     {
       "endPrefix": "到 秋日遊 ",
@@ -277,7 +285,8 @@
       ],
       "act": "免登錄，但消費當日要在 App 切到「秋日遊」，一天只能切一次",
       "warn": "愛店限路面店，百貨店中櫃不算",
-      "pay": "愛店限實體門市，第三方支付不算"
+      "pay": "愛店限實體門市",
+      "payNote": "第三方支付平台不算"
     },
     {
       "endPrefix": "到 秋日遊 ",
@@ -307,7 +316,8 @@
       ],
       "act": "免登錄，但消費當日要在 App 切到「秋日遊」，一天只能切一次",
       "warn": "愛店限路面店，百貨店中櫃不算",
-      "pay": "愛店限實體門市，第三方支付不算"
+      "pay": "愛店限實體門市",
+      "payNote": "第三方支付平台不算"
     },
     {
       "endPrefix": "到 秋日遊 ",
@@ -337,7 +347,8 @@
       ],
       "act": "免登錄，但消費當日要在 App 切到「秋日遊」，一天只能切一次",
       "warn": "愛店限路面店，百貨店中櫃不算",
-      "pay": "愛店限實體門市，第三方支付不算"
+      "pay": "愛店限實體門市",
+      "payNote": "第三方支付平台不算"
     },
     {
       "slug": "cathay-cube",
@@ -350,7 +361,8 @@
       "tiers": [],
       "act": "免登錄，但消費當日要在 App 切到「趣旅行」，一天只能切一次",
       "warn": "用訂房平台有授權時間差，提前切好並多留幾天",
-      "pay": "限日本實體消費，官方沒寫行動支付算不算"
+      "pay": "限日本實體消費",
+      "payNote": "官方沒寫行動支付算不算"
     },
     {
       "slug": "cathay-cube",
@@ -363,7 +375,8 @@
       "tiers": [],
       "act": "免登錄，但消費當日要在 App 切到「趣旅行」，一天只能切一次",
       "warn": "用訂房平台有授權時間差，提前切好並多留幾天",
-      "pay": "限日本實體消費，官方沒寫行動支付算不算"
+      "pay": "限日本實體消費",
+      "payNote": "官方沒寫行動支付算不算"
     },
     {
       "slug": "cathay-cube",
@@ -376,7 +389,8 @@
       "tiers": [],
       "act": "免登錄，但消費當日要在 App 切到「趣旅行」，一天只能切一次",
       "warn": "嫌 {{lv:l1}}% 太低可改切固定回饋 {{lv:fixed}}%，到 2026/12/31",
-      "pay": "限日本實體消費，官方沒寫行動支付算不算"
+      "pay": "限日本實體消費",
+      "payNote": "官方沒寫行動支付算不算"
     },
     {
       "slug": "ctbc-linepay",
@@ -391,7 +405,8 @@
       ],
       "act": "2.2% 要登錄，每週二開放 3,000 名，額滿為止，只算當週",
       "warn": "網購不算。簽帳金融卡完全不適用",
-      "pay": "實體卡或 Apple／Google／Samsung Pay；條碼與第三方支付不算"
+      "pay": "實體卡或 Apple／Google／Samsung Pay",
+      "payNote": "條碼與第三方支付不算"
     },
     {
       "slug": "dbs-eco",
@@ -404,7 +419,8 @@
       ],
       "act": "官網沒寫要不要登錄，本站未查實，刷前先問星展",
       "warn": "Suica、PASMO 儲值官方明文排除。結台幣不算",
-      "pay": "實體卡或 Apple／Samsung Pay；Google Pay 等其他行動支付不算"
+      "pay": "實體卡或 Apple／Samsung Pay",
+      "payNote": "Google Pay 等其他行動支付不算"
     },
     {
       "slug": "dbs-aov",
@@ -417,7 +433,8 @@
       ],
       "act": "免登錄；4% 要先綁自動扣繳完成存戶升級，沒綁只有 1%",
       "warn": "Suica、PASMO 儲值官方明文排除",
-      "pay": "實體卡或 Apple／Samsung Pay；Google Pay 等其他行動支付不算"
+      "pay": "實體卡或 Apple／Samsung Pay",
+      "payNote": "Google Pay 等其他行動支付不算"
     },
     {
       "slug": "esun-unicard",
@@ -432,7 +449,8 @@
       ],
       "act": "免登錄；要訂閱 UP選：上月刷滿 3 萬＋資產 30 萬，或 149 點 e point",
       "warn": "每月底自動續訂。網購不算，結台幣不算",
-      "pay": "實體卡或 Apple／Google／Samsung Pay；LINE Pay 等第三方不算"
+      "pay": "實體卡或 Apple／Google／Samsung Pay",
+      "payNote": "LINE Pay 等第三方不算"
     },
     {
       "slug": "esun-unicard",
@@ -447,7 +465,8 @@
       ],
       "act": "免登錄；要用玉山 Wallet 把日本選進 8 家，每月最多切 30 次",
       "warn": "網購不算，結台幣不算",
-      "pay": "實體卡或 Apple／Google／Samsung Pay；LINE Pay 等第三方不算"
+      "pay": "實體卡或 Apple／Google／Samsung Pay",
+      "payNote": "LINE Pay 等第三方不算"
     },
     {
       "slug": "esun-unicard",
@@ -463,7 +482,8 @@
       ],
       "act": "免登錄免訂閱；基本 1% 要先設自動扣繳加帳單 e 化，不然 0.3%",
       "warn": "每月最後一天的方案算整個月。網購不算，結台幣不算",
-      "pay": "實體卡或 Apple／Google／Samsung Pay；LINE Pay 等第三方不算"
+      "pay": "實體卡或 Apple／Google／Samsung Pay",
+      "payNote": "LINE Pay 等第三方不算"
     },
     {
       "slug": "taishin-richart",
