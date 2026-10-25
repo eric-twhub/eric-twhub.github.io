@@ -15609,8 +15609,8 @@ if os.path.exists('cards.json'):
       '<style>'
       '.lbk{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:16px 0}'
       '.lbk figure{margin:0}'
-      '.lbk .slip{border:1px solid var(--line);border-radius:8px;overflow:hidden;'
-      'background:#fff;aspect-ratio:540/810}'
+      '.lbk .slip{display:block;border:1px solid var(--line);border-radius:8px;'
+      'overflow:hidden;background:#fff;aspect-ratio:540/810}'
       '.lbk img{display:block;width:100%;height:auto}'
       '.lbk figcaption{padding:8px 2px 0;font-size:.8rem;line-height:1.6}'
       '.lbk figcaption b{display:block;font-size:.88rem}'
@@ -15624,10 +15624,10 @@ if os.path.exists('cards.json'):
       '</style>')
 
     _lb_grid = '<div class="lbk">' + ''.join(
-        f'<figure><div class="slip">'
+        f'<figure><a class="slip">'
         f'<img data-lb="{i}" alt="{html.escape(r["n"])}'
         + (f'（{html.escape(r["who"])}）' if r.get('who') else '')
-        + f' 的日本回饋標籤" width="540" height="810" loading="lazy"></div>'
+        + f' 的日本回饋標籤" width="540" height="810" loading="lazy"></a>'
           f'<figcaption><b>{html.escape(r["n"])}</b>'
         + (f'<s>{html.escape(r["who"])}</s>' if r.get('who') else '')
         + f'<s>日本最高 {r["top"]}　·　{html.escape(r["base"])}</s>'
@@ -15684,8 +15684,10 @@ if os.path.exists('cards.json'):
         '財富管理貴賓，在 CUBE App 裡看得到。</li>'
         '<li><b>「刷到多少就滿」是台幣帳單金額。</b>用官方的回饋上限除以加碼％算的，'
         '小數往下取整，照這個數字刷不會超過上限。超過的部分只剩基本回饋。</li>'
-        '<li><b>手機長按圖片存到相簿，</b>再用標籤機或相印機的 App 列印。'
-        '電腦上用右鍵另存圖片。一張做成 45.7 × 68.6 mm 的滿版，列印時不要再縮放。</li>'
+        '<li><b>電腦上點一下圖就會存檔，</b>檔名是那張卡的名字加身分，'
+        '例如「聯邦吉鶴卡-新戶.png」，26 張存在一起也分得出誰是誰。'
+        '手機長按圖片存到相簿。存完用標籤機或相印機的 App 列印，'
+        '一張做成 45.7 × 68.6 mm 的滿版，列印時不要再縮放。</li>'
         '<li><b>「刷法」那一行寫的是哪種付款方式才算加碼。</b>'
         '各行規定差很多：星展兩張只認 Apple Pay 與 Samsung Pay，Google Pay 不算；'
         '滙豐要直接刷卡，走行動支付可能掉回基本回饋。'

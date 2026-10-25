@@ -195,6 +195,13 @@ function pickScale(ctx,c){
   return FLOOR;
 }
 
+/* 存下來的檔名。資料 URL 沒有檔名，瀏覽器一律給「下載.png」，
+   26 張疊在下載夾裡就分不出誰是誰。 */
+function fileName(c){
+  const tag=(c.who||"").split("（")[0].replace(/・/g,"-");
+  return ((c.n+(tag?"-"+tag:"")).replace(/[\s\/\\:*?"<>|]/g,"")||"label")+".png";
+}
+
 function render(c){
   const cv=document.createElement("canvas");
   cv.width=W;cv.height=H;
@@ -209,7 +216,11 @@ function render(c){
 function paintLabels(){
   document.querySelectorAll("img[data-lb]").forEach(function(img){
     var c=LABELS[+img.getAttribute("data-lb")];
-    if(c)img.src=render(c);
+    if(!c)return;
+    var url=render(c);
+    img.src=url;
+    var a=img.closest("a.slip");
+    if(a){a.href=url;a.download=fileName(c);}
   });
 }
 if(document.fonts&&document.fonts.ready){document.fonts.ready.then(paintLabels)}
