@@ -1140,6 +1140,10 @@ padding:10px 13px;margin:0 0 10px}
 table.cardz td{border:0;padding:4px 0;white-space:normal;word-break:break-word;
 text-align:left}
 table.cardz td:first-child{font-size:1rem;margin-bottom:4px}
+/* colspan 的整列註解，在卡片版面要吃滿整排。.tw td.nm 的 max-width:290px
+   是給表格版面壓商品名那一欄用的，卡片化之後還在，會把整列註解夾成一欄寬，
+   右邊空掉三分之二（2026-10-25 在 /japan-credit-card/fubon-j/ 看到）。 */
+table.cardz td[colspan]{max-width:none;grid-column:1/-1}
 /* 空標籤不要印出孤零零的全形冒號。進度表的操作欄就是 data-l=""， */
 /* 它自己那條 display:none 的特異性低於這一條，會被蓋掉。 */
 table.cardz td[data-l]:not([data-l=""])::before{content:attr(data-l)"：";display:block;
