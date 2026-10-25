@@ -3,264 +3,481 @@
   "_tokens": "文案裡可用 {{hit}}（該層刷到多少就滿）、{{sum}}（底 + 該層）、{{shop}} 與 {{transit}}（該卡實體／交通卡模式的合計）、{{lv:KEY}}（cards.json levels 裡某一級的底％）。",
   "labels": [
     {
-      "slug": "firstbank-ileo", "key": "new",
+      "slug": "firstbank-ileo",
+      "key": "new",
       "who": "新戶（前 1 年沒有一銀正卡）",
       "topNote": "10% 限核卡 90 天內",
       "baseNote": "海外外幣消費，無上限",
       "tiers": [
-        {"label": "新戶加碼", "name": "新戶", "extra": "核卡後 90 天內"},
-        {"label": "海外外幣加碼", "name": "指定通路"},
-        {"label": "海外實體加碼", "name": "海外實體"}
+        {
+          "label": "新戶加碼",
+          "name": "新戶",
+          "extra": "核卡後 90 天內"
+        },
+        {
+          "label": "海外外幣加碼",
+          "name": "指定通路"
+        },
+        {
+          "label": "海外實體加碼",
+          "name": "海外實體"
+        }
       ],
       "act": "免登錄；1% 海外實體要先設 iLEO 自動扣繳加電子帳單",
-      "warn": "10% 另限從未持有本行卡且未開數位帳戶的人，不得與其他專案併用"
+      "warn": "10% 另限從未持有本行卡且未開數位帳戶的人，不得與其他專案併用",
+      "pay": "1% 海外實體限實體卡，其餘官方沒寫"
     },
     {
-      "slug": "firstbank-ileo", "key": "old",
+      "slug": "firstbank-ileo",
+      "key": "old",
       "who": "既有卡友（或已過核卡 90 天）",
       "topNote": "新戶的 13% 拿不到",
       "baseNote": "海外外幣消費，無上限",
       "tiers": [
-        {"label": "海外外幣加碼", "name": "指定通路"},
-        {"label": "海外實體加碼", "name": "海外實體"}
+        {
+          "label": "海外外幣加碼",
+          "name": "指定通路"
+        },
+        {
+          "label": "海外實體加碼",
+          "name": "海外實體"
+        }
       ],
       "act": "免登錄；1% 海外實體要設 iLEO 自動扣繳加電子帳單，沒設就沒有",
-      "warn": "紙本與電子帳單併行不算。儲值官方明文不列入"
+      "warn": "紙本與電子帳單併行不算。儲值官方明文不列入",
+      "pay": "1% 海外實體限實體卡，其餘官方沒寫"
     },
     {
-      "slug": "ubot-jiho", "variant": "new",
+      "slug": "ubot-jiho",
+      "variant": "new",
       "who": "新戶（前 6 個月沒有聯邦卡）",
       "topNote": "下面 4 項符合",
       "baseNote": "日幣一般消費，無上限",
       "tiers": [
-        {"label": "新戶加碼", "name": "新戶加碼"},
-        {"label": "11 大人氣通路加碼", "name": "11 大通路",
-         "d": "整檔刷到 {{hit}}就滿・三大超商、唐吉訶德、迪士尼、USJ 等 11 家"},
-        {"label": "行動支付加碼", "name": "行動支付"},
-        {"label": "前月帳單滿額加碼", "name": "前月帳單滿 3 萬"}
+        {
+          "label": "新戶加碼",
+          "name": "新戶加碼"
+        },
+        {
+          "label": "11 大人氣通路加碼",
+          "name": "11 大通路",
+          "d": "整檔刷到 {{hit}}就滿・三大超商、唐吉訶德、迪士尼、USJ 等 11 家"
+        },
+        {
+          "label": "行動支付加碼",
+          "name": "行動支付"
+        },
+        {
+          "label": "前月帳單滿額加碼",
+          "name": "前月帳單滿 3 萬"
+        }
       ],
-      "act": "1.5% 行動支付要登錄，活動期間一次即可",
-      "warn": "QUICPay 不算行動支付，樂園官網買票不算"
+      "act": "1.5% 行動支付要登錄，期間內一次即可",
+      "warn": "不含網路交易，樂園官網買票不算",
+      "pay": "1.5% 要用 Apple／Google Pay，QUICPay 不算"
     },
     {
-      "slug": "ubot-jiho", "variant": "old", "skip": ["新戶加碼"],
+      "slug": "ubot-jiho",
+      "variant": "old",
+      "skip": [
+        "新戶加碼"
+      ],
       "who": "既有卡友",
       "topNote": "下面 3 項符合",
       "baseNote": "日幣一般消費，無上限",
       "tiers": [
-        {"label": "11 大人氣通路加碼", "name": "11 大通路",
-         "d": "整檔刷到 {{hit}}就滿\n三大超商・唐吉訶德・Bic Camera・迪士尼・USJ 等 11 家"},
-        {"label": "行動支付加碼", "name": "行動支付"},
-        {"label": "前月帳單滿額加碼", "name": "前月帳單滿 3 萬"}
+        {
+          "label": "11 大人氣通路加碼",
+          "name": "11 大通路",
+          "d": "整檔刷到 {{hit}}就滿\n三大超商・唐吉訶德・Bic Camera・迪士尼・USJ 等 11 家"
+        },
+        {
+          "label": "行動支付加碼",
+          "name": "行動支付"
+        },
+        {
+          "label": "前月帳單滿額加碼",
+          "name": "前月帳單滿 3 萬"
+        }
       ],
-      "act": "1.5% 行動支付要登錄，活動期間一次即可",
-      "warn": "QUICPay 不算行動支付。樂園官網買票不算"
+      "act": "1.5% 行動支付要登錄，期間內一次即可",
+      "warn": "不含網路交易，樂園官網買票不算",
+      "pay": "1.5% 要用 Apple／Google Pay，QUICPay 不算"
     },
     {
       "slug": "ctbc-uniopen",
       "baseNote": "國外實體商店",
-      "tiers": [{"label": "國外實體加碼", "name": "國外實體"}],
+      "tiers": [
+        {
+          "label": "國外實體加碼",
+          "name": "國外實體"
+        }
+      ],
       "act": "免登錄，刷下去就有",
-      "warn": "網購、條碼支付、第三方支付都不算"
+      "warn": "網購不算",
+      "pay": "實體卡或 Apple／Google／Samsung Pay；條碼與第三方支付不算"
     },
     {
       "slug": "sinopac-jcb",
       "baseNote": "國外消費，無上限",
       "tiers": [
-        {"label": "日韓泰季度加碼", "name": "日韓泰季加碼",
-         "d": "每季要先刷滿 20,000 元才有，而刷到 {{hit}}剛好到頂"},
-        {"label": "日本加碼", "name": "日本加碼", "extra": "上限和網購共用"}
+        {
+          "label": "日韓泰季度加碼",
+          "name": "日韓泰季加碼",
+          "d": "每季要先刷滿 20,000 元才有，而刷到 {{hit}}剛好到頂"
+        },
+        {
+          "label": "日本加碼",
+          "name": "日本加碼",
+          "extra": "上限和網購共用"
+        }
       ],
       "act": "5% 每季搶登錄限 5,000 名；3% 要電子帳單加自動扣繳",
-      "warn": "5% 2026 第四季已額滿，下次 2027/3/25 10:00 開放"
+      "warn": "5% 2026 第四季已額滿，下次 2027/3/25 10:00 開放",
+      "pay": "5% 要面對面刷，第三方支付不算；3% 網購也算"
     },
     {
       "slug": "esun-kumamon",
       "baseNote": "日本一般消費，無上限",
-      "tiers": [{"label": "指定日本商店加碼", "name": "指定日本商店"}],
+      "tiers": [
+        {
+          "label": "指定日本商店加碼",
+          "name": "指定日本商店"
+        }
+      ],
       "shops": "松本清・唐吉訶德・大國藥妝・Bic Camera・無印良品・UNIQLO・GU・一蘭・壽司郎・松屋・Suica 儲值",
       "act": "6% 要登錄，活動期間一次即可，2025 年登過要重登",
-      "warn": "百貨與車站櫃位，帳單名稱認不出就不算"
+      "warn": "百貨與車站櫃位，帳單名稱認不出就不算",
+      "pay": "官方沒寫限實體卡還是行動支付"
     },
     {
       "slug": "sinopac-dual",
       "baseNote": "國外消費，無上限",
       "tiers": [
-        {"label": "精選通路加碼", "name": "精選通路"},
-        {"label": "新申辦行動支付加碼", "name": "新辦行動支付"}
+        {
+          "label": "精選通路加碼",
+          "name": "精選通路"
+        },
+        {
+          "label": "新申辦行動支付加碼",
+          "name": "新辦行動支付"
+        }
       ],
       "act": "免登錄；4% 要自動扣繳＋電子帳單＋前月資產月均 10 萬",
-      "warn": "仍收 1.5% 國外手續費，不因日圓結算而免收"
+      "warn": "仍收 1.5% 國外手續費，不因日圓結算而免收",
+      "pay": "4% 精選通路網購也算；2% 要用 Apple／Google Pay"
     },
     {
       "slug": "fubon-j",
       "topNote": "10% 是交通卡儲值；一般消費 {{shop}}%",
       "baseNote": "沒辦自動扣繳或電子帳單只有 0.5%",
       "tiers": [
-        {"label": "日本三大交通卡儲值加碼", "name": "交通卡儲值", "extra": "單筆要滿 2,000"},
-        {"label": "日韓泰實體消費加碼", "name": "日韓泰實體", "extra": "單筆要滿 1,000"}
+        {
+          "label": "日本三大交通卡儲值加碼",
+          "name": "交通卡儲值",
+          "extra": "單筆要滿 2,000"
+        },
+        {
+          "label": "日韓泰實體消費加碼",
+          "name": "日韓泰實體",
+          "extra": "單筆要滿 1,000"
+        }
       ],
       "act": "每月開放登錄：交通卡 18 日、日韓泰 20 日，16:00，當季登一次即可",
-      "warn": "日韓泰明文排除儲值，兩層不會疊在同一筆"
+      "warn": "日韓泰明文排除儲值，兩層不會疊在同一筆",
+      "pay": "7% 交通卡要用 Apple Pay 且限 iPhone 8 以上；3% 要面對面刷"
     },
     {
-      "slug": "sinopac-dawho", "key": "plus",
+      "slug": "sinopac-dawho",
+      "key": "plus",
       "who": "大戶 Plus 等級",
       "baseNote": "國外消費，須以外幣結帳",
-      "tiers": [{"label": "大戶 Plus 任務加碼", "name": "大戶 Plus 任務"}],
+      "tiers": [
+        {
+          "label": "大戶 Plus 任務加碼",
+          "name": "大戶 Plus 任務"
+        }
+      ],
       "act": "4% 要登錄，另綁 DAWHO 自動扣繳加電子帳單",
-      "warn": "等級按月均資產逐月認定，掉下來那個月就沒有 4%"
+      "warn": "等級按月均資產逐月認定，掉下來那個月就沒有 4%",
+      "pay": "官方沒寫限實體卡還是行動支付"
     },
     {
-      "slug": "sinopac-dawho", "key": "da",
+      "slug": "sinopac-dawho",
+      "key": "da",
       "who": "大戶等級",
       "baseNote": "國外消費，須以外幣結帳",
-      "tiers": [{"label": "大戶任務加碼", "name": "大戶任務"}],
+      "tiers": [
+        {
+          "label": "大戶任務加碼",
+          "name": "大戶任務"
+        }
+      ],
       "act": "2.5% 要登錄，另綁 DAWHO 自動扣繳加電子帳單",
-      "warn": "升 Plus 要月均資產 100 萬＋單筆換匯 5,000 元或台股交易一筆，次月生效"
+      "warn": "升 Plus 要月均資產 100 萬＋單筆換匯 5,000 元或台股交易一筆，次月生效",
+      "pay": "官方沒寫限實體卡還是行動支付"
     },
     {
-      "slug": "sinopac-dawho", "key": "dada",
+      "slug": "sinopac-dawho",
+      "key": "dada",
       "who": "大大等級",
       "topNote": "沒有任何加碼",
       "baseNote": "國外消費，須以外幣結帳",
       "tiers": [],
       "act": "沒有加碼可登錄，結帳一定要選日圓",
-      "warn": "只剩基本 2%，日本刷別張划算得多"
+      "warn": "只剩基本 2%，日本刷別張划算得多",
+      "pay": "官方沒寫限實體卡還是行動支付"
     },
     {
       "slug": "hsbc-liveplus",
       "baseNote": "一般通路，無上限",
       "tiers": [
-        {"label": "三大通路加碼", "name": "三大通路"},
-        {"label": "精選國家餐飲加碼", "name": "日本餐飲"},
-        {"label": "自動扣繳加碼", "name": "自動扣繳"}
+        {
+          "label": "三大通路加碼",
+          "name": "三大通路"
+        },
+        {
+          "label": "精選國家餐飲加碼",
+          "name": "日本餐飲"
+        },
+        {
+          "label": "自動扣繳加碼",
+          "name": "自動扣繳"
+        }
       ],
       "act": "免登錄；1% 自動扣繳要先申請，約 45 個工作天才生效",
-      "warn": "藥妝、電器量販、超市不在三大通路，只有 0.88%"
+      "warn": "藥妝、電器量販、超市不在三大通路，只有 0.88%",
+      "pay": "要直接刷這張卡，走行動支付可能只剩 0.88%"
     },
     {
-      "endPrefix": "到 秋日遊 ", "slug": "cathay-cube", "key": "autumn", "variant": "l3",
+      "endPrefix": "到 秋日遊 ",
+      "slug": "cathay-cube",
+      "key": "autumn",
+      "variant": "l3",
       "who": "秋日遊・Level 3",
       "topNote": "指定愛店",
       "baseNote": "秋日遊期間的日本實體消費",
-      "tiers": [{"label": "指定人氣愛店加碼", "name": "指定人氣愛店",
-                 "t": "{{sum}}% 指定人氣愛店",
-                 "d": "UNIQLO・Loft・ABC-MART・3COINS・寶可夢中心・SANRIO・KIDDY LAND・Alpen"}],
-      "rows": [["4% 機場免稅店", "成田・關西・新千歲・福岡"],
-               ["12/1 起回趣旅行", "你這一級是 {{lv:l3}}%"]],
+      "tiers": [
+        {
+          "label": "指定人氣愛店加碼",
+          "name": "指定人氣愛店",
+          "t": "{{sum}}% 指定人氣愛店",
+          "d": "UNIQLO・Loft・ABC-MART・3COINS・寶可夢中心・SANRIO・KIDDY LAND・Alpen"
+        }
+      ],
+      "rows": [
+        [
+          "4% 機場免稅店",
+          "成田・關西・新千歲・福岡"
+        ],
+        [
+          "12/1 起回趣旅行",
+          "你這一級是 {{lv:l3}}%"
+        ]
+      ],
       "act": "免登錄，但消費當日要在 App 切到「秋日遊」，一天只能切一次",
-      "warn": "愛店限路面店，百貨店中櫃不算"
+      "warn": "愛店限路面店，百貨店中櫃不算",
+      "pay": "愛店限實體門市，第三方支付不算"
     },
     {
-      "endPrefix": "到 秋日遊 ", "slug": "cathay-cube", "key": "autumn", "variant": "l2",
+      "endPrefix": "到 秋日遊 ",
+      "slug": "cathay-cube",
+      "key": "autumn",
+      "variant": "l2",
       "who": "秋日遊・Level 2",
       "topNote": "指定愛店",
       "baseNote": "秋日遊期間的日本實體消費",
-      "tiers": [{"label": "指定人氣愛店加碼", "name": "指定人氣愛店",
-                 "t": "{{sum}}% 指定人氣愛店",
-                 "d": "UNIQLO・Loft・ABC-MART・3COINS・寶可夢中心・SANRIO・KIDDY LAND・Alpen"}],
-      "rows": [["4% 機場免稅店", "成田・關西・新千歲・福岡"],
-               ["12/1 起回趣旅行", "你這一級是 {{lv:l2}}%"]],
+      "tiers": [
+        {
+          "label": "指定人氣愛店加碼",
+          "name": "指定人氣愛店",
+          "t": "{{sum}}% 指定人氣愛店",
+          "d": "UNIQLO・Loft・ABC-MART・3COINS・寶可夢中心・SANRIO・KIDDY LAND・Alpen"
+        }
+      ],
+      "rows": [
+        [
+          "4% 機場免稅店",
+          "成田・關西・新千歲・福岡"
+        ],
+        [
+          "12/1 起回趣旅行",
+          "你這一級是 {{lv:l2}}%"
+        ]
+      ],
       "act": "免登錄，但消費當日要在 App 切到「秋日遊」，一天只能切一次",
-      "warn": "愛店限路面店，百貨店中櫃不算"
+      "warn": "愛店限路面店，百貨店中櫃不算",
+      "pay": "愛店限實體門市，第三方支付不算"
     },
     {
-      "endPrefix": "到 秋日遊 ", "slug": "cathay-cube", "key": "autumn", "variant": "l1",
+      "endPrefix": "到 秋日遊 ",
+      "slug": "cathay-cube",
+      "key": "autumn",
+      "variant": "l1",
       "who": "秋日遊・Level 1",
       "topNote": "指定愛店",
       "baseNote": "秋日遊期間的日本實體消費",
-      "tiers": [{"label": "指定人氣愛店加碼", "name": "指定人氣愛店",
-                 "t": "{{sum}}% 指定人氣愛店",
-                 "d": "UNIQLO・Loft・ABC-MART・3COINS・寶可夢中心・SANRIO・KIDDY LAND・Alpen"}],
-      "rows": [["4% 機場免稅店", "成田・關西・新千歲・福岡"],
-               ["12/1 起回趣旅行", "你這一級只有 {{lv:l1}}%，可改切固定回饋 {{lv:fixed}}%"]],
+      "tiers": [
+        {
+          "label": "指定人氣愛店加碼",
+          "name": "指定人氣愛店",
+          "t": "{{sum}}% 指定人氣愛店",
+          "d": "UNIQLO・Loft・ABC-MART・3COINS・寶可夢中心・SANRIO・KIDDY LAND・Alpen"
+        }
+      ],
+      "rows": [
+        [
+          "4% 機場免稅店",
+          "成田・關西・新千歲・福岡"
+        ],
+        [
+          "12/1 起回趣旅行",
+          "你這一級只有 {{lv:l1}}%，可改切固定回饋 {{lv:fixed}}%"
+        ]
+      ],
       "act": "免登錄，但消費當日要在 App 切到「秋日遊」，一天只能切一次",
-      "warn": "愛店限路面店，百貨店中櫃不算"
+      "warn": "愛店限路面店，百貨店中櫃不算",
+      "pay": "愛店限實體門市，第三方支付不算"
     },
     {
-      "slug": "cathay-cube", "key": "l3", "variant": "trip-l3",
+      "slug": "cathay-cube",
+      "key": "l3",
+      "variant": "trip-l3",
       "end": "趣旅行期限依國泰世華公告",
       "who": "趣旅行・Level 3",
       "topNote": "12/1 起貼這張",
       "baseNote": "日本實體消費，這個方案看權益等級",
       "tiers": [],
       "act": "免登錄，但消費當日要在 App 切到「趣旅行」，一天只能切一次",
-      "warn": "12/1 會自動切成「集精選」，要自己切回趣旅行"
+      "warn": "12/1 會自動切成「集精選」，要自己切回趣旅行",
+      "pay": "限日本實體消費，官方沒寫行動支付算不算"
     },
     {
-      "slug": "cathay-cube", "key": "l2", "variant": "trip-l2",
+      "slug": "cathay-cube",
+      "key": "l2",
+      "variant": "trip-l2",
       "end": "趣旅行期限依國泰世華公告",
       "who": "趣旅行・Level 2",
       "topNote": "12/1 起貼這張",
       "baseNote": "日本實體消費，這個方案看權益等級",
       "tiers": [],
       "act": "免登錄，但消費當日要在 App 切到「趣旅行」，一天只能切一次",
-      "warn": "12/1 會自動切成「集精選」，要自己切回趣旅行"
+      "warn": "12/1 會自動切成「集精選」，要自己切回趣旅行",
+      "pay": "限日本實體消費，官方沒寫行動支付算不算"
     },
     {
-      "slug": "cathay-cube", "key": "l1", "variant": "trip-l1",
+      "slug": "cathay-cube",
+      "key": "l1",
+      "variant": "trip-l1",
       "end": "趣旅行期限依國泰世華公告",
       "who": "趣旅行・Level 1",
       "topNote": "12/1 起貼這張",
       "baseNote": "日本實體消費，這個方案看權益等級",
       "tiers": [],
       "act": "免登錄，但消費當日要在 App 切到「趣旅行」，一天只能切一次",
-      "warn": "12/1 會自動切成「集精選」。嫌 {{lv:l1}}% 太低可改切固定回饋 {{lv:fixed}}%"
+      "warn": "12/1 會自動切成「集精選」。嫌 {{lv:l1}}% 太低可改切固定回饋 {{lv:fixed}}%",
+      "pay": "限日本實體消費，官方沒寫行動支付算不算"
     },
     {
-      "slug": "ctbc-linepay", "endPrefix": "加碼到 ",
+      "slug": "ctbc-linepay",
+      "endPrefix": "加碼到 ",
       "baseNote": "國外實體商店",
-      "tiers": [{"label": "國外實體加碼", "name": "國外實體", "extra": "不是每月重算"}],
+      "tiers": [
+        {
+          "label": "國外實體加碼",
+          "name": "國外實體",
+          "extra": "不是每月重算"
+        }
+      ],
       "act": "2.2% 要登錄，每週二開放 3,000 名，額滿為止，只算當週",
-      "warn": "網購與條碼支付不算。簽帳金融卡完全不適用"
+      "warn": "網購不算。簽帳金融卡完全不適用",
+      "pay": "實體卡或 Apple／Google／Samsung Pay；條碼與第三方支付不算"
     },
     {
       "slug": "dbs-eco",
       "baseNote": "一般消費，無上限",
-      "tiers": [{"label": "指定國家實體消費加碼", "name": "當地實體"}],
+      "tiers": [
+        {
+          "label": "指定國家實體消費加碼",
+          "name": "當地實體"
+        }
+      ],
       "act": "官網沒寫要不要登錄，本站未查實，刷前先問星展",
-      "warn": "網購不算。Suica、PASMO 儲值官方明文排除。結台幣不算"
+      "warn": "Suica、PASMO 儲值官方明文排除。結台幣不算",
+      "pay": "實體卡或 Apple／Samsung Pay；Google Pay 等其他行動支付不算"
     },
     {
       "slug": "dbs-aov",
       "baseNote": "國外一般消費，無上限",
-      "tiers": [{"label": "日韓泰、新美歐加碼", "name": "當地實體"}],
+      "tiers": [
+        {
+          "label": "日韓泰、新美歐加碼",
+          "name": "當地實體"
+        }
+      ],
       "act": "免登錄；4% 要先綁自動扣繳完成存戶升級，沒綁只有 1%",
-      "warn": "網購不算。Suica、PASMO 儲值官方明文排除"
+      "warn": "Suica、PASMO 儲值官方明文排除",
+      "pay": "實體卡或 Apple／Samsung Pay；Google Pay 等其他行動支付不算"
     },
     {
-      "slug": "esun-unicard", "key": "up",
+      "slug": "esun-unicard",
+      "key": "up",
       "who": "UP選（需訂閱，限正卡人）",
       "baseNote": "沒辦帳單 e 化加自動扣繳只有 0.3%",
-      "tiers": [{"label": "百大指定消費加碼（國外實體・日本）", "name": "國外實體"}],
+      "tiers": [
+        {
+          "label": "百大指定消費加碼（國外實體・日本）",
+          "name": "國外實體"
+        }
+      ],
       "act": "免登錄；要訂閱 UP選：上月刷滿 3 萬＋資產 30 萬，或 149 點 e point",
-      "warn": "每月底自動續訂。網購、LINE Pay 等第三方支付、結台幣都不算"
+      "warn": "每月底自動續訂。網購不算，結台幣不算",
+      "pay": "實體卡或 Apple／Google／Samsung Pay；LINE Pay 等第三方不算"
     },
     {
-      "slug": "esun-unicard", "key": "pick",
+      "slug": "esun-unicard",
+      "key": "pick",
       "who": "任意選（要選進指定 8 家）",
       "baseNote": "沒辦帳單 e 化加自動扣繳只有 0.3%",
-      "tiers": [{"label": "百大指定消費加碼（國外實體・日本）", "name": "國外實體"}],
+      "tiers": [
+        {
+          "label": "百大指定消費加碼（國外實體・日本）",
+          "name": "國外實體"
+        }
+      ],
       "act": "免登錄；要用玉山 Wallet 把日本選進 8 家，每月最多切 30 次",
-      "warn": "網購、LINE Pay 等第三方支付、結台幣都不算"
+      "warn": "網購不算，結台幣不算",
+      "pay": "實體卡或 Apple／Google／Samsung Pay；LINE Pay 等第三方不算"
     },
     {
-      "slug": "esun-unicard", "key": "simple",
+      "slug": "esun-unicard",
+      "key": "simple",
       "who": "簡單選（預設）",
       "topNote": "三個方案裡最低的",
       "baseNote": "沒辦帳單 e 化加自動扣繳只有 0.3%",
-      "tiers": [{"label": "百大指定消費加碼（國外實體・日本）", "name": "國外實體"}],
+      "tiers": [
+        {
+          "label": "百大指定消費加碼（國外實體・日本）",
+          "name": "國外實體"
+        }
+      ],
       "act": "免登錄免訂閱；基本 1% 要先設自動扣繳加帳單 e 化，不然 0.3%",
-      "warn": "每月最後一天的方案算整個月。網購、第三方支付、結台幣都不算"
+      "warn": "每月最後一天的方案算整個月。網購不算，結台幣不算",
+      "pay": "實體卡或 Apple／Google／Samsung Pay；LINE Pay 等第三方不算"
     },
     {
       "slug": "taishin-richart",
       "baseNote": "海外消費，實體與線上都算，無指定店家",
       "tiers": [],
-      "rows": [["加碼的刷卡上限", "每期＝信用額度＋30 萬，超過只剩 0.3%"]],
+      "rows": [
+        [
+          "加碼的刷卡上限",
+          "每期＝信用額度＋30 萬，超過只剩 0.3%"
+        ]
+      ],
       "act": "免登錄，但消費當天要在 App 切到「玩旅刷」，事後補切無效",
-      "warn": "回饋是台新Point 不是現金：1 點換多少本站查不到，清除日是正卡人生日月的次月月底"
+      "warn": "回饋是台新Point 不是現金：1 點換多少本站查不到，清除日是正卡人生日月的次月月底",
+      "pay": "實體卡、Taiwan Pay 或行動支付都算"
     }
   ]
 }

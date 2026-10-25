@@ -15593,6 +15593,8 @@ if os.path.exists('cards.json'):
                 rec['topNote'] = tok(L['topNote'])
             if L.get('shops'):
                 rec['shops'] = L['shops']
+            if L.get('pay'):
+                rec['pay'] = tok(L['pay'])
             out.append(rec)
         return out
 
@@ -15626,6 +15628,7 @@ if os.path.exists('cards.json'):
         + (f'<s>{html.escape(r["who"])}</s>' if r.get('who') else '')
         + f'<s>日本最高 {r["top"]}　·　{html.escape(r["base"])}</s>'
         + ''.join(f'<u>{html.escape(t)}：{html.escape(d)}</u>' for t, d in r['tiers'])
+        + (f'<u>刷法：{html.escape(r["pay"])}</u>' if r.get('pay') else '')
         + f'<u>要做：{html.escape(r["act"])}</u>'
           f'<u>注意：{html.escape(r["warn"])}</u>'
           f'<u>{html.escape(r["end"])}</u></figcaption></figure>'
@@ -15671,6 +15674,11 @@ if os.path.exists('cards.json'):
         '小數往下取整，照這個數字刷不會超過上限。超過的部分只剩基本回饋。</li>'
         '<li><b>手機長按圖片存到相簿，</b>再用標籤機或相印機的 App 列印。'
         '電腦上用右鍵另存圖片。一張做成 45.7 × 68.6 mm 的滿版，列印時不要再縮放。</li>'
+        '<li><b>「刷法」那一行寫的是哪種付款方式才算加碼。</b>'
+        '各行規定差很多：星展兩張只認 Apple Pay 與 Samsung Pay，Google Pay 不算；'
+        '聯邦吉鶴的行動支付加碼官方明寫 QUICPay 不算；滙豐要直接刷卡，'
+        '走行動支付可能掉回基本回饋。官方沒寫清楚的，標籤上就寫「官方沒寫」，'
+        '不會替它猜成可以或不可以。</li>'
         '<li><b>上下各留了約 2mm 的白邊，</b>剪的時候貼著白邊剪，剪歪一點也不會切到字。</li>'
         f'<li><b>這兩件事每張卡都一樣，所以沒印在標籤上：</b>'
         f'結帳一律選日圓，選台幣是 DCC，匯率通常差 3–5%，而且多數銀行的海外加碼'
