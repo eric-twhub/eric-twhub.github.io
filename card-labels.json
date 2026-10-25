@@ -77,7 +77,7 @@
       "act": "1.5% 行動支付要登錄，期間內一次即可",
       "warn": "樂園門票要現場刷，不含網路交易",
       "pay": "1.5% 要用 Apple／Google Pay",
-      "payNote": "官方寫 QUICPay 不適用；但這張是 JCB，Apple Pay 在日本可能被走成 QUICPay，官方沒說"
+      "payNote": "官方寫 QUICPay 不適用；但這張是 JCB，Apple Pay 可能被走成 QUICPay，官方沒說"
     },
     {
       "slug": "ubot-jiho",
@@ -106,7 +106,7 @@
       "act": "1.5% 行動支付要登錄，期間內一次即可",
       "warn": "樂園門票要現場刷，不含網路交易",
       "pay": "1.5% 要用 Apple／Google Pay",
-      "payNote": "官方寫 QUICPay 不適用；但這張是 JCB，Apple Pay 在日本可能被走成 QUICPay，官方沒說"
+      "payNote": "官方寫 QUICPay 不適用；但這張是 JCB，Apple Pay 可能被走成 QUICPay，官方沒說"
     },
     {
       "slug": "ctbc-uniopen",
