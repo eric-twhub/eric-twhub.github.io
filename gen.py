@@ -18252,6 +18252,14 @@ if PC:
         f'<td class="{_SG.get(r["gap"], "")}"><b>{html.escape(r["gap"])}</b></td></tr>'
         for r in _pc_d['stability']['rows'])
 
+    _pc_sp = _pc_d['same_page']
+    _pc_same = ''.join(
+        f'<tr><td>{html.escape(r["stay"])}</td><td>{html.escape(r["room"])}</td>'
+        f'<td>{money(r["listed"])}</td>'
+        f'<td class="{"win" if r["badge"] != "無" else ""}"><b>{money(r["paid"])}</b></td>'
+        f'<td>{html.escape(r["badge"])}</td></tr>'
+        for r in _pc_sp['rows'])
+
     _pc_chk = ''.join(f'<details class="faq"><summary>{html.escape(c["q"])}</summary>'
                       f'<div>{html.escape(c["a"])}</div></details>' for c in PC['checklist'])
 
@@ -18389,6 +18397,15 @@ if PC:
       + _pc_stab + '</tbody></table></div>'
       + f'<div class="tldr"><ul><li>{html.escape(_pc_d["stability"]["reading"])}</li>'
         f'</ul></div>'
+      + '<h2>同一頁上，有的房型有折扣、有的沒有</h2>'
+      + f'<p class="lede">{html.escape(_pc_sp["_說明"])}</p>'
+      + f'<p class="disc">{html.escape(_pc_sp["date"])}・{html.escape(_pc_sp["hotel"])}'
+        f'・{html.escape(_pc_sp["device"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>住宿期間</th><th>房型</th>'
+        '<th>折扣前</th><th>實際顯示</th><th>折扣標籤</th></tr></thead><tbody>'
+      + _pc_same + '</tbody></table></div>'
+      + f'<div class="tldr"><ul><li>{html.escape(_pc_sp["reading"])}</li></ul></div>'
+      + f'<p class="disc">{html.escape(_pc_sp["limits"])}</p>'
       + '<h2>其他訂房平台呢</h2>'
       + f'<p class="lede">{html.escape(PC["platforms"]["_說明"])}</p>'
       + '<div class="tw"><table><thead><tr><th>平台</th><th>結果</th>'
