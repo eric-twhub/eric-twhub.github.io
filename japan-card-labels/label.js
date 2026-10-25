@@ -46,7 +46,7 @@ const S={head:80,name:44,big:80,topLab:28,topNote:27,who:28,whoStep:33,
          base:38,baseNote:29,baseStep:35,
          tier:35,tierStep:38,tierSub:28,tierSubStep:33,
          shops:26,shopsStep:31,tag:26,tagW:76,tagH:36,
-         body:30,bodyStep:35,foot:26,footSub:26,footDate:24,footH:78};
+         body:30,bodyStep:35,foot:26,footSub:26,footDate:24,footH:46};
 const FLOOR=0.78,CEIL=1.16;
 
 /* 一次走完整張標籤。draw=false 時只量高度，用來挑縮放倍率。 */
@@ -169,13 +169,15 @@ function run(ctx,c,k,draw){
   if(draw){
     const fy=H-MB-r(S.footH);
     ctx.fillStyle="#000";ctx.fillRect(PAD,fy,CW,Math.max(1,r(2)));
+    // 「結帳選日圓、手續費 1.5%」每張都一樣，寫在標籤上只是佔掉字級，
+    // 那句話放在網站的使用說明裡。頁尾留活動到期日與查證日就夠。
     ctx.font=f(700,r(S.foot));
     ctx.fillText(c.end,PAD,fy+r(34));
-    ctx.font=f(400,r(S.footSub));
-    ctx.fillText(FOOTLINE,PAD,fy+r(65));
+    const endW=ctx.measureText(c.end).width;
+    const chk="查於 "+CHECKED;
     ctx.textAlign="right";
-    ctx.font=f(400,r(S.footDate));
-    ctx.fillText(CHECKED,W-PAD,fy+r(34));
+    ctx.font=f(400,fitFont(ctx,chk,CW-endW-r(16),400,r(S.footDate)));
+    ctx.fillText(chk,W-PAD,fy+r(34));
     ctx.textAlign="left";
   }
   return y;
