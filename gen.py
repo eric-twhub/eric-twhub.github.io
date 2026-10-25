@@ -561,7 +561,7 @@ def adbox_tickets(items, slug, title, sub, note=''):
     return ('<aside class="adbox">'
             '<div class="adhd"><i>廣告</i>'
             f'<span>以下為合作平台的推廣連結，點了會離開本站前往 '
-            f'{html.escape("、".join(brands))}。本站可能獲得分潤，不影響你的價格。</span></div>'
+            f'{html.escape("、".join(brands))}。</span></div>'
             f'<div class="adbd"><div class="adt">{html.escape(title)}</div>'
             f'<div class="ads">{html.escape(sub)}</div>'
             f'<div class="adpl{one}">{cells}</div></div>'
@@ -1845,8 +1845,10 @@ def adbox(kind, path, slot='foot'):
     return (
       f'<aside class="adbox{cls}" data-ad="auto">'
       '<div class="adhd"><i>廣告</i>'
+      # 版位的「廣告」標籤、每條連結的 rel="sponsored"、頁尾那段完整聲明
+      # 已經把分潤關係講清楚了，這裡只需要講清楚點下去會去哪裡。
       f'<span>以下為合作平台的推廣連結，點了會離開本站前往 {html.escape(brand)}。'
-      '本站可能獲得分潤，不影響你的價格。</span></div>'
+      '</span></div>'
       + body
       + '<p class="adfp">本站沒有販售這些商品，也沒有查證過上面的價格與庫存。'
       # 頁面專屬商品是另外查的，日期跟著那一組走，不要套用全域日期，

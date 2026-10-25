@@ -37,6 +37,31 @@ BANNERS = {
     'hotel':     ('🏨', '日本住宿', '看完機票就是訂房', 'Trip.com'),
 }
 
+
+def _resolve():
+    """標題、副標與平台名以 ads.json 的商品組為準，上面那張表只當備援。
+
+    2026-10-25 發現圖上印「到 Trip.com 看」但連結其實送去 KKday：
+    transfer／car／transport 三組在 ads.json 換過平台，而這支程式自己抄了
+    一份寫死的平台名，換的時候沒跟著改，重新產生也修不好。同一個名字寫在
+    兩個檔案裡遲早會各走各的，所以改成只有一個來源。
+    """
+    groups = (json.load(open('ads.json', encoding='utf-8'))['groups']
+              if os.path.exists('ads.json') else {})
+    parts = (json.load(open('partners.json', encoding='utf-8'))['partners']
+             if os.path.exists('partners.json') else {})
+    out = {}
+    for kind, (icon, title, sub, brand) in BANNERS.items():
+        g = groups.get(kind) or {}
+        out[kind] = (g.get('icon') or icon,
+                     g.get('title') or title,
+                     g.get('sub') or sub,
+                     g.get('brand') or parts.get(kind, {}).get('brand') or brand)
+    return out
+
+
+SPEC = _resolve()
+
 CSS = """
 *{box-sizing:border-box;margin:0;padding:0}
 body{width:1440px;height:400px;overflow:hidden;
@@ -85,7 +110,7 @@ body{width:540px;height:360px;overflow:hidden;
 
 
 def card_page(kind):
-    icon, title, sub, brand = BANNERS[kind]
+    icon, title, sub, brand = SPEC[kind]
     return ('<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'
             f'<style>{CARD_CSS}</style></head><body><div class="c">'
             f'<div class="ic">{icon}</div>'
@@ -95,7 +120,7 @@ def card_page(kind):
 
 
 def page(kind):
-    icon, title, sub, brand = BANNERS[kind]
+    icon, title, sub, brand = SPEC[kind]
     return ('<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'
             f'<style>{CSS}</style></head><body><div class="b">'
             f'<div class="ic">{icon}</div>'
@@ -146,6 +171,8 @@ def shoot(ch, tmp, name, src, w, h, prefix):
 def main():
     ch = chrome()
     os.makedirs(OUT, exist_ok=True)
+    for kind, (_, title, _, brand) in SPEC.items():
+        print(f'   {kind:<10} {title}  →  {brand}')
     with tempfile.TemporaryDirectory() as tmp:
         for kind in BANNERS:
             shoot(ch, tmp, kind, page(kind), W, H, 'banner')
