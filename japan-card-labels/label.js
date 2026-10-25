@@ -116,9 +116,9 @@ function run(ctx,c,k,draw){
 
   // 加碼層
   for(const [t,d] of (c.tiers||[])){
-    y+=r(14);
+    y+=r(11);
     if(draw){ctx.fillStyle="#000";ctx.fillRect(PAD,y,CW,Math.max(2,r(3)))}
-    y+=r(17);
+    y+=r(14);
     ctx.font=f(700,r(S.tier));
     for(const ln of wrap(ctx,t,CW)){
       if(draw){ctx.fillStyle="#000";ctx.fillText(ln,PAD,y+r(28))}
@@ -170,7 +170,7 @@ function run(ctx,c,k,draw){
     const fy=H-MB-r(S.footH);
     ctx.fillStyle="#000";ctx.fillRect(PAD,fy,CW,Math.max(1,r(2)));
     ctx.font=f(700,r(S.foot));
-    ctx.fillText("到 "+c.end,PAD,fy+r(34));
+    ctx.fillText(c.end,PAD,fy+r(34));
     ctx.font=f(400,r(S.footSub));
     ctx.fillText(FOOTLINE,PAD,fy+r(65));
     ctx.textAlign="right";
