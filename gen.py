@@ -15575,8 +15575,11 @@ if os.path.exists('cards.json'):
 
             rec = {'n': c['name'], 'top': f'{_lb_g(top)}%',
                    'base': f'底 {_lb_g(base)}%', 'baseNote': L['baseNote'],
-                   'tiers': rows, 'act': L['act'], 'warn': L['warn'],
-                   'end': L.get('endPrefix', '') + _lb_end(c),
+                   'tiers': rows, 'act': tok(L['act']), 'warn': tok(L['warn']),
+                   # 沒有公告期限的方案（CUBE 的趣旅行）直接給一整句，
+                   # 不要拿別的方案的日期來充數。
+                   'end': L['end'] if L.get('end')
+                   else L.get('endPrefix', '到 ') + _lb_end(c),
                    'slug': c['slug']}
             if L.get('who'):
                 rec['who'] = L['who']
@@ -15620,7 +15623,7 @@ if os.path.exists('cards.json'):
         + ''.join(f'<u>{html.escape(t)}：{html.escape(d)}</u>' for t, d in r['tiers'])
         + f'<u>要做：{html.escape(r["act"])}</u>'
           f'<u>小心：{html.escape(r["warn"])}</u>'
-          f'<u>到 {html.escape(r["end"])}</u></figcaption></figure>'
+          f'<u>{html.escape(r["end"])}</u></figcaption></figure>'
         for i, r in enumerate(_LBR)) + '</div>'
 
     _lb_js = ('<script>window.LABELS=' + json.dumps(_LBR, ensure_ascii=False)
