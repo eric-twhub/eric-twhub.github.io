@@ -1,0 +1,53 @@
+{
+ "schema": 1,
+ "slug": "2026-10-26-kaohsiung-okinawa",
+ "generated": "2026-10-26 02:31",
+ "kind": "fare",
+ "origin": "kaohsiung",
+ "city": "okinawa",
+ "fare": {
+  "o": "KHH",
+  "d": "OKA",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 4426,
+  "dep": "2026-11-17",
+  "ret": "2026-11-20",
+  "dept": "17:30",
+  "rett": "10:30",
+  "rt": true,
+  "tr": 0,
+  "dur": 195,
+  "dur_to": 85,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 5376,
+ "n_rt": 2,
+ "others": [
+  {
+   "o": "KHH",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 6326,
+   "dep": "2026-11-11",
+   "ret": "2026-11-16",
+   "dept": "09:45",
+   "rett": "10:30",
+   "rt": true,
+   "tr": 0,
+   "dur": 215,
+   "dur_to": 105,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-11&inbound=OKA-KHH&returnDate=2026-11-16&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  }
+ ]
+}
