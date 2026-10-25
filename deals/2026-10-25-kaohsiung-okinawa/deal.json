@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-25-kaohsiung-okinawa",
- "generated": "2026-10-25 20:12",
+ "generated": "2026-10-25 20:26",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "okinawa",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 5910,
+ "med": 5626,
  "n_rt": 2,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 6895,
+   "price": 6326,
    "dep": "2026-11-11",
    "ret": "2026-11-16",
    "dept": "09:45",
