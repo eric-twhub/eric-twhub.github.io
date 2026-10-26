@@ -1340,7 +1340,7 @@ background:var(--acc);color:#fff;text-decoration:none;font-weight:700;font-size:
 .adgo .agt s{display:block;text-decoration:none;font-size:.76rem;font-weight:500;
 opacity:.88;margin-top:2px}
 .adgo .aga{flex:0 0 auto;font-size:1.15rem}
-.adbox.mid,.adbox.top{margin:22px 0 28px}
+.adbox.mid{margin:22px 0 28px}
 .adbox .adpl{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
 .adbox .adpl.one{grid-template-columns:1fr}
 .adbox .adp{display:flex;flex-direction:column;gap:5px;padding:11px 13px;
@@ -1787,7 +1787,12 @@ def _ad_products(g, track):
 _AD_IMG_KINDS = {'esim', 'activity2', 'transfer', 'car', 'transport', 'hotel'}
 
 def _ad_use_img(path, slot):
-    """這一頁的這個版位要不要用圖片版。只有上版位參與實驗。"""
+    """這一頁的這個版位要不要用圖片版。只有上版位參與實驗。
+
+    2026-10-26 拿掉上版位之後這裡永遠回 False，圖片版實驗等於停了
+    （ads/banner-*.jpg 目前沒有任何頁面會用到）。adbox() 的圖片分支先留著，
+    之後若把圖片版移到中版位，改這個條件就能復活。
+    """
     if slot != 'top':
         return False
     u = path[:-len('index.html')].strip('/') if path.endswith('index.html') else path
@@ -2464,24 +2469,6 @@ def _ad_second(path, content, used):
     used.append(k2)
     return content[:i] + box + content[i:]
 
-def _ad_top(path, content, used):
-    """頁面上方的版位，放在第一個 h2 之前。
-
-    不放在 h1 正下方：導言那段是讀者判斷「這頁有沒有我要的東西」的依據，
-    被廣告擋住的話，人還沒進入內容就先走了。
-    """
-    m = re.search(r'<h2[ >]', content)
-    if not m:
-        return content, used
-    k = _ad_other(used)
-    if not k:
-        return content, used
-    box = adbox(k, path, slot='top')
-    if not box:
-        return content, used
-    i = m.start()
-    return content[:i] + box + content[i:], used + [k]
-
 def _ad_inject(path, content):
     """把廣告區塊放進頁尾聲明之前。
 
@@ -2501,7 +2488,6 @@ def _ad_inject(path, content):
     content = content[:i] + box + content[i:]
     used = [kind]
     content = _ad_second(path, content, used)
-    content, used = _ad_top(path, content, used)
     return content
 
 def write(path,content):
