@@ -1,23 +1,11 @@
 {
- "generated": "2026-10-26 14:01",
+ "generated": "2026-10-27 04:42",
  "year": "2026",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
  "partial": true,
  "n_runs_all": 4,
  "runs": [
-  {
-   "names": [
-    "臺灣光復暨金門古寧頭大捷紀念日",
-    "補假"
-   ],
-   "start": "2026-10-24",
-   "end": "2026-10-26",
-   "days": 3,
-   "jp": [],
-   "cn": [],
-   "fest": []
-  },
   {
    "names": [
     "行憲紀念日"
@@ -653,9 +641,9 @@
      }
     ],
     "fare": {
-     "n": 5,
-     "median": 6851,
-     "low": 5401,
+     "n": 4,
+     "median": 7114,
+     "low": 6043,
      "enough": false
     },
     "areas": [
@@ -1056,9 +1044,9 @@
      }
     ],
     "fare": {
-     "n": 43,
-     "median": 8439,
-     "low": 4787,
+     "n": 41,
+     "median": 8464,
+     "low": 4881,
      "enough": true
     },
     "areas": [
@@ -1474,9 +1462,9 @@
      }
     ],
     "fare": {
-     "n": 26,
-     "median": 10402,
-     "low": 5507,
+     "n": 28,
+     "median": 10202,
+     "low": 5502,
      "enough": true
     },
     "areas": [
@@ -1887,8 +1875,8 @@
     ],
     "fare": {
      "n": 21,
-     "median": 9307,
-     "low": 5387,
+     "median": 10643,
+     "low": 5339,
      "enough": true
     },
     "areas": [
@@ -1923,7 +1911,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-10-26 06:00"
+   "generated": "2026-10-26 20:38"
   },
   "last": "2026-12-31",
   "partial": [],

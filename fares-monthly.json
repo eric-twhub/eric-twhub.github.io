@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-26 06:00",
+ "generated": "2026-10-26 20:38",
  "origin": "TPE",
  "dests": [
   "TYO",
@@ -18,27 +18,27 @@
  "min_n": 8,
  "months": {
   "2026-10": {
-   "n": 5,
-   "median": 6851,
-   "low": 5401,
+   "n": 4,
+   "median": 7114,
+   "low": 6043,
    "enough": false
   },
   "2026-11": {
-   "n": 43,
-   "median": 8439,
-   "low": 4787,
+   "n": 41,
+   "median": 8464,
+   "low": 4881,
    "enough": true
   },
   "2026-12": {
-   "n": 26,
-   "median": 10402,
-   "low": 5507,
+   "n": 28,
+   "median": 10202,
+   "low": 5502,
    "enough": true
   },
   "2027-01": {
    "n": 21,
-   "median": 9307,
-   "low": 5387,
+   "median": 10643,
+   "low": 5339,
    "enough": true
   },
   "2027-02": {
@@ -48,15 +48,15 @@
    "enough": true
   },
   "2027-03": {
-   "n": 4,
-   "median": 7608,
+   "n": 7,
+   "median": 9384,
    "low": 6282,
    "enough": false
   },
   "2027-04": {
-   "n": 4,
-   "median": 14836,
-   "low": 13428,
+   "n": 7,
+   "median": 13428,
+   "low": 8634,
    "enough": false
   },
   "2027-06": {
@@ -78,8 +78,8 @@
    "enough": false
   },
   "2027-09": {
-   "n": 6,
-   "median": 8756,
+   "n": 7,
+   "median": 9282,
    "low": 6465,
    "enough": false
   }
