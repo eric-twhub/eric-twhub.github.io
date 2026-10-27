@@ -1,32 +1,32 @@
 [
  {
   "slug": "2026-10-27-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,996 來回含稅｜台灣虎航 11/18 出發",
+  "title": "台北飛沖繩 NT$3,390 來回含稅｜台灣虎航 11/09 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 2996,
+  "price": 3390,
   "air": "台灣虎航",
-  "dep": "2026-11-18",
-  "ret": "2026-11-25",
+  "dep": "2026-11-09",
+  "ret": "2026-11-14",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,756（7 天有紀錄），這張低 37%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,754（7 天有紀錄），這張低 29%"
   ],
-  "med": 11472,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
+  "med": 11478,
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-09&inbound=OKA-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 3855,
-   "hi": 6045,
+   "lo": 3448,
+   "hi": 6050,
    "days": 8
   },
   "mbase": {
-   "avg": 4756,
+   "avg": 4754,
    "days": 7,
    "month": 11
   },
@@ -35,12 +35,12 @@
  },
  {
   "slug": "2026-10-27-kaohsiung-okinawa",
-  "title": "高雄飛沖繩 NT$4,424 來回含稅｜台灣虎航 11/17 出發",
+  "title": "高雄飛沖繩 NT$4,414 來回含稅｜台灣虎航 11/17 出發",
   "o": "高雄",
   "c": "沖繩",
   "_oiata": "KHH",
   "_diata": "OKA",
-  "price": 4424,
+  "price": 4414,
   "air": "台灣虎航",
   "dep": "2026-11-17",
   "ret": "2026-11-20",
@@ -49,7 +49,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 5374,
+  "med": 5364,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-11-17&inbound=OKA-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -60,82 +60,82 @@
  },
  {
   "slug": "2026-10-27-taichung-okinawa",
-  "title": "台中飛沖繩 NT$4,993 來回含稅｜台灣虎航 11/02 出發",
+  "title": "台中飛沖繩 NT$5,414 來回含稅｜台灣虎航 11/23 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 4993,
+  "price": 5414,
   "air": "台灣虎航",
-  "dep": "2026-11-02",
-  "ret": "2026-11-05",
+  "dep": "2026-11-23",
+  "ret": "2026-11-26",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,714（25 天有紀錄），這張低 49%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,755（25 天有紀錄），這張低 45%"
   ],
-  "med": 11244,
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
+  "med": 11207,
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 5993,
+   "lo": 6481,
    "hi": 11688,
    "days": 30
   },
   "mbase": {
-   "avg": 9714,
+   "avg": 9755,
    "days": 25,
    "month": 11
   },
   "rank": 1,
-  "n": 87
+  "n": 85
  },
  {
   "slug": "2026-10-27-transfer-tokyo-sendai",
-  "title": "飛東京轉乘去仙台，比直飛省 NT$5,383",
+  "title": "飛東京轉乘去仙台，比直飛省 NT$5,761",
   "o": "台灣",
   "c": "仙台",
   "via": "東京",
-  "price": 12366,
+  "price": 11988,
   "air": "飛東京再轉乘",
-  "fl_price": 7554,
+  "fl_price": 7196,
   "fl_rt": true,
   "fl_to": "東京",
-  "tr_twd": 2406,
+  "tr_twd": 2396,
   "tr_mode": "東北新幹線",
   "dep": "2026-11-03",
   "ret": "",
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$5,383"
+   "比直飛省 NT$5,761"
   ],
   "med": 17749,
-  "url": "https://www.aviasales.com/search/TPE0311NRT07111?t=MM17936886001793703300000185TPENRT17940561001794068100000260NRTTPE_dc2d71fd04eb781340b746447364c09e_18705&search_date=26102026&expected_price_uuid=01a1789d-5fe3-8030-e94c-170cdc7897f1&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fC0ivczWLtIagcWoVSwzKw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7554&marker=775639",
+  "url": "https://www.aviasales.com/search/TPE0311NRT07111?t=MM17936886001793703300000185TPENRT17940561001794068100000260NRTTPE_dc2d71fd04eb781340b746447364c09e_17857&search_date=27102026&expected_price_uuid=01a17ac6-16d4-8030-68be-9609716da89b&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fC0ivczWLtIagcWoVSwzKw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7196&marker=775639",
   "hotelcity": "仙台",
   "cslug": "sendai"
  },
  {
   "slug": "2026-10-27-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$3,629",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$3,647",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
-  "price": 11161,
+  "price": 11143,
   "air": "飛大阪再轉乘",
   "fl_price": 6851,
   "fl_rt": true,
   "fl_to": "大阪",
-  "tr_twd": 2155,
+  "tr_twd": 2146,
   "tr_mode": "山陽新幹線",
   "dep": "2026-10-29",
   "ret": "",
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$3,629"
+   "比直飛省 NT$3,647"
   ],
   "med": 14790,
   "url": "https://www.aviasales.com/search/TPE2910KIX05111?t=GK17932884001793302200000170TPEKIX17939202001793928600000200KIXTPE_bc793484147576452a50e3f68af4fe4d_17116&search_date=22102026&expected_price_uuid=01a1642e-7d24-8031-232c-e801624b782e&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pmJd2fnPzM94OtSiuHszMQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6851&marker=775639",
@@ -144,26 +144,26 @@
  },
  {
   "slug": "2026-10-27-transfer-tokyo-fukushima",
-  "title": "飛東京轉乘去福島，比直飛省 NT$7,328",
+  "title": "飛東京轉乘去福島，比直飛省 NT$7,702",
   "o": "台灣",
   "c": "福島",
   "via": "東京",
-  "price": 11352,
+  "price": 10978,
   "air": "飛東京再轉乘",
-  "fl_price": 7554,
+  "fl_price": 7196,
   "fl_rt": true,
   "fl_to": "東京",
-  "tr_twd": 1899,
+  "tr_twd": 1891,
   "tr_mode": "東北新幹線",
   "dep": "2026-11-03",
   "ret": "",
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$7,328"
+   "比直飛省 NT$7,702"
   ],
   "med": 18680,
-  "url": "https://www.aviasales.com/search/TPE0311NRT07111?t=MM17936886001793703300000185TPENRT17940561001794068100000260NRTTPE_dc2d71fd04eb781340b746447364c09e_18705&search_date=26102026&expected_price_uuid=01a1789d-5fe3-8030-e94c-170cdc7897f1&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fC0ivczWLtIagcWoVSwzKw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7554&marker=775639",
+  "url": "https://www.aviasales.com/search/TPE0311NRT07111?t=MM17936886001793703300000185TPENRT17940561001794068100000260NRTTPE_dc2d71fd04eb781340b746447364c09e_17857&search_date=27102026&expected_price_uuid=01a17ac6-16d4-8030-68be-9609716da89b&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fC0ivczWLtIagcWoVSwzKw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7196&marker=775639",
   "hotelcity": "福島",
   "cslug": "fukushima"
  }

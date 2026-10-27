@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-27-taichung-okinawa",
- "generated": "2026-10-27 05:55",
+ "generated": "2026-10-27 09:36",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4993,
-  "dep": "2026-11-02",
-  "ret": "2026-11-05",
+  "price": 5414,
+  "dep": "2026-11-23",
+  "ret": "2026-11-26",
   "dept": "07:10",
   "rett": "21:05",
   "rt": true,
@@ -21,15 +21,15 @@
   "dur": 180,
   "dur_to": 90,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$9,714（25 天有紀錄），這張低 49%"
+  "11 月出發的票，每天最便宜的平均要 NT$9,755（25 天有紀錄），這張低 45%"
  ],
- "med": 11244,
- "n_rt": 87,
+ "med": 11207,
+ "n_rt": 85,
  "others": [
   {
    "o": "RMQ",
@@ -37,9 +37,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5424,
-   "dep": "2026-11-23",
-   "ret": "2026-11-26",
+   "price": 5481,
+   "dep": "2026-11-02",
+   "ret": "2026-11-05",
    "dept": "07:10",
    "rett": "21:05",
    "rt": true,
@@ -47,7 +47,7 @@
    "dur": 180,
    "dur_to": 90,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
@@ -56,7 +56,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5924,
+   "price": 5914,
    "dep": "2026-11-09",
    "ret": "2026-11-12",
    "dept": "07:10",
@@ -75,7 +75,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5993,
+   "price": 6481,
    "dep": "2026-11-16",
    "ret": "2026-11-19",
    "dept": "07:10",
