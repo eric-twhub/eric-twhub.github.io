@@ -17594,8 +17594,17 @@ if os.path.exists('cards.json'):
               + f'<h1>在{html.escape(st["name"])} 刷哪張卡最划算？</h1>'
               + f'<p class="lede">{html.escape(st["jp"])}　·　{html.escape(st["cat"])}　·　'
                 f'輸入金額就知道每張卡實拿多少。'
-                f'卡片條件查證於 {_CDCHK}，折扣幅度查證於 {CP["checked"]}</p>'
+                f'卡片條件查證於 {_CDCHK}，折扣幅度查證於 '
+                f'{st.get("checked") or CP["checked"]}</p>'
               + _store_card_calc(st)
+              + ((f'<p class="disc" style="color:var(--hot)">'
+                  f'<b>⚠ {html.escape(st["top_warn_t"])}</b>：'
+                  f'{html.escape(st["top_warn"])}'
+                 + (f'　<a href="{html.escape(st["top_warn_src"])}" '
+                    f'rel="nofollow noopener" target="_blank">'
+                    f'{html.escape(st["top_warn_src_name"])}</a>'
+                    if st.get('top_warn_src') else '')
+                 + '</p>') if st.get('top_warn') else '')
               + ('' if st.get('kind') == 'card' else
                  f'<div class="today"><div class="tday">常見折扣 {html.escape(st["rate"])}'
                 f'　·　{html.escape(st["combo"])}　·　{html.escape(st["tax_min"])}</div>'
@@ -17669,7 +17678,8 @@ if os.path.exists('cards.json'):
               + (f'<p class="disc">領券頁：<a href="{html.escape(st["src"])}" '
                  f'rel="nofollow noopener" target="_blank">{html.escape(st["src_name"])}</a>，'
                  f'查證於 {CP["checked"]}。</p>' if st.get('src') else '')
-              + f'<p class="disc">本頁為公開資訊整理。折扣幅度與券的取得管道查證於 {CP["checked"]}，'
+              + f'<p class="disc">本頁為公開資訊整理。折扣幅度與券的取得管道查證於 '
+                f'{st.get("checked") or CP["checked"]}，'
                 f'由店家隨時調整，請以店家當期公告為準。本站不提供折價券本身，'
                 f'與文中店家無合作關係。{html.escape(CP["tax_note"])}</p>'
               + foot())
