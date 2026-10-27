@@ -206,8 +206,8 @@
   {
    "slug": "deals-2026-10-27-taipei-okinawa",
    "url": "/deals/2026-10-27-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,132 來回含稅｜台灣虎航 11/18 出發",
-   "title": "台北飛沖繩 NT$2,132 來回含稅｜台灣虎航 11/18 出發"
+   "h1": "台北飛沖繩 NT$2,990 來回含稅｜台灣虎航 11/18 出發",
+   "title": "台北飛沖繩 NT$2,990 來回含稅｜台灣虎航 11/18 出發"
   },
   {
    "slug": "deals-2026-10-27-kaohsiung-okinawa",
@@ -218,14 +218,20 @@
   {
    "slug": "deals-2026-10-27-taichung-okinawa",
    "url": "/deals/2026-10-27-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$4,848 來回含稅｜台灣虎航 11/09 出發",
-   "title": "台中飛沖繩 NT$4,848 來回含稅｜台灣虎航 11/09 出發"
+   "h1": "台中飛沖繩 NT$5,348 來回含稅｜台灣虎航 11/09 出發",
+   "title": "台中飛沖繩 NT$5,348 來回含稅｜台灣虎航 11/09 出發"
+  },
+  {
+   "slug": "deals-2026-10-27-taipei-saga",
+   "url": "/deals/2026-10-27-taipei-saga/",
+   "h1": "台北飛佐賀 NT$5,866 來回含稅｜台灣虎航 11/05 出發",
+   "title": "台北飛佐賀 NT$5,866 來回含稅｜台灣虎航 11/05 出發"
   },
   {
    "slug": "deals-2026-10-27-transfer-tokyo-sendai",
    "url": "/deals/2026-10-27-transfer-tokyo-sendai/",
-   "h1": "飛東京轉乘去仙台，比直飛省 NT$5,772",
-   "title": "飛東京轉乘去仙台，比直飛省 NT$5,772"
+   "h1": "飛東京轉乘去仙台，比直飛省 NT$5,788",
+   "title": "飛東京轉乘去仙台，比直飛省 NT$5,788"
   },
   {
    "slug": "deals-2026-10-27-transfer-osaka-hiroshima",
@@ -234,10 +240,16 @@
    "title": "飛大阪轉乘去廣島，比直飛省 NT$3,647"
   },
   {
+   "slug": "deals-2026-10-27-transfer-fukuoka-kumamoto",
+   "url": "/deals/2026-10-27-transfer-fukuoka-kumamoto/",
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$10,093",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$10,093"
+  },
+  {
    "slug": "deals-2026-10-27-transfer-tokyo-fukushima",
    "url": "/deals/2026-10-27-transfer-tokyo-fukushima/",
-   "h1": "飛東京轉乘去福島，比直飛省 NT$7,713",
-   "title": "飛東京轉乘去福島，比直飛省 NT$7,713"
+   "h1": "飛東京轉乘去福島，比直飛省 NT$7,729",
+   "title": "飛東京轉乘去福島，比直飛省 NT$7,729"
   },
   {
    "slug": "apple-japan-price",
