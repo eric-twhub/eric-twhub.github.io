@@ -253,7 +253,11 @@ def build(CD, mid, fee, rate_note):
         tag = []
         if maxrate(best) != maxrate(best, newbie=False):
             tag.append('含新戶加碼')
-        if best.get('reg_level') == 'race':
+        # reg_level 是整張卡的，但有 reg_monthly 的卡只有它指名的那一層要搶，
+        # 第 6 張標的就是「只有◯◯那層」。這一張算的是日幣實體消費，
+        # 吉鶴要搶的是交通卡儲值，不在這個數字裡面，標上去會讓人以為
+        # 那 11% 也要去搶登錄。
+        if best.get('reg_level') == 'race' and not best.get('reg_monthly'):
             tag.append('要搶登錄')
         rows += ('<div class="row"><div class="num"></div>'
                  f'<div class="nm">¥{y:,}<s>帳單約 NT${b:,.0f}</s></div>'
