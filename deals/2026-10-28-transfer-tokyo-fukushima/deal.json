@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-28-transfer-tokyo-fukushima",
- "generated": "2026-10-28 04:11",
+ "generated": "2026-10-28 05:32",
  "kind": "transfer",
  "city": "fukushima",
  "via": "tokyo",
@@ -12,7 +12,7 @@
   "air": "TR",
   "airname": "酷航",
   "cls": "lcc",
-  "price": 7714,
+  "price": 7716,
   "dep": "2026-11-03",
   "ret": "2026-11-07",
   "dept": "06:50",
@@ -22,7 +22,7 @@
   "dur": 430,
   "dur_to": 185,
   "gate": "Farera",
-  "url": "https://www.aviasales.com/search/TPE0311NRT07111?t=GK17936886001793703300000185TPENRT17940903001794101400000245NRTTPE_58bd29e96a7b87d6e5383659bbb9a834_19171&search_date=27102026&expected_price_uuid=01a17e15-dc3c-8030-2321-58d3bbe358f8&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=mB0mjRW6qNN-S6anp2ddXg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7714&marker=775639"
+  "url": "https://www.aviasales.com/search/TPE0311NRT07111?t=GK17936886001793703300000185TPENRT17940903001794101400000245NRTTPE_58bd29e96a7b87d6e5383659bbb9a834_19171&search_date=27102026&expected_price_uuid=01a17e15-dc3c-8030-2321-58d3bbe358f8&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=mB0mjRW6qNN-S6anp2ddXg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7716&marker=775639"
  },
  "fare_rt": true,
  "jpy_text": "約 ¥9,000",
@@ -39,6 +39,6 @@
  "route": "東京 → 福島",
  "mode": "東北新幹線",
  "tm": "約 1.5 小時",
- "total": 11496,
- "save": 7184
+ "total": 11498,
+ "save": 7182
 }

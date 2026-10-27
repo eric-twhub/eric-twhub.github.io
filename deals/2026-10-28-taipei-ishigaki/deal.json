@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-28-taipei-ishigaki",
- "generated": "2026-10-28 04:11",
+ "generated": "2026-10-28 05:32",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 10356,
+ "med": 10457,
  "n_rt": 4,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4505,
+   "price": 4705,
    "dep": "2026-11-24",
    "ret": "2026-11-28",
    "dept": "06:35",
@@ -55,7 +55,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 16207,
+   "price": 16209,
    "dep": "2026-11-21",
    "ret": "2026-11-25",
    "dept": "13:30",
@@ -65,7 +65,7 @@
    "dur": 2560,
    "dur_to": 375,
    "gate": "Turna.com",
-   "url": "https://www.aviasales.com/search/TSA2111ISG25111?t=NH17952678001795347000001260TSAHNDISG17956218001795696200001300ISGHNDTSA_c7d10bc159ae0dbb7f9829b215e45f7b_40277&search_date=27102026&expected_price_uuid=01a17e39-d24b-8040-2015-9c82b2037237&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=hrOE1YV5V8Az_zCwVZM47w&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=16207&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA2111ISG25111?t=NH17952678001795347000001260TSAHNDISG17956218001795696200001300ISGHNDTSA_c7d10bc159ae0dbb7f9829b215e45f7b_40277&search_date=27102026&expected_price_uuid=01a17e39-d24b-8040-2015-9c82b2037237&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=hrOE1YV5V8Az_zCwVZM47w&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=16209&marker=775639"
   },
   {
    "o": "TPE",
@@ -73,7 +73,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 17763,
+   "price": 17766,
    "dep": "2026-11-24",
    "ret": "2026-11-28",
    "dept": "16:50",
@@ -83,7 +83,7 @@
    "dur": 2875,
    "dur_to": 400,
    "gate": "Kupi.com",
-   "url": "https://www.aviasales.com/search/TSA2411ISG28111?t=NH17955390001795610700001135TSAHNDOKAISG17958546001795955400001740ISGMMYHNDTSA_e9895c2cb5602937fef753900acf3c44_44145&search_date=27102026&expected_price_uuid=01a17e3a-c081-8040-69db-da946e081dda&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=4XD5u2kVWaTD-FFgcnqxWg&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17763&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA2411ISG28111?t=NH17955390001795610700001135TSAHNDOKAISG17958546001795955400001740ISGMMYHNDTSA_e9895c2cb5602937fef753900acf3c44_44145&search_date=27102026&expected_price_uuid=01a17e3a-c081-8040-69db-da946e081dda&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=4XD5u2kVWaTD-FFgcnqxWg&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17766&marker=775639"
   }
  ]
 }
