@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-27-taipei-okinawa",
- "generated": "2026-10-27 09:43",
+ "generated": "2026-10-27 14:13",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 3390,
-  "dep": "2026-11-09",
-  "ret": "2026-11-14",
+  "price": 2132,
+  "dep": "2026-11-18",
+  "ret": "2026-11-25",
   "dept": "18:20",
   "rett": "09:45",
   "rt": true,
@@ -21,12 +21,12 @@
   "dur": 175,
   "dur_to": 80,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-09&inbound=OKA-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$4,754（7 天有紀錄），這張低 29%"
+  "11 月出發的票，每天最便宜的平均要 NT$4,509（7 天有紀錄），這張低 53%"
  ],
  "med": 11478,
  "n_rt": 18,
@@ -37,9 +37,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 3448,
-   "dep": "2026-11-18",
-   "ret": "2026-11-25",
+   "price": 2990,
+   "dep": "2026-11-09",
+   "ret": "2026-11-14",
    "dept": "18:20",
    "rett": "09:45",
    "rt": true,
@@ -47,7 +47,7 @@
    "dur": 175,
    "dur_to": 80,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-09&inbound=OKA-TPE&returnDate=2026-11-14&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
