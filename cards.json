@@ -340,6 +340,16 @@
      "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/cube#level"
     ]
    },
+   "_2026-10-27_複查": {
+    "查了什麼": "2027 年小樹點兌換比率換版，核對機場外圍停車的點數。",
+    "結論": "2027 公告的機場外圍停車是大園 135 點、連統 150 點、大程／大鵬 155 點（155 不變）。但那份公告的活動期間寫明 2027/1/1 到 2027/12/31，機場停車權益頁今天讀到的仍是大園 130 點、連統 145 點、大鵬／大程 155 點，所以站上這兩處在 2026/12/31 之前都是對的，今天不改。",
+    "待辦": "2027/1/1 起把 parking.json 的「桃園大園 130 點換一天」改成 135 點，把這張卡 parking.why 的「桃園大園 130 點換一天、連統 145 點」改成 135 點與 150 點；大鵬與大程 155 點不動。",
+    "順帶查到": "2027 的市區停車只列嘟嘟房、台灣聯通、24TPS、廣朋，詮營不在表上；肯驛的會籍卡改名成龍騰出行一點／二點，900 與 1,800 點不變。這兩件站上都沒引用。長榮聯名卡的 U.First 貴賓室是另一回事，沒有動。",
+    "來源": [
+     "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/discount/2027/pointannounceInfo/index.html",
+     "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/rights/airportparking"
+    ]
+   },
    "parking": {
     "has": false,
     "status": "官網明文排除",
