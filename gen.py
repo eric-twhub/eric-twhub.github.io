@@ -17596,15 +17596,17 @@ if os.path.exists('cards.json'):
                 f'輸入金額就知道每張卡實拿多少。'
                 f'卡片條件查證於 {_CDCHK}，折扣幅度查證於 '
                 f'{st.get("checked") or CP["checked"]}</p>'
-              + _store_card_calc(st)
-              + ((f'<p class="disc" style="color:var(--hot)">'
-                  f'<b>⚠ {html.escape(st["top_warn_t"])}</b>：'
+              # 放在試算「之前」而且用 tldr 框：試算後面緊接著每張卡的 ⚠ 免責聲明，
+              # 同樣用 disc 小字排在那堆後面會被讀成卡片註腳，而這是本頁最重要的一句。
+              + ((f'<div class="tldr"><ul><li><b style="color:var(--hot)">'
+                  f'⚠ {html.escape(st["top_warn_t"])}</b>：'
                   f'{html.escape(st["top_warn"])}'
                  + (f'　<a href="{html.escape(st["top_warn_src"])}" '
                     f'rel="nofollow noopener" target="_blank">'
                     f'{html.escape(st["top_warn_src_name"])}</a>'
                     if st.get('top_warn_src') else '')
-                 + '</p>') if st.get('top_warn') else '')
+                 + '</li></ul></div>') if st.get('top_warn') else '')
+              + _store_card_calc(st)
               + ('' if st.get('kind') == 'card' else
                  f'<div class="today"><div class="tday">常見折扣 {html.escape(st["rate"])}'
                 f'　·　{html.escape(st["combo"])}　·　{html.escape(st["tax_min"])}</div>'
