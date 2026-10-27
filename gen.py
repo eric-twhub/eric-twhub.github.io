@@ -52,13 +52,35 @@ def gate_info(g):
     return (g or '其他平台','C')
 
 URBAN={'tokyo','osaka','nagoya','fukuoka','kobe','kitakyushu'}
+# apple.json 的 quoted_at 是 update_rate.py 寫進去的 RFC-2822 UTC 原字串
+# （Tue, 27 Oct 2026 00:02:31 +0000）。以前四個地方都把它原樣印在頁面上，
+# 讀者看到的是一行英文加 UTC，而全站其他地方都是台北時間的 2026-10-27 08:02。
+# 這裡統一轉過來；解析不了就原樣傳回，不讓頁面壞掉。
+def _tpe_time(s):
+    if not s:
+        return ''
+    try:
+        from email.utils import parsedate_to_datetime
+        d = parsedate_to_datetime(s)
+        if d.tzinfo is None:
+            d = d.replace(tzinfo=datetime.timezone.utc)
+        try:
+            from zoneinfo import ZoneInfo
+            d = d.astimezone(ZoneInfo('Asia/Taipei'))
+        except Exception:
+            d = d.astimezone(datetime.timezone(datetime.timedelta(hours=8)))
+        return d.strftime('%Y-%m-%d %H:%M')
+    except Exception:
+        return s
+
+
 # 日圓匯率。CI 每天跑 update_rate.py 把牌告匯率寫進 apple.json，
 # 這裡直接讀它，原本寫死 0.213，比實際高約 5%，會把轉乘的車資算貴、
 # 讓「比直飛省多少」看起來比實際少。抓不到就退回舊常數，不讓頁面壞掉。
 def _jpy_rate():
     try:
         _r = json.load(open('apple.json', encoding='utf-8'))['rate']
-        return float(_r['jpy_twd']), _r.get('quoted_at', '')[:16]
+        return float(_r['jpy_twd']), _tpe_time(_r.get('quoted_at', ''))
     except Exception:
         return 0.213, ''
 JPY, JPY_AT = _jpy_rate()
@@ -11485,7 +11507,7 @@ if os.path.exists('apple.json'):
       f'多數 iPhone 單機已超過此金額，應主動申報，超出部分課徵進口稅捐；手機關稅為 0%，主要為 5% 營業稅，'
       f'實際以海關核定為準。'),
      ('匯率會影響結果嗎？',
-      f'會，而且影響很大。本頁使用 {AP["rate"]["source"]} {RATE}（{AP["rate"]["quoted_at"]}）換算。'
+      f'會，而且影響很大。本頁使用 {AP["rate"]["source"]} {RATE}（{_tpe_time(AP["rate"]["quoted_at"])}）換算。'
       f'日圓每變動 1%，一支 iPhone 的價差就會變動數百元；刷卡另有約 1.5% 國外交易手續費，實際成本會更高。'),
     ]
     faq_html=''.join('<details class="faq"><summary>'+html.escape(q)+'</summary><div>'
@@ -11670,7 +11692,7 @@ if os.path.exists('apple.json'):
       + f'<p class="upd">換算匯率 <b>{RATE}</b>'
         + (f'（中間匯率 {AP["rate"]["jpy_twd_mid"]} 加計約 {round(AP["rate"]["spread"]*100,1)}% 換匯成本）'
            if AP['rate'].get('jpy_twd_mid') else '')
-        + f'　·　匯率更新 {AP["rate"]["quoted_at"]}'
+        + f'　·　匯率更新 {_tpe_time(AP["rate"]["quoted_at"])}'
         + f'　·　售價取自 <a href="{AP["price_src"]}" rel="nofollow noopener" target="_blank">'
           f'Apple 日本</a>／<a href="{AP["price_src_tw"]}" rel="nofollow noopener" target="_blank">'
           f'台灣官網</a>，核對於 {AP["price_checked"]}</p>'
@@ -14665,7 +14687,7 @@ if os.path.exists('cards.json'):
     _ap = json.load(open('apple.json', encoding='utf-8')) if os.path.exists('apple.json') else {}
     _MIDC = (_ap.get('rate', {}).get('jpy_twd_mid')
              or _ap.get('rate', {}).get('jpy_twd') or 0.205)
-    _RDATE = _ap.get('rate', {}).get('quoted_at', '')
+    _RDATE = _tpe_time(_ap.get('rate', {}).get('quoted_at', ''))
     MODES = [('shop', '符合加碼條件的實體消費'), ('base', '一般日本消費'),
              ('transit', '交通卡儲值')]
     SCOPE_NAME = {'shop': '實體消費', 'transit': '交通卡儲值', 'any': '實體與交通卡'}
@@ -16810,8 +16832,8 @@ if os.path.exists('cards.json'):
       + '<p class="lede">在店裡看到日圓標價，想知道刷下去實際負擔多少、哪張卡回饋最多。'
         f'最多可以挑三張並排比，順便看加碼上限會在哪個金額卡住。目前收錄 {len(CD["cards"])} 張卡。</p>'
       + f'<p class="upd">換算匯率 {_MIDC}（中間匯率）　·　'
-        f'國外交易手續費 {_fx["typical"]}%　·　匯率每日自動更新'
-        + (f'　·　{_RDATE}' if _RDATE else '') + '</p>'
+        f'國外交易手續費 {_fx["typical"]}%　·　'
+        + (f'匯率更新 {_RDATE}' if _RDATE else '匯率每日自動更新') + '</p>'
       + '<div class="calc"><div class="sf">'
       + _ksel(1, _ktop[0], False)
       + _ksel(2, _ktop[1] if len(_ktop) > 1 else None, True)
