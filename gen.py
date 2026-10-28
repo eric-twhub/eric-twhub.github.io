@@ -13895,6 +13895,14 @@ if os.path.exists('cobrand-cards.json'):
       '整筆交易都拿不到退款。官方說明採每筆購買紀錄判定，同一筆交易中只要有一項商品'
       '未通過海關確認，該筆交易就失去免稅資格，不是只扣掉那一項。'
       '另外「別送」（把商品寄回國）制度已於 2025 年 3 月 31 日廢止，商品必須自己帶出境。'),
+     ('出境時要去哪裡辦？可以用手機辦嗎？',
+      '在國際線出境大廳、託運行李之前辦海關確認。可以在免稅手續機台刷護照，'
+      '也可以在成田、羽田、關西、中部、新千歲、福岡、那霸這 7 個機場，'
+      '連上海關專用 Wi-Fi 後用 Visit Japan Web 線上辦。綠燈就完成，'
+      '紅燈要帶著東西到海關檢查處給關員看。'),
+     ('行李已經託運了還能辦嗎？',
+      '不能。辦確認時免稅品要全部帶在身上，行李託運後也不能為了辦手續再拿回來。'
+      '所以要先辦確認、再託運。'),
      ('10 月底之前買還是舊制嗎？',
       f'是。10 月 31 日之前購買仍適用現行的購買時免稅，結帳當下就是免稅價。'
       f'制度以購買日為準，{_cd.replace("<b>","").replace("</b>","")}。'),
@@ -13908,7 +13916,7 @@ if os.path.exists('cobrand-cards.json'):
 
     tf_title = '2026/11/1 日本免稅新制：先付全額、出境後才退稅（懶人包）'
     tf_desc = ('日本免稅 2026 年 11 月 1 日改採退款方式：購買時先付含稅全額，出境經海關確認後'
-               '才退還消費稅。整理新舊制對照、要先墊多少錢、90 天確認期限與常見問題。')
+               '才退還消費稅。整理新舊制對照、要先墊多少錢、出境當天怎麼辦海關確認與常見問題。')
 
     _NCARD = (len(json.load(open('cards.json', encoding='utf-8'))['cards'])
               if os.path.exists('cards.json') else 0)
@@ -13947,6 +13955,57 @@ if os.path.exists('cobrand-cards.json'):
                 '查證於 ' + _RF['checked'] + '。該頁是給免稅店看的問答，'
                 '但問的正是旅客會遇到的事，所以直接引原文。</p>')
         return out
+
+    # 出境當天的流程。全部引國稅廳、觀光廳、海關三處的旅客說明，查證於 2026-10-28。
+    # Wi-Fi 的名稱與密碼是海關自己公開的，機場現場也會貼。
+    _TF_VJW7 = '成田、羽田、關西、中部、新千歲、福岡、那霸'
+    _tf_src = [
+        ('觀光廳 旅客說明', 'https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00028.html'),
+        ('國稅廳 線上辦理海關確認操作指南（繁中）',
+         'https://www.nta.go.jp/publication/pamph/shohi/menzei/201805/format/002/onlinetetsuzuki/guidetwn.htm'),
+        ('國稅廳 線上辦理常見問題（繁中）',
+         'https://www.nta.go.jp/publication/pamph/shohi/menzei/201805/format/002/onlinetetsuzuki/faqtwn.htm'),
+        ('海關 各機場機台與檢查處位置圖', 'https://www.customs.go.jp/kaigairyoko/taxrefund/map.htm'),
+        ('海關 線上辦理的 Wi-Fi', 'https://www.customs.go.jp/kaigairyoko/taxrefund/vjw.html'),
+    ]
+    _tf_depart = (
+        '<h2 id="departure">出境那天怎麼辦</h2>'
+        '<p class="lede">買了免稅品，出境那天要先到國際線出境大廳辦「海關確認」，'
+        '<b>而且要在託運行李之前</b>。辦法有兩種，擇一即可，結果一樣。</p>'
+        '<ol class="lede">'
+        '<li><b>帶著所有免稅品到出境大廳，行李先不要託運。</b>'
+        '免稅手續機台和海關檢查處都在託運櫃檯之前。行李一旦託運就不能為了辦手續再拿回來，'
+        '如果結果要你給關員看東西，東西卻在託運行李裡，就辦不成了。</li>'
+        '<li><b>辦確認，兩種擇一：</b><br>'
+        '<b>機台：</b>在免稅手續機台刷護照。有設機台的機場、港口都能用，不必事先登錄任何東西。<br>'
+        f'<b>手機：</b>只有{_TF_VJW7}這 7 個機場可以。'
+        '在出境大廳、安檢之前的範圍內，連上海關專用 Wi-Fi'
+        '「Customs_WiFi_For_TaxRefund」（密碼 jcustoms），打開 Visit Japan Web 按「Confirm」。'
+        '一定要連這個 Wi-Fi 才按得下去，用自己的網卡或 eSIM 不行。'
+        '事先要在 Visit Japan Web 建好帳號，登錄護照和入境許可證印的資料；這個畫面只有英文。</li>'
+        '<li><b>看結果。</b>綠燈（Completed）就完成了，可以去託運。'
+        '紅燈（Not Completed）要帶著東西到海關檢查處給關員看，看過才算完成；'
+        '不去也可以，但那幾筆就不退。</li>'
+        '<li><b>等退款。</b>海關確認之後，由店家或店家委託的退稅業者退款。'
+        '退款進度要問當初購買的店，Visit Japan Web 不顯示、海關櫃檯也不回答。</li>'
+        '</ol>'
+        '<div class="tldr"><ul>'
+        '<li><b>要在報到登機手續完成之前辦完，</b>包含被抽查的時間。'
+        '來不及而放棄，就當作沒有完成確認；因此趕不上班機，航空公司和海關都不賠。'
+        '有買免稅品的那天，到機場的時間要抓寬一點。</li>'
+        '<li><b>國內線轉國際線出境的，</b>在最後離開日本的那個機場辦，不是在第一個機場。</li>'
+        '<li><b>確認以收據為單位。</b>同一張收據只要少一件，整張都不退。'
+        '已經吃掉或用掉的，那張收據不要自己按確認，直接到櫃檯跟關員說。</li>'
+        '<li><b>店裡結帳時沒出示 Visit Japan Web 的條碼也沒關係，</b>'
+        '店家有傳出購買紀錄，一樣會顯示在 Visit Japan Web 裡，可以用手機辦。</li>'
+        '<li><b>同行家人：</b>購買紀錄是用購買者的護照登記的，官方寫的手續都是本人出示護照，'
+        '或登入自己的 Visit Japan Web。能不能替同行家人一起辦，'
+        '國稅廳和觀光廳給旅客的問答都沒有提到。</li>'
+        '</ul></div>'
+        '<p class="disc">以上依'
+        + '、'.join(f'<a href="{u}" target="_blank" rel="nofollow noopener">{n}</a>'
+                   for n, u in _tf_src)
+        + '整理，查證於 2026-10-28。機台在各航廈的位置，看海關的位置圖最準。</p>')
 
     write('japan-tax-free-2026/index.html',
       head(tf_title, tf_desc, 'japan-tax-free-2026/',
@@ -13995,6 +14054,7 @@ if os.path.exists('cobrand-cards.json'):
       + fare_cta('osaka', '大阪也有便宜票', '')
       + search_form('查你自己的日期',
                     '上面是近期最低紀錄，選好日期可查目前實際可訂的價格。', 'TPE', 'TYO')
+      + _tf_depart
       + '<span id="refund-fee"></span>' + _rf_block()
       + '<h2>三個容易踩到的地雷</h2>'
       + '<div class="tldr"><ul>'
@@ -14017,7 +14077,7 @@ if os.path.exists('cobrand-cards.json'):
         f'<s>沒有入境章就買不了免稅品</s></a>'
       + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b><s>台灣飛日本，每日更新</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>各出發地比價</s></a></div>'
-      + '<p class="disc">本頁依日本觀光廳「消費稅免稅店」網站、全國免稅店協會「リファンド方式」'
+      + '<p class="disc">本頁依日本觀光廳「消費稅免稅店」網站、國稅廳與海關的旅客說明、全國免稅店協會「リファンド方式」'
         '特設網站及免稅系統業者公開說明整理。制度細則以日本國稅廳與觀光廳公告為準，'
         '各店家實際作業方式可能不同，請於現場確認。'
         '頁內部分連結為聯盟行銷連結，本站可能獲得分潤，不影響你的價格。</p>'
