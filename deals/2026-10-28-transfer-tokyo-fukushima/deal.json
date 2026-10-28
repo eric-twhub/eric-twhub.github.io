@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-28-transfer-tokyo-fukushima",
- "generated": "2026-10-28 16:05",
+ "generated": "2026-10-28 17:34",
  "kind": "transfer",
  "city": "fukushima",
  "via": "tokyo",
@@ -31,10 +31,10 @@
  "rate_at": "2026-10-28 08:02",
  "fare_gate": "Farera",
  "tc_alt": {
-  "price": 10114,
-  "airname": "台灣虎航",
-  "dep": "2026-10-30",
-  "total": 13870
+  "price": 10052,
+  "airname": "酷航",
+  "dep": "2026-11-16",
+  "total": 13808
  },
  "route": "東京 → 福島",
  "mode": "東北新幹線",
