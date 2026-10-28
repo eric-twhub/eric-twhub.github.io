@@ -1,0 +1,52 @@
+{
+ "schema": 1,
+ "slug": "2026-10-29-taipei-saga",
+ "generated": "2026-10-29 04:25",
+ "kind": "fare",
+ "origin": "taipei",
+ "city": "saga",
+ "fare": {
+  "o": "TPE",
+  "d": "HSG",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 5340,
+  "dep": "2026-11-05",
+  "ret": "2026-11-12",
+  "dept": "08:10",
+  "rett": "12:15",
+  "rt": true,
+  "tr": 0,
+  "dur": 275,
+  "dur_to": 125,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-05&inbound=HSG-TPE&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 16130,
+ "n_rt": 2,
+ "others": [
+  {
+   "o": "TPE",
+   "d": "HSG",
+   "air": "NH",
+   "airname": "全日空",
+   "cls": "fsc",
+   "price": 26920,
+   "dep": "2026-11-05",
+   "ret": "2026-11-12",
+   "dept": "16:50",
+   "rett": "10:00",
+   "rt": true,
+   "tr": 2,
+   "dur": 1335,
+   "dur_to": 290,
+   "gate": "All Nippon Airways",
+   "url": "https://www.aviasales.com/search/TSA0511HSG12111?t=NH17938974001793956500000925TSAHNDHSG17944776001794498600000410HSGHNDTSA_106d4d15cbc649784ad6d0656453e672_67019&search_date=23102026&expected_price_uuid=01a167ad-9fa3-8040-6cf1-f0f18fce2e7a&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=xmPE5xGLYEUH-JwteMU6qg&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=26920&marker=775639"
+  }
+ ]
+}
