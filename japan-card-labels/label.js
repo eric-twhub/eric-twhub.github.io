@@ -48,28 +48,8 @@ const S={head:80,name:44,big:80,topLab:28,topNote:27,who:28,whoStep:33,
          base:38,baseNote:29,baseStep:35,
          tier:35,tierStep:38,tierSub:28,tierSubStep:33,
          shops:26,shopsStep:31,tag:26,tagW:76,tagH:36,
-         body:30,bodyStep:35,foot:26,footSub:26,footDate:24,footH:46,
-         ex:23,exStep:28};
+         body:30,bodyStep:35,foot:26,footSub:26,footDate:24,footH:46};
 const FLOOR=0.78,CEIL=1.16;
-
-/* 不算、拿不到的資訊一律用這一種寫法：比說明再小一級的細字，前面加「×」。
-   和能用的資訊同樣大小時，讀者會把「條碼與第三方支付不算」的「不算」
-   一路讀回上一行，以為連 Apple Pay 都不算。 */
-const EX=t=>"× "+t;
-function drawEx(ctx,text,x,y,maxW,r,draw){
-  ctx.font=f(400,r(S.ex));
-  // 換行後的那幾行縮排到「×」後面，「×」單獨凸出來才看得出一條從哪裡開始
-  const ind=ctx.measureText(EX("")).width;
-  wrap(ctx,text,maxW-ind).forEach((ln,i)=>{
-    if(draw){
-      ctx.fillStyle="#000";
-      if(i===0)ctx.fillText("×",x,y+r(22));
-      ctx.fillText(ln,x+ind,y+r(22));
-    }
-    y+=r(S.exStep);
-  });
-  return y;
-}
 
 /* 一次走完整張標籤。draw=false 時只量高度，用來挑縮放倍率。 */
 function run(ctx,c,k,draw){
@@ -123,10 +103,6 @@ function run(ctx,c,k,draw){
       const ns=fitFont(ctx,c.topNote,CW-r(236),400,r(S.topNote));
       ctx.font=f(400,ns);ctx.fillText(c.topNote,PAD,heroTop+r(57));
     }
-    if(c.topEx){
-      const ns=fitFont(ctx,EX(c.topEx),CW-r(236),400,r(S.ex));
-      ctx.font=f(400,ns);ctx.fillText(EX(c.topEx),PAD,heroTop+r(55));
-    }
   }
   y=heroTop+capH+r(14);
 
@@ -135,11 +111,10 @@ function run(ctx,c,k,draw){
   if(draw){ctx.fillStyle="#000";ctx.fillText(c.base,PAD,y+r(30))}
   y+=r(43);
   ctx.font=f(400,r(S.baseNote));
-  for(const ln of wrap(ctx,c.baseNote||"",CW)){
+  for(const ln of wrap(ctx,c.baseNote,CW)){
     if(draw){ctx.fillStyle="#000";ctx.fillText(ln,PAD,y+r(26))}
     y+=r(S.baseStep);
   }
-  if(c.baseEx)y=drawEx(ctx,c.baseEx,PAD,y,CW,r,draw)+r(4);
 
   // 加碼層
   for(const [t,d] of (c.tiers||[])){
@@ -173,9 +148,8 @@ function run(ctx,c,k,draw){
 
   // 要做／小心
   const tagW=r(S.tagW),tagH=r(S.tagH);
-  for(const [tag,txt,sub,ex] of [["刷法",c.pay,c.payNote,c.payEx],["要做",c.act,null,c.actEx],
-                                 ["注意",c.warn,null,c.warnEx]]){
-    if(!txt&&!ex)continue;
+  for(const [tag,txt,sub] of [["刷法",c.pay,c.payNote],["要做",c.act],["注意",c.warn]]){
+    if(!txt)continue;
     y+=r(17);
     if(draw){
       ctx.fillStyle="#000";ctx.fillRect(PAD,y,tagW,tagH);
@@ -186,11 +160,11 @@ function run(ctx,c,k,draw){
     ctx.font=f(500,r(S.body));
     const x=PAD+tagW+r(13);
     let y2=y;
-    for(const ln of wrap(ctx,txt||"",CW-tagW-r(13))){
+    for(const ln of wrap(ctx,txt,CW-tagW-r(13))){
       if(draw){ctx.fillStyle="#000";ctx.fillText(ln,x,y2+r(27))}
       y2+=r(S.bodyStep);
     }
-    // 補充說明（官方沒寫、使用條件）用小字；這不是排除項，不加「×」
+    // 「不算」的那半句用小字，不然整段一樣大，看不出哪裡開始是排除項
     if(sub){
       ctx.font=f(400,r(S.tierSub));
       for(const ln of wrap(ctx,sub,CW-tagW-r(13))){
@@ -198,8 +172,6 @@ function run(ctx,c,k,draw){
         y2+=r(S.tierSubStep);
       }
     }
-    // 整句都是排除項時，細字和黑色標籤對齊在同一行
-    if(ex)y2=drawEx(ctx,ex,x,txt||sub?y2:y2+r(4),CW-tagW-r(13),r,draw);
     y=Math.max(y+tagH,y2);
   }
 

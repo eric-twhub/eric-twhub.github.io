@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,289（5 天有紀錄），這張低 40%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,197（5 天有紀錄），這張低 38%"
   ],
   "med": 11141,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
@@ -22,7 +22,7 @@
   "cslug": "okinawa",
   "usual": null,
   "mbase": {
-   "avg": 4289,
+   "avg": 4197,
    "days": 5,
    "month": 11
   },
@@ -70,7 +70,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 10362,
+  "med": 10454,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-21&inbound=ISG-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
   "hotelcity": "石垣島",
   "cslug": "ishigaki",
