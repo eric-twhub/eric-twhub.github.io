@@ -13981,7 +13981,7 @@ if os.path.exists('cobrand-cards.json'):
         f'<b>手機：</b>只有{_TF_VJW7}這 7 個機場可以。'
         '在出境大廳、安檢之前的範圍內，連上海關專用 Wi-Fi'
         '「Customs_WiFi_For_TaxRefund」（密碼 jcustoms），打開 Visit Japan Web 按「Confirm」。'
-        '一定要連這個 Wi-Fi 才按得下去，用自己的網卡或 eSIM 不行。'
+        '要先連上這個 Wi-Fi，Confirm 才能按。'
         '事先要在 Visit Japan Web 建好帳號，登錄護照和入境許可證印的資料；這個畫面只有英文。</li>'
         '<li><b>看結果。</b>綠燈（Completed）就完成了，可以去託運。'
         '紅燈（Not Completed）要帶著東西到海關檢查處給關員看，看過才算完成；'
@@ -14005,7 +14005,8 @@ if os.path.exists('cobrand-cards.json'):
         '<p class="disc">以上依'
         + '、'.join(f'<a href="{u}" target="_blank" rel="nofollow noopener">{n}</a>'
                    for n, u in _tf_src)
-        + '整理，查證於 2026-10-28。機台在各航廈的位置，看海關的位置圖最準。</p>')
+        + '整理，查證於 2026-10-28。整理可能有疏漏，出發前請以官方公告為準；'
+        '機台在各航廈的位置，看海關的位置圖最準。</p>')
 
     write('japan-tax-free-2026/index.html',
       head(tf_title, tf_desc, 'japan-tax-free-2026/',
