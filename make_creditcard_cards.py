@@ -22,6 +22,13 @@ E = htm.escape
 # 用來試算的消費金額。¥50,000 剛好落在多數加碼上限開始咬人的位置，
 # 帳面和實際的差距在這裡最看得出來。
 DEMO_JPY = 50000
+# store_scope 存的是 slug，圖卡上要印店名
+_SHOPNAME = {
+    'bic-camera': 'Bic Camera', 'matsukiyo': '松本清', 'don-quijote': '唐吉訶德',
+    'daikoku': '大國藥妝', 'uniqlo': 'UNIQLO', 'alpen': 'Alpen', 'muji': '無印良品',
+    'loft': 'Loft', 'abc-mart': 'ABC-MART', '3coins': '3COINS',
+    'pokemon-center': '寶可夢中心', 'sanrio': 'SANRIO', 'kiddy-land': 'KIDDY LAND',
+}
 LADDER = (10000, 30000, 50000, 100000, 200000)
 # 判斷這一層是不是只有新戶拿得到
 NEW = re.compile(r'新戶|核卡')
@@ -171,7 +178,7 @@ def make_math(CD, mid, fee):
 def build(CD, mid, fee, rate_note):
     bill, tiers, back, maxrate, hit = make_math(CD, mid, fee)
     cards = CD['cards']
-    n = 8
+    n = 9
     demo_bill = bill(DEMO_JPY)
     out = []
 
@@ -339,6 +346,103 @@ def build(CD, mid, fee, rate_note):
              f'<div class="list">{rows}</div>'
              + foot(8, n, rate_note))
     out.append(('jp-card-08.png', page(inner)))
+
+    # ── 9 六張卡的刷卡順序 ──
+    # 社群上傳最廣的那種「先刷 A 再刷 B」清單，站上有 cap 可以把金額門檻補上去。
+    # 綁定名單的加碼層（store_scope）不能算進一般消費的順序裡，那是另一條路徑。
+    SIX = ['ctbc-uniopen', 'esun-kumamon', 'fubon-j',
+           'ctbc-linepay', 'cathay-cube', 'esun-unicard']
+
+    def gen_ts(c):
+        """一般實體消費真正用得到的加碼層：排除新戶層與綁定店家名單的層。"""
+        return [t for t in tiers(c, 'shop', newbie=False) if not t.get('store_scope')]
+
+    def gen_rate(c):
+        ts = gen_ts(c)
+        base = 0 if any(t.get('no_base') for t in ts) else c['base']
+        return round(base + sum(t['rate'] for t in ts), 2)
+
+    def gen_hit(c):
+        ts = [t for t in gen_ts(c) if t['cap']]
+        return round(min(t['cap'] / (t['rate'] / 100) for t in ts)) if ts else 0
+
+    def gen_floor(c):
+        """加碼上限用完之後剩下的費率：只留沒有上限的那幾層。"""
+        ts = [t for t in gen_ts(c) if not t['cap']]
+        base = 0 if any(t.get('no_base') for t in ts) else c['base']
+        return round(base + sum(t['rate'] for t in ts), 2)
+
+    six = [next(x for x in cards if x['slug'] == sg) for sg in SIX]
+    six.sort(key=lambda c: -gen_rate(c))
+
+    rows = ('<div class="hd"><div class="num"></div><div class="nm">卡片</div>'
+            '<div class="c1">回饋</div><div class="c2">刷到這個金額就滿</div>'
+            '<div class="c3">之後剩</div></div>')
+    for j, c in enumerate(six, 1):
+        h = gen_hit(c)
+        fl = gen_floor(c)
+        # 三種狀況要分開講：有上限就給金額；有加碼但官方沒寫上限；
+        # 根本沒有加碼可以用完（這一欄全部是基本回饋）。第三種印成
+        # 「官方沒寫上限」會變成斷言一件官方根本沒被問到的事。
+        if h:
+            lim = f'NT${h:,}'
+        elif gen_ts(c):
+            lim = '<small>官方沒寫上限</small>'
+        else:
+            lim = '<small>沒有加碼可以用完</small>'
+        rows += (f'<div class="row"><div class="num">{j:02}</div>'
+                 f'<div class="nm">{E(c["name"])}</div>'
+                 f'<div class="c1">{rate_txt(gen_rate(c))}</div>'
+                 f'<div class="c2">{lim}</div>'
+                 f'<div class="c3">{rate_txt(fl)}</div></div>')
+
+    # 綁名單的加碼：只有「贏得過一般順序第二名」的那幾張才會真的改變順序。
+    # 第一名反正會先刷滿，所以門檻抓第二名。沒入選的不是沒有，是排不進來，
+    # 要在卡上說出來，不能默默拿掉一列。
+    second = gen_rate(six[1]) if len(six) > 1 else 0
+    ex, ex_out = '', []
+    for c in six:
+        st = [t for t in tiers(c, 'shop', newbie=False) if t.get('store_scope')]
+        if not st:
+            continue
+        r = round(c['base'] + sum(t['rate'] for t in st), 2)
+        if r <= second:
+            ex_out.append(f'{c["name"]}在它的指定店家是 {rate_txt(r)}，'
+                          f'低於{six[1]["name"]}的 {rate_txt(second)}，排不進來')
+            continue
+        caps = [t['cap'] / (t['rate'] / 100) for t in st if t['cap']]
+        lim = f'刷到 NT${round(min(caps)):,}' if caps else '官方沒寫上限'
+        names = '・'.join(_SHOPNAME.get(x, x) for t in st for x in t['store_scope'])
+        ex += ('<div class="grp">'
+               f'<b>{E(c["name"])} {rate_txt(r)}<i>{lim}</i></b>'
+               f'<s>{E(names)}<br>'
+               f'{rate_txt(r)}還是低於{E(six[0]["name"])}的 '
+               f'{rate_txt(gen_rate(six[0]))}，所以先把那張刷到上限，'
+               f'之後在這幾家才換過來</s></div>')
+
+    # 交通卡儲值是另一個 scope，上限也是分開的
+    tr = ''
+    for c in six:
+        # 這裡要的是真的綁交通卡儲值的層。tiers() 會把 scope=any 的層一起回傳，
+        # 熊本熊的指定商店加碼就是 any，不擋掉它會被誤印成交通卡那一類。
+        if not any(t['scope'] == 'transit'
+                   for t in tiers(c, 'transit', newbie=False)):
+            continue
+        tr += ('<div class="grp">'
+               f'<b>{E(c["name"])} {rate_txt(maxrate(c, "transit", newbie=False))}'
+               f'<i>刷到 NT${hit(c, "transit"):,}</i></b>'
+               '<s>儲值和實體消費的上限分開算，兩層不疊在同一筆</s></div>')
+
+    inner = ('<div class="kick">加碼有上限，順序才有意義</div>'
+             '<h1>這六張，<em>照什麼順序刷</em></h1>'
+             '<div class="sub">金額是台幣帳單，刷到那個數字加碼就用完，該換下一張。'
+             '以既有卡友、日本一般實體消費計算。</div>'
+             f'<div class="list">{rows}</div>'
+             '<div class="legend">下面兩種情況跳出上面的順序。</div>'
+             + f'<div class="list">{ex}{tr}</div>'
+             + (f'<div class="legend">{E("；".join(ex_out))}。</div>' if ex_out else '')
+             + foot(9, n, rate_note))
+    out.append(('jp-card-09.png', page(inner)))
     return out
 
 
