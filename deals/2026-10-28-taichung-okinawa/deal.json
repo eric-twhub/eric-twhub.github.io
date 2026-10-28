@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-28-taichung-okinawa",
- "generated": "2026-10-28 05:32",
+ "generated": "2026-10-28 11:30",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5348,
-  "dep": "2026-11-09",
-  "ret": "2026-11-12",
+  "price": 5469,
+  "dep": "2026-11-02",
+  "ret": "2026-11-05",
   "dept": "07:10",
   "rett": "21:05",
   "rt": true,
@@ -21,14 +21,14 @@
   "dur": 180,
   "dur_to": 90,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$9,692（26 天有紀錄），這張低 45%"
+  "11 月出發的票，每天最便宜的平均要 NT$10,007（27 天有紀錄），這張低 45%"
  ],
- "med": 11146,
+ "med": 11243,
  "n_rt": 84,
  "others": [
   {
@@ -37,7 +37,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5414,
+   "price": 5905,
    "dep": "2026-11-23",
    "ret": "2026-11-26",
    "dept": "07:10",
@@ -56,9 +56,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5481,
-   "dep": "2026-11-02",
-   "ret": "2026-11-05",
+   "price": 5905,
+   "dep": "2026-11-09",
+   "ret": "2026-11-12",
    "dept": "07:10",
    "rett": "21:05",
    "rt": true,
@@ -66,7 +66,7 @@
    "dur": 180,
    "dur_to": 90,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-02&inbound=OKA-RMQ&returnDate=2026-11-05&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
@@ -75,7 +75,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 6481,
+   "price": 6469,
    "dep": "2026-11-16",
    "ret": "2026-11-19",
    "dept": "07:10",
