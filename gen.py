@@ -16578,6 +16578,17 @@ if os.path.exists('cards.json'):
       // 因為把未查證算成 0 或算成有，兩種都是在斷言沒查證的事。
       var rank=rows.filter(function(r){return !r.gone&&!r.tu;})
         .slice().sort(function(a,b){return b.m.rate-a.m.rate;});
+      // 表格照「下一筆回饋率」由高到低排，排不出來的（查不到、已不收錄）放最後。
+      // 正在輸入金額時維持上一次的順序，按 Enter 或離開欄位才重排，
+      // 不然打到一半那一列就跳走了。
+      var rid=function(r){return r.custom?('c:'+r.x.id):r.slug;};
+      var disp=KEEP&&LAST
+        ?rows.slice().sort(function(a,b){
+            var i=LAST.indexOf(rid(a)),j=LAST.indexOf(rid(b));
+            return (i<0?1e9:i)-(j<0?1e9:j);})
+        :rank.concat(rows.filter(function(r){return !r.gone&&r.tu;}),
+                     rows.filter(function(r){return r.gone;}));
+      LAST=disp.map(rid);
 
       var h='';
       if(!rows.length){
@@ -16586,7 +16597,7 @@ if os.path.exists('cards.json'):
         h='<div class="tw ttw"><table class="ttab"><thead><tr><th>卡</th>'
          +'<th>已刷（日幣）</th><th>台幣帳單</th>'
          +'<th>下一筆回饋率</th><th>加碼額度</th><th></th></tr></thead><tbody>';
-        rows.forEach(function(r){
+        disp.forEach(function(r){
           if(r.gone){
             h+='<tr><td colspan="6" class="nm"><b>'+esc(r.slug)+'</b>　'
              +'本站已不再收錄這張卡，你記的 ¥'+jfmt(r.jpy)+' 保留在這裡。'
@@ -16640,7 +16651,13 @@ if os.path.exists('cards.json'):
         });
         h+='</tbody></table></div>';
       }
+      // 重畫會換掉輸入框，把焦點放回同一張卡的那一格
+      var ae=document.activeElement, fid=ae&&ae.getAttribute?ae.getAttribute('data-sp'):null;
       document.getElementById('trows').innerHTML=h;
+      if(fid!==null){
+        var fe=document.querySelector('.tin[data-sp="'+fid+'"]');
+        if(fe) fe.focus();
+      }
 
       var nx='';
       if(rank.length){
@@ -16669,9 +16686,16 @@ if os.path.exists('cards.json'):
       }
       save(S);
     }
+    var KEEP=false, LAST=null;
     document.addEventListener('input',function(e){
       var t=e.target;
-      if(t.classList&&t.classList.contains('tin')) setSp(t.getAttribute('data-sp'),+t.value);
+      if(t.classList&&t.classList.contains('tin')){
+        KEEP=true; setSp(t.getAttribute('data-sp'),+t.value); KEEP=false;
+      }
+    });
+    // 打完（Enter 或離開欄位）才重排
+    document.addEventListener('change',function(e){
+      if(e.target.classList&&e.target.classList.contains('tin')) render();
     });
     // 登錄狀態只是給使用者自己記的，本站無從得知他有沒有真的登錄成功，
     // 所以不拿它去改任何回饋率的計算。
