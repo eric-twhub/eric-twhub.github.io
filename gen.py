@@ -1245,6 +1245,7 @@ border:1px solid var(--line);border-radius:12px}
 .toc>b{display:block;font-size:.76rem;color:var(--dim);font-weight:600;
 margin-bottom:8px;letter-spacing:.02em}
 .toc>div{display:flex;flex-wrap:wrap;gap:7px}
+.toc>div+b{margin-top:12px}
 .toc a{font-size:.82rem;line-height:1.4;color:var(--fg);background:var(--card);
 border:1px solid var(--line);border-radius:999px;padding:5px 11px;
 text-decoration:none;white-space:nowrap}
@@ -2250,7 +2251,10 @@ PAGE_META = {}          # 產生路徑 → {title, h1, fare}，給 og 圖卡用
 _TOC_RE = re.compile(r'<h2(?![^>]*\bclass=)([^>]*)>(.*?)</h2>', re.S)
 # 不是段落標題、但也想進書籤的東西（例如熱搜頁那 11 則），
 # 在元素上標 data-toc="要顯示的字"，位置照文件順序排進同一排。
-_TOC_EXTRA = re.compile(r'<\w+[^>]*\bid="([^"]+)"[^>]*\bdata-toc="([^"]*)"')
+# 再加 data-tocg="組名" 的另起一排（例如小抄頁的每一張卡），
+# 不和段落標題擠在同一排，讀者才分得出哪些是段落、哪些是卡。
+_TOC_EXTRA = re.compile(r'<\w+[^>]*\bid="([^"]+)"[^>]*\bdata-toc="([^"]*)"'
+                        r'(?:\s+data-tocg="([^"]*)")?')
 
 def _toc(content):
     """把頁面裡的 h2 收成一排書籤，插在第一個 h2 前面。
@@ -2263,9 +2267,15 @@ def _toc(content):
     hs = list(_TOC_RE.finditer(content))
     out, seen = [], set()
     items = []          # (文件位置, id, 文字)
+    groups = {}         # 組名 → [(id, 文字)]，照文件順序
     for m in _TOC_EXTRA.finditer(content):
-        if m.group(2).strip():
-            items.append((m.start(), m.group(1), html.unescape(m.group(2)).strip()))
+        if not m.group(2).strip():
+            continue
+        it = (m.group(1), html.unescape(m.group(2)).strip())
+        if m.group(3):
+            groups.setdefault(html.unescape(m.group(3)), []).append(it)
+        else:
+            items.append((m.start(),) + it)
             seen.add(m.group(1))
     for m in hs:
         attrs, inner = m.group(1), m.group(2)
@@ -2291,7 +2301,11 @@ def _toc(content):
     items.sort(key=lambda x: x[0])
     toc = ('<div class="toc"><b>這一頁有</b><div>'
            + ''.join(f'<a href="#{i}">{html.escape(t)}</a>' for _, i, t in items)
-           + '</div></div>')
+           + '</div>'
+           + ''.join(f'<b>{html.escape(g)}</b><div>'
+                     + ''.join(f'<a href="#{i}">{html.escape(t)}</a>' for i, t in its)
+                     + '</div>' for g, its in groups.items())
+           + '</div>')
     # 插在第一個 h2 或第一個 data-toc 元素前面，哪個先算哪個：
     # 有些頁面的主體是一串卡片，第一個段落標題在很後面，
     # 只看 h2 的話書籤會被推到內容底下。
@@ -15720,6 +15734,7 @@ if os.path.exists('cards.json'):
       '<style>'
       '.lbk{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:16px 0}'
       '.lbk figure{margin:0}'
+      '.lbk figure[id]{scroll-margin-top:72px}'
       '.lbk .slip{display:block;border:1px solid var(--line);border-radius:8px;'
       'overflow:hidden;background:#fff;aspect-ratio:540/810}'
       '.lbk img{display:block;width:100%;height:auto}'
@@ -15800,8 +15815,20 @@ if os.path.exists('cards.json'):
     def _lb_ex(t):
         return f' <small>{_LB_EXI}{html.escape(t)}</small>' if t else ''
 
+    # 每張卡的第一張標籤掛錨點，進上面「這一頁有」的「卡片」那一排。
+    # 同一張卡的新戶／舊戶、各等級是連在一起的，跳到第一張往下看就是。
+    _lb_first = {}
+    for i, r in enumerate(_LBR):
+        _lb_first.setdefault(r['slug'], i)
+
+    def _lb_anchor(i, r):
+        if _lb_first[r['slug']] != i:
+            return ''
+        return (f' id="lb-{r["slug"]}" data-toc="{html.escape(r["n"])}"'
+                ' data-tocg="卡片"')
+
     _lb_cells = [
-        f'<figure><a class="slip">'
+        f'<figure{_lb_anchor(i, r)}><a class="slip">'
         f'<img data-lb="{i}" alt="{html.escape(r["n"])}'
         + (f'（{html.escape(r["who"])}）' if r.get('who') else '')
         + f' 的日本回饋標籤" width="540" height="810" loading="lazy"></a>'
