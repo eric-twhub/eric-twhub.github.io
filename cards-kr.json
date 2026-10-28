@@ -1,0 +1,482 @@
+{
+ "_說明": "15 張旅日信用卡在韓國適不適用的逐張查證紀錄，查證於 2026-10-28，逐張讀發卡行官方活動頁或條款原文。這個檔目前沒有被 gen.py 讀取，站上任何一頁都不會算繪它，純粹是資料底稿，等之後真的要做韓國版時直接接得上。kr 三態：yes 官方明文適用、no 官方明文不適用或條款本身綁定日本、unknown 官方沒寫。unknown 不等於 no，不可以在任何對照表裡算繪成「無」或 0。日本側的數字取自 cards.json（查證於 2026-10-22），兩邊的查證日不同，更新時要各自看。",
+ "checked": "2026-10-28",
+ "jp_source": {
+  "file": "cards.json",
+  "checked": "2026-10-22"
+ },
+ "摘要": {
+  "和日本一樣": 8,
+  "適用但較低": 5,
+  "幾乎拿不到": 2
+ },
+ "cards": [
+  {
+   "slug": "firstbank-ileo",
+   "name": "第一銀行 iLEO 卡",
+   "verdict": "same",
+   "jp": {
+    "total": 13.0,
+    "note": "新戶 13%，既有卡友 3%"
+   },
+   "kr": {
+    "total": 13.0,
+    "total_old": 3.0,
+    "note": "與日本完全相同"
+   },
+   "tiers": [
+    {
+     "label": "指定通路加碼（愛饗樂含海外外幣消費）",
+     "rate": 1.5,
+     "kr": "yes",
+     "why": "官方寫「海外外幣消費」，沒有國家限制"
+    },
+    {
+     "label": "海外實體加碼",
+     "rate": 1.0,
+     "kr": "yes",
+     "why": "官方寫「海外實體商店」，沒有國家限制"
+    },
+    {
+     "label": "新戶加碼",
+     "rate": 10.0,
+     "kr": "yes",
+     "why": "官方寫「海外外幣消費」，沒有國家限制"
+    }
+   ],
+   "quote": "官方自己的表就寫「合計最高回饋　新戶 13%／既有卡友 3%」，三個活動名稱分別是「海外實體商店消費筆筆加碼1%」「海外外幣消費筆筆加碼2%」「<新戶首刷禮>海外外幣消費加碼10%」",
+   "conds": [
+    "海外實體那 1% 須本行帳戶（含數位帳戶）扣繳卡費與電子帳單",
+    "限實體卡及當地幣別結帳，且須為面對面交易（不含網購）",
+    "分期付款交易不回饋"
+   ],
+   "period": "2026/7/1 – 2026/12/31",
+   "src": "https://card.firstbank.com.tw/sites/Satellite?c=CreditCard&cid=1565698492326&d=Touch&pagename=FirstBankCard%2FCreditCard%2Fzh%2FCardActivityDetailView",
+   "fetch_note": "curl 會 403，要用瀏覽器開"
+  },
+  {
+   "slug": "ctbc-uniopen",
+   "name": "中信 uniopen 聯名卡",
+   "verdict": "same",
+   "jp": {
+    "total": 11.0
+   },
+   "kr": {
+    "total": 11.0,
+    "note": "與日本完全相同"
+   },
+   "tiers": [
+    {
+     "label": "國外實體加碼",
+     "rate": 8.0,
+     "kr": "yes",
+     "why": "官方定義只看國別碼是否為國外，不分哪一國"
+    }
+   ],
+   "quote": "國外實體商店消費認定：該筆交易請款時，消費地或商店登記之國別碼於國外（非台灣），且須為面對面交易（包括以實體卡、Apple Pay、Google Pay 於實體商店支付）；網路交易、條碼支付或第三方支付恕不列入消費計算",
+   "conds": [
+    "加碼上限 500 點／月"
+   ],
+   "period": "2026/9/1 – 2026/12/31",
+   "src": "https://mkt.ctbcbank.com/long/creditcard/N2025052600033_01/index.html"
+  },
+  {
+   "slug": "sinopac-dawho",
+   "name": "永豐 DAWHO 大戶卡",
+   "verdict": "same",
+   "jp": {
+    "total": 6.0,
+    "note": "大戶Plus 6%／大戶 4.5%／大大 2%"
+   },
+   "kr": {
+    "total": 6.0,
+    "note": "三個等級都與日本相同"
+   },
+   "tiers": [
+    {
+     "label": "大戶 Plus 任務加碼",
+     "rate": 4.0,
+     "kr": "yes",
+     "why": "官方寫「國外消費最高6%」，沒有國家限制"
+    }
+   ],
+   "quote": "國內消費最高5%、國外消費最高6%現金回饋！【一般消費】國內 1%、國外 2% 現金回饋無上限！【完成指定任務】大戶Plus等級加碼4%，回饋上限NT$1,000/月帳單週期、大戶等級加碼2.5%，回饋上限NT$400/月帳單週期、大大等級無加碼優惠",
+   "conds": [
+    "指定任務：綁定 DAWHO 新臺幣帳戶自動扣繳且扣款成功，並使用電子或行動帳單"
+   ],
+   "period": "活動內容頁標示至 2026/12/31",
+   "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/DAWHO.html"
+  },
+  {
+   "slug": "ctbc-linepay",
+   "name": "中信 LINE Pay 卡",
+   "verdict": "same",
+   "jp": {
+    "total": 5.0
+   },
+   "kr": {
+    "total": 5.0,
+    "note": "官方文案直接寫「不限國別」"
+   },
+   "tiers": [
+    {
+     "label": "國外實體加碼",
+     "rate": 2.2,
+     "kr": "yes",
+     "why": "活動名稱就叫「不限國別國外實體店」"
+    }
+   ],
+   "quote": "每週二 00:00開放　不限國別國外實體店享 LINE POINTS 5%　本活動排除不回饋項目（含部分歐洲地區國家）",
+   "conds": [
+    "加碼 2.2% 須登錄，每週二 00:00 開放 3,000 名",
+    "限量 20,000 組",
+    "每歸戶上限 450 點",
+    "排除項目含部分歐洲地區國家，韓國不在排除內"
+   ],
+   "period": "2026/10/1 – 2026/12/31",
+   "src": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html"
+  },
+  {
+   "slug": "esun-unicard",
+   "name": "玉山 Unicard",
+   "verdict": "same",
+   "jp": {
+    "total": 4.5,
+    "note": "UP選 4.5%／任意選 3.5%／簡單選 3%"
+   },
+   "kr": {
+    "total": 4.5,
+    "note": "與日本相同，韓國在官方的 18 國清單裡"
+   },
+   "tiers": [
+    {
+     "label": "百大指定消費加碼（國外實體）",
+     "rate": 3.5,
+     "kr": "yes",
+     "why": "官方把這一類逐國列出共 18 國，韓國是第二個"
+    }
+   ],
+   "quote": "國外實體　日本　韓國　泰國　越南　新加坡　馬來西亞　菲律賓　中國　香港　澳門　美國　加拿大　英國　法國　德國　義大利　澳洲　紐西蘭",
+   "conds": [
+    "限玉山 Unicard 實體卡或綁定 Apple／Google／Samsung Pay",
+    "第三方支付與電子支付錢包不認列",
+    "面對面，網路交易不算",
+    "商店國別非台澎金馬且交易幣別非新臺幣"
+   ],
+   "src": "https://event.esunbank.com.tw/credit/unicard/discount-channel.html",
+   "站上修正": "2026-10-28 已把 tier 標籤從「百大指定消費加碼（國外實體・日本）」改成「百大指定消費加碼（國外實體）」並補上 18 國清單"
+  },
+  {
+   "slug": "dbs-eco",
+   "name": "星展 eco 永續卡",
+   "verdict": "same",
+   "jp": {
+    "total": 5.0
+   },
+   "kr": {
+    "total": 5.0,
+    "note": "韓國在指定國家清單裡"
+   },
+   "tiers": [
+    {
+     "label": "指定國家實體消費加碼",
+     "rate": 4.0,
+     "kr": "yes",
+     "why": "指定國家＝日本／韓國／泰國／新加坡／美洲／歐洲"
+    }
+   ],
+   "quote": "持卡人於日本、韓國、泰國、新加坡、美洲地區、歐洲地區，以實體卡片或Apple Pay／Samsung Pay於當地實體門市等進行面對面刷卡消費，且於收單機構設定之該交易商店之國別為指定地區，且非以新臺幣為交易幣別",
+   "conds": [
+    "上限 600 點／月",
+    "排除電子票證儲值（官方舉的例子就是 PASMO／SUICA）"
+   ],
+   "period": "2026/1/1 – 2026/12/31",
+   "src": "https://www.dbs.com.tw/personal-zh/cards/dbs_eco/index.html"
+  },
+  {
+   "slug": "dbs-aov",
+   "name": "星展傳說對決聯名卡",
+   "verdict": "same",
+   "jp": {
+    "total": 5.0
+   },
+   "kr": {
+    "total": 5.0
+   },
+   "tiers": [
+    {
+     "label": "日韓泰、新美歐加碼",
+     "rate": 4.0,
+     "kr": "yes",
+     "why": "韓國在官方兩種寫法裡都有"
+    }
+   ],
+   "quote": "權益表寫「日韓泰／新美歐」；現金積點計算公式那段寫「當期日本、韓國、泰國、新加坡、土耳其、烏克蘭、美洲地區實體消費總金額……× 4%」「歐洲地區實體消費總金額……× 5%」",
+   "conds": [
+    "上限 500 點，按曆月計非帳單週期",
+    "排除電子票證儲值"
+   ],
+   "period": "2026/7/1 – 2026/12/31",
+   "src": "https://www.dbs.com.tw/personal-zh/cards/dbs-aov/index.html",
+   "站上修正": "2026-10-28 已把官方兩種國家寫法都寫進 cond"
+  },
+  {
+   "slug": "taishin-richart",
+   "name": "台新 Richart 卡",
+   "verdict": "same",
+   "jp": {
+    "total": 3.3
+   },
+   "kr": {
+    "total": 3.3,
+    "note": "base 的定義本身不分國家"
+   },
+   "tiers": [],
+   "quote": "海外消費（交易幣別為外幣，或交易國別非台灣，實際依商家拋送資訊為準）",
+   "conds": [
+    "消費當日要在 Richart Life App 切到「玩旅刷」，事後補切無效"
+   ],
+   "韓國限定權益": "台新Pay+ 日韓交易再享免 1.5% 國外交易手續費，官方點名韓國 GS25、DAISO（日本是 LAWSON、BicCamera）。站上 other_perks 已收錄。",
+   "src": "https://www.taishinbank.com.tw/TSB/personal/credit/intro/overview/future/ab46dfa7-5d88-11f1-b50f-0050568c09e3"
+  },
+  {
+   "slug": "sinopac-jcb",
+   "name": "永豐現金回饋 JCB 卡",
+   "verdict": "lower",
+   "jp": {
+    "total": 10.0
+   },
+   "kr": {
+    "total": 7.0,
+    "note": "少掉日本限定的 3%"
+   },
+   "tiers": [
+    {
+     "label": "日本加碼",
+     "rate": 3.0,
+     "kr": "no",
+     "why": "官方明文日本"
+    },
+    {
+     "label": "日韓泰季度加碼",
+     "rate": 5.0,
+     "kr": "yes",
+     "why": "韓國明文在內"
+    }
+   ],
+   "quote": "「日本、韓國、泰國」實體消費定義：係指特約商店或收單機構登記所在地為日本、韓國、泰國，且交易幣別非新臺幣之實體商店一般消費",
+   "conds": [
+    "每季累積滿新臺幣 20,000 元",
+    "上限 1,000",
+    "須登錄"
+   ],
+   "period": "2026/7/1 – 2027/3/31",
+   "登錄狀態": "2026 第四季登錄已於 2026/10/2 下午 17:49 額滿，下次 2027/3/25 上午 10:00 開放。與日本側同一個限制。",
+   "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/cashcardJCB.html"
+  },
+  {
+   "slug": "fubon-j",
+   "name": "台北富邦 J 卡",
+   "verdict": "lower",
+   "jp": {
+    "total": 6.0,
+    "transit_total": 10.0,
+    "note": "實體消費 6%；日本三大交通卡儲值路線 10%"
+   },
+   "kr": {
+    "total": 6.0,
+    "transit_total": null,
+    "note": "實體消費與日本相同 6%，但沒有交通卡儲值那條路"
+   },
+   "tiers": [
+    {
+     "label": "日韓泰實體消費加碼",
+     "rate": 3.0,
+     "kr": "yes",
+     "why": "韓國明文在內，上限 1,000"
+    },
+    {
+     "label": "日本三大交通卡儲值加碼",
+     "rate": 7.0,
+     "kr": "no",
+     "why": "官方寫日本三大交通卡（Suica／PASMO／ICOCA）"
+    }
+   ],
+   "quote": "日本/ 韓國/ 泰國地區一般消費享最高3%　國內及其他海外地區一般消費享最高1%",
+   "conds": [
+    "base 3% 需本行帳戶自動扣繳或電子帳單，且須於當期帳單結帳日（含）前完成",
+    "日韓泰加碼當季登錄一次即可，不需每月重複，但各月有登錄人數上限"
+   ],
+   "period": "2026/1/1 – 2026/12/31",
+   "src": "https://www.fubon.com/banking/Personal/credit_card/all_card/omiyage/omiyage.htm"
+  },
+  {
+   "slug": "sinopac-dual",
+   "name": "永豐幣倍卡",
+   "verdict": "lower",
+   "jp": {
+    "total": 8.0
+   },
+   "kr": {
+    "total": 6.0,
+    "note": "國外實體那半適用，日本限定的網購名單不適用"
+   },
+   "tiers": [
+    {
+     "label": "精選通路加碼",
+     "rate": 4.0,
+     "kr": "yes",
+     "why": "國外實體的定義是「交易地區非臺灣，且非新臺幣之實體商店一般消費」，不分國家。但同一層的網購名單（日本三大交通卡、大國藥妝、Sugi、Rakuten、Mercari 等）是日本限定"
+    },
+    {
+     "label": "新申辦行動支付加碼",
+     "rate": 2.0,
+     "kr": "unknown",
+     "why": "官方沒有寫這一層的國家範圍"
+    }
+   ],
+   "quote": "精選通路　國外實體：交易地區非臺灣，且非新臺幣之實體商店一般消費",
+   "結構性問題": "這是日圓／美元／歐元雙幣卡，沒有韓元。官方條款：「其國外實體及網路消費，或國內網路商店但其收單行為外國機構之消費，不論交易金額為新臺幣或任何幣別外幣，交易金額將依約定轉換為指定外幣結付」。所以在韓國刷會先被轉成日圓／美元／歐元再換台幣，這張卡的雙幣賣點在韓國不成立。",
+   "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/dual-currency-card.html"
+  },
+  {
+   "slug": "hsbc-liveplus",
+   "name": "滙豐 Live+ 現金回饋卡",
+   "verdict": "lower",
+   "jp": {
+    "total": 5.88
+   },
+   "kr": {
+    "total": 4.88,
+    "note": "少掉精選國家餐飲那 1%"
+   },
+   "tiers": [
+    {
+     "label": "三大通路加碼",
+     "rate": 3.0,
+     "kr": "yes",
+     "why": "依 MCC code 判斷餐飲／購物／娛樂，不分國家，上限 888 點"
+    },
+    {
+     "label": "精選國家餐飲加碼",
+     "rate": 1.0,
+     "kr": "no",
+     "why": "官方清單是日本、新加坡、馬來西亞、越南、菲律賓、印度、斯里蘭卡，韓國不在內"
+    },
+    {
+     "label": "自動扣繳加碼",
+     "rate": 1.0,
+     "kr": "yes",
+     "why": "任務型，不分國家，上限 200 點"
+    }
+   ],
+   "quote": "精選國家餐飲通路消費依收單機構所設定登錄之餐廳分類代碼（MCC code 為5441、5499、5812、5813、5814）為判斷依據，且係指精選國家當地實體交易，交易商店之國別為日本、新加坡、馬來西亞、越南、菲律賓、印度、斯里蘭卡",
+   "src": "https://www.hsbc.com.tw/content/dam/hsbc/tw/docs/credit-cards/live-plus/cashback-cash-points-method.pdf",
+   "fetch_note": "是 PDF，這台機器要用 swift 加 PDFKit 才讀得到"
+  },
+  {
+   "slug": "cathay-cube",
+   "name": "國泰世華 CUBE 卡",
+   "verdict": "lower",
+   "jp": {
+    "total": 5.0,
+    "note": "秋日遊期間日本實體 3.5%，指定人氣愛店 5%"
+   },
+   "kr": {
+    "total": 2.5,
+    "note": "走固定回饋方案的海外實體 2.5%，不是趣旅行"
+   },
+   "tiers": [
+    {
+     "label": "指定人氣愛店加碼",
+     "rate": 1.5,
+     "kr": "no",
+     "why": "秋日遊是日本限定，2026/10/1 – 11/30"
+    }
+   ],
+   "quote": "切換「固定回饋」權益方案當日起至2026/12/31止，皆享一般消費（不含保費）1.2%、海外實體消費2.5%小樹點（信用卡）",
+   "趣旅行不是國家型": "趣旅行是通路型方案。官方自己的舉例是 Agoda 屬「指定旅遊／交通消費」回饋 3%，所以在韓國的一般實體店買東西不算趣旅行，只會落到一般消費 0.3%。",
+   "conds": [
+    "固定回饋方案 2026/8/3 – 2026/12/31 期間只能切換一次",
+    "方案設定自當日零時起生效，每日限變更一次"
+   ],
+   "src": "https://www.cathaybk.com.tw/cathaybk/personal/product/credit-card/cards/cube/"
+  },
+  {
+   "slug": "ubot-jiho",
+   "name": "聯邦吉鶴卡",
+   "verdict": "none",
+   "jp": {
+    "total": 11.0,
+    "note": "新戶 11%，既有卡友 8%"
+   },
+   "kr": {
+    "total": 1.0,
+    "note": "只有國外一般消費 1%，五層加碼全部拿不到"
+   },
+   "tiers": [
+    {
+     "label": "行動支付加碼",
+     "rate": 1.5,
+     "kr": "no",
+     "why": "官方寫日本實體店家"
+    },
+    {
+     "label": "前月帳單滿額加碼",
+     "rate": 1.0,
+     "kr": "no",
+     "why": "官方寫日本實體店家"
+    },
+    {
+     "label": "11 大人氣通路加碼",
+     "rate": 3.0,
+     "kr": "no",
+     "why": "11 家全部是日本通路"
+    },
+    {
+     "label": "新戶加碼",
+     "rate": 3.0,
+     "kr": "no",
+     "why": "官方寫於日本實體店家消費"
+    },
+    {
+     "label": "日本交通卡儲值（Suica／ICOCA／PASMO）",
+     "rate": 1.5,
+     "kr": "no",
+     "why": "日本交通卡"
+    }
+   ],
+   "quote": "日幣一般消費2.5%回饋：凡信用卡帳單「消費地金額及幣別」以日幣請款之一般消費即享日幣消費2.5%回饋，回饋無上限。國外一般消費1%回饋：凡信用卡帳單「消費地金額及幣別」以外幣（不含日幣）請款之一般消費即享國外消費1%回饋",
+   "韓國限定權益": "吉鶴卡有專屬購票網頁，持卡購買台灣出發至日本、韓國來回機票可享最高 9 折並享免費虎快客與虎厝邊選位，每月限量 500 組依結帳先後為準。這不是回饋，但韓國適用。",
+   "src": "https://activity.ubot.com.tw/2026JiHoCard/index.htm"
+  },
+  {
+   "slug": "esun-kumamon",
+   "name": "玉山熊本熊卡",
+   "verdict": "unknown",
+   "jp": {
+    "total": 8.5
+   },
+   "kr": {
+    "total": null,
+    "note": "官方沒寫。活動頁與卡片頁都只列日本的費率，沒有寫非日本地區拿多少。依站上規矩這一格要留「官方沒寫」，不可以填 1% 或 0。"
+   },
+   "tiers": [
+    {
+     "label": "指定日本商店加碼",
+     "rate": 6.0,
+     "kr": "no",
+     "why": "官方明文「指定日本商店」，而且是逐家點名"
+    }
+   ],
+   "quote": "日本指定商店 8.5%　日本一般消費 2.5%（整頁沒有出現非日本地區的費率）",
+   "src": "https://event.esunbank.com.tw/credit/kumamon-card/japan-discount.html",
+   "另查": "https://event.esunbank.com.tw/credit/kumamon-card/index.html 也只寫日本"
+  }
+ ],
+ "待補": [
+  "永豐幣倍卡「新申辦行動支付加碼 2%」的國家範圍，官方沒寫",
+  "玉山熊本熊卡在非日本地區的一般消費回饋率，官方沒寫",
+  "韓國特有而本站資料結構沒有欄位的：T-money／Cashbee 儲值、WOWPASS、韓國的即時退稅與事後退稅、韓國指定通路名單（CU、GS25、Olive Young、樂天）"
+ ]
+}
