@@ -15729,8 +15729,15 @@ if os.path.exists('cards.json'):
                f'上全部的{html.escape(title)} →</a>' if more else '')
             + '</div></figure>')
 
+    # 和圖上同一個禁止進入圖示：實心黑圓加白色橫槓。「×」會被讀成乘號。
+    _LB_EXI = ('<svg width="0.9em" height="0.9em" viewBox="0 0 12 12" role="img" '
+               'aria-label="不適用" style="vertical-align:-0.1em;margin-right:0.25em">'
+               # 橫槓是鏤空的（evenodd），深色模式下透出底色，不會變成白圓白槓
+               '<path fill="currentColor" fill-rule="evenodd" '
+               'd="M6 0a6 6 0 1 0 0 12A6 6 0 1 0 6 0zM2.3 4.8h7.4v2.4H2.3z"/></svg>')
+
     def _lb_ex(t):
-        return f' <small>× {html.escape(t)}</small>' if t else ''
+        return f' <small>{_LB_EXI}{html.escape(t)}</small>' if t else ''
 
     _lb_cells = [
         f'<figure><a class="slip">'

@@ -52,19 +52,30 @@ const S={head:80,name:44,big:80,topLab:28,topNote:27,who:28,whoStep:33,
          ex:23,exStep:28};
 const FLOOR=0.78,CEIL=1.16;
 
-/* 不算、拿不到的資訊一律用這一種寫法：比說明再小一級的細字，前面加「×」。
+/* 不算、拿不到的資訊一律用這一種寫法：比說明再小一級的細字，前面加禁止進入的圖示。
    和能用的資訊同樣大小時，讀者會把「條碼與第三方支付不算」的「不算」
-   一路讀回上一行，以為連 Apple Pay 都不算。 */
-const EX=t=>"× "+t;
+   一路讀回上一行，以為連 Apple Pay 都不算。
+   圖示用畫的不用字型：「×」會被讀成乘號，emoji 各平台長得不一樣、還是彩色的。
+   實心黑圓加白色橫槓，縮到 2mm 高熱感應也印得出來，細線的禁止圈會印斷。 */
+function exIcon(ctx,x,base,s,draw){
+  const d=Math.round(s*0.8), cy=base-s*0.36, cx=x+d/2;
+  if(draw){
+    ctx.fillStyle="#000";ctx.beginPath();ctx.arc(cx,cy,d/2,0,Math.PI*2);ctx.fill();
+    const bw=Math.round(d*0.62), bh=Math.max(2,Math.round(d*0.2));
+    ctx.fillStyle="#fff";ctx.fillRect(cx-bw/2,cy-bh/2,bw,bh);
+    ctx.fillStyle="#000";
+  }
+  return d+Math.round(s*0.3);
+}
 function drawEx(ctx,text,x,y,maxW,r,draw){
-  ctx.font=f(400,r(S.ex));
-  // 換行後的那幾行縮排到「×」後面，「×」單獨凸出來才看得出一條從哪裡開始
-  const ind=ctx.measureText(EX("")).width;
+  const s=r(S.ex);
+  ctx.font=f(400,s);
+  // 換行後的那幾行縮排到圖示後面，圖示單獨凸出來才看得出一條從哪裡開始
+  const ind=exIcon(ctx,0,0,s,false);
   wrap(ctx,text,maxW-ind).forEach((ln,i)=>{
     if(draw){
-      ctx.fillStyle="#000";
-      if(i===0)ctx.fillText("×",x,y+r(22));
-      ctx.fillText(ln,x+ind,y+r(22));
+      if(i===0)exIcon(ctx,x,y+r(22),s,true);
+      ctx.fillStyle="#000";ctx.fillText(ln,x+ind,y+r(22));
     }
     y+=r(S.exStep);
   });
@@ -124,8 +135,10 @@ function run(ctx,c,k,draw){
       ctx.font=f(400,ns);ctx.fillText(c.topNote,PAD,heroTop+r(57));
     }
     if(c.topEx){
-      const ns=fitFont(ctx,EX(c.topEx),CW-r(236),400,r(S.ex));
-      ctx.font=f(400,ns);ctx.fillText(EX(c.topEx),PAD,heroTop+r(55));
+      const ind=exIcon(ctx,0,0,r(S.ex),false);
+      const ns=fitFont(ctx,c.topEx,CW-r(236)-ind,400,r(S.ex));
+      exIcon(ctx,PAD,heroTop+r(55),ns,true);
+      ctx.font=f(400,ns);ctx.fillText(c.topEx,PAD+exIcon(ctx,0,0,ns,false),heroTop+r(55));
     }
   }
   y=heroTop+capH+r(14);
@@ -190,7 +203,7 @@ function run(ctx,c,k,draw){
       if(draw){ctx.fillStyle="#000";ctx.fillText(ln,x,y2+r(27))}
       y2+=r(S.bodyStep);
     }
-    // 補充說明（官方沒寫、使用條件）用小字；這不是排除項，不加「×」
+    // 補充說明（官方沒寫、使用條件）用小字；這不是排除項，不加禁止圖示
     if(sub){
       ctx.font=f(400,r(S.tierSub));
       for(const ln of wrap(ctx,sub,CW-tagW-r(13))){
