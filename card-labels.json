@@ -119,7 +119,7 @@
       ],
       "act": "免登錄，刷下去就有",
       "warn": "網購不算",
-      "pay": "實體卡或 Apple／Google／Samsung Pay",
+      "pay": "實體卡、Apple／Google／Samsung Pay 都算",
       "payNote": "條碼與第三方支付不算"
     },
     {
@@ -405,7 +405,7 @@
       ],
       "act": "2.2% 要登錄，每週二開放 3,000 名，額滿為止，只算當週",
       "warn": "網購不算。簽帳金融卡完全不適用",
-      "pay": "實體卡或 Apple／Google／Samsung Pay",
+      "pay": "實體卡、Apple／Google／Samsung Pay 都算",
       "payNote": "條碼與第三方支付不算"
     },
     {
@@ -419,7 +419,7 @@
       ],
       "act": "官網沒寫要不要登錄，本站未查實，刷前先問星展",
       "warn": "Suica、PASMO 儲值官方明文排除。結台幣不算",
-      "pay": "實體卡或 Apple／Samsung Pay",
+      "pay": "實體卡、Apple／Samsung Pay 都算",
       "payNote": "Google Pay 等其他行動支付不算"
     },
     {
@@ -433,7 +433,7 @@
       ],
       "act": "免登錄；4% 要先綁自動扣繳完成存戶升級，沒綁只有 1%",
       "warn": "Suica、PASMO 儲值官方明文排除",
-      "pay": "實體卡或 Apple／Samsung Pay",
+      "pay": "實體卡、Apple／Samsung Pay 都算",
       "payNote": "Google Pay 等其他行動支付不算"
     },
     {
@@ -449,7 +449,7 @@
       ],
       "act": "免登錄；要訂閱 UP選：上月刷滿 3 萬＋資產 30 萬，或 149 點 e point",
       "warn": "每月底自動續訂。網購不算，結台幣不算",
-      "pay": "實體卡或 Apple／Google／Samsung Pay",
+      "pay": "實體卡、Apple／Google／Samsung Pay 都算",
       "payNote": "LINE Pay 等第三方不算"
     },
     {
@@ -465,7 +465,7 @@
       ],
       "act": "免登錄；要用玉山 Wallet 把日本選進 8 家，每月最多切 30 次",
       "warn": "網購不算，結台幣不算",
-      "pay": "實體卡或 Apple／Google／Samsung Pay",
+      "pay": "實體卡、Apple／Google／Samsung Pay 都算",
       "payNote": "LINE Pay 等第三方不算"
     },
     {
@@ -482,7 +482,7 @@
       ],
       "act": "免登錄免訂閱；基本 1% 要先設自動扣繳加帳單 e 化，不然 0.3%",
       "warn": "每月最後一天的方案算整個月。網購不算，結台幣不算",
-      "pay": "實體卡或 Apple／Google／Samsung Pay",
+      "pay": "實體卡、Apple／Google／Samsung Pay 都算",
       "payNote": "LINE Pay 等第三方不算"
     },
     {
