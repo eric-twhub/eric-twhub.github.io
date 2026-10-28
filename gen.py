@@ -16422,7 +16422,7 @@ if os.path.exists('cards.json'):
     function save(d){
       MEM=d;
       try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){OK=false;}
-      render();
+      render();myN();
     }
     var S=load();
     var SC='shop';
@@ -16723,6 +16723,12 @@ if os.path.exists('cards.json'):
         save(S);
       }
     });
+    // 「我的卡片」標題旁標出選了幾張，收起來的時候也看得到
+    function myN(){
+      var n=Object.keys(S.own).length+(S.custom||[]).length;
+      document.getElementById('tmyn').textContent=n?'（已選 '+n+' 張，點開修改）':'';
+      return n;
+    }
 
     // 勾選清單
     (function(){
@@ -16737,6 +16743,8 @@ if os.path.exists('cards.json'):
         var el=document.querySelector('.tck[data-own="'+s+'"]');
         if(el) el.checked=true;
       });
+      // 從 #mycards 連結進來的人是要改卡，不收
+      if(myN()&&location.hash!=='#mycards') document.getElementById('mycards').open=false;
     })();
     render();
     })();
@@ -16986,6 +16994,12 @@ if os.path.exists('cards.json'):
       '#tpick .tlb{margin:0;white-space:normal;align-items:flex-start;'
       'line-height:1.45;padding:3px 0}'
       '#tpick .tlb input{margin:1px 0 0;flex:0 0 auto}'
+      '.tmy{margin:14px 0 4px;padding:12px 16px;background:var(--soft);'
+      'border:1px solid var(--line);border-radius:12px}'
+      '.tmy>summary{cursor:pointer;font-weight:700;font-size:1.02rem}'
+      '.tmy>summary span{font-weight:400;font-size:.84rem;color:var(--dim)}'
+      '.tmy[open]>summary{margin-bottom:6px}'
+      '.tmy h3{margin-top:18px}'
       '.tin{width:110px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;'
       'background:var(--bg);color:var(--fg);font-size:.9rem}'
       '.tbtn{padding:3px 8px;border:1px solid var(--line);border-radius:6px;'
@@ -17119,22 +17133,10 @@ if os.path.exists('cards.json'):
         '這一頁記你每張卡已經刷了多少，算出下一筆實際拿得到幾趴。</p>'
       + f'<p class="upd">換算匯率 {_MIDC}（中間匯率）　·　'
         f'國外交易手續費 {_fx["typical"]}%　·　卡片條件查證於 {_CDCHK}</p>'
-
-      + '<div class="warn" id="twarn" style="display:none">'
-        '這個瀏覽器存不住資料（可能是無痕模式，或封鎖了網站資料）。'
-        '這一頁還是可以用，但關掉分頁就會歸零。</div>'
-
-      + '<div class="calc">'
-      + f'<div class="sf"><label>消費情境<select id="tsc">'
-      + ''.join(f'<option value="{k}">{v}</option>'
-                for k, v in MODES if k != 'base')
-      + '</select></label>'
-        '<label class="tlb"><input type="checkbox" id="tnew">我是新戶'
-        '（算進新戶與核卡期間的加碼）</label></div>'
-      + '<div id="trows"></div>'
-      + '<div class="cres" id="tnext"></div></div>'
-
-      + '<h2 id="mycards">我的卡片</h2>'
+      # 放在計算表上面：第一次來的人要先勾卡，表才有東西。
+      # 預設展開；已經勾過卡的人，載入時由 JS 收起來，表直接露出來。
+      + '<details class="tmy" id="mycards" open>'
+        '<summary>我的卡片<span id="tmyn"></span></summary>'
       + f'<p class="lede">勾選你持有的。本站收錄 {len(CD["cards"])} 張，'
         f'數字來自各家官方活動頁，條件改了本站會更新，你下次打開就是新的。</p>'
       + '<div id="tpick" class="callg"></div>'
@@ -17150,6 +17152,22 @@ if os.path.exists('cards.json'):
         '<label>上限用完後 %<input id="ta" type="number" step="0.1" min="0" placeholder="1"></label>'
         '<label>上限單位（備註用）<input id="tu" type="text" placeholder="每月"></label>'
         '<button class="btn" id="tadd">新增</button></div>'
+        '</details>'
+
+      + '<div class="warn" id="twarn" style="display:none">'
+        '這個瀏覽器存不住資料（可能是無痕模式，或封鎖了網站資料）。'
+        '這一頁還是可以用，但關掉分頁就會歸零。</div>'
+
+      + '<div class="calc">'
+      + f'<div class="sf"><label>消費情境<select id="tsc">'
+      + ''.join(f'<option value="{k}">{v}</option>'
+                for k, v in MODES if k != 'base')
+      + '</select></label>'
+        '<label class="tlb"><input type="checkbox" id="tnew">我是新戶'
+        '（算進新戶與核卡期間的加碼）</label></div>'
+      + '<div id="trows"></div>'
+      + '<div class="cres" id="tnext"></div></div>'
+
 
       + '<h2>上限的週期可以拿來用</h2>'
       + '<p class="lede">上限既然綁在週期上，就可以刻意錯開。'
