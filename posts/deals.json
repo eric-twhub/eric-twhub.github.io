@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,197（5 天有紀錄），這張低 38%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,289（5 天有紀錄），這張低 40%"
   ],
   "med": 11141,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
@@ -22,7 +22,7 @@
   "cslug": "okinawa",
   "usual": null,
   "mbase": {
-   "avg": 4197,
+   "avg": 4289,
    "days": 5,
    "month": 11
   },
@@ -94,9 +94,9 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,744（26 天有紀錄），這張低 45%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,745（26 天有紀錄），這張低 45%"
   ],
-  "med": 11231,
+  "med": 11160,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -106,7 +106,7 @@
    "days": 30
   },
   "mbase": {
-   "avg": 9744,
+   "avg": 9745,
    "days": 26,
    "month": 11
   },
