@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-28-taipei-ishigaki",
- "generated": "2026-10-28 11:30",
+ "generated": "2026-10-28 13:33",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -27,8 +27,8 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 10454,
- "n_rt": 4,
+ "med": 10362,
+ "n_rt": 6,
  "others": [
   {
    "o": "TPE",
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4696,
+   "price": 4496,
    "dep": "2026-11-24",
    "ret": "2026-11-28",
    "dept": "06:35",
@@ -47,6 +47,25 @@
    "dur_to": 60,
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-24&inbound=ISG-TPE&returnDate=2026-11-28&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "ISG",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 4513,
+   "dep": "2026-11-13",
+   "ret": "2026-11-17",
+   "dept": "06:35",
+   "rett": "09:25",
+   "rt": true,
+   "tr": 0,
+   "dur": 130,
+   "dur_to": 60,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-13&inbound=ISG-TPE&returnDate=2026-11-17&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
@@ -66,24 +85,6 @@
    "dur_to": 375,
    "gate": "Turna.com",
    "url": "https://www.aviasales.com/search/TSA2111ISG25111?t=NH17952678001795347000001260TSAHNDISG17956218001795696200001300ISGHNDTSA_c7d10bc159ae0dbb7f9829b215e45f7b_40277&search_date=27102026&expected_price_uuid=01a17e39-d24b-8040-2015-9c82b2037237&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=hrOE1YV5V8Az_zCwVZM47w&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=16212&marker=775639"
-  },
-  {
-   "o": "TPE",
-   "d": "ISG",
-   "air": "NH",
-   "airname": "全日空",
-   "cls": "fsc",
-   "price": 17768,
-   "dep": "2026-11-24",
-   "ret": "2026-11-28",
-   "dept": "16:50",
-   "rett": "08:30",
-   "rt": true,
-   "tr": 4,
-   "dur": 2875,
-   "dur_to": 400,
-   "gate": "Kupi.com",
-   "url": "https://www.aviasales.com/search/TSA2411ISG28111?t=NH17955390001795610700001135TSAHNDOKAISG17958546001795955400001740ISGMMYHNDTSA_e9895c2cb5602937fef753900acf3c44_44145&search_date=27102026&expected_price_uuid=01a17e3a-c081-8040-69db-da946e081dda&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=4XD5u2kVWaTD-FFgcnqxWg&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17768&marker=775639"
   }
  ]
 }
