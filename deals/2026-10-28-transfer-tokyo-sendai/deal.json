@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-28-transfer-tokyo-sendai",
- "generated": "2026-10-28 21:00",
+ "generated": "2026-10-28 21:06",
  "kind": "transfer",
  "city": "sendai",
  "via": "tokyo",
@@ -31,10 +31,10 @@
  "rate_at": "2026-10-28 08:02",
  "fare_gate": "Farera",
  "tc_alt": {
-  "price": 10046,
+  "price": 10044,
   "airname": "酷航",
   "dep": "2026-11-16",
-  "total": 14804
+  "total": 14802
  },
  "route": "東京 → 仙台",
  "mode": "東北新幹線",
