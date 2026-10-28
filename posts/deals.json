@@ -1,12 +1,12 @@
 [
  {
   "slug": "2026-10-29-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,584 來回含稅｜台灣虎航 11/18 出發",
+  "title": "台北飛沖繩 NT$3,040 來回含稅｜台灣虎航 11/18 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 2584,
+  "price": 3040,
   "air": "台灣虎航",
   "dep": "2026-11-18",
   "ret": "2026-11-25",
@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,369（5 天有紀錄），這張低 41%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,460（5 天有紀錄），這張低 32%"
   ],
   "med": 11141,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
@@ -22,7 +22,7 @@
   "cslug": "okinawa",
   "usual": null,
   "mbase": {
-   "avg": 4369,
+   "avg": 4460,
    "days": 5,
    "month": 11
   },
@@ -80,31 +80,6 @@
   "n": 6
  },
  {
-  "slug": "2026-10-29-taipei-saga",
-  "title": "台北飛佐賀 NT$5,340 來回含稅｜台灣虎航 11/05 出發",
-  "o": "台北",
-  "c": "佐賀",
-  "_oiata": "TPE",
-  "_diata": "HSG",
-  "price": 5340,
-  "air": "台灣虎航",
-  "dep": "2026-11-05",
-  "ret": "2026-11-12",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000"
-  ],
-  "med": 16130,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-05&inbound=HSG-TPE&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
-  "hotelcity": "佐賀",
-  "cslug": "saga",
-  "usual": null,
-  "mbase": null,
-  "rank": 1,
-  "n": 2
- },
- {
   "slug": "2026-10-29-taichung-okinawa",
   "title": "台中飛沖繩 NT$5,340 來回含稅｜台灣虎航 11/09 出發",
   "o": "台中",
@@ -119,9 +94,9 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,767（26 天有紀錄），這張低 45%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,768（26 天有紀錄），這張低 45%"
   ],
-  "med": 11147,
+  "med": 11160,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -131,12 +106,37 @@
    "days": 29
   },
   "mbase": {
-   "avg": 9767,
+   "avg": 9768,
    "days": 26,
    "month": 11
   },
   "rank": 1,
-  "n": 84
+  "n": 83
+ },
+ {
+  "slug": "2026-10-29-taipei-saga",
+  "title": "台北飛佐賀 NT$5,796 來回含稅｜台灣虎航 11/05 出發",
+  "o": "台北",
+  "c": "佐賀",
+  "_oiata": "TPE",
+  "_diata": "HSG",
+  "price": 5796,
+  "air": "台灣虎航",
+  "dep": "2026-11-05",
+  "ret": "2026-11-12",
+  "stops": "直飛",
+  "cls": "lcc",
+  "reasons": [
+   "廉航低於 NT$6,000"
+  ],
+  "med": 16358,
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-05&inbound=HSG-TPE&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
+  "hotelcity": "佐賀",
+  "cslug": "saga",
+  "usual": null,
+  "mbase": null,
+  "rank": 1,
+  "n": 2
  },
  {
   "slug": "2026-10-29-transfer-tokyo-sendai",

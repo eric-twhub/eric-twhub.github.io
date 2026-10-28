@@ -6,7 +6,7 @@
    帶網址的貼文觸及會不會被壓還沒有數字，但把連結挪開沒有損失。
 ====================================================
 
-✈️【台北 → 沖繩】NT$2,584 來回含稅
+✈️【台北 → 沖繩】NT$3,040 來回含稅
 
 　🛫 台灣虎航｜直飛
 　📅 2026-11-18 – 2026-11-25
@@ -48,20 +48,6 @@
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-21&inbound=ISG-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW
 ----------------------------------------------------
-✈️【台北 → 佐賀】NT$5,340 來回含稅
-
-　🛫 台灣虎航｜直飛
-　📅 2026-11-05 – 2026-11-12
-　💡 廉航低於 NT$6,000
-
-#日本機票 #佐賀機票 #台北出發 #便宜機票 #日本自由行
-#機票特價 #廉航 #省錢旅遊 #小資旅行 #日本旅遊
-
-　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
-　　 https://eric-twhub.github.io/deals/2026-10-29-taipei-saga/
-　🔍 查證用，發文前自己開，不要貼出去：
-　　 https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-05&inbound=HSG-TPE&returnDate=2026-11-12&type=return&adult=1&language=zh-TW
-----------------------------------------------------
 ✈️【台中 → 沖繩】NT$5,340 來回含稅
 
 　🛫 台灣虎航｜直飛
@@ -75,6 +61,20 @@
 　　 https://eric-twhub.github.io/deals/2026-10-29-taichung-okinawa/
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW
+----------------------------------------------------
+✈️【台北 → 佐賀】NT$5,796 來回含稅
+
+　🛫 台灣虎航｜直飛
+　📅 2026-11-05 – 2026-11-12
+　💡 廉航低於 NT$6,000
+
+#日本機票 #佐賀機票 #台北出發 #便宜機票 #日本自由行
+#機票特價 #廉航 #省錢旅遊 #小資旅行 #日本旅遊
+
+　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
+　　 https://eric-twhub.github.io/deals/2026-10-29-taipei-saga/
+　🔍 查證用，發文前自己開，不要貼出去：
+　　 https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-05&inbound=HSG-TPE&returnDate=2026-11-12&type=return&adult=1&language=zh-TW
 ----------------------------------------------------
 ✈️【台灣 → 仙台】NT$12,475 總計
 
