@@ -15625,7 +15625,7 @@ if os.path.exists('cards.json'):
 
             rec = {'n': c['name'], 'top': f'{_lb_g(top)}%',
                    # 「底 2.5%」看不出是什麼的底，那一行右邊還有空間，寫完整
-                   'base': f'基本回饋 {_lb_g(base)}%', 'baseNote': L['baseNote'],
+                   'base': f'基本回饋 {_lb_g(base)}%', 'baseNote': L.get('baseNote', ''),
                    'tiers': rows, 'act': tok(L['act']), 'warn': tok(L['warn']),
                    # 沒有公告期限的方案（CUBE 的趣旅行）直接給一整句，
                    # 不要拿別的方案的日期來充數。
@@ -15644,6 +15644,11 @@ if os.path.exists('cards.json'):
                 rec['pay'] = tok(L['pay'])
             if L.get('payNote'):
                 rec['payNote'] = tok(L['payNote'])
+            # 不算、拿不到的那半句另放一欄，圖上用小字加「×」，和能用的資訊分開。
+            # 「官方沒寫」不是排除項，留在 payNote，不能放進這裡。
+            for k in ('topEx', 'baseEx', 'payEx', 'actEx', 'warnEx'):
+                if L.get(k):
+                    rec[k] = tok(L[k])
             out.append(rec)
         return out
 
@@ -15724,6 +15729,9 @@ if os.path.exists('cards.json'):
                f'上全部的{html.escape(title)} →</a>' if more else '')
             + '</div></figure>')
 
+    def _lb_ex(t):
+        return f' <small>× {html.escape(t)}</small>' if t else ''
+
     _lb_cells = [
         f'<figure><a class="slip">'
         f'<img data-lb="{i}" alt="{html.escape(r["n"])}'
@@ -15731,14 +15739,16 @@ if os.path.exists('cards.json'):
         + f' 的日本回饋標籤" width="540" height="810" loading="lazy"></a>'
           f'<figcaption><b>{html.escape(r["n"])}</b>'
         + (f'<s>{html.escape(r["who"])}</s>' if r.get('who') else '')
-        + f'<s>日本最高 {r["top"]}　·　{html.escape(r["base"])}</s>'
+        + f'<s>日本最高 {r["top"]}　·　{html.escape(r["base"])}'
+        + ''.join(_lb_ex(r.get(k)) for k in ('topEx', 'baseEx')) + '</s>'
         + ''.join(f'<u>{html.escape(t)}：{html.escape(d)}</u>' for t, d in r['tiers'])
-        + (f'<u>刷法：{html.escape(r["pay"])}'
-           + (f'（{html.escape(r["payNote"])}）' if r.get('payNote') else '')
-           + '</u>' if r.get('pay') else '')
-        + f'<u>要做：{html.escape(r["act"])}</u>'
-          f'<u>注意：{html.escape(r["warn"])}</u>'
-          f'<u>{html.escape(r["end"])}</u>'
+        + ''.join(
+            f'<u>{tag}：{html.escape(r.get(k) or "")}'
+            + (f'（{html.escape(r[k + "Note"])}）' if r.get(k + 'Note') else '')
+            + _lb_ex(r.get(k + 'Ex')) + '</u>'
+            for tag, k in (('刷法', 'pay'), ('要做', 'act'), ('注意', 'warn'))
+            if r.get(k) or r.get(k + 'Ex'))
+        + f'<u>{html.escape(r["end"])}</u>'
           f'<u>更多<a href="{U("/japan-credit-card/" + r["slug"] + "/")}">'
           f'{html.escape(r["n"])}</a>詳細介紹，條款以'
           f'<a href="{html.escape(r["src"])}" target="_blank" '
