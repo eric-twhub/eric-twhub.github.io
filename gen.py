@@ -16578,25 +16578,18 @@ if os.path.exists('cards.json'):
       // 因為把未查證算成 0 或算成有，兩種都是在斷言沒查證的事。
       var rank=rows.filter(function(r){return !r.gone&&!r.tu;})
         .slice().sort(function(a,b){return b.m.rate-a.m.rate;});
-      // 表格照「下一筆回饋率」由高到低排，排不出來的（查不到、已不收錄）放最後。
-      // 正在輸入金額時維持上一次的順序，按 Enter 或離開欄位才重排，
-      // 不然打到一半那一列就跳走了。
-      var rid=function(r){return r.custom?('c:'+r.x.id):r.slug;};
-      var disp=KEEP&&LAST
-        ?rows.slice().sort(function(a,b){
-            var i=LAST.indexOf(rid(a)),j=LAST.indexOf(rid(b));
-            return (i<0?1e9:i)-(j<0?1e9:j);})
-        :rank.concat(rows.filter(function(r){return !r.gone&&r.tu;}),
-                     rows.filter(function(r){return r.gone;}));
-      LAST=disp.map(rid);
+      // 表格照「目前回饋率」由高到低排，排不出來的（查不到、已不收錄）放最後。
+      // 金額要按「送出」才加進去，所以打字的時候不會重排。
+      var disp=rank.concat(rows.filter(function(r){return !r.gone&&r.tu;}),
+                           rows.filter(function(r){return r.gone;}));
 
       var h='';
       if(!rows.length){
         h='<p class="lede">還沒有設定。<a href="#mycards">點這裡勾選你持有的卡</a>。</p>';
       }else{
         h='<div class="tw ttw"><table class="ttab"><thead><tr><th>卡</th>'
-         +'<th>已刷（日幣）</th><th>台幣帳單</th>'
-         +'<th>下一筆回饋率</th><th>加碼額度</th><th></th></tr></thead><tbody>';
+         +'<th>刷卡金額（日幣）</th><th>台幣帳單</th>'
+         +'<th>目前回饋率</th><th>目前刷卡額度</th><th></th></tr></thead><tbody>';
         disp.forEach(function(r){
           if(r.gone){
             h+='<tr><td colspan="6" class="nm"><b>'+esc(r.slug)+'</b>　'
@@ -16637,10 +16630,12 @@ if os.path.exists('cards.json'):
              :'<button class="tdbtn" type="button" data-det="'+esc(id)+'">'
               +(OPEN[id]?'\u25be':'\u25b8')+' 查看這張卡的回饋條件</button>')
            +'</td>'
-           +'<td data-l="已刷（日幣）"><input class="tin" type="number" min="0" step="1000" value="'+r.jpy+'" data-sp="'+esc(id)+'"></td>'
+           // 每刷一筆輸入那一筆的金額，按送出就加進累計。輸入負數可以扣回刷錯的。
+           +'<td data-l="刷卡金額（日幣）"><span class="tadd"><input class="tin" type="number" step="1000" placeholder="這一筆" data-sp="'+esc(id)+'">'
+           +'<button class="tbtn" type="button" data-add="'+esc(id)+'">送出</button></span></td>'
            +'<td data-l="換算台幣帳單" class="nm">NT$'+jfmt(r.bill)+'</td>'
-           +'<td data-l="下一筆回饋率">'+rate+'</td>'
-           +'<td data-l="加碼額度">'+barHtml(r)+'</td>'
+           +'<td data-l="目前回饋率">'+rate+'</td>'
+           +'<td data-l="目前刷卡額度"><b class="tsum">已刷 ¥'+jfmt(r.jpy)+'</b>'+barHtml(r)+'</td>'
            +'<td data-l=""><button class="tbtn" data-rst="'+esc(id)+'">這期重新開始</button>'
            +' <button class="tbtn" data-del="'+esc(id)+'">刪除</button></td></tr>';
           // 跨欄的明細列。放在表格裡才能跟著該張卡一起排序與重畫，
@@ -16649,7 +16644,9 @@ if os.path.exists('cards.json'):
           if(det) h+='<tr class="tdrow"'+(OPEN[id]?'':' hidden')
             +'><td colspan="6"><div class="tdc">'+det+'</div></td></tr>';
         });
-        h+='</tbody></table></div>';
+        h+='</tbody></table></div>'
+          +'<p class="disc">刷卡金額每一筆按「送出」就會加進已刷的累計。'
+          +'輸入錯了，可以輸入負數扣回，例如 -5000。</p>';
       }
       // 重畫會換掉輸入框，把焦點放回同一張卡的那一格
       var ae=document.activeElement, fid=ae&&ae.getAttribute?ae.getAttribute('data-sp'):null;
@@ -16686,16 +16683,22 @@ if os.path.exists('cards.json'):
       }
       save(S);
     }
-    var KEEP=false, LAST=null;
-    document.addEventListener('input',function(e){
+    // 這一筆加進累計。累計扣到負數就停在 0。
+    function addSp(id){
+      var el=document.querySelector('.tin[data-sp="'+id+'"]');
+      var v=el?Math.round(+el.value||0):0;
+      if(!v) return;
+      var cur=0;
+      if(id.slice(0,2)==='c:'){
+        (S.custom||[]).forEach(function(x){if('c:'+x.id===id) cur=spent(x,SC);});
+      }else cur=spent(S.own[id],SC);
+      setSp(id,cur+v);
+    }
+    document.addEventListener('keydown',function(e){
       var t=e.target;
-      if(t.classList&&t.classList.contains('tin')){
-        KEEP=true; setSp(t.getAttribute('data-sp'),+t.value); KEEP=false;
+      if(e.key==='Enter'&&t.classList&&t.classList.contains('tin')){
+        e.preventDefault(); addSp(t.getAttribute('data-sp'));
       }
-    });
-    // 打完（Enter 或離開欄位）才重排
-    document.addEventListener('change',function(e){
-      if(e.target.classList&&e.target.classList.contains('tin')) render();
     });
     // 登錄狀態只是給使用者自己記的，本站無從得知他有沒有真的登錄成功，
     // 所以不拿它去改任何回饋率的計算。
@@ -16712,6 +16715,8 @@ if os.path.exists('cards.json'):
       var dt=t.getAttribute('data-det');
       if(dt){OPEN[dt]=!OPEN[dt]; render(); return;}
       var r=t.getAttribute('data-rst'), d=t.getAttribute('data-del');
+      var ad=t.getAttribute('data-add');
+      if(ad){addSp(ad);return;}
       if(r){setSp(r,0);}
       if(d){
         if(d.slice(0,2)==='c:'){S.custom=(S.custom||[]).filter(function(x){return 'c:'+x.id!==d;});}
@@ -17024,6 +17029,8 @@ if os.path.exists('cards.json'):
       '.tmy>summary span{font-weight:400;font-size:.84rem;color:var(--dim)}'
       '.tmy[open]>summary{margin-bottom:6px}'
       '.tmy h3{margin-top:18px}'
+      '.tadd{display:inline-flex;gap:6px;align-items:center}'
+      '.tsum{display:block;font-size:.88rem;margin-bottom:5px}'
       '.tin{width:110px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;'
       'background:var(--bg);color:var(--fg);font-size:.9rem}'
       '.tbtn{padding:3px 8px;border:1px solid var(--line);border-radius:6px;'
@@ -17040,7 +17047,7 @@ if os.path.exists('cards.json'):
       'font-size:.8rem;cursor:pointer}'
       '.treg input{margin:0;flex:0 0 auto}'
       '.ttab small.warn,.tdc .warn{color:var(--acc);font-weight:700}'
-      '.ttab td[data-l="加碼額度"]{white-space:normal;max-width:168px}'
+      '.ttab td[data-l="目前刷卡額度"]{white-space:normal;max-width:168px}'
       '.tdbtn{display:block;margin-top:9px;padding:0;border:0;background:none;'
       'font-family:inherit;font-size:.8rem;color:var(--lcc);font-weight:600;'
       'cursor:pointer;text-align:left}'
@@ -17078,8 +17085,8 @@ if os.path.exists('cards.json'):
       '.ttab td[data-l=""]::before{display:none}'
       '.ttab td[data-l="卡"]{display:block}'
       '.ttab td[data-l="卡"]::before{display:none}'
-      '.ttab td[data-l="加碼額度"]{display:block;max-width:100%}'
-      '.ttab td[data-l="加碼額度"]::before{display:block;'
+      '.ttab td[data-l="目前刷卡額度"]{display:block;max-width:100%}'
+      '.ttab td[data-l="目前刷卡額度"]::before{display:block;'
       'margin-bottom:5px}'
       '}'
       '</style>')
@@ -17130,7 +17137,7 @@ if os.path.exists('cards.json'):
        '表上會標示「你自己填的」。'),
       ('日幣換台幣用什麼匯率？',
        f'用本站每日更新的中間匯率，再加上 {_fx["typical"]}% 國外交易手續費。'
-       '你輸入的是累計日幣金額，換算時全部用今天的匯率，'
+       '你每一筆輸入的日幣金額會加總起來，換算時全部用今天的匯率，'
        '所以和你的實際帳單會有小差距。上限是算在台幣回饋金額上的，'
        '所以要先換算才比得出來。'),
     ]
