@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-29-taichung-okinawa",
- "generated": "2026-10-29 10:53",
+ "generated": "2026-10-29 14:59",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5337,
-  "dep": "2026-11-09",
-  "ret": "2026-11-12",
+  "price": 5401,
+  "dep": "2026-11-23",
+  "ret": "2026-11-26",
   "dept": "07:10",
   "rett": "21:05",
   "rt": true,
@@ -21,35 +21,16 @@
   "dur": 180,
   "dur_to": 90,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$9,943（27 天有紀錄），這張低 46%"
+  "11 月出發的票，每天最便宜的平均要 NT$9,953（27 天有紀錄），這張低 46%"
  ],
- "med": 11216,
- "n_rt": 81,
+ "med": 11221,
+ "n_rt": 82,
  "others": [
-  {
-   "o": "RMQ",
-   "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 5401,
-   "dep": "2026-11-23",
-   "ret": "2026-11-26",
-   "dept": "07:10",
-   "rett": "21:05",
-   "rt": true,
-   "tr": 0,
-   "dur": 180,
-   "dur_to": 90,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
   {
    "o": "RMQ",
    "d": "OKA",
@@ -87,6 +68,24 @@
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
+  },
+  {
+   "o": "RMQ",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 8011,
+   "dep": "2026-11-09",
+   "ret": "2026-11-12",
+   "dept": "07:10",
+   "rett": "21:05",
+   "rt": true,
+   "tr": 0,
+   "dur": 180,
+   "dur_to": 90,
+   "gate": "City.Travel",
+   "url": "https://www.aviasales.com/search/RMQ0911OKA12111?t=IT17942082001794217200000090RMQOKA17945175001794519300000090OKARMQ_cf93d367ecac54c81581bf6a60cf461d_19926&search_date=28102026&expected_price_uuid=01a18025-b07d-8031-2d0a-d995ca2e5ffc&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fsjkCAW9e8vAzPuWdArdJg&expected_price_source=share&expected_price_currency=twd&expected_price=8011&marker=775639"
   }
  ]
 }

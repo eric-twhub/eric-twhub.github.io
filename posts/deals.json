@@ -1,12 +1,12 @@
 [
  {
   "slug": "2026-10-29-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,582 來回含稅｜台灣虎航 11/18 出發",
+  "title": "台北飛沖繩 NT$2,982 來回含稅｜台灣虎航 11/18 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 2582,
+  "price": 2982,
   "air": "台灣虎航",
   "dep": "2026-11-18",
   "ret": "2026-11-25",
@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,368（5 天有紀錄），這張低 41%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,448（5 天有紀錄），這張低 33%"
   ],
   "med": 11141,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
@@ -22,7 +22,7 @@
   "cslug": "okinawa",
   "usual": null,
   "mbase": {
-   "avg": 4368,
+   "avg": 4448,
    "days": 5,
    "month": 11
   },
@@ -56,12 +56,12 @@
  },
  {
   "slug": "2026-10-29-taipei-saga",
-  "title": "台北飛佐賀 NT$5,037 來回含稅｜台灣虎航 11/05 出發",
+  "title": "台北飛佐賀 NT$4,737 來回含稅｜台灣虎航 11/05 出發",
   "o": "台北",
   "c": "佐賀",
   "_oiata": "TPE",
   "_diata": "HSG",
-  "price": 5037,
+  "price": 4737,
   "air": "台灣虎航",
   "dep": "2026-11-05",
   "ret": "2026-11-12",
@@ -70,7 +70,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 15978,
+  "med": 15828,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-05&inbound=HSG-TPE&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
   "hotelcity": "佐賀",
   "cslug": "saga",
@@ -81,37 +81,37 @@
  },
  {
   "slug": "2026-10-29-taichung-okinawa",
-  "title": "台中飛沖繩 NT$5,337 來回含稅｜台灣虎航 11/09 出發",
+  "title": "台中飛沖繩 NT$5,401 來回含稅｜台灣虎航 11/23 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 5337,
+  "price": 5401,
   "air": "台灣虎航",
-  "dep": "2026-11-09",
-  "ret": "2026-11-12",
+  "dep": "2026-11-23",
+  "ret": "2026-11-26",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,943（27 天有紀錄），這張低 46%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,953（27 天有紀錄），這張低 46%"
   ],
-  "med": 11216,
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
+  "med": 11221,
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-23&inbound=OKA-RMQ&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 6465,
-   "hi": 12089,
+   "lo": 8011,
+   "hi": 11716,
    "days": 30
   },
   "mbase": {
-   "avg": 9943,
+   "avg": 9953,
    "days": 27,
    "month": 11
   },
   "rank": 1,
-  "n": 81
+  "n": 82
  },
  {
   "slug": "2026-10-29-transfer-tokyo-sendai",
@@ -165,13 +165,13 @@
  },
  {
   "slug": "2026-10-29-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$699",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,641",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 9385,
+  "price": 8443,
   "air": "飛福岡再轉乘",
-  "fl_price": 7171,
+  "fl_price": 6229,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1107,
@@ -181,7 +181,7 @@
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$699"
+   "比直飛省 NT$1,641"
   ],
   "med": 10084,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
