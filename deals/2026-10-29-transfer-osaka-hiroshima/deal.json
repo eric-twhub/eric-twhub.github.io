@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-29-transfer-osaka-hiroshima",
- "generated": "2026-10-29 05:57",
+ "generated": "2026-10-29 10:53",
  "kind": "transfer",
  "city": "hiroshima",
  "via": "osaka",
@@ -26,19 +26,19 @@
  },
  "fare_rt": true,
  "jpy_text": "¥10,210",
- "twd_one_way": 2130,
- "rate": 0.2087,
- "rate_at": "2026-10-28 08:02",
+ "twd_one_way": 2128,
+ "rate": 0.2085,
+ "rate_at": "2026-10-29 08:02",
  "fare_gate": "Farera",
  "tc_alt": {
   "price": 20489,
   "airname": "大韓航空",
   "dep": "2026-11-22",
-  "total": 24749
+  "total": 24745
  },
  "route": "新大阪 → 廣島",
  "mode": "山陽新幹線",
  "tm": "約 1.5 小時",
- "total": 11111,
- "save": 3679
+ "total": 11107,
+ "save": 3683
 }
