@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-30-transfer-tokyo-sendai",
- "generated": "2026-10-30 06:04",
+ "generated": "2026-10-30 15:02",
  "kind": "transfer",
  "city": "sendai",
  "via": "tokyo",
@@ -12,33 +12,33 @@
   "air": "TR",
   "airname": "酷航",
   "cls": "lcc",
-  "price": 7717,
-  "dep": "2026-11-03",
+  "price": 7664,
+  "dep": "2026-11-02",
   "ret": "2026-11-07",
   "dept": "06:50",
-  "rett": "22:25",
+  "rett": "22:05",
   "rt": true,
   "tr": 0,
-  "dur": 430,
+  "dur": 445,
   "dur_to": 185,
   "gate": "Farera",
-  "url": "https://www.aviasales.com/search/TPE0311NRT07111?t=GK17936886001793703300000185TPENRT17940903001794101400000245NRTTPE_58bd29e96a7b87d6e5383659bbb9a834_19171&search_date=27102026&expected_price_uuid=01a17e15-dc3c-8030-2321-58d3bbe358f8&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=mB0mjRW6qNN-S6anp2ddXg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7717&marker=775639"
+  "url": "https://www.aviasales.com/search/TPE0211NRT07111?t=MM17936022001793616900000185TPENRT17940891001794101100000260NRTTPE_6a5f492142741a74df4613bd54b35eb5_19095&search_date=30102026&expected_price_uuid=01a18a34-fe4f-8031-6bca-a7d09dfd8948&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GGyo3SVMfTn-jReG28FDOA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7663&marker=775639"
  },
  "fare_rt": true,
  "jpy_text": "約 ¥11,400",
- "twd_one_way": 2376,
- "rate": 0.2085,
- "rate_at": "2026-10-29 08:02",
+ "twd_one_way": 2389,
+ "rate": 0.2096,
+ "rate_at": "2026-10-30 08:02",
  "fare_gate": "Farera",
  "tc_alt": {
-  "price": 9389,
-  "airname": "泰國亞洲航空",
-  "dep": "2026-11-21",
-  "total": 14141
+  "price": 9237,
+  "airname": "德威航空",
+  "dep": "2026-11-06",
+  "total": 14015
  },
  "route": "東京 → 仙台",
  "mode": "東北新幹線",
  "tm": "約 1.5 小時",
- "total": 12469,
- "save": 5280
+ "total": 12442,
+ "save": 5307
 }

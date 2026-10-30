@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-30-transfer-fukuoka-kumamoto",
- "generated": "2026-10-30 06:04",
+ "generated": "2026-10-30 15:02",
  "kind": "transfer",
  "city": "kumamoto",
  "via": "fukuoka",
@@ -12,7 +12,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 6629,
+  "price": 6648,
   "dep": "2026-11-02",
   "ret": "2026-11-06",
   "dept": "13:40",
@@ -27,14 +27,14 @@
  },
  "fare_rt": true,
  "jpy_text": "¥5,310（自由席）",
- "twd_one_way": 1107,
- "rate": 0.2085,
- "rate_at": "2026-10-29 08:02",
+ "twd_one_way": 1112,
+ "rate": 0.2096,
+ "rate_at": "2026-10-30 08:02",
  "fare_gate": "Tigerair Taiwan",
  "tc_alt": null,
  "route": "博多 → 熊本",
  "mode": "九州新幹線",
  "tm": "約 40 分",
- "total": 8843,
- "save": 1241
+ "total": 8872,
+ "save": 1212
 }
