@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-31-taipei-okinawa",
- "generated": "2026-10-31 04:00",
+ "generated": "2026-10-31 05:46",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 2990,
+  "price": 2590,
   "dep": "2026-11-18",
   "ret": "2026-11-25",
   "dept": "18:20",
@@ -54,7 +54,7 @@
    "air": "VZ",
    "airname": "泰越捷航空",
    "cls": "lcc",
-   "price": 5256,
+   "price": 5257,
    "dep": "2026-11-01",
    "ret": "2026-11-17",
    "dept": "14:15",
@@ -64,7 +64,7 @@
    "dur": 185,
    "dur_to": 90,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE0111OKA17111?t=IT17935425001793551500000090TPEOKA17949087001794910800000095OKATPE_c1b0cbeb8801e1647e5ba914eee4d6b8_13095&search_date=30102026&expected_price_uuid=01a18a31-35f3-8040-a849-0b9fc303190b&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LA_tGQRpbhvqC2lbY1zR0w&expected_price_source=share&expected_price_currency=twd&expected_price=5256&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE0111OKA17111?t=IT17935425001793551500000090TPEOKA17949087001794910800000095OKATPE_c1b0cbeb8801e1647e5ba914eee4d6b8_13095&search_date=30102026&expected_price_uuid=01a18a31-35f3-8040-a849-0b9fc303190b&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LA_tGQRpbhvqC2lbY1zR0w&expected_price_source=share&expected_price_currency=twd&expected_price=5257&marker=775639"
   },
   {
    "o": "TPE",
