@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-30 15:02",
+ "generated": "2026-10-31 04:00",
  "year": "2026",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -640,12 +640,7 @@
       "est": false
      }
     ],
-    "fare": {
-     "n": 1,
-     "median": 8147,
-     "low": 8147,
-     "enough": false
-    },
+    "fare": null,
     "areas": [
      {
       "area": "kyushu",
@@ -1044,8 +1039,8 @@
      }
     ],
     "fare": {
-     "n": 39,
-     "median": 8766,
+     "n": 36,
+     "median": 8872,
      "low": 4627,
      "enough": true
     },
@@ -1462,8 +1457,8 @@
      }
     ],
     "fare": {
-     "n": 37,
-     "median": 9287,
+     "n": 35,
+     "median": 9627,
      "low": 5507,
      "enough": true
     },
@@ -1911,7 +1906,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-10-30 07:00"
+   "generated": "2026-10-30 19:58"
   },
   "last": "2026-12-31",
   "partial": [],

@@ -1,6 +1,6 @@
 [
  {
-  "slug": "2026-10-30-taipei-okinawa",
+  "slug": "2026-10-31-taipei-okinawa",
   "title": "台北飛沖繩 NT$2,990 來回含稅｜台灣虎航 11/18 出發",
   "o": "台北",
   "c": "沖繩",
@@ -13,24 +13,19 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,733（5 天有紀錄），這張低 37%"
+   "廉航低於 NT$6,000"
   ],
   "med": 11141,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": null,
-  "mbase": {
-   "avg": 4733,
-   "days": 5,
-   "month": 11
-  },
+  "mbase": null,
   "rank": 1,
-  "n": 12
+  "n": 8
  },
  {
-  "slug": "2026-10-30-taipei-ishigaki",
+  "slug": "2026-10-31-taipei-ishigaki",
   "title": "台北飛石垣島 NT$4,048 來回含稅｜台灣虎航 11/21 出發",
   "o": "台北",
   "c": "石垣島",
@@ -55,7 +50,7 @@
   "n": 6
  },
  {
-  "slug": "2026-10-30-taichung-okinawa",
+  "slug": "2026-10-31-taichung-okinawa",
   "title": "台中飛沖繩 NT$4,981 來回含稅｜台灣虎航 11/30 出發",
   "o": "台中",
   "c": "沖繩",
@@ -69,19 +64,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,695（28 天有紀錄），這張低 49%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,715（28 天有紀錄），這張低 49%"
   ],
   "med": 10912,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-30&inbound=OKA-RMQ&returnDate=2026-12-03&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 6481,
+   "lo": 5914,
    "hi": 11716,
-   "days": 30
+   "days": 29
   },
   "mbase": {
-   "avg": 9695,
+   "avg": 9715,
    "days": 28,
    "month": 11
   },
@@ -89,57 +84,7 @@
   "n": 81
  },
  {
-  "slug": "2026-10-30-taipei-saga",
-  "title": "台北飛佐賀 NT$5,048 來回含稅｜台灣虎航 11/05 出發",
-  "o": "台北",
-  "c": "佐賀",
-  "_oiata": "TPE",
-  "_diata": "HSG",
-  "price": 5048,
-  "air": "台灣虎航",
-  "dep": "2026-11-05",
-  "ret": "2026-11-12",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000"
-  ],
-  "med": 15984,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-05&inbound=HSG-TPE&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
-  "hotelcity": "佐賀",
-  "cslug": "saga",
-  "usual": null,
-  "mbase": null,
-  "rank": 1,
-  "n": 2
- },
- {
-  "slug": "2026-10-30-transfer-tokyo-sendai",
-  "title": "飛東京轉乘去仙台，比直飛省 NT$5,307",
-  "o": "台灣",
-  "c": "仙台",
-  "via": "東京",
-  "price": 12442,
-  "air": "飛東京再轉乘",
-  "fl_price": 7664,
-  "fl_rt": true,
-  "fl_to": "東京",
-  "tr_twd": 2389,
-  "tr_mode": "東北新幹線",
-  "dep": "2026-11-02",
-  "ret": "",
-  "stops": "東北新幹線",
-  "cls": "transfer",
-  "reasons": [
-   "比直飛省 NT$5,307"
-  ],
-  "med": 17749,
-  "url": "https://www.aviasales.com/search/TPE0211NRT07111?t=MM17936022001793616900000185TPENRT17940891001794101100000260NRTTPE_6a5f492142741a74df4613bd54b35eb5_19095&search_date=30102026&expected_price_uuid=01a18a34-fe4f-8031-6bca-a7d09dfd8948&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GGyo3SVMfTn-jReG28FDOA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7663&marker=775639",
-  "hotelcity": "仙台",
-  "cslug": "sendai"
- },
- {
-  "slug": "2026-10-30-transfer-osaka-hiroshima",
+  "slug": "2026-10-31-transfer-osaka-hiroshima",
   "title": "飛大阪轉乘去廣島，比直飛省 NT$3,569",
   "o": "台灣",
   "c": "廣島",
@@ -164,14 +109,14 @@
   "cslug": "hiroshima"
  },
  {
-  "slug": "2026-10-30-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,212",
+  "slug": "2026-10-31-transfer-fukuoka-kumamoto",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,612",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 8872,
+  "price": 8472,
   "air": "飛福岡再轉乘",
-  "fl_price": 6648,
+  "fl_price": 6248,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1112,
@@ -181,7 +126,7 @@
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$1,212"
+   "比直飛省 NT$1,612"
   ],
   "med": 10084,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
@@ -189,7 +134,7 @@
   "cslug": "kumamoto"
  },
  {
-  "slug": "2026-10-30-transfer-tokyo-fukushima",
+  "slug": "2026-10-31-transfer-tokyo-fukushima",
   "title": "飛東京轉乘去福島，比直飛省 NT$7,244",
   "o": "台灣",
   "c": "福島",
@@ -209,7 +154,7 @@
    "比直飛省 NT$7,244"
   ],
   "med": 18680,
-  "url": "https://www.aviasales.com/search/TPE0211NRT07111?t=MM17936022001793616900000185TPENRT17940891001794101100000260NRTTPE_6a5f492142741a74df4613bd54b35eb5_19095&search_date=30102026&expected_price_uuid=01a18a34-fe4f-8031-6bca-a7d09dfd8948&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GGyo3SVMfTn-jReG28FDOA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7663&marker=775639",
+  "url": "https://www.aviasales.com/search/TPE0211NRT07111?t=MM17936022001793616900000185TPENRT17940891001794101100000260NRTTPE_6a5f492142741a74df4613bd54b35eb5_19095&search_date=30102026&expected_price_uuid=01a18a34-fe4f-8031-6bca-a7d09dfd8948&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GGyo3SVMfTn-jReG28FDOA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7664&marker=775639",
   "hotelcity": "福島",
   "cslug": "fukushima"
  }
