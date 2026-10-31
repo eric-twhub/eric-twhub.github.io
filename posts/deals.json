@@ -1,37 +1,42 @@
 [
  {
   "slug": "2026-10-31-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,590 來回含稅｜台灣虎航 11/18 出發",
+  "title": "台北飛沖繩 NT$2,992 來回含稅｜台灣虎航 11/02 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 2590,
+  "price": 2992,
   "air": "台灣虎航",
-  "dep": "2026-11-18",
-  "ret": "2026-11-25",
+  "dep": "2026-11-02",
+  "ret": "2026-11-06",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "廉航低於 NT$6,000"
+   "廉航低於 NT$6,000",
+   "11 月出發的票，每天最便宜的平均要 NT$4,407（5 天有紀錄），這張低 32%"
   ],
   "med": 11141,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-02&inbound=OKA-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": null,
-  "mbase": null,
+  "mbase": {
+   "avg": 4407,
+   "days": 5,
+   "month": 11
+  },
   "rank": 1,
-  "n": 8
+  "n": 10
  },
  {
   "slug": "2026-10-31-taipei-ishigaki",
-  "title": "台北飛石垣島 NT$4,048 來回含稅｜台灣虎航 11/21 出發",
+  "title": "台北飛石垣島 NT$4,050 來回含稅｜台灣虎航 11/21 出發",
   "o": "台北",
   "c": "石垣島",
   "_oiata": "TPE",
   "_diata": "ISG",
-  "price": 4048,
+  "price": 4050,
   "air": "台灣虎航",
   "dep": "2026-11-21",
   "ret": "2026-11-25",
@@ -40,7 +45,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 10458,
+  "med": 10460,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-21&inbound=ISG-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
   "hotelcity": "石垣島",
   "cslug": "ishigaki",
@@ -51,12 +56,12 @@
  },
  {
   "slug": "2026-10-31-taichung-okinawa",
-  "title": "台中飛沖繩 NT$4,981 來回含稅｜台灣虎航 11/30 出發",
+  "title": "台中飛沖繩 NT$4,985 來回含稅｜台灣虎航 11/30 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 4981,
+  "price": 4985,
   "air": "台灣虎航",
   "dep": "2026-11-30",
   "ret": "2026-12-03",
@@ -64,44 +69,44 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,716（28 天有紀錄），這張低 49%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,998（29 天有紀錄），這張低 50%"
   ],
-  "med": 10819,
+  "med": 10724,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-30&inbound=OKA-RMQ&returnDate=2026-12-03&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 5914,
+   "lo": 9093,
    "hi": 11716,
-   "days": 29
+   "days": 30
   },
   "mbase": {
-   "avg": 9716,
-   "days": 28,
+   "avg": 9998,
+   "days": 29,
    "month": 11
   },
   "rank": 1,
-  "n": 80
+  "n": 81
  },
  {
   "slug": "2026-10-31-transfer-osaka-hiroshima",
-  "title": "飛大阪轉乘去廣島，比直飛省 NT$3,569",
+  "title": "飛大阪轉乘去廣島，比直飛省 NT$3,555",
   "o": "台灣",
   "c": "廣島",
   "via": "大阪",
-  "price": 11221,
+  "price": 11235,
   "air": "飛大阪再轉乘",
   "fl_price": 6941,
   "fl_rt": true,
   "fl_to": "大阪",
-  "tr_twd": 2140,
+  "tr_twd": 2147,
   "tr_mode": "山陽新幹線",
   "dep": "2026-11-05",
   "ret": "",
   "stops": "山陽新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$3,569"
+   "比直飛省 NT$3,555"
   ],
   "med": 14790,
   "url": "https://www.aviasales.com/search/TPE0511KIX10111?t=GK17938581001793870400000145TPEKIX17943522001794360600000200KIXTPE_b1d93c2b0cc9d2ab7a1ad11b5e52e676_17091&search_date=26102026&expected_price_uuid=01a175d5-dab5-8030-e576-3f75e657bfae&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=FNl3Vy9niYZ05hzV66BMBg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6941&marker=775639",
@@ -110,51 +115,51 @@
  },
  {
   "slug": "2026-10-31-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,212",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,600",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 8872,
+  "price": 8484,
   "air": "飛福岡再轉乘",
-  "fl_price": 6648,
+  "fl_price": 6252,
   "fl_rt": true,
   "fl_to": "福岡",
-  "tr_twd": 1112,
+  "tr_twd": 1116,
   "tr_mode": "九州新幹線",
-  "dep": "2026-11-02",
+  "dep": "2026-11-03",
   "ret": "",
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$1,212"
+   "比直飛省 NT$1,600"
   ],
   "med": 10084,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
  },
  {
   "slug": "2026-10-31-transfer-tokyo-fukushima",
-  "title": "飛東京轉乘去福島，比直飛省 NT$7,242",
+  "title": "飛東京轉乘去福島，比直飛省 NT$13,975",
   "o": "台灣",
   "c": "福島",
   "via": "東京",
-  "price": 11438,
+  "price": 11418,
   "air": "飛東京再轉乘",
-  "fl_price": 7666,
+  "fl_price": 7634,
   "fl_rt": true,
   "fl_to": "東京",
-  "tr_twd": 1886,
+  "tr_twd": 1892,
   "tr_mode": "東北新幹線",
   "dep": "2026-11-02",
   "ret": "",
   "stops": "東北新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$7,242"
+   "比直飛省 NT$13,975"
   ],
-  "med": 18680,
-  "url": "https://www.aviasales.com/search/TPE0211NRT07111?t=MM17936022001793616900000185TPENRT17940891001794101100000260NRTTPE_6a5f492142741a74df4613bd54b35eb5_19095&search_date=30102026&expected_price_uuid=01a18a34-fe4f-8031-6bca-a7d09dfd8948&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GGyo3SVMfTn-jReG28FDOA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7666&marker=775639",
+  "med": 25393,
+  "url": "https://www.aviasales.com/search/TPE0211NRT07111?t=MM17936022001793616900000185TPENRT17940891001794101100000260NRTTPE_6a5f492142741a74df4613bd54b35eb5_18791&search_date=31102026&expected_price_uuid=01a1909d-d0e9-8030-a093-f21d3e0465df&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GGyo3SVMfTn-jReG28FDOA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7634&marker=775639",
   "hotelcity": "福島",
   "cslug": "fukushima"
  }

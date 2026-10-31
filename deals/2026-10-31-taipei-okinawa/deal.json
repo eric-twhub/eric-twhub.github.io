@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-31-taipei-okinawa",
- "generated": "2026-10-31 05:46",
+ "generated": "2026-10-31 14:56",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 2590,
-  "dep": "2026-11-18",
-  "ret": "2026-11-25",
+  "price": 2992,
+  "dep": "2026-11-02",
+  "ret": "2026-11-06",
   "dept": "18:20",
   "rett": "09:45",
   "rt": true,
@@ -21,15 +21,35 @@
   "dur": 175,
   "dur_to": 80,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-02&inbound=OKA-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
-  "廉航低於 NT$6,000"
+  "廉航低於 NT$6,000",
+  "11 月出發的票，每天最便宜的平均要 NT$4,407（5 天有紀錄），這張低 32%"
  ],
  "med": 11141,
- "n_rt": 8,
+ "n_rt": 10,
  "others": [
+  {
+   "o": "TPE",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 3450,
+   "dep": "2026-11-18",
+   "ret": "2026-11-25",
+   "dept": "18:20",
+   "rett": "09:45",
+   "rt": true,
+   "tr": 0,
+   "dur": 175,
+   "dur_to": 80,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-18&inbound=OKA-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
   {
    "o": "TPE",
    "d": "OKA",
@@ -65,24 +85,6 @@
    "dur_to": 90,
    "gate": "Farera",
    "url": "https://www.aviasales.com/search/TPE0111OKA17111?t=IT17935425001793551500000090TPEOKA17949087001794910800000095OKATPE_c1b0cbeb8801e1647e5ba914eee4d6b8_13095&search_date=30102026&expected_price_uuid=01a18a31-35f3-8040-a849-0b9fc303190b&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LA_tGQRpbhvqC2lbY1zR0w&expected_price_source=share&expected_price_currency=twd&expected_price=5257&marker=775639"
-  },
-  {
-   "o": "TPE",
-   "d": "OKA",
-   "air": "VZ",
-   "airname": "泰越捷航空",
-   "cls": "lcc",
-   "price": 5385,
-   "dep": "2026-11-15",
-   "ret": "2026-11-18",
-   "dept": "14:15",
-   "rett": "18:15",
-   "rt": true,
-   "tr": 0,
-   "dur": 185,
-   "dur_to": 90,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE1511OKA18111?t=VZ17947521001794761100000090TPEOKA17950257001795027800000095OKATPE_55073c0ee9a205bd718c3ca11be7df30_13368&search_date=26102026&expected_price_uuid=01a17760-0f16-8040-ab19-3c9b4bb8a4d7&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tEug7iXQHAG5hIVb5fd1Bg&expected_price_source=share&expected_price_currency=twd&expected_price=5385&marker=775639"
   }
  ]
 }

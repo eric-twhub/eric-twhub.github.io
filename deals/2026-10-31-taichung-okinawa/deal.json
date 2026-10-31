@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-10-31-taichung-okinawa",
- "generated": "2026-10-31 05:46",
+ "generated": "2026-10-31 14:56",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4981,
+  "price": 4985,
   "dep": "2026-11-30",
   "ret": "2026-12-03",
   "dept": "07:10",
@@ -26,10 +26,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$9,716（28 天有紀錄），這張低 49%"
+  "11 月出發的票，每天最便宜的平均要 NT$9,998（29 天有紀錄），這張低 50%"
  ],
- "med": 10819,
- "n_rt": 80,
+ "med": 10724,
+ "n_rt": 81,
  "others": [
   {
    "o": "RMQ",
@@ -37,7 +37,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5481,
+   "price": 5485,
    "dep": "2026-11-02",
    "ret": "2026-11-05",
    "dept": "07:10",
@@ -56,7 +56,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5914,
+   "price": 5917,
    "dep": "2026-11-09",
    "ret": "2026-11-12",
    "dept": "07:10",
@@ -72,21 +72,20 @@
   {
    "o": "RMQ",
    "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
+   "air": "LJ",
+   "airname": "真航空",
    "cls": "lcc",
-   "price": 6481,
-   "dep": "2026-11-16",
-   "ret": "2026-11-19",
-   "dept": "07:10",
+   "price": 9093,
+   "dep": "2026-11-10",
+   "ret": "2026-11-17",
+   "dept": "18:30",
    "rett": "21:05",
    "rt": true,
-   "tr": 0,
-   "dur": 180,
-   "dur_to": 90,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
+   "tr": 1,
+   "dur": 1115,
+   "dur_to": 310,
+   "gate": "Trip.com",
+   "url": "https://www.aviasales.com/search/RMQ1011OKA17111?t=LJ17943354001794400500001025RMQICNOKA17949495001794951300000090OKARMQ_bf37b20b9a2dba5a87aad8bf1cfeb286_22428&search_date=29102026&expected_price_uuid=01a18686-ab40-8030-2db2-8fc7afc1b88a&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=xhbSaeRh8QS31_7nFca6fQ&expected_price_source=share&expected_price_currency=twd&expected_price=9093&marker=775639"
   }
  ]
 }
