@@ -1,6 +1,6 @@
 [
  {
-  "slug": "2026-10-31-taipei-okinawa",
+  "slug": "2026-11-01-taipei-okinawa",
   "title": "台北飛沖繩 NT$2,992 來回含稅｜台灣虎航 11/18 出發",
   "o": "台北",
   "c": "沖繩",
@@ -30,7 +30,7 @@
   "n": 10
  },
  {
-  "slug": "2026-10-31-taipei-ishigaki",
+  "slug": "2026-11-01-taipei-ishigaki",
   "title": "台北飛石垣島 NT$4,050 來回含稅｜台灣虎航 11/21 出發",
   "o": "台北",
   "c": "石垣島",
@@ -55,7 +55,7 @@
   "n": 6
  },
  {
-  "slug": "2026-10-31-taichung-okinawa",
+  "slug": "2026-11-01-taichung-okinawa",
   "title": "台中飛沖繩 NT$4,985 來回含稅｜台灣虎航 11/30 出發",
   "o": "台中",
   "c": "沖繩",
@@ -89,7 +89,7 @@
   "n": 77
  },
  {
-  "slug": "2026-10-31-transfer-osaka-hiroshima",
+  "slug": "2026-11-01-transfer-osaka-hiroshima",
   "title": "飛大阪轉乘去廣島，比直飛省 NT$3,555",
   "o": "台灣",
   "c": "廣島",
@@ -114,14 +114,14 @@
   "cslug": "hiroshima"
  },
  {
-  "slug": "2026-10-31-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,200",
+  "slug": "2026-11-01-transfer-fukuoka-kumamoto",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$1,600",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 8884,
+  "price": 8484,
   "air": "飛福岡再轉乘",
-  "fl_price": 6652,
+  "fl_price": 6252,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1116,
@@ -131,7 +131,7 @@
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$1,200"
+   "比直飛省 NT$1,600"
   ],
   "med": 10084,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
