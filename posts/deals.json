@@ -126,7 +126,7 @@
   "fl_to": "福岡",
   "tr_twd": 1116,
   "tr_mode": "九州新幹線",
-  "dep": "2026-11-03",
+  "dep": "2026-11-02",
   "ret": "",
   "stops": "九州新幹線",
   "cls": "transfer",
@@ -134,7 +134,7 @@
    "比直飛省 NT$1,600"
   ],
   "med": 10084,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
  }

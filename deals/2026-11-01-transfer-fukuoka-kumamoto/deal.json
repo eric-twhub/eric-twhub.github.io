@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-01-transfer-fukuoka-kumamoto",
- "generated": "2026-11-01 03:25",
+ "generated": "2026-11-01 04:43",
  "kind": "transfer",
  "city": "kumamoto",
  "via": "fukuoka",
@@ -13,7 +13,7 @@
   "airname": "台灣虎航",
   "cls": "lcc",
   "price": 6252,
-  "dep": "2026-11-03",
+  "dep": "2026-11-02",
   "ret": "2026-11-06",
   "dept": "06:45",
   "rett": "10:55",
@@ -22,7 +22,7 @@
   "dur": 300,
   "dur_to": 135,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-03&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-02&inbound=FUK-TPE&returnDate=2026-11-06&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "fare_rt": true,
