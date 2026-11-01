@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-01-taichung-okinawa",
- "generated": "2026-11-01 04:43",
+ "generated": "2026-11-01 15:24",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -26,10 +26,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$9,916（28 天有紀錄），這張低 50%"
+  "11 月出發的票，每天最便宜的平均要 NT$9,714（28 天有紀錄），這張低 49%"
  ],
- "med": 10652,
- "n_rt": 77,
+ "med": 10524,
+ "n_rt": 103,
  "others": [
   {
    "o": "RMQ",
@@ -56,6 +56,25 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
+   "price": 5485,
+   "dep": "2026-12-14",
+   "ret": "2026-12-17",
+   "dept": "07:10",
+   "rett": "21:05",
+   "rt": true,
+   "tr": 0,
+   "dur": 180,
+   "dur_to": 90,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-12-14&inbound=OKA-RMQ&returnDate=2026-12-17&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "RMQ",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
    "price": 5917,
    "dep": "2026-11-09",
    "ret": "2026-11-12",
@@ -68,24 +87,6 @@
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-09&inbound=OKA-RMQ&returnDate=2026-11-12&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
-  },
-  {
-   "o": "RMQ",
-   "d": "OKA",
-   "air": "LJ",
-   "airname": "真航空",
-   "cls": "lcc",
-   "price": 9093,
-   "dep": "2026-11-10",
-   "ret": "2026-11-17",
-   "dept": "18:30",
-   "rett": "21:05",
-   "rt": true,
-   "tr": 1,
-   "dur": 1115,
-   "dur_to": 310,
-   "gate": "Trip.com",
-   "url": "https://www.aviasales.com/search/RMQ1011OKA17111?t=LJ17943354001794400500001025RMQICNOKA17949495001794951300000090OKARMQ_bf37b20b9a2dba5a87aad8bf1cfeb286_22428&search_date=29102026&expected_price_uuid=01a18686-ab40-8030-2db2-8fc7afc1b88a&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=xhbSaeRh8QS31_7nFca6fQ&expected_price_source=share&expected_price_currency=twd&expected_price=9093&marker=775639"
   }
  ]
 }
