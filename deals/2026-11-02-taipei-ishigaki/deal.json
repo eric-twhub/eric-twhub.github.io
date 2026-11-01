@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-02-taipei-ishigaki",
- "generated": "2026-11-02 03:50",
+ "generated": "2026-11-02 05:26",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4068,
-  "dep": "2026-11-13",
-  "ret": "2026-11-17",
+  "price": 4050,
+  "dep": "2026-11-21",
+  "ret": "2026-11-25",
   "dept": "06:35",
   "rett": "09:25",
   "rt": true,
@@ -21,7 +21,7 @@
   "dur": 130,
   "dur_to": 60,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-13&inbound=ISG-TPE&returnDate=2026-11-17&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-21&inbound=ISG-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
@@ -36,9 +36,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4268,
-   "dep": "2026-11-21",
-   "ret": "2026-11-25",
+   "price": 4068,
+   "dep": "2026-11-13",
+   "ret": "2026-11-17",
    "dept": "06:35",
    "rett": "09:25",
    "rt": true,
@@ -46,7 +46,7 @@
    "dur": 130,
    "dur_to": 60,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-21&inbound=ISG-TPE&returnDate=2026-11-25&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-13&inbound=ISG-TPE&returnDate=2026-11-17&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
