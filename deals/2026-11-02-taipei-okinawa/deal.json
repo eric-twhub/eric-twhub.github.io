@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-02-taipei-okinawa",
- "generated": "2026-11-02 17:19",
+ "generated": "2026-11-02 17:26",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -26,7 +26,7 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$4,566（5 天有紀錄），這張低 16%"
+  "11 月出發的票，每天最便宜的平均要 NT$4,793（5 天有紀錄），這張低 20%"
  ],
  "med": 8812,
  "n_rt": 21,
@@ -56,18 +56,17 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4417,
-   "dep": "2026-11-05",
-   "ret": "2026-11-09",
+   "price": 4894,
+   "dep": "2026-11-02",
+   "ret": "2026-11-06",
    "dept": "18:20",
-   "rett": "12:10",
+   "rett": "09:45",
    "rt": true,
    "tr": 0,
    "dur": 175,
    "dur_to": 80,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-05&inbound=OKA-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/TPE0211OKA06111?t=IT17936436001793652000000080TPEOKA17939583001793960400000095OKATPE_b5d9d69fdb8479b03b84dc957b92adca_12046&search_date=31102026&expected_price_uuid=01a1900b-f83c-8030-e8ff-c283c450861d&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0sfJ7NIWukdOE7fvdO5zmg&expected_price_source=share&expected_price_currency=twd&expected_price=4894&marker=775639"
   },
   {
    "o": "TPE",
@@ -75,17 +74,17 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4417,
-   "dep": "2026-11-04",
-   "ret": "2026-11-09",
+   "price": 4917,
+   "dep": "2026-12-30",
+   "ret": "2027-01-02",
    "dept": "18:20",
-   "rett": "12:10",
+   "rett": "09:45",
    "rt": true,
    "tr": 0,
    "dur": 175,
    "dur_to": 80,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-04&inbound=OKA-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-30&inbound=OKA-TPE&returnDate=2027-01-02&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
