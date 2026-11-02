@@ -13896,7 +13896,8 @@ if os.path.exists('cobrand-cards.json'):
       '出境時經海關確認後，由店家或其委託的退稅服務商退還，不需要再回到原店。'
       '觀光廳的旅客問答列出的方式有銀行轉帳、退回信用卡、App，'
       '以及海關確認完之後在出境的機場或港口領現金，但每家店提供的不一樣；'
-      '怎麼登錄退款方式，結帳時店家會說明。實際到帳時間同樣依店家與業者而異。'
+      '怎麼登錄退款方式，結帳時店家會說明。App 也不是每家都有：Global Blue、PIE VAT 有 App，'
+      'J&J、JPrefund 是用網頁登錄。實際到帳時間同樣依店家與業者而異。'
       '若你在意刷卡回饋被回沖，退回信用卡以外的方式比較單純。'),
      ('退款可以直接領日幣現金嗎？',
       '可以，多半是在出境的機場或港口、海關確認完之後領，而且要看當初購買的店有沒有提供這個方式。'
@@ -14049,6 +14050,51 @@ if os.path.exists('cobrand-cards.json'):
         + '整理，查證於 2026-10-31。整理可能有疏漏，出發前請以官方公告為準；'
         '機台在各航廈的位置，看海關的位置圖最準。</p>')
 
+    # 退稅業者的 App。只列官方旅客說明查得到的四家，查證於 2026-11-02。
+    # Planet、IntaSect 等找不到給旅客看的說明，沒查到不等於沒有，所以不列進表裡當「無」。
+    _tf_ops = [
+        ('Global Blue', '有：Global Blue - Shop Tax Free（iOS、Android），不一定要裝',
+         '在 App 或官網的 My Purchases 登錄退款方式、查進度；也可以到 Global Blue 的退稅櫃台領',
+         '官方寫海關確認後，一般 3～5 天退到你登錄的方式'),
+        ('PIE VAT', '有：PIE VAT（iOS、Android）',
+         '旅客說明以 App 為主：在 App 申請退款、查進度',
+         '手續費從退稅金扣，依店家或商場而不同'),
+        ('J&J（J-TaxRefund）', '沒有，官方寫明不需安裝 App',
+         '掃店家出示的 QR 打開網頁，登錄護照與退款方式（信用卡、銀行轉帳、QR 碼支付）',
+         '網頁型服務'),
+        ('SmartDetax（JPrefund）', '官方網站沒有提到 App',
+         '在網站用 email 註冊，登錄護照與退款方式，再用 QR、20 位交易編號，'
+         '或購買日加含稅合計金額登錄購買紀錄',
+         '要在購買日起 200 天內申請；會扣手續費；退款可能要出境後 1 個月以上'),
+    ]
+    _tf_ops_src = [
+        ('Global Blue 日本新制說明',
+         'https://www.globalblue.com/en/shoppers/how-to-shop-tax-free/guides/japan/japan-tax-free-shopping-2026'),
+        ('PIE VAT 旅客說明', 'https://pievat.com/tourists/japan'),
+        ('J&J J-TaxRefund', 'https://j-taxfree.jp/service/j-taxrefund/'),
+        ('JPrefund', 'https://jprefund.com/landing'),
+    ]
+    _tf_apps = (
+        '<h2 id="refund-apps">退款要裝 App 嗎？看是哪一家業者</h2>'
+        '<p class="lede">退款多半是店家委託的退稅業者處理，用哪一家不是自己選的，'
+        '看你在哪家店買；結帳時店家會給 QR 或說明怎麼登錄。'
+        '<b>有 App 的只有部分業者</b>，其他是用網頁辦。</p>'
+        '<div class="tw"><table><thead><tr><th>業者</th><th>App</th>'
+        '<th>怎麼登錄退款</th><th>另外要注意</th></tr></thead><tbody>'
+        + ''.join('<tr>' + ''.join(f'<td>{html.escape(c)}</td>' for c in r) + '</tr>'
+                  for r in _tf_ops)
+        + '</tbody></table></div>'
+        '<div class="tldr"><ul>'
+        '<li><b>Visit Japan Web 不是退款 App。</b>它只負責出境時的海關確認，'
+        '錢還是由店家或退稅業者退。</li>'
+        '<li><b>機場的 Cash Japan、Self Tax Refund 是領現金的機台，</b>不是要下載的 App。</li>'
+        '</ul></div>'
+        '<p class="disc">以上依'
+        + '、'.join(f'<a href="{u}" target="_blank" rel="nofollow noopener">{html.escape(n)}</a>'
+                   for n, u in _tf_ops_src)
+        + '的旅客說明整理，查證於 2026-11-02。其他退稅業者沒有查到給旅客的說明，'
+        '表上沒列不代表沒有 App；實際流程以店家當場說明為準。</p>')
+
     write('japan-tax-free-2026/index.html',
       head(tf_title, tf_desc, 'japan-tax-free-2026/',
            '<script type="application/ld+json">' + tf_ld + '</script>')
@@ -14098,6 +14144,7 @@ if os.path.exists('cobrand-cards.json'):
       + search_form('查你自己的日期',
                     '上面是近期最低紀錄，選好日期可查目前實際可訂的價格。', 'TPE', 'TYO')
       + _tf_depart
+      + _tf_apps
       + '<span id="refund-fee"></span>' + _rf_block()
       + '<h2>三個容易踩到的地雷</h2>'
       + '<div class="tldr"><ul>'
