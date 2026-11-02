@@ -15648,7 +15648,12 @@ if os.path.exists('cards.json'):
         return f'{y}/{m}/{d}'
 
     def _lb_mode(base, tiers, mode):
-        ts = [t for t in tiers if t.get('scope') in (mode, 'any')]
+        # 名額已滿的那一層這一期登錄不到，不能算進小抄的「日本最高」。
+        # 比較表、卡片頁與回饋計算機都已經扣掉它（nowmax()、JS 的 !t.sold_out），
+        # 只有小抄沒扣，結果印出一個讀者現在拿不到的數字，而小抄是會被印出來
+        # 貼在卡背、帶著用好幾個月的那一個產出。
+        ts = [t for t in tiers
+              if t.get('scope') in (mode, 'any') and not t.get('sold_out')]
         if not ts:
             return base
         # 官方寫明不算一般消費的那幾層（交通卡儲值）連基本回饋都沒有
@@ -15712,6 +15717,10 @@ if os.path.exists('cards.json'):
                     title = f'＋{t["rate"]:g}% {spec.get("name") or t["label"]}'
                 if nmb:
                     title = f'{ti}. {title}'
+                # 這一層還是要列出來（它是真的加碼，只是這一期搶不到），
+                # 但要標出來，否則上面的「最高％」會跟下面幾層加不起來。
+                if t.get('sold_out'):
+                    title = f'{title}（名額已滿）'
                 if spec.get('d'):
                     detail = tok(spec['d'], hit, t['rate'])
                 else:
