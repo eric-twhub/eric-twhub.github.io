@@ -14101,8 +14101,10 @@ if os.path.exists('cobrand-cards.json'):
          '旅客說明以 App 為主：在 App 申請退款、查進度',
          '手續費從退稅金扣，依店家或商場而不同'),
         ('J&J（J-TaxRefund）', '沒有，官方寫明不需安裝 App',
-         '掃店家出示的 QR 打開網頁，登錄護照與退款方式（信用卡、銀行轉帳、QR 碼支付）',
-         '網頁型服務'),
+         '掃店家出示的 QR 打開網頁，登錄護照與退款方式（信用卡、金融卡、預付卡、支付寶、'
+         '微信支付；銀行轉帳要退款滿 ¥10 萬），也可以在機場退稅櫃台領現金',
+         '手續費由各店自己設定，退款方式不同扣的也不同；購買日隔天起 180 天內要完成註冊、'
+         '護照驗證、設定退款方式；退到 Visa 卡時，扣完店家手續費不到 ¥2,000，每筆另收 0.70 美元'),
         ('SmartDetax（JPrefund）', '官方網站沒有提到 App',
          '在網站用 email 註冊，登錄護照與退款方式，再用 QR、20 位交易編號，'
          '或購買日加含稅合計金額登錄購買紀錄',
@@ -14113,6 +14115,7 @@ if os.path.exists('cobrand-cards.json'):
          'https://www.globalblue.com/en/shoppers/how-to-shop-tax-free/guides/japan/japan-tax-free-shopping-2026'),
         ('PIE VAT 旅客說明', 'https://pievat.com/tourists/japan'),
         ('J&J J-TaxRefund', 'https://j-taxfree.jp/service/j-taxrefund/'),
+        ('J-TaxRefund 旅客網站', 'https://j-taxrefund.com/'),
         ('JPrefund', 'https://jprefund.com/landing'),
     ]
     _tf_apps = (
