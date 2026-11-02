@@ -17943,6 +17943,9 @@ if os.path.exists('cards.json'):
                  f'<p class="disc">實際折扣依商品類別與當期券別而異，以店家公告為準。'
                  f'想連刷卡回饋一起算，可用<a href="{U("/japan-coupon/")}">實付價計算機</a>。</p>')
               + _card_bonus_block(st)
+              # 會員卡型的店沒有「券怎麼拿」那一段，退稅手續費單獨一塊
+              + (f'<div class="tldr"><ul>{_rfs_li(st)}</ul></div>'
+                 if st.get('kind') == 'card' and _rfs_li(st) else '')
               + fare_cta('tokyo', '算完省多少，機票呢')
               + ('' if st.get('kind') == 'card' else
                  '<h2>券怎麼拿、什麼時候出示</h2><div class="tldr"><ul>'
