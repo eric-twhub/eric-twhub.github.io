@@ -13971,7 +13971,7 @@ if os.path.exists('cobrand-cards.json'):
     _RFS = {}
     if os.path.exists('refund-fees.json'):
         _RFS = json.load(open('refund-fees.json', encoding='utf-8'))
-    _RFS_ST = {'fee': '公告了費率', 'free': '公告不收', 'no_rate': '有公告，沒寫費率'}
+    _RFS_ST = {'fee': '公告費率', 'free': '公告不收', 'no_rate': '有公告，沒寫費率'}
 
     def _rfs_name(s):
         n = html.escape(s['name'])
