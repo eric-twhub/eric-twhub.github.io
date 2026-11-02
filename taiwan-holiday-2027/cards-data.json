@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-02 10:14",
+ "generated": "2026-11-02 15:37",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -1324,9 +1324,9 @@
      }
     ],
     "fare": {
-     "n": 32,
-     "median": 9280,
-     "low": 5507,
+     "n": 30,
+     "median": 9478,
+     "low": 5523,
      "enough": true
     },
     "areas": [
@@ -1736,8 +1736,8 @@
      }
     ],
     "fare": {
-     "n": 21,
-     "median": 11197,
+     "n": 22,
+     "median": 10736,
      "low": 5345,
      "enough": true
     },
@@ -2112,8 +2112,8 @@
      }
     ],
     "fare": {
-     "n": 11,
-     "median": 10350,
+     "n": 10,
+     "median": 10036,
      "low": 5826,
      "enough": true
     },
@@ -2519,8 +2519,8 @@
     ],
     "fest": [],
     "fare": {
-     "n": 7,
-     "median": 9783,
+     "n": 6,
+     "median": 9682,
      "low": 7102,
      "enough": false
     },
@@ -2916,10 +2916,10 @@
      }
     ],
     "fare": {
-     "n": 9,
-     "median": 9540,
+     "n": 7,
+     "median": 10581,
      "low": 8258,
-     "enough": true
+     "enough": false
     },
     "areas": [
      {
@@ -3320,8 +3320,8 @@
     ],
     "fest": [],
     "fare": {
-     "n": 3,
-     "median": 8785,
+     "n": 4,
+     "median": 8929,
      "low": 6749,
      "enough": false
     },
@@ -3712,7 +3712,7 @@
     ],
     "fest": [],
     "fare": {
-     "n": 3,
+     "n": 5,
      "median": 8933,
      "low": 8202,
      "enough": false
@@ -4135,9 +4135,9 @@
      }
     ],
     "fare": {
-     "n": 3,
-     "median": 11152,
-     "low": 10781,
+     "n": 4,
+     "median": 10966,
+     "low": 9775,
      "enough": false
     },
     "areas": [
@@ -4986,9 +4986,9 @@
     ],
     "fest": [],
     "fare": {
-     "n": 1,
-     "median": 10588,
-     "low": 10588,
+     "n": 2,
+     "median": 10058,
+     "low": 9528,
      "enough": false
     },
     "areas": [
@@ -6323,7 +6323,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-11-02 02:13"
+   "generated": "2026-11-02 07:36"
   },
   "last": "2027-12-31",
   "partial": [
