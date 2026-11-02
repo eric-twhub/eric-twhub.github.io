@@ -1174,6 +1174,7 @@ blockquote.q{margin:14px 0;padding:12px 16px;background:var(--card);
 border-left:3px solid var(--acc);border-radius:0 8px 8px 0;font-size:.9rem;line-height:1.75}
 blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem;color:var(--dim)}
 blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem;color:var(--dim)}
+.tw td .qz{display:block;margin-top:4px;font-size:.84rem;color:var(--dim)}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
 .tw table{font-size:.95rem}
 .tw th{font-size:.86rem}
@@ -13963,6 +13964,50 @@ if os.path.exists('cobrand-cards.json'):
     if os.path.exists('japan-rules.json'):
         _RF = json.load(open('japan-rules.json', encoding='utf-8')).get('refund_fee') or {}
 
+    # 各店自己公告的手續費（refund-fees.json）。沒查到公告的店另外列一行名單，
+    # 不放進表格裡給「—」：沒查到不等於不收，也不等於收。
+    _RFS = {}
+    if os.path.exists('refund-fees.json'):
+        _RFS = json.load(open('refund-fees.json', encoding='utf-8'))
+    _RFS_ST = {'fee': '公告了費率', 'free': '公告不收', 'no_rate': '有公告，沒寫費率'}
+
+    def _rfs_name(s):
+        n = html.escape(s['name'])
+        return f'<a href="{U("/japan-coupon/" + s["slug"] + "/")}">{n}</a>' if s.get('slug') else n
+
+    def _rfs_block():
+        rows = [s for s in _RFS['stores'] if s['status'] != 'none']
+        none = [s for s in _RFS['stores'] if s['status'] == 'none']
+        old = [s['name'] for s in none if s.get('old')]
+        trs = ''.join(
+            '<tr><td><b>' + _rfs_name(s) + '</b></td>'
+            f'<td>{html.escape(_RFS_ST[s["status"]])}</td>'
+            f'<td>{html.escape(s["rate"])}</td>'
+            f'<td>{html.escape(s.get("base") or "沒寫")}</td>'
+            f'<td>{html.escape(s.get("per10k") or "算不出來")}</td>'
+            '<td>' + html.escape(s['note'])
+            + (f'<span class="qz">「{html.escape(s["quote"])}」</span>' if s.get('quote') else '')
+            + f' <a href="{s["src"]}" target="_blank" rel="nofollow noopener">'
+              f'{html.escape(s["src_name"])}</a></td></tr>'
+            for s in rows)
+        return ('<h3 id="store-fees">各店公告的手續費</h3>'
+                '<p class="lede">只算店家自己在官網或新聞稿寫出來的。'
+                '<b>同樣寫「10%」或「2.3%」，算的基礎可能完全不同：</b>'
+                'UNIQLO 是從退稅金額扣約 10%，大丸是從稅前購買金額扣最高 2.3%。'
+                '換算成同一筆 ¥10,000（稅前）的消費，UNIQLO 約扣 ¥100，大丸最多扣 ¥230，'
+                '所以表裡另外算了實際退回多少。</p>'
+                '<div class="tw"><table><thead><tr><th>店家</th><th>狀態</th><th>手續費</th>'
+                '<th>從哪個金額算</th><th>買 ¥10,000（稅前）退回</th><th>官方怎麼說</th>'
+                '</tr></thead><tbody>' + trs + '</tbody></table></div>'
+                '<p class="lede"><b>還沒查到官方公告的：</b>'
+                + '、'.join(_rfs_name(s) for s in none) + '。'
+                '沒查到不等於不收，結帳時看店家當場的說明。'
+                + ('其中' + '、'.join(html.escape(n) for n in old)
+                   + '的官網免稅說明還是 11/1 以前的舊制內容，不要照著做。' if old else '')
+                + '</p>'
+                '<p class="disc">查證於 ' + _RFS['checked'] + '。只採用店家或集團的官方頁面與新聞稿，'
+                '媒體報導與粉專轉述的數字沒有列入。手續費隨時可能調整，以結帳當下店家公告為準。</p>')
+
     def _rf_block():
         if not _RF:
             return ''
@@ -13976,15 +14021,8 @@ if os.path.exists('cobrand-cards.json'):
                '<p class="lede">新制最常被問的一題：那 10% 會完整回到我手上嗎？'
                '官方的答案是「沒有規定」，而這三個字比任何數字都重要。</p>'
                '<div class="cmp">' + cards + '</div>')
-        ex = _RF.get('_店家實例') or {}
-        if ex:
-            out += ('<h3>已經有店家把手續費寫出來了</h3>'
-                    '<blockquote class="q">' + html.escape(ex['quote'])
-                    + '<cite><a href="' + ex['src'] + '" target="_blank" '
-                    'rel="nofollow noopener">' + html.escape(ex['src_name'])
-                    + '</a></cite></blockquote>'
-                    '<p class="lede">' + html.escape(ex['zh']) + '</p>'
-                    '<p class="lede"><b>' + html.escape(ex['so']) + '</b></p>')
+        if _RFS:
+            out += _rfs_block()
         if obs:
             out += ('<p class="disc"><b>社群實測：</b>' + html.escape(obs['note'])
                     + '　' + html.escape(obs['本站立場']) + '</p>')
@@ -17342,6 +17380,23 @@ if os.path.exists('cards.json'):
         'image': '以靜態券圖提供，注意事項通常另寫在圖外',
         'counter': '不是電子券，要到店內櫃台憑護照換紙本券',
     }
+    # 各店頁的「退稅手續費」一行，資料與免稅新制頁的對照表同一份
+    _RFS_BY = {}
+    if os.path.exists('refund-fees.json'):
+        _RFS_BY = {x['slug']: x for x in
+                   json.load(open('refund-fees.json', encoding='utf-8'))['stores'] if x.get('slug')}
+
+    def _rfs_li(st):
+        x = _RFS_BY.get(st.get('slug'))
+        if not x:
+            return ''
+        t = {'fee': f'官方公告{x.get("rate", "")}'
+                    + (f'，從{x["base"]}算' if x.get('base') else ''),
+             'free': '官方公告不收' + ('，但機場領現金另收業者手續費' if '機場' in x.get('note', '') else ''),
+             'no_rate': '官方有公告會扣，但沒寫費率',
+             'none': '還沒查到官方公告，結帳時看店家說明'}[x['status']]
+        return (f'<li><b>退稅手續費</b>：{html.escape(t)}。'
+                f'<a href="{U("/japan-tax-free-2026/")}#store-fees">各店比較</a></li>')
     if os.path.exists('coupons.json'):
         CP = json.load(open('coupons.json', encoding='utf-8'))
         # 免稅門檻從 tax_min 的文字取數字；取不到就用日本通則 ¥5,000
@@ -17895,6 +17950,7 @@ if os.path.exists('cards.json'):
                 f'<li><b>出示時機</b>：{html.escape(st["when"])}</li>'
                 f'<li><b>免稅門檻</b>：{html.escape(st["tax_min"])}</li>'
                 f'<li><b>與免稅併用</b>：{html.escape(st["combo"])}</li>'
+              + _rfs_li(st)
               + (f'<li><b>券的形式</b>：{html.escape(_FORM[st["form"]])}'
                  + (f'　{html.escape(st["form_note"])}' if st.get('form_note') else '')
                  + '</li>' if st.get('form') else '')
