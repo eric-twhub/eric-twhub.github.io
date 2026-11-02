@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-02-taipei-okinawa",
- "generated": "2026-11-02 05:26",
+ "generated": "2026-11-02 10:14",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -26,10 +26,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "這條航線平常最低落在 NT$3,850–NT$8,186，這張是近期 22 筆紀錄中第 1 低"
+  "11 月出發的票，每天最便宜的平均要 NT$4,560（6 天有紀錄），這張低 26%"
  ],
  "med": 12400,
- "n_rt": 22,
+ "n_rt": 26,
  "others": [
   {
    "o": "TPE",
@@ -56,35 +56,37 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4894,
-   "dep": "2026-11-02",
-   "ret": "2026-11-06",
+   "price": 4017,
+   "dep": "2026-11-05",
+   "ret": "2026-11-09",
    "dept": "18:20",
-   "rett": "09:45",
+   "rett": "12:10",
    "rt": true,
    "tr": 0,
    "dur": 175,
    "dur_to": 80,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE0211OKA06111?t=IT17936436001793652000000080TPEOKA17939583001793960400000095OKATPE_b5d9d69fdb8479b03b84dc957b92adca_12046&search_date=31102026&expected_price_uuid=01a1900b-f83c-8030-e8ff-c283c450861d&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0sfJ7NIWukdOE7fvdO5zmg&expected_price_source=share&expected_price_currency=twd&expected_price=4894&marker=775639"
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-05&inbound=OKA-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
   },
   {
    "o": "TPE",
    "d": "OKA",
-   "air": "SL",
-   "airname": "泰國獅子航空",
+   "air": "IT",
+   "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5252,
-   "dep": "2026-11-23",
-   "ret": "2026-11-28",
-   "dept": "09:00",
-   "rett": "19:30",
+   "price": 4417,
+   "dep": "2026-11-04",
+   "ret": "2026-11-09",
+   "dept": "18:20",
+   "rett": "12:10",
    "rt": true,
    "tr": 0,
-   "dur": 170,
-   "dur_to": 75,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2311OKA28111?t=SL17954244001795432500000075TPEOKA17958942001795896300000095OKATPE_5aa059204531f5bed7a48697ec037bfa_12929&search_date=01112026&expected_price_uuid=01a19748-4c3e-8040-2fa3-4b7528d420e4&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=vk_FeUMHEBYJn0Sm0Ss36w&expected_price_source=share&expected_price_currency=twd&expected_price=5252&marker=775639"
+   "dur": 175,
+   "dur_to": 80,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-04&inbound=OKA-TPE&returnDate=2026-11-09&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
   }
  ]
 }
