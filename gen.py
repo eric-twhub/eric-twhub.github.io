@@ -1175,6 +1175,8 @@ border-left:3px solid var(--acc);border-radius:0 8px 8px 0;font-size:.9rem;line-
 blockquote.q cite{display:block;margin-top:7px;font-style:normal;font-size:.8rem;color:var(--dim)}
 blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem;color:var(--dim)}
 .tw td .qz{display:block;margin-top:4px;font-size:.84rem;color:var(--dim)}
+/* 各店手續費表：最後一欄是整段說明，攤成卡片時吃滿整排，不要擠在中間那一格 */
+table.cardz.fees td:last-child{grid-column:1/-1}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
 .tw table{font-size:.95rem}
 .tw th{font-size:.86rem}
@@ -13996,7 +13998,7 @@ if os.path.exists('cobrand-cards.json'):
                 'UNIQLO 是從退稅金額扣約 10%，大丸是從稅前購買金額扣最高 2.3%。'
                 '換算成同一筆 ¥10,000（稅前）的消費，UNIQLO 約扣 ¥100，大丸最多扣 ¥230，'
                 '所以表裡另外算了實際退回多少。</p>'
-                '<div class="tw"><table><thead><tr><th>店家</th><th>狀態</th><th>手續費</th>'
+                '<div class="tw"><table class="fees"><thead><tr><th>店家</th><th>狀態</th><th>手續費</th>'
                 '<th>從哪個金額算</th><th>買 ¥10,000（稅前）退回</th><th>官方怎麼說</th>'
                 '</tr></thead><tbody>' + trs + '</tbody></table></div>'
                 '<p class="lede"><b>還沒查到官方公告的：</b>'
