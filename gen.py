@@ -303,11 +303,14 @@ def fare_cta(slug, headline, sub_prefix='', before=None):
     pt = '來回' if b['rt'] else '單程'
     sub = (f'{sub_prefix}台北飛{nm}・{b["airname"]}・{b["dep"]} 出發・{pt}含稅'
            f'　→ 到 Trip.com 查這天')
-    return (f'<a class="cta" href="{html.escape(flight_url(b))}" target="_blank" '
+    # <!--nh--> 包起來的部分不算進 lastmod 的內容雜湊（見 write()）。
+    # 這顆按鈕是順帶推的機票，票價一變就跟著變；優惠券、信用卡頁的內容
+    # 本身沒動，不該因為它每天被當成「這頁更新了」。
+    return (f'<!--nh--><a class="cta" href="{html.escape(flight_url(b))}" target="_blank" '
             f'rel="nofollow noopener sponsored">'
             f'<span class="ci">✈️</span>'
             f'<span class="ct"><b>{html.escape(headline)}</b><s>{html.escape(sub)}</s></span>'
-            f'<span class="ca pr">{money(b["price"])}<small>近期最低</small></span></a>')
+            f'<span class="ca pr">{money(b["price"])}<small>近期最低</small></span></a><!--/nh-->')
 
 def ez_url(slug=''):
     """易遊網的該航線查詢頁。
@@ -1929,7 +1932,7 @@ def foot():
 <!--f-->票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
 <!--/f--><!--a-->實際訂購由合作平台完成：{_partner_line()}。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
-<!--/a-->最後更新 {NOWS}　·　<a href="{U("/")}">回首頁</a>
+<!--/a-->最後更新 <!--lm-->{NOWS}<!--/lm-->　·　<a href="{U("/")}">回首頁</a>
 </p></div>{SF_JS}{NAV_JS}{TBL_JS}{LB_JS}</body></html>'''
 
 def _reg_window(c):
@@ -2537,9 +2540,14 @@ def write(path,content):
         content = _ad_inject(path, content)
         content = _trim_note(content)
         content = _ja_gloss(content)
+        # 內容雜湊不含頁尾的「最後更新」時間（建好 sitemap 後才回填成這頁
+        # 真正變動的時間）與 <!--nh--> 包住的順帶機票按鈕，否則每次重建
+        # 每一頁都會被判定有變，lastmod 永遠是今天。
+        _hc = re.sub(r'<!--nh-->.*?<!--/nh-->|<!--lm-->.*?<!--/lm-->', '', content, flags=re.S)
+        content = content.replace('<!--nh-->', '').replace('<!--/nh-->', '')
     open(path,'w',encoding='utf-8').write(content)
     if path.endswith('.html'):
-        PAGE_HASH[path] = hashlib.sha1(content.encode('utf-8')).hexdigest()[:16]
+        PAGE_HASH[path] = hashlib.sha1(_hc.encode('utf-8')).hexdigest()[:16]
         _t = re.search(r'<title>(.*?)</title>', content, re.S)
         _h = re.search(r'<h1[^>]*>(.*?)</h1>', content, re.S)
         PAGE_META[path] = {
@@ -19886,6 +19894,19 @@ for _u, _p in pages:
         _lm_same += 1
     else:
         _lm_new[_u] = {'h': _h, 'd': LASTMOD}
+
+# 頁尾「最後更新」回填成這一頁內容真正變動的時間，跟 sitemap 的 lastmod 一致。
+# 原本寫的是建置時間，讀者看到的「更新」其實只是網站重建。
+_LM_RE = re.compile(r'<!--lm-->.*?<!--/lm-->')
+for _u, _p in pages:
+    _f = _page_file(_u)
+    if _f not in PAGE_HASH:
+        continue
+    _d = _lm_new[_u]['d']
+    _t = open(_f, encoding='utf-8').read()
+    _t2 = _LM_RE.sub(f'<!--lm-->{_d[:10]} {_d[11:16]}<!--/lm-->', _t)
+    if _t2 != _t:
+        open(_f, 'w', encoding='utf-8').write(_t2)
 
 # 這個檔刻意不放建置時間戳。放了的話它每次都會變，
 # CI 的「無變動就不 commit」判斷會永遠失效，每次建置都多一個空 commit。

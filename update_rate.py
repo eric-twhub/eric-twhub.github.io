@@ -22,6 +22,12 @@ def fetch_mid():
 def main():
     ap = json.load(open("apple.json", encoding="utf-8"))
     old = ap["rate"]["jpy_twd"]
+    # 頁面寫的是「每日更新」，一天只抓一次（台北日期）。網站一天重建好幾次，
+    # 每次都抓的話同一天的匯率會變兩三次，所有換算過的頁面都被當成有更新。
+    today = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).date().isoformat()
+    if ap["rate"].get("fetched_on") == today:
+        print(f"今天（{today}）已更新過匯率，沿用 {old}")
+        return 0
     try:
         mid, when = fetch_mid()
     except Exception as e:
@@ -35,6 +41,7 @@ def main():
         "spread": SPREAD,
         "source": "open.er-api.com 中間匯率，加計約 1.6% 換匯成本",
         "quoted_at": (when or datetime.datetime.utcnow().isoformat()[:16]),
+        "fetched_on": today,
     }
     ap["updated"] = datetime.date.today().isoformat()
     json.dump(ap, open("apple.json", "w", encoding="utf-8"), ensure_ascii=False, indent=2)
