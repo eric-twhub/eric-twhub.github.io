@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-03 21:09",
+ "generated": "2026-11-03 22:32",
  "origin": "TPE",
  "dests": [
   "TYO",
@@ -26,12 +26,12 @@
   "2026-12": {
    "n": 37,
    "median": 9947,
-   "low": 5021,
+   "low": 5022,
    "enough": true
   },
   "2027-01": {
    "n": 22,
-   "median": 9356,
+   "median": 9358,
    "low": 5389,
    "enough": true
   },
@@ -43,7 +43,7 @@
   },
   "2027-03": {
    "n": 4,
-   "median": 7249,
+   "median": 7250,
    "low": 6588,
    "enough": false
   },

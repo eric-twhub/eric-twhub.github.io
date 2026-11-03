@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-04-taipei-ishigaki",
- "generated": "2026-11-04 05:10",
+ "generated": "2026-11-04 06:34",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -27,28 +27,9 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11061,
+ "med": 11143,
  "n_rt": 6,
  "others": [
-  {
-   "o": "TPE",
-   "d": "ISG",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 4073,
-   "dep": "2026-11-13",
-   "ret": "2026-11-17",
-   "dept": "06:35",
-   "rett": "09:25",
-   "rt": true,
-   "tr": 0,
-   "dur": 130,
-   "dur_to": 60,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-13&inbound=ISG-TPE&returnDate=2026-11-17&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
   {
    "o": "TPE",
    "d": "ISG",
@@ -71,10 +52,29 @@
   {
    "o": "TPE",
    "d": "ISG",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 4273,
+   "dep": "2026-11-13",
+   "ret": "2026-11-17",
+   "dept": "06:35",
+   "rett": "09:25",
+   "rt": true,
+   "tr": 0,
+   "dur": 130,
+   "dur_to": 60,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-13&inbound=ISG-TPE&returnDate=2026-11-17&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "ISG",
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 18010,
+   "price": 18014,
    "dep": "2026-12-15",
    "ret": "2026-12-19",
    "dept": "16:50",
@@ -84,7 +84,7 @@
    "dur": 2360,
    "dur_to": 375,
    "gate": "Mytrip.com",
-   "url": "https://www.aviasales.com/search/TSA1512ISG19121?t=NH17973534001797420900001065TSAHNDISG17976957001797769800001295ISGHNDTSA_c73a5bfdefad226258fa910b3d0a0fc4_44825&search_date=03112026&expected_price_uuid=01a1a2e2-02a6-8040-a613-ef35eb30b466&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=9jZcWdJiq13b-yEtu8tdBA&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=18010&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA1512ISG19121?t=NH17973534001797420900001065TSAHNDISG17976957001797769800001295ISGHNDTSA_c73a5bfdefad226258fa910b3d0a0fc4_44825&search_date=03112026&expected_price_uuid=01a1a2e2-02a6-8040-a613-ef35eb30b466&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=9jZcWdJiq13b-yEtu8tdBA&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=18014&marker=775639"
   }
  ]
 }

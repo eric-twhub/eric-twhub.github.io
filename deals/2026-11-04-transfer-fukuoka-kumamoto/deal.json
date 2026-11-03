@@ -1,18 +1,18 @@
 {
  "schema": 1,
  "slug": "2026-11-04-transfer-fukuoka-kumamoto",
- "generated": "2026-11-04 05:10",
+ "generated": "2026-11-04 06:34",
  "kind": "transfer",
  "city": "kumamoto",
  "via": "fukuoka",
- "own": 10510,
+ "own": 10175,
  "fare": {
   "o": "TPE",
   "d": "FUK",
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 6806,
+  "price": 6406,
   "dep": "2026-12-01",
   "ret": "2026-12-05",
   "dept": "06:45",
@@ -40,6 +40,6 @@
  "route": "博多 → 熊本",
  "mode": "九州新幹線",
  "tm": "約 40 分",
- "total": 9034,
- "save": 1476
+ "total": 8634,
+ "save": 1541
 }
