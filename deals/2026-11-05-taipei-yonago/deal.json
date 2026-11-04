@@ -1,0 +1,52 @@
+{
+ "schema": 1,
+ "slug": "2026-11-05-taipei-yonago",
+ "generated": "2026-11-05 05:25",
+ "kind": "fare",
+ "origin": "taipei",
+ "city": "yonago",
+ "fare": {
+  "o": "TPE",
+  "d": "YGJ",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 5802,
+  "dep": "2026-12-04",
+  "ret": "2026-12-11",
+  "dept": "13:30",
+  "rett": "17:50",
+  "rt": true,
+  "tr": 0,
+  "dur": 330,
+  "dur_to": 140,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-YGJ&departureDate=2026-12-04&inbound=YGJ-TPE&returnDate=2026-12-11&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 11512,
+ "n_rt": 2,
+ "others": [
+  {
+   "o": "TPE",
+   "d": "YGJ",
+   "air": "NH",
+   "airname": "全日空",
+   "cls": "fsc",
+   "price": 17222,
+   "dep": "2026-12-04",
+   "ret": "2026-12-11",
+   "dept": "16:50",
+   "rett": "08:55",
+   "rt": true,
+   "tr": 2,
+   "dur": 1340,
+   "dur_to": 255,
+   "gate": "Wingie",
+   "url": "https://www.aviasales.com/search/TSA0412YGJ11121?t=NH17964030001796458500000865TSAHNDYGJ17969793001797004200000475YGJHNDTSA_830c7c1a5f5819aa04d72de637bf3b47_42791&search_date=04112026&expected_price_uuid=01a1a520-b1de-8040-64c6-2c0f8273b535&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=EFj6Csvy2hiBt576NruK1w&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17222&marker=775639"
+  }
+ ]
+}
