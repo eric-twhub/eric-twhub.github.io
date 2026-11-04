@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-05-taipei-yonago",
- "generated": "2026-11-05 05:25",
+ "generated": "2026-11-05 06:58",
  "kind": "fare",
  "origin": "taipei",
  "city": "yonago",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11512,
+ "med": 11511,
  "n_rt": 2,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 17222,
+   "price": 17220,
    "dep": "2026-12-04",
    "ret": "2026-12-11",
    "dept": "16:50",
@@ -46,7 +46,7 @@
    "dur": 1340,
    "dur_to": 255,
    "gate": "Wingie",
-   "url": "https://www.aviasales.com/search/TSA0412YGJ11121?t=NH17964030001796458500000865TSAHNDYGJ17969793001797004200000475YGJHNDTSA_830c7c1a5f5819aa04d72de637bf3b47_42791&search_date=04112026&expected_price_uuid=01a1a520-b1de-8040-64c6-2c0f8273b535&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=EFj6Csvy2hiBt576NruK1w&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17222&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA0412YGJ11121?t=NH17964030001796458500000865TSAHNDYGJ17969793001797004200000475YGJHNDTSA_830c7c1a5f5819aa04d72de637bf3b47_42791&search_date=04112026&expected_price_uuid=01a1a520-b1de-8040-64c6-2c0f8273b535&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=EFj6Csvy2hiBt576NruK1w&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17220&marker=775639"
   }
  ]
 }
