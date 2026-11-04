@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-04-taichung-okinawa",
- "generated": "2026-11-04 06:34",
+ "generated": "2026-11-04 15:30",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4354,
+  "price": 4355,
   "dep": "2026-11-16",
   "ret": "2026-11-19",
   "dept": "07:10",
@@ -26,10 +26,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$9,834（25 天有紀錄），這張低 56%"
+  "11 月出發的票，每天最便宜的平均要 NT$9,770（25 天有紀錄），這張低 55%"
  ],
- "med": 10724,
- "n_rt": 97,
+ "med": 10796,
+ "n_rt": 101,
  "others": [
   {
    "o": "RMQ",
@@ -37,26 +37,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5491,
-   "dep": "2026-12-14",
-   "ret": "2026-12-17",
-   "dept": "07:10",
-   "rett": "21:05",
-   "rt": true,
-   "tr": 0,
-   "dur": 180,
-   "dur_to": 90,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-12-14&inbound=OKA-RMQ&returnDate=2026-12-17&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
-  {
-   "o": "RMQ",
-   "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 6059,
+   "price": 6062,
    "dep": "2026-11-30",
    "ret": "2026-12-03",
    "dept": "07:10",
@@ -67,6 +48,25 @@
    "dur_to": 90,
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-30&inbound=OKA-RMQ&returnDate=2026-12-03&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "RMQ",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 6062,
+   "dep": "2026-12-14",
+   "ret": "2026-12-17",
+   "dept": "07:10",
+   "rett": "21:05",
+   "rt": true,
+   "tr": 0,
+   "dur": 180,
+   "dur_to": 90,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-12-14&inbound=OKA-RMQ&returnDate=2026-12-17&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {

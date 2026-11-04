@@ -1,0 +1,33 @@
+{
+ "schema": 1,
+ "slug": "2026-11-04-kaohsiung-kanazawa",
+ "generated": "2026-11-04 15:30",
+ "kind": "fare",
+ "origin": "kaohsiung",
+ "city": "kanazawa",
+ "fare": {
+  "o": "KHH",
+  "d": "KMQ",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 5743,
+  "dep": "2026-11-12",
+  "ret": "2026-11-19",
+  "dept": "08:05",
+  "rett": "12:55",
+  "rt": true,
+  "tr": 0,
+  "dur": 415,
+  "dur_to": 180,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-KMQ&departureDate=2026-11-12&inbound=KMQ-KHH&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 5743,
+ "n_rt": 1,
+ "others": []
+}
