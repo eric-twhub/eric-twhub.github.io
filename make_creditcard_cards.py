@@ -184,8 +184,8 @@ def make_math(CD, mid, fee):
         base = 0 if any(t.get('no_base') for t in ts) else c['base']
         return round(base + sum(t['rate'] for t in ts), 2)
 
-    def hit(c, scope='shop'):
-        ts = [t for t in tiers(c, scope) if t['cap']]
+    def hit(c, scope='shop', newbie=True):
+        ts = [t for t in tiers(c, scope, newbie) if t['cap']]
         return round(min(t['cap'] / (t['rate'] / 100) for t in ts)) if ts else 0
 
     return bill, tiers, back, maxrate, hit
@@ -201,8 +201,10 @@ def build(CD, mid, fee, rate_note):
     def rate_txt(v):
         return f'{v:g}%'
 
-    # 依「刷 DEMO_JPY 實際拿到多少」排序，這才是讀者真正會拿到的順序
-    ranked = sorted(cards, key=lambda c: -back(c, DEMO_JPY)[0])
+    # 依「刷 DEMO_JPY 實際拿到多少」排序，而且一律以既有卡友計算。
+    # 新戶加碼是核卡後一次性的，15 張裡只有 3 張有，算進去會讓整個排行偏高，
+    # 而多數讀者手上的卡早就不是新辦的。新戶的數字留在第 4 張單獨講。
+    ranked = sorted(cards, key=lambda c: -back(c, DEMO_JPY, 'shop', False)[0])
     newbie_gap = [c for c in cards if maxrate(c) != maxrate(c, newbie=False)]
 
     # ── 1 封面 ──
@@ -218,32 +220,36 @@ def build(CD, mid, fee, rate_note):
              f'<div><b>{maxrate(top_paper, newbie=False):g}%</b>'
              f'<span>同一張卡<br>老客戶只有</span></div>'
              f'<div><b>{len(newbie_gap)}</b><span>張的帳面<br>含新戶限定</span></div></div>'
-             f'<div class="note">實際刷 ¥{DEMO_JPY:,}（帳單約 NT${demo_bill:,.0f}）'
-             f'回饋最高的是<b>{E(top_real["name"])}</b>，'
-             f'拿得到 NT${back(top_real, DEMO_JPY)[0]:,.0f}。'
+             f'<div class="note">既有卡友實際刷 ¥{DEMO_JPY:,}'
+             f'（帳單約 NT${demo_bill:,.0f}）回饋最高的是'
+             f'<b>{E(top_real["name"])}</b>，'
+             f'拿得到 NT${back(top_real, DEMO_JPY, "shop", False)[0]:,.0f}。'
              f'那不是帳面第一名的那張。</div>' + foot(1, n))
     out.append(('jp-card-01.png', page(cover, 'cover')))
 
     # ── 2、3 帳面 vs 實際 ──
     def rank_card(idx, part, items, start):
         rows = ('<div class="hd"><div class="num"></div><div class="nm">卡片</div>'
-                '<div class="c1">帳面</div>'
+                '<div class="c1">既有卡友</div>'
                 f'<div class="c2">刷 ¥{DEMO_JPY // 1000}K 實拿</div>'
                 '<div class="c3">加碼到頂</div></div>')
         for j, c in enumerate(items, start):
-            v, capped = back(c, DEMO_JPY)
-            h = hit(c)
+            v, capped = back(c, DEMO_JPY, 'shop', False)
+            h = hit(c, 'shop', False)
+            nb = round(maxrate(c, 'shop') - maxrate(c, 'shop', newbie=False), 2)
             rows += (f'<div class="row"><div class="num">{j:02}</div>'
                      f'<div class="nm">{E(c["name"])}<s>{E(c["plan"])}'
+                     + (f'　新戶另有 +{nb:g}%' if nb else '')
                      + (f'　官方 {c["total"]:g}%，一層已額滿' if soldout(c) else '')
                      + '</s></div>'
-                     f'<div class="c1">{rate_txt(facerate(c))}</div>'
+                     f'<div class="c1">{rate_txt(maxrate(c, "shop", newbie=False))}</div>'
                      f'<div class="c2">{v:,.0f}<small>元</small></div>'
                      f'<div class="c3{" warn" if capped else ""}">'
                      + (f'NT${h:,}' if h else '無上限') + '</div></div>')
         return ('<div class="kick">旅日信用卡</div>'
                 f'<h1>實拿排行 <em>{part}</em></h1>'
-                f'<div class="sub">依「刷 ¥{DEMO_JPY:,} 實際拿到多少」排序，不是依帳面。</div>'
+                f'<div class="sub">以<em>既有卡友</em>計算，'
+                f'依「刷 ¥{DEMO_JPY:,} 實際拿到多少」排序，不是依帳面。</div>'
                 '<div class="legend">「加碼到頂」是加碼額度用完的台幣帳單金額，'
                 '超過之後只剩基本回饋。標紅色的表示這筆已經觸頂。</div>'
                 f'<div class="list">{rows}</div>' + foot(idx, n))
@@ -271,13 +277,12 @@ def build(CD, mid, fee, rate_note):
     rows = ('<div class="hd"><div class="num"></div><div class="nm">日幣消費</div>'
             '<div class="c2">回饋最高的卡</div><div class="c3">有效回饋率</div></div>')
     for y in LADDER:
-        best = max(cards, key=lambda c: back(c, y)[0])
-        v = back(best, y)[0]
+        best = max(cards, key=lambda c: back(c, y, 'shop', False)[0])
+        v = back(best, y, 'shop', False)[0]
         b = bill(y)
-        # 這幾張的第一名幾乎都帶條件，不標出來會看起來像人人有獎
+        # 第一名常常帶條件，不標出來會看起來像人人有獎。
+        # 「含新戶加碼」這個標籤拿掉了，因為這一張現在整個以既有卡友計算。
         tag = []
-        if maxrate(best) != maxrate(best, newbie=False):
-            tag.append('含新戶加碼')
         # reg_level 是整張卡的，但有 reg_monthly 的卡只有它指名的那一層要搶，
         # 第 6 張標的就是「只有◯◯那層」。這一張算的是日幣實體消費，
         # 吉鶴要搶的是交通卡儲值，不在這個數字裡面，標上去會讓人以為
