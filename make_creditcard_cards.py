@@ -201,12 +201,23 @@ def build(CD, mid, fee, rate_note):
     def rate_txt(v):
         return f'{v:g}%'
 
-    def plain_ts(c):
-        """到處都能拿到的加碼層：排除新戶層、名額已滿的層、以及綁店家名單的層。
+    def cats(t):
+        """這一層挑不挑店家：回傳它成立的類別標籤，到處都成立就回空的。
 
-        綁名單的那幾層只有在指定通路才成立，和不綁的層排在同一欄比大小
-        等於假設讀者剛好都在那幾家消費。四張卡因此被高估，熊本熊差 500 元。"""
-        return [t for t in tiers(c, 'shop', newbie=False) if not t.get('store_scope')]
+        兩種挑法要一起擋。store_scope 是逐家店的名單（熊本熊的指定店家），
+        cat_scope 是消費類別（滙豐只認餐飲購物娛樂的 MCC，藥妝與超市不算）。
+        只擋前者的話，滙豐 5.88% 與 iLEO 3% 會印在「走進任何一家店」那一欄，
+        而它們自己的官方條款就寫明藥妝店只有 0.88%。"""
+        if t.get('cat_scope'):
+            return list(t['cat_scope'])
+        return ['指定通路'] if t.get('store_scope') else []
+
+    def plain_ts(c):
+        """到處都能拿到的加碼層：排除新戶層、名額已滿的層、以及挑店家的層。
+
+        挑店家的那幾層只有在特定通路或特定類別才成立，和不挑的層排在同一欄
+        比大小，等於假設讀者剛好都在那幾家消費。六張卡因此被高估。"""
+        return [t for t in tiers(c, 'shop', newbie=False) if not cats(t)]
 
     def plain_rate(c):
         ts = plain_ts(c)
@@ -229,11 +240,31 @@ def build(CD, mid, fee, rate_note):
         ts = [t for t in plain_ts(c) if t['cap']]
         return round(min(t['cap'] / (t['rate'] / 100) for t in ts)) if ts else 0
 
-    def store_rate(c):
-        """挑對店家才拿得到的那個數字，沒有綁名單的層就回 0。"""
-        return (round(maxrate(c, 'shop', newbie=False), 2)
-                if any(t.get('store_scope') for t in tiers(c, 'shop', newbie=False))
-                else 0)
+    def cat_clause(c):
+        """挑對店家才拿得到的那個數字，寫成一句話；不挑店家的卡回空字串。
+
+        同一張卡的各層覆蓋範圍不一定一樣（滙豐的 3% 認餐飲購物娛樂、
+        1% 只認餐飲），所以逐個類別算，再取最高的那一組。印最高那一組
+        是因為帳面數字就是從那裡來的，要講清楚它要在哪裡才成立。"""
+        st = [t for t in tiers(c, 'shop', newbie=False) if cats(t)]
+        if not st:
+            return ''
+        base = plain_rate(c)
+        tags = []
+        for t in st:
+            for x in cats(t):
+                if x not in tags:
+                    tags.append(x)
+        best, top = [], base
+        for x in tags:
+            r = round(base + sum(t['rate'] for t in st if x in cats(t)), 2)
+            if r > top:
+                best, top = [x], r
+            elif r == top:
+                best.append(x)
+        if not best:
+            return ''
+        return f'{"／".join(best)}才有 {top:g}%'
 
     REG = {'none': '免登錄', 'reg': '要登錄', 'setup': '要先設定或切 App',
            'race': '要搶限量登錄'}
@@ -282,12 +313,11 @@ def build(CD, mid, fee, rate_note):
             v, capped = plain_back(c)
             h = plain_hit(c)
             nb = round(maxrate(c, 'shop') - maxrate(c, 'shop', newbie=False), 2)
-            sr = store_rate(c)
             # 卡名底下那行改放條件。原本放的是方案名稱（日本旅遊祭之類），
             # 那是裝飾；小抄上有，這裡的空間要留給「拿不到的理由」。
             cond = [x for x in (
                 reg_txt(c),
-                f'指定通路才有 {sr:g}%' if sr else '',
+                cat_clause(c),
                 f'新戶另有 +{nb:g}%' if nb else '',
                 f'官方 {c["total"]:g}%，一層已額滿' if soldout(c) else '',
             ) if x]
@@ -301,9 +331,9 @@ def build(CD, mid, fee, rate_note):
                 f'<h1>實拿排行 <em>{part}</em></h1>'
                 f'<div class="sub">以<em>既有卡友</em>、<em>不挑店家</em>計算：'
                 f'走進任何一家日本實體店就拿得到的數字。</div>'
-                '<div class="legend">綁指定通路的加碼不算進來，那幾張在卡名下面'
-                '標出「指定通路才有幾％」。「加碼到頂」是加碼額度用完的台幣帳單'
-                '金額，超過之後只剩基本回饋。</div>'
+                '<div class="legend">只在指定店家或指定消費類別成立的加碼不算'
+                '進來，那幾張在卡名下面標出「在哪裡才有幾％」。「加碼到頂」是'
+                '加碼額度用完的台幣帳單金額，超過之後只剩基本回饋。</div>'
                 f'<div class="list">{rows}</div>' + foot(idx, n))
 
     out.append(('jp-card-02.png', page(rank_card(2, '①', ranked[:8], 1))))
