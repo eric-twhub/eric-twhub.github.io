@@ -1507,6 +1507,43 @@
    "台新 Richart"
   ]
  },
+ "_cat_scope_map": {
+  "_note": "cat_scope 綁的是消費類別，要看那家店在收單機構登記的行業代碼，發卡行不公布逐店對照。這裡逐張卡、逐個類別標籤列出本站 22 家店的判定：yes 是查得證據在名單上、unknown 是查不到、沒列到的一律當 no。unknown 不算進店家頁的試算，但要在頁面上說出來。gen.py 找不到對應的標籤會直接中斷，避免新增 cat_scope 之後店家頁默默把它算成到處都有。",
+  "_checked": "2026-11-06",
+  "hsbc-liveplus": {
+   "_src": "https://www.hsbc.com.tw/content/dam/hsbc/tw/docs/credit-cards/live-plus/cashback-cash-points-method.pdf",
+   "餐飲": {
+    "yes": [],
+    "unknown": [
+     "takeya",
+     "don-quijote"
+    ],
+    "why": "官方認的是 MCC 5441／5499／5812／5813／5814。本站 22 家沒有一家是餐廳。多慶屋與唐吉訶德是綜合量販，食品佔比高，有可能登記成 5499 食品專賣，官方與店家都沒有公布，所以列 unknown。"
+   },
+   "百貨": {
+    "yes": [
+     "daimaru"
+    ],
+    "unknown": [
+     "takeya",
+     "don-quijote"
+    ],
+    "why": "官方購物類只認 MCC 5311（百貨公司）、5944、5948。大丸・松坂屋是百貨公司，官方計算範例也把百貨公司列為購物通路。藥妝（5912）、電器（5722／5732）、運動用品（5655）、服飾（5651）、鞋（5661）、玩具（5945）、生活雜貨都不在這三個代碼裡。多慶屋與唐吉訶德是綜合量販，登記成 5311 還是 5399／5411 查不到。"
+   },
+   "娛樂": {
+    "yes": [],
+    "unknown": [],
+    "why": "官方娛樂類只認 MCC 7832（電影院）、7996（遊樂園）、7998（水族館）。本站 22 家都是零售店，沒有一家落在這三個代碼。"
+   }
+  },
+  "firstbank-ileo": {
+   "_src": "https://card.firstbank.com.tw/sites/card/zh_TW/1565698492326",
+   "指定通路": {
+    "unknown_all": true,
+    "why": "官方寫「依帳單商店名稱與行業代碼認定」，但沒有公布愛饗樂的逐店或逐代碼清單，所以本站 22 家全部無法判定。"
+   }
+  }
+ },
  "_指定類別加碼": "有些加碼不綁店家名單，綁的是消費類別（MCC 或官方自訂的通路分類）。tier 加 cat_scope（類別標籤陣列）之後，圖卡的「不挑店家」欄不會把那一層算進去，並在卡名下面標出「某某類別才有 X%」。cat_scope 和 store_scope 不同：store_scope 是逐家店的 slug 名單，會影響店家頁；cat_scope 只影響「走進任何一家店拿得到多少」的計算。",
  "_指定店家加碼": "有些加碼只在發卡行公告的指定店家成立。tier 加 store_scope（本站店家 slug 陣列）之後，只有名單上的店才會把那一層算進去；partial_list 代表官方名單寫「等」、沒有窮舉，那一層就不自動套用到任何店，只在頁面上說明。",
  "_reg_說明": "reg_events 是各卡加碼活動的登錄時點，給 /japan-card-register/ 用。cycle：monthly 每月幾號、weekly 每週幾（weekday 0=週一）、quarterly 每季（日期逐季公布，列在 dates）、once 期間內一次、unknown 官網沒寫。"

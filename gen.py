@@ -14914,6 +14914,43 @@ if os.path.exists('cards.json'):
             if os.path.exists('coupons.json') else {})
     # 15 張卡全開。版型在幣倍卡那頁確認過，資料是共用的，不必逐張再看一次。
     _SHOP_PAGES = {c['slug'] for c in CD['cards']}
+
+    # 綁消費類別的加碼（cat_scope）在某一家店成不成立，要看那家店在收單機構
+    # 登記的行業代碼。發卡行不公布逐店對照，所以只認三態：在名單上＝yes、
+    # 明顯不在＝no、查不到＝unknown。unknown 不算進試算，但要在頁面上說出來，
+    # 不替讀者宣稱拿得到，也不替官方宣稱沒有。
+    _CATMAP = CD.get('_cat_scope_map', {})
+
+    def _cat_state(card_slug, tag, store_slug):
+        m = _CATMAP.get(card_slug, {}).get(tag)
+        if m is None:
+            raise SystemExit(
+                f'cards.json：{card_slug} 的 cat_scope「{tag}」沒有在 '
+                f'_cat_scope_map 裡給逐店判定。少了這一筆，店家頁會把這一層'
+                f'當成到處都拿得到。')
+        if m.get('unknown_all'):
+            return 'unknown'
+        if store_slug in m.get('yes', []):
+            return 'yes'
+        if store_slug in m.get('unknown', []):
+            return 'unknown'
+        return 'no'
+
+    def _tier_state(c, t, st):
+        """這一層加碼在這家店成不成立：yes／no／unknown。
+
+        store_scope 是逐家店的名單，名單外就是 no。cat_scope 是消費類別，
+        標籤只要有一個對得上就算；全部對不上但有查不到的，就是 unknown。
+        """
+        if 'store_scope' in t and st['slug'] not in t['store_scope']:
+            return 'no'
+        tags = t.get('cat_scope')
+        if not tags:
+            return 'yes'
+        sts = [_cat_state(c['slug'], x, st['slug']) for x in tags]
+        if 'yes' in sts:
+            return 'yes'
+        return 'unknown' if 'unknown' in sts else 'no'
     _fx = CD['fx_fee']
     _ap = json.load(open('apple.json', encoding='utf-8')) if os.path.exists('apple.json') else {}
     _MIDC = (_ap.get('rate', {}).get('jpy_twd_mid')
@@ -16383,6 +16420,7 @@ if os.path.exists('cards.json'):
         # 沒有大站在經營，而券、免稅、費率三份資料我們都有，算得出實付價。
         if c['slug'] in _SHOP_PAGES and _CPS.get('stores'):
             _sb = ''
+            _unk_all, _unk_tiers = [], []
             for s in sorted(_CPS['stores'], key=lambda x: -x['max']):
                 free = 100000 / 1.1                      # 以 ¥100,000 為例
                 after = free * (1 - s['max'] / 100)
@@ -16390,12 +16428,18 @@ if os.path.exists('cards.json'):
                 # 用既有卡友的費率。新戶加碼多半上限很低（幣倍卡只有 NT$200），
                 # 算進去會讓每一家都顯示「加碼已滿」，反而看不出店家之間的差別。
                 bill_t = after * _MIDC * (1 + _fx['typical'] / 100)
-                val, capped = bill_t * c['base'] / 100, False
+                val, capped, _unk = bill_t * c['base'] / 100, False, set()
                 for _t in _tiers(c, 'shop'):
                     if _is_newbie(_t):
                         continue
-                    # 綁定指定店家的加碼，只在名單上的店算；官方名單沒窮舉的不自動套
-                    if 'store_scope' in _t and s['slug'] not in _t['store_scope']:
+                    # 綁定指定店家或指定消費類別的加碼，只在成立的店算；
+                    # 官方名單沒窮舉、或行業代碼查不到的，一律不自動套
+                    _ts = _tier_state(c, _t, s)
+                    if _ts != 'yes':
+                        if _ts == 'unknown':
+                            _unk.add(s['slug'])
+                            if _t['label'] not in _unk_tiers:
+                                _unk_tiers.append(_t['label'])
                         continue
                     _x = _t['rate'] / 100 * bill_t
                     if _t['cap'] and _x > _t['cap']:
@@ -16406,8 +16450,14 @@ if os.path.exists('cards.json'):
                         f'<td>{html.escape(s["rate"])}</td>'
                         f'<td>{money(round(bill))}</td>'
                         f'<td class="win"><b>{money(round(val))}</b>'
-                        f'{SMALL}{"加碼已滿" if capped else ""}</small></td>'
+                        f'{SMALL}{"加碼已滿" if capped else ""}'
+                        f'{"　有一層查不到※" if _unk else ""}</small></td>'
                         f'<td><b>{money(round(bill - val))}</b></td></tr>')
+                if _unk:
+                    _unk_all.append(s['name'])
+            # 每一家都查不到的時候，逐列標 ※ 只是把同一句話印 22 次。
+            if len(_unk_all) >= len(_CPS['stores']):
+                _sb = _sb.replace('　有一層查不到※', '')
             _t2 = f'{c["name"]}在日本購物回饋多少？{len(_CPS["stores"])} 家店實付價試算'
             _d2 = (f'{c["name"]}在日本實體店消費最高 {c["total"]}%。'
                    f'逐家算出折價券、免稅與刷卡回饋疊起來之後的實付價，'
@@ -16432,6 +16482,16 @@ if os.path.exists('cards.json'):
               + '<div class="tw"><table><thead><tr><th>店家</th><th>常見券折扣</th>'
                 '<th>台幣帳單</th><th>刷卡回饋</th><th>實際負擔</th>'
                 '</tr></thead><tbody>' + _sb + '</tbody></table></div>'
+              + (f'<p class="disc">'
+                 + ('※ 這張卡的' if len(_unk_all) < len(_CPS['stores'])
+                    else '這張卡的')
+                 + f'{html.escape("、".join(_unk_tiers))}綁指定的消費類別，'
+                   f'要看店家在收單機構登記的行業代碼，官方沒有公布對照表，'
+                 + (f'本站查不到上表這 {len(_unk_all)} 家算不算，'
+                    if len(_unk_all) >= len(_CPS['stores'])
+                    else '本站查不到'
+                         + html.escape("、".join(_unk_all)) + '算不算，')
+                 + '所以上表沒有把它算進去，不代表拿不到。</p>' if _unk_all else '')
               + f'<p class="disc">匯率 {_MIDC}，加計 {_fx["typical"]}% 國外交易手續費。'
                 f'假設該店的券與這張卡的各層加碼條件都符合；加碼有上限的卡，'
                 f'金額拉高之後有效回饋率會下降。券的幅度查證於 {_CPS["checked"]}。</p>'
@@ -17782,17 +17842,15 @@ if os.path.exists('cards.json'):
         # 那邊在另一個區塊裡，這裡自己留一份。
         _NB = re.compile(r'新戶|核卡')
 
-        def _tier_ok(t, st):
+        def _tier_ok(c, t, st):
             """這一層加碼在這家店成不成立。
 
-            有些加碼只在發卡行公告的指定店家有；官方名單寫「等」沒有窮舉的，
-            一律不自動套用，寧可少算也不要替讀者宣稱拿得到。
+            兩種限定都要擋：store_scope 是發卡行公告的指定店家名單，
+            cat_scope 是消費類別（看行業代碼）。官方名單寫「等」沒有窮舉的，
+            以及行業代碼查不到的，一律不自動套用，寧可少算也不要替讀者
+            宣稱拿得到。查不到的那幾層會在頁面上另外說明。
             """
-            if 'store_scope' not in t:
-                return True
-            # partial_list 只代表官方名單寫「等」、可能還有別家，
-            # 不代表名單上這幾家不算。名單上的照算，名單外的不算。
-            return st['slug'] in t['store_scope']
+            return _tier_state(c, t, st) == 'yes'
 
         def _store_cards(st):
             """這家店可用的卡，去掉新戶限定與不適用這家店的加碼之後的費率"""
@@ -17802,7 +17860,7 @@ if os.path.exists('cards.json'):
                             'tiers': [t for t in c['tiers']
                                       if t['scope'] in ('shop', 'any')
                                       and not _NB.search(t['label'] + t.get('cond', ''))
-                                      and _tier_ok(t, st)],
+                                      and _tier_ok(c, t, st)],
                             'reg': c.get('reg_short', '')})
             return out
 
@@ -17816,6 +17874,35 @@ if os.path.exists('cards.json'):
                                'max': st['max'], 'steps': st['steps'],
                                'name': st['name']}, ensure_ascii=False)
             nc = st.get('kind') == 'card'      # 沒有折價券的店
+
+            # 綁消費類別的加碼，在這家店是「查不到」還是「不在類別裡」，
+            # 要分開講。兩種都沒有算進上面的試算，但理由不同：前者是我們
+            # 查不到，後者是官方條款就排除。整段省略會讓讀者以為這張卡在
+            # 這裡本來就只有基本回饋。
+            _catn = ''
+            for c in CD['cards']:
+                _u = [t for t in c['tiers']
+                      if t.get('cat_scope') and _tier_state(c, t, st) == 'unknown']
+                _n = [t for t in c['tiers']
+                      if t.get('cat_scope') and _tier_state(c, t, st) == 'no']
+                _link = (f'<a href="{U("/japan-credit-card/" + c["slug"] + "/")}">'
+                         f'{html.escape(c["name"])}</a>')
+                if _u:
+                    _catn += (
+                        f'<p class="disc">⚠ {html.escape(c["name"])}另有'
+                        + '、'.join(f'{html.escape(t["label"])} {t["rate"]}%'
+                                    for t in _u)
+                        + f'，要看這家店在收單機構登記的行業代碼。官方沒有公布'
+                          f'對照表，本站查不到{html.escape(st["name"])}算不算，'
+                          f'所以上面的試算沒有把它算進去，不代表拿不到。'
+                          f'條件見{_link}。</p>')
+                if _n:
+                    _catn += (
+                        f'<p class="disc">{html.escape(c["name"])}的'
+                        + '、'.join(f'{html.escape(t["label"])} {t["rate"]}%'
+                                    for t in _n)
+                        + f'，只認官方指定的消費類別，{html.escape(st["cat"])}'
+                          f'不在裡面，上面的試算沒有算進去。條件見{_link}。</p>')
             return (
                 '<div class="today"><div class="tday">'
                 + ('這家店沒有對台灣旅客的折價券，省錢靠免稅與刷卡回饋'
@@ -17842,6 +17929,7 @@ if os.path.exists('cards.json'):
                     f'{html.escape(c["name"])}</a>。</p>'
                     for c in CD['cards'] for t in c['tiers']
                     if t.get('partial_list') and st['slug'] not in (t.get('store_scope') or [])))
+                + _catn
                 + f'<p class="disc">依各卡的日本實體消費費率計算，'
                   f'不含新戶限定加碼，也假設各層加碼的條件都符合（部分卡要先登錄或'
                   f'達資產門檻）。點數型回饋以 1 點約 1 元估算。'
