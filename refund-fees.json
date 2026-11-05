@@ -26,17 +26,17 @@
       {"name": "Bic Camera", "slug": "bic-camera", "rate": "0%", "per10k": "約 ¥1,000", "basis": "媒體引述 Bic 粉專 10/13 貼文，官網沒寫這句。機場領現金的手續費要自付。", "src": "https://www.businesstoday.com.tw/article/category/183031/post/202610150026/", "src_name": "今周刊報導"},
       {"name": "鶴羽藥妝", "slug": "tsuruha", "rate": "0%", "per10k": "約 ¥1,000", "basis": "部落客列為已宣布吸收，官網的免稅說明沒寫。"},
       {"name": "YAMADA 山田電機", "slug": "yamada", "rate": "0%", "per10k": "約 ¥1,000", "basis": "部落客說收到正式通知，沒附文件。清單列的退稅業者是 J-TaxRefund，山田新聞稿寫的是 Ocean Tax Refund，兩邊對不上。"},
-      {"name": "SUNDRUG", "slug": "sundrug", "rate": "0%", "per10k": "約 ¥1,000", "basis": ""},
-      {"name": "大國藥妝", "slug": "daikoku", "rate": "0%", "per10k": "約 ¥1,000", "basis": ""},
+      {"name": "SUNDRUG", "slug": "sundrug", "rate": "0%", "per10k": "約 ¥1,000", "basis": "沒附依據。"},
+      {"name": "大國藥妝", "slug": "daikoku", "rate": "0%", "per10k": "約 ¥1,000", "basis": "沒附依據。"},
       {"name": "松本清", "slug": "matsukiyo", "rate": "0.33%", "per10k": "約 ¥967", "basis": "部落客留言說已確認，性質是匯款手續費，沒附文件。"},
-      {"name": "無印良品", "slug": "muji", "rate": "1.3%", "per10k": "約 ¥870", "basis": ""},
+      {"name": "無印良品", "slug": "muji", "rate": "1.3%", "per10k": "約 ¥870", "basis": "沒附依據。"},
       {"name": "ABC-MART", "slug": "abc-mart", "rate": "1.5%", "per10k": "約 ¥850", "basis": "有旅客回報福岡 PARCO 店是這個數字，其他分店沒有回報。"},
-      {"name": "寶可夢中心", "slug": "pokemon-center", "rate": "1.5%", "per10k": "約 ¥850", "basis": ""},
-      {"name": "AEON 夢樂城", "slug": null, "rate": "1.5%", "per10k": "約 ¥850", "basis": "只涵蓋夢樂城，AEON 門市沒有數字。"},
-      {"name": "Alpen", "slug": "alpen", "rate": "2%", "per10k": "約 ¥800", "basis": "清單列的業者 JPrefund 可能另收匯款費（退稅額 5%），實際可能更少。"},
-      {"name": "EDION", "slug": "edion", "rate": "定額 ¥210", "per10k": "約 ¥790", "basis": "定額收費買得少比例就高：買 ¥5,000 只退約 ¥290。"},
+      {"name": "寶可夢中心", "slug": "pokemon-center", "rate": "1.5%", "per10k": "約 ¥850", "basis": "沒附依據。"},
+      {"name": "AEON 夢樂城", "slug": null, "rate": "1.5%", "per10k": "約 ¥850", "basis": "沒附依據。只涵蓋夢樂城，AEON 門市沒有數字。"},
+      {"name": "Alpen", "slug": "alpen", "rate": "2%", "per10k": "約 ¥800", "basis": "沒附依據。清單列的業者 JPrefund 可能另收匯款費（退稅額 5%），實際可能更少。"},
+      {"name": "EDION", "slug": "edion", "rate": "定額 ¥210", "per10k": "約 ¥790", "basis": "沒附依據。定額收費買得少比例就高：買 ¥5,000 只退約 ¥290。"},
       {"name": "友都八喜", "slug": null, "rate": "2.3%", "per10k": "約 ¥770", "basis": "多位旅客回報，官方公告沒寫。"},
-      {"name": "3COINS", "slug": "3coins", "rate": "定額約 ¥320", "per10k": "約 ¥680", "basis": "買 ¥5,000 只退約 ¥180；JPrefund 可能另收匯款費，實際可能更少。"}
+      {"name": "3COINS", "slug": "3coins", "rate": "定額約 ¥320", "per10k": "約 ¥680", "basis": "沒附依據。買 ¥5,000 只退約 ¥180；JPrefund 可能另收匯款費，實際可能更少。"}
     ]
   },
   "stores": [

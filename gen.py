@@ -1180,6 +1180,8 @@ blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem
 .tw td .qz{display:block;margin-top:4px;font-size:.84rem;color:var(--dim)}
 /* 各店手續費表：最後一欄是整段說明，攤成卡片時吃滿整排，不要擠在中間那一格 */
 table.cardz.fees td:last-child{grid-column:1/-1}
+/* 回報表的依據欄可以換行，桌機才裝得下、保持一張能上下比較的表 */
+.tw table.rfr td:last-child{white-space:normal}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
 .tw table{font-size:.95rem}
 .tw th{font-size:.86rem}
@@ -14002,9 +14004,9 @@ if os.path.exists('cobrand-cards.json'):
         return ('<h3 id="store-fees-reported">店家沒公告、只有回報的數字</h3>'
                 '<p class="lede"><b>下面這些不是店家公告，不要當成確定值。</b>數字出自旅日部落客'
                 + lk(r['src'], '林氏璧的整理') + '與' + lk(r['fb'], '粉專貼文的留言回報')
-                + '，多數沒有附店家原文，依據欄空白的就是清單列了數字但沒寫依據。'
+                + '，多數沒有附店家原文。'
                 '百分比以稅前金額計算，同一家不同分店也可能不一樣。</p>'
-                '<div class="tw"><table class="fees"><thead><tr><th>店家</th><th>回報的手續費</th>'
+                '<div class="tw"><table class="fees rfr"><thead><tr><th>店家</th><th>回報的手續費</th>'
                 '<th>買 ¥10,000（稅前）退回</th><th>依據</th></tr></thead><tbody>' + trs
                 + '</tbody></table></div>'
                 '<p class="lede">現場看店內標示最準：使用 J-TaxRefund 的店，櫃台立牌可能標 Service Fee，'
