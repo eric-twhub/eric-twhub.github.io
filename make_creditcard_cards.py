@@ -135,6 +135,17 @@ def foot(i, n, note='條件逐張查證，各附發卡行官方來源'):
 
 
 # ── 回饋計算（與 gen.py 同一套公式）────────────────────────────
+def soldout(c):
+    return [t for t in c['tiers'] if t.get('sold_out')]
+
+
+def facerate(c):
+    """現在拿得到的帳面％：官方公告的 total 扣掉名額已滿的層。
+
+    和 gen.py 的 nowmax() 同一個算法，兩邊不可以各算各的。"""
+    return round(c['total'] - sum(t['rate'] for t in soldout(c)), 2)
+
+
 def make_math(CD, mid, fee):
     def bill(jpy):
         return jpy * mid * (1 + fee / 100)
@@ -145,6 +156,11 @@ def make_math(CD, mid, fee):
             if t['scope'] not in (scope, 'any'):
                 continue
             if not newbie and NEW.search(t['label'] + t.get('cond', '')):
+                continue
+            # 名額已滿的層這一期登錄不到。gen.py 的比較表、卡片頁、回饋計算機
+            # 與小抄都已經扣掉它，圖卡不扣的話排行榜就是假的：永豐現金回饋 JCB
+            # 會以一個拿不到的 5% 排到第 2 名，實際上是第 13 名。
+            if t.get('sold_out'):
                 continue
             out.append(t)
         return out
@@ -190,15 +206,15 @@ def build(CD, mid, fee, rate_note):
     newbie_gap = [c for c in cards if maxrate(c) != maxrate(c, newbie=False)]
 
     # ── 1 封面 ──
-    top_paper = max(cards, key=lambda c: c['total'])
+    top_paper = max(cards, key=facerate)
     top_real = ranked[0]
     cover = ('<div class="kick">旅日信用卡</div>'
-             f'<h1>帳面最高 {top_paper["total"]:g}%，<br><em>實際刷下去不是</em></h1>'
+             f'<h1>帳面最高 {facerate(top_paper):g}%，<br><em>實際刷下去不是</em></h1>'
              f'<div class="sub">{len(cards)} 張卡逐張查發卡行官方條件。'
              f'帳面數字幾乎都是多層加碼疊出來的，<br>而每一層都有自己的上限與門檻。</div>'
              '<div class="stat">'
              f'<div><b>{len(cards)}</b><span>張卡<br>逐張查證</span></div>'
-             f'<div><b>{top_paper["total"]:g}%</b><span>帳面最高<br>（{E(top_paper["name"])}）</span></div>'
+             f'<div><b>{facerate(top_paper):g}%</b><span>帳面最高<br>（{E(top_paper["name"])}）</span></div>'
              f'<div><b>{maxrate(top_paper, newbie=False):g}%</b>'
              f'<span>同一張卡<br>老客戶只有</span></div>'
              f'<div><b>{len(newbie_gap)}</b><span>張的帳面<br>含新戶限定</span></div></div>'
@@ -218,8 +234,10 @@ def build(CD, mid, fee, rate_note):
             v, capped = back(c, DEMO_JPY)
             h = hit(c)
             rows += (f'<div class="row"><div class="num">{j:02}</div>'
-                     f'<div class="nm">{E(c["name"])}<s>{E(c["plan"])}</s></div>'
-                     f'<div class="c1">{rate_txt(c["total"])}</div>'
+                     f'<div class="nm">{E(c["name"])}<s>{E(c["plan"])}'
+                     + (f'　官方 {c["total"]:g}%，一層已額滿' if soldout(c) else '')
+                     + '</s></div>'
+                     f'<div class="c1">{rate_txt(facerate(c))}</div>'
                      f'<div class="c2">{v:,.0f}<small>元</small></div>'
                      f'<div class="c3{" warn" if capped else ""}">'
                      + (f'NT${h:,}' if h else '無上限') + '</div></div>')
@@ -240,7 +258,7 @@ def build(CD, mid, fee, rate_note):
         nb = [t for t in c['tiers'] if NEW.search(t['label'] + t.get('cond', ''))]
         cond = nb[0].get('cond', '') if nb else ''
         rows += ('<div class="grp">'
-                 f'<b>{E(c["name"])}<i>{rate_txt(c["total"])} → {rate_txt(old)}</i></b>'
+                 f'<b>{E(c["name"])}<i>{rate_txt(facerate(c))} → {rate_txt(old)}</i></b>'
                  f'<s>{E(cond[:80])}</s></div>')
     inner = ('<div class="kick">帳面數字裡的陷阱</div>'
              '<h1>有 <em>{}</em> 張的帳面<br>算進了新戶加碼'.format(len(newbie_gap)) + '</h1>'
