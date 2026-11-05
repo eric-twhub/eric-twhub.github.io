@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-05-taipei-saga",
- "generated": "2026-11-05 06:58",
+ "generated": "2026-11-05 14:53",
  "kind": "fare",
  "origin": "taipei",
  "city": "saga",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5815,
-  "dep": "2026-11-19",
-  "ret": "2026-11-26",
+  "price": 5885,
+  "dep": "2026-11-12",
+  "ret": "2026-11-19",
   "dept": "08:10",
   "rett": "12:15",
   "rt": true,
@@ -21,15 +21,34 @@
   "dur": 275,
   "dur_to": 125,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-19&inbound=HSG-TPE&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-12&inbound=HSG-TPE&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 15195,
- "n_rt": 2,
+ "med": 15351,
+ "n_rt": 4,
  "others": [
+  {
+   "o": "TPE",
+   "d": "HSG",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 6127,
+   "dep": "2026-11-19",
+   "ret": "2026-11-26",
+   "dept": "08:10",
+   "rett": "12:15",
+   "rt": true,
+   "tr": 0,
+   "dur": 275,
+   "dur_to": 125,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-19&inbound=HSG-TPE&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
   {
    "o": "TPE",
    "d": "HSG",
@@ -47,6 +66,24 @@
    "dur_to": 290,
    "gate": "Wingie",
    "url": "https://www.aviasales.com/search/TSA1911HSG26111?t=NH17951070001795166100000925TSAHNDHSG17957085001795782600001295HSGHNDTSA_bc254c52b3fd84450cb308eaf95ad4b8_61071&search_date=04112026&expected_price_uuid=01a1a521-7b1b-8040-a077-5c3ff533f5d1&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=WHnvZh-bJYDzbivvI0lOGA&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=24576&marker=775639"
+  },
+  {
+   "o": "TPE",
+   "d": "HSG",
+   "air": "NH",
+   "airname": "全日空",
+   "cls": "fsc",
+   "price": 28502,
+   "dep": "2026-11-12",
+   "ret": "2026-11-19",
+   "dept": "13:30",
+   "rett": "06:50",
+   "rt": true,
+   "tr": 2,
+   "dur": 1885,
+   "dur_to": 295,
+   "gate": "City.Travel",
+   "url": "https://www.aviasales.com/search/TSA1211HSG19111?t=NH17944902001794582900001485TSAHNDHSG17950710001795091400000400HSGHNDTSA_c2950d2b05a512c2b3816a39478cf8fe_70820&search_date=05112026&expected_price_uuid=01a1aa4c-de7f-8040-a694-7953dc336fb5&static_fare_key=TY%7CP0%7CH1%7CL1_1_0%7CCH0%7CR0%7CTBC1&itinerary_key=zs5fIV6a020pBHqcQbQirw&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=28502&marker=775639"
   }
  ]
 }

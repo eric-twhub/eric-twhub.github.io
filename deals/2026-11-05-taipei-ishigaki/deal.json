@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-05-taipei-ishigaki",
- "generated": "2026-11-05 06:58",
+ "generated": "2026-11-05 14:53",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 3874,
+  "price": 3885,
   "dep": "2026-12-15",
   "ret": "2026-12-19",
   "dept": "06:35",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11172,
+ "med": 11178,
  "n_rt": 6,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4274,
+   "price": 4065,
    "dep": "2026-11-13",
    "ret": "2026-11-20",
    "dept": "06:35",
@@ -55,7 +55,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4334,
+   "price": 4346,
    "dep": "2026-12-01",
    "ret": "2026-12-05",
    "dept": "06:35",

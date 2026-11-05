@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-05-taipei-okinawa",
- "generated": "2026-11-05 06:58",
+ "generated": "2026-11-05 14:53",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 2996,
+  "price": 3004,
   "dep": "2026-12-01",
   "ret": "2026-12-05",
   "dept": "18:20",
@@ -26,10 +26,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$5,596（7 天有紀錄），這張低 46%"
+  "12 月出發的票，每天最便宜的平均要 NT$5,934（6 天有紀錄），這張低 49%"
  ],
- "med": 12412,
- "n_rt": 22,
+ "med": 8499,
+ "n_rt": 18,
  "others": [
   {
    "o": "TPE",
@@ -37,7 +37,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 2996,
+   "price": 3004,
    "dep": "2026-12-05",
    "ret": "2026-12-09",
    "dept": "18:20",
@@ -56,7 +56,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 3855,
+   "price": 3865,
    "dep": "2026-11-18",
    "ret": "2026-11-25",
    "dept": "18:20",
@@ -75,18 +75,17 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4024,
-   "dep": "2026-12-13",
-   "ret": "2026-12-15",
+   "price": 4762,
+   "dep": "2026-11-05",
+   "ret": "2026-11-12",
    "dept": "18:20",
    "rett": "09:45",
    "rt": true,
    "tr": 0,
    "dur": 175,
    "dur_to": 80,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-13&inbound=OKA-TPE&returnDate=2026-12-15&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/TPE0511OKA12111?t=IT17939028001793911200000080TPEOKA17944767001794478800000095OKATPE_11a0928dc38cd58fcc6bd19a12b6689d_11845&search_date=02112026&expected_price_uuid=01a19d02-a0ab-8030-63f5-8a8ac0f9123f&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=o4-ceU5zTGT4r7ZhZm815g&expected_price_source=share&expected_price_currency=twd&expected_price=4762&marker=775639"
   }
  ]
 }
