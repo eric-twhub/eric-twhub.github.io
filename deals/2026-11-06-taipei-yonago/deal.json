@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-06-taipei-yonago",
- "generated": "2026-11-06 00:49",
+ "generated": "2026-11-06 01:12",
  "kind": "fare",
  "origin": "taipei",
  "city": "yonago",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5818,
+  "price": 5356,
   "dep": "2026-12-04",
   "ret": "2026-12-11",
   "dept": "13:30",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11519,
+ "med": 11288,
  "n_rt": 2,
  "others": [
   {
