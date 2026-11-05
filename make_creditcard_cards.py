@@ -201,10 +201,55 @@ def build(CD, mid, fee, rate_note):
     def rate_txt(v):
         return f'{v:g}%'
 
+    def plain_ts(c):
+        """到處都能拿到的加碼層：排除新戶層、名額已滿的層、以及綁店家名單的層。
+
+        綁名單的那幾層只有在指定通路才成立，和不綁的層排在同一欄比大小
+        等於假設讀者剛好都在那幾家消費。四張卡因此被高估，熊本熊差 500 元。"""
+        return [t for t in tiers(c, 'shop', newbie=False) if not t.get('store_scope')]
+
+    def plain_rate(c):
+        ts = plain_ts(c)
+        b = 0 if any(t.get('no_base') for t in ts) else c['base']
+        return round(b + sum(t['rate'] for t in ts), 2)
+
+    def plain_back(c):
+        b = bill(DEMO_JPY)
+        ts = plain_ts(c)
+        v = 0 if any(t.get('no_base') for t in ts) else c['base'] / 100 * b
+        capped = False
+        for t in ts:
+            x = t['rate'] / 100 * b
+            if t['cap'] and x > t['cap']:
+                x, capped = t['cap'], True
+            v += x
+        return v, capped
+
+    def plain_hit(c):
+        ts = [t for t in plain_ts(c) if t['cap']]
+        return round(min(t['cap'] / (t['rate'] / 100) for t in ts)) if ts else 0
+
+    def store_rate(c):
+        """挑對店家才拿得到的那個數字，沒有綁名單的層就回 0。"""
+        return (round(maxrate(c, 'shop', newbie=False), 2)
+                if any(t.get('store_scope') for t in tiers(c, 'shop', newbie=False))
+                else 0)
+
+    REG = {'none': '免登錄', 'reg': '要登錄', 'setup': '要先設定或切 App',
+           'race': '要搶限量登錄'}
+
+    def reg_txt(c):
+        lv = c.get('reg_level')
+        # reg_level 是整張卡的，但有 reg_monthly 的卡只有它指名的那一層要搶，
+        # 吉鶴要搶的是交通卡儲值，不在這個排行的數字裡，標「要搶」會嚇錯人。
+        if lv == 'race' and c.get('reg_monthly'):
+            return '要登錄'
+        return REG.get(lv, '')
+
     # 依「刷 DEMO_JPY 實際拿到多少」排序，而且一律以既有卡友計算。
     # 新戶加碼是核卡後一次性的，15 張裡只有 3 張有，算進去會讓整個排行偏高，
     # 而多數讀者手上的卡早就不是新辦的。新戶的數字留在第 4 張單獨講。
-    ranked = sorted(cards, key=lambda c: -back(c, DEMO_JPY, 'shop', False)[0])
+    ranked = sorted(cards, key=lambda c: -plain_back(c)[0])
     newbie_gap = [c for c in cards if maxrate(c) != maxrate(c, newbie=False)]
 
     # ── 1 封面 ──
@@ -220,10 +265,10 @@ def build(CD, mid, fee, rate_note):
              f'<div><b>{maxrate(top_paper, newbie=False):g}%</b>'
              f'<span>同一張卡<br>老客戶只有</span></div>'
              f'<div><b>{len(newbie_gap)}</b><span>張的帳面<br>含新戶限定</span></div></div>'
-             f'<div class="note">既有卡友實際刷 ¥{DEMO_JPY:,}'
+             f'<div class="note">既有卡友、不挑店家，實際刷 ¥{DEMO_JPY:,}'
              f'（帳單約 NT${demo_bill:,.0f}）回饋最高的是'
              f'<b>{E(top_real["name"])}</b>，'
-             f'拿得到 NT${back(top_real, DEMO_JPY, "shop", False)[0]:,.0f}。'
+             f'拿得到 NT${plain_back(top_real)[0]:,.0f}。'
              f'那不是帳面第一名的那張。</div>' + foot(1, n))
     out.append(('jp-card-01.png', page(cover, 'cover')))
 
@@ -234,24 +279,31 @@ def build(CD, mid, fee, rate_note):
                 f'<div class="c2">刷 ¥{DEMO_JPY // 1000}K 實拿</div>'
                 '<div class="c3">加碼到頂</div></div>')
         for j, c in enumerate(items, start):
-            v, capped = back(c, DEMO_JPY, 'shop', False)
-            h = hit(c, 'shop', False)
+            v, capped = plain_back(c)
+            h = plain_hit(c)
             nb = round(maxrate(c, 'shop') - maxrate(c, 'shop', newbie=False), 2)
+            sr = store_rate(c)
+            # 卡名底下那行改放條件。原本放的是方案名稱（日本旅遊祭之類），
+            # 那是裝飾；小抄上有，這裡的空間要留給「拿不到的理由」。
+            cond = [x for x in (
+                reg_txt(c),
+                f'指定通路才有 {sr:g}%' if sr else '',
+                f'新戶另有 +{nb:g}%' if nb else '',
+                f'官方 {c["total"]:g}%，一層已額滿' if soldout(c) else '',
+            ) if x]
             rows += (f'<div class="row"><div class="num">{j:02}</div>'
-                     f'<div class="nm">{E(c["name"])}<s>{E(c["plan"])}'
-                     + (f'　新戶另有 +{nb:g}%' if nb else '')
-                     + (f'　官方 {c["total"]:g}%，一層已額滿' if soldout(c) else '')
-                     + '</s></div>'
-                     f'<div class="c1">{rate_txt(maxrate(c, "shop", newbie=False))}</div>'
+                     f'<div class="nm">{E(c["name"])}<s>{E("・".join(cond))}</s></div>'
+                     f'<div class="c1">{rate_txt(plain_rate(c))}</div>'
                      f'<div class="c2">{v:,.0f}<small>元</small></div>'
                      f'<div class="c3{" warn" if capped else ""}">'
                      + (f'NT${h:,}' if h else '無上限') + '</div></div>')
         return ('<div class="kick">旅日信用卡</div>'
                 f'<h1>實拿排行 <em>{part}</em></h1>'
-                f'<div class="sub">以<em>既有卡友</em>計算，'
-                f'依「刷 ¥{DEMO_JPY:,} 實際拿到多少」排序，不是依帳面。</div>'
-                '<div class="legend">「加碼到頂」是加碼額度用完的台幣帳單金額，'
-                '超過之後只剩基本回饋。標紅色的表示這筆已經觸頂。</div>'
+                f'<div class="sub">以<em>既有卡友</em>、<em>不挑店家</em>計算：'
+                f'走進任何一家日本實體店就拿得到的數字。</div>'
+                '<div class="legend">綁指定通路的加碼不算進來，那幾張在卡名下面'
+                '標出「指定通路才有幾％」。「加碼到頂」是加碼額度用完的台幣帳單'
+                '金額，超過之後只剩基本回饋。</div>'
                 f'<div class="list">{rows}</div>' + foot(idx, n))
 
     out.append(('jp-card-02.png', page(rank_card(2, '①', ranked[:8], 1))))
