@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-05-taipei-okayama",
- "generated": "2026-11-05 06:58",
+ "generated": "2026-11-05 15:54",
  "kind": "fare",
  "origin": "taipei",
  "city": "okayama",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5743,
+  "price": 5756,
   "dep": "2026-12-27",
   "ret": "2026-12-31",
   "dept": "13:05",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11812,
+ "med": 11821,
  "n_rt": 4,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 6662,
+   "price": 6679,
    "dep": "2026-12-08",
    "ret": "2026-12-12",
    "dept": "11:10",
