@@ -13985,6 +13985,32 @@ if os.path.exists('cobrand-cards.json'):
         n = html.escape(s['name'])
         return f'<a href="{U("/japan-coupon/" + s["slug"] + "/")}">{n}</a>' if s.get('slug') else n
 
+    def _rfs_reported():
+        # 未經店家證實的回報：不和官方對照表混在一起，來源連結不可拿掉（原作者要求引用附出處）
+        r = _RFS.get('reported')
+        if not r or not r.get('rows'):
+            return ''
+        lk = lambda u, t: (f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">'
+                           f'{html.escape(t)}</a>')
+        trs = ''.join(
+            '<tr><td><b>' + _rfs_name(s) + '</b></td>'
+            f'<td>{html.escape(s["rate"])}</td>'
+            f'<td>{html.escape(s["per10k"])}</td>'
+            '<td>' + html.escape(s['basis'])
+            + (' ' + lk(s['src'], s['src_name']) if s.get('src') else '') + '</td></tr>'
+            for s in r['rows'])
+        return ('<h3 id="store-fees-reported">店家沒公告、只有回報的數字</h3>'
+                '<p class="lede"><b>下面這些不是店家公告，不要當成確定值。</b>數字出自旅日部落客'
+                + lk(r['src'], '林氏璧的整理') + '與' + lk(r['fb'], '粉專貼文的留言回報')
+                + '，多數沒有附店家原文，依據欄空白的就是清單列了數字但沒寫依據。'
+                '百分比以稅前金額計算，同一家不同分店也可能不一樣。</p>'
+                '<div class="tw"><table class="fees"><thead><tr><th>店家</th><th>回報的手續費</th>'
+                '<th>買 ¥10,000（稅前）退回</th><th>依據</th></tr></thead><tbody>' + trs
+                + '</tbody></table></div>'
+                '<p class="lede">現場看店內標示最準：使用 J-TaxRefund 的店，櫃台立牌可能標 Service Fee，'
+                '也有旅客拍到寫 7.80% 的立牌（' + lk(r['tvb'], 'TVB 報導') + '，沒有店名）。'
+                '結帳前問一聲，比事後才發現划算。</p>')
+
     def _rfs_block():
         rows = [s for s in _RFS['stores'] if s['status'] != 'none']
         none = [s for s in _RFS['stores'] if s['status'] == 'none']
@@ -14016,8 +14042,9 @@ if os.path.exists('cobrand-cards.json'):
                 + ('其中' + '、'.join(html.escape(n) for n in old)
                    + '的官網免稅說明還是 11/1 以前的舊制內容，不要照著做。' if old else '')
                 + '</p>'
-                '<p class="disc">查證於 ' + _RFS['checked'] + '。只採用店家或集團的官方頁面與新聞稿，'
-                '媒體報導與粉專轉述的數字沒有列入。手續費隨時可能調整，以結帳當下店家公告為準。</p>')
+                + _rfs_reported() +
+                '<p class="disc">查證於 ' + _RFS['checked'] + '。官方對照表只採用店家或集團的官方頁面與新聞稿，'
+                '回報的數字未經店家證實。手續費隨時可能調整，以結帳當下店家公告為準。</p>')
 
     def _rf_block():
         if not _RF:
