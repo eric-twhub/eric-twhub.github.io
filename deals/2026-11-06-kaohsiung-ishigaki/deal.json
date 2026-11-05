@@ -1,0 +1,33 @@
+{
+ "schema": 1,
+ "slug": "2026-11-06-kaohsiung-ishigaki",
+ "generated": "2026-11-06 00:49",
+ "kind": "fare",
+ "origin": "kaohsiung",
+ "city": "ishigaki",
+ "fare": {
+  "o": "KHH",
+  "d": "ISG",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 3823,
+  "dep": "2026-11-29",
+  "ret": "2026-12-06",
+  "dept": "09:30",
+  "rett": "12:15",
+  "rt": true,
+  "tr": 0,
+  "dur": 125,
+  "dur_to": 55,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-ISG&departureDate=2026-11-29&inbound=ISG-KHH&returnDate=2026-12-06&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 3823,
+ "n_rt": 1,
+ "others": []
+}

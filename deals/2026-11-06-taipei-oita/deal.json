@@ -1,0 +1,52 @@
+{
+ "schema": 1,
+ "slug": "2026-11-06-taipei-oita",
+ "generated": "2026-11-06 00:49",
+ "kind": "fare",
+ "origin": "taipei",
+ "city": "oita",
+ "fare": {
+  "o": "TPE",
+  "d": "OIT",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 4946,
+  "dep": "2026-11-21",
+  "ret": "2026-11-28",
+  "dept": "12:00",
+  "rett": "16:30",
+  "rt": true,
+  "tr": 0,
+  "dur": 280,
+  "dur_to": 120,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OIT&departureDate=2026-11-21&inbound=OIT-TPE&returnDate=2026-11-28&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 12321,
+ "n_rt": 2,
+ "others": [
+  {
+   "o": "TPE",
+   "d": "OIT",
+   "air": "NH",
+   "airname": "全日空",
+   "cls": "fsc",
+   "price": 19697,
+   "dep": "2026-11-21",
+   "ret": "2026-11-28",
+   "dept": "16:50",
+   "rett": "16:45",
+   "rt": true,
+   "tr": 2,
+   "dur": 2100,
+   "dur_to": 275,
+   "gate": "Wingie",
+   "url": "https://www.aviasales.com/search/TSA2111OIT28111?t=NH17952798001795334700000855TSAHNDOIT17958843001795955400001245OITHNDTSA_39e2a09ea1782ac3c65267e07c9d5417_48947&search_date=04112026&expected_price_uuid=01a1a523-7902-8040-a07e-36e204ffd32a&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=L2Qxli1GqiBV_HSYgeNEzA&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=19697&marker=775639"
+  }
+ ]
+}
