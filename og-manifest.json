@@ -210,12 +210,6 @@
    "title": "台北飛沖繩 NT$3,004 來回含稅｜台灣虎航 12/01 出發"
   },
   {
-   "slug": "deals-2026-11-06-taichung-okinawa",
-   "url": "/deals/2026-11-06-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$3,465 來回含稅｜台灣虎航 12/07 出發",
-   "title": "台中飛沖繩 NT$3,465 來回含稅｜台灣虎航 12/07 出發"
-  },
-  {
    "slug": "deals-2026-11-06-kaohsiung-ishigaki",
    "url": "/deals/2026-11-06-kaohsiung-ishigaki/",
    "h1": "高雄飛石垣島 NT$3,823 來回含稅｜台灣虎航 11/29 出發",
@@ -228,10 +222,22 @@
    "title": "台北飛石垣島 NT$3,865 來回含稅｜台灣虎航 12/05 出發"
   },
   {
+   "slug": "deals-2026-11-06-taichung-okinawa",
+   "url": "/deals/2026-11-06-taichung-okinawa/",
+   "h1": "台中飛沖繩 NT$4,437 來回含稅｜台灣虎航 12/07 出發",
+   "title": "台中飛沖繩 NT$4,437 來回含稅｜台灣虎航 12/07 出發"
+  },
+  {
    "slug": "deals-2026-11-06-kaohsiung-okinawa",
    "url": "/deals/2026-11-06-kaohsiung-okinawa/",
    "h1": "高雄飛沖繩 NT$4,437 來回含稅｜台灣虎航 11/17 出發",
    "title": "高雄飛沖繩 NT$4,437 來回含稅｜台灣虎航 11/17 出發"
+  },
+  {
+   "slug": "deals-2026-11-06-taipei-oita",
+   "url": "/deals/2026-11-06-taipei-oita/",
+   "h1": "台北飛大分・別府 NT$5,076 來回含稅｜台灣虎航 11/21 出發",
+   "title": "台北飛大分・別府 NT$5,076 來回含稅｜台灣虎航 11/21 出發"
   },
   {
    "slug": "deals-2026-11-06-taipei-miyazaki",
@@ -240,28 +246,22 @@
    "title": "台北飛宮崎 NT$5,227 來回含稅｜台灣虎航 11/20 出發"
   },
   {
-   "slug": "deals-2026-11-06-taipei-oita",
-   "url": "/deals/2026-11-06-taipei-oita/",
-   "h1": "台北飛大分・別府 NT$5,276 來回含稅｜台灣虎航 11/21 出發",
-   "title": "台北飛大分・別府 NT$5,276 來回含稅｜台灣虎航 11/21 出發"
-  },
-  {
    "slug": "deals-2026-11-06-taipei-yonago",
    "url": "/deals/2026-11-06-taipei-yonago/",
-   "h1": "台北飛米子・鳥取 NT$5,818 來回含稅｜台灣虎航 12/04 出發",
-   "title": "台北飛米子・鳥取 NT$5,818 來回含稅｜台灣虎航 12/04 出發"
+   "h1": "台北飛米子・鳥取 NT$5,356 來回含稅｜台灣虎航 12/04 出發",
+   "title": "台北飛米子・鳥取 NT$5,356 來回含稅｜台灣虎航 12/04 出發"
   },
   {
    "slug": "deals-2026-11-06-taipei-fukuoka",
    "url": "/deals/2026-11-06-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$5,818 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$5,818 來回含稅｜台灣虎航 12/01 出發"
+   "h1": "台北飛福岡 NT$5,418 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$5,418 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-06-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-06-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,272",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,272"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,672",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,672"
   },
   {
    "slug": "apple-japan-price",
