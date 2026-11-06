@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-06-taipei-fukuoka",
- "generated": "2026-11-06 06:58",
+ "generated": "2026-11-06 15:55",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5418,
+  "price": 6298,
   "dep": "2026-12-01",
   "ret": "2026-12-05",
   "dept": "06:45",
@@ -25,11 +25,10 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$10,258（5 天有紀錄），這張低 47%"
+  "12 月出發的票，每天最便宜的平均要 NT$10,438（5 天有紀錄），這張低 40%"
  ],
  "med": 16512,
- "n_rt": 18,
+ "n_rt": 20,
  "others": [
   {
    "o": "TPE",
@@ -37,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7800,
+   "price": 7824,
    "dep": "2026-12-08",
    "ret": "2026-12-12",
    "dept": "13:40",
@@ -56,7 +55,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7800,
+   "price": 7824,
    "dep": "2026-12-08",
    "ret": "2026-12-13",
    "dept": "18:20",
@@ -72,20 +71,21 @@
   {
    "o": "TPE",
    "d": "FUK",
-   "air": "TW",
-   "airname": "德威航空",
+   "air": "IT",
+   "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8832,
-   "dep": "2026-11-28",
-   "ret": "2026-12-02",
-   "dept": "14:25",
+   "price": 8170,
+   "dep": "2026-11-21",
+   "ret": "2026-11-24",
+   "dept": "06:45",
    "rett": "10:55",
    "rt": true,
-   "tr": 1,
-   "dur": 1505,
-   "dur_to": 185,
-   "gate": "City.Travel",
-   "url": "https://www.aviasales.com/search/TPE2811FUK02121?t=IT17958759001795959900001340TPECJUFUK17962089001796215200000165FUKTPE_d281893c26481550a08fefd8ae44ff0c_21811&search_date=05112026&expected_price_uuid=01a1ac6d-1b5b-8040-2661-36ab42618fc1&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=geKCYV4Kr1gwYqeC0flkMw&expected_price_source=share&expected_price_currency=twd&expected_price=8832&marker=775639"
+   "tr": 0,
+   "dur": 300,
+   "dur_to": 135,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-21&inbound=FUK-TPE&returnDate=2026-11-24&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
   }
  ]
 }

@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-06-taipei-ishigaki",
- "generated": "2026-11-06 06:58",
+ "generated": "2026-11-06 15:55",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 3865,
-  "dep": "2026-12-05",
-  "ret": "2026-12-09",
+  "price": 2170,
+  "dep": "2026-11-13",
+  "ret": "2026-11-20",
   "dept": "06:35",
   "rett": "09:25",
   "rt": true,
@@ -21,13 +21,13 @@
   "dur": 130,
   "dur_to": 60,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-05&inbound=ISG-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-13&inbound=ISG-TPE&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11178,
+ "med": 11285,
  "n_rt": 8,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 3885,
+   "price": 2170,
    "dep": "2026-12-15",
    "ret": "2026-12-19",
    "dept": "06:35",
@@ -55,9 +55,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4065,
-   "dep": "2026-11-13",
-   "ret": "2026-11-20",
+   "price": 2970,
+   "dep": "2026-12-05",
+   "ret": "2026-12-09",
    "dept": "06:35",
    "rett": "09:25",
    "rt": true,
@@ -65,7 +65,7 @@
    "dur": 130,
    "dur_to": 60,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-13&inbound=ISG-TPE&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-05&inbound=ISG-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
@@ -74,7 +74,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4346,
+   "price": 4560,
    "dep": "2026-12-01",
    "ret": "2026-12-05",
    "dept": "06:35",
