@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-07-taipei-saga",
- "generated": "2026-11-07 05:00",
+ "generated": "2026-11-07 06:26",
  "kind": "fare",
  "origin": "taipei",
  "city": "saga",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5697,
-  "dep": "2026-11-12",
-  "ret": "2026-11-19",
+  "price": 5491,
+  "dep": "2026-12-03",
+  "ret": "2026-12-10",
   "dept": "08:10",
   "rett": "12:15",
   "rt": true,
@@ -21,13 +21,13 @@
   "dur": 275,
   "dur_to": 125,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-12&inbound=HSG-TPE&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-12-03&inbound=HSG-TPE&returnDate=2026-12-10&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11454,
+ "med": 11724,
  "n_rt": 6,
  "others": [
   {
@@ -36,9 +36,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5791,
-   "dep": "2026-12-03",
-   "ret": "2026-12-10",
+   "price": 5697,
+   "dep": "2026-11-12",
+   "ret": "2026-11-19",
    "dept": "08:10",
    "rett": "12:15",
    "rt": true,
@@ -46,7 +46,7 @@
    "dur": 275,
    "dur_to": 125,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-12-03&inbound=HSG-TPE&returnDate=2026-12-10&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-12&inbound=HSG-TPE&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
@@ -55,7 +55,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5839,
+   "price": 6360,
    "dep": "2026-11-19",
    "ret": "2026-11-26",
    "dept": "08:10",
@@ -74,7 +74,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 17070,
+   "price": 17088,
    "dep": "2026-12-03",
    "ret": "2026-12-10",
    "dept": "16:50",
@@ -84,7 +84,7 @@
    "dur": 1325,
    "dur_to": 290,
    "gate": "Wingie",
-   "url": "https://www.aviasales.com/search/TSA0312HSG10121?t=NH17963166001796375700000925TSAHNDHSG17968854001796905800000400HSGHNDTSA_01390081758cf37266a72cb2b748bf21_42450&search_date=06112026&expected_price_uuid=01a1af72-b291-8040-2f82-0c4b6ee76cd6&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=1hbTlJuJJabGqyJam6LQoQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17070&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA0312HSG10121?t=NH17963166001796375700000925TSAHNDHSG17968854001796905800000400HSGHNDTSA_01390081758cf37266a72cb2b748bf21_42450&search_date=06112026&expected_price_uuid=01a1af72-b291-8040-2f82-0c4b6ee76cd6&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=1hbTlJuJJabGqyJam6LQoQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17088&marker=775639"
   }
  ]
 }
