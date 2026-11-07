@@ -1182,6 +1182,8 @@ blockquote.q .qz{display:block;margin-top:7px;font-style:normal;font-size:.88rem
 table.cardz.fees td:last-child{grid-column:1/-1}
 /* 回報表的依據欄可以換行，桌機才裝得下、保持一張能上下比較的表 */
 .tw table.rfr td:last-child{white-space:normal}
+/* 機場領現金表：機場與業者名單很長，除了第一欄都可以換行 */
+.tw table.ac td:not(:first-child){white-space:normal}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px}
 .tw table{font-size:.95rem}
 .tw th{font-size:.86rem}
@@ -13916,7 +13918,10 @@ if os.path.exists('cobrand-cards.json'):
       '可以，多半是在出境的機場或港口、海關確認完之後領，而且要看當初購買的店有沒有提供這個方式。'
       '機場領現金通常要另付手續費：例如機場的 Cash Japan，條款寫的是退稅業者指示退稅金額的 10%，'
       '每筆交易可能另有上限與下限金額，但條款沒有寫是多少；'
-      '這筆費用和店家、退稅業者另收的手續費分開計算。人已經離開日本就領不到現金，'
+      '羽田、那霸與成田第 1、2 航廈出境審查前的 Self Tax Refund，條款寫的是稅前金額的 1.1%'
+      '（另有一種比率算法），而且未滿 ¥100 的零頭不給。以本來該退 ¥1,000 計算，'
+      'Cash Japan 約給 ¥900，Self Tax Refund 給 ¥800。'
+      '這些費用和店家、退稅業者另收的手續費分開計算。人已經離開日本就領不到現金，'
       '要改用轉帳、信用卡或 App。'),
      ('可以在市區先拿到退稅嗎？',
       '目前查到公布的只有友都八喜（Yodobashi Camera）。11 月 1 日起，'
@@ -14013,6 +14018,34 @@ if os.path.exists('cobrand-cards.json'):
                 '也有旅客拍到寫 7.80% 的立牌（' + lk(r['tvb'], 'TVB 報導') + '，沒有店名）。'
                 '結帳前問一聲，比事後才發現划算。</p>')
 
+    def _rfs_airport():
+        # 機場退現金機台另收的手續費：只採機台業者自己的條款，和店家、退稅業者的手續費分開
+        a = _RFS.get('airport_cash')
+        if not a or not a.get('rows'):
+            return ''
+        lk = lambda u, t: (f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">'
+                           f'{html.escape(t)}</a>')
+        trs = ''.join(
+            f'<tr><td><b>{html.escape(r["name"])}</b></td>'
+            f'<td>{html.escape(r["airports"])}</td>'
+            f'<td>{html.escape(r["ops"])}</td>'
+            f'<td><b>{html.escape(r["per1k"])}</b></td>'
+            '<td>' + html.escape(r['fee'])
+            + f'<span class="qz">「{html.escape(r["quote"])}」</span> '
+            + lk(r['src'], r['src_name']) + '、' + lk(r['src2'], r['src2_name']) + '</td></tr>'
+            for r in a['rows'])
+        return ('<h3 id="airport-cash">選機場領現金，機台業者再扣一次</h3>'
+                '<p class="lede">退款方式選「機場領現金」的話，出境時在機場的退現金機台領錢，'
+                '<b>機台業者會再扣自己的手續費</b>，和店家、退稅業者收的分開算，'
+                '連宣布不收手續費的店也一樣（唐吉訶德的官方說明就有寫這點）。'
+                '下面「實拿」以店家不收手續費、本來該退 ¥1,000 計算；店家有收的話，從扣完的金額再扣。'
+                '機台只能領合作業者的退款，名單外的要改用信用卡或其他方式。</p>'
+                '<div class="tw"><table class="fees ac"><thead><tr><th>機台</th><th>在哪些機場</th>'
+                '<th>能領哪些退稅業者的退款</th><th>本來退 ¥1,000，實拿</th><th>條款怎麼寫</th>'
+                '</tr></thead><tbody>' + trs + '</tbody></table></div>'
+                '<p class="disc">依兩家業者的使用條款與官網整理，查證於 ' + a['checked'] + '。'
+                'Cash Japan 每筆交易的上下限，條款只寫可能適用，沒有公布金額。</p>')
+
     def _rfs_block():
         rows = [s for s in _RFS['stores'] if s['status'] != 'none']
         none = [s for s in _RFS['stores'] if s['status'] == 'none']
@@ -14046,7 +14079,8 @@ if os.path.exists('cobrand-cards.json'):
                 + '</p>'
                 + _rfs_reported() +
                 '<p class="disc">查證於 ' + _RFS['checked'] + '。官方對照表只採用店家或集團的官方頁面與新聞稿，'
-                '回報的數字未經店家證實。手續費隨時可能調整，以結帳當下店家公告為準。</p>')
+                '回報的數字未經店家證實。手續費隨時可能調整，以結帳當下店家公告為準。</p>'
+                + _rfs_airport())
 
     def _rf_block():
         if not _RF:
@@ -14086,6 +14120,8 @@ if os.path.exists('cobrand-cards.json'):
         ('海關 線上辦理的 Wi-Fi', 'https://www.customs.go.jp/kaigairyoko/taxrefund/vjw.html'),
         ('數位廳 Visit Japan Web 利用說明', 'https://services.digital.go.jp/visit-japan-web/guide/'),
         ('Cash Japan 使用條款', 'https://www.cashjapan.com/zh-tw/terms-and-conditions/'),
+        ('Self Tax Refund 使用條款（繁中）',
+         'https://www.glory.co.jp/files/user/selftaxrefund/pdf/STRterms_CN(tw)_20261101.pdf'),
         ('友都八喜 新免稅制度公告', 'https://www.yodobashi.com/ec/support/news/2610280032675/index.html'),
     ]
     _tf_depart = (

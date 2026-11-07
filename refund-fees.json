@@ -99,5 +99,13 @@
     {"name": "寶可夢中心", "slug": "pokemon-center", "status": "none"},
     {"name": "三麗鷗", "slug": "sanrio", "status": "none"},
     {"name": "KIDDY LAND", "slug": "kiddy-land", "status": "none", "old": true}
-  ]
+  ],
+  "airport_cash": {
+    "_說明": "機場退現金機台另收的手續費，和店家、退稅業者的手續費分開計算。只採機台業者自己的條款與官網。per1k 以店家不收手續費、本來退 ¥1,000 計算。",
+    "checked": "2026-11-08",
+    "rows": [
+      {"name": "Cash Japan", "airports": "成田、新千歲、中部、關西、神戶、福岡", "ops": "Global Blue、J&J（J-TaxRefund）、JPrefund", "per1k": "約 ¥900", "fee": "扣退稅業者算好的退稅金額的 10%，每筆交易可能另有上下限，條款沒寫金額。零頭以 ¥50 為單位四捨五入。", "quote": "免稅退稅業者所指示退稅金額的10%", "src": "https://www.cashjapan.com/zh-tw/terms-and-conditions/", "src_name": "Cash Japan 使用條款第 7 條", "src2": "https://www.cashjapan.com/ja/get-your-refund/", "src2_name": "據點與合作業者"},
+      {"name": "Self Tax Refund", "airports": "羽田（第 2 航廈國際線、第 3 航廈）、那霸、成田（第 1、2 航廈，出境審查前）", "ops": "J&J（J-TaxRefund）、JPrefund、Global Tax Free-Planet、AddSmart、LINKTIVITY、IntaSect Communications", "per1k": "¥800", "fee": "扣稅前金額的 1.1%，或「扣完退稅業者手續費後的金額 × 機台業者指定的比率」，兩種算法，條款沒說什麼時候用哪一種。未滿 ¥100 的零頭不給，所以 ¥1,000 扣 ¥110 剩 ¥890，實拿 ¥800。", "quote": "手續費為免稅購物之未稅購買價格百分之一點一（1.1%）之相當金額（含稅）", "src": "https://www.glory.co.jp/files/user/selftaxrefund/pdf/STRterms_CN(tw)_20261101.pdf", "src_name": "Self Tax Refund 使用條款第 7、8 條", "src2": "https://www.glory.co.jp/selftaxrefund/", "src2_name": "據點與合作業者"}
+    ]
+  }
 }
