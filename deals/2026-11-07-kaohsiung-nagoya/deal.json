@@ -1,0 +1,33 @@
+{
+ "schema": 1,
+ "slug": "2026-11-07-kaohsiung-nagoya",
+ "generated": "2026-11-07 15:03",
+ "kind": "fare",
+ "origin": "kaohsiung",
+ "city": "nagoya",
+ "fare": {
+  "o": "KHH",
+  "d": "NGO",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 5051,
+  "dep": "2026-11-14",
+  "ret": "2026-11-23",
+  "dept": "14:50",
+  "rett": "19:40",
+  "rt": true,
+  "tr": 0,
+  "dur": 415,
+  "dur_to": 180,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-NGO&departureDate=2026-11-14&inbound=NGO-KHH&returnDate=2026-11-23&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 5051,
+ "n_rt": 1,
+ "others": []
+}
