@@ -1567,6 +1567,7 @@ def topnav(cur=''):
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
             + link('/japan-pokepark-kanto/', '⚡ 寶可夢公園門票怎麼買')
             + link('/japan-pokemon-cafe/', '☕ 寶可夢咖啡廳怎麼預約')
+            + link('/japan-nintendo-museum/', '🎮 任天堂博物館門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1700,6 +1701,7 @@ _AD_MAP = [
     ('japan-airport-last-train', 'transfer'),
     ('japan-esim', 'esim'), ('japan-sms', 'esim'),
     ('japan-pokemon-cafe', 'esim'),
+    ('japan-nintendo-museum', 'activity2'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -8012,6 +8014,163 @@ if os.path.exists('pokemon-cafe.json'):
       + '<p class="disc">預約規則、營業時間與價格以寶可夢咖啡廳官網與預約網站為準，整理可能有疏漏。</p>'
       + foot())
     pages.append(('/japan-pokemon-cafe/', 0.6))
+
+# ---------- 任天堂博物館門票怎麼買 ----------
+# 資料在 nintendo-museum.json，引官網、官方購票站與任天堂客服 Q&A。
+# 門票只在官方購票站賣、旅行社團體不受理、外面買的票無效，所以不放任何商品。
+# 抽籤：入館月的三個月前整月申請，下個月 1 日公布、7 日前付款；月份照規則當場算。
+# 機票從 tigerair-fares.json 當場算：台北飛關西。
+if os.path.exists('nintendo-museum.json'):
+    NM = json.load(open('nintendo-museum.json', encoding='utf-8'))
+    _nm_today = datetime.date.fromisoformat(TODAY)
+    _nm_wd = '一二三四五六日'
+
+    def _nm_add(y, m, k):
+        m += k
+        while m > 12:
+            y, m = y + 1, m - 12
+        return y, m
+
+    def _nm_md(d):
+        return f'{d.month}/{d.day}（{_nm_wd[d.weekday()]}）'
+
+    def _nm_last(y, m):
+        return datetime.date(y, m, calendar.monthrange(y, m)[1])
+
+    _nm_rounds = []
+    for k in range(3):
+        ay, am = _nm_add(_nm_today.year, _nm_today.month, k)
+        ey, em = _nm_add(ay, am, 3)
+        ry, rm = _nm_add(ay, am, 1)
+        _nm_rounds.append({'y': ey, 'm': em, 'open': datetime.date(ay, am, 1),
+                           'close': _nm_last(ay, am), 'result': datetime.date(ry, rm, 1),
+                           'pay': datetime.date(ry, rm, 7)})
+    _nm_cur = _nm_rounds[0]
+
+    def _nm_fare(y, m):
+        best = None
+        for k, p in (TGF.get('TPE-KIX') or {}).items():
+            d = datetime.date.fromisoformat(k)
+            if d.year == y and d.month == m and d > _nm_today and (best is None or p < best[0]):
+                best = (p, d)
+        return best
+
+    def _nm_status(r):
+        if _nm_today < r['open']:
+            return f'{_nm_md(r["open"])} 開放<br><small style="color:var(--dim)">到 {r["close"].month}/{r["close"].day} 23:59</small>'
+        return f'<b>申請中</b><br><small style="color:var(--dim)">到 {_nm_md(r["close"])} 23:59</small>'
+
+    _nm_rows = ''
+    for r in _nm_rounds:
+        f = _nm_fare(r['y'], r['m'])
+        _nm_rows += (
+            f'<tr><td class="nm"><b>{r["y"]} 年 {r["m"]} 月</b></td>'
+            f'<td class="nm">{_nm_status(r)}</td>'
+            f'<td class="nm">{r["result"].month}/{r["result"].day} 下午公布<br>'
+            f'<small style="color:var(--dim)">{_nm_md(r["pay"])} 23:59 前付款</small></td>'
+            + (f'<td class="nm"><b>{money(f[0])}</b><br><small style="color:var(--dim)">'
+               f'{f[1].month}/{f[1].day}</small></td>' if f
+               else '<td class="nm"><small style="color:var(--dim)">虎航還沒開賣這個月</small></td>')
+            + '</tr>')
+
+    _nm_price = ''.join(
+        f'<tr><td class="nm">{html.escape(p["n"])}</td><td class="nm"><b>'
+        + (f'¥{p["p"]:,}</b><br><small style="color:var(--dim)">約 {money(round(p["p"] * JPY))}</small>'
+           if p['p'] else '免費</b>')
+        + '</td></tr>' for p in NM['price'])
+
+    _nm_lt = NM['lottery']
+    # 已經抽完、可能有先到先得的兩個月份：結果已公布的那兩輪
+    _nm_done = [_nm_add(_nm_today.year, _nm_today.month, k) for k in (1, 2)]
+    _nm_left = (_nm_cur['close'] - _nm_today).days
+    _nm_tans = (f'{_nm_cur["y"]} 年 {_nm_cur["m"]} 月入館的票正在抽籤，申請到 {_nm_md(_nm_cur["close"])} 23:59，'
+                + ('今天是最後一天' if _nm_left == 0 else ('明天截止' if _nm_left == 1 else f'還有 {_nm_left} 天')))
+    _nm_tsub = (f'{_nm_cur["result"].month}/{_nm_cur["result"].day} 下午公布結果，'
+                f'{_nm_cur["pay"].month}/{_nm_cur["pay"].day} 23:59 前要付款。'
+                f'{_nm_today.month} 月到 {_nm_done[1][1]} 月的票已經抽完，有人取消或沒額滿時，購票站會開先到先得，'
+                '官方不預告時間。')
+
+    nm_faq = [
+     ('外國人可以買任天堂博物館的門票嗎？',
+      '可以，官方購票站有英文介面。要先註冊免費的任天堂帳號，準備 Visa、Mastercard 或 JCB 信用卡（要有 3D 驗證），'
+      '以及一支能打電話的號碼做驗證：從日本以外撥要加 +81、開啟來電顯示，只有上網的 SIM 卡做不到。'),
+     ('任天堂博物館的抽籤什麼時候？', _nm_lt['rule'] + _nm_lt['result'] + _nm_lt['pay']),
+     ('沒抽到還有機會嗎？', _nm_lt['left'] + '客服 Q&A 也寫沒有當日票。'),
+     ('門票多少錢？',
+      '大人 3,300 円、國中生與高中生 2,200 円、小學生 1,100 円、學齡前免費。' + NM['price_note'].split('。', 1)[1]),
+     ('電話驗證要怎麼做？', NM['phone']),
+     ('一次可以買幾張？', '每個入館日最多 8 張，申請時就要填好所有入館者的姓名。'),
+     ('可以透過旅行社或代購買嗎？',
+      '不行。門票只在官方購票站賣，任天堂客服寫目前不受理旅行社的團體預約；'
+      '官網公告已經有人在其他網站買到無效票、不能入館。'),
+     ('可以取消或改日期嗎？',
+      NM['rules'][4] + '沒有改日期的功能，要改就是取消後再買。' + _nm_lt['change']),
+     ('入館要帶什麼？', 'QR 票和護照。QR 票在來館前一天 14:00 以後到購票站發，發了就不能取消。'),
+     ('任天堂博物館怎麼去？', NM['access'][1] + NM['access'][2]),
+    ]
+    nm_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in nm_faq)
+    nm_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in nm_faq]}, ensure_ascii=False)
+
+    write('japan-nintendo-museum/index.html',
+      head('任天堂博物館門票怎麼買：外國人抽籤時間、電話驗證、票價與交通（京都宇治）',
+           '京都宇治的任天堂博物館只能在官方購票站抽籤：入館月份的三個月前整月申請，'
+           '下個月 1 日公布、7 日前付款。要任天堂帳號、能打電話的電話號碼做驗證，'
+           '每天最多 8 張、沒有當日票、旅行社團體不受理，以及每個月飛關西的虎航票價。',
+           'japan-nintendo-museum/',
+           '<script type="application/ld+json">' + nm_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('任天堂博物館門票怎麼買', None)])
+      + '<h1>任天堂博物館門票怎麼買</h1>'
+      + '<p class="lede">任天堂博物館（Nintendo Museum）在京都府宇治市，由任天堂以前的宇治小倉工場改建，'
+        '展示從花札到 Nintendo Switch 的歷代產品，也有可以玩的體驗展示。門票全部是日期時段指定、先抽籤，'
+        f'只能在官方購票站買。下面的規則與價格引官網、官方購票站與任天堂客服 Q&A，查證於 {NM["checked"]}；'
+        f'台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官方購票站，查證於 {NM["checked"]}</div>'
+        f'<div class="tans">{_nm_tans}</div>'
+        f'<div class="tsub">{_nm_tsub}</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>要能打電話的電話號碼</b>：中籤付款前要用登記的電話撥號驗證，只有上網的 SIM 卡做不到。</li>'
+        '<li><b>只有官方購票站</b>：沒有當日票、不受理旅行社團體，別處買的票無效。</li>'
+        '<li><b>週二休館</b>：遇日本國定假日照常開、改休隔天。</li>'
+        '</ul></div>'
+      + '<h2>哪個月份在抽籤</h2>'
+      + '<div class="tw"><table><tr><th>入館月份</th><th>抽籤申請（日本時間）</th><th>結果與付款</th>'
+        '<th>台北 → 大阪關西虎航最低單程</th></tr>' + _nm_rows + '</table></div>'
+      + '<p class="disc">抽籤月份照官方購票站的規則推算。機票是台灣虎航官網每天抓的該月最低單程票價，'
+        '含稅、不含託運行李；博物館在京都與奈良之間，從關西機場過去要轉車。</p>'
+      + '<h2>票價</h2>'
+      + '<div class="tw narrow"><table><tr><th>票種</th><th>價格（含稅）</th></tr>' + _nm_price + '</table></div>'
+      + f'<p class="disc">{html.escape(NM["price_note"])}</p>'
+      + '<h2>怎麼買</h2>'
+      + '<h3>要準備的東西</h3>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in NM['need']) + '</ul>'
+      + '<h3>流程</h3>'
+      + '<ol class="lede">'
+        f'<li><b>申請抽籤</b>：{html.escape(_nm_lt["rule"])}</li>'
+        f'<li><b>看結果</b>：{html.escape(_nm_lt["result"])}</li>'
+        f'<li><b>電話驗證並付款</b>：{html.escape(_nm_lt["pay"])}</li>'
+        '<li><b>發 QR 票</b>：來館前一天 14:00 起在購票站發，發了之後就不能取消。</li>'
+        '</ol>'
+      + f'<p class="lede"><b>電話驗證：</b>{html.escape(NM["phone"])}</p>'
+      + f'<p class="lede"><b>沒抽到：</b>{html.escape(_nm_lt["left"])}</p>'
+      + f'<a class="cta" href="{html.escape(NM["_來源"]["tickets"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎮</span><span class="ct"><b>到任天堂博物館官方購票站</b>'
+        '<s>有英文介面，日圓原價，只收信用卡</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">官方購票站是任天堂自己的網站，本站沒有分潤。</p>'
+      + '<h2>買之前要知道的規定</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in NM['rules']) + '</ul>'
+      + '<h2>入館當天</h2>'
+      + f'<p class="lede">營業 {NM["hours"]}；{html.escape(NM["closed"])}</p>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in NM['entry']) + '</ul>'
+      + '<h2>怎麼去</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in NM['access']) + '</ul>'
+      + '<h2>常見問題</h2>' + nm_html
+      + '<p class="disc">抽籤規則、票價與入館規定以任天堂博物館官網與官方購票站為準，整理可能有疏漏。</p>'
+      + foot())
+    pages.append(('/japan-nintendo-museum/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
