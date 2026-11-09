@@ -6857,7 +6857,8 @@ if os.path.exists('sumo.json'):
     _sm_rows = ''
     for b in _sm_up:
         y = b['first'][:4]
-        f = _sm_fare(b)
+        # 已售完的場所不放機票：寫一個價格等於叫人飛過去看一場進不去的比賽
+        f = None if b.get('status') else _sm_fare(b)
         _sale_past = datetime.date.fromisoformat(b['sale']) < _sm_today
         _sm_rows += (
             f'<tr><td class="nm"><b>{y} {html.escape(b["name"])}</b>'
@@ -6868,6 +6869,7 @@ if os.path.exists('sumo.json'):
             + '</td>'
             + (f'<td class="nm"><b>{money(f[0])}</b><br><small style="color:var(--dim)">'
                f'{_sm_air[f[2]]}，{_sm_d(f[1], False)} 出發</small></td>' if f
+               else '<td class="nm"><small style="color:var(--dim)">門票已售完</small></td>' if b.get('status')
                else '<td class="nm"><small style="color:var(--dim)">虎航還沒開放這段日期</small></td>')
             + f'<td class="nm"><a href="{U("/" + b["slug"] + "/")}">{html.escape(b["city"])}機票</a></td></tr>')
 
