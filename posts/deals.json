@@ -1,32 +1,32 @@
 [
  {
   "slug": "2026-11-09-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,139 來回含稅｜台灣虎航 12/05 出發",
+  "title": "台北飛沖繩 NT$2,139 來回含稅｜台灣虎航 12/14 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
   "price": 2139,
   "air": "台灣虎航",
-  "dep": "2026-12-05",
-  "ret": "2026-12-09",
+  "dep": "2026-12-14",
+  "ret": "2026-12-18",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$3,847（7 天有紀錄），這張低 44%"
+   "12 月出發的票，每天最便宜的平均要 NT$4,035（7 天有紀錄），這張低 47%"
   ],
   "med": 11133,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-05&inbound=OKA-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-14&inbound=OKA-TPE&returnDate=2026-12-18&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 2139,
+   "lo": 2539,
    "hi": 6018,
    "days": 10
   },
   "mbase": {
-   "avg": 3847,
+   "avg": 4035,
    "days": 7,
    "month": 12
   },
@@ -63,29 +63,29 @@
   "n": 12
  },
  {
-  "slug": "2026-11-09-kaohsiung-ishigaki",
-  "title": "高雄飛石垣島 NT$3,818 來回含稅｜台灣虎航 11/29 出發",
-  "o": "高雄",
-  "c": "石垣島",
-  "_oiata": "KHH",
-  "_diata": "ISG",
-  "price": 3818,
+  "slug": "2026-11-09-taipei-saga",
+  "title": "台北飛佐賀 NT$3,881 來回含稅｜台灣虎航 11/12 出發",
+  "o": "台北",
+  "c": "佐賀",
+  "_oiata": "TPE",
+  "_diata": "HSG",
+  "price": 3881,
   "air": "台灣虎航",
-  "dep": "2026-11-29",
-  "ret": "2026-12-06",
+  "dep": "2026-11-12",
+  "ret": "2026-11-19",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 3818,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-ISG&departureDate=2026-11-29&inbound=ISG-KHH&returnDate=2026-12-06&type=return&adult=1&language=zh-TW",
-  "hotelcity": "石垣島",
-  "cslug": "ishigaki",
+  "med": 11603,
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-12&inbound=HSG-TPE&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
+  "hotelcity": "佐賀",
+  "cslug": "saga",
   "usual": null,
   "mbase": null,
   "rank": 1,
-  "n": 1
+  "n": 6
  },
  {
   "slug": "2026-11-09-kaohsiung-okinawa",
@@ -147,29 +147,29 @@
   "n": 87
  },
  {
-  "slug": "2026-11-09-taipei-saga",
-  "title": "台北飛佐賀 NT$4,078 來回含稅｜台灣虎航 11/12 出發",
-  "o": "台北",
-  "c": "佐賀",
-  "_oiata": "TPE",
-  "_diata": "HSG",
-  "price": 4078,
+  "slug": "2026-11-09-kaohsiung-ishigaki",
+  "title": "高雄飛石垣島 NT$4,059 來回含稅｜台灣虎航 11/29 出發",
+  "o": "高雄",
+  "c": "石垣島",
+  "_oiata": "KHH",
+  "_diata": "ISG",
+  "price": 4059,
   "air": "台灣虎航",
-  "dep": "2026-11-12",
-  "ret": "2026-11-19",
+  "dep": "2026-11-29",
+  "ret": "2026-12-06",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 11753,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-12&inbound=HSG-TPE&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
-  "hotelcity": "佐賀",
-  "cslug": "saga",
+  "med": 4059,
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-ISG&departureDate=2026-11-29&inbound=ISG-KHH&returnDate=2026-12-06&type=return&adult=1&language=zh-TW",
+  "hotelcity": "石垣島",
+  "cslug": "ishigaki",
   "usual": null,
   "mbase": null,
   "rank": 1,
-  "n": 6
+  "n": 1
  },
  {
   "slug": "2026-11-09-taipei-morioka",
@@ -198,12 +198,12 @@
  },
  {
   "slug": "2026-11-09-taipei-miyazaki",
-  "title": "台北飛宮崎 NT$5,081 來回含稅｜台灣虎航 11/20 出發",
+  "title": "台北飛宮崎 NT$5,278 來回含稅｜台灣虎航 11/20 出發",
   "o": "台北",
   "c": "宮崎",
   "_oiata": "TPE",
   "_diata": "KMI",
-  "price": 5081,
+  "price": 5278,
   "air": "台灣虎航",
   "dep": "2026-11-20",
   "ret": "2026-11-27",
@@ -222,56 +222,6 @@
   "n": 6
  },
  {
-  "slug": "2026-11-09-taipei-oita",
-  "title": "台北飛大分・別府 NT$5,568 來回含稅｜台灣虎航 11/21 出發",
-  "o": "台北",
-  "c": "大分・別府",
-  "_oiata": "TPE",
-  "_diata": "OIT",
-  "price": 5568,
-  "air": "台灣虎航",
-  "dep": "2026-11-21",
-  "ret": "2026-11-28",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000"
-  ],
-  "med": 11914,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OIT&departureDate=2026-11-21&inbound=OIT-TPE&returnDate=2026-11-28&type=return&adult=1&language=zh-TW",
-  "hotelcity": "別府",
-  "cslug": "oita",
-  "usual": null,
-  "mbase": null,
-  "rank": 1,
-  "n": 2
- },
- {
-  "slug": "2026-11-09-kaohsiung-fukuoka",
-  "title": "高雄飛福岡 NT$5,808 來回含稅｜台灣虎航 11/13 出發",
-  "o": "高雄",
-  "c": "福岡",
-  "_oiata": "KHH",
-  "_diata": "FUK",
-  "price": 5808,
-  "air": "台灣虎航",
-  "dep": "2026-11-13",
-  "ret": "2026-11-20",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000"
-  ],
-  "med": 6038,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-11-13&inbound=FUK-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
-  "hotelcity": "福岡",
-  "cslug": "fukuoka",
-  "usual": null,
-  "mbase": null,
-  "rank": 1,
-  "n": 2
- },
- {
   "slug": "2026-11-09-taipei-fukuoka",
   "title": "台北飛福岡 NT$5,881 來回含稅｜台灣虎航 11/12 出發",
   "o": "台北",
@@ -286,20 +236,45 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "這條航線平常最低落在 NT$8,568–NT$9,027，這張是近期 16 筆紀錄中第 1 低"
+   "這條航線平常最低落在 NT$8,108–NT$9,108，這張是近期 16 筆紀錄中第 1 低"
   ],
   "med": 13570,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-12&inbound=FUK-TPE&returnDate=2026-11-17&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 8568,
-   "hi": 9027,
+   "lo": 8108,
+   "hi": 9108,
    "days": 8
   },
   "mbase": null,
   "rank": 1,
   "n": 16
+ },
+ {
+  "slug": "2026-11-09-taipei-oita",
+  "title": "台北飛大分・別府 NT$5,897 來回含稅｜台灣虎航 11/21 出發",
+  "o": "台北",
+  "c": "大分・別府",
+  "_oiata": "TPE",
+  "_diata": "OIT",
+  "price": 5897,
+  "air": "台灣虎航",
+  "dep": "2026-11-21",
+  "ret": "2026-11-28",
+  "stops": "直飛",
+  "cls": "lcc",
+  "reasons": [
+   "廉航低於 NT$6,000"
+  ],
+  "med": 12079,
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OIT&departureDate=2026-11-21&inbound=OIT-TPE&returnDate=2026-11-28&type=return&adult=1&language=zh-TW",
+  "hotelcity": "別府",
+  "cslug": "oita",
+  "usual": null,
+  "mbase": null,
+  "rank": 1,
+  "n": 2
  },
  {
   "slug": "2026-11-09-taipei-nagoya",

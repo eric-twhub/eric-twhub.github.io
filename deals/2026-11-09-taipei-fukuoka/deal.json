@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-09-taipei-fukuoka",
- "generated": "2026-11-09 22:11",
+ "generated": "2026-11-09 22:44",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -26,7 +26,7 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "這條航線平常最低落在 NT$8,568–NT$9,027，這張是近期 16 筆紀錄中第 1 低"
+  "這條航線平常最低落在 NT$8,108–NT$9,108，這張是近期 16 筆紀錄中第 1 低"
  ],
  "med": 13570,
  "n_rt": 16,
@@ -37,7 +37,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8568,
+   "price": 8108,
    "dep": "2026-12-06",
    "ret": "2026-12-10",
    "dept": "06:45",
@@ -56,7 +56,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8616,
+   "price": 8116,
    "dep": "2026-12-14",
    "ret": "2026-12-18",
    "dept": "13:40",
@@ -75,18 +75,17 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8648,
-   "dep": "2026-11-21",
-   "ret": "2026-11-24",
-   "dept": "06:45",
+   "price": 8736,
+   "dep": "2026-12-08",
+   "ret": "2026-12-12",
+   "dept": "13:40",
    "rett": "10:55",
    "rt": true,
    "tr": 0,
    "dur": 300,
    "dur_to": 135,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-21&inbound=FUK-TPE&returnDate=2026-11-24&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/TPE0812FUK12121?t=IT17967372001796748900000135TPEFUK17970729001797079200000165FUKTPE_ec2eb3d588f8b0b2e5d634ca85e0de68_21744&search_date=03112026&expected_price_uuid=01a1a2e9-917e-8040-aa3d-9cbe5e3e81f3&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=w-9SvTN-2WU3Hq0dszO8Vg&expected_price_source=share&expected_price_currency=twd&expected_price=8736&marker=775639"
   }
  ]
 }
