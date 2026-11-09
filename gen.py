@@ -1751,7 +1751,13 @@ _ADS = (json.load(open('ads.json', encoding='utf-8'))
 
 # 頁面專屬商品放哪一個版位。只放一個：三個版位都放同一支門票，
 # 等於同一頁跟讀者推銷三次一樣的東西。
-_AD_PAGE_SLOT = 'top'
+# 原本是 top，2026-10-26 拿掉上版位後沒跟著改，專屬商品整整兩週沒出現在任何一頁。
+# 現在放中版位；頁面短到沒有中版位的，改放頁尾那個（_ad_inject 處理）。
+_AD_PAGE_SLOT = 'mid'
+
+def _ad_page(path):
+    u = path[:-len('index.html')].strip('/') if path.endswith('index.html') else path
+    return (_ADS.get('pages') or {}).get(u)
 
 def _hid(txt):
     """同一頁小標的錨點。和目錄用的是同一套算法，所以標題改了連結也跟著對，
@@ -1780,15 +1786,14 @@ def _allow_note(vals, allow, what, extra=''):
             + (f'</li><li><b>{extra}' if extra else '')
             + '</li></ul></div>')
 
-def _ad_group(kind, path, slot='foot'):
+def _ad_group(kind, path, slot='foot', page=False):
     """這一頁這個版位要用哪一組商品。頁面專屬的優先。
 
     有些頁面講的就是某一支商品（SUPER SPARK、ちゅらさん6 的門票），
     那種頁放通用清單等於答非所問。
     """
-    u = path[:-len('index.html')].strip('/') if path.endswith('index.html') else path
-    pg = (_ADS.get('pages') or {}).get(u)
-    if pg and slot == _AD_PAGE_SLOT:
+    pg = _ad_page(path)
+    if pg and (page or slot == _AD_PAGE_SLOT):
         # use 指向既有的 groups，這樣商品清單只維護一份。
         # 頁面自己寫的 title／sub／icon 會蓋過被指向那一組的。
         if pg.get('use'):
@@ -1850,12 +1855,14 @@ def _ad_use_img(path, slot):
     h = hashlib.sha1(path.encode('utf-8')).hexdigest()
     return int(h[:8], 16) % 2 == 0
 
-def adbox(kind, path, slot='foot'):
-    """廣告區塊。track 帶頁面路徑與版位，才分得出哪一頁、哪個位置有人點。"""
+def adbox(kind, path, slot='foot', page=False):
+    """廣告區塊。track 帶頁面路徑與版位，才分得出哪一頁、哪個位置有人點。
+    page=True：這個版位要放頁面專屬商品（頁面沒有中版位時，頁尾那個改放）。"""
     icon, title, sub = _AD_KIND[kind]
     # 有商品清單的群組用 ads.json 的標題：那是名詞片語，
     # 接在「看 Klook 上全部的…」後面才通順。
-    _g = _ad_group(kind, path, slot)
+    _g = _ad_group(kind, path, slot, page)
+    _own = bool(_ad_page(path)) and (page or slot == _AD_PAGE_SLOT)
     if _g.get('title'):
         title, sub = _g['title'], _g.get('sub') or sub
         # 頁面專屬商品的圖示要跟著商品走。沿用輪替到的那個類型的圖示，
@@ -1868,10 +1875,12 @@ def adbox(kind, path, slot='foot'):
         track += '_img'
     city = _ad_city(path)
     img_on = kind in _AD_IMG_KINDS and _ad_use_img(path, slot)
-    if kind == 'activity2' and u_region(path):
+    # 頁面專屬商品的標題不能被輪替類型的標題蓋掉，
+    # 不然會出現「找北海道的行程與門票」底下只有一支一日遊。
+    if kind == 'activity2' and u_region(path) and not _own:
         title = f'找{u_region(path)}的行程與門票'
         sub = '在地一日遊、景點票與體驗，出發前先看有什麼'
-    if kind == 'hotel' and city:
+    if kind == 'hotel' and city and not _own:
         title = f'找{city[0]}的住宿'
         sub = '看完機票就是訂房。比價後再決定要不要現在訂。'
     try:
@@ -1926,7 +1935,7 @@ def adbox(kind, path, slot='foot'):
                   f'rel="nofollow noopener sponsored">'
                   f'<span class="agi">{icon}</span>'
                   f'<span class="agt">'
-                + (f'到 {html.escape(brand)} 看這張票'
+                + (f'到 {html.escape(brand)} 看{html.escape(_g.get("go") or "這張票")}'
                    if len(_g.get('items') or []) == 1 else
                    f'看 {html.escape(brand)} 上全部的{html.escape(title)}'
                    if prods else f'到 {html.escape(brand)} 看')
@@ -2579,6 +2588,11 @@ def _ad_inject(path, content):
     content = content[:i] + box + content[i:]
     used = [kind]
     content = _ad_second(path, content, used)
+    # 有專屬商品、但頁面短到沒有中版位：專屬商品改放頁尾這個。
+    if _ad_page(path) and 'class="adbox mid' not in content:
+        box2 = adbox(kind, path, page=True)
+        if box2:
+            content = content.replace(box, box2, 1)
     return content
 
 def write(path,content):
