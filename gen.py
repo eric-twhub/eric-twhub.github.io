@@ -1566,6 +1566,7 @@ def topnav(cur=''):
             + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
             + link('/japan-pokepark-kanto/', '⚡ 寶可夢公園門票怎麼買')
+            + link('/japan-pokemon-cafe/', '☕ 寶可夢咖啡廳怎麼預約')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1698,6 +1699,7 @@ _AD_MAP = [
     ('japan-driving', 'car'), ('japan-rentacar', 'car'),
     ('japan-airport-last-train', 'transfer'),
     ('japan-esim', 'esim'), ('japan-sms', 'esim'),
+    ('japan-pokemon-cafe', 'esim'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -7774,6 +7776,7 @@ if os.path.exists('pokepark.json'):
       + '<h1>寶可夢公園門票怎麼買</h1>'
       + '<p class="lede">寶可夢公園（PokéPark KANTO）在東京稻城市的讀賣樂園裡，分成寶可夢森林和草紗鎮兩區，'
         '要先買指定日期的票。住在日本以外的人只能在官方海外購票站抽籤，現場不賣票。'
+        '寶可夢咖啡廳是另外預約，看<a href="/japan-pokemon-cafe/">寶可夢咖啡廳怎麼預約</a>。'
         f'下面的規則與價格引官網和海外購票站，查證於 {PP["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
       + '<div class="today">'
         f'<div class="tday">官方海外購票站，查證於 {PP["checked"]}</div>'
@@ -7821,6 +7824,194 @@ if os.path.exists('pokepark.json'):
       + '<p class="disc">抽籤規則、票價與入場規定以寶可夢公園官網與官方海外購票站為準。</p>'
       + foot())
     pages.append(('/japan-pokepark-kanto/', 0.6))
+
+# ---------- 寶可夢咖啡廳怎麼預約 ----------
+# 資料在 pokemon-cafe.json，引官網 NEWS、FAQ、菜單頁與兩店預約網站的同意事項。
+# 預約網站明文禁止代行預約與轉賣，所以不放任何代訂商品，只連官方預約網站。
+# 開放日：已公告的月份用 announced；還沒公告的照「前一個月 1 日 18:00」的慣例推算，並寫明是推算。
+# 機票從 tigerair-fares.json 當場算：東京取成田、羽田較低者，大阪看關西。
+if os.path.exists('pokemon-cafe.json'):
+    PC = json.load(open('pokemon-cafe.json', encoding='utf-8'))
+    _pc_today = datetime.date.fromisoformat(TODAY)
+    _pc_wd = '一二三四五六日'
+
+    def _pc_add(y, m, k):
+        m += k
+        while m > 12:
+            y, m = y + 1, m - 12
+        while m < 1:
+            y, m = y - 1, m + 12
+        return y, m
+
+    def _pc_md(d):
+        return f'{d.month}/{d.day}（{_pc_wd[d.weekday()]}）'
+
+    _pc_months = []
+    for k in range(3):
+        y, m = _pc_add(_pc_today.year, _pc_today.month, k)
+        key = f'{y}-{m:02d}'
+        if key in PC['announced']:
+            od, guess = datetime.date.fromisoformat(PC['announced'][key]), False
+        else:
+            py, pm = _pc_add(y, m, -1)
+            od, guess = datetime.date(py, pm, 1), True
+        _pc_months.append({'y': y, 'm': m, 'open': od, 'guess': guess})
+
+    def _pc_fare(routes, y, m):
+        best = None
+        for r in routes:
+            for k, p in (TGF.get(r) or {}).items():
+                d = datetime.date.fromisoformat(k)
+                if d.year == y and d.month == m and d > _pc_today and (best is None or p < best[0]):
+                    best = (p, d)
+        return best
+
+    def _pc_fcell(f):
+        if not f:
+            return '<td class="nm"><small style="color:var(--dim)">虎航還沒開賣這個月</small></td>'
+        return (f'<td class="nm"><b>{money(f[0])}</b><br><small style="color:var(--dim)">'
+                f'{f[1].month}/{f[1].day}</small></td>')
+
+    def _pc_status(r):
+        if r['guess']:
+            if r['open'] <= _pc_today:
+                return '照慣例應該已開放<br><small style="color:var(--dim)">以預約網站為準</small>'
+            return (f'預計 {_pc_md(r["open"])} 18:00<br>'
+                    '<small style="color:var(--dim)">官網還沒公告，照慣例推算</small>')
+        if r['open'] <= _pc_today:
+            return f'<b>已開放</b><br><small style="color:var(--dim)">{r["open"].month}/{r["open"].day} 起</small>'
+        return f'{_pc_md(r["open"])} 18:00 開放<br><small style="color:var(--dim)">官網已公告</small>'
+
+    _pc_rows = ''.join(
+        f'<tr><td class="nm"><b>{r["y"]} 年 {r["m"]} 月</b></td>'
+        f'<td class="nm">{_pc_status(r)}</td>'
+        + _pc_fcell(_pc_fare(('TPE-NRT', 'TPE-HND'), r['y'], r['m']))
+        + _pc_fcell(_pc_fare(('TPE-KIX',), r['y'], r['m']))
+        + '</tr>' for r in _pc_months)
+
+    # 最上面那句：下一個還沒開放的月份
+    _pc_next = next((r for r in _pc_months if r['open'] > _pc_today), None)
+    _pc_opened = [r for r in _pc_months if r['open'] <= _pc_today and not r['guess']]
+    if _pc_next:
+        _pc_left = (_pc_next['open'] - _pc_today).days
+        _pc_tans = (f'{_pc_next["y"]} 年 {_pc_next["m"]} 月的位子，'
+                    + ('預計 ' if _pc_next['guess'] else '')
+                    + f'{_pc_md(_pc_next["open"])} 18:00 開放，'
+                    + ('就是明天' if _pc_left == 1 else f'還有 {_pc_left} 天'))
+        _pc_tsub = (('官網還沒公告這個月份，這是照 2026 年 7 月以來每個月的慣例推算，公告後以公告為準。'
+                     if _pc_next['guess'] else '')
+                    + (f'{_pc_opened[-1]["m"]} 月以前的位子已經開放，取消釋出的空位要自己回預約網站看。'
+                       if _pc_opened else ''))
+    else:
+        _pc_tans = '接下來幾個月的位子都已開放'
+        _pc_tsub = ''
+
+    _pc_st = PC['stores']
+    _pc_cmp = ('<div class="tw"><table><tr><th></th>'
+               + ''.join(f'<th>{html.escape(s["n"].split("（")[0])}</th>' for s in _pc_st) + '</tr>'
+               + ''.join('<tr><td class="nm"><b>' + lab + '</b></td>'
+                         + ''.join(f'<td class="nm"><small>{html.escape(s[k])}</small></td>' for s in _pc_st)
+                         + '</tr>'
+                         for lab, k in (('地點', 'addr'), ('營業時間', 'hours'), ('最後一場', 'last'),
+                                        ('席種與人數', 'seats'), ('到店', 'arrive'), ('付款', 'pay'),
+                                        ('交通', 'access')))
+               + '</table></div>')
+
+    _pc_cta = ''.join(
+        f'<a class="cta" href="{html.escape(s["reserve"])}" target="_blank" rel="nofollow noopener">'
+        f'<span class="ci">{"🗼" if s["k"] == "tokyo" else "🏯"}</span><span class="ct">'
+        f'<b>到{html.escape(s["n"].split("（")[0])}的官方預約網站</b>'
+        '<s>免費預約，餐點到店再付</s></span><span class="ca">→</span></a>'
+        for s in _pc_st)
+
+    _pc_menu = ('<div class="tw narrow"><table>'
+                + ''.join(f'<tr><td class="nm">{html.escape(x["n"])}</td><td class="nm"><b>{html.escape(x["p"])}</b></td></tr>'
+                          for x in PC['menu'])
+                + '</table></div>')
+
+    _pc_sw = PC['sweets']
+    pc_faq = [
+     ('寶可夢咖啡廳什麼時候開放預約？',
+      PC['rule'] + (f'下一次是 {_pc_next["y"]} 年 {_pc_next["m"]} 月的位子，'
+                    + ('照慣例會在 ' if _pc_next['guess'] else '')
+                    + f'{_pc_next["open"].month} 月 {_pc_next["open"].day} 日 18:00 開放。'
+                    if _pc_next else '') + PC['deadline']),
+     ('外國人可以預約嗎？',
+      '可以，官網 FAQ 沒有限制只有住在日本的人能訂。預約網站的同意事項有英文版，用電子郵件收驗證碼完成預約。'
+      '訂好之後店家可能用你登記的電話或信箱聯絡，聯絡不上可能被取消，所以要填收得到的聯絡方式。'),
+     ('沒訂到可以直接去排隊嗎？', PC['walkin'] + '不想等的話，池袋有不用預約的外帶店 ' + _pc_sw['n'] + '。'),
+     ('預約要付錢嗎？', '訂位本身不用付錢，餐點到店再付。只有加購的預約特典周邊要在預約時刷信用卡。'),
+     ('東京和大阪的寶可夢咖啡廳差在哪？',
+      '東京在日本橋髙島屋 S.C. 東館 5 樓，營業到 21:00，B 席可以 1～2 人訂；'
+      '大阪在大丸心齋橋店本館 9 樓，營業到 20:00，A、B 席要 2 人以上。大阪的刷卡不收 Discover。'),
+     ('可以取消嗎？', PC['rules'][2]),
+     ('一個人可以去嗎？', '可以。東京的 B 席、C 席與大阪的 C 席都能 1 人訂。6 歲以上每人至少點一份。'),
+     ('餐點大概多少錢？',
+      '官網菜單的含稅價格：主餐 2,530 円、甜點 2,090 円、飲料 715～1,375 円，'
+      '附杯子帶回家的飲料 1,705～3,465 円。'),
+     ('可以多訂幾天或幫朋友訂嗎？',
+      '同一個電子郵件只能有一筆預約，要訂兩天就要用另一個信箱。'
+      '幫別人代訂、轉賣或轉讓預約都是官方明文禁止的，被發現會取消、不能入店、不退款。'),
+    ]
+    pc_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in pc_faq)
+    pc_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in pc_faq]}, ensure_ascii=False)
+
+    write('japan-pokemon-cafe/index.html',
+      head('寶可夢咖啡廳預約攻略：東京日本橋、大阪心齋橋什麼時候開放、怎麼訂、菜單價格',
+           '寶可夢咖啡廳（Pokémon Cafe）東京日本橋店與大阪心齋橋店都要先上官網預約：'
+           '每月 1 日 18:00 一次開放下個月整月的位子。預約步驟、一個信箱只能訂一筆、'
+           '取消與遲到規定、兩家店的席種與付款差異、菜單價格，沒訂到的話池袋的 Pikachu Sweets 不用預約。',
+           'japan-pokemon-cafe/',
+           '<script type="application/ld+json">' + pc_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('寶可夢咖啡廳怎麼預約', None)])
+      + '<h1>寶可夢咖啡廳怎麼預約</h1>'
+      + '<p class="lede">寶可夢咖啡廳（Pokémon Cafe）在東京日本橋和大阪心齋橋各有一家，都是事前預約制，'
+        '只能在官方預約網站訂，電話和電子郵件不受理。下面的規則與價格引官網與兩店的預約網站，'
+        f'查證於 {PC["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。'
+        '想去寶可夢公園的話，門票是另外抽籤，看<a href="/japan-pokepark-kanto/">寶可夢公園門票怎麼買</a>。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網公告，查證於 {PC["checked"]}</div>'
+        f'<div class="tans">{_pc_tans}</div>'
+        f'<div class="tsub">{_pc_tsub}日本時間 18:00 是台灣時間 17:00，兩家店同時開放。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>一個信箱只能訂一筆</b>：要訂兩天或 7 人以上拆單，要準備另一個電子郵件。</li>'
+        '<li><b>遲到 10 分鐘自動取消</b>：東京要提早 15 分鐘到、大阪提早 10 分鐘。</li>'
+        '<li><b>代訂與轉賣一律禁止</b>：被發現取消預約、不能入店、不退款，所以本頁不放任何代訂商品。</li>'
+        '</ul></div>'
+      + '<h2>哪個月份可以訂</h2>'
+      + '<div class="tw"><table><tr><th>用餐月份</th><th>開放預約（日本時間）</th>'
+        '<th>台北 → 東京虎航最低單程</th><th>台北 → 大阪虎航最低單程</th></tr>' + _pc_rows + '</table></div>'
+      + '<p class="disc">已公告的月份照官網 NEWS；還沒公告的照 2026 年 7 月以來「前一個月 1 日 18:00」的慣例推算，'
+        '官網寫日期可能臨時調整。機票是台灣虎航官網每天抓的該月最低單程票價，東京取成田與羽田較低的那個，'
+        '含稅、不含託運行李。</p>'
+      + '<h2>東京店和大阪店</h2>' + _pc_cmp
+      + '<p class="disc">兩家店都是座位用 90 分鐘、只能預約時選席種，不能指定座位。</p>'
+      + '<h2>怎麼預約</h2>'
+      + '<ol class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in PC['steps']) + '</ol>'
+      + f'<p class="lede">{html.escape(PC["deadline"])}</p>'
+      + _pc_cta
+      + '<p class="disc">兩個預約網站都是寶可夢咖啡廳官方的，本站沒有分潤。</p>'
+      + '<h2>預約規定</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in PC['rules']) + '</ul>'
+      + '<h2>菜單價格</h2>' + _pc_menu
+      + f'<p class="disc">{html.escape(PC["menu_note"])}</p>'
+      + '<h2>到店之後</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in PC['inside']) + '</ul>'
+      + '<h2>沒訂到怎麼辦</h2>'
+      + f'<p class="lede">{html.escape(PC["walkin"])}</p>'
+      + f'<div class="card"><h3>{html.escape(_pc_sw["n"])}（池袋）</h3><ul>'
+        f'<li><b>是什麼：</b>{html.escape(_pc_sw["what"])}</li>'
+        f'<li><b>地點：</b>{html.escape(_pc_sw["addr"])}</li>'
+        f'<li><b>營業：</b>{html.escape(_pc_sw["hours"])}</li>'
+        f'<li><b>交通：</b>{html.escape(_pc_sw["access"])}</li></ul></div>'
+      + '<p class="lede">陽光城裡還有<a href="/japan-chiikawa-park/">吉伊卡哇樂園</a>（在 Annex 的地下一樓，門票要另外先買），可以排在同一天。</p>'
+      + '<h2>常見問題</h2>' + pc_html
+      + '<p class="disc">預約規則、營業時間與價格以寶可夢咖啡廳官網與預約網站為準，整理可能有疏漏。</p>'
+      + foot())
+    pages.append(('/japan-pokemon-cafe/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
