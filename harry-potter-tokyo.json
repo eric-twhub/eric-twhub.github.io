@@ -1,0 +1,73 @@
+{
+ "_說明": "/japan-harry-potter-tokyo/ 哈利波特影城（ワーナー ブラザース スタジオツアー東京）門票頁的資料。票價引官網チケット頁（訂票系統的起價）與料金表；開放範圍、休館日引運営時間頁；取消、變更、遲到、年齡、所要時間、再入場、寄物引よくある質問；交通引アクセス頁；代理商名單引正規販売代理店頁。",
+ "_來源": {
+  "tickets": "https://www.wbstudiotour.jp/tickets/",
+  "price": "https://www.wbstudiotour.jp/ticket-information/price/",
+  "faqs": "https://www.wbstudiotour.jp/plan-your-visit/faqs/",
+  "hours": "https://www.wbstudiotour.jp/plan-your-visit/opening-times/",
+  "access": "https://www.wbstudiotour.jp/plan-your-visit/location/",
+  "agents": "https://www.wbstudiotour.jp/authorised-distributors/",
+  "booking": "https://www.wbstudiotour.jp/tickets/"
+ },
+ "_價格": "料金表頁寫一般チケット 6,300〜7,300 円，チケット頁與訂票系統寫 6,600 円〜，兩頁不一致；本頁只用チケット頁的起價，並註明依日期時段變動。",
+ "_通路判斷": "官網正規販売代理店名單有 Klook、KKday（都標日文對應）、Trip.com、Agoda 與台灣的雄獅、東南、康迅、可樂、易遊網；名單以外買的票不能入場。Klook 84374 一般景點 5%，KKday 144383 不在 1% 清單（3.5%），Klook 放前面。",
+ "_沒查到": "每天的營業時間與最後入場時間（運営カレンダー是前端算繪，每天不同）；2027 年 4 月以後的開放日期；平台售價。",
+ "_回查": "2027-03 前回查開放範圍有沒有延長；料金表與チケット頁的價格是否一致；休館日；停車 2027-01-01 起的新制。",
+ "checked": "2026-11-10",
+ "sale_until": "2027-03-31",
+ "closed": [
+  "2026-11-11",
+  "2026-11-12",
+  "2027-01-12",
+  "2027-01-13",
+  "2027-02-24"
+ ],
+ "price": {
+  "adult": 6600,
+  "teen": 5500,
+  "child": 4000,
+  "note": "官網寫的是起價，實際價格依入場日與時段不同，以訂票畫面為準。3 歲以下免費，但要選免費的幼兒票。"
+ },
+ "age": "票種依來場當天的學年分：小人是 4 歲到小學六年級，中人是國中一年級到高中三年級，大人是 18 歲以上；學年以日本的 4 月 1 日為起點，所以 12 歲的小六買小人票、18 歲的高三買中人票。",
+ "pay": "信用卡（Visa、Mastercard、JCB、Amex、銀聯、Diners、Discover，也接受綁這些卡的 Apple Pay、Google Pay）；卡片沒有開 3D 驗證會付款失敗。現場窗口收現金。",
+ "eticket": "電子票是確認信裡的二維碼，用手機出示就好，不用印。",
+ "counter": "現場窗口也有賣，但想要的時段常常賣完，官網建議先在網路買。",
+ "refund": "不能退費。",
+ "change": "在原本預約的入場時間以前，可以透過官網客服聊天改日期，每改一次收 1,500 円手續費；過了原本的時間就不能改。",
+ "change_agent": "在 Klook、KKday 等代理商買的票，要找原本購買的平台改，影城不受理。",
+ "late": "請在指定入場時間起 30 分鐘內進場；遲到的話，工作人員依當天空位安排下一個可以進場的時段，趕不上當天最後一梯就可能看不完或不能進場。",
+ "duration": "官網建議預留 3～4 小時，裡面沒有停留時間限制。",
+ "reentry": "出來就不能再進去。",
+ "locker": "室內外都有付費置物櫃，大行李箱建議放室外的置物櫃。",
+ "guide": "數位導覽 1,480 円一台，語言有日文、英文、中文、韓文與繁體中文（台灣）。",
+ "address": "東京都練馬區春日町 1-1-7",
+ "train": [
+  "西武池袋線（豐島線）：西武池袋站直達豐島園站約 17 分鐘",
+  "都營大江戶線：新宿站直達豐島園站約 20 分鐘",
+  "豐島園站走路 2 分鐘"
+ ],
+ "bus": "2026 年 3 月起羽田機場往光之丘、練馬方向的利木津巴士新增影城站，直接停在影城入口。",
+ "parking": "停車一天 2,000 円，官網建議搭電車。",
+ "parking_change": "2027-01-01",
+ "klook": {
+  "id": 84374,
+  "url": "https://www.klook.com/zh-TW/activity/84374-warner-bros-studio-tour-tokyo-making-harry-potter/"
+ },
+ "kkday": {
+  "id": 144383,
+  "url": "https://www.kkday.com/zh-tw/product/144383-warner-bros-studio-tour-tokyo-the-making-of-harry-potter-ticket"
+ },
+ "agents_platform": [
+  "Klook",
+  "KKday",
+  "Trip.com",
+  "Agoda"
+ ],
+ "agents_tw": [
+  "雄獅旅遊",
+  "東南旅行社",
+  "康迅旅行社",
+  "可樂旅遊",
+  "易遊網"
+ ]
+}

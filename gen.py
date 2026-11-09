@@ -927,7 +927,7 @@ def faq_visible(items):
             + ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in items))
 
-KLOOK_CARD = {'619': '1556136', '171099': '1556138', '229535': '1556139'}
+KLOOK_CARD = {'619': '1556136', '171099': '1556138', '229535': '1556139', '84374': '1556185'}
 
 def klook_card(act_id):
     adid = KLOOK_CARD.get(str(act_id))
@@ -1576,6 +1576,7 @@ def topnav(cur=''):
             + link('/japan-pokemon-cafe/', '☕ 寶可夢咖啡廳怎麼預約')
             + link('/japan-nintendo-museum/', '🎮 任天堂博物館門票怎麼買')
             + link('/japan-shibuya-sky/', '🌇 SHIBUYA SKY 門票怎麼買')
+            + link('/japan-harry-potter-tokyo/', '🪄 東京哈利波特影城門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1711,6 +1712,7 @@ _AD_MAP = [
     ('japan-pokemon-cafe', 'esim'),
     ('japan-nintendo-museum', 'activity2'),
     ('japan-shibuya-sky', 'activity2'),
+    ('japan-harry-potter-tokyo', 'activity2'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -8377,6 +8379,150 @@ if os.path.exists('shibuya-sky.json'):
       + '<p class="disc">票價、開賣規則與入場方式以 SHIBUYA SKY 官網為準，整理可能有疏漏。</p>'
       + foot())
     pages.append(('/japan-shibuya-sky/', 0.6))
+
+# ---------- 東京哈利波特影城門票怎麼買 ----------
+# 資料在 harry-potter-tokyo.json，引ワーナー ブラザース スタジオツアー東京官網。
+# 票價用チケット頁的起價（料金表頁的區間和訂票系統對不起來，不用）。
+# 開放範圍與休館日用日本日期當場比，過了開放日就改口說「以官網為準」。
+# 官網正規代理名單有 Klook、KKday；Klook 分潤較高放前面。
+if os.path.exists('harry-potter-tokyo.json'):
+    HP = json.load(open('harry-potter-tokyo.json', encoding='utf-8'))
+    _hp_jst = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _hp_wd = '一二三四五六日'
+
+    def _hp_md(d, y=False):
+        return (f'{d.year}/' if y else '') + f'{d.month}/{d.day}（{_hp_wd[d.weekday()]}）'
+
+    _hp_until = datetime.date.fromisoformat(HP['sale_until'])
+    _hp_closed = [datetime.date.fromisoformat(x) for x in HP['closed']]
+    _hp_next = [d for d in _hp_closed if d >= _hp_jst]
+    _hp_pk = datetime.date.fromisoformat(HP['parking_change'])
+    _hp_pr = HP['price']
+
+    if _hp_jst <= _hp_until:
+        _hp_tans = f'官網現在開放到 {_hp_md(_hp_until, _hp_until.year != _hp_jst.year)}入場的票'
+        _hp_left = (_hp_until - _hp_jst).days
+        _hp_tsub = f'離開放的最後一天還有 {_hp_left} 天；更後面的日期官網還沒開放，開賣消息在官方社群公告。'
+    else:
+        _hp_tans = '更新的開放範圍請看官網'
+        _hp_tsub = f'本站查證時官網開放到 {_hp_md(_hp_until, True)} 入場，之後的日期以官網訂票畫面為準。'
+    _hp_cl = ''
+    if _hp_next:
+        _hp_cl = ('<div class="tbuf"><b>接下來的休館日</b>：'
+                  + '、'.join(_hp_md(d, d.year != _hp_jst.year) for d in _hp_next) + '。</div>')
+    _hp_pk_note = ''
+    if _hp_jst < _hp_pk:
+        _hp_pk_note = (f'<div class="tbuf"><b>開車去的話</b>：{_hp_pk.year - 1}/12/31 以前入場要先預約停車券，'
+                       f'{_hp_pk.year}/1/1 以後的入場日不再預售。</div>')
+
+    def _hp_y(p):
+        return f'¥{p:,} 起<br><small style="color:var(--dim)">約 {money(round(p * JPY))} 起</small>'
+
+    _hp_price = (
+        f'<tr><td class="nm"><b>大人</b></td><td class="nm">18 歲以上</td><td class="nm">{_hp_y(_hp_pr["adult"])}</td></tr>'
+        f'<tr><td class="nm"><b>中人</b></td><td class="nm">國一到高三</td><td class="nm">{_hp_y(_hp_pr["teen"])}</td></tr>'
+        f'<tr><td class="nm"><b>小人</b></td><td class="nm">4 歲到小六</td><td class="nm">{_hp_y(_hp_pr["child"])}</td></tr>'
+        '<tr><td class="nm"><b>幼兒</b></td><td class="nm">3 歲以下</td><td class="nm">免費（要選幼兒票）</td></tr>')
+
+    _hp_kl_h = html.escape(klook(HP['klook']['url'], 'ticket'))
+    _hp_kk_h = html.escape(kkday(HP['kkday']['url'], 'ticket', 'harry-potter-tokyo'))
+    _hp_of_h = html.escape(HP['_來源']['tickets'])
+    _hp_ag = ('可以用台幣或中文買的平台有 ' + '、'.join(HP['agents_platform'])
+              + '，台灣的旅行社有' + '、'.join(HP['agents_tw']))
+    _hp_pk_txt = (f'{_hp_pk.year - 1}/12/31 以前入場要先預約停車券，{_hp_pk.year}/1/1 以後的入場日不再預售。'
+                  if _hp_jst < _hp_pk else f'{_hp_pk.year}/1/1 起不再預售停車券，細節看官網停車頁。')
+
+    hp_faq = [
+     ('東京哈利波特影城門票多少錢？',
+      f'官網一般票大人 {_hp_pr["adult"]:,} 円起、中人（國一到高三）{_hp_pr["teen"]:,} 円起、'
+      f'小人（4 歲到小六）{_hp_pr["child"]:,} 円起，3 歲以下免費。' + HP['price']['note'].split('。')[0] + '。'),
+     ('門票可以買到哪一天？',
+      (f'官網目前開放到 {_hp_md(_hp_until, True)}入場的票。' if _hp_jst <= _hp_until
+       else f'本站查證時官網開放到 {_hp_md(_hp_until, True)}入場，之後的日期以官網為準。')
+      + '更後面的日期開放時，官網說會在官方社群公告。'),
+     ('Klook、KKday 買的票可以用嗎？',
+      '可以。Klook、KKday 都在官網的正規販售代理名單上，名單上還有 Trip.com、Agoda 與雄獅等台灣旅行社。'
+      '只有官網或名單上的代理直接賣的票能入場，拍賣網站或其他第三方轉賣的票不能用。'),
+     ('可以退票或改日期嗎？', HP['refund'] + HP['change'] + HP['change_agent']),
+     ('逛完要多久？', HP['duration'] + HP['reentry']),
+     ('遲到還能進去嗎？', HP['late']),
+     ('小孩要買哪一種票？', HP['age']),
+     ('有中文導覽嗎？', HP['guide']),
+     ('可以帶行李箱嗎？', HP['locker']),
+     ('怎麼去？', '從西武池袋站搭西武池袋線（豐島線）直達豐島園站約 17 分鐘，'
+      '或從新宿站搭都營大江戶線直達約 20 分鐘，出站走路 2 分鐘。' + HP['bus']),
+     ('哪幾天休館？',
+      ('接下來的休館日是 ' + '、'.join(_hp_md(d, True) for d in _hp_next) + '。' if _hp_next else '')
+      + '營業時間每天不同，出發前看官網的營運日曆。'),
+    ]
+    hp_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in hp_faq]}, ensure_ascii=False)
+
+    write('japan-harry-potter-tokyo/index.html',
+      head('東京哈利波特影城門票怎麼買：票價、官網與 Klook／KKday、開放日期與交通',
+           '東京哈利波特影城（華納兄弟影城）的門票是指定入場時段的預約票，現場常常賣完。'
+           f'本頁整理官網票價（大人 {_hp_pr["adult"]:,} 円起）、目前開放到哪一天、休館日、'
+           '官方認可的代理商（Klook、KKday、雄獅等）、退票改期規定與豐島園站交通。',
+           'japan-harry-potter-tokyo/',
+           '<script type="application/ld+json">' + hp_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('東京哈利波特影城門票怎麼買', None)])
+      + '<h1>東京哈利波特影城門票怎麼買</h1>'
+      + '<p class="lede">東京哈利波特影城在練馬區的豐島園站旁，正式名稱是 Warner Bros. Studio Tour Tokyo – The Making of Harry Potter。'
+        '門票要指定入場日期與時段，每個時段有人數上限。下面的價格與規定引影城官網，'
+        f'查證於 {HP["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_hp_md(_hp_jst)}</div>'
+        f'<div class="tans">{_hp_tans}</div>'
+        f'<div class="tsub">{_hp_tsub}</div>'
+        + _hp_cl + _hp_pk_note + '</div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>先在網路買</b>：現場窗口也有賣，但想要的時段常常賣完。</li>'
+        '<li><b>不能退票</b>：官網買的票可以在原本的入場時間以前改期，每次 1,500 円。</li>'
+        '<li><b>預留 3～4 小時</b>：裡面沒有時間限制，但出來就不能再進去。</li>'
+        '</ul></div>'
+      + '<h2>票價</h2>'
+      + '<div class="tw narrow"><table><tr><th>票種</th><th>對象</th><th>官網起價（含稅）</th></tr>'
+        + _hp_price + '</table></div>'
+      + f'<p class="disc">{html.escape(HP["price"]["note"])}</p>'
+      + f'<p class="lede">{html.escape(HP["age"])}</p>'
+      + '<h2>在哪裡買</h2>'
+      + '<p class="lede">影城官網寫明，只有官網或正規販售代理直接賣的票能入場，'
+        f'拍賣網站或其他第三方轉賣的票不能用。代理名單裡{html.escape(_hp_ag)}。</p>'
+      + klook_card(HP['klook']['id'])
+      + f'<a class="cta" href="{_hp_kl_h}" target="_blank" rel="{_rel(_hp_kl_h)}">'
+        '<span class="ci">🎫</span><span class="ct"><b>Klook 的東京哈利波特影城門票</b>'
+        '<s>用台幣付款，價格與時段以 Klook 頁面為準</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_hp_kk_h}" target="_blank" rel="{_rel(_hp_kk_h)}">'
+        '<span class="ci">🎫</span><span class="ct"><b>KKday 的東京哈利波特影城門票</b>'
+        '<s>用台幣付款，價格與時段以 KKday 頁面為準</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_hp_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🏰</span><span class="ct"><b>影城官網訂票</b>'
+        '<s>日文與英文介面，日圓原價，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官網訂票本站沒有分潤。平台的售價與取消規定本站沒有查證，以平台頁面為準。</p>'
+      + f'<p class="lede"><b>官網付款</b>：{html.escape(HP["pay"])}{html.escape(HP["eticket"])}</p>'
+      + '<h2>退票、改期與遲到</h2>'
+      + '<ul class="lede">'
+        f'<li><b>退票</b>：{html.escape(HP["refund"])}</li>'
+        f'<li><b>改期</b>：{html.escape(HP["change"])}</li>'
+        f'<li><b>代理商的票</b>：{html.escape(HP["change_agent"])}</li>'
+        f'<li><b>遲到</b>：{html.escape(HP["late"])}</li></ul>'
+      + '<h2>現場要知道的事</h2>'
+      + '<ul class="lede">'
+        f'<li><b>時間</b>：{html.escape(HP["duration"])}{html.escape(HP["reentry"])}</li>'
+        f'<li><b>行李</b>：{html.escape(HP["locker"])}</li>'
+        f'<li><b>導覽</b>：{html.escape(HP["guide"])}</li>'
+        '<li><b>營業時間</b>：每天不同，出發前看官網的營運日曆。</li></ul>'
+      + '<h2>交通</h2>'
+      + f'<p class="lede">地址：{html.escape(HP["address"])}。</p>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in HP['train'])
+        + f'<li>{html.escape(HP["bus"])}</li><li>{html.escape(HP["parking"] + _hp_pk_txt)}</li></ul>'
+      + faq_visible(hp_faq)
+      + '<p class="disc">票價、開放日期與規定以影城官網為準，整理可能有疏漏。'
+        '本頁與華納兄弟及影城沒有合作關係。</p>'
+      + foot())
+    pages.append(('/japan-harry-potter-tokyo/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
