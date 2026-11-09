@@ -920,6 +920,13 @@ LB_JS = ('<script>(function(){'
 # 合作條款只准用 Klook 提供的推廣素材、不能自己抓商品頁的圖，所以要有圖只能走這個。
 # 圖、評分、價格都由 Klook 的 iframe 即時帶入，本站不寫死。一個 adid 綁一個商品，
 # 換商品要回後台改；後台顯示「活動無效」的商品做不出來（2026-11-10 吉卜力公園 132673）。
+def faq_visible(items):
+    """把 FAQ 清單算繪成畫面上看得到的問答。結構化資料裡的 FAQ 一定要在頁面上看得到，
+    Google 不收只藏在 JSON-LD 的版本；兩邊用同一份清單，題目才不會對不起來。"""
+    return ('<h2>常見問題</h2>'
+            + ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in items))
+
 KLOOK_CARD = {'619': '1556136', '171099': '1556138', '229535': '1556139'}
 
 def klook_card(act_id):
@@ -13998,6 +14005,7 @@ if os.path.exists('cameras.json') and os.path.exists('apple.json'):
       + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
         f'<s>先墊多少、怎麼退</s></a></div>'
 
+      + faq_visible(_cfaq)
       + f'<p class="disc">日本售價取自 {html.escape(CMS["src_jp_name"])}，'
         f'台灣售價取自 DJI 與 Insta360 官方商城，核對於 {CMS["checked"]}；'
         f'匯率每日更新。DJI 官方商城標示商品不從台灣地區本地出貨，'
@@ -14329,6 +14337,7 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
       + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
         f'<s>改成出境後才退稅</s></a></div>'
 
+      + faq_visible(_dfaq)
       + f'<p class="disc">日本售價取自 {html.escape(DY["src_jp_name"])}，'
         f'台灣售價取自 {html.escape(DY["src_tw_name"])}，核對於 {DY["checked"]}；'
         f'匯率每日更新。台灣特價隨檔期變動，日本在庫以店頭為準。'
@@ -14560,6 +14569,7 @@ if os.path.exists('panasonic.json') and os.path.exists('apple.json'):
       + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
         f'<s>改成出境後才退稅</s></a></div>'
 
+      + faq_visible(_pfaq)
       + f'<p class="disc">日本售價取自 {html.escape(PN["src_jp_name"])}，'
         f'台灣售價取自 {html.escape(PN["src_tw_name"])}，核對於 {PN["checked"]}；'
         f'匯率每日更新。電壓與規格取自兩地 Panasonic 官網的規格表。'
@@ -14728,6 +14738,7 @@ if os.path.exists('bic-points.json'):
       + f'<a class="ct" href="{U("/japan-coupon/bic-camera/")}">'
         f'<b>🎫 Bic Camera 折價券</b><s>條款與不適用清單</s></a></div>'
 
+      + faq_visible(_bfaq)
       + f'<p class="disc">規則取自 {html.escape(BP["src_name"])}，'
         f'費率取自 {html.escape(BP["src_list_name"])}，核對於 {BP["checked"]}。'
         f'費率與規約由 Bic 隨時調整，請以結帳當下的店頭與商品頁標示為準。'
@@ -14879,6 +14890,7 @@ if os.path.exists('airline-card.json'):
       + f'<a class="ct" href="{U("/japan-bic-points/")}"><b>🧮 Bic 點數率怎麼看</b>'
         f'<s>免稅結帳沒有點數</s></a></div>'
 
+      + faq_visible(_afaq)
       + f'<p class="disc">判斷規則引自玉山銀行與中國信託的官方說明，'
         f'各發卡行條款可能不同，請以你自己那張卡的約定條款為準。'
         f'航空公司的付款規則取自各家官網，核對於 {AC["checked"]}。'
@@ -15141,6 +15153,7 @@ if os.path.exists('cobrand-cards.json'):
           + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
             f'<s>15 張現金回饋卡</s></a></div>'
 
+          + faq_visible(_faq)
           + f'<p class="disc">卡片權益取自發卡行官網，購票優惠與哩程兌換取自'
             f'發卡行與{html.escape(A["name"])}官網，核對於 {CB["checked"]}。活動條件、年費與兌換標準'
             f'由發卡行與航空公司隨時調整，以官方公告為準。本頁為公開資訊整理，非理財建議。</p>'
@@ -17447,11 +17460,7 @@ if os.path.exists('cards.json'):
     _rg_soon = [r for r in _rg_rows if r['days'] <= 7]
     _rg_today = [r for r in _rg_rows if r['days'] == 0]
 
-    _rg_ld = json.dumps({
-        "@context": "https://schema.org", "@type": "FAQPage",
-        "mainEntity": [{"@type": "Question", "name": q,
-                        "acceptedAnswer": {"@type": "Answer", "text": a}}
-                       for q, a in [
+    _rg_faq = [
           ('旅日信用卡的加碼登錄都是幾號開放？',
            '各家不同。' + '；'.join(
                f'{r["c"]["name"]}的{r["e"]["what"]}{_rg_tag(r["e"])}'
@@ -17459,10 +17468,24 @@ if os.path.exists('cards.json'):
                for r in _rg_rows if r['e']['cycle'] in ('monthly', 'weekly'))
            + '。'),
           ('沒登錄會怎樣？',
-           '只剩那張卡的基本回饋。加碼層是獨立計算的，沒登錄就是不給，'
-           '事後補登錄多數不能回溯到登錄前的消費。'),
-          ('登錄一次就好，還是每個月都要登錄？', _rg_cycle_sentence()),
-        ]]}, ensure_ascii=False)
+           '只剩基本回饋。加碼層是分開算的，沒登錄就是不給。'
+           '而且多數活動寫明不能回溯到登錄前的消費，事後補登錄救不回來。'),
+          ('登錄一次就好，還是每個月都要？', _rg_cycle_sentence()),
+          ('限量的搶得到嗎？',
+           '看名額大小。永豐現金回饋 JCB 卡每季 5,000 名，'
+           '2026 第三季開放當天中午 12:37 額滿、第四季當天下午 17:49 額滿，'
+           '兩次都在開放當天就沒了。台北富邦 J 卡每月 20,000 名，'
+           '官方沒有公布額滿時間。'),
+          ('這一頁會自己更新嗎？',
+           '日曆與「下一次」會跟著日期走，每天重新算。'
+           '但活動本身的規則是人工查證的，銀行改規則不會自動反映，'
+           '出發前還是要看一次官方頁。'),
+        ]
+    _rg_ld = json.dumps({
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in _rg_faq]}, ensure_ascii=False)
 
     # 分享圖卡。張數與標題由 make_cardreg_cards.py 隨資料產生，這裡照著排。
     _rgi = 'japan-card-register/cards/index.json'
@@ -17591,21 +17614,7 @@ if os.path.exists('cards.json'):
       + '<div class="faq">'
       + ''.join(
           f'<details><summary>{html.escape(q)}</summary><div>{html.escape(a)}</div></details>'
-          for q, a in [
-            ('沒登錄會怎樣？',
-             '只剩基本回饋。加碼層是分開算的，沒登錄就是不給。'
-             '而且多數活動寫明不能回溯到登錄前的消費，事後補登錄救不回來。'),
-            ('登錄一次就好，還是每個月都要？', _rg_cycle_sentence()),
-            ('限量的搶得到嗎？',
-             '看名額大小。永豐現金回饋 JCB 卡每季 5,000 名，'
-             '2026 第三季開放當天中午 12:37 額滿、第四季當天下午 17:49 額滿，'
-             '兩次都在開放當天就沒了。台北富邦 J 卡每月 20,000 名，'
-             '官方沒有公布額滿時間。'),
-            ('這一頁會自己更新嗎？',
-             '日曆與「下一次」會跟著日期走，每天重新算。'
-             '但活動本身的規則是人工查證的，銀行改規則不會自動反映，'
-             '出發前還是要看一次官方頁。'),
-          ])
+          for q, a in _rg_faq)
       + '</div>'
       + _rg_cards
       + '<div class="cities">'
