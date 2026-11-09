@@ -1539,6 +1539,7 @@ def topnav(cur=''):
             + link('/japan-bogo/', '🎁 行程與網卡買一送一')
             + link('/japan-sumo/', '🤼 大相撲門票怎麼買')
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
+            + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
@@ -1717,7 +1718,9 @@ _NO_AD_OK = {'/japan-hotel-check/', '/kawaguchiko-hotel-case/',
              # 同上：Klook 官方通路與 JTB 行程就是頁面本身
              '/japan-ghibli-park/',
              # 同上：Asoview 與 Klook 兩個官方通路就是頁面本身
-             '/japan-chiikawa-park/'}
+             '/japan-chiikawa-park/',
+             # 同上：Lawson 官方售票站與 JTB 巴士團就是頁面本身
+             '/japan-ghibli-museum/'}
 
 def u_region(path):
     """地區頁回地區名，其餘回空字串。"""
@@ -7198,6 +7201,8 @@ if os.path.exists('ghibli.json'):
       + '<p class="lede">想去的日期買不到票的話，可以看旅行社把門票和交通或住宿包在一起賣的行程，'
         f'價格比單買門票高。{html.escape(_kk["seen"])}</p>'
       + _gb_tour + _gb_disc
+      + '<p class="lede">要去東京三鷹的吉卜力美術館，門票怎麼買見'
+        '<a href="/japan-ghibli-museum/">吉卜力美術館門票怎麼買</a>。</p>'
       + '<h2>常見問題</h2>' + gb_html
       + '<p class="disc">票種、價格與購買規定以吉卜力公園官網為準；行程的內容、價格與名額以 KKday 商品頁為準。</p>'
       + foot())
@@ -7399,6 +7404,187 @@ if os.path.exists('chiikawa.json'):
       + '<p class="disc">票價、開賣規則與入場規定以吉伊卡哇樂園官網為準；Klook 的價格與名額以 Klook 頁面為準。</p>'
       + foot())
     pages.append(('/japan-chiikawa-park/', 0.6))
+
+# ---------- 吉卜力美術館門票怎麼買 ----------
+# 資料在 ghibli-museum.json，引三鷹之森吉卜力美術館官網（日文與英文 tickets 頁）與 Lawson Ticket 日文購票頁。
+# 官網寫海外只有 Lawson Ticket 英文版與 JTB 巴士團兩個方法；Klook 619 的供應商是 JTB，所以放它。
+# KKday 21611 查不到供應商，不放。海外的取票方式各家說法不一，頁面只寫以結帳畫面為準。
+# 開賣日照官方規則當場算（每月 10 日 10:00 開賣下個月），機票從 tigerair-fares.json 當場算。
+if os.path.exists('ghibli-museum.json'):
+    GM = json.load(open('ghibli-museum.json', encoding='utf-8'))
+    _gm_today = datetime.date.fromisoformat(TODAY)
+    _gm_wd = '一二三四五六日'
+
+    def _gm_sale(y, m):
+        """y 年 m 月入館的票的開賣日：前一個月的 10 日。"""
+        mm, yy = m - 1, y
+        if mm <= 0:
+            mm, yy = 12, yy - 1
+        return datetime.date(yy, mm, 10)
+
+    def _gm_md(d):
+        return f'{d.month}/{d.day}（{_gm_wd[d.weekday()]}）'
+
+    # 已經開賣、還沒過完的月份，加上下一個要開賣的月份
+    _gm_months = []
+    _y, _m = _gm_today.year, _gm_today.month
+    for _ in range(3):
+        _s = _gm_sale(_y, _m)
+        if _s <= _gm_today or not any(x['sale'] > _gm_today for x in _gm_months):
+            _gm_months.append({'y': _y, 'm': _m, 'sale': _s})
+        _m += 1
+        if _m > 12:
+            _y, _m = _y + 1, 1
+    _gm_next = next((x for x in _gm_months if x['sale'] >= _gm_today), None)
+
+    _gm_air = {'TPE-NRT': '成田', 'TPE-HND': '羽田'}
+
+    def _gm_fare(y, m):
+        best = None
+        for r in _gm_air:
+            for k, p in (TGF.get(r) or {}).items():
+                d = datetime.date.fromisoformat(k)
+                if d.year == y and d.month == m and d > _gm_today and (best is None or p < best[0]):
+                    best = (p, d, r)
+        return best
+
+    def _gm_closed(y, m):
+        c = GM['closed'].get(f'{y}-{m:02d}')
+        if c is None:
+            return '官網還沒公布'
+        # 連續三天以上併成一段（11/4–11/18），不然維護休館那串會長到讀不下去
+        out, i = [], 0
+        while i < len(c):
+            j = i
+            while j + 1 < len(c) and c[j + 1] == c[j] + 1:
+                j += 1
+            if j - i >= 2:
+                out.append(f'{m}/{c[i]}–{m}/{c[j]}')
+            else:
+                out += [f'{m}/{c[k]}' for k in range(i, j + 1)]
+            i = j + 1
+        return '、'.join(out)
+
+    _gm_rows = ''
+    for x in _gm_months:
+        f = _gm_fare(x['y'], x['m'])
+        _gm_rows += (
+            f'<tr><td class="nm"><b>{x["y"]} 年 {x["m"]} 月</b></td>'
+            f'<td class="nm">{"已開賣" if x["sale"] < _gm_today else _gm_md(x["sale"]) + " 10:00"}</td>'
+            f'<td class="nm"><small>{_gm_closed(x["y"], x["m"])}</small></td>'
+            + (f'<td class="nm"><b>{money(f[0])}</b><br><small style="color:var(--dim)">'
+               f'{f[1].month}/{f[1].day} 飛{_gm_air[f[2]]}</small></td>' if f
+               else '<td class="nm"><small style="color:var(--dim)">虎航沒有這個月的票價</small></td>')
+            + '</tr>')
+
+    _gm_price = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(t["n"])}</b><br><small style="color:var(--dim)">{html.escape(t["age"])}</small></td>'
+        f'<td class="nm">¥{t["p"]:,}<br><small style="color:var(--dim)">約 {money(round(t["p"] * JPY))}</small></td></tr>'
+        for t in GM['price'])
+
+    _gm_le = GM['lawson_en']
+    _gm_jt = GM['jtb']
+    _gm_jt_h = html.escape(klook(_gm_jt['url'], 'ticket'))
+    _gm_buy = (
+        '<div class="card"><h3>單買門票：Lawson Ticket 英文版</h3><ul>'
+        f'<li><b>怎麼買：</b>{html.escape(_gm_le["how"])}</li>'
+        f'<li><b>開賣：</b>{html.escape(GM["sale_rule"])}</li>'
+        f'<li><b>取票：</b>{html.escape(_gm_le["pickup"])}</li>'
+        f'<li><b>日文版：</b>{html.escape(GM["lawson_jp"])}</li></ul>'
+        f'<a class="cta" href="{html.escape(_gm_le["url"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎟️</span><span class="ct"><b>到 Lawson Ticket 英文版買票</b>'
+        '<s>美術館官網連過去的購票頁，日圓原價</s></span><span class="ca">→</span></a></div>'
+        '<div class="card"><h3>票賣完了：JTB 吉卜力美術館巴士一日遊（Klook）</h3><ul>'
+        f'<li><b>行程：</b>{html.escape(_gm_jt["what"])}</li>'
+        f'<li><b>要注意：</b>{html.escape(_gm_jt["watch"])}</li>'
+        f'<li><b>供應商：</b>{html.escape(_gm_jt["supplier"])}</li>'
+        f'<li><b>查證日期：</b>{html.escape(_gm_jt["seen"])}</li></ul>'
+        f'<a class="cta" href="{_gm_jt_h}" target="_blank" rel="{_rel(_gm_jt_h)}">'
+        '<span class="ci">🚌</span><span class="ct"><b>到 Klook 看可以訂的日期</b>'
+        '<s>門票、交通與午餐包在一起，價格比單買門票高，以 Klook 頁面為準</s></span><span class="ca">→</span></a></div>')
+    # _links_disc 會把 Lawson 寫成「一般搜尋」，這裡它是官方售票站，所以自己寫
+    _gm_disc = ('<p class="disc">Lawson Ticket 是美術館的官方售票站，本站沒有分潤；'
+                + ('Klook 連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>'
+                   if _AFF_RE.search(html.unescape(_gm_jt_h)) else 'Klook 連結本站也沒有分潤。</p>'))
+
+    gm_faq = [
+     ('吉卜力美術館的門票什麼時候開賣？',
+      GM['sale_rule'] + (f'下一次是 {_gm_next["sale"].month} 月 {_gm_next["sale"].day} 日，'
+                         f'開賣 {_gm_next["y"]} 年 {_gm_next["m"]} 月入館的票。先到先得，不是抽籤。'
+                         if _gm_next else '')),
+     ('外國人要在哪裡買？',
+      '美術館官網寫海外購票只有兩個方法：Lawson Ticket 英文版單買門票，或參加 JTB 的巴士一日遊。'
+      + GM['lawson_jp']),
+     ('票賣完了怎麼辦？',
+      '美術館窗口不賣票，當天去也買不到。可以看 JTB 把門票、交通與午餐包在一起的巴士一日遊，'
+      'Klook 上賣的那團供應商就是 JTB。其他來路的票要小心：票面印的是購票人的姓名，轉賣的票會被拒絕入館。'),
+     ('買了可以退票或改日期嗎？', '不行。官網寫明購買後不能改姓名、日期，也不能退。'),
+     ('要帶什麼證件？', '入口可能確認購票人本人的身分，帶護照。同行的人要和購票人一起入館。'),
+     ('館內可以拍照嗎？', '不行。官網寫館內禁止拍照和錄影。'),
+     ('小孩要買票嗎？', '4 歲以上要買票，4 到 6 歲 100 円。' + GM['price_note']),
+     ('吉卜力美術館和吉卜力公園是同一個地方嗎？',
+      '不是。吉卜力美術館在東京三鷹，' + GM['park']),
+    ]
+    gm_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in gm_faq)
+    gm_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in gm_faq]}, ensure_ascii=False)
+
+    if _gm_next:
+        _gm_left = (_gm_next['sale'] - _gm_today).days
+        _gm_tans = (f'{_gm_next["y"]} 年 {_gm_next["m"]} 月入館的票，'
+                    f'{_gm_md(_gm_next["sale"])} 10:00 開賣，'
+                    + ('就是今天' if _gm_left == 0 else ('就是明天' if _gm_left == 1 else f'還有 {_gm_left} 天')))
+    else:
+        _gm_tans = GM['sale_rule']
+
+    write('japan-ghibli-museum/index.html',
+      head('吉卜力美術館門票怎麼買：外國人購票、開賣日、買不到怎麼辦',
+           '三鷹之森吉卜力美術館全部預約制，門票每月 10 日 10:00（台灣時間 9:00）開賣下個月的票，'
+           '外國人要從 Lawson Ticket 英文版買，賣完可以看 JTB 巴士一日遊。'
+           '票價、記名與護照規定、2026 年 11 月起的系統使用費、休館日、交通與每個月的虎航票價。',
+           'japan-ghibli-museum/',
+           '<script type="application/ld+json">' + gm_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('吉卜力美術館門票怎麼買', None)])
+      + '<h1>吉卜力美術館門票怎麼買</h1>'
+      + '<p class="lede">三鷹之森吉卜力美術館在東京三鷹的井之頭公園旁，全部採指定日期與時段的預約制，'
+        '美術館窗口不賣票。下面的規則與價格引美術館官網與官方售票站 Lawson Ticket，'
+        f'查證於 {GM["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網原文，查證於 {GM["checked"]}</div>'
+        f'<div class="tans">{_gm_tans}</div>'
+        '<div class="tsub">台灣時間早 1 小時，也就是 9:00。先到先得，不是抽籤。'
+        '外國人從 Lawson Ticket 英文版買，買了不能退也不能改日期。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>票是記名的</b>：要用當天會去的人的帳號買，入口可能查護照，同行的人一起進。</li>'
+        '<li><b>每帳號每月 1 次、最多 6 張</b>：一家人要一次買齊。</li>'
+        '<li><b>館內不能拍照</b>：也不能再入館。</li>'
+        '</ul></div>'
+      + '<h2>哪個月份的票開賣了</h2>'
+      + '<div class="tw"><table><tr><th>入館月份</th><th>開賣（日本時間）</th><th>休館日</th>'
+        '<th>台北 → 東京虎航最低單程</th></tr>' + _gm_rows + '</table></div>'
+      + f'<p class="disc">開賣日照官網的規則推算。開館 {GM["hours"]}，{html.escape(GM["slots"])}'
+        f'{html.escape(GM["closed_note"])}機票是台灣虎航官網每天抓的該月最低單程票價，'
+        '成田與羽田取較低的那個，含稅、不含託運行李。</p>'
+      + '<h2>票價</h2>'
+      + '<div class="tw"><table><tr><th>票種</th><th>票價</th></tr>' + _gm_price + '</table></div>'
+      + f'<p class="disc">{html.escape(GM["price_note"])}{html.escape(GM["fee"])}價格含稅。</p>'
+      + '<h2>在哪裡買</h2>'
+      + '<p class="lede">美術館官網寫海外購票只有兩個方法：Lawson Ticket 英文版，或 JTB 的巴士一日遊。</p>'
+      + _gm_buy + _gm_disc
+      + '<h2>買之前要知道的規定</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(r)}</li>' for r in GM['rules']) + '</ul>'
+      + '<h2>入館當天</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(r)}</li>' for r in GM['inside']) + '</ul>'
+      + '<h2>怎麼去</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(r)}</li>' for r in GM['access']) + '</ul>'
+      + '<p class="lede">要去愛知縣的吉卜力公園，門票怎麼買見'
+        '<a href="/japan-ghibli-park/">吉卜力公園門票怎麼買</a>。</p>'
+      + '<h2>常見問題</h2>' + gm_html
+      + '<p class="disc">開賣規則、票價與入館規定以吉卜力美術館官網為準；巴士一日遊的內容、價格與名額以 Klook 頁面為準。</p>'
+      + foot())
+    pages.append(('/japan-ghibli-museum/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
