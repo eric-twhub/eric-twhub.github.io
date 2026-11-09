@@ -8389,6 +8389,14 @@ if os.path.exists('angel63.json'):
       '全場最便宜的女子会プラン ¥3,000（約 NT$615）Klook 也沒有。'
       '另外 Klook 明寫座位當天現場安排、不接受指定，官網的迫力系列可以指定但要註冊會員。'),
     ]
+    if os.path.exists('churasun6.json'):
+        _cs0 = json.load(open('churasun6.json', encoding='utf-8'))
+        ag_faq.append(
+         ('沖繩也有 63 ANGEL 嗎？',
+          f'六本木 63 ANGEL 的官網在相關連結裡列了一家沖繩的店：那霸的 ちゅらさん6（Churasun6），'
+          f'營業時間 {_cs0["hours"]}，{_cs0["age"]}。'
+          f'營運公司是{_cs0["operator"]}，跟六本木那家不同；兩家的表演者會互相客串，'
+          f'但官方沒有說明公司之間的關係。方案、價格與取消規定都是各自的，不能拿六本木的套用。'))
     ag_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in ag_faq)
     ag_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
@@ -8417,6 +8425,10 @@ if os.path.exists('angel63.json'):
            f'每天的陣容與主題都不一樣。'
            f'<a href="{U("/tokyo/63angel/talents/")}">看有哪些女孩與她們的社群</a>。</div>'
            if AG.get('talents') else '')
+        + (f'<div class="tbuf">人在沖繩的話，那霸也有一家 63 ANGEL 官網自己連過去的店：'
+           f'<a href="{U("/okinawa/churasun6/")}">ちゅらさん6 的座位方案與取消規定</a>'
+           f'（營運公司跟六本木不同，規定要分開看）。</div>'
+           if os.path.exists('churasun6.json') else '')
         + '</div>'
       + '<h2>場次時間</h2>' + _ag_shows
       + f'<p class="disc">{html.escape(AG["shows"]["note"])}</p>'
