@@ -927,7 +927,7 @@ def faq_visible(items):
             + ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in items))
 
-KLOOK_CARD = {'619': '1556136', '171099': '1556138', '229535': '1556139', '84374': '1556185'}
+KLOOK_CARD = {'619': '1556136', '171099': '1556138', '229535': '1556139', '84374': '1556185', '41352': '1556201'}
 
 def klook_card(act_id):
     adid = KLOOK_CARD.get(str(act_id))
@@ -1577,6 +1577,7 @@ def topnav(cur=''):
             + link('/japan-nintendo-museum/', '🎮 任天堂博物館門票怎麼買')
             + link('/japan-shibuya-sky/', '🌇 SHIBUYA SKY 門票怎麼買')
             + link('/japan-harry-potter-tokyo/', '🪄 東京哈利波特影城門票怎麼買')
+            + link('/japan-skytree/', '🗼 晴空塔門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1713,6 +1714,7 @@ _AD_MAP = [
     ('japan-nintendo-museum', 'activity2'),
     ('japan-shibuya-sky', 'activity2'),
     ('japan-harry-potter-tokyo', 'activity2'),
+    ('japan-skytree', 'activity2'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -8523,6 +8525,179 @@ if os.path.exists('harry-potter-tokyo.json'):
         '本頁與華納兄弟及影城沒有合作關係。</p>'
       + foot())
     pages.append(('/japan-harry-potter-tokyo/', 0.6))
+
+# ---------- 東京晴空塔門票怎麼買 ----------
+# 資料在 skytree.json。每日票價是官方訂票站日曆的快照（天望甲板大人價），
+# 每日營業時間是官網營業時間頁內嵌 calendarData 的快照，兩者都只到查證時開放的日期；
+# 今天以後沒有資料就整塊改口叫讀者看官網，不拿舊資料推估。
+# Klook 41352 一般景點 5%，KKday 10759 不在 1% 清單（3.5%），Klook 放前面。
+if os.path.exists('skytree.json'):
+    STR = json.load(open('skytree.json', encoding='utf-8'))
+    _tk_jst = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _tk_wd = '一二三四五六日'
+
+    def _tk_md(d, y=False):
+        return (f'{d.year}/' if y else '') + f'{d.month}/{d.day}（{_tk_wd[d.weekday()]}）'
+
+    def _tk_y(p):
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    _tk_pr = {datetime.date.fromisoformat(k): v for k, v in STR['price'].items()}
+    _tk_hr = {datetime.date.fromisoformat(k): '、'.join(v) for k, v in STR['hours'].items()}
+    _tk_until = datetime.date.fromisoformat(STR['booking_until'])
+    _tk_fr, _tk_ex = STR['from'], STR['example']
+    _tk_ex_d = datetime.date.fromisoformat(_tk_ex['date'])
+    _tk_fee = STR['counter_fee']
+
+    # 接下來 14 天，價格與營業時間都一樣的連續日期併成一列
+    _tk_days = [d for d in (_tk_jst + datetime.timedelta(days=k) for k in range(14))
+                if d in _tk_pr and d in _tk_hr]
+    _tk_grp = []
+    for d in _tk_days:
+        key = (_tk_pr[d], _tk_hr[d])
+        if _tk_grp and _tk_grp[-1]['key'] == key and (d - _tk_grp[-1]['to']).days == 1:
+            _tk_grp[-1]['to'] = d
+        else:
+            _tk_grp.append({'from': d, 'to': d, 'key': key})
+    _tk_rows = ''.join(
+        f'<tr><td class="nm"><b>{_tk_md(g["from"])}'
+        + ('' if g['to'] == g['from'] else '～' + _tk_md(g['to'])) + '</b></td>'
+        f'<td class="nm">{g["key"][1]}</td><td class="nm">{_tk_y(g["key"][0])}</td></tr>'
+        for g in _tk_grp)
+
+    _tk_future = {d: p for d, p in _tk_pr.items() if d >= _tk_jst}
+    _tk_lo = min(_tk_future.values()) if _tk_future else None
+    _tk_hi = max(_tk_future.values()) if _tk_future else None
+    _tk_lo_days = [d for d in sorted(_tk_future) if _tk_future[d] == _tk_lo]
+    _tk_hi_days = [d for d in sorted(_tk_future) if _tk_future[d] == _tk_hi]
+
+    def _tk_ranges(ds):
+        out, run = [], []
+        for d in ds:
+            if run and (d - run[-1]).days == 1:
+                run.append(d)
+            else:
+                if run: out.append(run)
+                run = [d]
+        if run: out.append(run)
+        return '、'.join(_tk_md(r[0]) + ('' if len(r) == 1 else '～' + _tk_md(r[-1])) for r in out)
+
+    if _tk_jst in _tk_pr and _tk_jst in _tk_hr:
+        _tk_tans = (f'今天天望甲板大人 {_tk_pr[_tk_jst]:,} 円，營業 {_tk_hr[_tk_jst]}')
+    else:
+        _tk_tans = '今天的票價與營業時間請看官網'
+    if _tk_jst <= _tk_until:
+        _tk_tsub = (f'本站查證時，官方訂票站開放到 {_tk_md(_tk_until, _tk_until.year != _tk_jst.year)}入場的票。'
+                    f'網路買比當天在現場買每張少 {_tk_fee} 円。')
+    else:
+        _tk_tsub = (f'本站查證時官方訂票站開放到 {_tk_md(_tk_until, True)}，之後的日期與價格以官網為準。')
+    _tk_lohi = ''
+    if _tk_future and _tk_lo != _tk_hi:
+        _tk_lohi = (f'<div class="tbuf"><b>查得到的日期裡最便宜 {_tk_lo:,} 円</b>：{_tk_ranges(_tk_lo_days)}。'
+                    f'最貴 {_tk_hi:,} 円：{_tk_ranges(_tk_hi_days)}。</div>')
+
+    _tk_kl_h = html.escape(klook(STR['klook']['url'], 'ticket'))
+    _tk_kk_h = html.escape(kkday(STR['kkday']['url'], 'ticket', 'skytree'))
+    _tk_of_h = html.escape(STR['_來源']['zh'])
+    _tk_ex_md = f'{_tk_ex_d.month}/{_tk_ex_d.day}'
+
+    tk_faq = [
+     ('晴空塔門票多少錢？',
+      f'價格每天不同。官網寫天望甲板大人 {_tk_fr["deck"]:,} 円起、天望甲板加天望回廊 {_tk_fr["combo"]:,} 円起；'
+      + (f'本站查證時官方訂票站接下來的日期是 {_tk_lo:,}～{_tk_hi:,} 円（天望甲板大人）。' if _tk_future else '')
+      + f'以 {_tk_ex_md} 為例，天望甲板大人 {_tk_ex["deck"]:,}、兒童 {_tk_ex["deck_child"]:,} 円，'
+        f'兩層套票大人 {_tk_ex["combo"]:,}、兒童 {_tk_ex["combo_child"]:,} 円。當天在現場買每張再加 {_tk_fee} 円。'),
+     ('門票要指定時間嗎？', STR['slot']),
+     ('遲到還能進去嗎？', STR['late']),
+     ('營業時間是幾點？',
+      (f'日本時間今天 {_tk_md(_tk_jst)} 是 {_tk_hr[_tk_jst]}。' if _tk_jst in _tk_hr else '')
+      + '平日和假日不一樣，本頁表格列出接下來兩週。' + STR['last_entry']),
+     ('現場買和網路買差在哪？', STR['counter'] + '網路票可以先選時段，從事前購票的通道直接進場。'),
+     ('可以取消或改時間嗎？', '；'.join(STR['cancel']) + '。' + STR['change']),
+     ('天望回廊要另外買嗎？',
+      f'可以買兩層套票，或先買天望甲板，上去再加購天望回廊（大人 {STR["galleria"]["adult"]:,}、兒童 {STR["galleria"]["child"]:,} 円）。'
+      + STR['galleria_note'].split('；')[1]),
+     ('Klook、KKday 買的票怎麼取消？', STR['agent'] + '平台的取消規定以平台頁面為準。'),
+     ('小孩要買票嗎？', STR['age']),
+     ('可以帶行李箱上去嗎？', STR['bag']),
+     ('可以出來再進去嗎？', STR['stay']),
+     ('怎麼去？', STR['train'][0] + '。' + '；'.join(STR['train'][1:]) + '。'),
+    ]
+    tk_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in tk_faq]}, ensure_ascii=False)
+
+    _tk_table = ''
+    if _tk_rows:
+        _tk_table = ('<h2>接下來兩週的票價與營業時間</h2>'
+                     '<div class="tw narrow"><table><tr><th>日期</th><th>營業時間</th><th>天望甲板大人</th></tr>'
+                     + _tk_rows + '</table></div>'
+                     f'<p class="disc">票價是官方訂票站的網路價，查證於 {STR["checked"]}，官網可能調整，以訂票畫面為準。'
+                     f'{STR["last_entry"]}</p>')
+
+    write('japan-skytree/index.html',
+      head('晴空塔門票怎麼買：每日票價與營業時間、指定時間、遲到與取消規定（東京）',
+           '東京晴空塔門票價格每天不同，網路票要指定 30 分鐘一格的入場時段，當天現場買每張多 500 円。'
+           '本頁列出接下來兩週每天的天望甲板票價與營業時間、最便宜的日子、遲到怎麼辦、取消費怎麼算，'
+           '以及天望回廊要不要另外買。',
+           'japan-skytree/',
+           '<script type="application/ld+json">' + tk_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('晴空塔門票怎麼買', None)])
+      + '<h1>晴空塔門票怎麼買</h1>'
+      + '<p class="lede">東京晴空塔有兩層展望台：350 公尺的天望甲板與 450 公尺的天望回廊。'
+        '門票價格依日期變動，網路票要指定入場日與時段。下面的規定引晴空塔官網，每日票價與營業時間取自官方訂票站與營業時間頁，'
+        f'查證於 {STR["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_tk_md(_tk_jst)}</div>'
+        f'<div class="tans">{_tk_tans}</div>'
+        f'<div class="tsub">{_tk_tsub}</div>'
+        + _tk_lohi + '</div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>網路買少 {_tk_fee} 円</b>：當天現場買每張加收窗口發券費，人多的日子現場還可能停售。</li>'
+        '<li><b>要選 30 分鐘一格的時段</b>：遲到只能當天從隊伍最後面排。</li>'
+        '<li><b>入場日 31 天前取消免費</b>：之後收 20%，時段開始後不能取消。</li>'
+        '</ul></div>'
+      + _tk_table
+      + '<h2>票種</h2>'
+      + '<div class="tw narrow"><table><tr><th>票種</th><th>官網起價（大人）</th><th>官網起價（兒童）</th></tr>'
+        f'<tr><td class="nm"><b>天望甲板（350 m）</b></td><td class="nm">{_tk_y(_tk_fr["deck"])}</td><td class="nm">{_tk_y(_tk_fr["deck_child"])}</td></tr>'
+        f'<tr><td class="nm"><b>天望甲板＋天望回廊</b></td><td class="nm">{_tk_y(_tk_fr["combo"])}</td><td class="nm">{_tk_y(_tk_fr["combo_child"])}</td></tr>'
+        f'<tr><td class="nm"><b>現場加購天望回廊</b></td><td class="nm">{_tk_y(STR["galleria"]["adult"])}</td><td class="nm">{_tk_y(STR["galleria"]["child"])}</td></tr>'
+        '</table></div>'
+      + f'<p class="disc">官網寫的是起價，實際價格依日期不同；以 {_tk_ex_md} 為例，兩層套票大人 {_tk_ex["combo"]:,} 円、'
+        f'兒童 {_tk_ex["combo_child"]:,} 円。兒童是 6～14 歲（國中生以下）。</p>'
+      + f'<p class="lede">{html.escape(STR["age"])}{html.escape(STR["galleria_note"])}</p>'
+      + '<h2>在哪裡買</h2>'
+      + klook_card(STR['klook']['id'])
+      + f'<a class="cta" href="{_tk_kl_h}" target="_blank" rel="{_rel(_tk_kl_h)}">'
+        '<span class="ci">🎫</span><span class="ct"><b>Klook 的東京晴空塔門票</b>'
+        '<s>用台幣付款，價格與票種以 Klook 頁面為準</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_tk_kk_h}" target="_blank" rel="{_rel(_tk_kk_h)}">'
+        '<span class="ci">🎫</span><span class="ct"><b>KKday 的東京晴空塔門票</b>'
+        '<s>用台幣付款，價格與票種以 KKday 頁面為準</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_tk_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🗼</span><span class="ct"><b>晴空塔官網購票</b>'
+        '<s>官方訂票站有繁體中文，日圓原價，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官網購票本站沒有分潤。平台的售價、票種與取消規定本站沒有查證，以平台頁面為準。</p>'
+      + f'<p class="lede"><b>官網付款</b>：{html.escape(STR["pay"])}</p>'
+      + '<h2>取消、改時間與遲到</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in STR['cancel'])
+        + f'<li><b>改時間</b>：{html.escape(STR["change"])}</li>'
+        f'<li><b>旅行社或平台的票</b>：{html.escape(STR["agent"])}</li>'
+        f'<li><b>遲到</b>：{html.escape(STR["late"])}</li></ul>'
+      + '<h2>現場要知道的事</h2>'
+      + '<ul class="lede">'
+        f'<li><b>停留</b>：{html.escape(STR["stay"])}</li>'
+        f'<li><b>行李</b>：{html.escape(STR["bag"])}</li>'
+        f'<li><b>現場買票</b>：{html.escape(STR["counter"])}</li></ul>'
+      + '<h2>交通</h2>'
+      + f'<p class="lede">地址：{html.escape(STR["address"])}。{html.escape(STR["train"][0])}。</p>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in STR['train'][1:]) + '</ul>'
+      + faq_visible(tk_faq)
+      + '<p class="disc">票價、營業時間與規定以東京晴空塔官網為準，整理可能有疏漏。</p>'
+      + foot())
+    pages.append(('/japan-skytree/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
