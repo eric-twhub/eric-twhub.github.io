@@ -1541,6 +1541,7 @@ def topnav(cur=''):
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
             + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
+            + link('/japan-pokepark-kanto/', '⚡ 寶可夢公園門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -7585,6 +7586,215 @@ if os.path.exists('ghibli-museum.json'):
       + '<p class="disc">開賣規則、票價與入館規定以吉卜力美術館官網為準；巴士一日遊的內容、價格與名額以 Klook 頁面為準。</p>'
       + foot())
     pages.append(('/japan-ghibli-museum/', 0.6))
+
+# ---------- 寶可夢公園（PokéPark KANTO）門票怎麼買 ----------
+# 資料在 pokepark.json，引海外購票站 ticket-en.pokepark-kanto.co.jp（官方授權售票商 JTRWeb）與官網繁中版。
+# 住在日本以外只能走海外購票站的抽籤：每月 1～12 日申請三個月後的整月。
+# Klook 241317 查不到授權、官網寫非官方通路的 QR code 不受理，所以不放任何商品，頁面只講官方通路。
+# 抽籤月份照規則當場算，機票從 tigerair-fares.json 當場算。
+if os.path.exists('pokepark.json'):
+    PP = json.load(open('pokepark.json', encoding='utf-8'))
+    _pp_today = datetime.date.fromisoformat(TODAY)
+    _pp_wd = '一二三四五六日'
+
+    def _pp_add(y, m, k):
+        m += k
+        while m > 12:
+            y, m = y + 1, m - 12
+        return y, m
+
+    def _pp_md(d):
+        return f'{d.month}/{d.day}（{_pp_wd[d.weekday()]}）'
+
+    # 申請中或剛截止的那一輪，加上後面兩輪
+    _pp_rounds = []
+    for k in range(3):
+        ay, am = _pp_add(_pp_today.year, _pp_today.month, k)
+        ey, em = _pp_add(ay, am, 3)
+        _pp_rounds.append({'y': ey, 'm': em, 'open': datetime.date(ay, am, 1),
+                           'close': datetime.date(ay, am, 12)})
+    _pp_cur = _pp_rounds[0]
+    _pp_air = {'TPE-NRT': '成田', 'TPE-HND': '羽田'}
+
+    def _pp_fare(y, m):
+        best = None
+        for r in _pp_air:
+            for k, p in (TGF.get(r) or {}).items():
+                d = datetime.date.fromisoformat(k)
+                if d.year == y and d.month == m and d > _pp_today and (best is None or p < best[0]):
+                    best = (p, d, r)
+        return best
+
+    def _pp_hours(y, m):
+        t = None
+        for h in PP['hours']:
+            if f'{y}-{m:02d}' >= h['from']:
+                t = h['t']
+        return t
+
+    def _pp_days(m, ds):
+        return '、'.join(f'{m}/{d}' for d in ds)
+
+    def _pp_runs(m, ds):
+        # 連續三天以上併成一段，皮卡丘週那串才讀得下去
+        out, i = [], 0
+        while i < len(ds):
+            j = i
+            while j + 1 < len(ds) and ds[j + 1] == ds[j] + 1:
+                j += 1
+            out += ([f'{m}/{ds[i]}–{m}/{ds[j]}'] if j - i >= 2 else [f'{m}/{ds[x]}' for x in range(i, j + 1)])
+            i = j + 1
+        return '、'.join(out)
+
+    def _pp_status(r):
+        if _pp_today < r['open']:
+            return f'{_pp_md(r["open"])} 19:00 開放<br><small style="color:var(--dim)">到 {r["close"].month}/12</small>'
+        if _pp_today <= r['close']:
+            return f'<b>開放中</b><br><small style="color:var(--dim)">到 {_pp_md(r["close"])}</small>'
+        return '已截止<br><small style="color:var(--dim)">月底公布結果</small>'
+
+    def _pp_info(y, m):
+        key = f'{y}-{m:02d}'
+        t = PP['tiers'].get(key)
+        c = PP['closed'].get(key)
+        if not t:
+            return '<small style="color:var(--dim)">開放申請後海外購票站才會公布</small>'
+        return (f'<small>最便宜（A 級）：{_pp_days(m, t["A"])}<br>最貴（C 級）：{_pp_runs(m, t["C"])}'
+                + (f'<br>休園：{_pp_days(m, c)}' if c else '') + '</small>')
+
+    _pp_rows = ''
+    for r in _pp_rounds:
+        f = _pp_fare(r['y'], r['m'])
+        _h = _pp_hours(r['y'], r['m'])
+        _pp_rows += (
+            f'<tr><td class="nm"><b>{r["y"]} 年 {r["m"]} 月</b>'
+            + (f'<br><small style="color:var(--dim)">營業 {_h}</small>' if _h else '') + '</td>'
+            f'<td class="nm">{_pp_status(r)}</td>'
+            f'<td class="nm">{_pp_info(r["y"], r["m"])}</td>'
+            + (f'<td class="nm"><b>{money(f[0])}</b><br><small style="color:var(--dim)">'
+               f'{f[1].month}/{f[1].day} 飛{_pp_air[f[2]]}</small></td>' if f
+               else '<td class="nm"><small style="color:var(--dim)">虎航還沒開賣這個月</small></td>')
+            + '</tr>')
+
+    def _pp_y(p):
+        return f'¥{p[0]:,}<br><small style="color:var(--dim)">約 {money(round(p[0] * JPY))}・兒童 ¥{p[1]:,}</small>'
+
+    _pp_price = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(t["n"])}</b></td>'
+        f'<td class="nm">{_pp_y(t["A"])}</td><td class="nm">{_pp_y(t["B"])}</td><td class="nm">{_pp_y(t["C"])}</td></tr>'
+        for t in PP['price'])
+
+    _pp_ev = [e for e in PP['events'] if datetime.date.fromisoformat(e['to']) >= _pp_today]
+    _pp_ev_h = ''.join(
+        f'<li><b>{datetime.date.fromisoformat(e["from"]).year} 年 '
+        f'{datetime.date.fromisoformat(e["from"]).month}/{datetime.date.fromisoformat(e["from"]).day}'
+        f'–{datetime.date.fromisoformat(e["to"]).month}/{datetime.date.fromisoformat(e["to"]).day}</b>：'
+        f'{html.escape(e["t"])}</li>' for e in _pp_ev)
+    # 這一輪抽的月份剛好有活動的話，放進最上面那句
+    _pp_cur_ev = next((e for e in _pp_ev
+                       if datetime.date.fromisoformat(e['from']).year == _pp_cur['y']
+                       and datetime.date.fromisoformat(e['from']).month == _pp_cur['m']), None)
+
+    _pp_lt = PP['lottery']
+    pp_faq = [
+     ('外國人要怎麼買寶可夢公園的門票？',
+      '官網寫住在日本以外的遊客要到海外購票站（英文）買，營運的是官方授權售票商 JTRWeb，只能抽籤。'
+      + _pp_lt['rule'] + PP['resident']),
+     ('寶可夢公園的抽籤什麼時候？',
+      _pp_lt['rule'] + _pp_lt['result']),
+     ('沒抽到還有機會嗎？', _pp_lt['redraw']),
+     ('三種票差在哪？',
+      ''.join(f'{t["n"].split("（")[0]}：{t["what"]}' for t in PP['price'])),
+     ('門票多少錢？',
+      '票價依入園日期分三級，大人訓練家通行證 '
+      + '、'.join(f'¥{t["A"][0]:,}～¥{t["C"][0]:,}' for t in PP['price'][1:2])
+      + '，小鎮通行證 ' + f'¥{PP["price"][2]["A"][0]:,}～¥{PP["price"][2]["C"][0]:,}'
+      + '，精英訓練家通行證 ' + f'¥{PP["price"][0]["A"][0]:,}～¥{PP["price"][0]["C"][0]:,}。' + PP['price_note']),
+     ('小孩可以進寶可夢森林嗎？', PP['forest']),
+     ('入場要帶什麼？', PP['passport']),
+     ('要另外買讀賣樂園的門票嗎？',
+      '不用。寶可夢公園的每種票都可以進讀賣樂園，但讀賣樂園的遊樂設施要另外付費。'),
+     ('可以取消或改日期嗎？',
+      '不能改日期、票種或入園者資料。' + _pp_lt['cancel']),
+    ]
+    pp_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in pp_faq)
+    pp_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in pp_faq]}, ensure_ascii=False)
+
+    if _pp_today < _pp_cur['open'] or _pp_today > _pp_cur['close']:
+        _nx = _pp_rounds[1] if _pp_today > _pp_cur['close'] else _pp_cur
+        _pp_left = (_nx['open'] - _pp_today).days
+        _pp_tans = (f'{_nx["y"]} 年 {_nx["m"]} 月入園的票，{_pp_md(_nx["open"])} 19:00 開放抽籤申請，'
+                    + ('就是明天' if _pp_left == 1 else f'還有 {_pp_left} 天'))
+    else:
+        _pp_left = (_pp_cur['close'] - _pp_today).days
+        _pp_tans = (f'{_pp_cur["y"]} 年 {_pp_cur["m"]} 月入園的票正在抽籤，申請到 {_pp_md(_pp_cur["close"])}，'
+                    + ('今天是最後一天' if _pp_left == 0 else ('明天截止' if _pp_left == 1 else f'還有 {_pp_left} 天')))
+    _pp_tsub = ((f'這個月有{html.escape(_pp_cur_ev["t"].split("，")[0])}'
+                 f'（{datetime.date.fromisoformat(_pp_cur_ev["from"]).month}/{datetime.date.fromisoformat(_pp_cur_ev["from"]).day}'
+                 f'–{datetime.date.fromisoformat(_pp_cur_ev["to"]).month}/{datetime.date.fromisoformat(_pp_cur_ev["to"]).day}），'
+                 '那幾天是最貴的一級。') if _pp_cur_ev and _pp_today <= _pp_cur['close'] else '')
+
+    write('japan-pokepark-kanto/index.html',
+      head('寶可夢公園門票怎麼買：外國人抽籤時間、三種票價差別、護照驗證（PokéPark KANTO）',
+           '東京讀賣樂園裡的寶可夢公園 PokéPark KANTO，住在日本以外只能在官方海外購票站抽籤：'
+           '每月 1～12 日申請三個月後的票。精英訓練家、訓練家、小鎮三種通行證差在哪、依日期分三級的票價、'
+           '5 歲以下不能進寶可夢森林、入場掃護照，以及每個月的虎航票價。',
+           'japan-pokepark-kanto/',
+           '<script type="application/ld+json">' + pp_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('寶可夢公園門票怎麼買', None)])
+      + '<h1>寶可夢公園門票怎麼買</h1>'
+      + '<p class="lede">寶可夢公園（PokéPark KANTO）在東京稻城市的讀賣樂園裡，分成寶可夢森林和草紗鎮兩區，'
+        '要先買指定日期的票。住在日本以外的人只能在官方海外購票站抽籤，現場不賣票。'
+        f'下面的規則與價格引官網和海外購票站，查證於 {PP["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官方海外購票站，查證於 {PP["checked"]}</div>'
+        f'<div class="tans">{_pp_tans}</div>'
+        f'<div class="tsub">{_pp_tsub}每月 1 日 19:00（台灣時間 18:00）開放，申請到 12 日，月底公布結果、當月底前付款。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>外國人只能抽籤</b>：日文官網要日本手機號碼認證，台灣旅客走英文的海外購票站。</li>'
+        '<li><b>要登記護照號碼</b>：入場時機器掃護照核對，帶申請時登記的那本正本。</li>'
+        '<li><b>未滿 5 歲不能進寶可夢森林</b>：帶小小孩買小鎮通行證就好。</li>'
+        '</ul></div>'
+      + '<h2>哪個月份在抽籤</h2>'
+      + '<div class="tw"><table><tr><th>入園月份</th><th>抽籤申請（日本時間）</th><th>票價分級與休園</th>'
+        '<th>台北 → 東京虎航最低單程</th></tr>' + _pp_rows + '</table></div>'
+      + f'<p class="disc">抽籤月份照海外購票站的規則推算。{html.escape(_pp_lt["result"])}'
+        '機票是台灣虎航官網每天抓的該月最低單程票價，成田與羽田取較低的那個，含稅、不含託運行李。</p>'
+      + ('<h2>最近的活動</h2><ul class="lede">' + _pp_ev_h + '</ul>' if _pp_ev_h else '')
+      + '<h2>三種票與票價</h2>'
+      + '<div class="tw"><table><tr><th>票種</th><th>A 級（最便宜）</th><th>B 級</th><th>C 級（最貴）</th></tr>'
+        + _pp_price + '</table></div>'
+      + f'<p class="disc">大人（13 歲以上）的價格，小字是兒童（3 歲以上）。{html.escape(PP["price_note"])}'
+        '每天屬於哪一級，在海外購票站的日曆上看顏色。</p>'
+      + '<ul class="lede">' + ''.join(f'<li><b>{html.escape(t["n"].split("（")[0])}</b>：{html.escape(t["what"])}</li>'
+                                      for t in PP['price']) + '</ul>'
+      + f'<p class="lede">{html.escape(PP["forest"])}</p>'
+      + '<h2>在哪裡買</h2>'
+      + '<div class="card"><h3>官方海外購票站（英文）</h3><ul>'
+        '<li><b>誰在賣：</b>官網門票頁連過去的外部網站，頁首寫營運的 JTRWeb 是寶可夢公園的授權售票商。</li>'
+        f'<li><b>怎麼買：</b>{html.escape(_pp_lt["rule"])}</li>'
+        f'<li><b>結果：</b>{html.escape(_pp_lt["result"])}</li>'
+        f'<li><b>補抽：</b>{html.escape(_pp_lt["redraw"])}</li>'
+        f'<li><b>取消：</b>{html.escape(_pp_lt["cancel"])}</li></ul>'
+        f'<a class="cta" href="{html.escape(PP["_來源"]["overseas"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎟️</span><span class="ct"><b>到官方海外購票站申請抽籤</b>'
+        '<s>日圓原價，只收信用卡</s></span><span class="ca">→</span></a></div>'
+        f'<p class="lede">{html.escape(PP["resident"])}</p>'
+      + '<p class="disc">海外購票站是官方授權售票商，本站沒有分潤。</p>'
+      + '<h2>買之前要知道的規定</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(r)}</li>' for r in PP['rules'])
+        + f'<li>{html.escape(PP["passport"])}</li></ul>'
+      + '<h2>入園當天</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(r)}</li>' for r in PP['inside']) + '</ul>'
+      + '<h2>怎麼去</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(r)}</li>' for r in PP['access']) + '</ul>'
+      + '<h2>常見問題</h2>' + pp_html
+      + '<p class="disc">抽籤規則、票價與入場規定以寶可夢公園官網與官方海外購票站為準。</p>'
+      + foot())
+    pages.append(('/japan-pokepark-kanto/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
