@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-09-taipei-miyazaki",
- "generated": "2026-11-09 21:56",
+ "generated": "2026-11-09 22:03",
  "kind": "fare",
  "origin": "taipei",
  "city": "miyazaki",
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 6067,
+   "price": 5767,
    "dep": "2026-12-07",
    "ret": "2026-12-14",
    "dept": "06:20",
