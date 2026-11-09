@@ -1353,16 +1353,22 @@ border:1px solid var(--line)}
 .cmp .pp{font-style:normal;font-size:.76rem;color:var(--dim);font-weight:600;margin-left:6px}
 .tw td.lose{color:var(--acc);font-weight:700}
 .tw td.win b,.tw td.lose b{color:inherit}
+/* 外連按鈕做成實心色塊：白底框線的版本讀者看不出是連結（2026-11-10 使用者回報），
+   整頁的重點動作要一眼就看得出能點。 */
 .cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
-background:var(--card);border:1px solid var(--line);border-radius:12px;
-text-decoration:none;color:var(--fg)}
-.cta:hover{border-color:var(--acc)}
+background:var(--acc);border:0;border-radius:12px;box-shadow:0 2px 0 #9a3412;
+text-decoration:none;color:#fff;transition:transform .08s,filter .15s}
+.cta:hover{filter:brightness(1.08)}
+.cta:active{transform:translateY(1px);box-shadow:0 1px 0 #9a3412}
 .cta .ci{font-size:1.5rem;flex:0 0 auto}
-.cta .ct{flex:1;display:flex;flex-direction:column;gap:2px}
-.cta .ct b{font-size:.98rem;font-weight:700}
-.cta .ct s{text-decoration:none;font-size:.82rem;color:var(--dim)}
-.cta .ca{color:var(--acc);font-weight:700;font-size:1.1rem;flex:0 0 auto}
-.cta .ca.pr{font-size:1.42rem;letter-spacing:-.03em;line-height:1.15;text-align:right}
+.cta .ct{flex:1;display:flex;flex-direction:column;gap:2px;
+background:none;border:0;padding:0;border-radius:0;color:#fff}  /* 蓋掉同名的 .ct 卡片樣式 */
+.cta .ct b{font-size:1rem;font-weight:700;color:#fff}
+.cta .ct s{text-decoration:none;font-size:.82rem;color:rgba(255,255,255,.88)}
+.cta .ca{color:var(--acc);background:#fff;border-radius:999px;font-weight:700;font-size:1rem;
+flex:0 0 auto;padding:6px 14px;white-space:nowrap}
+.cta .ca:not(.pr)::before{content:"前往 "}
+.cta .ca.pr{font-size:1.3rem;letter-spacing:-.03em;line-height:1.15;text-align:right;border-radius:10px;padding:6px 12px}
 .cta .ca.pr small{display:block;font-size:.66rem;font-weight:600;color:var(--dim);letter-spacing:0}
 /* 廣告版位。明確標示，而且跟內文的卡片長得不一樣，
    不要讓讀者以為那是我們查證過的資料。 */
