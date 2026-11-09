@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-09-taipei-ishigaki",
- "generated": "2026-11-09 13:31",
+ "generated": "2026-11-09 15:54",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -25,10 +25,9 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "廉航低於 NT$6,000",
-  "這條航線平常最低落在 NT$2,961–NT$4,338，這張是近期 12 筆紀錄中第 1 低"
+  "廉航低於 NT$6,000"
  ],
- "med": 11534,
+ "med": 11134,
  "n_rt": 12,
  "others": [
   {
@@ -37,26 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 2961,
-   "dep": "2026-11-14",
-   "ret": "2026-11-20",
-   "dept": "06:35",
-   "rett": "09:25",
-   "rt": true,
-   "tr": 0,
-   "dur": 130,
-   "dur_to": 60,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-14&inbound=ISG-TPE&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
-  {
-   "o": "TPE",
-   "d": "ISG",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 3161,
+   "price": 2161,
    "dep": "2026-12-05",
    "ret": "2026-12-09",
    "dept": "06:35",
@@ -75,8 +55,27 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 3361,
-   "dep": "2026-11-13",
+   "price": 2161,
+   "dep": "2026-12-15",
+   "ret": "2026-12-19",
+   "dept": "06:35",
+   "rett": "09:25",
+   "rt": true,
+   "tr": 0,
+   "dur": 130,
+   "dur_to": 60,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-15&inbound=ISG-TPE&returnDate=2026-12-19&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "ISG",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 2961,
+   "dep": "2026-11-14",
    "ret": "2026-11-20",
    "dept": "06:35",
    "rett": "09:25",
@@ -85,7 +84,7 @@
    "dur": 130,
    "dur_to": 60,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-13&inbound=ISG-TPE&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-14&inbound=ISG-TPE&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
