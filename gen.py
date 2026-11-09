@@ -247,6 +247,13 @@ def _monetise(u, s1='', s2=''):
         return klook(u, 'fallback')
     return u
 
+def _agoda_cid(city):
+    """Agoda 聯盟的數字城市 ID；template 還沒填或沒查過的城市回 None。"""
+    p = P.get('hotel2') or {}
+    if not (p.get('template') or '').startswith('http'):
+        return None
+    return (p.get('city_ids') or {}).get(city)
+
 def plink(kind,city='',**kw):
     p=P[kind]; t=p.get('template','')
     # Klook 的 template 是外層轉址，目標網址要整條編碼塞進 k_site，
@@ -259,6 +266,10 @@ def plink(kind,city='',**kw):
     # 否則會產生一個指向錯誤城市（或整個掉回首頁）的連結
     if '{cid}' in u:
         cid=(p.get('city_ids') or {}).get(city)
+        if not cid and kind == 'hotel' and _agoda_cid(city):
+            # Trip.com 拿不到城市 ID 的 27 城改走 Agoda 聯盟（2026-11-09 接上），
+            # 不再退回沒有分潤的關鍵字搜尋
+            return plink('hotel2', city)
         u=u.replace('{cid}',str(cid)) if cid else p['fallback']
     u=u.replace('{q}',urllib.parse.quote(city))
     kw.setdefault('sub','')          # 沒傳就留空，別讓 {sub} 原樣留在網址裡
@@ -1627,6 +1638,8 @@ def _partner_line():
              'activity2': '景點門票',
              'transport': '交通票', 'car': '租車', 'transfer': '機場接送',
              'esim': '網卡與 eSIM'}
+    if (P.get('hotel2') or {}).get('template', '').startswith('http'):
+        LABEL['hotel2'] = '住宿'
     by_brand = {}
     for k, name in LABEL.items():
         b = (P.get(k) or {}).get('brand')
