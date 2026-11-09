@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$4,142（6 天有紀錄），這張低 48%"
+   "12 月出發的票，每天最便宜的平均要 NT$4,218（6 天有紀錄），這張低 49%"
   ],
   "med": 12082,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-05&inbound=OKA-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
@@ -26,7 +26,7 @@
    "days": 9
   },
   "mbase": {
-   "avg": 4142,
+   "avg": 4218,
    "days": 6,
    "month": 12
   },
@@ -222,6 +222,31 @@
   "n": 6
  },
  {
+  "slug": "2026-11-09-kaohsiung-fukuoka",
+  "title": "高雄飛福岡 NT$5,348 來回含稅｜台灣虎航 11/13 出發",
+  "o": "高雄",
+  "c": "福岡",
+  "_oiata": "KHH",
+  "_diata": "FUK",
+  "price": 5348,
+  "air": "台灣虎航",
+  "dep": "2026-11-13",
+  "ret": "2026-11-20",
+  "stops": "直飛",
+  "cls": "lcc",
+  "reasons": [
+   "廉航低於 NT$6,000"
+  ],
+  "med": 5608,
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-11-13&inbound=FUK-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
+  "hotelcity": "福岡",
+  "cslug": "fukuoka",
+  "usual": null,
+  "mbase": null,
+  "rank": 1,
+  "n": 2
+ },
+ {
   "slug": "2026-11-09-taipei-oita",
   "title": "台北飛大分・別府 NT$5,568 來回含稅｜台灣虎航 11/21 出發",
   "o": "台北",
@@ -241,31 +266,6 @@
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OIT&departureDate=2026-11-21&inbound=OIT-TPE&returnDate=2026-11-28&type=return&adult=1&language=zh-TW",
   "hotelcity": "別府",
   "cslug": "oita",
-  "usual": null,
-  "mbase": null,
-  "rank": 1,
-  "n": 2
- },
- {
-  "slug": "2026-11-09-kaohsiung-fukuoka",
-  "title": "高雄飛福岡 NT$5,808 來回含稅｜台灣虎航 11/13 出發",
-  "o": "高雄",
-  "c": "福岡",
-  "_oiata": "KHH",
-  "_diata": "FUK",
-  "price": 5808,
-  "air": "台灣虎航",
-  "dep": "2026-11-13",
-  "ret": "2026-11-20",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000"
-  ],
-  "med": 5838,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-11-13&inbound=FUK-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
-  "hotelcity": "福岡",
-  "cslug": "fukuoka",
   "usual": null,
   "mbase": null,
   "rank": 1,
