@@ -8,8 +8,10 @@ Threads 單則上限 500 字元，分成三則：主文、續文（回覆）、�
 
 配圖：
   taiwan-holiday-2026/cards/cal-2026-12.png（今年 12 月，橘框就是要請的四天）
-  taiwan-holiday-2027/cards/tw-06.png（2027 上半年請假試算表，元旦到端午）
-  要多一張就接 taiwan-holiday-2027/cards/tw-03.png（元旦、春節、和平紀念日的日中韓同期）
+  cards/threads/年底請4休10/tw-06-ring.png（2027 上半年請假表，綠色數字加紅圈，ring.py 產生）
+  cards/threads/年底請4休10/h1-same-1.png（上半年日中韓同期：元旦、春節、和平紀念日）
+  cards/threads/年底請4休10/h1-same-2.png（上半年日中韓同期：清明兒童節、勞動節）
+  （後三張是貼文專用版，h1cards.py 產生；cards/ 不進 git）
   （11/9 使用者決定：明年底那段太遠先不寫，改寫 2027 上半年）
 
 數字出處：
