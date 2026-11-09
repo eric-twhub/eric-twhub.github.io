@@ -9764,6 +9764,37 @@ if os.path.exists('angel63.json'):
           f'營業時間 {_cs0["hours"]}，{_cs0["age"]}。'
           f'營運公司是{_cs0["operator"]}，跟六本木那家不同；兩家的表演者會互相客串，'
           f'但官方沒有說明公司之間的關係。方案、價格與取消規定都是各自的，不能拿六本木的套用。'))
+    # 台灣公演：最後一場結束後整段不顯示。招待券的效期比公演長，但這段是在講「現在去買台灣場」。
+    _agt = AG.get('taiwan')
+    if _agt and TODAY > _agt['end']:
+        _agt = None
+    _agt_html = ''
+    if _agt:
+        _agt_html = (
+            '<h2>台灣場：63 ANGEL 15 周年公演</h2>'
+            f'<p class="lede">{html.escape(_agt["venue"])}。{html.escape(_agt["len"])}</p>'
+            '<div class="tw narrow"><table><tr><th>日期</th><th>場次</th></tr>'
+            + ''.join(f'<tr><td class="nm"><b>{html.escape(r[0])}</b></td>'
+                      f'<td class="nm">{html.escape(r[1])}</td></tr>' for r in _agt['shows'])
+            + '</table></div>'
+            '<ul class="lede">'
+            f'<li><b>票價</b>：{html.escape(_agt["price"])}</li>'
+            f'<li><b>買票</b>：{html.escape(_agt["buy"])}</li>'
+            f'<li><b>退票</b>：{html.escape(_agt["refund"])}</li>'
+            f'<li><b>年齡</b>：{html.escape(_agt["age"])}</li>'
+            '</ul>'
+            '<h3>票根可以換日本的招待券</h3>'
+            f'<p class="lede">{html.escape(_agt["voucher"])}</p>'
+            f'<p class="disc">{html.escape(_agt["voucher_rule"])}</p>'
+            f'<a class="cta" href="{html.escape(_agt["url"])}" target="_blank" rel="nofollow noopener">'
+            '<span class="ci">🎭</span><span class="ct"><b>KKTIX 台灣場售票頁</b>'
+            '<s>場次、座位圖與購票說明</s></span><span class="ca">→</span></a>'
+            f'<p class="disc">引 KKTIX 活動頁，查證於 {_agt["checked"]}；本站沒有分潤。</p>')
+        ag_faq.insert(0,
+         ('63 ANGEL 會來台灣嗎？',
+          '會。15 周年公演在 ' + _agt['venue'] + '，'
+          + '；'.join(r[0] + ' ' + r[1] for r in _agt['shows']) + '。'
+          + _agt['price'] + _agt['voucher']))
     ag_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in ag_faq)
     ag_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
@@ -9792,11 +9823,14 @@ if os.path.exists('angel63.json'):
            f'每天的陣容與主題都不一樣。'
            f'<a href="{U("/tokyo/63angel/talents/")}">看有哪些女孩與她們的社群</a>。</div>'
            if AG.get('talents') else '')
+        + ('<div class="tbuf"><b>12 月在台北有台灣場</b>，票根還能換東京與沖繩三家店各一次的免費入場，'
+           f'<a href="#{_hid("台灣場：63 ANGEL 15 周年公演")}">看台灣場</a>。</div>' if _agt else '')
         + (f'<div class="tbuf">人在沖繩的話，那霸也有一家 63 ANGEL 官網自己連過去的店：'
            f'<a href="{U("/okinawa/churasun6/")}">ちゅらさん6 的座位方案與取消規定</a>'
            f'（營運公司跟六本木不同，規定要分開看）。</div>'
            if os.path.exists('churasun6.json') else '')
         + '</div>'
+      + _agt_html
       + '<h2>場次時間</h2>' + _ag_shows
       + f'<p class="disc">{html.escape(AG["shows"]["note"])}</p>'
       + '<h2>座位方案與價格</h2>'
