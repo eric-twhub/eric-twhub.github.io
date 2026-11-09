@@ -1536,6 +1536,7 @@ def topnav(cur=''):
     # 訂完票之後才會看的東西。同一層放太多會找不到，所以分兩組小標。
     trip = ('<b>挑日期</b>'
             + link('/japan-park-ticket/', '🎢 樂園門票哪天便宜')
+            + link('/japan-bogo/', '🎁 行程與網卡買一送一')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1705,7 +1706,9 @@ _AD_SKIP = ('deals/', 'cards/', 'posts/')
 _NO_AD_OK = {'/japan-hotel-check/', '/kawaguchiko-hotel-case/',
              '/tokyo/teamlab/',
              # 關於本站講的是分潤關係本身，再掛版位就自相矛盾
-             '/about/'}
+             '/about/',
+             # 整頁就是 KKday 商品，再掛版位等於同一頁推兩次
+             '/japan-bogo/'}
 
 def u_region(path):
     """地區頁回地區名，其餘回空字串。"""
@@ -6725,6 +6728,82 @@ write('about/index.html',
   + '<p class="disc">本站內容為公開資訊整理，不是理財建議，也不代為訂票或申辦信用卡。</p>'
   + foot())
 pages.append(('/about/', 0.3))
+
+# ---------- 日本旅遊的買一送一 ----------
+# 資料在 bogo.json。活動隨時會收掉，所以超過 stale_days 沒重查、或 until 已過的
+# 項目不列：寫著「買一送一」卻已經沒有那個方案，比沒寫更糟（2026-11-09 使用者要做這頁，
+# 起因是 Threads 上有人分享北海道一日遊的台灣限定買一送一）。
+# 不寫價格：KKday 的價格是前端算繪而且會變，只寫「一組＝原本一人的價格」這種結構。
+if os.path.exists('bogo.json'):
+    _bg = json.load(open('bogo.json', encoding='utf-8'))
+    _bg_today = datetime.date.fromisoformat(TODAY)
+    _bg_live, _bg_soon = [], []
+    for _it in _bg.get('items', []):
+        _age = (_bg_today - datetime.date.fromisoformat(_it['checked'])).days
+        if _age > _bg.get('stale_days', 14):
+            continue
+        if _it.get('until') and datetime.date.fromisoformat(_it['until']) < _bg_today:
+            continue
+        if _age >= _bg.get('stale_days', 14) - 4:
+            _bg_soon.append(_it['id'])
+        _bg_live.append(_it)
+    if _bg_soon:
+        print(f'   ⚠ bogo.json：{len(_bg_soon)} 項快要超過重查期限，到期就不會列出：{", ".join(_bg_soon)}')
+
+    def _bg_card(it):
+        h = html.escape(kkday(it['url'], 'bogo', it['id']))
+        return (f'<div class="card"><h3>{it["icon"]} {html.escape(it["name"])}</h3>'
+                f'<p class="lede">{html.escape(it["where"])}</p><ul>'
+                f'<li><b>送什麼：</b>{html.escape(it["what"])}</li>'
+                f'<li><b>行程與寄送：</b>{html.escape(it["how"])}</li>'
+                f'<li><b>要注意：</b>{html.escape(it["watch"])}</li>'
+                + (f'<li><b>活動期間：</b>到 {html.escape(it["until"])}</li>' if it.get('until') else '')
+                + f'<li><b>查證日期：</b>{html.escape(it["checked"])}</li></ul>'
+                f'<a class="cta" href="{h}" target="_blank" rel="{_rel(h)}">'
+                f'<span class="ci">{it["icon"]}</span>'
+                f'<span class="ct"><b>到 KKday 看這個方案</b>'
+                f'<s>價格與剩餘名額以 KKday 頁面為準</s></span>'
+                f'<span class="ca">→</span></a></div>')
+
+    _bg_body = ''
+    for _cat, _h2 in (('行程', '一日遊行程'), ('網卡', '網卡與 eSIM')):
+        _xs = [x for x in _bg_live if x['cat'] == _cat]
+        if _xs:
+            _bg_body += f'<h2>{_h2}</h2>' + ''.join(_bg_card(x) for x in _xs)
+    if _bg_live:
+        _bg_body += _links_disc(re.findall(r'class="cta" href="([^"]+)"', _bg_body))
+    else:
+        _bg_body = ('<p>目前沒有查證過、還在進行中的買一送一。KKday 的活動常常換，'
+                    '可以直接在 KKday 搜尋「買一送一」看最新的。</p>')
+    _bg_n = len(_bg_live)
+    write('japan-bogo/index.html',
+      head('日本旅遊的買一送一：KKday 上現在有哪些、送的是什麼',
+           'KKday 上標「買一送一」的日本一日遊與網卡，各自送的是什麼、'
+           '要怎麼買才算數、有哪些限制。每一項附查證日期。',
+           'japan-bogo/')
+      + topnav() + crumbs([('首頁', '/'), ('日本旅遊的買一送一', None)])
+      + '<h1>日本旅遊的買一送一</h1>'
+      + '<p class="lede">KKday 上標「買一送一」的日本商品，實際上是把兩人份（或兩張）'
+        '綁成一組，一組的價格等於原本一個人（或一張）的價格。'
+        '所以要兩個人同行、或一次要用兩張才划算，一個人買等於沒有折扣。</p>'
+      + (f'<div class="tldr"><ul><li><b>目前列出 {_bg_n} 項</b>，分成一日遊行程與網卡兩類，'
+         '每一項都寫了送什麼、怎麼買、要注意什麼。</li>'
+         '<li><b>一組通常就是兩人或兩張</b>，一個人用不到第二份的話，'
+         '直接比單人方案的價格比較準。</li>'
+         '<li><b>活動隨時會結束</b>，大多沒有寫到哪一天，下單前以 KKday 頁面為準。</li>'
+         '</ul></div>' if _bg_live else '')
+      + _bg_body
+      + '<h2>買之前先確認的三件事</h2>'
+      + '<ol><li><b>真的是兩個人用。</b>行程類的買一送一大多限定兩人使用，'
+        '同一筆訂單加第三個人要另外計價。</li>'
+        '<li><b>時間來不來得及。</b>實體 SIM 卡從台灣寄出要幾天，'
+        'eSIM 則要在訂購後一段期間內使用，太早買可能過期。</li>'
+        '<li><b>成團與取消規定。</b>一日遊有最低成團人數，未成團會改期；'
+        '免費取消的期限各團不同，出發前太接近就不能退。</li></ol>'
+      + '<p class="disc">活動內容、價格與名額以 KKday 商品頁顯示為準，'
+        '每一項寫的日期是查證那天，之後可能已經改變。</p>'
+      + foot())
+    pages.append(('/japan-bogo/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
