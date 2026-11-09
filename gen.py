@@ -1537,6 +1537,7 @@ def topnav(cur=''):
     trip = ('<b>挑日期</b>'
             + link('/japan-park-ticket/', '🎢 樂園門票哪天便宜')
             + link('/japan-bogo/', '🎁 行程與網卡買一送一')
+            + link('/japan-sumo/', '🤼 大相撲門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1708,7 +1709,9 @@ _NO_AD_OK = {'/japan-hotel-check/', '/kawaguchiko-hotel-case/',
              # 關於本站講的是分潤關係本身，再掛版位就自相矛盾
              '/about/',
              # 整頁就是 KKday 商品，再掛版位等於同一頁推兩次
-             '/japan-bogo/'}
+             '/japan-bogo/',
+             # 相撲秀卡片就是 KKday 商品，同上
+             '/japan-sumo/'}
 
 def u_region(path):
     """地區頁回地區名，其餘回空字串。"""
@@ -6804,6 +6807,206 @@ if os.path.exists('bogo.json'):
         '每一項寫的日期是查證那天，之後可能已經改變。</p>'
       + foot())
     pages.append(('/japan-bogo/', 0.6))
+
+# ---------- 大相撲門票怎麼買 ----------
+# 資料在 sumo.json，全部引官方原文（協會英文站的年度日程、チケット大相撲的席種頁與購買說明）。
+# 不放 KKday 的本場所觀賽團：官方寫明未經許可組團取得的票可能被拒絕入場，
+# 查不到那些商品有沒有授權（2026-11-09 使用者決定）。商品只放不是本場所門票的相撲秀。
+# 機票從 tigerair-fares.json 當場算，沒有那段日期的資料就寫沒有，不補值。
+if os.path.exists('sumo.json'):
+    SM = json.load(open('sumo.json', encoding='utf-8'))
+    _sm_today = datetime.date.fromisoformat(TODAY)
+    _sm_wd = '一二三四五六日'
+
+    def _sm_d(s, wd=True):
+        d = datetime.date.fromisoformat(s)
+        return f'{d.month}/{d.day}' + (f'（{_sm_wd[d.weekday()]}）' if wd else '')
+
+    def _sm_ymd(s):
+        d = datetime.date.fromisoformat(s)
+        return f'{d.year} 年 {d.month} 月 {d.day} 日'
+
+    _sm_air = {'TPE-NRT': '台北 → 成田', 'TPE-HND': '台北 → 羽田', 'TPE-KIX': '台北 → 關西',
+               'TPE-NGO': '台北 → 中部', 'TPE-FUK': '台北 → 福岡'}
+
+    def _sm_fare(b):
+        """會期開始前兩天到最後一天前一天出發的虎航最低單程。沒有資料回 None。"""
+        a = max(datetime.date.fromisoformat(b['first']) - datetime.timedelta(days=2),
+                _sm_today + datetime.timedelta(days=1))
+        z = datetime.date.fromisoformat(b['last']) - datetime.timedelta(days=1)
+        best = None
+        for r in b['air']:
+            v = TGF.get(r) or {}
+            d = a
+            while d <= z:
+                p = v.get(d.isoformat())
+                if p and (best is None or p < best[0]):
+                    best = (p, d.isoformat(), r)
+                d += datetime.timedelta(days=1)
+        return best
+
+    # 還沒結束的場所，依開始日排序
+    _sm_up = sorted([b for b in SM['basho']
+                     if datetime.date.fromisoformat(b['last']) >= _sm_today],
+                    key=lambda b: b['first'])
+    _sm_next = next((b for b in sorted(SM['basho'], key=lambda b: b['sale'])
+                     if datetime.date.fromisoformat(b['sale']) >= _sm_today), None)
+    _sm_now = next((b for b in _sm_up
+                    if datetime.date.fromisoformat(b['first']) <= _sm_today), None)
+
+    _sm_rows = ''
+    for b in _sm_up:
+        y = b['first'][:4]
+        f = _sm_fare(b)
+        _sale_past = datetime.date.fromisoformat(b['sale']) < _sm_today
+        _sm_rows += (
+            f'<tr><td class="nm"><b>{y} {html.escape(b["name"])}</b>'
+            f'<br><small style="color:var(--dim)">{html.escape(b["city"])}・{html.escape(b["venue"])}</small></td>'
+            f'<td class="nm">{_sm_d(b["first"])}<br>到 {_sm_d(b["last"])}</td>'
+            f'<td class="nm">{"已開賣" if _sale_past else _sm_d(b["sale"]) + " 10:00"}'
+            + (f'<br><small style="color:var(--dim)">{html.escape(b["status"])}</small>' if b.get('status') else '')
+            + '</td>'
+            + (f'<td class="nm"><b>{money(f[0])}</b><br><small style="color:var(--dim)">'
+               f'{_sm_air[f[2]]}，{_sm_d(f[1], False)} 出發</small></td>' if f
+               else '<td class="nm"><small style="color:var(--dim)">虎航還沒開放這段日期</small></td>')
+            + f'<td class="nm"><a href="{U("/" + b["slug"] + "/")}">{html.escape(b["city"])}機票</a></td></tr>')
+
+    _pr = SM['price']
+
+    def _sm_prow(r):
+        return (f'<tr><td class="nm"><b>{html.escape(r["n"])}</b>'
+                + ('<br><small style="color:var(--dim)">只在日文站賣</small>' if r.get('jp_only') else '')
+                + '</td>'
+                + ''.join(f'<td class="nm">¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small></td>'
+                          for p in r['p']) + '</tr>')
+
+    _sm_ptab = ('<div class="tw"><table><tr><th>席種</th>'
+                + ''.join(f'<th>{html.escape(c)}</th>' for c in _pr['cols']) + '</tr>'
+                + '<tr><td colspan="4" class="nm"><b>椅子席（每人）</b></td></tr>'
+                + ''.join(_sm_prow(r) for r in _pr['chair'])
+                + '<tr><td colspan="4" class="nm"><b>枡席（坐地板，價格是整格）</b></td></tr>'
+                + ''.join(_sm_prow(r) for r in _pr['box4'] + _pr['box1'])
+                + '<tr><td colspan="4" class="nm"><b>溜席</b></td></tr>'
+                + _sm_prow(_pr['tamari'])
+                + '</table></div>')
+
+    _bu = SM['buy']
+
+    def _sm_card(it):
+        h = html.escape(kkday(it['url'], 'sumo', it['id']))
+        return (f'<div class="card"><h3>{html.escape(it["city"])}｜{html.escape(it["name"])}</h3>'
+                f'<p class="lede">{html.escape(it["where"])}</p><ul>'
+                f'<li><b>內容：</b>{html.escape(it["what"])}</li>'
+                f'<li><b>要注意：</b>{html.escape(it["watch"])}</li>'
+                f'<li><b>查證日期：</b>{html.escape(it["checked"])}</li></ul>'
+                f'<a class="cta" href="{h}" target="_blank" rel="{_rel(h)}">'
+                f'<span class="ci">🎫</span>'
+                f'<span class="ct"><b>到 KKday 看這個相撲秀</b>'
+                f'<s>價格與場次以 KKday 頁面為準</s></span>'
+                f'<span class="ca">→</span></a></div>')
+
+    _sm_cards = ''.join(_sm_card(x) for x in SM['shows'])
+    _sm_cards += _links_disc(re.findall(r'class="cta" href="([^"]+)"', _sm_cards))
+
+    sm_faq = [
+     ('外國人可以自己買大相撲門票嗎？',
+      f'可以。官方的英文售票站チケット大相撲 English（sumo.pia.jp/en）{_bu["en"]["pay"]}，'
+      f'每張另收 {_bu["en"]["fee"]:,} 円手續費，{_bu["en"]["pickup"]}。{_bu["en"]["refund"]}。'),
+     ('大相撲門票什麼時候開賣？',
+      '每個場所大約在開始前一到兩個月開賣，日本時間上午 10 點。'
+      + (f'下一個開賣的是 {_sm_next["first"][:4]} {_sm_next["name"]}（{_sm_next["city"]}），'
+         f'{_sm_ymd(_sm_next["sale"])}。' if _sm_next else '')
+      + '開賣前還有官方粉絲俱樂部的付費會員先行抽選。'),
+     ('最便宜的位子多少錢？',
+      f'以 {_pr["basho"]}為例，英文站買得到最便宜的是椅子席 C，平日 ¥5,000，'
+      f'加上每張 {_bu["en"]["fee"]:,} 円手續費。日文站另有椅子席 D，大人全日程 ¥3,000。'
+      '其他場館的價格不同。'),
+     ('門票賣完了當天還買得到嗎？',
+      f'{_bu["soldout"]}2026 十一月場所（福岡）英文站在 11/9 就寫全部日期已售完、當天也不賣。'),
+     ('可以在 KKday 或旅行社買觀賽團嗎？',
+      f'官方售票站寫明：{_bu["resale"]}本頁查不到那些觀賽團有沒有主辦方授權，所以沒有列。'
+      '想要沒有入場風險的替代方案，可以看相撲秀或相撲部屋體驗，那不是本場所門票。'),
+     ('一張票可以看多久？',
+      f'整天。{SM["day"]["open"]}，{SM["day"]["top"]}。'
+      f'兩國國技館{SM["day"]["reentry"]}。'),
+    ]
+    sm_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in sm_faq)
+    sm_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in sm_faq]}, ensure_ascii=False)
+
+    if _sm_next:
+        _sm_left = (datetime.date.fromisoformat(_sm_next['sale']) - _sm_today).days
+        _sm_tans = (f'下一個開賣：<b>{_sm_next["first"][:4]} {html.escape(_sm_next["name"])}'
+                    f'（{html.escape(_sm_next["city"])}）</b>，'
+                    f'{_sm_d(_sm_next["sale"])} 10:00，' + ('就是今天' if _sm_left == 0 else f'還有 {_sm_left} 天'))
+        _sm_tsub = (f'會期 {_sm_d(_sm_next["first"])} 到 {_sm_d(_sm_next["last"])}，'
+                    f'在{html.escape(_sm_next["venue"])}。')
+    else:
+        _sm_tans, _sm_tsub = '今年的場所都已經開賣', ''
+    if _sm_now and _sm_now.get('status'):
+        _sm_tsub += f'正在進行的{html.escape(_sm_now["name"])}：{html.escape(_sm_now["status"])}。'
+
+    write('japan-sumo/index.html',
+      head('大相撲門票怎麼買：各場所日期、開賣日、票價與外國人購票方式',
+           '大相撲一年六場，東京、大阪、名古屋、福岡。各場所的開賣日、官方英文站怎麼買、'
+           '每張另收的手續費、各席種價格換算台幣，加上會期間的虎航最低票價。全部引官方原文。',
+           'japan-sumo/',
+           '<script type="application/ld+json">' + sm_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('大相撲門票怎麼買', None)])
+      + '<h1>大相撲門票怎麼買</h1>'
+      + '<p class="lede">大相撲一年有六個場所（正式賽事），每個場所連續 15 天，'
+        '一月、五月、九月在東京，三月大阪，七月名古屋，十一月福岡。'
+        '門票在官方售票站開賣，熱門的日子很快賣完。'
+        f'下面的日期、價格與規定都引官方原文，查證於 {SM["checked"]}；'
+        f'台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官方售票站原文，查證於 {SM["checked"]}</div>'
+        f'<div class="tans">{_sm_tans}</div>'
+        + (f'<div class="tsub">{_sm_tsub}</div>' if _sm_tsub else '')
+        + '</div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>外國人可以自己買</b>：官方英文站{_bu["en"]["pay"]}，'
+        f'每張另收 {_bu["en"]["fee"]:,} 円，{_bu["en"]["pickup"]}。</li>'
+        f'<li><b>買了不能退</b>：{_bu["en"]["refund"]}。</li>'
+        '<li><b>不要買來路不明的票</b>：官方寫明轉賣取得的票、未經許可的觀賽團，都可能被拒絕入場。</li>'
+        '</ul></div>'
+      + '<h2>各場所日期與開賣日</h2>'
+      + '<div class="tw"><table><tr><th>場所</th><th>會期</th><th>開賣（日本時間）</th>'
+        '<th>虎航最低單程</th><th></th></tr>' + _sm_rows + '</table></div>'
+      + '<p class="disc">機票是台灣虎航官網每天抓的最低單程票價，從會期開始前兩天到最後一天前一天出發的日子裡挑最低的，'
+        '含稅、不含託運行李；最低價的位子賣掉就會跳價。日期表引日本相撲協會英文站的年度日程。</p>'
+      + '<h2>官方英文站怎麼買</h2>'
+      + '<ol>'
+        f'<li><b>開賣時間</b>：日本時間上午 10:00（台灣 9:00）。</li>'
+        f'<li><b>能買的席種</b>：{html.escape(_bu["en"]["seats"])}</li>'
+        f'<li><b>付款與手續費</b>：{_bu["en"]["pay"]}，每張另收 {_bu["en"]["fee"]:,} 円。</li>'
+        f'<li><b>取票</b>：{_bu["en"]["pickup"]}，座位號碼也是列印時才知道。</li>'
+        f'<li><b>先行抽選</b>：{html.escape(_bu["en"]["lottery_seen"])}</li>'
+        '</ol>'
+      + f'<p class="lede">官方英文站：<a href="{_bu["en"]["site"]}" rel="nofollow noopener" target="_blank">sumo.pia.jp/en</a>。'
+        f'日文站{html.escape(_bu["jp"]["note"])}</p>'
+      + f'<h2>票價：{html.escape(_pr["basho"])}（東京）</h2>'
+      + _sm_ptab
+      + f'<p class="disc">{html.escape(_pr["kids"])}溜席限 {html.escape(_pr["tamari"]["note"])}'
+        '這是一月場所兩國國技館的價格，大阪、名古屋、福岡的價格不同，'
+        '英文站買的每張再加手續費。</p>'
+      + '<h2>當天怎麼看</h2>'
+      + '<ul class="lede">'
+        f'<li>{html.escape(SM["day"]["open"])}，一張票可以從早看到晚。</li>'
+        f'<li>{html.escape(SM["day"]["top"])}，想看橫綱、大關的話下午進場就好。</li>'
+        f'<li>兩國國技館{html.escape(SM["day"]["reentry"])}。</li>'
+        '</ul>'
+      + '<h2>買不到票的話：相撲秀與相撲部屋體驗</h2>'
+      + '<p class="lede">下面這些不是本場所的門票，是退役力士的表演、相撲部屋參觀或體驗，'
+        '一年到頭都有場次，也能上土俵和力士合影。大多以英語進行。</p>'
+      + _sm_cards
+      + '<h2>常見問題</h2>' + sm_html
+      + '<p class="disc">日期、價格與購買規定以官方售票站チケット大相撲為準；'
+        '相撲秀的內容、價格與場次以 KKday 商品頁為準。</p>'
+      + foot())
+    pages.append(('/japan-sumo/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
