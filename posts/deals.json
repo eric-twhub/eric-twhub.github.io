@@ -14,19 +14,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$4,065（6 天有紀錄），這張低 47%"
+   "12 月出發的票，每天最便宜的平均要 NT$4,142（6 天有紀錄），這張低 48%"
   ],
   "med": 12082,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-05&inbound=OKA-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 2139,
+   "lo": 2599,
    "hi": 6018,
    "days": 9
   },
   "mbase": {
-   "avg": 4065,
+   "avg": 4142,
    "days": 6,
    "month": 12
   },
@@ -172,31 +172,6 @@
   "n": 1
  },
  {
-  "slug": "2026-11-09-taipei-miyazaki",
-  "title": "台北飛宮崎 NT$4,781 來回含稅｜台灣虎航 11/20 出發",
-  "o": "台北",
-  "c": "宮崎",
-  "_oiata": "TPE",
-  "_diata": "KMI",
-  "price": 4781,
-  "air": "台灣虎航",
-  "dep": "2026-11-20",
-  "ret": "2026-11-27",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000"
-  ],
-  "med": 11343,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-11-20&inbound=KMI-TPE&returnDate=2026-11-27&type=return&adult=1&language=zh-TW",
-  "hotelcity": "宮崎",
-  "cslug": "miyazaki",
-  "usual": null,
-  "mbase": null,
-  "rank": 1,
-  "n": 6
- },
- {
   "slug": "2026-11-09-taipei-morioka",
   "title": "台北飛盛岡・花卷 NT$4,973 來回含稅｜台灣虎航 11/21 出發",
   "o": "台北",
@@ -220,6 +195,31 @@
   "mbase": null,
   "rank": 1,
   "n": 3
+ },
+ {
+  "slug": "2026-11-09-taipei-miyazaki",
+  "title": "台北飛宮崎 NT$5,081 來回含稅｜台灣虎航 11/20 出發",
+  "o": "台北",
+  "c": "宮崎",
+  "_oiata": "TPE",
+  "_diata": "KMI",
+  "price": 5081,
+  "air": "台灣虎航",
+  "dep": "2026-11-20",
+  "ret": "2026-11-27",
+  "stops": "直飛",
+  "cls": "lcc",
+  "reasons": [
+   "廉航低於 NT$6,000"
+  ],
+  "med": 11343,
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-11-20&inbound=KMI-TPE&returnDate=2026-11-27&type=return&adult=1&language=zh-TW",
+  "hotelcity": "宮崎",
+  "cslug": "miyazaki",
+  "usual": null,
+  "mbase": null,
+  "rank": 1,
+  "n": 6
  },
  {
   "slug": "2026-11-09-taipei-oita",
@@ -262,7 +262,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 6038,
+  "med": 5838,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-11-13&inbound=FUK-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
