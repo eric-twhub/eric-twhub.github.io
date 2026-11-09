@@ -150,6 +150,12 @@
    "title": "寶可夢咖啡廳預約攻略：東京日本橋、大阪心齋橋什麼時候開放、怎麼訂、菜單價格"
   },
   {
+   "slug": "japan-nintendo-museum",
+   "url": "/japan-nintendo-museum/",
+   "h1": "任天堂博物館門票怎麼買",
+   "title": "任天堂博物館門票怎麼買：外國人抽籤時間、電話驗證、票價與交通（京都宇治）"
+  },
+  {
    "slug": "japan-driving-habits",
    "url": "/japan-driving-habits/",
    "h1": "在日本開車，哪些是法規，哪些只是習慣",
@@ -258,12 +264,6 @@
    "title": "台北飛沖繩 NT$2,139 來回含稅｜台灣虎航 12/03 出發"
   },
   {
-   "slug": "deals-2026-11-10-kaohsiung-okinawa",
-   "url": "/deals/2026-11-10-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$3,899 來回含稅｜台灣虎航 11/17 出發",
-   "title": "高雄飛沖繩 NT$3,899 來回含稅｜台灣虎航 11/17 出發"
-  },
-  {
    "slug": "deals-2026-11-10-taipei-ishigaki",
    "url": "/deals/2026-11-10-taipei-ishigaki/",
    "h1": "台北飛石垣島 NT$4,059 來回含稅｜台灣虎航 12/05 出發",
@@ -282,6 +282,12 @@
    "title": "台北飛佐賀 NT$4,278 來回含稅｜台灣虎航 11/12 出發"
   },
   {
+   "slug": "deals-2026-11-10-kaohsiung-okinawa",
+   "url": "/deals/2026-11-10-kaohsiung-okinawa/",
+   "h1": "高雄飛沖繩 NT$4,359 來回含稅｜台灣虎航 11/17 出發",
+   "title": "高雄飛沖繩 NT$4,359 來回含稅｜台灣虎航 11/17 出發"
+  },
+  {
    "slug": "deals-2026-11-10-taichung-okinawa",
    "url": "/deals/2026-11-10-taichung-okinawa/",
    "h1": "台中飛沖繩 NT$4,859 來回含稅｜台灣虎航 11/30 出發",
@@ -290,8 +296,14 @@
   {
    "slug": "deals-2026-11-10-taipei-miyazaki",
    "url": "/deals/2026-11-10-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$5,519 來回含稅｜台灣虎航 11/20 出發",
-   "title": "台北飛宮崎 NT$5,519 來回含稅｜台灣虎航 11/20 出發"
+   "h1": "台北飛宮崎 NT$5,278 來回含稅｜台灣虎航 11/20 出發",
+   "title": "台北飛宮崎 NT$5,278 來回含稅｜台灣虎航 11/20 出發"
+  },
+  {
+   "slug": "deals-2026-11-10-taipei-fukuoka",
+   "url": "/deals/2026-11-10-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$5,748 來回含稅｜台灣虎航 11/12 出發",
+   "title": "台北飛福岡 NT$5,748 來回含稅｜台灣虎航 11/12 出發"
   },
   {
    "slug": "deals-2026-11-10-taipei-oita",
@@ -300,10 +312,10 @@
    "title": "台北飛大分・別府 NT$5,768 來回含稅｜台灣虎航 11/21 出發"
   },
   {
-   "slug": "deals-2026-11-10-taipei-fukuoka",
-   "url": "/deals/2026-11-10-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$6,148 來回含稅｜台灣虎航 11/12 出發",
-   "title": "台北飛福岡 NT$6,148 來回含稅｜台灣虎航 11/12 出發"
+   "slug": "deals-2026-11-10-kaohsiung-fukuoka",
+   "url": "/deals/2026-11-10-kaohsiung-fukuoka/",
+   "h1": "高雄飛福岡 NT$5,808 來回含稅｜台灣虎航 11/13 出發",
+   "title": "高雄飛福岡 NT$5,808 來回含稅｜台灣虎航 11/13 出發"
   },
   {
    "slug": "deals-2026-11-10-taipei-nagoya",
