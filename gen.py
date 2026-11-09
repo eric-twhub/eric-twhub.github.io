@@ -1539,6 +1539,7 @@ def topnav(cur=''):
             + link('/japan-bogo/', '🎁 行程與網卡買一送一')
             + link('/japan-sumo/', '🤼 大相撲門票怎麼買')
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
+            + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1714,7 +1715,9 @@ _NO_AD_OK = {'/japan-hotel-check/', '/kawaguchiko-hotel-case/',
              # 相撲秀卡片就是 KKday 商品，同上
              '/japan-sumo/',
              # 同上：Klook 官方通路與 JTB 行程就是頁面本身
-             '/japan-ghibli-park/'}
+             '/japan-ghibli-park/',
+             # 同上：Asoview 與 Klook 兩個官方通路就是頁面本身
+             '/japan-chiikawa-park/'}
 
 def u_region(path):
     """地區頁回地區名，其餘回空字串。"""
@@ -7199,6 +7202,203 @@ if os.path.exists('ghibli.json'):
       + '<p class="disc">票種、價格與購買規定以吉卜力公園官網為準；行程的內容、價格與名額以 KKday 商品頁為準。</p>'
       + foot())
     pages.append(('/japan-ghibli-park/', 0.6))
+
+# ---------- 吉伊卡哇樂園門票怎麼買 ----------
+# 資料在 chiikawa.json，引ちいかわパーク官網（日文與英文版）與 Asoview 購票頁。
+# 官網只寫 Asoview；樂園 2025-08 另外公布 Klook 與 Trip.com 兩個海外通路，
+# 所以單買門票放 Asoview（官方本站，沒有分潤）與 Klook。KKday 不在那份公告裡，查不到授權，不放。
+# 開賣日照官方規則當場算（每月 15 日 12:00 開賣兩個月後的整個月，碰到週末或國定假日提前到前一個平日），
+# 機票從 tigerair-fares.json 當場算。
+if os.path.exists('chiikawa.json'):
+    CK = json.load(open('chiikawa.json', encoding='utf-8'))
+    _ck_today = datetime.date.fromisoformat(TODAY)
+    _ck_wd = '一二三四五六日'
+    _ck_hol = {x['d'] for x in (HOL.get('days') or []) if x.get('jp_off')}
+
+    def _ck_sale(y, m):
+        """y 年 m 月入園的票的開賣日：前兩個月的 15 日，週末或日本國定假日就提前到前一個平日。"""
+        mm, yy = m - 2, y
+        if mm <= 0:
+            mm, yy = mm + 12, yy - 1
+        d = datetime.date(yy, mm, 15)
+        while d.weekday() >= 5 or d.isoformat() in _ck_hol:
+            d -= datetime.timedelta(days=1)
+        return d
+
+    def _ck_md(d):
+        return f'{d.month}/{d.day}（{_ck_wd[d.weekday()]}）'
+
+    # 已經開賣、還沒過完的月份，加上下一個要開賣的月份
+    _ck_months = []
+    _y, _m = _ck_today.year, _ck_today.month
+    for _ in range(4):
+        _s = _ck_sale(_y, _m)
+        if _s <= _ck_today or not any(x['sale'] > _ck_today for x in _ck_months):
+            _ck_months.append({'y': _y, 'm': _m, 'sale': _s})
+        _m += 1
+        if _m > 12:
+            _y, _m = _y + 1, 1
+    _ck_next = next((x for x in _ck_months if x['sale'] >= _ck_today), None)
+
+    _ck_air = {'TPE-NRT': '成田', 'TPE-HND': '羽田'}
+
+    def _ck_fare(y, m):
+        best = None
+        for r in _ck_air:
+            for k, p in (TGF.get(r) or {}).items():
+                d = datetime.date.fromisoformat(k)
+                if d.year == y and d.month == m and d > _ck_today and (best is None or p < best[0]):
+                    best = (p, d, r)
+        return best
+
+    def _ck_hours(y, m):
+        """這個月的營業時間：平常的，加上落在這個月的特別營業時間。"""
+        sp = [h for h in CK['hours']['special']
+              if datetime.date.fromisoformat(h['from']).year == y
+              and datetime.date.fromisoformat(h['from']).month == m]
+        if not sp:
+            return html.escape(CK['hours']['normal'])
+        out = []
+        for h in sp:
+            a, z = datetime.date.fromisoformat(h['from']), datetime.date.fromisoformat(h['to'])
+            out.append(f'{a.month}/{a.day}' + (f'–{z.month}/{z.day}' if z != a else '')
+                       + f'：{html.escape(h["t"])}')
+        return '<br>'.join(out)
+
+    _ck_rows = ''
+    for x in _ck_months:
+        f = _ck_fare(x['y'], x['m'])
+        _ck_rows += (
+            f'<tr><td class="nm"><b>{x["y"]} 年 {x["m"]} 月</b></td>'
+            f'<td class="nm">{"已開賣" if x["sale"] < _ck_today else _ck_md(x["sale"]) + " 12:00"}</td>'
+            f'<td class="nm"><small>{_ck_hours(x["y"], x["m"])}</small></td>'
+            + (f'<td class="nm"><b>{money(f[0])}</b><br><small style="color:var(--dim)">'
+               f'{f[1].month}/{f[1].day} 飛{_ck_air[f[2]]}</small></td>' if f
+               else '<td class="nm"><small style="color:var(--dim)">虎航沒有這個月的票價</small></td>')
+            + '</tr>')
+
+    def _ck_y(p):
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    _ck_price = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(t["n"])}</b>'
+        + (f'<br><small style="color:var(--dim)">{html.escape(t["note"])}</small>' if t.get('note') else '')
+        + f'</td><td class="nm">{_ck_y(t["p"])}</td>'
+        + (f'<td class="nm">{_ck_y(t["dis"])}</td>' if t.get('dis')
+           else '<td class="nm"><small style="color:var(--dim)">官網沒有列這個票種</small></td>')
+        + '</tr>' for t in CK['price'])
+
+    _ck_as = CK['asoview']
+    _ck_kl = CK['klook']
+    _ck_kl_h = html.escape(klook(_ck_kl['url'], 'ticket'))
+    _ck_as_h = html.escape(_ck_as['url'])
+    _ck_buy = (
+        '<div class="card"><h3>官方售票站 Asoview</h3><ul>'
+        f'<li><b>張數：</b>{html.escape(_ck_as["limit"])}。</li>'
+        f'<li><b>付款：</b>{html.escape(_ck_as["pay"])}。</li>'
+        f'<li><b>語言：</b>{html.escape(_ck_as["lang"])}</li>'
+        f'<li><b>會員：</b>{html.escape(_ck_as["account"])}</li>'
+        f'<li><b>入場：</b>{html.escape(_ck_as["how"])}</li></ul>'
+        f'<a class="cta" href="{_ck_as_h}" target="_blank" rel="{_rel(_ck_as_h)}">'
+        '<span class="ci">🎟️</span><span class="ct"><b>到 Asoview 看剩下的時段</b>'
+        '<s>樂園官網連過去的購票頁，日圓原價</s></span><span class="ca">→</span></a></div>'
+        '<div class="card"><h3>海外通路 Klook</h3><ul>'
+        '<li><b>為什麼能買：</b>樂園 2025 年 8 月公布新增 Klook 與 Trip.com 兩個購票管道。</li>'
+        f'<li><b>要注意：</b>{html.escape(_ck_kl["note"])}購票本人到場、同行的人一起進場的規定一樣適用。</li>'
+        f'<li><b>名額：</b>{html.escape(_ck_kl["seen"])}</li></ul>'
+        f'<a class="cta" href="{_ck_kl_h}" target="_blank" rel="{_rel(_ck_kl_h)}">'
+        '<span class="ci">🎫</span><span class="ct"><b>到 Klook 買吉伊卡哇樂園門票</b>'
+        '<s>用台幣付款，價格與剩餘名額以 Klook 頁面為準</s></span><span class="ca">→</span></a></div>')
+    # _links_disc 會把 Asoview 寫成「一般搜尋」，這裡它是官方售票站，所以自己寫
+    _ck_disc = ('<p class="disc">Asoview 是樂園的官方售票站，不是本站的合作平台，本站沒有分潤；'
+                + ('Klook 連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>'
+                   if _AFF_RE.search(html.unescape(_ck_kl_h)) else 'Klook 連結本站也沒有分潤。</p>'))
+
+    _ck_ev = [e for e in CK['events'] if datetime.date.fromisoformat(e['to']) >= _ck_today]
+    _ck_ev_h = ''.join(
+        f'<li><b>{datetime.date.fromisoformat(e["from"]).month}/{datetime.date.fromisoformat(e["from"]).day}'
+        f'–{datetime.date.fromisoformat(e["to"]).month}/{datetime.date.fromisoformat(e["to"]).day}</b>：'
+        f'{html.escape(e["t"])}</li>' for e in _ck_ev)
+
+    ck_faq = [
+     ('吉伊卡哇樂園的門票什麼時候開賣？',
+      CK['sale_rule'] + (f'下一次是 {_ck_next["sale"].month} 月 {_ck_next["sale"].day} 日，'
+                         f'開賣 {_ck_next["y"]} 年 {_ck_next["m"]} 月入園的票。先到先得，不是抽籤。'
+                         if _ck_next else '')),
+     ('外國人要在哪裡買？',
+      '樂園官網連的是 Asoview，' + _ck_as['lang']
+      + '樂園 2025 年 8 月另外公布了 Klook 與 Trip.com 兩個海外購票管道。'),
+     ('當天去現場買得到票嗎？', CK['same_day']),
+     ('沒買門票可以進去買周邊嗎？',
+      '不行。周邊商店在樂園裡面，只有買票入場的人能逛。'),
+     ('東京車站的 ちいかわらんど 是吉伊卡哇樂園嗎？',
+      '不是。ちいかわらんど 是吉伊卡哇的周邊專賣店，東京車站一番街等地都有分店，不用門票；'
+      '要先買門票、有拍照場景和遊戲區的是池袋陽光城的吉伊卡哇樂園。'),
+     ('大阪有吉伊卡哇樂園嗎？', CK['osaka']),
+     ('買了可以退票或改日期嗎？',
+      '不行。官網寫明購買後不論什麼理由都不能取消、退款或改日期時段，天候因素也一樣。'),
+     ('小孩要買票嗎？', CK['price_note']),
+    ]
+    ck_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in ck_faq)
+    ck_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in ck_faq]}, ensure_ascii=False)
+
+    if _ck_next:
+        _ck_left = (_ck_next['sale'] - _ck_today).days
+        _ck_tans = (f'{_ck_next["y"]} 年 {_ck_next["m"]} 月入園的票，'
+                    f'{_ck_md(_ck_next["sale"])} 12:00 開賣，'
+                    + ('就是今天' if _ck_left == 0 else ('就是明天' if _ck_left == 1 else f'還有 {_ck_left} 天')))
+        _ck_shift = ('' if _ck_next['sale'].day == 15
+                     else '這個月的 15 日碰到週末或假日，所以提前。')
+    else:
+        _ck_tans, _ck_shift = CK['sale_rule'], ''
+
+    write('japan-chiikawa-park/index.html',
+      head('吉伊卡哇樂園門票怎麼買：開賣日、票價、Asoview 與 Klook、現場有沒有票',
+           '東京池袋吉伊卡哇樂園的門票每月 15 日 12:00 開賣兩個月後的票，先到先得。'
+           '官方售票站 Asoview 有繁體中文介面，海外也能在 Klook 買。票價、入場規定、現場當日票、'
+           '東京車站 ちいかわらんど 和大阪商店的差別，以及每個月的虎航票價。',
+           'japan-chiikawa-park/',
+           '<script type="application/ld+json">' + ck_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('吉伊卡哇樂園門票怎麼買', None)])
+      + '<h1>吉伊卡哇樂園門票怎麼買</h1>'
+      + '<p class="lede">吉伊卡哇樂園（ちいかわパーク）在東京池袋的陽光城，要先買指定日期與時段的票才能進去，'
+        f'裡面有拍照場景、遊戲區和只有這裡買得到的周邊。{html.escape(CK["access"])}'
+        f'下面的規則與價格引樂園官網，查證於 {CK["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網原文，查證於 {CK["checked"]}</div>'
+        f'<div class="tans">{_ck_tans}</div>'
+        f'<div class="tsub">{_ck_shift}先到先得，不是抽籤。官方售票站 Asoview 有繁體中文介面，'
+        '海外也能在 Klook 買。買了不能退也不能改日期。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>購票本人一定要到</b>：同行的人要一起進場，購票人沒來票就作廢。</li>'
+        '<li><b>園內不收現金</b>：信用卡、交通 IC 卡或電子支付才能買周邊。</li>'
+        '<li><b>沒有置物櫃</b>：行李箱和嬰兒車都不能推進去。</li>'
+        '</ul></div>'
+      + '<h2>哪個月份的票開賣了</h2>'
+      + '<div class="tw"><table><tr><th>入園月份</th><th>開賣（日本時間）</th><th>營業時間</th>'
+        '<th>台北 → 東京虎航最低單程</th></tr>' + _ck_rows + '</table></div>'
+      + '<p class="disc">開賣日照官網的規則推算。機票是台灣虎航官網每天抓的該月最低單程票價，'
+        '成田與羽田取較低的那個，含稅、不含託運行李。</p>'
+      + ('<h2>最近的活動</h2><ul class="lede">' + _ck_ev_h + '</ul>' if _ck_ev_h else '')
+      + '<h2>票價</h2>'
+      + '<div class="tw"><table><tr><th>票種</th><th>一般</th><th>身心障礙</th></tr>'
+        + _ck_price + '</table></div>'
+      + f'<p class="disc">{html.escape(CK["price_note"])}所有日期與時段同一個價格，價格含稅。</p>'
+      + '<h2>在哪裡買</h2>'
+      + _ck_buy + _ck_disc
+      + f'<p class="lede">{html.escape(CK["trip"])}當天現場：{html.escape(CK["same_day"])}</p>'
+      + '<h2>買之前要知道的規定</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(r)}</li>' for r in CK['rules']) + '</ul>'
+      + '<h2>入場當天</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(r)}</li>' for r in CK['inside']) + '</ul>'
+      + f'<p class="disc">地址：{html.escape(CK["address"])}。</p>'
+      + '<h2>常見問題</h2>' + ck_html
+      + '<p class="disc">票價、開賣規則與入場規定以吉伊卡哇樂園官網為準；Klook 的價格與名額以 Klook 頁面為準。</p>'
+      + foot())
+    pages.append(('/japan-chiikawa-park/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
