@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""三國連假與請假試算的分享圖卡（1080×1350，4:5）。
+"""台日中韓連假與請假試算的分享圖卡（1080×1350，4:5）。
 
 資料不是直接讀 holidays.json，而是讀 gen.py 產出的
 japan-holiday-calendar/cards-data.json。原因有兩個：
@@ -20,7 +20,7 @@ W, H = 1080, 1350
 OUT = os.path.join('japan-holiday-calendar', 'cards')
 SRC = os.path.join('japan-holiday-calendar', 'cards-data.json')
 E = htm.escape
-CN = {'jp': '日本', 'tw': '台灣', 'cn': '中國'}
+CN = {'jp': '日本', 'tw': '台灣', 'cn': '中國', 'kr': '韓國'}
 
 
 def fingerprint(d):
@@ -148,12 +148,12 @@ def build(d, today):
                 tw_pct = r['pct']
             if r['label'] == '只有日本連假' and r['pct'] is not None:
                 jp_pct = r['pct']
-    cover = ('<div class="kick">台灣・日本・中國</div>'
+    cover = ('<div class="kick">台灣・日本・中國・韓國</div>'
              '<h1>該避開的是<em>台灣的連假</em>，<br>不是日本的</h1>'
              '<div class="sub">用行政院人事行政總處與日本內閣府的官方行事曆逐日計算，'
              '請假排法不是手打的表。</div>'
              '<div class="stat">'
-             f'<div><b>{len(ov)}</b><span>段三國撞期<br>還沒過</span></div>'
+             f'<div><b>{len(ov)}</b><span>段多國撞期<br>還沒過</span></div>'
              f'<div><b>{len(lv)}</b><span>個台灣假期<br>可以排</span></div>'
              + (f'<div><b>+{tw_pct:.0f}%</b><span>台灣連假出發<br>機票中位價</span></div>'
                 if tw_pct is not None else '')
@@ -199,7 +199,7 @@ def build(d, today):
     # ── 3 撞期 ──
     rows = ''
     for o in ov:
-        who = '＋'.join(CN[c] for c in o['countries'])
+        who = '＋'.join(CN[c] for c in ('tw', 'jp', 'cn', 'kr') if c in o['countries'])
         left = (datetime.date.fromisoformat(o['start'])
                 - datetime.date.fromisoformat(today)).days
         rows += (f'<div class="row"><div class="nm">{md(o["start"])}–{md(o["end"])}'

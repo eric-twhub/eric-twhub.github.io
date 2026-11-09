@@ -247,7 +247,7 @@ def build(d):
             f'{len(leave)} 段'
             + ('，含單日假日' if any(x['base'] == 1 for x in leave) else ''))
 
-    # ── 連假 × 日本／中國 ──
+    # ── 連假 × 日本／中國／韓國 ──
     for k, grp in enumerate(_chunk(runs, PER_RUN)):
         if not grp:
             break
@@ -271,6 +271,14 @@ def build(d):
                     for x in r['cn']))
             else:
                 bits.append('🇨🇳 中國沒有連假')
+            if r.get('kr') is None:
+                bits.append('🇰🇷 韓國尚未公布')
+            elif r['kr']:
+                bits.append('🇰🇷 <em>韓國同時連假</em>　' + '；'.join(
+                    f'{"、".join(x["names"]) or "連假"} {_rng(x["start"], x["end"])}'
+                    for x in r['kr']))
+            else:
+                bits.append('🇰🇷 韓國沒有連假')
             if r['fest']:
                 bits.append('🎆 <em>' + '、'.join(
                     f'{f["name"]}（{f["city"]}）' + ('・推估' if f['est'] else '')
@@ -286,10 +294,10 @@ def build(d):
                                else '<s>' + x + '</s>' for x in bits)
                      + '</div>')
         n = len(_chunk(runs, PER_RUN))
-        add(f'<h1>{ys} 年的連假，<br><em>日本與中國同期</em></h1>'
+        add(f'<h1>{ys} 年的連假，<br><em>日本、中國、韓國同期</em></h1>'
             + (f'<div class="legend">第 {k + 1} 組，共 {n} 組</div>' if n > 1 else '')
             + f'<div class="list">{rows}</div>', '',
-            '台灣放假時，日本與中國同期',
+            '台灣放假時，日本、中國、韓國同期',
             f'第 {k + 1} 組，共 {n} 組' if n > 1 else '逐段對照')
 
     # ── 請假表 ──
@@ -521,6 +529,8 @@ def _month(m, cal, d):
                     + '，那幾天當地的住宿會緊。')
     if not cal.get('cn_open'):
         sub += f'中國 {_Y[0]} 年的節假日還沒公布，格子裡不會有中國的標記。'
+    if not cal.get('kr_open'):
+        sub += f'韓國 {_Y[0]} 年的月曆要項還沒發布，格子裡不會有韓國的標記。'
 
     lead = _dt.date(y, mo, int(m['days'][0]['d'][8:10])).weekday()
     cells = '<div class="cell cl-pad"></div>' * lead
@@ -543,6 +553,8 @@ def _month(m, cal, d):
             txt += f'<s>🇯🇵 {E(c["jp"])}</s>'
         if c['cn']:
             txt += f'<s>🇨🇳 {E(c["cn"])}</s>'
+        if c.get('kr'):
+            txt += f'<s>🇰🇷 {E(c["kr"])}</s>'
         if c['leave']:
             txt += '<u>請假</u>'
         cells += f'<div class="cell {cls}"><b>{int(c["d"][8:10])}</b>{txt}</div>'
@@ -578,7 +590,7 @@ def _month(m, cal, d):
             '<span><i style="background:#fbe3dd;border-color:#eeb6a6"></i>台灣連假</span>'
             '<span><i style="background:#ffedd8;border-color:#c2410c"></i>建議請假</span>'
             '<span><i style="background:#eceae5;border-color:#e0ddd6"></i>週末</span>'
-            '<span>🇹🇼 台灣　🇯🇵 日本　🇨🇳 中國</span></div>'
+            '<span>🇹🇼 台灣　🇯🇵 日本　🇨🇳 中國　🇰🇷 韓國</span></div>'
             '<div class="list" style="margin-top:16px">'
             + '<div class="cwd">'
             + ''.join(f'<div>{w}</div>' for w in '一二三四五六日')

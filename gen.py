@@ -1529,7 +1529,7 @@ def topnav(cur=''):
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
-            + link('/japan-holiday-calendar/', '📅 三國連假撞期')
+            + link('/japan-holiday-calendar/', '📅 台日中韓連假撞期')
             + '<hr><b>訂房與交通</b>'
             + link('/hotel-price-check/', '🏨 訂房比價')
             + link('/japan-airport-last-train/', '🚉 機場末班車')
@@ -2012,9 +2012,9 @@ def good_times(x):
 HOL = {}
 JPH_RUN, TWH_RUN, HOL_OVER, HOL_DAYS = [], [], [], {}
 # 每個國家的行事曆各自涵蓋到哪一天。資料尾端會跨到隔年（跨年的連假要算得出來，
-# 就得多幾天），但三個國家的公布進度不一樣，*_off 是 None 就代表那天還沒公布。
+# 就得多幾天），但各國的公布進度不一樣，*_off 是 None 就代表那天還沒公布。
 # 走出範圍的日子要說「未公布」，寫「沒有假」等於替對方宣告。
-HOL_COV = {'jp': '', 'tw': '', 'cn': ''}
+HOL_COV = {'jp': '', 'tw': '', 'cn': '', 'kr': ''}
 if os.path.exists('holidays.json'):
     HOL = json.load(open('holidays.json', encoding='utf-8'))
 
@@ -2033,7 +2033,8 @@ if os.path.exists('holidays.json'):
     for _r in HOL['runs']['tw']:
         _r['names'] = [_tw_name(n) for n in _r['names']]
     for _o in HOL.get('overlaps') or []:
-        _o['names'] = [_tw_name(n) for n in _o['names']]
+        # 日本、中國、韓國的 1/1 本來就叫元旦，台灣的換名後會重複，去掉重複的
+        _o['names'] = list(dict.fromkeys(_tw_name(n) for n in _o['names']))
 
     JPH_RUN = HOL['runs']['jp']
     TWH_RUN = HOL['runs']['tw']
@@ -2041,7 +2042,7 @@ if os.path.exists('holidays.json'):
     HOL_DAYS = {x['d']: x for x in HOL['days']}
     HOL_COV = {k: max((x['d'] for x in HOL['days']
                        if x.get(k + '_off') is not None), default='')
-               for k in ('jp', 'tw', 'cn')}
+               for k in ('jp', 'tw', 'cn', 'kr')}
 
 def jp_run(d):
     """這個日期（YYYY-MM-DD）落在哪一段日本連假裡，沒有就回 None"""
@@ -5659,7 +5660,7 @@ if os.path.exists('ski-ticket.json'):
         f'<s>社群話題查證後的版本</s></a>'
       + f'<a class="ct" href="{U("/sapporo/")}"><b>札幌機票</b>'
         f'<s>北海道雪場門戶</s></a>'
-      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 三國連假撞期</b>'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b>'
         f'<s>雪季的連假怎麼避</s></a></div>'
       + f'<p class="disc">本頁的票價、折扣與截止日查證於 {ST["checked"]}，'
         f'早鳥票售完即提前結束，購買前請以商品頁為準。'
@@ -7472,7 +7473,7 @@ if os.path.exists('threads-hub.json'):
         f'<s>七千多則回覆挑出來的</s></a>'
       + f'<a class="ct" href="{U("/japan-travel-rules/")}"><b>📋 去日本的新制度</b>'
         f'<s>出境稅、住宿稅、肉品檢疫</s></a>'
-      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 三國連假撞期</b>'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b>'
         f'<s>含請假試算</s></a>'
       + f'<a class="ct" href="{U("/deals/")}"><b>🔥 機票特價</b>'
         f'<s>台灣飛日本，每日更新</s></a></div>'
@@ -8998,7 +8999,7 @@ if os.path.exists('jttp.json'):
 # 使用者要的不是「哪天放假」那種查得到的東西，是「那幾天到底貴多少」。
 # 我們手上有每日票價，所以價差用自己的資料算，不用猜的。
 if HOL:
-    _CN = {'jp': '日本', 'tw': '台灣', 'cn': '中國'}
+    _CN = {'jp': '日本', 'tw': '台灣', 'cn': '中國', 'kr': '韓國'}
 
     def _hol_price_gap():
         """用站上自己的票價資料，算連假出發與平常日出發的價差。
@@ -9222,7 +9223,7 @@ if HOL:
 
     # 分享圖卡。資料來自上面那個 cards-data.json，由 make_holiday_cards.py 產生。
     _HC_CARD = [
-     ('01', '該避開的是台灣的連假', '三國行事曆與關鍵數字'),
+     ('01', '該避開的是台灣的連假', '台日中韓行事曆與關鍵數字'),
      ('02', '台灣飛日本，連假貴多少', '當日票價快照'),
      ('03', '接下來會撞期的日子', '兩國以上同時放長假'),
      ('04', '只請 1 天，能休幾天', '依多出來的天數排序'),
@@ -9250,7 +9251,7 @@ if HOL:
       + ''.join(
           f'<a href="{U("/japan-holiday-calendar/cards/hol-" + i + ".png")}" target="_blank">'
           f'<img src="{U("/japan-holiday-calendar/cards/hol-" + i + ".png")}" '
-          f'alt="三國連假圖卡第 {i} 張：{html.escape(t)}" '
+          f'alt="台日中韓連假圖卡第 {i} 張：{html.escape(t)}" '
           f'width="1080" height="1350" loading="lazy">'
           f'<b>{html.escape(t)}</b><s>{html.escape(sub)}</s></a>'
           for i, t, sub in _HC_CARD)
@@ -9263,7 +9264,7 @@ if HOL:
     for o in HOL_OVER:
         if o['end'] < TODAY:
             continue
-        who = '＋'.join(_CN[c] for c in o['countries'])
+        who = '＋'.join(_CN[c] for c in ('tw', 'jp', 'cn', 'kr') if c in o['countries'])
         nm = '、'.join(o['names'])
         d0 = datetime.date.fromisoformat(o['start'])
         left = (d0 - datetime.date.fromisoformat(TODAY)).days
@@ -9290,12 +9291,13 @@ if HOL:
     _src = HOL['_來源網址']
     _src_rows = ''.join(
         f'<li><b>{_CN[k]}</b>：{html.escape(HOL["_來源"][_CN[k]])}　'
-        # 逐年公布的（中國）一年一個網址，用 {年份: 網址} 存，連結各標年份
+        # 逐年公布的（中國、韓國）一年一個網址，用 {年份: 網址} 存，連結各標年份
         + ('　'.join(f'<a href="{u}" target="_blank" rel="nofollow noopener">{y} 年 →</a>'
                      for y, u in v.items()) if isinstance(v, dict) else
            f'<a href="{v}" target="_blank" rel="nofollow noopener">來源 →</a>')
         + '</li>'
-        for k, v in (('jp', _src['日本']), ('tw', _src['台灣']), ('cn', _src['中國'])))
+        for k, v in (('jp', _src['日本']), ('tw', _src['台灣']), ('cn', _src['中國']),
+                     ('kr', _src['韓國'])))
 
     hc_faq = [
      ('為什麼要看日本的假期？我又不是日本人',
@@ -9322,6 +9324,15 @@ if HOL:
       '中國的節假日由國務院逐年公布，2027 年的安排在 2026 年 11 月 5 日發布'
       '（國辦發明電〔2026〕10 號），已經算進來了。2028 年的還沒公布，'
       '所以 2028 年的中國那一欄是空的。還沒公布不等於沒有假。'),
+     ('為什麼也要看韓國？',
+      '韓國是去日本旅遊人數最多的國家之一，韓國放連假時，'
+      '飛日本的航班與日本的住宿都會多一波需求。它和台灣的機票價格沒有直接關係，'
+      '影響的是你到了之後的住宿，跟日本自己放假是同一類。'),
+     ('韓國的資料到什麼時候？',
+      '韓國的公休日以宇宙航空廳每年發布的隔年「月曆要項」為準，'
+      '2027 年的在 2026 年 6 月 29 日發布，已經算進來了，'
+      '勞動節、制憲節從 2026 年起改列公休日也包含在內。2028 年的還沒發布。'
+      '韓國的補假（대체공휴일）有算進去，臨時加放的公休日只收已經公布的。'),
     ]
     hc_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in hc_faq)
@@ -9329,18 +9340,19 @@ if HOL:
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
         for q, a in hc_faq]}, ensure_ascii=False)
 
-    hc_title = '日本、台灣、中國的連假撞在一起是哪幾天？附實際票價算出來的價差'
+    hc_title = '日本、台灣、中國、韓國的連假撞在一起是哪幾天？附實際票價算出來的價差'
     hc_desc = ('台灣的連假決定你何時出發，日本的連假決定你到了之後住宿多貴。'
-               '本頁把三國的國定假日排在一起，標出重疊的日期，'
+               '本頁把台日中韓的國定假日排在一起，標出重疊的日期，'
                '並用本站每日抓取的票價資料計算連假出發與平常日出發的實際價差。')
 
     write('japan-holiday-calendar/index.html',
       head(hc_title, hc_desc, 'japan-holiday-calendar/',
            '<script type="application/ld+json">' + hc_ld + '</script>')
-      + topnav() + crumbs([('首頁', '/'), ('三國連假日曆', None)])
-      + '<h1>哪幾天最好避開？三國的假期排在一起看</h1>'
+      + topnav() + crumbs([('首頁', '/'), ('台日中韓連假日曆', None)])
+      + '<h1>哪幾天最好避開？台日中韓的假期排在一起看</h1>'
       + '<p class="lede">台灣的連假決定你什麼時候能出發，日本的連假決定你到了之後住宿多貴。'
-        '中國的黃金週則是在搶同一批機位。三邊排在一起才看得出來哪幾天真的該避開。</p>'
+        '中國的黃金週是在搶同一批機位，韓國的連假則是另一波飛日本的人潮。'
+        '排在一起才看得出來哪幾天真的該避開。</p>'
       + '<div class="today">'
         f'<div class="tday">官方資料，查證於 {HOL["checked"]}</div>'
         '<div class="tans"><b>機票看台灣的連假，住宿才看日本的</b></div>'
@@ -9397,8 +9409,10 @@ if HOL:
       + '<h3>🇯🇵 日本</h3>' + _runs_tbl('jp')
       + '<h3>🇹🇼 台灣</h3>' + _runs_tbl('tw')
       + '<h3>🇨🇳 中國</h3>' + _runs_tbl('cn')
+      + '<h3>🇰🇷 韓國</h3>' + _runs_tbl('kr')
       + f'<p class="disc">{html.escape(HOL["_連假定義"])}'
-        f'{html.escape(HOL["_中國到2027"])}</p>'
+        f'{html.escape(HOL["_中國到2027"])}'
+        f'{html.escape(HOL["_韓國到2027"])}</p>'
       + '<h2>資料來源</h2>'
       + f'<ul class="lede">{_src_rows}</ul>'
       + '<h2>常見問題</h2>' + hc_html
@@ -9421,9 +9435,9 @@ if HOL:
         '價差為本站票價快照的計算結果，僅供量級參考。</p>'
       + foot())
     pages.append(('/japan-holiday-calendar/', 0.8))
-    print(f'   三國連假日曆：重疊 {len(HOL_OVER)} 段'
+    print(f'   台日中韓連假日曆：重疊 {len(HOL_OVER)} 段'
           f'（日 {len(HOL["runs"]["jp"])}／台 {len(HOL["runs"]["tw"])}／'
-          f'中 {len(HOL["runs"]["cn"])} 段連假）')
+          f'中 {len(HOL["runs"]["cn"])}／韓 {len(HOL["runs"]["kr"])} 段連假）')
 
     # ---------- 台灣假期：分年度的請假攻略 ----------
     # 三國連假那頁是橫著比三個國家，這裡是直著看一整年。
@@ -9548,6 +9562,8 @@ if HOL:
                     days.setdefault(d, x)
         cn_open = any(x.get('cn_off') is not None
                       for d, x in days.items() if d[:4] == ys)
+        kr_open = any(x.get('kr_off') is not None
+                      for d, x in days.items() if d[:4] == ys)
         months = []
         for ym in sorted({d[:7] for d in days}):
             md = [d for d in sorted(days) if d[:7] == ym]
@@ -9559,7 +9575,7 @@ if HOL:
                 cells.append({
                     'd': d, 'w': x['w'],
                     'tw': x.get('tw') if x.get('tw') != '週末' else None,
-                    'jp': x.get('jp'), 'cn': x.get('cn'),
+                    'jp': x.get('jp'), 'cn': x.get('cn'), 'kr': x.get('kr'),
                     'run': d in runset,
                     'off': bool(x.get('tw_off')),
                     'jp_off': bool(x.get('jp_off')),
@@ -9576,7 +9592,7 @@ if HOL:
                 'ym': ym, 'days': cells, 'fest': _f,
                 'fare': (MF.get('months') or {}).get(ym),
                 'areas': ((MG or {}).get('months') or {}).get(_mn) or []})
-        return {'months': months, 'cn_open': cn_open,
+        return {'months': months, 'cn_open': cn_open, 'kr_open': kr_open,
                 'fare_src': {'origin': MF.get('origin'),
                              'dests': MF.get('dest_names') or MF.get('dests'),
                              'generated': MF.get('generated')} if MF else None,
@@ -9594,6 +9610,7 @@ if HOL:
         if not cd:
             return ''
         cn_open, last, extra = cd['cn_open'], cd['last'], cd['extra']
+        kr_open = cd.get('kr_open')
         partial = cd.get('partial') or []
         out = ''
         for _m in cd['months']:
@@ -9624,6 +9641,8 @@ if HOL:
                     txt += f'<s>🇯🇵 {html.escape(c["jp"])}</s>'
                 if c['cn']:
                     txt += f'<s>🇨🇳 {html.escape(c["cn"])}</s>'
+                if c.get('kr'):
+                    txt += f'<s>🇰🇷 {html.escape(c["kr"])}</s>'
                 if c['leave']:
                     txt += '<span class="tag">請假</span>'
                 cells += (f'<div class="cd {" ".join(cls)}">'
@@ -9643,7 +9662,7 @@ if HOL:
               'border-width:2px"></u>建議請假</span>'
               '<span><u style="background:#efeeea"></u>週末</span>'
               '<span><u style="background:#eef6fb;border-color:#b9d8ea"></u>補班日</span>'
-              '<span>🇹🇼 台灣　🇯🇵 日本　🇨🇳 中國</span></div>')
+              '<span>🇹🇼 台灣　🇯🇵 日本　🇨🇳 中國　🇰🇷 韓國</span></div>')
         note = ('<p class="disc">'
                 + (f'另外畫了 {"、".join(f"{int(e[:4])} 年 {int(e[5:7])} 月" for e in extra)}，'
                    '因為跨年的那段假期，要請的日子與換到的連休不在同一年，'
@@ -9654,6 +9673,8 @@ if HOL:
                 '台灣有兩個名字太長，月曆上縮寫成光復節與教師節。'
                 + ('' if cn_open else
                    f'中國的 {ys} 年節假日國務院還沒公布，所以月曆上沒有中國的標記。')
+                + ('' if kr_open else
+                   f'韓國 {ys} 年的月曆要項還沒發布，所以月曆上沒有韓國的標記。')
                 + (f'{"、".join(f"{int(pm[:4])} 年 {int(pm[5:7])} 月" for pm in partial)}'
                    '只畫了跨年連假用到的那幾天，'
                    f'台灣的行事曆資料到 {HOL_COV["tw"]} 為止，之後的還沒公布。</p>'
@@ -9710,7 +9731,7 @@ if HOL:
 
         return (f'<h2>{ys} 年月曆</h2>'
                 '<p class="lede">哪幾天放假、哪幾天請了最划算，直接標在日期上。'
-                '三國的假日名稱都寫在格子裡，出發前掃一眼就知道那幾天日本或中國'
+                '各國的假日名稱都寫在格子裡，出發前掃一眼就知道那幾天日本、中國或韓國'
                 '是不是也在放假。</p>' + lg + '<div class="cal">' + out + '</div>'
                 + note + _mg_block)
 
@@ -9722,37 +9743,29 @@ if HOL:
         lp = [p for p in _LP if p['start'][:4] == ys]
         fy = _fest_year(Y)
         cn_open = any(r['start'][:4] == ys for r in HOL['runs']['cn'])
+        kr_open = any(r['start'][:4] == ys for r in HOL['runs']['kr'])
+        _open = {'jp': True, 'cn': cn_open, 'kr': kr_open}
 
-        # ── 連假對照表：台灣的每一段，日本與中國那幾天在做什麼 ──
+        def _ovl_cell(k, s, e):
+            """台灣這一段連假期間，某國有沒有連假。三態：有／無／未公布。"""
+            hit = _ovl_runs(k, s, e) if _open[k] else []
+            if hit:
+                return ('<td class="lose nm"><b>有</b><br><small style="'
+                        'color:var(--dim);font-weight:400">'
+                        + '<br>'.join(
+                            f'{html.escape("、".join(x["names"]) or "連假")}'
+                            f' {_dm(x["start"], x["end"])}，重疊 {n} 天'
+                            for x, n in hit) + '</small></td>')
+            if not _open[k] or e > HOL_COV[k]:
+                # 資料還沒涵蓋到的日子（跨進還沒公布的隔年）寫「無」，等於替對方宣告那幾天不放假
+                return '<td class="dimcell">未公布</td>'
+            return '<td class="dimcell">無</td>'
+
+        # ── 連假對照表：台灣的每一段，日本、中國、韓國那幾天在做什麼 ──
         rows = ''
         for r in twr:
             s, e = r['start'], r['end']
-            jp = _ovl_runs('jp', s, e)
-            if jp:
-                jpc = ('<td class="lose nm"><b>有</b><br><small style="'
-                       'color:var(--dim);font-weight:400">'
-                       + '<br>'.join(
-                           f'{html.escape("、".join(x["names"]) or "連假")}'
-                           f' {_dm(x["start"], x["end"])}，重疊 {n} 天'
-                           for x, n in jp) + '</small></td>')
-            elif e > HOL_COV['jp']:
-                # 資料還沒涵蓋到的日子寫「無」，等於替日本宣告那幾天不放假。
-                jpc = '<td class="dimcell">未公布</td>'
-            else:
-                jpc = '<td class="dimcell">無</td>'
-            cn = _ovl_runs('cn', s, e) if cn_open else []
-            if cn:
-                cnc = ('<td class="lose nm"><b>有</b><br><small style="'
-                       'color:var(--dim);font-weight:400">'
-                       + '<br>'.join(
-                           f'{html.escape("、".join(x["names"]) or "連假")}'
-                           f' {_dm(x["start"], x["end"])}，重疊 {n} 天'
-                           for x, n in cn) + '</small></td>')
-            elif not cn_open or e > HOL_COV['cn']:
-                # 跨進隔年、而隔年中國還沒公布的那一段，寫「無」等於替對方宣告，和日本同一套三態
-                cnc = '<td class="dimcell">未公布</td>'
-            else:
-                cnc = '<td class="dimcell">無</td>'
+            jpc, cnc, krc = (_ovl_cell(k, s, e) for k in ('jp', 'cn', 'kr'))
             fs = [f for f in fy if f['start'] and f['start'] <= e and f['end'] >= s]
             fc = (('<td class="nm"><small>' + '<br>'.join(
                     f'{html.escape(f["name"])}（{f["city"]}）'
@@ -9764,7 +9777,7 @@ if HOL:
             rows += (f'<tr><td class="nm"><b>{html.escape(_rn)}</b>'
                      f'<br><small style="color:var(--dim)">'
                      f'{_dm(r["start"], r["end"])}</small></td>'
-                     f'<td><b>{r["days"]} 天</b></td>{jpc}{cnc}{fc}</tr>')
+                     f'<td><b>{r["days"]} 天</b></td>{jpc}{cnc}{krc}{fc}</tr>')
 
         # ── 請假試算 ──
         lp_rows = ''.join(
@@ -9913,7 +9926,7 @@ if HOL:
             _cal_cards = (
               '<h3>月曆圖卡</h3>'
               f'<p class="lede">上面那份月曆做成 {len(_clk)} 張圖，一張一個月，'
-              '格子放大到寫得下三國的假日名稱。存下來或轉發都可以。</p>'
+              '格子放大到寫得下各國的假日名稱。存下來或轉發都可以。</p>'
               '<div class="twk">'
               + ''.join(
                   f'<a href="{U(f"/taiwan-holiday-{ys}/cards/" + c["file"])}" '
@@ -9927,9 +9940,9 @@ if HOL:
         _tw_cards += _cal_cards
 
         title = (f'{ys} 年台灣連假請假攻略：請 1 天休幾天，'
-                 f'順便看日本中國同期放不放假')
+                 f'順便看日本中國韓國同期放不放假')
         desc = (f'{ys} 年台灣的國定假日與連假，逐段算出請 1 到 4 天的最佳排法。'
-                f'同一張表上標出日本與中國那幾天有沒有連假，'
+                f'同一張表上標出日本、中國、韓國那幾天有沒有連假，'
                 f'以及日本當地的大型祭典，因為那會同時吃掉住宿與交通。')
 
         other = 2027 if Y == 2026 else 2026
@@ -9947,6 +9960,9 @@ if HOL:
                 'cn': (None if not cn_open or e > HOL_COV['cn'] else
                        [{'names': x['names'], 'start': x['start'], 'end': x['end'],
                          'overlap': n} for x, n in _ovl_runs('cn', s, e)]),
+                'kr': (None if not kr_open or e > HOL_COV['kr'] else
+                       [{'names': x['names'], 'start': x['start'], 'end': x['end'],
+                         'overlap': n} for x, n in _ovl_runs('kr', s, e)]),
                 'fest': [{'name': f['name'], 'city': f['city'],
                           'est': f['conf_y'] == 'est'}
                          for f in fy if f['start'] and f['start'] <= e
@@ -10002,6 +10018,12 @@ if HOL:
               '會影響機位，不是直接影響台灣這邊的票價。中國的黃金週期間，'
               '飛日本的航線整體都很滿，能加的班次也被吃掉。'
               '上表標出中國同期有沒有連假就是為了這個。'))
+        if kr_open:
+            faq.append(
+             ('韓國放假跟台灣出發的人有什麼關係？',
+              '影響的是住宿。韓國是去日本旅遊人數最多的國家之一，'
+              '韓國連假時日本的飯店多一波需求，跟日本自己放假是同一類，'
+              '和台灣飛日本的機票價格沒有直接關係。'))
         if _hit:
             _r, _j = _hit[0]
             _nm = '、'.join(_r['names'])
@@ -10011,7 +10033,7 @@ if HOL:
               f'{_nm}（{_dm(_r["start"], _r["end"])}）跟日本的{_jn}'
               f'（{_dm(_j[0][0]["start"], _j[0][0]["end"])}）重疊 {_j[0][1]} 天。'
               '那種日子機票與住宿會一起被推上去，是最該避開的一類。'
-              '完整的重疊清單在三國連假日曆那一頁。'))
+              '完整的重疊清單在台日中韓連假日曆那一頁。'))
         else:
             faq.append(
              (f'{ys} 年剩下的連假，有跟日本撞在一起的嗎？',
@@ -10029,12 +10051,12 @@ if HOL:
         write(f'taiwan-holiday-{ys}/index.html',
           head(title, desc, f'taiwan-holiday-{ys}/',
                '<script type="application/ld+json">' + faq_ld + '</script>')
-          + topnav() + crumbs([('首頁', '/'), ('三國連假日曆', '/japan-holiday-calendar/'),
+          + topnav() + crumbs([('首頁', '/'), ('台日中韓連假日曆', '/japan-holiday-calendar/'),
                     (f'{ys} 年請假攻略', None)])
           + f'<h1>{ys} 年台灣連假：請幾天假，可以連休幾天</h1>'
           + '<p class="lede">請假排法是用行政院人事行政總處的官方行事曆逐日算出來的，'
             '不是手打的表，補班日也扣掉了。'
-            '同一張表上一併標出日本與中國那幾天放不放假，還有日本當地的大型活動，'
+            '同一張表上一併標出日本、中國、韓國那幾天放不放假，還有日本當地的大型活動，'
             '因為決定住宿貴不貴的是那個，不是台灣的行事曆。</p>'
           + '<div class="today">'
             f'<div class="tday">官方行事曆，查證於 {HOL["checked"]}</div>'
@@ -10062,19 +10084,24 @@ if HOL:
                  + '</tr>' for p in lp)
              + '</tbody></table></div>')
              if lp else '')
-          + (f'<h2>{ys} 年的連假，日本與中國同期在做什麼</h2>'
+          + (f'<h2>{ys} 年的連假，日本、中國、韓國同期在做什麼</h2>'
              + ('<p class="lede">今年已經過去的假期不列。'
                 f'{ys} 年整年共 {len(twr_all)} 段連假，'
                 f'還沒到的有 {len(twr)} 段。</p>' if len(twr) != len(twr_all)
                 else f'<p class="lede">{ys} 年共 {len(twr)} 段連假。</p>')
              + '<div class="tw"><table><tr><th>台灣連假</th><th>天數</th>'
-               '<th>🇯🇵 日本同期</th><th>🇨🇳 中國同期</th><th>日本當地活動</th></tr>'
+               '<th>🇯🇵 日本同期</th><th>🇨🇳 中國同期</th><th>🇰🇷 韓國同期</th>'
+               '<th>日本當地活動</th></tr>'
              + rows + '</table></div>'
              + ('<p class="disc">中國那一欄一律標「未公布」，'
                 '因為中國的節假日由國務院逐年公布，'
                 f'{ys} 年的安排還沒發布。還沒公布不等於沒有假，'
                 '所以不寫成「無」。</p>' if not cn_open
-                else '<p class="disc">「無」是指那幾天該國沒有連續三天以上的假期，'
+                else '')
+             + ('<p class="disc">韓國那一欄一律標「未公布」，'
+                f'因為韓國 {ys} 年的月曆要項還沒發布。</p>' if not kr_open
+                else '')
+             + ('<p class="disc">「無」是指那幾天該國沒有連續三天以上的假期，'
                      '不是指完全沒有放假日。單純的週六日不算，'
                      '那不會造成額外的需求高峰。</p>')
              if twr else
@@ -10135,13 +10162,14 @@ if HOL:
           + f'<a class="ct" href="{U(f"/taiwan-holiday-{other}/")}">'
             f'<b>📅 {other} 年版</b><s>同一份算法，換一年</s></a>'
           + f'<a class="ct" href="{U("/japan-holiday-calendar/")}">'
-            f'<b>📅 三國連假撞期</b><s>附實際票價算出來的價差</s></a>'
+            f'<b>📅 台日中韓連假撞期</b><s>附實際票價算出來的價差</s></a>'
           + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日機票特價</b>'
             f'<s>票價卡會標出撞期的日子</s></a>'
           + f'<a class="ct" href="{U("/hotel-price-check/")}"><b>🏨 訂房比價</b>'
             f'<s>連假時最先漲的就是這個</s></a></div>'
           + f'<p class="disc">台灣假日引自行政院人事行政總處的政府行政機關辦公日曆表，'
-            f'日本引自內閣府，中國引自國務院辦公廳的通知，查證於 {HOL["checked"]}。'
+            f'日本引自內閣府，中國引自國務院辦公廳的通知，'
+            f'韓國引自宇宙航空廳的月曆要項，查證於 {HOL["checked"]}。'
             '各國都可能臨時調整，出發前請以官方最新公告為準。'
             '祭典日期以各主辦單位當年度公告為準，標為「推估」的尚未公布。</p>'
           + foot())
@@ -11248,7 +11276,7 @@ def _card_stamp_warn():
             ('make_ski_cards', 'ski-ticket.json',
              'japan-ski-lift-ticket/cards', '雪票早鳥'),
             ('make_holiday_cards', 'japan-holiday-calendar/cards-data.json',
-             'japan-holiday-calendar/cards', '三國連假'),
+             'japan-holiday-calendar/cards', '台日中韓連假'),
             ('make_coupon_cards', 'coupons.json',
              'japan-coupon/cards', '購物折扣券'),
             ('make_apple_cards', 'apple.json',
@@ -18467,7 +18495,7 @@ if HS:
         f'不影響你的價格；連到 Booking 的按鈕是查價來源，本站沒有分潤。</p>'
       + jp_runs_block(4, '住宿會跳價的日子：日本連假')
       + f'<p class="disc">台灣與日本同時放假的那幾天更兇，'
-        f'<a href="{U("/japan-holiday-calendar/")}">三國連假撞期日曆</a>'
+        f'<a href="{U("/japan-holiday-calendar/")}">台日中韓連假撞期日曆</a>'
         f'有完整對照與實際票價算出來的價差。</p>'
       + foot())
     pages.append(('/tokyo/hostel/', 0.8))
@@ -18714,7 +18742,7 @@ if BH:
         f'連到 Booking 的按鈕是查價來源，本站沒有分潤。</p>'
       + jp_runs_block(4, '住宿會跳價的日子：日本連假')
       + f'<p class="disc">台灣與日本同時放假的那幾天更兇，'
-        f'<a href="{U("/japan-holiday-calendar/")}">三國連假撞期日曆</a>'
+        f'<a href="{U("/japan-holiday-calendar/")}">台日中韓連假撞期日曆</a>'
         f'有完整對照與實際票價算出來的價差。</p>'
       + foot())
     pages.append(('/tokyo/budget-hotel/', 0.8))
@@ -18977,7 +19005,7 @@ if PC:
         f'請以你自己查到的結帳頁金額為準。</p>'
       + jp_runs_block(4, '住宿會跳價的日子：日本連假')
       + f'<p class="disc">台灣與日本同時放假的那幾天更兇，'
-        f'<a href="{U("/japan-holiday-calendar/")}">三國連假撞期日曆</a>'
+        f'<a href="{U("/japan-holiday-calendar/")}">台日中韓連假撞期日曆</a>'
         f'有完整對照與實際票價算出來的價差。</p>'
       + foot())
     pages.append(('/hotel-price-check/', 0.9))
@@ -19571,7 +19599,7 @@ if os.path.exists('ginkgo.json'):
       + f'<div class="tldr"><ul>{_gk_unv}</ul></div>'
 
       + '<h2>順便看看</h2><div class="cities">'
-      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 三國連假撞期</b>'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b>'
         f'<s>見頃那兩週會不會撞到日本連假</s></a>'
       + f'<a class="ct" href="{U("/hotel-price-check/")}"><b>🏨 訂房比價</b>'
         f'<s>同一間房跨平台的實測價差</s></a>'
@@ -19966,7 +19994,7 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
          if (TGF and _au_h23) else '')
       + f'<p class="lede">{html.escape(_HL["hotel"])}</p>'
       + f'<p class="disc">{html.escape(_HL["other"])}'
-        f'完整的三國連假撞期在<a href="{U("/japan-holiday-calendar/")}">連假日曆</a>。</p>'
+        f'完整的台日中韓連假撞期在<a href="{U("/japan-holiday-calendar/")}">連假日曆</a>。</p>'
 
       + f'<h2 id="{_hid(AU["plan"]["title"])}">{html.escape(AU["plan"]["title"])}</h2>'
       + f'<div class="tldr"><ul>{_au_plan}</ul></div>'
@@ -19978,7 +20006,7 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/tokyo/ginkgo/")}"><b>🍂 神宮外苑銀杏並木</b>'
         f'<s>銀杏比楓葉晚，而且絵画館在施工</s></a>'
-      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 三國連假撞期</b>'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b>'
         f'<s>見頃那兩週會不會撞到連假</s></a>'
       + f'<a class="ct" href="{U("/hotel-price-check/")}"><b>🏨 訂房比價</b>'
         f'<s>同一間房跨平台的實測價差</s></a></div>'
