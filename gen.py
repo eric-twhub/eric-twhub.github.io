@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """台日機票速報 — 多頁 SEO 網站產生器"""
-import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics, hashlib, calendar
+import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics, hashlib, calendar, math
 import glob
 
 CFG=json.load(open('partners.json',encoding='utf-8'))
@@ -1568,6 +1568,7 @@ def topnav(cur=''):
             + link('/japan-pokepark-kanto/', '⚡ 寶可夢公園門票怎麼買')
             + link('/japan-pokemon-cafe/', '☕ 寶可夢咖啡廳怎麼預約')
             + link('/japan-nintendo-museum/', '🎮 任天堂博物館門票怎麼買')
+            + link('/japan-shibuya-sky/', '🌇 SHIBUYA SKY 門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1702,6 +1703,7 @@ _AD_MAP = [
     ('japan-esim', 'esim'), ('japan-sms', 'esim'),
     ('japan-pokemon-cafe', 'esim'),
     ('japan-nintendo-museum', 'activity2'),
+    ('japan-shibuya-sky', 'activity2'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -8171,6 +8173,203 @@ if os.path.exists('nintendo-museum.json'):
       + '<p class="disc">抽籤規則、票價與入館規定以任天堂博物館官網與官方購票站為準，整理可能有疏漏。</p>'
       + foot())
     pages.append(('/japan-nintendo-museum/', 0.6))
+
+# ---------- SHIBUYA SKY 門票怎麼買 ----------
+# 資料在 shibuya-sky.json，引官網票券頁與 FAQ（前端算繪，要用瀏覽器讀）。
+# 開賣是「入場日 2 週前的日本時間 0:00」，所以開賣到哪一天用日本日期當場算。
+# 日落用 NOAA 公式算東京，和國立天文台逐日比對誤差在 1 分鐘內。
+# 官網 FAQ 列 Klook、KKday、Trip.com 是正規代理，Fliggy、淘寶的轉賣票無效。
+if os.path.exists('shibuya-sky.json'):
+    SS = json.load(open('shibuya-sky.json', encoding='utf-8'))
+    _ss_jst = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _ss_wd = '一二三四五六日'
+
+    def _ss_md(d):
+        return f'{d.month}/{d.day}（{_ss_wd[d.weekday()]}）'
+
+    def _ss_sunset(d, lat=35.6581, lon=139.7414, tz=9):
+        """東京的日落（太陽上緣碰到地平線，含大氣折射），回傳當地時間的分鐘數。"""
+        n = d.toordinal() - datetime.date(2000, 1, 1).toordinal() + 1
+        t = (2451544.5 + n + 0.5 - tz / 24 - 2451545.0) / 36525
+        L0 = (280.46646 + t * (36000.76983 + t * 0.0003032)) % 360
+        M = math.radians(357.52911 + t * (35999.05029 - 0.0001537 * t))
+        e = 0.016708634 - t * (0.000042037 + 0.0000001267 * t)
+        C = (math.sin(M) * (1.914602 - t * (0.004817 + 0.000014 * t))
+             + math.sin(2 * M) * (0.019993 - 0.000101 * t) + math.sin(3 * M) * 0.000289)
+        om = math.radians(125.04 - 1934.136 * t)
+        lam = math.radians(L0 + C - 0.00569 - 0.00478 * math.sin(om))
+        eps = math.radians(23 + (26 + (21.448 - t * (46.815 + t * (0.00059 - t * 0.001813))) / 60) / 60
+                           + 0.00256 * math.cos(om))
+        dec = math.asin(math.sin(eps) * math.sin(lam))
+        y = math.tan(eps / 2) ** 2
+        L0r = math.radians(L0)
+        eqt = 4 * math.degrees(y * math.sin(2 * L0r) - 2 * e * math.sin(M)
+                               + 4 * e * y * math.sin(M) * math.cos(2 * L0r)
+                               - 0.5 * y * y * math.sin(4 * L0r) - 1.25 * e * e * math.sin(2 * M))
+        ha = math.degrees(math.acos(math.cos(math.radians(90.833))
+                                    / (math.cos(math.radians(lat)) * math.cos(dec))
+                                    - math.tan(math.radians(lat)) * math.tan(dec)))
+        return 720 - 4 * lon - eqt + tz * 60 + 4 * ha
+
+    def _ss_hm(m):
+        m = int(round(m))
+        return f'{m // 60}:{m % 60:02d}'
+
+    def _ss_slot(m):
+        s = int(m) // 20 * 20
+        return f'{_ss_hm(s)}–{_ss_hm(s + 19)}'
+
+    _ss_last = _ss_jst + datetime.timedelta(days=14)
+    _ss_next = _ss_last + datetime.timedelta(days=1)
+    _ss_pr = SS['price']
+    _ss_chg = datetime.date.fromisoformat(SS['change_date'])
+    _ss_chg_md = f'{_ss_chg.month}/{_ss_chg.day}'
+
+    # 同一個入場時段的連續日期併成一列：十一月整整兩週都是同一格，
+    # 一天一列只會印出十五次一樣的時段。
+    _ss_days = []
+    for k in range(15):
+        d = _ss_jst + datetime.timedelta(days=k)
+        if d.month == 1 and d.day == 1:
+            _ss_days.append((d, None, '元旦休館'))
+        else:
+            m = _ss_sunset(d)
+            _ss_days.append((d, m, _ss_slot(m)))
+    _ss_grp = []
+    for d, m, sl in _ss_days:
+        if _ss_grp and _ss_grp[-1]['slot'] == sl and m is not None:
+            _ss_grp[-1]['to'], _ss_grp[-1]['m1'] = d, m
+        else:
+            _ss_grp.append({'from': d, 'to': d, 'm0': m, 'm1': m, 'slot': sl})
+    _ss_rows = ''
+    for g in _ss_grp:
+        dr = _ss_md(g['from']) + ('' if g['to'] == g['from'] else '～' + _ss_md(g['to']))
+        if g['m0'] is None:
+            _ss_rows += (f'<tr><td class="nm"><b>{dr}</b></td>'
+                         '<td class="nm" colspan="2"><small style="color:var(--dim)">元旦休館</small></td></tr>')
+            continue
+        sr = _ss_hm(g['m0']) + ('' if _ss_hm(g['m1']) == _ss_hm(g['m0']) else ' → ' + _ss_hm(g['m1']))
+        _ss_rows += (f'<tr><td class="nm"><b>{dr}</b></td><td class="nm"><b>{sr}</b></td>'
+                     f'<td class="nm">{g["slot"]}</td></tr>')
+    _ss_m0 = _ss_sunset(_ss_jst)
+
+    def _ss_y(p):
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    _ss_price = (
+        f'<tr><td class="nm"><b>網路（{_ss_pr["split"]} 前入場）</b></td><td class="nm">{_ss_y(_ss_pr["web_day"])}</td></tr>'
+        f'<tr><td class="nm"><b>網路（{_ss_pr["split"]} 以後入場）</b></td><td class="nm">{_ss_y(_ss_pr["web_eve"])}</td></tr>'
+        f'<tr><td class="nm"><b>櫃台（{_ss_pr["split"]} 前入場）</b></td><td class="nm">{_ss_y(_ss_pr["win_day"])}</td></tr>'
+        f'<tr><td class="nm"><b>櫃台（{_ss_pr["split"]} 以後入場）</b></td><td class="nm">{_ss_y(_ss_pr["win_eve"])}</td></tr>'
+        f'<tr><td class="nm"><b>兒童（只在櫃台賣）</b></td><td class="nm">{_ss_y(_ss_pr["child"])}</td></tr>')
+    _ss_save = _ss_pr['web_eve'] - _ss_pr['web_day']
+
+    _ss_kl_h = html.escape(klook(SS['klook']['url'], 'ticket'))
+    _ss_kk_h = html.escape(kkday(SS['kkday']['url'], 'ticket', 'shibuya-sky'))
+    _ss_of_h = html.escape(SS['_來源']['overseas'])
+
+    _ss_tans = (f'現在賣到 {_ss_md(_ss_last)} 入場的票；{_ss_md(_ss_next)} 的票在日本時間 '
+                f'{_ss_md(_ss_jst + datetime.timedelta(days=1))} 0:00 開賣')
+    _ss_tsub = (f'也就是台灣時間 {_ss_md(_ss_jst)} 23:00。今天東京的日落是 {_ss_hm(_ss_m0)}，'
+                f'落在 {_ss_slot(_ss_m0)} 這個入場時段。')
+
+    ss_faq = [
+     ('SHIBUYA SKY 門票什麼時候開賣？', SS['sale'] + SS['soldout']),
+     ('SHIBUYA SKY 門票多少錢？',
+      f'網路買，{_ss_pr["split"]} 前入場 {_ss_pr["web_day"]:,} 円、{_ss_pr["split"]} 以後 {_ss_pr["web_eve"]:,} 円；'
+      f'當天櫃台各貴 300 円（{_ss_pr["win_day"]:,}／{_ss_pr["win_eve"]:,} 円）。'
+      f'兒童 {_ss_pr["child"]:,} 円只在櫃台賣，6 歲還沒上小學的免費。'),
+     ('看夕陽要買幾點的票？',
+      f'看當天的日落時間。今天東京是 {_ss_hm(_ss_m0)}，本頁表格列出可以買的這兩週每天的日落與它落在哪個入場時段。'
+      f'官網寫進場後沒有停留時間限制，所以 {_ss_pr["split"]} 前進場一路待到日落也可以，'
+      f'票價是 {_ss_pr["web_day"]:,} 円，比 {_ss_pr["split"]} 以後的票少 {_ss_save} 円；出來就不能再進去。'),
+     ('外國人要怎麼買？' ,
+      f'{_ss_chg_md} 以後的入場日，住在日本以外的人用官網的海外購票站（有英文），'
+      '或 Klook、KKday、Trip.com 這些官方代理。入場改成護照認證，同行每個人都要帶護照正本，'
+      '購票時填的護照資料要和當天一致。'),
+     ('Klook、KKday 買的票可以用嗎？',
+      '可以。官網 FAQ 把 Klook、KKday、Trip.com 列為正規販售代理；但 Fliggy、淘寶買到的轉賣票不能入場，'
+      '正規代理以外的轉賣網站也一樣。'),
+     ('可以取消嗎？', SS['cancel'][0] + SS['cancel'][1] + SS['cancel'][4]),
+     ('下雨或屋頂關閉怎麼辦？', SS['cancel'][1] + SS['cancel'][2]),
+     ('可以帶行李箱嗎？', SS['roof'][1]),
+     ('營業時間是幾點到幾點？', f'{SS["hours"]}。{SS["counter"]}。{SS["closed"]}'),
+    ]
+    ss_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in ss_faq)
+    ss_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in ss_faq]}, ensure_ascii=False)
+
+    _ss_chg_note = ''
+    if _ss_jst < _ss_chg:
+        _ss_chg_note = (f'<div class="tbuf"><b>{_ss_chg_md} 起的入場日改成護照入場</b>：'
+                        '海外購票站與 Klook、KKday、Trip.com 買的票，同行每個人都要帶護照正本。</div>')
+
+    write('japan-shibuya-sky/index.html',
+      head('SHIBUYA SKY 門票開賣時間：入場日 2 週前 0 點開賣、看夕陽買幾點、票價與護照入場',
+           'SHIBUYA SKY 澀谷展望台的門票在入場日 2 週前的日本時間 0:00 開賣，網路完售櫃台也買不到。'
+           '本頁每天更新現在賣到哪一天、這兩週東京的日落時間落在哪個入場時段，'
+           f'以及 {SS["price"]["split"]} 前後的票價差、取消規定與 {_ss_chg_md} 起改用護照入場。',
+           'japan-shibuya-sky/',
+           '<script type="application/ld+json">' + ss_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('SHIBUYA SKY 門票怎麼買', None)])
+      + '<h1>SHIBUYA SKY 門票怎麼買</h1>'
+      + '<p class="lede">SHIBUYA SKY 是澀谷站上方 SHIBUYA SCRAMBLE SQUARE 頂樓的展望台，屋頂是露天的。'
+        '門票是每 20 分鐘一個入場時段的日期指定票。下面的規則與價格引官網票券頁與 FAQ，'
+        f'查證於 {SS["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_ss_md(_ss_jst)}</div>'
+        f'<div class="tans">{_ss_tans}</div>'
+        f'<div class="tsub">{_ss_tsub}</div>'
+        + _ss_chg_note + '</div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>{_ss_pr["split"]} 是票價分界</b>：網路 {_ss_pr["web_day"]:,} 円對 {_ss_pr["web_eve"]:,} 円，'
+        '看的是入場時段，進去之後沒有停留時間限制。</li>'
+        '<li><b>網路完售，櫃台也完售</b>：熱門時段要先在網路買。</li>'
+        '<li><b>屋頂只能帶手機</b>：包包、腳架、帽子都要寄放在 46 樓。</li>'
+        '</ul></div>'
+      + '<h2>這兩週的日落時間</h2>'
+      + '<div class="tw narrow"><table><tr><th>入場日</th><th>東京日落</th><th>日落落在的入場時段</th></tr>'
+        + _ss_rows + '</table></div>'
+      + '<p class="disc">日落是用天文公式推算的東京地面時間，和國立天文台曆計算室的值相差 1 分鐘以內；'
+        '展望台在 229 公尺高，實際看到太陽下山會晚一點。表上的日期就是現在買得到的範圍。</p>'
+      + f'<p class="lede">{html.escape(SS["slot"])}</p>'
+      + '<h2>票價</h2>'
+      + '<div class="tw narrow"><table><tr><th>票種</th><th>價格（含稅）</th></tr>' + _ss_price + '</table></div>'
+      + f'<p class="disc">{html.escape(_ss_pr["note"])}</p>'
+      + f'<p class="lede"><b>想省 {_ss_save} 円</b>：買 {_ss_pr["split"]} 前的最後一個時段進場，'
+        '在裡面等到日落。官網寫進場後沒有停留時間限制，只是出來就不能再進去，'
+        '屋頂也可能因為天氣臨時關閉。</p>'
+      + '<h2>開賣規則</h2>'
+      + f'<p class="lede">{html.escape(SS["sale"])}{html.escape(SS["soldout"])}</p>'
+      + f'<h2>{_ss_chg_md} 起外國人改用護照入場</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in SS['change']) + '</ul>'
+      + '<h2>在哪裡買</h2>'
+      + '<p class="lede">官網 FAQ 列出的正規販售代理包含 Klook、KKday、Trip.com；'
+        'Fliggy、淘寶與其他轉賣網站買到的票不能入場。</p>'
+      + f'<a class="cta" href="{_ss_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🌇</span><span class="ct"><b>官網海外購票站</b>'
+        '<s>英文介面，日圓原價，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_ss_kl_h}" target="_blank" rel="{_rel(_ss_kl_h)}">'
+        '<span class="ci">🎫</span><span class="ct"><b>Klook 的 SHIBUYA SKY 門票</b>'
+        '<s>用台幣付款，價格與時段以 Klook 頁面為準</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_ss_kk_h}" target="_blank" rel="{_rel(_ss_kk_h)}">'
+        '<span class="ci">🎫</span><span class="ct"><b>KKday 的 SHIBUYA SKY 門票</b>'
+        '<s>用台幣付款，價格與時段以 KKday 頁面為準</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">官網購票站本站沒有分潤；Klook 與 KKday 連結會前往合作訂票平台，'
+        '本站可能獲得分潤，不影響你的價格。平台的售價與取消規定本站沒有查證，以平台頁面為準。</p>'
+      + '<h2>取消與退費</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in SS['cancel']) + '</ul>'
+      + '<h2>屋頂規定</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in SS['roof']) + '</ul>'
+      + '<h2>營業時間與入口</h2>'
+      + f'<p class="lede">{SS["hours"]}；{html.escape(SS["counter"])}。{html.escape(SS["closed"])}'
+        f'{html.escape(SS["where"])}</p>'
+      + '<h2>常見問題</h2>' + ss_html
+      + '<p class="disc">票價、開賣規則與入場方式以 SHIBUYA SKY 官網為準，整理可能有疏漏。</p>'
+      + foot())
+    pages.append(('/japan-shibuya-sky/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
