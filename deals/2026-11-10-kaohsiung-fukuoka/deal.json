@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-10-kaohsiung-fukuoka",
- "generated": "2026-11-10 01:12",
+ "generated": "2026-11-10 01:21",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "fukuoka",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5808,
-  "dep": "2026-11-13",
-  "ret": "2026-11-20",
+  "price": 5868,
+  "dep": "2026-11-20",
+  "ret": "2026-11-27",
   "dept": "15:25",
   "rett": "19:55",
   "rt": true,
@@ -21,13 +21,13 @@
   "dur": 330,
   "dur_to": 150,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-11-13&inbound=FUK-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-11-20&inbound=FUK-KHH&returnDate=2026-11-27&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 5838,
+ "med": 6038,
  "n_rt": 2,
  "others": [
   {
@@ -36,9 +36,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5868,
-   "dep": "2026-11-20",
-   "ret": "2026-11-27",
+   "price": 6208,
+   "dep": "2026-11-13",
+   "ret": "2026-11-20",
    "dept": "15:25",
    "rett": "19:55",
    "rt": true,
@@ -46,7 +46,7 @@
    "dur": 330,
    "dur_to": 150,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-11-20&inbound=FUK-KHH&returnDate=2026-11-27&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-11-13&inbound=FUK-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
