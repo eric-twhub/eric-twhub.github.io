@@ -10461,6 +10461,11 @@ if os.path.exists('churasun6.json'):
 
       + '<h2>這頁查不到的部分</h2><div class="tldr"><ul>' + _cs_un + '</ul></div>'
 
+      # 結構化資料裡的常見問題要在頁面上看得到，Google 不收只藏在 JSON-LD 的版本
+      + '<h2>常見問題</h2>' + ''.join('<details class="faq"><summary>' + html.escape(q)
+                                     + '</summary><div>' + html.escape(a) + '</div></details>'
+                                     for q, a in _cs_faq)
+
       + fare_cta('okinawa', '飛沖繩的機票多少')
 
       + '<h2>順便看看</h2><div class="cities">'
@@ -10572,6 +10577,11 @@ if os.path.exists('superspark.json'):
         f'　·　<a href="{SS["law"]}" rel="nofollow noopener" target="_blank">特定商取引法頁</a></p>'
 
       + '<h2>這頁查不到的部分</h2><div class="tldr"><ul>' + _ss_un + '</ul></div>'
+
+      # 結構化資料裡的常見問題要在頁面上看得到，Google 不收只藏在 JSON-LD 的版本
+      + '<h2>常見問題</h2>' + ''.join('<details class="faq"><summary>' + html.escape(q)
+                                     + '</summary><div>' + html.escape(a) + '</div></details>'
+                                     for q, a in _ss_faq)
 
       + fare_cta('tokyo', '飛東京的機票多少')
 
