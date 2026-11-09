@@ -261,7 +261,7 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "這條航線平常最低落在 NT$8,116–NT$9,608，這張是近期 16 筆紀錄中第 1 低"
+   "這條航線平常最低落在 NT$8,116–NT$9,148，這張是近期 16 筆紀錄中第 1 低"
   ],
   "med": 13570,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-12&inbound=FUK-TPE&returnDate=2026-11-17&type=return&adult=1&language=zh-TW",
@@ -269,7 +269,7 @@
   "cslug": "fukuoka",
   "usual": {
    "lo": 8116,
-   "hi": 9608,
+   "hi": 9148,
    "days": 8
   },
   "mbase": null,
