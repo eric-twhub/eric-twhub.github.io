@@ -1538,6 +1538,7 @@ def topnav(cur=''):
             + link('/japan-park-ticket/', '🎢 樂園門票哪天便宜')
             + link('/japan-bogo/', '🎁 行程與網卡買一送一')
             + link('/japan-sumo/', '🤼 大相撲門票怎麼買')
+            + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1711,7 +1712,9 @@ _NO_AD_OK = {'/japan-hotel-check/', '/kawaguchiko-hotel-case/',
              # 整頁就是 KKday 商品，再掛版位等於同一頁推兩次
              '/japan-bogo/',
              # 相撲秀卡片就是 KKday 商品，同上
-             '/japan-sumo/'}
+             '/japan-sumo/',
+             # 同上：Klook 官方通路與 JTB 行程就是頁面本身
+             '/japan-ghibli-park/'}
 
 def u_region(path):
     """地區頁回地區名，其餘回空字串。"""
@@ -7009,6 +7012,193 @@ if os.path.exists('sumo.json'):
         '相撲秀的內容、價格與場次以 KKday 商品頁為準。</p>'
       + foot())
     pages.append(('/japan-sumo/', 0.6))
+
+# ---------- 吉卜力公園門票怎麼買 ----------
+# 資料在 ghibli.json，引吉卜力公園官網（日文版與英文海外購票頁）。
+# 官網海外購票頁只連 Lawson Ticket 與 Klook，所以單買門票只放這兩個；
+# KKday 只放 JTB 供應的行程與住宿套裝（官網寫的附住宿方案通路之一），票賣完時的替代。
+# 開賣日照官方規則當場算（入園月份前兩個月的 10 日 14:00），機票從 tigerair-fares.json 當場算。
+if os.path.exists('ghibli.json'):
+    GB = json.load(open('ghibli.json', encoding='utf-8'))
+    _gb_today = datetime.date.fromisoformat(TODAY)
+    _gb_wd = '一二三四五六日'
+
+    def _gb_sale(y, m):
+        """y 年 m 月入園的票的開賣日：前兩個月的 10 日。"""
+        mm, yy = m - 2, y
+        if mm <= 0:
+            mm, yy = mm + 12, yy - 1
+        return datetime.date(yy, mm, 10)
+
+    def _gb_md(d):
+        return f'{d.month}/{d.day}（{_gb_wd[d.weekday()]}）'
+
+    # 已經開賣、還沒過完的月份，加上下一個要開賣的月份
+    _gb_months = []
+    _y, _m = _gb_today.year, _gb_today.month
+    for _ in range(4):
+        _s = _gb_sale(_y, _m)
+        if _s <= _gb_today or not any(x['sale'] > _gb_today for x in _gb_months):
+            _gb_months.append({'y': _y, 'm': _m, 'sale': _s})
+        _m += 1
+        if _m > 12:
+            _y, _m = _y + 1, 1
+    _gb_next = next((x for x in _gb_months if x['sale'] >= _gb_today), None)
+
+    def _gb_fare(y, m):
+        v = TGF.get('TPE-NGO') or {}
+        best = None
+        for k, p in v.items():
+            d = datetime.date.fromisoformat(k)
+            if d.year == y and d.month == m and d > _gb_today and (best is None or p < best[0]):
+                best = (p, d)
+        return best
+
+    def _gb_closed(y, m):
+        c = GB['closed'].get(f'{y}-{m:02d}')
+        if c is None:
+            return '官網還沒公布'
+        # 連續的日子併成一段（12/1–12/8），不然年底那串會長到讀不下去
+        out, i = [], 0
+        while i < len(c):
+            j = i
+            while j + 1 < len(c) and c[j + 1] == c[j] + 1:
+                j += 1
+            out.append(f'{m}/{c[i]}' + (f'–{m}/{c[j]}' if j - i >= 2 else ''))
+            if 0 < j - i < 2:
+                out.append(f'{m}/{c[j]}')
+            i = j + 1
+        return '、'.join(out)
+
+    _gb_rows = ''
+    for x in _gb_months:
+        f = _gb_fare(x['y'], x['m'])
+        _on = x['sale'] < _gb_today or (x['sale'] == _gb_today)
+        _gb_rows += (
+            f'<tr><td class="nm"><b>{x["y"]} 年 {x["m"]} 月</b></td>'
+            f'<td class="nm">{"已開賣" if x["sale"] < _gb_today else _gb_md(x["sale"]) + " 14:00"}</td>'
+            f'<td class="nm"><small>{_gb_closed(x["y"], x["m"])}</small></td>'
+            + (f'<td class="nm"><b>{money(f[0])}</b><br><small style="color:var(--dim)">'
+               f'{f[1].month}/{f[1].day} 出發</small></td>' if f
+               else '<td class="nm"><small style="color:var(--dim)">虎航沒有這個月的票價</small></td>')
+            + '</tr>')
+
+    def _gb_y(p):
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    _gb_os = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(t["n"])}</b><br><small style="color:var(--dim)">{html.escape(t["areas"])}</small></td>'
+        f'<td class="nm">{_gb_y(t["p"]["wd"])}</td><td class="nm">{_gb_y(t["p"]["we"])}</td>'
+        f'<td class="nm">¥{t["c"]["wd"]:,}／¥{t["c"]["we"]:,}</td></tr>' for t in GB['overseas'])
+    _gb_dom = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(t["n"])}</b></td><td class="nm">{html.escape(t["areas"])}</td>'
+        f'<td class="nm">' + (f'¥{t["p"]["wd"]:,}' if t['p']['wd'] == t['p']['we']
+                             else f'平日 ¥{t["p"]["wd"]:,}<br>週末假日 ¥{t["p"]["we"]:,}') + '</td></tr>'
+        for t in GB['domestic_only'])
+
+    _kl = GB['klook']
+    _kk = GB['kkday']
+    _kl_h = html.escape(klook(_kl['url'], 'ticket'))
+    _kk_h = html.escape(kkday(_kk['url'], 'ghibli', _kk['id']))
+    _gb_buy = (
+        f'<a class="cta" href="{_kl_h}" target="_blank" rel="{_rel(_kl_h)}">'
+        '<span class="ci">🎫</span><span class="ct"><b>到 Klook 買吉卜力公園門票</b>'
+        '<s>官網海外購票頁連過去的通路，價格與剩餘名額以 Klook 頁面為準</s></span>'
+        '<span class="ca">→</span></a>'
+        f'<p class="lede">另一個官方海外通路是 <a href="{GB["lawson"]["url"]}" rel="nofollow noopener" target="_blank">Lawson Ticket 英文版</a>。'
+        f'{html.escape(_kl["note"].split("。")[1])}。</p>')
+    _gb_tour = (
+        f'<div class="card"><h3>JTB 吉卜力公園一日遊與住宿套裝（KKday）</h3><ul>'
+        f'<li><b>方案：</b>{html.escape(_kk["plans"])}</li>'
+        f'<li><b>要注意：</b>{html.escape(_kk["watch"])}</li>'
+        f'<li><b>供應商：</b>{html.escape(_kk["supplier"])}吉卜力公園官網寫附住宿的方案由 JTB 等旅行社販售，KKday 是其中之一。</li>'
+        f'<li><b>查證日期：</b>{GB["checked"]}</li></ul>'
+        f'<a class="cta" href="{_kk_h}" target="_blank" rel="{_rel(_kk_h)}">'
+        '<span class="ci">🚌</span><span class="ct"><b>到 KKday 看可以訂的日期</b>'
+        '<s>價格與剩餘名額以 KKday 頁面為準</s></span><span class="ca">→</span></a></div>')
+    _gb_disc = _links_disc([html.unescape(_kl_h), html.unescape(_kk_h)])
+
+    gb_faq = [
+     ('吉卜力公園的門票什麼時候開賣？',
+      GB['sale_rule'] + (f'下一次是 {_gb_next["sale"].month} 月 {_gb_next["sale"].day} 日，開賣 {_gb_next["y"]} 年 {_gb_next["m"]} 月入園的票。'
+                         if _gb_next else '')),
+     ('外國人要在哪裡買？',
+      '吉卜力公園官網的海外購票頁只連兩個通路：Lawson Ticket 英文版與 Klook。'
+      '海外購票頁只賣大散步券高級版與標準版兩種，日本國內另有五種只去部分區域的票。'),
+     ('高級版和標準版差在哪？',
+      '高級版可以進五個區域，所有建物內部都能看；標準版只有吉卜力大倉庫、魔法公主之里、魔女之谷三區，'
+      '霍爾的城堡等三棟建物要當天另外排隊加買，數量有限。'),
+     ('買了可以退票或改日期嗎？',
+      '不行。官網寫明購買後不能改日期、時段、票種或張數，也不能退；票弄丟不補發。'),
+     ('每月 27 日可以去嗎？',
+      GB['aichi_day']),
+     ('吉卜力公園和吉卜力美術館是同一個地方嗎？',
+      '不是。' + GB['mitaka'] + '吉卜力公園在愛知縣長久手市。'),
+    ]
+    gb_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in gb_faq)
+    gb_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in gb_faq]}, ensure_ascii=False)
+
+    if _gb_next:
+        _gb_left = (_gb_next['sale'] - _gb_today).days
+        _gb_tans = (f'{_gb_next["y"]} 年 {_gb_next["m"]} 月入園的票，'
+                    f'{_gb_md(_gb_next["sale"])} 14:00 開賣，'
+                    + ('就是今天' if _gb_left == 0 else ('就是明天' if _gb_left == 1 else f'還有 {_gb_left} 天')))
+    else:
+        _gb_tans = GB['sale_rule']
+
+    write('japan-ghibli-park/index.html',
+      head('吉卜力公園門票怎麼買：開賣日、高級版與標準版差別、外國人購票管道',
+           '吉卜力公園門票在入園前兩個月的 10 日 14:00 開賣，外國人只能透過官網連過去的 Lawson Ticket 英文版或 Klook 買。'
+           '高級版與標準版能去哪些區域、國內才買得到的票、每月 27 日的限制、休園日與會期間的虎航票價。',
+           'japan-ghibli-park/',
+           '<script type="application/ld+json">' + gb_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('吉卜力公園門票怎麼買', None)])
+      + '<h1>吉卜力公園門票怎麼買</h1>'
+      + '<p class="lede">吉卜力公園在愛知縣的愛・地球博紀念公園裡，全部預約制，園區不賣票。'
+        f'{html.escape(GB["access"])}下面的規則與價格都引官網原文，查證於 {GB["checked"]}；'
+        f'台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網原文，查證於 {GB["checked"]}</div>'
+        f'<div class="tans">{_gb_tans}</div>'
+        '<div class="tsub">外國人要從官網的海外購票頁買，通路只有 Lawson Ticket 英文版與 Klook。'
+        '買了不能退也不能改日期。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>海外只賣兩種票</b>：大散步券高級版（五區全包）與標準版（三區）。</li>'
+        '<li><b>每月 27 日外地遊客買不到</b>：那天是愛知縣民日，只抽籤賣給住在愛知縣的人。</li>'
+        '<li><b>要帶護照</b>：入口會隨機查申請人證件，同行的人要一起進場。</li>'
+        '</ul></div>'
+      + '<h2>哪個月份的票開賣了</h2>'
+      + '<div class="tw"><table><tr><th>入園月份</th><th>開賣（日本時間）</th><th>休園日</th>'
+        '<th>台北 → 名古屋（中部）虎航最低單程</th></tr>' + _gb_rows + '</table></div>'
+      + '<p class="disc">開賣日照官網的規則推算（入園月份前兩個月的 10 日 14:00），官網寫開賣日可能變更。'
+        f'營業時間平日 {GB["hours"]["weekday"]}、週末與假日 {GB["hours"]["holiday"]}，'
+        f'最後入場 {GB["hours"]["last_entry"]}。機票是台灣虎航官網每天抓的該月最低單程票價，'
+        '含稅、不含託運行李。</p>'
+      + '<h2>海外購票頁的兩種票</h2>'
+      + '<div class="tw"><table><tr><th>票種</th><th>大人平日</th><th>大人週末假日</th>'
+        '<th>4 到 12 歲（平日／週末假日）</th></tr>' + _gb_os + '</table></div>'
+      + '<ul class="lede">' + ''.join(f'<li><b>{html.escape(t["n"])}</b>：{html.escape(t["note"])}</li>'
+                                      for t in GB['overseas']) + '</ul>'
+      + '<p class="disc">3 歲以下免費。價格含稅，另收手續費。</p>'
+      + _gb_buy
+      + '<h2>日本國內才買得到的票</h2>'
+      + f'<p class="lede">{html.escape(GB["domestic_note"])}</p>'
+      + '<div class="tw"><table><tr><th>票種</th><th>能去的區域</th><th>大人</th></tr>'
+        + _gb_dom + '</table></div>'
+      + '<h2>買之前要知道的規定</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(r)}</li>' for r in GB['rules'])
+        + f'<li>{html.escape(GB["aichi_day"])}</li></ul>'
+      + '<h2>票賣完了：JTB 的一日遊與住宿套裝</h2>'
+      + '<p class="lede">想去的日期買不到票的話，可以看旅行社把門票和交通或住宿包在一起賣的行程，'
+        f'價格比單買門票高。{html.escape(_kk["seen"])}</p>'
+      + _gb_tour + _gb_disc
+      + '<h2>常見問題</h2>' + gb_html
+      + '<p class="disc">票種、價格與購買規定以吉卜力公園官網為準；行程的內容、價格與名額以 KKday 商品頁為準。</p>'
+      + foot())
+    pages.append(('/japan-ghibli-park/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
