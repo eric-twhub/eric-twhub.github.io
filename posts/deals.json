@@ -1,23 +1,23 @@
 [
  {
   "slug": "2026-11-09-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,139 來回含稅｜台灣虎航 12/05 出發",
+  "title": "台北飛沖繩 NT$2,139 來回含稅｜台灣虎航 12/03 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
   "price": 2139,
   "air": "台灣虎航",
-  "dep": "2026-12-05",
+  "dep": "2026-12-03",
   "ret": "2026-12-09",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$3,847（7 天有紀錄），這張低 44%"
+   "12 月出發的票，每天最便宜的平均要 NT$3,790（7 天有紀錄），這張低 44%"
   ],
   "med": 11134,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-05&inbound=OKA-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-03&inbound=OKA-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
@@ -26,7 +26,7 @@
    "days": 10
   },
   "mbase": {
-   "avg": 3847,
+   "avg": 3790,
    "days": 7,
    "month": 12
   },
@@ -198,12 +198,12 @@
  },
  {
   "slug": "2026-11-09-taipei-miyazaki",
-  "title": "台北飛宮崎 NT$5,578 來回含稅｜台灣虎航 11/20 出發",
+  "title": "台北飛宮崎 NT$5,381 來回含稅｜台灣虎航 11/20 出發",
   "o": "台北",
   "c": "宮崎",
   "_oiata": "TPE",
   "_diata": "KMI",
-  "price": 5578,
+  "price": 5381,
   "air": "台灣虎航",
   "dep": "2026-11-20",
   "ret": "2026-11-27",
@@ -222,25 +222,25 @@
   "n": 6
  },
  {
-  "slug": "2026-11-09-kaohsiung-fukuoka",
-  "title": "高雄飛福岡 NT$5,808 來回含稅｜台灣虎航 11/13 出發",
-  "o": "高雄",
-  "c": "福岡",
-  "_oiata": "KHH",
-  "_diata": "FUK",
-  "price": 5808,
+  "slug": "2026-11-09-taipei-oita",
+  "title": "台北飛大分・別府 NT$5,568 來回含稅｜台灣虎航 11/21 出發",
+  "o": "台北",
+  "c": "大分・別府",
+  "_oiata": "TPE",
+  "_diata": "OIT",
+  "price": 5568,
   "air": "台灣虎航",
-  "dep": "2026-11-13",
-  "ret": "2026-11-20",
+  "dep": "2026-11-21",
+  "ret": "2026-11-28",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 6238,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-11-13&inbound=FUK-KHH&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
-  "hotelcity": "福岡",
-  "cslug": "fukuoka",
+  "med": 11914,
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OIT&departureDate=2026-11-21&inbound=OIT-TPE&returnDate=2026-11-28&type=return&adult=1&language=zh-TW",
+  "hotelcity": "別府",
+  "cslug": "oita",
   "usual": null,
   "mbase": null,
   "rank": 1,
@@ -261,45 +261,20 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "這條航線平常最低落在 NT$8,108–NT$9,568，這張是近期 16 筆紀錄中第 1 低"
+   "這條航線平常最低落在 NT$8,608–NT$9,568，這張是近期 16 筆紀錄中第 1 低"
   ],
   "med": 13570,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-11-12&inbound=FUK-TPE&returnDate=2026-11-17&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 8108,
+   "lo": 8608,
    "hi": 9568,
    "days": 8
   },
   "mbase": null,
   "rank": 1,
   "n": 16
- },
- {
-  "slug": "2026-11-09-taipei-oita",
-  "title": "台北飛大分・別府 NT$5,897 來回含稅｜台灣虎航 11/21 出發",
-  "o": "台北",
-  "c": "大分・別府",
-  "_oiata": "TPE",
-  "_diata": "OIT",
-  "price": 5897,
-  "air": "台灣虎航",
-  "dep": "2026-11-21",
-  "ret": "2026-11-28",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000"
-  ],
-  "med": 12079,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OIT&departureDate=2026-11-21&inbound=OIT-TPE&returnDate=2026-11-28&type=return&adult=1&language=zh-TW",
-  "hotelcity": "別府",
-  "cslug": "oita",
-  "usual": null,
-  "mbase": null,
-  "rank": 1,
-  "n": 2
  },
  {
   "slug": "2026-11-09-taipei-nagoya",

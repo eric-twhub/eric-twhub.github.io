@@ -114,6 +114,12 @@
    "title": "日本旅遊的買一送一：KKday 上現在有哪些、送的是什麼"
   },
   {
+   "slug": "japan-sumo",
+   "url": "/japan-sumo/",
+   "h1": "大相撲門票怎麼買",
+   "title": "大相撲門票怎麼買：各場所日期、開賣日、票價與外國人購票方式"
+  },
+  {
    "slug": "japan-driving-habits",
    "url": "/japan-driving-habits/",
    "h1": "在日本開車，哪些是法規，哪些只是習慣",
@@ -218,8 +224,8 @@
   {
    "slug": "deals-2026-11-09-taipei-okinawa",
    "url": "/deals/2026-11-09-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,139 來回含稅｜台灣虎航 12/05 出發",
-   "title": "台北飛沖繩 NT$2,139 來回含稅｜台灣虎航 12/05 出發"
+   "h1": "台北飛沖繩 NT$2,139 來回含稅｜台灣虎航 12/03 出發",
+   "title": "台北飛沖繩 NT$2,139 來回含稅｜台灣虎航 12/03 出發"
   },
   {
    "slug": "deals-2026-11-09-taipei-ishigaki",
@@ -260,26 +266,20 @@
   {
    "slug": "deals-2026-11-09-taipei-miyazaki",
    "url": "/deals/2026-11-09-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$5,578 來回含稅｜台灣虎航 11/20 出發",
-   "title": "台北飛宮崎 NT$5,578 來回含稅｜台灣虎航 11/20 出發"
+   "h1": "台北飛宮崎 NT$5,381 來回含稅｜台灣虎航 11/20 出發",
+   "title": "台北飛宮崎 NT$5,381 來回含稅｜台灣虎航 11/20 出發"
   },
   {
-   "slug": "deals-2026-11-09-kaohsiung-fukuoka",
-   "url": "/deals/2026-11-09-kaohsiung-fukuoka/",
-   "h1": "高雄飛福岡 NT$5,808 來回含稅｜台灣虎航 11/13 出發",
-   "title": "高雄飛福岡 NT$5,808 來回含稅｜台灣虎航 11/13 出發"
+   "slug": "deals-2026-11-09-taipei-oita",
+   "url": "/deals/2026-11-09-taipei-oita/",
+   "h1": "台北飛大分・別府 NT$5,568 來回含稅｜台灣虎航 11/21 出發",
+   "title": "台北飛大分・別府 NT$5,568 來回含稅｜台灣虎航 11/21 出發"
   },
   {
    "slug": "deals-2026-11-09-taipei-fukuoka",
    "url": "/deals/2026-11-09-taipei-fukuoka/",
    "h1": "台北飛福岡 NT$5,881 來回含稅｜台灣虎航 11/12 出發",
    "title": "台北飛福岡 NT$5,881 來回含稅｜台灣虎航 11/12 出發"
-  },
-  {
-   "slug": "deals-2026-11-09-taipei-oita",
-   "url": "/deals/2026-11-09-taipei-oita/",
-   "h1": "台北飛大分・別府 NT$5,897 來回含稅｜台灣虎航 11/21 出發",
-   "title": "台北飛大分・別府 NT$5,897 來回含稅｜台灣虎航 11/21 出發"
   },
   {
    "slug": "deals-2026-11-09-taipei-nagoya",
