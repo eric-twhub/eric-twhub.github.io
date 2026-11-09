@@ -3,17 +3,20 @@
  "_來源": {
   "日本": "內閣府「国民の祝日について」公開 CSV",
   "台灣": "行政院人事行政總處・政府行政機關辦公日曆表（115、116 年）",
-  "中國": "國務院辦公廳關於 2026 年部分節假日安排的通知（國辦發明電〔2025〕7 號）"
+  "中國": "國務院辦公廳關於 2026 年部分節假日安排的通知（國辦發明電〔2025〕7 號）、關於 2027 年部分節假日安排的通知（國辦發明電〔2026〕10 號）"
  },
  "_來源網址": {
   "日本": "https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv",
   "台灣": "https://data.gov.tw/dataset/14718",
-  "中國": "https://www.gov.cn/zhengce/content/202511/content_7047090.htm"
+  "中國": {
+   "2026": "https://www.gov.cn/zhengce/content/202511/content_7047090.htm",
+   "2027": "https://www.gov.cn/zhengce/content/202611/content_7085101.htm"
+  }
  },
  "checked": "2026-09-26",
  "_涵蓋": "2026-09-01 至 2028-01-03",
  "_尾端延伸": "2027-12-31 之後只延伸三天，為的是讓 12/31 到 2028-01-02 那段跨年連假算得出來：連假要連續三天，少了 2028 年 1 月那兩天就會被截掉。這三天只有台灣那一欄是有依據的（1/1 是開國紀念日，1/2 是週日，1/3 是週一），日本與中國 2028 年的假日都還沒公布，所以那兩欄是未公布，不是沒有假。",
- "_中國只到2026": "中國的節假日由國務院逐年公布，2027 年的還沒發布，所以 2027 年的中國那一欄是空的。還沒公布不等於沒有假。",
+ "_中國到2027": "中國的節假日由國務院逐年公布，2027 年的已於 2026-11-05 發布（國辦發明電〔2026〕10 號），2026-11-09 補進來；2028 年的還沒公布。",
  "_連假定義": "把週六日與各自的國定假日視為非上班日，取連續三天以上。台灣的補班日與中國的調休上班日都已扣除。",
  "days": [
   {
@@ -1548,14 +1551,15 @@
    "w": 4,
    "jp": "元旦",
    "tw": "開國紀念日",
-   "cn": null,
+   "cn": "元旦",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 2,
+   "cn_off": true,
+   "lv": 3,
    "in": [
     "jp",
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -1563,14 +1567,15 @@
    "w": 5,
    "jp": null,
    "tw": "週末",
-   "cn": null,
+   "cn": "元旦",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 2,
+   "cn_off": true,
+   "lv": 3,
    "in": [
     "jp",
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -1578,14 +1583,15 @@
    "w": 6,
    "jp": null,
    "tw": "週末",
-   "cn": null,
+   "cn": "元旦",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 2,
+   "cn_off": true,
+   "lv": 3,
    "in": [
     "jp",
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -1596,7 +1602,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1608,7 +1614,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1620,7 +1626,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1632,7 +1638,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1644,7 +1650,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1656,7 +1662,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "jp"
@@ -1670,7 +1676,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "jp"
@@ -1684,7 +1690,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 1,
    "in": [
     "jp"
@@ -1698,7 +1704,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1710,7 +1716,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1722,7 +1728,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1734,7 +1740,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1746,7 +1752,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -1758,7 +1764,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -1770,7 +1776,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1782,7 +1788,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1794,7 +1800,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1806,7 +1812,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1818,7 +1824,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1830,7 +1836,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -1842,7 +1848,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -1854,7 +1860,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1866,7 +1872,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1878,7 +1884,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1890,7 +1896,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1902,7 +1908,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1914,7 +1920,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -1926,7 +1932,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1938,7 +1944,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1950,7 +1956,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1962,7 +1968,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -1974,7 +1980,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 1,
    "in": [
     "tw"
@@ -1985,13 +1991,14 @@
    "w": 4,
    "jp": null,
    "tw": "農曆除夕",
-   "cn": null,
+   "cn": "春節",
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -1999,13 +2006,14 @@
    "w": 5,
    "jp": null,
    "tw": "春節",
-   "cn": null,
+   "cn": "春節",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -2013,13 +2021,14 @@
    "w": 6,
    "jp": null,
    "tw": "春節",
-   "cn": null,
+   "cn": "春節",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -2027,13 +2036,14 @@
    "w": 0,
    "jp": null,
    "tw": "春節",
-   "cn": null,
+   "cn": "春節",
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -2041,13 +2051,14 @@
    "w": 1,
    "jp": null,
    "tw": "補假",
-   "cn": null,
+   "cn": "春節",
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -2055,13 +2066,14 @@
    "w": 2,
    "jp": null,
    "tw": "補假",
-   "cn": null,
+   "cn": "春節",
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -2069,36 +2081,42 @@
    "w": 3,
    "jp": "建國紀念日",
    "tw": null,
-   "cn": null,
+   "cn": "春節",
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
-   "lv": 0,
-   "in": []
+   "cn_off": true,
+   "lv": 1,
+   "in": [
+    "cn"
+   ]
   },
   {
    "d": "2027-02-12",
    "w": 4,
    "jp": null,
    "tw": null,
-   "cn": null,
+   "cn": "春節",
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
-   "lv": 0,
-   "in": []
+   "cn_off": true,
+   "lv": 1,
+   "in": [
+    "cn"
+   ]
   },
   {
    "d": "2027-02-13",
    "w": 5,
    "jp": null,
    "tw": "週末",
-   "cn": null,
+   "cn": "春節",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 0,
-   "in": []
+   "cn_off": true,
+   "lv": 1,
+   "in": [
+    "cn"
+   ]
   },
   {
    "d": "2027-02-14",
@@ -2108,7 +2126,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2120,7 +2138,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2132,7 +2150,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2144,7 +2162,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2156,7 +2174,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2168,7 +2186,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2180,7 +2198,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2192,7 +2210,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2204,7 +2222,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2216,7 +2234,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2228,7 +2246,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2240,7 +2258,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2252,7 +2270,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2264,7 +2282,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "tw"
@@ -2278,7 +2296,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "tw"
@@ -2292,7 +2310,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 1,
    "in": [
     "tw"
@@ -2306,7 +2324,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2318,7 +2336,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2330,7 +2348,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2342,7 +2360,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2354,7 +2372,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2366,7 +2384,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2378,7 +2396,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2390,7 +2408,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2402,7 +2420,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2414,7 +2432,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2426,7 +2444,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2438,7 +2456,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2450,7 +2468,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2462,7 +2480,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2474,7 +2492,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2486,7 +2504,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2498,7 +2516,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2510,7 +2528,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2522,7 +2540,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "jp"
@@ -2536,7 +2554,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "jp"
@@ -2550,7 +2568,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 1,
    "in": [
     "jp"
@@ -2564,7 +2582,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2576,7 +2594,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2588,7 +2606,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2600,7 +2618,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2612,7 +2630,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2624,7 +2642,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2636,7 +2654,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2648,7 +2666,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2660,7 +2678,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2672,7 +2690,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2684,7 +2702,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2693,13 +2711,14 @@
    "w": 5,
    "jp": null,
    "tw": "週末",
-   "cn": null,
+   "cn": "清明節",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -2707,13 +2726,14 @@
    "w": 6,
    "jp": null,
    "tw": "兒童節",
-   "cn": null,
+   "cn": "清明節",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -2721,13 +2741,14 @@
    "w": 0,
    "jp": null,
    "tw": "清明節",
-   "cn": null,
+   "cn": "清明節",
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -2738,7 +2759,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 1,
    "in": [
     "tw"
@@ -2752,7 +2773,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2764,7 +2785,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2776,7 +2797,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2788,7 +2809,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2800,7 +2821,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2812,7 +2833,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2824,7 +2845,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2836,7 +2857,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2848,7 +2869,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2860,7 +2881,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2872,7 +2893,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2884,7 +2905,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2896,7 +2917,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2908,7 +2929,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2920,7 +2941,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2932,7 +2953,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2944,7 +2965,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2956,7 +2977,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2968,7 +2989,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -2980,7 +3001,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -2992,7 +3013,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3004,7 +3025,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3016,7 +3037,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3028,7 +3049,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 1,
    "in": [
     "tw"
@@ -3039,14 +3060,15 @@
    "w": 5,
    "jp": null,
    "tw": "勞動節",
-   "cn": null,
+   "cn": "勞動節",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 2,
+   "cn_off": true,
+   "lv": 3,
    "in": [
     "jp",
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -3054,14 +3076,15 @@
    "w": 6,
    "jp": null,
    "tw": "週末",
-   "cn": null,
+   "cn": "勞動節",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 2,
+   "cn_off": true,
+   "lv": 3,
    "in": [
     "jp",
-    "tw"
+    "tw",
+    "cn"
    ]
   },
   {
@@ -3069,13 +3092,14 @@
    "w": 0,
    "jp": "憲法紀念日",
    "tw": null,
-   "cn": null,
+   "cn": "勞動節",
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "jp"
+    "jp",
+    "cn"
    ]
   },
   {
@@ -3083,13 +3107,14 @@
    "w": 1,
    "jp": "綠之日",
    "tw": null,
-   "cn": null,
+   "cn": "勞動節",
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "jp"
+    "jp",
+    "cn"
    ]
   },
   {
@@ -3097,13 +3122,14 @@
    "w": 2,
    "jp": "兒童節",
    "tw": null,
-   "cn": null,
+   "cn": "勞動節",
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
-   "lv": 1,
+   "cn_off": true,
+   "lv": 2,
    "in": [
-    "jp"
+    "jp",
+    "cn"
    ]
   },
   {
@@ -3114,7 +3140,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3126,7 +3152,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3138,7 +3164,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3150,7 +3176,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3162,7 +3188,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3174,7 +3200,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3186,7 +3212,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3198,7 +3224,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3210,7 +3236,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3222,7 +3248,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3234,7 +3260,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3246,7 +3272,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3258,7 +3284,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3270,7 +3296,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3282,7 +3308,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3294,7 +3320,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3306,7 +3332,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3318,7 +3344,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3330,7 +3356,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3342,7 +3368,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3354,7 +3380,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3366,7 +3392,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3378,7 +3404,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3390,7 +3416,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3402,7 +3428,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3414,7 +3440,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3426,7 +3452,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3438,7 +3464,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3450,7 +3476,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3462,7 +3488,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3474,7 +3500,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3486,7 +3512,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3498,7 +3524,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3510,7 +3536,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3519,10 +3545,10 @@
    "w": 2,
    "jp": null,
    "tw": "端午節",
-   "cn": null,
+   "cn": "端午節",
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3534,7 +3560,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3546,7 +3572,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3558,7 +3584,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3570,7 +3596,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3582,7 +3608,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3594,7 +3620,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3606,7 +3632,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3618,7 +3644,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3630,7 +3656,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3642,7 +3668,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3654,7 +3680,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3666,7 +3692,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3678,7 +3704,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3690,7 +3716,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3702,7 +3728,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3714,7 +3740,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3726,7 +3752,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3738,7 +3764,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3750,7 +3776,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3762,7 +3788,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3774,7 +3800,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3786,7 +3812,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3798,7 +3824,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3810,7 +3836,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3822,7 +3848,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3834,7 +3860,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3846,7 +3872,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3858,7 +3884,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3870,7 +3896,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3882,7 +3908,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3894,7 +3920,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3906,7 +3932,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -3918,7 +3944,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3930,7 +3956,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3942,7 +3968,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3954,7 +3980,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3966,7 +3992,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -3978,7 +4004,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "jp"
@@ -3992,7 +4018,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "jp"
@@ -4006,7 +4032,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 1,
    "in": [
     "jp"
@@ -4020,7 +4046,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4032,7 +4058,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4044,7 +4070,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4056,7 +4082,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4068,7 +4094,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4080,7 +4106,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4092,7 +4118,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4104,7 +4130,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4116,7 +4142,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4128,7 +4154,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4140,7 +4166,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4152,7 +4178,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4164,7 +4190,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4176,7 +4202,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4188,7 +4214,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4200,7 +4226,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4212,7 +4238,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4224,7 +4250,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4236,7 +4262,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4248,7 +4274,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4260,7 +4286,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4272,7 +4298,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4284,7 +4310,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4296,7 +4322,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4308,7 +4334,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4320,7 +4346,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4332,7 +4358,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4344,7 +4370,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4356,7 +4382,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4368,7 +4394,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4380,7 +4406,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4392,7 +4418,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4404,7 +4430,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4416,7 +4442,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4428,7 +4454,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4440,7 +4466,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4452,7 +4478,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4464,7 +4490,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4476,7 +4502,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4488,7 +4514,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4500,7 +4526,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4512,7 +4538,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4524,7 +4550,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4536,7 +4562,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4548,7 +4574,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4560,7 +4586,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4572,7 +4598,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4584,7 +4610,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4596,7 +4622,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4608,7 +4634,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4620,7 +4646,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4632,7 +4658,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4644,7 +4670,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4656,7 +4682,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4668,7 +4694,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4680,7 +4706,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4692,7 +4718,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4701,10 +4727,10 @@
    "w": 2,
    "jp": null,
    "tw": "中秋節",
-   "cn": null,
+   "cn": "中秋節",
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4716,7 +4742,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4728,7 +4754,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4740,7 +4766,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "jp"
@@ -4754,7 +4780,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "jp"
@@ -4768,7 +4794,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 1,
    "in": [
     "jp"
@@ -4782,7 +4808,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4794,7 +4820,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4806,7 +4832,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4818,7 +4844,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4830,7 +4856,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -4842,7 +4868,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4854,7 +4880,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4866,7 +4892,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4878,7 +4904,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4890,7 +4916,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4899,84 +4925,98 @@
    "w": 4,
    "jp": null,
    "tw": null,
-   "cn": null,
+   "cn": "國慶節",
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
-   "lv": 0,
-   "in": []
+   "cn_off": true,
+   "lv": 1,
+   "in": [
+    "cn"
+   ]
   },
   {
    "d": "2027-10-02",
    "w": 5,
    "jp": null,
    "tw": "週末",
-   "cn": null,
+   "cn": "國慶節",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 0,
-   "in": []
+   "cn_off": true,
+   "lv": 1,
+   "in": [
+    "cn"
+   ]
   },
   {
    "d": "2027-10-03",
    "w": 6,
    "jp": null,
    "tw": "週末",
-   "cn": null,
+   "cn": "國慶節",
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
-   "lv": 0,
-   "in": []
+   "cn_off": true,
+   "lv": 1,
+   "in": [
+    "cn"
+   ]
   },
   {
    "d": "2027-10-04",
    "w": 0,
    "jp": null,
    "tw": null,
-   "cn": null,
+   "cn": "國慶節",
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
-   "lv": 0,
-   "in": []
+   "cn_off": true,
+   "lv": 1,
+   "in": [
+    "cn"
+   ]
   },
   {
    "d": "2027-10-05",
    "w": 1,
    "jp": null,
    "tw": null,
-   "cn": null,
+   "cn": "國慶節",
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
-   "lv": 0,
-   "in": []
+   "cn_off": true,
+   "lv": 1,
+   "in": [
+    "cn"
+   ]
   },
   {
    "d": "2027-10-06",
    "w": 2,
    "jp": null,
    "tw": null,
-   "cn": null,
+   "cn": "國慶節",
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
-   "lv": 0,
-   "in": []
+   "cn_off": true,
+   "lv": 1,
+   "in": [
+    "cn"
+   ]
   },
   {
    "d": "2027-10-07",
    "w": 3,
    "jp": null,
    "tw": null,
-   "cn": null,
+   "cn": "國慶節",
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
-   "lv": 0,
-   "in": []
+   "cn_off": true,
+   "lv": 1,
+   "in": [
+    "cn"
+   ]
   },
   {
    "d": "2027-10-08",
@@ -4986,7 +5026,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -4998,7 +5038,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 2,
    "in": [
     "jp",
@@ -5013,7 +5053,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 2,
    "in": [
     "jp",
@@ -5028,7 +5068,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 2,
    "in": [
     "jp",
@@ -5043,7 +5083,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5055,7 +5095,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5067,7 +5107,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5079,7 +5119,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5091,7 +5131,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5103,7 +5143,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5115,7 +5155,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5127,7 +5167,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5139,7 +5179,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5151,7 +5191,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5163,7 +5203,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5175,7 +5215,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "tw"
@@ -5189,7 +5229,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "tw"
@@ -5203,7 +5243,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 1,
    "in": [
     "tw"
@@ -5217,7 +5257,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5229,7 +5269,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5241,7 +5281,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5253,7 +5293,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5265,7 +5305,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5277,7 +5317,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5289,7 +5329,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5301,7 +5341,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5313,7 +5353,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5325,7 +5365,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5337,7 +5377,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5349,7 +5389,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5361,7 +5401,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5373,7 +5413,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5385,7 +5425,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5397,7 +5437,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5409,7 +5449,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5421,7 +5461,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5433,7 +5473,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5445,7 +5485,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5457,7 +5497,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5469,7 +5509,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5481,7 +5521,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5493,7 +5533,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5505,7 +5545,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5517,7 +5557,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5529,7 +5569,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5541,7 +5581,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5553,7 +5593,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5565,7 +5605,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5577,7 +5617,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5589,7 +5629,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5601,7 +5641,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5613,7 +5653,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5625,7 +5665,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5637,7 +5677,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5649,7 +5689,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5661,7 +5701,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5673,7 +5713,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5685,7 +5725,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5697,7 +5737,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5709,7 +5749,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5721,7 +5761,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5733,7 +5773,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5745,7 +5785,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5757,7 +5797,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5769,7 +5809,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5781,7 +5821,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5793,7 +5833,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5805,7 +5845,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5817,7 +5857,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5829,7 +5869,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5841,7 +5881,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5853,7 +5893,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5865,7 +5905,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 0,
    "in": []
   },
@@ -5877,7 +5917,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5889,7 +5929,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5901,7 +5941,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5913,7 +5953,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5925,7 +5965,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 1,
    "in": [
     "tw"
@@ -5939,7 +5979,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "tw"
@@ -5953,7 +5993,7 @@
    "cn": null,
    "jp_off": true,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": true,
    "lv": 1,
    "in": [
     "tw"
@@ -5967,7 +6007,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5979,7 +6019,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -5991,7 +6031,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -6003,7 +6043,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": false,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 0,
    "in": []
   },
@@ -6015,7 +6055,7 @@
    "cn": null,
    "jp_off": false,
    "tw_off": true,
-   "cn_off": null,
+   "cn_off": false,
    "lv": 1,
    "in": [
     "tw"
@@ -6285,6 +6325,46 @@
     "names": [
      "國慶節"
     ]
+   },
+   {
+    "start": "2027-01-01",
+    "end": "2027-01-03",
+    "days": 3,
+    "names": [
+     "元旦"
+    ]
+   },
+   {
+    "start": "2027-02-05",
+    "end": "2027-02-13",
+    "days": 9,
+    "names": [
+     "春節"
+    ]
+   },
+   {
+    "start": "2027-04-03",
+    "end": "2027-04-05",
+    "days": 3,
+    "names": [
+     "清明節"
+    ]
+   },
+   {
+    "start": "2027-05-01",
+    "end": "2027-05-05",
+    "days": 5,
+    "names": [
+     "勞動節"
+    ]
+   },
+   {
+    "start": "2027-10-01",
+    "end": "2027-10-07",
+    "days": 7,
+    "names": [
+     "國慶節"
+    ]
    }
   ]
  },
@@ -6323,24 +6403,57 @@
    "end": "2027-01-03",
    "days": 3,
    "countries": [
+    "cn",
     "jp",
     "tw"
    ],
-   "max_lv": 2,
+   "max_lv": 3,
    "names": [
     "元旦",
     "開國紀念日"
    ]
   },
   {
-   "start": "2027-05-01",
-   "end": "2027-05-02",
-   "days": 2,
+   "start": "2027-02-05",
+   "end": "2027-02-10",
+   "days": 6,
    "countries": [
-    "jp",
+    "cn",
     "tw"
    ],
    "max_lv": 2,
+   "names": [
+    "小年夜",
+    "農曆除夕",
+    "春節",
+    "補假"
+   ]
+  },
+  {
+   "start": "2027-04-03",
+   "end": "2027-04-05",
+   "days": 3,
+   "countries": [
+    "cn",
+    "tw"
+   ],
+   "max_lv": 2,
+   "names": [
+    "兒童節",
+    "清明節",
+    "補假"
+   ]
+  },
+  {
+   "start": "2027-05-01",
+   "end": "2027-05-05",
+   "days": 5,
+   "countries": [
+    "cn",
+    "jp",
+    "tw"
+   ],
+   "max_lv": 3,
    "names": [
     "憲法紀念日",
     "綠之日",
@@ -6365,5 +6478,6 @@
    ]
   }
  ],
- "_重疊定義": "同一天有兩個以上國家正在放「連續三天以上」的假。單純的週六日不算，因為那不會造成額外的需求高峰。"
+ "_重疊定義": "同一天有兩個以上國家正在放「連續三天以上」的假。單純的週六日不算，因為那不會造成額外的需求高峰。",
+ "checked_cn2027": "2026-11-09"
 }

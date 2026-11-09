@@ -9290,7 +9290,11 @@ if HOL:
     _src = HOL['_來源網址']
     _src_rows = ''.join(
         f'<li><b>{_CN[k]}</b>：{html.escape(HOL["_來源"][_CN[k]])}　'
-        f'<a href="{v}" target="_blank" rel="nofollow noopener">來源 →</a></li>'
+        # 逐年公布的（中國）一年一個網址，用 {年份: 網址} 存，連結各標年份
+        + ('　'.join(f'<a href="{u}" target="_blank" rel="nofollow noopener">{y} 年 →</a>'
+                     for y, u in v.items()) if isinstance(v, dict) else
+           f'<a href="{v}" target="_blank" rel="nofollow noopener">來源 →</a>')
+        + '</li>'
         for k, v in (('jp', _src['日本']), ('tw', _src['台灣']), ('cn', _src['中國'])))
 
     hc_faq = [
@@ -9314,9 +9318,10 @@ if HOL:
      ('日本的補假會算進去嗎？',
       '會。日本的振替休日在內閣府的公開假日資料裡就列為休日，這裡一併計入。'
       '台灣的補班日與中國的調休上班日也都扣掉了，不會把要上班的週六算成假日。'),
-     ('為什麼 2027 年沒有中國的資料？',
-      '中國的節假日由國務院逐年公布，2027 年的還沒發布，'
-      '所以 2027 年的中國那一欄是空的。還沒公布不等於沒有假。'),
+     ('中國的資料到什麼時候？',
+      '中國的節假日由國務院逐年公布，2027 年的安排在 2026 年 11 月 5 日發布'
+      '（國辦發明電〔2026〕10 號），已經算進來了。2028 年的還沒公布，'
+      '所以 2028 年的中國那一欄是空的。還沒公布不等於沒有假。'),
     ]
     hc_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in hc_faq)
@@ -9393,7 +9398,7 @@ if HOL:
       + '<h3>🇹🇼 台灣</h3>' + _runs_tbl('tw')
       + '<h3>🇨🇳 中國</h3>' + _runs_tbl('cn')
       + f'<p class="disc">{html.escape(HOL["_連假定義"])}'
-        f'{html.escape(HOL["_中國只到2026"])}</p>'
+        f'{html.escape(HOL["_中國到2027"])}</p>'
       + '<h2>資料來源</h2>'
       + f'<ul class="lede">{_src_rows}</ul>'
       + '<h2>常見問題</h2>' + hc_html
@@ -9735,17 +9740,19 @@ if HOL:
                 jpc = '<td class="dimcell">未公布</td>'
             else:
                 jpc = '<td class="dimcell">無</td>'
-            if not cn_open:
-                cnc = ('<td class="dimcell">未公布</td>')
+            cn = _ovl_runs('cn', s, e) if cn_open else []
+            if cn:
+                cnc = ('<td class="lose nm"><b>有</b><br><small style="'
+                       'color:var(--dim);font-weight:400">'
+                       + '<br>'.join(
+                           f'{html.escape("、".join(x["names"]) or "連假")}'
+                           f' {_dm(x["start"], x["end"])}，重疊 {n} 天'
+                           for x, n in cn) + '</small></td>')
+            elif not cn_open or e > HOL_COV['cn']:
+                # 跨進隔年、而隔年中國還沒公布的那一段，寫「無」等於替對方宣告，和日本同一套三態
+                cnc = '<td class="dimcell">未公布</td>'
             else:
-                cn = _ovl_runs('cn', s, e)
-                cnc = (('<td class="lose nm"><b>有</b><br><small style="'
-                        'color:var(--dim);font-weight:400">'
-                        + '<br>'.join(
-                            f'{html.escape("、".join(x["names"]) or "連假")}'
-                            f' {_dm(x["start"], x["end"])}，重疊 {n} 天'
-                            for x, n in cn) + '</small></td>')
-                       if cn else '<td class="dimcell">無</td>')
+                cnc = '<td class="dimcell">無</td>'
             fs = [f for f in fy if f['start'] and f['start'] <= e and f['end'] >= s]
             fc = (('<td class="nm"><small>' + '<br>'.join(
                     f'{html.escape(f["name"])}（{f["city"]}）'
@@ -9937,7 +9944,7 @@ if HOL:
                        [{'names': x['names'], 'start': x['start'],
                          'end': x['end'], 'overlap': n}
                         for x, n in _ovl_runs('jp', s, e)]),
-                'cn': (None if not cn_open else
+                'cn': (None if not cn_open or e > HOL_COV['cn'] else
                        [{'names': x['names'], 'start': x['start'], 'end': x['end'],
                          'overlap': n} for x, n in _ovl_runs('cn', s, e)]),
                 'fest': [{'name': f['name'], 'city': f['city'],
