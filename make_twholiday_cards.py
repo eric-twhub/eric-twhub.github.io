@@ -286,8 +286,7 @@ def build(d):
                                else '<s>' + x + '</s>' for x in bits)
                      + '</div>')
         n = len(_chunk(runs, PER_RUN))
-        add(f'<div class="kick">台灣放假時，那邊在做什麼</div>'
-            f'<h1>{ys} 年的連假，<br><em>日本與中國同期</em></h1>'
+        add(f'<h1>{ys} 年的連假，<br><em>日本與中國同期</em></h1>'
             + (f'<div class="legend">第 {k + 1} 組，共 {n} 組</div>' if n > 1 else '')
             + f'<div class="list">{rows}</div>', '',
             '台灣放假時，日本與中國同期',
