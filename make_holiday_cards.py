@@ -72,6 +72,7 @@ h1 em{font-style:normal;color:#c2410c}
 .row{display:flex;gap:12px;align-items:baseline;padding:13px 0;
  border-bottom:1px solid #e5e3de}
 .row:last-child{border-bottom:0}
+.tight .row{padding:9px 0}
 .nm{flex:1 1 auto;font-size:29px;font-weight:700;line-height:1.28;letter-spacing:-.01em}
 .nm s{display:block;text-decoration:none;font-size:20px;font-weight:500;color:#8a847c;
  margin-top:4px;letter-spacing:0}
@@ -199,7 +200,8 @@ def build(d, today):
     # ── 3 撞期 ──
     rows = ''
     for o in ov:
-        who = '＋'.join(CN[c] for c in ('tw', 'jp', 'cn', 'kr') if c in o['countries'])
+        # 四國全上時全名排不下，用一字簡稱（台日中韓）
+        who = ''.join(CN[c][0] for c in ('tw', 'jp', 'cn', 'kr') if c in o['countries'])
         left = (datetime.date.fromisoformat(o['start'])
                 - datetime.date.fromisoformat(today)).days
         rows += (f'<div class="row"><div class="nm">{md(o["start"])}–{md(o["end"])}'
@@ -212,7 +214,7 @@ def build(d, today):
              '<div class="sub">同一天有兩個以上國家在放三天以上的連假，'
              '機票與住宿會一起被推上去。</div>'
              '<div class="legend">單純的週六日不算，那不會造成額外的需求高峰。</div>'
-             f'<div class="list">{rows}</div>' + foot(3, n, cal_note))
+             f'<div class="list tight">{rows}</div>' + foot(3, n, cal_note))
     out.append(('hol-03.png', page(inner)))
 
     # ── 4 請 1 天休最多 ──
