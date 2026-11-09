@@ -35,6 +35,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # IndexNow 要比對這一輪前後的 lastmod，建置前先留一份
+      - name: 保存建置前的 sitemap
+        run: cp sitemap.xml /tmp/sitemap_before.xml || true
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -206,3 +210,9 @@ jobs:
           done
           echo "::error::重試三次仍無法推送"
           exit 1
+
+      # 內容有變的網址通知 Bing（IndexNow）。送不出去不影響已推送的網站，所以不擋。
+      - name: 通知 IndexNow
+        continue-on-error: true
+        timeout-minutes: 8
+        run: python3 indexnow.py /tmp/sitemap_before.xml sitemap.xml
