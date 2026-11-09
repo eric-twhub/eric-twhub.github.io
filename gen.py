@@ -1731,12 +1731,13 @@ def _ad_kind_for(path):
             return kind
     # 城市頁與航線頁本來就有行程與 eSIM 兩個版位，這裡配住宿：
     # 看完機票的下一步就是訂房，而且不跟既有的兩個重複。
-    # 但 Trip.com 的飯店列表要數字城市 ID，只有六個城市有；
-    # 其餘城市會掉回 Agoda 的關鍵字連結，那不是我們的夥伴，點了沒有分潤。
-    # 那些城市改配機場接送，一樣是落地後要用的東西，而且連結帶得到分潤。
+    # Trip.com 的飯店列表要數字城市 ID，只有六個城市有；其餘 27 城
+    # 2026-11-09 起走 Agoda 聯盟（plink 會自動轉過去）。兩邊都沒有 ID 的城市
+    # 才配機場接送，免得版位送出沒有分潤的關鍵字搜尋。
     _c = _ad_city(path)
     if _c:
-        return 'hotel' if (P['hotel'].get('city_ids') or {}).get(_c[1]) else 'transfer'
+        return ('hotel' if (P['hotel'].get('city_ids') or {}).get(_c[1])
+                or _agoda_cid(_c[1]) else 'transfer')
     if u in REGNAME:                # 地區頁：還在挑日本哪一區，配當地行程
         return 'activity2'
     if u in ONAME:                  # 出發地頁：從台灣出發，配上網
@@ -1890,6 +1891,12 @@ def adbox(kind, path, slot='foot'):
     if '{' in href or href.startswith('TODO'):
         return ''
     brand = P[kind]['brand']
+    if kind == 'hotel':
+        # 沒有 Trip.com 城市 ID 的城市，plink 送去的是 Agoda。平台名跟著連結走，
+        # 橫幅圖上印的是「到 Trip.com 看」，這些頁只用文字版。
+        brand = _host_brand(href) or brand
+        if brand != P[kind]['brand']:
+            img_on = False
     if _g.get('items'):
         # 商品是哪個平台的，整個版位就標哪個平台，按鈕也送去那裡。
         # 不然會變成列 KKday 的商品、按鈕卻把人送去 Trip.com。
