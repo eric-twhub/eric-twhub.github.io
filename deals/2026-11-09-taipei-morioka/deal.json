@@ -1,0 +1,71 @@
+{
+ "schema": 1,
+ "slug": "2026-11-09-taipei-morioka",
+ "generated": "2026-11-09 17:29",
+ "kind": "fare",
+ "origin": "taipei",
+ "city": "morioka",
+ "fare": {
+  "o": "TPE",
+  "d": "HNA",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 4973,
+  "dep": "2026-11-21",
+  "ret": "2026-11-28",
+  "dept": "12:15",
+  "rett": "17:50",
+  "rt": true,
+  "tr": 0,
+  "dur": 460,
+  "dur_to": 200,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-HNA&departureDate=2026-11-21&inbound=HNA-TPE&returnDate=2026-11-28&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 9073,
+ "n_rt": 3,
+ "others": [
+  {
+   "o": "TPE",
+   "d": "HNA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 9073,
+   "dep": "2026-11-14",
+   "ret": "2026-11-21",
+   "dept": "12:15",
+   "rett": "17:50",
+   "rt": true,
+   "tr": 0,
+   "dur": 460,
+   "dur_to": 200,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-HNA&departureDate=2026-11-14&inbound=HNA-TPE&returnDate=2026-11-21&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "HNA",
+   "air": "NH",
+   "airname": "全日空",
+   "cls": "fsc",
+   "price": 50836,
+   "dep": "2026-11-14",
+   "ret": "2026-11-21",
+   "dept": "16:50",
+   "rett": "17:10",
+   "rt": true,
+   "tr": 4,
+   "dur": 3860,
+   "dur_to": 405,
+   "gate": "Clickavia",
+   "url": "https://www.aviasales.com/search/TSA1411HNA21111?t=CI17946750001794756300001295TSAHNDFUKHNA17952810001795431300002565HNACTSHNDTSA_0a3c9bc6b48d766cc7ee09f6a8de7338_125848&search_date=05112026&expected_price_uuid=01a1aa4d-ac6c-8040-a094-ecc3ce3cdfc4&static_fare_key=TY%7CP0%7CH1%7CL1_1_20%7CCH0%7CR0%7CTBC1&itinerary_key=ihRY6ErAbDKlEex2Vgvk8Q&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=50836&marker=775639"
+  }
+ ]
+}
