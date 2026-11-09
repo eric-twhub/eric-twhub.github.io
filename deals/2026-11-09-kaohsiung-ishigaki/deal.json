@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-09-kaohsiung-ishigaki",
- "generated": "2026-11-09 18:20",
+ "generated": "2026-11-09 21:09",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "ishigaki",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4059,
+  "price": 3818,
   "dep": "2026-11-29",
   "ret": "2026-12-06",
   "dept": "09:30",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 4059,
+ "med": 3818,
  "n_rt": 1,
  "others": []
 }
