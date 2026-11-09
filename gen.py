@@ -916,6 +916,22 @@ LB_JS = ('<script>(function(){'
          'show(+a.getAttribute("data-i"));'
          'box.querySelector(".lbc").focus()});})();</script>')
 
+# Klook 後台「我的廣告 → 其他工具 → 動態廣告（手動輸入活動）」產生的單一商品圖卡。
+# 合作條款只准用 Klook 提供的推廣素材、不能自己抓商品頁的圖，所以要有圖只能走這個。
+# 圖、評分、價格都由 Klook 的 iframe 即時帶入，本站不寫死。一個 adid 綁一個商品，
+# 換商品要回後台改；後台顯示「活動無效」的商品做不出來（2026-11-10 吉卜力公園 132673）。
+KLOOK_CARD = {'619': '1556136', '171099': '1556138', '229535': '1556139'}
+
+def klook_card(act_id):
+    adid = KLOOK_CARD.get(str(act_id))
+    if not adid: return ''
+    return ('<div class="kcard"><ins class="klk-aff-widget" data-adid="' + adid + '" data-lang="" '
+            'data-currency="" data-cardH="126" data-padding="92" data-lgH="470" data-edgeValue="655" '
+            'data-prod="static_widget" data-amount="1"><a href="//www.klook.com/">Klook.com</a></ins></div>'
+            '<script>(function(d,sc,u){var s=d.createElement(sc),p=d.getElementsByTagName(sc)[0];'
+            's.type="text/javascript";s.async=true;s.src=u;p.parentNode.insertBefore(s,p);})'
+            '(document,"script","https://affiliate.klook.com/widget/fetch-iframe-init.js");</script>')
+
 def widget_block(kind,title,note,**kw):
     code=(W.get(kind) or '').strip()
     if not code: return ''          # 未設定嵌入碼時整區不顯示，不留空殼
@@ -1445,6 +1461,8 @@ border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;flex:0 0 auto}
  font-size:1.12rem;font-weight:800;line-height:1.5}
 .cres .cv.jp{color:var(--lcc)}.cres .cv.tw{color:var(--acc)}
 .widget{margin:12px 0 0;min-height:60px}
+/* 寬過 655px 時 Klook 會換成直式卡片，iframe 卻維持 245px 高，價格被切掉；限寬讓它一律用橫式 */
+.kcard{margin:12px 0 0;min-height:60px;max-width:600px}
 .widget iframe{max-width:100%;border:0}
 .gatebar{margin:16px 0 0;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
 .disc{font-size:.88rem;color:var(--dim);margin:8px 0 0;line-height:1.6}
@@ -7318,6 +7336,7 @@ if os.path.exists('chiikawa.json'):
         '<li><b>為什麼能買：</b>樂園 2025 年 8 月公布新增 Klook 與 Trip.com 兩個購票管道。</li>'
         f'<li><b>要注意：</b>{html.escape(_ck_kl["note"])}購票本人到場、同行的人一起進場的規定一樣適用。</li>'
         f'<li><b>名額：</b>{html.escape(_ck_kl["seen"])}</li></ul>'
+        + klook_card(_ck_kl['id']) +
         f'<a class="cta" href="{_ck_kl_h}" target="_blank" rel="{_rel(_ck_kl_h)}">'
         '<span class="ci">🎫</span><span class="ct"><b>到 Klook 買吉伊卡哇樂園門票</b>'
         '<s>用台幣付款，價格與剩餘名額以 Klook 頁面為準</s></span><span class="ca">→</span></a></div>')
@@ -7506,6 +7525,7 @@ if os.path.exists('ghibli-museum.json'):
         f'<li><b>要注意：</b>{html.escape(_gm_jt["watch"])}</li>'
         f'<li><b>供應商：</b>{html.escape(_gm_jt["supplier"])}</li>'
         f'<li><b>查證日期：</b>{html.escape(_gm_jt["seen"])}</li></ul>'
+        + klook_card(_gm_jt['id']) +
         f'<a class="cta" href="{_gm_jt_h}" target="_blank" rel="{_rel(_gm_jt_h)}">'
         '<span class="ci">🚌</span><span class="ct"><b>到 Klook 看可以訂的日期</b>'
         '<s>門票、交通與午餐包在一起，價格比單買門票高，以 Klook 頁面為準</s></span><span class="ca">→</span></a></div>')
@@ -9493,6 +9513,8 @@ if os.path.exists('angel63.json'):
           f'<p class="lede">{html.escape(_agk["compare"]["so"])}</p>'
           f'<p class="disc">{html.escape(_agk["compare"]["caveat"])}</p>')
          if _agk.get('compare') else '')
+      # 比價表是 9/28 的快照，圖卡是 Klook 即時價；放在快照說明之後，不讓兩個數字並排
+      + klook_card(re.search(r'/activity/(\d+)', _agk['url']).group(1))
       + '<h2>基本資料</h2>'
       + '<div class="tldr"><ul>'
         f'<li><b>地址</b>：{html.escape(AG["addr"])}</li>'
