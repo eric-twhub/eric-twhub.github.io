@@ -2168,10 +2168,10 @@ def cta(kind, city_name, hotel_city, headline, sub, track='', ci='', co=''):
 
     track 會填進 trip_sub1，用來在聯盟後台分辨是哪個頁面帶來的成交。"""
     p = P[kind]
-    return (f'<a class="cta" href="'
-            f'{html.escape(plink(kind, hotel_city, sub=track, ci=ci, co=co))}" '
+    _h = html.escape(plink(kind, hotel_city, sub=track, ci=ci, co=co))
+    return (f'<a class="cta" href="{_h}" '
             f'target="_blank" '
-            f'rel="nofollow noopener sponsored">'
+            f'rel="{_rel(_h)}">'
             f'<span class="ci">{p["icon"]}</span>'
             f'<span class="ct"><b>{html.escape(headline)}</b><s>{html.escape(sub)}</s></span>'
             f'<span class="ca">→</span></a>')
@@ -2179,12 +2179,12 @@ def cta(kind, city_name, hotel_city, headline, sub, track='', ci='', co=''):
 def partner_links(city_name, hotel_city, slug=None):
     """保留給尚未改為情境式配置的頁面（航線頁、deal 貼文），至多兩個連結。"""
     keys = ['hotel', 'esim']
+    hs = [html.escape(plink(k, hotel_city)) for k in keys]
     ls = ''.join(
-        f'<a class="plink" href="{html.escape(plink(k,hotel_city))}" target="_blank" '
-        f'rel="nofollow noopener sponsored">{plabel(k,city_name,hotel_city)}</a>'
-        for k in keys)
-    return (f'<div class="plinks">{ls}</div>'
-            '<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>')
+        f'<a class="plink" href="{h}" target="_blank" '
+        f'rel="{_rel(h)}">{plabel(k,city_name,hotel_city)}</a>'
+        for k, h in zip(keys, hs))
+    return f'<div class="plinks">{ls}</div>' + _links_disc(hs)
 
 def alt_calc(slug):
     """回傳 [(替代城市slug, 機票最低, 交通TWD單程 or None, 總計 or None, route, mode, tm, fare)]"""
@@ -2330,8 +2330,30 @@ def _toc(content):
         first = st if first < 0 else min(first, st)
     return content[:first] + toc + content[first:] if first > 0 else content
 
+# Agoda、Booking 的一般搜尋連結沒有分潤（Agoda 的聯盟申請 2026-10-15 送出，
+# 還沒核准，partners.json 的 template 仍是 TODO），只有帶了 cid／aid 才算。
+# 以前整個網域都算進來，頁尾和「以上連結」那句就把一般連結講成了分潤連結。
 _AFF_RE = re.compile(r'affiliate\.klook|affclkr|trip\.com|kkday\.com'
-                     r'|booking\.com|agoda\.com|sfGo\(')
+                     r'|agoda\.com[^"\s]*[?&](?:amp;)?cid=\d'
+                     r'|booking\.com[^"\s]*[?&](?:amp;)?aid=\d|sfGo\(')
+
+
+def _links_disc(hrefs):
+    """一組連結下方的分潤說明，依連結本身有沒有分潤參數決定怎麼寫。"""
+    free = list(dict.fromkeys(_host_brand(html.unescape(h)) or '其他網站'
+                              for h in hrefs if not _AFF_RE.search(h)))
+    if not free:
+        return '<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>'
+    names = '、'.join(free)
+    if not any(_AFF_RE.search(h) for h in hrefs):
+        return f'<p class="disc">以上連結前往 {names}，那不是本站的合作平台，本站沒有分潤。</p>'
+    return (f'<p class="disc">前往 {names} 的連結只是一般搜尋，那不是本站的合作平台，本站沒有分潤；'
+            '其他連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>')
+
+
+def _rel(href):
+    """有分潤的連結標 sponsored，一般連結不標，免得把沒收錢的連結申報成廣告。"""
+    return 'nofollow noopener sponsored' if _AFF_RE.search(href) else 'nofollow noopener'
 
 def _trim_note(content):
     """頁尾那兩段聲明，只留這一頁真的用得上的。
@@ -2869,6 +2891,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
         _as = AIRLINE_SCHED[slug]
         body += (f'<p class="lede"><a href="{U(_as["url"])}"><b>{html.escape(_as["label"])}</b></a>'
                  f'：{html.escape(_as["blurb"])}</p>')
+    _cta_mark = len(body)
     # 看完票價 → 下一步就是找住宿，放在這裡最順
     if fs:
         # 沒有城市 ID 的城市會退回 Agoda，文案就不能寫 Trip.com
@@ -2935,7 +2958,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
                f'<a href="{U("/japan-rentacar-noc/")}">那筆叫 NOC，不買可能賠 2～5 萬日圓</a>。</p>')
     body+=cta('esim',name,hotelcity,'出發前別忘了日本上網',
               '到 Klook 買 eSIM 或網卡，落地就能用')
-    body+='<p class="disc">以上連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>'
+    body+=_links_disc(re.findall(r'class="cta" href="([^"]+)"', body[_cta_mark:]))
     sib=[c for c in CITIES if c[3]==reg and c[0]!=slug]
     if sib:
         body+=(f'<h2>{REGNAME[reg]}其他航點</h2><div class="cities">'+''.join(
