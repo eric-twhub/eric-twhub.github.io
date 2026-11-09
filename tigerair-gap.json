@@ -1590,11 +1590,11 @@
    "max": 0.5796,
    "min": 0.0285,
    "db_total": 348089,
-   "air_total": 266247,
+   "air_total": 267567,
    "routes": {
     "KHH-FUK": {
      "n": 2,
-     "med": 0.3737
+     "med": 0.331
     },
     "KHH-ISG": {
      "n": 1,
