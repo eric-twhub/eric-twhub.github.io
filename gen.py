@@ -1587,6 +1587,7 @@ def topnav(cur=''):
             + link('/kyoto/autumn-leaves/', '🍁 京都賞楓要預約的地方')
             + link('/tokyo/autumn-leaves/', '🍁 東京賞楓要買票的地方')
             + link('/japan-shirakawago-lightup/', '🏮 白川鄉點燈怎麼預約')
+            + link('/japan-ginzan-onsen/', '♨️ 銀山溫泉冬季怎麼預約')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -1744,6 +1745,7 @@ _AD_MAP = [
     ('kyoto/autumn-leaves', 'esim'),
     ('tokyo/autumn-leaves', 'esim'),
     ('japan-shirakawago-lightup', 'esim'),
+    ('japan-ginzan-onsen', 'esim'),
     ('japan-park-ticket', 'activity2'), ('japan-seasonal-event', 'activity2'), ('tigerair-nagoya', 'transfer'),
     ('taiwan-holiday', 'activity2'), ('japan-holiday-calendar', 'activity2'),
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
@@ -23060,6 +23062,7 @@ if os.path.exists('shirakawago.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/taiwan-holiday-2027/")}"><b>📅 2027 請假攻略</b><s>1 月的連假怎麼請</s></a>'
       + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b><s>1/11 是日本的連假</s></a>'
+      + f'<a class="ct" href="{U("/japan-ginzan-onsen/")}"><b>♨️ 銀山溫泉冬季預約</b><s>當天來回要先訂接駁巴士</s></a>'
       + f'<a class="ct" href="{U("/japan-ski-resort/")}"><b>🏔 雪場官網現場價</b><s>同一趟冬天順便滑雪</s></a></div>'
       + faq_visible(skg_faq)
       + f'<p class="disc">規定以白川郷観光協会與各巴士公司的公告為準，整理可能有疏漏。查證於 {SKG["checked"]}。'
@@ -23067,6 +23070,141 @@ if os.path.exists('shirakawago.json'):
         f'{_skg_src(SKG["src_park"], "停車場預約")}。</p>'
       + foot())
     pages.append(('/japan-shirakawago-lightup/', 0.7))
+
+# ---------- 銀山溫泉冬季接駁巴士 ----------
+# 資料在 ginzan.json，引銀山温泉官網的冬季交通案内與售票頁。
+# 每天會變的在這裡算：管制期間的狀態、下一個開賣時間。空位是 seats_checked 那天的快照。
+if os.path.exists('ginzan.json'):
+    GZ = json.load(open('ginzan.json', encoding='utf-8'))
+    _gz_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _gz_iso = _gz_today.isoformat()
+    _gz_wd = '一二三四五六日'
+
+    def _gz_md(s):
+        d = datetime.date.fromisoformat(s) if isinstance(s, str) else s
+        return f'{d.month}/{d.day}（{_gz_wd[d.weekday()]}）'
+
+    def _gz_src(u, label='官方頁面'):
+        return f'<a href="{html.escape(u)}" rel="nofollow noopener" target="_blank">{label}</a>'
+
+    def _gz_when(d, t):
+        """日本時間開賣時刻，附台灣時間（0:00 換成前一天 23:00）。"""
+        h, m = (int(x) for x in t.split(':'))
+        jd = datetime.date.fromisoformat(d)
+        if h == 0:
+            td = jd - datetime.timedelta(days=1)
+            tw = f'台灣 {td.month}/{td.day} 23:{m:02d}'
+        else:
+            tw = f'台灣 {h - 1}:{m:02d}'
+        return f'{_gz_md(jd)} 日本時間 {h}:{m:02d}（{tw}）'
+
+    if _gz_iso < GZ['from']:
+        _n = (datetime.date.fromisoformat(GZ['from']) - _gz_today).days
+        _gz_ans = f'冬季管制 {_gz_md(GZ["from"])}開始，還有 {_n} 天'
+    elif _gz_iso <= GZ['to']:
+        _gz_ans = f'冬季管制中（到 {_gz_md(GZ["to"])}），當天來回要先訂接駁巴士'
+    else:
+        _gz_ans = f'今年的冬季管制 {_gz_md(GZ["to"])} 已經結束'
+    _gz_up = [x for x in GZ['sales'] if x[0] >= _gz_iso]
+    if _gz_up:
+        _gz_next = f'下一次開賣：{_gz_when(_gz_up[0][0], _gz_up[0][1])}，{_gz_up[0][2]}。'
+    elif _gz_iso <= GZ['to']:
+        _gz_next = '所有時段都已經開賣，預約到乘車前一天 17:00（日本時間）。'
+    else:
+        _gz_next = '明年冬天的辦法要等官網公告。'
+
+    _gz_sale_rows = ''.join(
+        f'<tr><td>{html.escape(_gz_when(d, t))}</td><td>{html.escape(w)}</td></tr>' for d, t, w in GZ['sales'])
+    _gz_fare_rows = ''.join(
+        f'<tr><td>{html.escape(a)}</td><td>{html.escape(b)}</td><td>{html.escape(c)}</td></tr>' for a, b, c in GZ['fares'])
+    _gz_seat_rows = ''.join(
+        f'<tr><td>{html.escape(a)}</td><td>{html.escape(b)}</td></tr>' for a, b in GZ['seats'])
+    _gz_rules = ''.join(f'<li>{html.escape(x)}</li>' for x in GZ['rules'])
+    _gz_period = f'{_gz_md(GZ["from"])}～{_gz_md(GZ["to"])}'
+
+    gz_faq = [
+     ('銀山溫泉冬天要預約嗎？',
+      f'當天來回的話要。{_gz_period}私家車不能直接開進溫泉街，要停在大正ろまん館，換搭事先預約的接駁巴士。'
+      '住在溫泉街旅館的人照旅館的交通說明。'),
+     ('銀山溫泉接駁巴士怎麼預約？',
+      f'在銀山溫泉官網的預約日曆選日期，會連到全旅協會的售票頁，選去程時段與人數後刷卡。{GZ["buy"]}'),
+     ('銀山溫泉接駁巴士什麼時候開賣？',
+      '9:00～13:40 出發的班次 2026/11/1 9:00 已經整季開賣；14:00～18:00 出發的傍晚班次分月開賣：'
+      '12 月的 11/1、1 月的 12/1 0:00、2 月到 3/7 的 1/1 0:00（都是日本時間）。'),
+     ('銀山溫泉接駁巴士多少錢？',
+      '來回票價看去程時段：' + '；'.join(f'{a} 事先買 {b}、當天買 {c}' for a, b, c in GZ['fares'])
+      + '。網路預約每筆另收 165 円手續費，小學生以下免費（人數上限是同組大人的人數）。'),
+     ('銀山溫泉接駁巴士可以取消嗎？',
+      GZ['cancel']),
+     ('回程要搭哪一班？',
+      GZ['back']),
+     ('可以從大正ろまん館走路到銀山溫泉嗎？',
+      '官方明確寫不要。約 2 公里，但冬天人行道沒有除雪，只能走車道，遇到暴風雪會看不到前面，等再久都不要走。'),
+     ('沒有預約可以去嗎？',
+      '當天只有還有空位時，才在大正ろまん館的售票機賣指定時段的票，傍晚的班次官方寫過去曾經等到 3 個小時。'),
+    ]
+    gz_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in gz_faq]}, ensure_ascii=False)
+
+    write('japan-ginzan-onsen/index.html',
+      head('銀山溫泉冬季預約 2026–2027：接駁巴士怎麼訂、傍晚時段開賣日、票價與回程班次',
+           '銀山溫泉 2026/12/19～2027/3/7 冬季管制：當天來回要停大正ろまん館、先預約接駁巴士。'
+           '整理預約方法、1 月傍晚時段 12/1 開賣、各時段票價、回程指定班次、取消規定與官方的安全提醒。',
+           'japan-ginzan-onsen/',
+           '<script type="application/ld+json">' + gz_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('銀山溫泉冬季預約', None)])
+      + '<h1>銀山溫泉冬季預約：接駁巴士怎麼訂、什麼時候開賣</h1>'
+      + f'<p class="lede">銀山溫泉 {_gz_period}實施冬季管制：當天來回的人不能直接開車或走路進溫泉街，'
+        '要在大正ろまん館換搭事先預約的接駁巴士，而且每個時段的人數有上限。'
+        f'下面的規則都引自銀山溫泉官網與售票頁，查證於 {GZ["checked"]}。</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_gz_md(_gz_today)}</div>'
+        f'<div class="tans">{html.escape(_gz_ans)}</div>'
+        f'<div class="tsub">{html.escape(_gz_next)}</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>當天來回要先訂接駁巴士</b>：停大正ろまん館，搭指定時段的車進去，回程是去程 90 分鐘後那一班優先。</li>'
+        '<li><b>傍晚時段分月開賣</b>：1 月的 14:00～18:00 班次 12/1 0:00（日本時間）開賣，2 月以後的 1/1 開賣。</li>'
+        '<li><b>不要走路進去</b>：約 2 公里，但冬天只能走車道，官方寫等再久都不要走。</li>'
+        '</ul></div>'
+      + '<h2>誰要預約</h2>'
+      + f'<p class="lede">{html.escape(GZ["who"])}</p>'
+      + '<h2>開賣時間</h2>'
+      + '<div class="tw"><table><thead><tr><th>開賣</th><th>賣哪些班次</th></tr></thead><tbody>'
+      + _gz_sale_rows + '</tbody></table></div>'
+      + '<h2>票價（來回）</h2>'
+      + '<div class="tw"><table><thead><tr><th>去程時段</th><th>事先買</th><th>當天買</th></tr></thead><tbody>'
+      + _gz_fare_rows + '</tbody></table></div>'
+      + f'<p class="lede">{html.escape(GZ["bus"])}</p>'
+      + '<h2>怎麼預約</h2>'
+      + f'<p class="lede">在 {_gz_src(GZ["src_cal"], "銀山溫泉官網的預約日曆")}選日期，會連到全旅協會的售票頁，'
+        f'選去程時段與人數後刷卡。{html.escape(GZ["buy"])}</p>'
+      + f'<p class="lede"><b>回程</b>：{html.escape(GZ["back"])}</p>'
+      + f'<p class="lede"><b>取消</b>：{html.escape(GZ["cancel"])}</p>'
+      + '<h2>還有沒有位子</h2>'
+      + f'<p class="lede">每個時段 70 個位子。下面是 {GZ["seats_checked"]} 在售票頁看到的剩餘座位，'
+        '會一直變動，訂之前以售票頁為準。</p>'
+      + '<div class="tw"><table><thead><tr><th>日期</th><th>剩餘座位</th></tr></thead><tbody>'
+      + _gz_seat_rows + '</tbody></table></div>'
+      + '<h2>官方的安全提醒</h2>'
+      + '<div class="tldr"><ul>' + _gz_rules + '</ul></div>'
+      + f'<p class="disc">出處：{_gz_src(GZ["src"], "2026–2027 冬季交通案内")}'
+        f'（官方另有{_gz_src(GZ["src_zh"], "簡體中文版")}）。</p>'
+      + '<h2>飛哪裡比較近</h2>'
+      + '<p class="lede">銀山溫泉在山形縣尾花沢市。從台灣飛仙台再轉陸路，是比較常見的走法。</p>'
+      + '<div class="cities">'
+      + f'<a class="ct" href="{U("/sendai/")}"><b>✈️ 仙台機票</b><s>山形、銀山溫泉的入口</s></a></div>'
+      + '<h2>這一頁查不到的</h2>'
+      + '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(x)}</li>' for x in GZ['unverified']) + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-shirakawago-lightup/")}"><b>🏮 白川鄉點燈 2027</b><s>一樣是完全預約制的冬季雪景</s></a>'
+      + f'<a class="ct" href="{U("/taiwan-holiday-2027/")}"><b>📅 2027 請假攻略</b><s>寒假與春節怎麼請</s></a>'
+      + f'<a class="ct" href="{U("/japan-ski-resort/")}"><b>🏔 雪場官網現場價</b><s>同一趟冬天順便滑雪</s></a></div>'
+      + faq_visible(gz_faq)
+      + f'<p class="disc">規定以銀山溫泉官網與售票頁為準，整理可能有疏漏。查證於 {GZ["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-ginzan-onsen/', 0.7))
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
