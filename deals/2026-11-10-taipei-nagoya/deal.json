@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-10-taipei-nagoya",
- "generated": "2026-11-10 23:01",
+ "generated": "2026-11-10 23:45",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -25,9 +25,9 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "這條航線平常最低落在 NT$8,757–NT$9,341，這張是近期 12 筆紀錄中第 1 低"
+  "這條航線平常最低落在 NT$8,756–NT$9,341，這張是近期 12 筆紀錄中第 1 低"
  ],
- "med": 13398,
+ "med": 13397,
  "n_rt": 12,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 8757,
+   "price": 8756,
    "dep": "2026-12-27",
    "ret": "2026-12-31",
    "dept": "02:55",
@@ -46,7 +46,7 @@
    "dur": 365,
    "dur_to": 150,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TPE2712NGO31121?t=IT17983401001798352700000150TPENGO17987460001798755300000215NGOTPE_c7d40201551476d1366a26f5d6418555_22033&search_date=10112026&expected_price_uuid=01a1c5e1-22b5-8040-ada7-1c123d752145&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ZSfWDWJ1IRz7COWHrw9tQA&expected_price_source=share&expected_price_currency=twd&expected_price=8757&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2712NGO31121?t=IT17983401001798352700000150TPENGO17987460001798755300000215NGOTPE_c7d40201551476d1366a26f5d6418555_22033&search_date=10112026&expected_price_uuid=01a1c5e1-22b5-8040-ada7-1c123d752145&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ZSfWDWJ1IRz7COWHrw9tQA&expected_price_source=share&expected_price_currency=twd&expected_price=8756&marker=775639"
   },
   {
    "o": "TPE",
@@ -72,7 +72,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 9269,
+   "price": 9198,
    "dep": "2026-11-22",
    "ret": "2026-11-27",
    "dept": "15:05",
