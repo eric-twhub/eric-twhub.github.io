@@ -1619,6 +1619,7 @@ def topnav(cur=''):
             + link('/japan-shirakawago-lightup/', '🏮 白川鄉點燈怎麼預約')
             + link('/japan-ginzan-onsen/', '♨️ 銀山溫泉冬季怎麼預約')
             + link('/japan-ryuhyo-monogatari/', '🧊 流冰物語號怎麼訂')
+            + link('/sapporo/snow-festival/', '❄️ 札幌雪祭 2027')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -1777,6 +1778,7 @@ _AD_MAP = [
     ('japan-airline-card', 'transport'),
     ('japan-autumn-leaves', 'activity2'),
     ('kyoto/autumn-leaves', 'esim'),
+    ('sapporo/snow-festival', 'esim'),
     ('tokyo/autumn-leaves', 'esim'),
     ('japan-shirakawago-lightup', 'esim'),
     ('japan-ginzan-onsen', 'esim'),
@@ -23649,6 +23651,7 @@ if os.path.exists('ryuhyo.json'):
       + '<h2>這一頁查不到的</h2>'
       + '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(x)}</li>' for x in RY['unverified']) + '</ul></div>'
       + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/sapporo/snow-festival/")}"><b>❄️ 札幌雪祭 2027</b><s>2/4～2/11，跟流冰季同一段</s></a>'
       + f'<a class="ct" href="{U("/japan-ginzan-onsen/")}"><b>♨️ 銀山溫泉冬季預約</b><s>一樣要先訂的冬季雪景</s></a>'
       + f'<a class="ct" href="{U("/japan-shirakawago-lightup/")}"><b>🏮 白川鄉點燈 2027</b><s>1 月的四天點燈</s></a>'
       + f'<a class="ct" href="{U("/japan-burton-rental/")}"><b>🏂 Burton 宅配租雪板</b><s>同一趟北海道順便滑雪</s></a>'
@@ -23657,6 +23660,260 @@ if os.path.exists('ryuhyo.json'):
       + f'<p class="disc">規定以 JR 北海道官網為準，整理可能有疏漏。查證於 {RY["checked"]}。</p>'
       + foot())
     pages.append(('/japan-ryuhyo-monogatari/', 0.7))
+
+# ---------- 札幌雪祭 2027 ----------
+# 資料在 snowfes.json。連假重疊從 holidays.json 逐日算，票價比較從 snowfes.json 的快照當場算，
+# 文案裡不寫死任何一個比較結果（快照換掉，結論就跟著換）。
+if os.path.exists('snowfes.json'):
+    SNF = json.load(open('snowfes.json', encoding='utf-8'))
+    _snf_wd = '一二三四五六日'
+    _snf_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _snf_a = datetime.date.fromisoformat(SNF['start'])
+    _snf_b = datetime.date.fromisoformat(SNF['end'])
+    _snf_days = [_snf_a + datetime.timedelta(days=i) for i in range((_snf_b - _snf_a).days + 1)]
+
+    def _snf_md(d, wd=True):
+        if isinstance(d, str):
+            d = datetime.date.fromisoformat(d)
+        return f'{d.month}/{d.day}' + (f'（{_snf_wd[d.weekday()]}）' if wd else '')
+
+    def _snf_src(u, label='官方頁面'):
+        return f'<a href="{html.escape(u)}" rel="nofollow noopener" target="_blank">{label}</a>'
+
+    _snf_span = f'{_snf_md(_snf_a)}～{_snf_md(_snf_b)}'
+
+    # 連假：holidays.json 的逐日資料
+    _snf_hol = {}
+    if os.path.exists('holidays.json'):
+        _snf_H = json.load(open('holidays.json', encoding='utf-8'))
+        _snf_hol = {x['d']: x for x in _snf_H['days']}
+        _snf_runs = {c: [r for r in _snf_H['runs'].get(c, [])
+                         if r['start'] <= SNF['end'] and r['end'] >= SNF['start']]
+                     for c in ('tw', 'cn', 'kr', 'jp')}
+    else:
+        _snf_runs = {}
+    _snf_CN = [('tw', '台灣'), ('cn', '中國'), ('kr', '韓國'), ('jp', '日本')]
+
+    def _snf_run_txt(c):
+        rs = _snf_runs.get(c) or []
+        return '、'.join(f'{_snf_md(r["start"], False)}～{_snf_md(r["end"], False)}' for r in rs)
+
+    _snf_all3 = [d for d in _snf_days
+                 if all((_snf_hol.get(d.isoformat()) or {}).get(f'{c}_off') for c in ('tw', 'cn', 'kr'))]
+    _snf_tw_off = [d for d in _snf_days if (_snf_hol.get(d.isoformat()) or {}).get('tw_off')]
+
+    _snf_hol_rows = ''
+    for d in _snf_days:
+        h = _snf_hol.get(d.isoformat()) or {}
+        cells = ''
+        for c, _ in _snf_CN:
+            if h.get(f'{c}_off'):
+                cells += f'<td><b>{html.escape(h.get(c) or "週末")}</b></td>'
+            else:
+                cells += '<td><small>上班日</small></td>'
+        _snf_hol_rows += f'<tr><td>{_snf_md(d)}</td>{cells}</tr>'
+
+    # 票價快照
+    _F = SNF['fares']
+    _G = _F['grid']
+    _snf_cells = [(_G['dep'][j], _G['ret'][i], v)
+                  for i, row in enumerate(_G['p']) for j, v in enumerate(row) if v]
+    _snf_gmin = min(_snf_cells, key=lambda x: x[2])
+    _snf_gmax = max(_snf_cells, key=lambda x: x[2])
+    _snf_full = next((v for dp, rt, v in _snf_cells if dp == SNF['start'] and rt == SNF['end']), None)
+    _N7 = _F['nights7']
+    _snf_after = {k: v for k, v in _N7.items() if k > SNF['end']}
+    _snf_amin_d = min(_snf_after, key=_snf_after.get) if _snf_after else None
+    _snf_n7_start = _N7.get(SNF['start'])
+    _snf_jan = sorted(v for k, v in _N7.items() if k < '2027-01-16')
+    _snf_jan_med = _snf_jan[len(_snf_jan) // 2] if _snf_jan else None
+    _snf_fck = _snf_md(_F['checked'], False)
+
+    _snf_grid = ('<div class="tw"><table><thead><tr><th>回程＼出發</th>'
+                 + ''.join(f'<th>{_snf_md(x)}出發</th>' for x in _G['dep']) + '</tr></thead><tbody>')
+    for i, rt in enumerate(_G['ret']):
+        _snf_grid += f'<tr><td>{_snf_md(rt)} 回</td>'
+        for j, v in enumerate(_G['p'][i]):
+            if not v:
+                _snf_grid += '<td><small>日曆沒有價格</small></td>'
+                continue
+            t = f'{v:,}'
+            if (_G['dep'][j], rt) == (_snf_gmin[0], _snf_gmin[1]):
+                t = f'<b>{t}</b><br><small>這張表最便宜</small>'
+            elif (_G['dep'][j], rt) == (_snf_gmax[0], _snf_gmax[1]):
+                t = f'<b>{t}</b><br><small>這張表最貴</small>'
+            _snf_grid += f'<td>{t}</td>'
+        _snf_grid += '</tr>'
+    _snf_grid += '</tbody></table></div>'
+
+    _snf_n7_rows = ''
+    for k in sorted(_N7):
+        if k < '2027-01-28':
+            continue
+        d = datetime.date.fromisoformat(k)
+        r = d + datetime.timedelta(days=7)
+        # 抵達與回程那天都算：人在札幌，晚上的點燈看得到
+        _trip = [d + datetime.timedelta(days=i) for i in range(8)]
+        _nf = sum(1 for x in _trip if _snf_a <= x <= _snf_b)
+        _nt = sum(1 for x in _trip if (_snf_hol.get(x.isoformat()) or {}).get('tw')
+                  in ('小年夜', '農曆除夕', '春節', '補假'))
+        tags = []
+        if _nf:
+            tags.append(f'雪祭 {_nf} 天')
+        if _nt:
+            tags.append(f'台灣春節連假 {_nt} 天')
+        if d > _snf_b:
+            tags.append('雪祭已結束')
+        _snf_n7_rows += (f'<tr><td>{_snf_md(d)}</td><td>{_snf_md(r)}</td><td>{_N7[k]:,}</td>'
+                         f'<td>{"、".join(tags) or "<small>沒有</small>"}</td></tr>')
+
+    if _snf_today < _snf_a:
+        _snf_ans = f'離開幕還有 {(_snf_a - _snf_today).days} 天'
+        _snf_sub = f'{SNF["year"]} 年雪祭 {_snf_span}，三個會場同時開。'
+    elif _snf_today <= _snf_b:
+        _snf_ans = f'雪祭進行中，第 {(_snf_today - _snf_a).days + 1} 天'
+        _snf_sub = f'{_snf_md(_snf_b)}是最後一天，隔天早上雪像就會拆掉。'
+    else:
+        _snf_ans = f'{SNF["year"]} 年的雪祭已經在 {_snf_md(_snf_b)}結束'
+        _snf_sub = '下一屆的日期官網公布後，這頁會更新。'
+
+    _snf_cmp = ''
+    if _snf_n7_start and _snf_amin_d:
+        _snf_cmp = (f'{_snf_fck} 查的時候，{_snf_md(SNF["start"])}出發住 7 晚最低 {_snf_n7_start:,} 元；'
+                    f'雪祭結束後的 {_snf_md(_snf_amin_d)}出發住 7 晚是 {_snf_after[_snf_amin_d]:,} 元，'
+                    f'差 {_snf_n7_start - _snf_after[_snf_amin_d]:,} 元。')
+    _snf_early = ''
+    if _snf_full and _snf_gmin[2] < _snf_full:
+        _snf_early = (f'同一天查的雪祭期間表格裡，最便宜的是 {_snf_md(_snf_gmin[0])}出發、{_snf_md(_snf_gmin[1])}回，'
+                      f'{_snf_gmin[2]:,} 元，比 {_snf_md(SNF["start"])}出發、{_snf_md(SNF["end"])}回（{_snf_full:,} 元）'
+                      f'少 {_snf_full - _snf_gmin[2]:,} 元。')
+
+    _snf_venue_rows = ''.join(
+        f'<tr><td>{html.escape(v["name"])}</td><td>{html.escape(v["where"])}</td>'
+        f'<td>{html.escape(v["hours"])}</td><td>{html.escape(v["go"])}</td>'
+        f'<td>{html.escape(v["what"])} {_snf_src(SNF[v["src"]], "會場頁")}</td></tr>'
+        for v in SNF['venues'])
+    _snf_tips = ''.join(f'<li>{html.escape(x)}</li>' for x in SNF['tips'])
+    _snf_tw_txt = _snf_run_txt('tw')
+
+    snf_faq = [
+     (f'札幌雪祭 {SNF["year"]} 是什麼時候？',
+      f'{SNF["year"]} 年是第 {SNF["edition"]} 屆，{_snf_span}共 {len(_snf_days)} 天。'
+      '大通、薄野（すすきの）、Tsudome（つどーむ）三個會場同一段時間開。'),
+     ('札幌雪祭要門票嗎？', '不用，官方寫全部會場免費。'),
+     ('札幌雪祭晚上幾點前看得到？',
+      '大通會場是公園，全天都能進去，點燈到 22:00；薄野會場的冰雕也是全天開放，點燈到 23:00，最後一天到 22:00；'
+      'Tsudome 會場只開 10:00 到 16:00。'),
+     (f'札幌雪祭 {SNF["year"]} 跟春節有重疊嗎？',
+      (f'有。台灣的春節連假是 {_snf_tw_txt}，雪祭 {len(_snf_days)} 天裡台灣放假的有 {len(_snf_tw_off)} 天；'
+       f'中國的春節假期是 {_snf_run_txt("cn")}，韓國是 {_snf_run_txt("kr")}，'
+       f'台灣、中國、韓國同時放假的有 {len(_snf_all3)} 天。日本 2/11 是建國紀念日。')
+      if _snf_tw_txt else f'雪祭是 {_snf_span}。'),
+     ('札幌雪祭那週的機票多少錢？',
+      (_snf_cmp + '這是本站在 Trip.com 價格日曆查的單一快照，台北桃園飛札幌、經濟艙 1 人來回含稅，價格每天變。')
+      if _snf_cmp else '本站還沒有查這段時間的票價。'),
+     (f'{_snf_md(_snf_b + datetime.timedelta(days=1), False)} 以後去還看得到雪像嗎？',
+      '看不到。官方寫會期結束的隔天早上就會把雪像、冰雕拆掉，避免倒塌。'),
+     (f'札幌雪祭 {SNF["year"]} 的雪像主題是什麼？',
+      f'還沒公布。官網寫 {SNF["year"]} 年的會場內容 {SNF["content_update"]}才更新，現在各會場頁上的是 2026 年的內容。'),
+     ('札幌雪祭要穿什麼？',
+      '2 月的札幌平均氣溫 -2.3℃。官方建議毛衣外面穿厚外套，帽子、耳罩、手套都要；'
+      '路面常結冰，鞋底沒有溝紋的話，可以買套在鞋外的防滑釘，官方寫一個約 1,000 円，會場官方商店與便利商店有賣。'),
+     ('從新千歲機場到雪祭會場要多久？', SNF['airport']),
+    ]
+    snf_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in snf_faq]}, ensure_ascii=False)
+    snf_ev = json.dumps({"@context": "https://schema.org", "@type": "Event",
+        "name": f'さっぽろ雪まつり {SNF["year"]}（札幌雪祭）',
+        "startDate": SNF['start'], "endDate": SNF['end'],
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "isAccessibleForFree": True,
+        "location": {"@type": "Place", "name": "大通公園",
+                     "address": {"@type": "PostalAddress", "addressLocality": "札幌市",
+                                 "addressRegion": "北海道", "addressCountry": "JP"}},
+        "url": SNF['src']}, ensure_ascii=False)
+
+    _snf_fl = html.escape(plink('flight', o='tpe', d='cts', dep=SNF['start'], ret=SNF['end'],
+                                tt='rt', sub='snowfes'))
+
+    write('sapporo/snow-festival/index.html',
+      head(f'札幌雪祭 {SNF["year"]}：{_snf_md(_snf_a, False)}～{_snf_md(_snf_b, False)} 三個會場時間、撞上春節的機票價差、怎麼去',
+           f'札幌雪祭 {SNF["year"]} 年 {_snf_span}，大通、薄野、Tsudome 三個會場免費。'
+           '整理各會場開放與點燈時間、怎麼去、和台灣春節連假重疊的日子，以及雪祭那週與之後出發的機票價差。',
+           'sapporo/snow-festival/',
+           '<script type="application/ld+json">' + snf_ld + '</script>'
+           '<script type="application/ld+json">' + snf_ev + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('札幌', '/sapporo/'), (f'札幌雪祭 {SNF["year"]}', None)])
+      + f'<h1>札幌雪祭 {SNF["year"]}：{_snf_md(_snf_a, False)}～{_snf_md(_snf_b, False)}，剛好撞上春節連假</h1>'
+      + f'<p class="lede">札幌雪祭（さっぽろ雪まつり）{SNF["year"]} 年是第 {SNF["edition"]} 屆，{_snf_span}共 {len(_snf_days)} 天，'
+        '大通、薄野、Tsudome 三個會場同時開，全部免費。'
+        + (f'今年雪祭和農曆春節撞在一起，台灣的春節連假是 {_snf_tw_txt}。' if _snf_tw_txt else '') + '</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_snf_md(_snf_today)}</div>'
+        f'<div class="tans">{html.escape(_snf_ans)}</div>'
+        f'<div class="tsub">{html.escape(_snf_sub)}</div></div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>日期</b>：{_snf_span}，三個會場同期。</li>'
+        '<li><b>免費</b>：全部會場不用門票。</li>'
+        '<li><b>晚上</b>：大通點燈到 22:00、薄野到 23:00（最後一天 22:00）；Tsudome 只開 10:00～16:00。</li>'
+        + (f'<li><b>撞上春節</b>：雪祭 {len(_snf_days)} 天裡，台灣放假 {len(_snf_tw_off)} 天，'
+           f'台灣、中國、韓國同時放假 {len(_snf_all3)} 天。</li>' if _snf_hol else '')
+        + (f'<li><b>機票</b>：{html.escape(_snf_cmp)}</li>' if _snf_cmp else '')
+        + f'<li><b>雪像內容還沒公布</b>：官網寫 {SNF["content_update"]}更新 {SNF["year"]} 年的會場內容。</li>'
+        '</ul></div>'
+      + '<h2>三個會場</h2>'
+      + '<div class="tw"><table><thead><tr><th>會場</th><th>在哪</th><th>開放時間</th><th>怎麼去</th><th>有什麼</th>'
+        '</tr></thead><tbody>' + _snf_venue_rows + '</tbody></table></div>'
+      + f'<p class="disc">時間與交通引自{_snf_src(SNF["src"], "札幌雪祭官網")}與{_snf_src(SNF["src_faq"], "官網常見問題")}。'
+        f'「有什麼」寫的是每年都有的會場性質，數量是 2026 年的；{SNF["year"]} 年的內容官網 {SNF["content_update"]}才更新。</p>'
+      + ('<h2>雪祭撞上春節：每一天誰在放假</h2>'
+         '<p class="lede">放假的人多，機票和住宿就搶。下面是雪祭每一天，台灣、中國、韓國、日本是不是放假日（週末也算）。</p>'
+         '<div class="tw"><table><thead><tr><th>日期</th>'
+         + ''.join(f'<th>{n}</th>' for _, n in _snf_CN) + '</tr></thead><tbody>'
+         + _snf_hol_rows + '</tbody></table></div>'
+         + f'<p class="disc">假日資料引自各國官方公告，整理在<a href="{U("/japan-holiday-calendar/")}">台日中韓連假撞期</a>那一頁。'
+           '各國都可能臨時調整，以官方最新公告為準。</p>' if _snf_hol else '')
+      + '<h2>雪祭那週的機票</h2>'
+      + f'<p class="lede">{html.escape(_snf_cmp)}{html.escape(_snf_early)}</p>'
+      + f'<h3>雪祭期間出發、回程的組合（{_snf_fck} 查）</h3>'
+      + _snf_grid
+      + f'<h3>住 7 晚，哪一天出發（{_snf_fck} 查）</h3>'
+      + '<div class="tw"><table><thead><tr><th>出發</th><th>回程</th><th>最低來回（元）</th><th>這 8 天裡有</th>'
+        '</tr></thead><tbody>' + _snf_n7_rows + '</tbody></table></div>'
+      + (f'<p class="disc">2/8～2/15 出發的 7 晚價格這次沒有查到。1 月上旬（1/5～1/14）出發住 7 晚的中位數是 {_snf_jan_med:,} 元，'
+         '可以當作平常時候的參考。' if _snf_jan_med else '<p class="disc">')
+      + f'以上都是 {_F["src_name"]}的單一快照（{html.escape(_F["note"])}），日曆價和點進去的實際最低價會有小幅出入，價格每天變。</p>'
+      + f'<a class="cta" href="{_snf_fl}" target="_blank" rel="nofollow noopener sponsored">'
+        '<span class="ci">✈️</span><span class="ct"><b>查今天雪祭那週的機票</b>'
+        f'<s>帶入 {_snf_md(_snf_a)}出發、{_snf_md(_snf_b)}回程，到 Trip.com 看現在的價錢</s></span>'
+        '<span class="ca">→</span></a>'
+      + f'<p class="lede">想看最近幾週便宜的札幌票，到 <a href="{U("/sapporo/")}">札幌機票</a>那一頁。</p>'
+      + '<h2>住宿</h2>'
+      + f'<p class="lede">雪祭期間的札幌房價本站沒有查。會期 {len(_snf_days)} 天、又碰上春節連假，機票和住宿最好一起看，'
+        '確定了再一起訂。</p>'
+      + cta('hotel', '札幌', '札幌', '查雪祭期間的札幌住宿',
+            f'帶入 {_snf_md(_snf_a)}入住、{_snf_md(_snf_b)}退房', track='snowfes',
+            ci=SNF['start'], co=SNF['end'])
+      + '<h2>去之前要知道</h2>'
+      + f'<div class="tldr"><ul>{_snf_tips}</ul></div>'
+      + f'<p class="disc">出處：{_snf_src(SNF["src_faq"], "官網常見問題")}、{_snf_src(SNF["src_walk"], "官網的雪道走法說明")}、'
+        f'{_snf_src(SNF["src_tsudome"], "Tsudome 會場頁")}。</p>'
+      + '<h2>從新千歲機場過去</h2>'
+      + f'<p class="lede">{html.escape(SNF["airport"])}官網的{_snf_src(SNF["src_access"], "交通頁")}有從札幌站到各會場的地圖。</p>'
+      + '<h2>這一頁還查不到的</h2>'
+      + '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(x)}</li>' for x in SNF['unverified']) + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-ryuhyo-monogatari/")}"><b>🧊 流冰物語號 2027</b><s>雪祭前後，網走的流冰列車</s></a>'
+      + f'<a class="ct" href="{U("/japan-burton-rental/")}"><b>🏂 Burton 宅配租雪板</b><s>同一趟北海道順便滑雪</s></a>'
+      + f'<a class="ct" href="{U("/japan-ski-lift-ticket/")}"><b>🎟️ 雪票早鳥</b><s>北海道雪場的早鳥票</s></a>'
+      + f'<a class="ct" href="{U("/taiwan-holiday-2027/")}"><b>📅 2027 請假攻略</b><s>春節前後怎麼請</s></a></div>'
+      + faq_visible(snf_faq)
+      + f'<p class="disc">活動內容以札幌雪祭官網為準，整理可能有疏漏。查證於 {SNF["checked"]}。</p>'
+      + foot())
+    pages.append(('/sapporo/snow-festival/', 0.7))
 
 # ---------- 站內搜尋 ----------
 # 純前端：兩個 JSON 檔加一段 script，不需要任何外部服務，也不記錄誰搜了什麼。
