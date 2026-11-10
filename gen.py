@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """台日機票速報 — 多頁 SEO 網站產生器"""
-import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics, hashlib, calendar, math
+import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics, hashlib, calendar, math, unicodedata
 import glob
 
 CFG=json.load(open('partners.json',encoding='utf-8'))
@@ -742,6 +742,14 @@ def klook_tours(slug, name):
             f'<div class="widget">{tpl.replace("{city_id}", str(cid))}</div>'
             '<p class="disc">透過此區塊完成預訂時本站可獲得分潤，不影響你的價格。</p>')
 
+def site_search_box(autofocus=False):
+    """站內搜尋框。沒有 JS 也能用：送出就是帶 ?q= 打開 /search/。"""
+    return (f'<form class="sbox" action="{U("/search/")}" method="get" role="search">'
+            '<input type="search" name="q" id="q" placeholder="搜尋：退稅、eSIM、門票"'
+            ' aria-label="搜尋全站" autocomplete="off" enterkeyhint="search"'
+            + (' autofocus' if autofocus else '') + '>'
+            '<button type="submit">搜尋</button></form>')
+
 def search_form(title, note, def_o='TPE', def_d='TYO'):
     """自製繁中搜尋表單，送往 Trip.com 繁中／TWD 搜尋頁。
     不用第三方 widget：避免英文介面、美金計價與 iframe 拖慢頁面。"""
@@ -1088,6 +1096,23 @@ a{color:var(--acc)}
 h1{font-size:1.95rem;margin:14px 0 8px;letter-spacing:-.025em;line-height:1.3}
 .lede{color:var(--dim);font-size:.95rem;margin:0 0 4px}
 .upd{color:var(--dim);font-size:.78rem;margin:6px 0 0}
+.sbox{display:flex;gap:8px;margin:14px 0 6px}
+.sbox input{flex:1;min-width:0;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);
+border-radius:9px;background:var(--card);color:var(--fg)}
+.sbox input:focus{outline:2px solid var(--acc);outline-offset:-1px;border-color:var(--acc)}
+.sbox button{font:inherit;font-size:.95rem;font-weight:600;padding:0 18px;border:0;border-radius:9px;
+background:var(--acc);color:#fff;cursor:pointer;white-space:nowrap}
+.sst{color:var(--dim);font-size:.88rem;margin:6px 0 10px}
+.sri{padding:14px 0;border-bottom:1px solid var(--line)}
+.srt{font-weight:600;font-size:1.02rem;text-decoration:none}
+.srt:hover{text-decoration:underline}
+.sru{font-size:.75rem;color:var(--dim);margin-top:2px;word-break:break-all}
+.srs{margin:6px 0 0;font-size:.9rem;line-height:1.65}
+.srh{margin-top:6px;font-size:.84rem;color:var(--dim)}
+.srh a{margin-right:12px;display:inline-block}
+.sri mark{background:#fde68a;color:inherit;padding:0 1px;border-radius:2px}
+.srm{margin:16px 0;font:inherit;font-size:.9rem;padding:9px 18px;border:1px solid var(--line);
+border-radius:9px;background:var(--card);color:var(--fg);cursor:pointer}
 nav.top{position:sticky;top:0;z-index:30;background:var(--bg);padding:9px 0;margin-top:14px;
 border-bottom:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 nav.top>a{color:var(--dim);text-decoration:none;font-size:.86rem;white-space:nowrap;
@@ -1129,6 +1154,10 @@ nav.top>details.burger{display:none}
  nav.top>details.burger{display:block}
  nav.top>details:not(.burger){display:none}
 }
+/* 放在導覽列的規則後面，才蓋得過上面的 padding */
+/* 手機上搜尋只留放大鏡；375 寬要和首頁、機票特價、日本熱搜、選單擠在同一行 */
+@media(max-width:767px){nav.top>a.srch span{display:none}}
+@media(max-width:420px){nav.top{gap:4px}nav.top>a,nav.top summary{padding:6px 7px}}
 /* 漢堡面板內的分類標題 */
 .dd>details>summary{list-style:none;cursor:pointer;user-select:none;
 font-size:.9rem;font-weight:600;color:var(--fg);padding:10px 11px;border-radius:7px;
@@ -1678,6 +1707,9 @@ def topnav(cur=''):
             # Threads 熱搜是內容彙整頁，不是制度，所以不收在「新制度」那組裡。
             # 擺在信用卡右邊當頂層連結，讓它自己就是一個入口。
             + link('/threads-japan/', '🔥 日本熱搜', cur == 'threads')
+            # 搜尋放在每一頁都看得到的那一排，手機上不收進 ☰
+            + f'<a href="{U("/search/")}" class="srch{" cur" if cur == "search" else ""}"'
+              ' aria-label="站內搜尋">🔍<span> 搜尋</span></a>'
             + burger
             + '</nav>')
 
@@ -2671,11 +2703,81 @@ def _ad_inject(path, content):
             content = content.replace(box, box2, 1)
     return content
 
+# ---------- 站內搜尋的索引 ----------
+# write() 每寫一頁就收一筆，最後在 sitemap 前面寫成兩個檔：
+#   search.json       標題、說明、段落標題、常見問題（搜尋頁一打開就載）
+#   search-text.json  內文（晚一步載，載到之前只比對上面那些）
+# 收在 _ad_inject 之前，廣告版位的商品名才不會讓每一頁都「內文提到 eSIM」。
+# 票價頁不收內文：內容是一張張票價卡，天天變，收進來只會讓檔案每天大改。
+SEARCH_IDX = {}
+
+def _sr_strip(s, open_re, tag='div'):
+    """拿掉某種開頭的整個區塊（數巢狀層數，regex 做不到）"""
+    out, pos = [], 0
+    for m in re.finditer(open_re, s):
+        if m.start() < pos:
+            continue
+        depth, i = 1, m.end()
+        tre = re.compile(rf'<(/?){tag}\b[^>]*>')
+        while depth and i < len(s):
+            t = tre.search(s, i)
+            if not t:
+                i = len(s); break
+            depth += -1 if t.group(1) else 1
+            i = t.end()
+        out.append(s[pos:m.start()]); pos = i
+    out.append(s[pos:])
+    return ''.join(out)
+
+def _sr_txt(s):
+    s = re.sub(r'<[^>]+>', ' ', s)
+    return re.sub(r'\s+', ' ', html.unescape(s)).strip()
+
+def _search_capture(path, content):
+    if not path.endswith('.html') or path in ('404.html', 'search/index.html'):
+        return
+    if '<h1' not in content:
+        return
+    # 每日特價的單筆快照（/deals/2026-11-10-…）一天一百頁，收進來會把出發地頁、
+    # 航線頁全擠下去；要找特價看 /deals/ 總覽就好
+    if re.match(r'deals/\d{4}-', path):
+        return
+    url = U('/' + path[:-len('index.html')]) if path.endswith('index.html') else U('/' + path)
+    _t = re.search(r'<title>(.*?)</title>', content, re.S)
+    _d = re.search(r'<meta name="description" content="([^"]*)"', content)
+    _h = re.search(r'<h1[^>]*>(.*?)</h1>', content, re.S)
+    body = content[_h.end():] if _h else content
+    _ft = body.rfind('<p class="note">')
+    if _ft > 0:
+        body = body[:_ft]
+    body = re.sub(r'<script\b.*?</script>|<style\b.*?</style>', ' ', body, flags=re.S)
+    body = _sr_strip(body, r'<div class="(?:toc|adbox)[^"]*"[^>]*>')
+    heads = []
+    for m in re.finditer(r'<h2([^>]*)>(.*?)</h2>', body, re.S):
+        hid = re.search(r'\bid="([^"]+)"', m.group(1))
+        t = _sr_txt(m.group(2))
+        if t:
+            heads.append([hid.group(1) if hid else '', t])
+    faq = [_sr_txt(q) for q in re.findall(r'<details class="faq"><summary>(.*?)</summary>', body, re.S)]
+    faq_id = next((i for i, t in heads if t == '常見問題'), '')
+    fare = bool(re.search(r'更新於 \d{4}-\d{2}-\d{2} \d{2}:\d{2}|票價更新於', content))
+    SEARCH_IDX[url] = {
+        'u': url,
+        'h': _sr_txt(_h.group(1)) if _h else '',
+        't': _sr_txt(_t.group(1)) if _t else '',
+        'd': html.unescape(_d.group(1)) if _d else '',
+        's': [x for x in heads if x[1] != '常見問題'],
+        'q': faq, 'qi': faq_id,
+        'f': 1 if fare else 0,
+        'x': '' if fare else unicodedata.normalize('NFKC', _sr_txt(body)),
+    }
+
 def write(path,content):
     d=os.path.dirname(path)
     if d: os.makedirs(d,exist_ok=True)
     if path.endswith('.html'):
         content = _toc(content)
+        _search_capture(path, content)
         content = _ad_inject(path, content)
         content = _trim_note(content)
         content = _ja_gloss(content)
@@ -13519,6 +13621,7 @@ write('index.html', head(title,desc,'')
        if _ALLTC and _ALLTC > allbest else '')
     + '。</p>'
   + f'<p class="upd">更新於 {NOWS}　·　共 {len(deals)} 筆票價</p>'
+  + site_search_box()
   + (f'<h2>🔥 超值票</h2><p class="lede" style="font-size:.85rem">廉航低於 {money(LCC_CAP)}／一般航空低於 {money(FSC_CAP)}</p>'
      + GATE_FILTER + f'<div class="grid">{"".join(fare_card(x,True) for x in hot[:12])}</div>' if hot else '')
   + '<h2>其他實用資訊</h2><div class="cities">'
@@ -23554,6 +23657,92 @@ if os.path.exists('ryuhyo.json'):
       + f'<p class="disc">規定以 JR 北海道官網為準，整理可能有疏漏。查證於 {RY["checked"]}。</p>'
       + foot())
     pages.append(('/japan-ryuhyo-monogatari/', 0.7))
+
+# ---------- 站內搜尋 ----------
+# 純前端：兩個 JSON 檔加一段 script，不需要任何外部服務，也不記錄誰搜了什麼。
+# 中文不分詞也能搜：每個詞直接做子字串比對，多個詞用空白分開、全部要有。
+_si = [SEARCH_IDX[k] for k in sorted(SEARCH_IDX)]
+_sj = json.dumps([{k: v for k, v in e.items() if k != 'x'} for e in _si],
+                 ensure_ascii=False, separators=(',', ':'))
+_sx = json.dumps([e['x'] for e in _si], ensure_ascii=False, separators=(',', ':'))
+_sv = hashlib.sha1((_sj + _sx).encode('utf-8')).hexdigest()[:10]
+write('search.json', _sj)
+write('search-text.json', _sx)
+
+SEARCH_JS = r'''<script>(function(){
+var IDX="__IDX__",TXT="__TXT__";
+var inp=document.getElementById("q"),out=document.getElementById("sr"),st=document.getElementById("sst"),fm=inp.form;
+var D=null,X=false,lim=20,tm,last="";
+function lo(s){return s.toLowerCase().replace(/臺/g,"台")}
+function N(s){return lo((s||"").normalize("NFKC"))}
+function Z(s){return N(s).replace(/\s+/g,"")}
+function esc(s){return s.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+// 畫重點：NFKC 前後長度一樣才能拿原字串顯示，不一樣就顯示正規化後的
+function mk(s,ts){var n=s.normalize("NFKC");if(n.length!==s.length)s=n;var l=lo(n),r=[];
+ts.forEach(function(t){var i=0;while(t&&(i=l.indexOf(t,i))>=0){r.push([i,i+t.length]);i+=t.length}});
+if(!r.length)return esc(s);r.sort(function(a,b){return a[0]-b[0]});
+var o="",p=0;r.forEach(function(x){if(x[0]<p)x[0]=p;if(x[1]<=p)return;o+=esc(s.slice(p,x[0]))+"<mark>"+esc(s.slice(x[0],x[1]))+"</mark>";p=x[1]});
+return o+esc(s.slice(p))}
+function cut(s,ts){var n=s,l=lo(n),b=-1;
+ts.forEach(function(t){var i=l.indexOf(t);if(i>=0&&(b<0||i<b))b=i});
+if(b<0)return null;var a=Math.max(0,b-45),e=Math.min(n.length,b+75);
+return(a>0?"…":"")+mk(n.slice(a,e),ts)+(e<n.length?"…":"")}
+function prep(){D.forEach(function(e){e.zt=Z(e.h+" "+e.t);e.zh=Z(e.h);e.zd=Z(e.d);
+e.zs=e.s.map(function(x){return Z(x[1])});e.zq=e.q.map(Z);e.zx=""})}
+function run(){if(!D)return;var raw=inp.value.trim(),ts=N(raw).split(/\s+/).filter(Boolean);
+if(raw!==last){lim=20;last=raw}
+try{history.replaceState(null,"",raw?"?q="+encodeURIComponent(raw):location.pathname)}catch(e){}
+if(!ts.length){out.innerHTML="";st.textContent=st.getAttribute("data-hint");return}
+var whole=Z(raw),R=[];
+D.forEach(function(e){var sc=0,hs=[],qs=[],ok=true;
+ts.forEach(function(t){if(!ok)return;var s=0;
+if(e.zt.indexOf(t)>=0)s+=20;if(e.zd.indexOf(t)>=0)s+=8;
+e.zs.forEach(function(z,i){if(z.indexOf(t)>=0&&hs.indexOf(i)<0)hs.push(i)});
+e.zq.forEach(function(z,i){if(z.indexOf(t)>=0&&qs.indexOf(i)<0)qs.push(i)});
+if(!e.f&&e.zs.some(function(z){return z.indexOf(t)>=0}))s+=6;
+if(!e.f&&e.zq.some(function(z){return z.indexOf(t)>=0}))s+=5;
+var c=0,j=0;while(c<20&&(j=e.zx.indexOf(t,j))>=0){c++;j+=t.length}if(c)s+=2+c*0.5;
+if(!s)ok=false;sc+=s});
+if(!ok)return;if(e.zh.indexOf(whole)>=0)sc+=15;if(e.f)sc-=3;
+R.push({e:e,sc:sc,hs:hs,qs:qs})});
+R.sort(function(a,b){return b.sc-a.sc||a.e.u.length-b.e.u.length});
+if(!R.length){st.innerHTML="找不到「"+esc(raw)+"」。試試少打幾個字，或換個說法"+(X?"":"（內文還在載入，等一下會再找一次）");out.innerHTML="";return}
+st.textContent="找到 "+R.length+" 頁"+(X?"":"（內文還在載入，目前只比對標題和段落）");
+var h="";R.slice(0,lim).forEach(function(r){var e=r.e,sn=null;
+if(e.zd&&ts.some(function(t){return e.zd.indexOf(t)>=0}))sn=mk(e.d,ts);
+if(!sn&&e.x)sn=cut(e.x,ts);if(!sn)sn=esc(e.d);
+h+='<div class="sri"><a class="srt" href="'+e.u+'">'+mk(e.h||e.t,ts)+'</a>'
++'<div class="sru">'+esc(decodeURI(e.u))+'</div><p class="srs">'+sn+'</p>';
+if(r.hs.length&&!e.f)h+='<div class="srh">段落：'+r.hs.slice(0,3).map(function(i){var s=e.s[i];
+return'<a href="'+e.u+(s[0]?"#"+s[0]:"")+'">'+mk(s[1],ts)+'</a>'}).join("")+'</div>';
+if(r.qs.length&&!e.f)h+='<div class="srh">常見問題：'+r.qs.slice(0,2).map(function(i){
+return'<a href="'+e.u+(e.qi?"#"+e.qi:"")+'">'+mk(e.q[i],ts)+'</a>'}).join("")+'</div>';
+h+='</div>'});
+if(R.length>lim)h+='<button type="button" id="srm" class="srm">再顯示 '+Math.min(20,R.length-lim)+' 頁</button>';
+out.innerHTML=h;var m=document.getElementById("srm");if(m)m.onclick=function(){lim+=20;run()}}
+inp.addEventListener("input",function(){clearTimeout(tm);tm=setTimeout(run,150)});
+fm.addEventListener("submit",function(ev){ev.preventDefault();run();inp.blur()});
+var q0=new URLSearchParams(location.search).get("q");if(q0)inp.value=q0;
+st.setAttribute("data-hint",st.textContent);
+fetch(IDX).then(function(r){return r.json()}).then(function(j){D=j;prep();run();return fetch(TXT)})
+.then(function(r){return r.json()}).then(function(xs){D.forEach(function(e,i){e.x=xs[i]||"";e.zx=Z(e.x)});X=true;run()})
+.catch(function(){if(!D)st.textContent="搜尋資料載入失敗，請重新整理再試一次。";else{X=true;run()}});
+})();</script>'''
+SEARCH_JS = (SEARCH_JS.replace('__IDX__', U('/search.json') + '?v=' + _sv)
+             .replace('__TXT__', U('/search-text.json') + '?v=' + _sv))
+
+write('search/index.html',
+      head('站內搜尋｜台日機票速報', '搜尋本站整理過的機票、門票、信用卡、退稅、上網等頁面。',
+           'search/', extra='<meta name="robots" content="noindex">')
+      + topnav('search') + crumbs([('首頁', '/'), ('站內搜尋', None)])
+      + '<h1>站內搜尋</h1>'
+      + site_search_box(autofocus=True)
+      + '<p class="sst" id="sst">打幾個字就會列出相關的頁面，例如「退稅」「eSIM」「吉卜力」「流冰」。'
+        '多個詞用空白分開，會找同時有這幾個詞的頁面。</p>'
+      + '<div id="sr"></div>'
+      + SEARCH_JS
+      + foot())
+print(f'   站內搜尋：{len(_si)} 頁，索引 {len(_sj.encode()) // 1024} KB、內文 {len(_sx.encode()) // 1024} KB')
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
