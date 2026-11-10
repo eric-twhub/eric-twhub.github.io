@@ -180,6 +180,12 @@
    "title": "東京鐵塔門票怎麼買：Main Deck／Top Deck 票價、今天點燈時間、取消與交通"
   },
   {
+   "slug": "japan-fujiko-museum",
+   "url": "/japan-fujiko-museum/",
+   "h1": "藤子不二雄博物館門票怎麼買",
+   "title": "藤子不二雄博物館門票怎麼買：每月 5 日、20 日開賣，Klook 能買嗎、取消規定（哆啦A夢博物館）"
+  },
+  {
    "slug": "japan-driving-habits",
    "url": "/japan-driving-habits/",
    "h1": "在日本開車，哪些是法規，哪些只是習慣",
@@ -284,14 +290,8 @@
   {
    "slug": "deals-2026-11-10-taipei-okinawa",
    "url": "/deals/2026-11-10-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,141 來回含稅｜台灣虎航 12/03 出發",
-   "title": "台北飛沖繩 NT$2,141 來回含稅｜台灣虎航 12/03 出發"
-  },
-  {
-   "slug": "deals-2026-11-10-kaohsiung-okinawa",
-   "url": "/deals/2026-11-10-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$3,903 來回含稅｜台灣虎航 11/17 出發",
-   "title": "高雄飛沖繩 NT$3,903 來回含稅｜台灣虎航 11/17 出發"
+   "h1": "台北飛沖繩 NT$2,541 來回含稅｜台灣虎航 12/03 出發",
+   "title": "台北飛沖繩 NT$2,541 來回含稅｜台灣虎航 12/03 出發"
   },
   {
    "slug": "deals-2026-11-10-taipei-ishigaki",
@@ -306,16 +306,22 @@
    "title": "高雄飛石垣島 NT$4,064 來回含稅｜台灣虎航 11/29 出發"
   },
   {
+   "slug": "deals-2026-11-10-taipei-saga",
+   "url": "/deals/2026-11-10-taipei-saga/",
+   "h1": "台北飛佐賀 NT$4,284 來回含稅｜台灣虎航 11/12 出發",
+   "title": "台北飛佐賀 NT$4,284 來回含稅｜台灣虎航 11/12 出發"
+  },
+  {
+   "slug": "deals-2026-11-10-kaohsiung-okinawa",
+   "url": "/deals/2026-11-10-kaohsiung-okinawa/",
+   "h1": "高雄飛沖繩 NT$4,364 來回含稅｜台灣虎航 11/17 出發",
+   "title": "高雄飛沖繩 NT$4,364 來回含稅｜台灣虎航 11/17 出發"
+  },
+  {
    "slug": "deals-2026-11-10-taichung-okinawa",
    "url": "/deals/2026-11-10-taichung-okinawa/",
    "h1": "台中飛沖繩 NT$4,864 來回含稅｜台灣虎航 11/30 出發",
    "title": "台中飛沖繩 NT$4,864 來回含稅｜台灣虎航 11/30 出發"
-  },
-  {
-   "slug": "deals-2026-11-10-taipei-saga",
-   "url": "/deals/2026-11-10-taipei-saga/",
-   "h1": "台北飛佐賀 NT$5,075 來回含稅｜台灣虎航 11/12 出發",
-   "title": "台北飛佐賀 NT$5,075 來回含稅｜台灣虎航 11/12 出發"
   },
   {
    "slug": "deals-2026-11-10-taipei-miyazaki",
@@ -324,16 +330,10 @@
    "title": "台北飛宮崎 NT$5,284 來回含稅｜台灣虎航 11/20 出發"
   },
   {
-   "slug": "deals-2026-11-10-kaohsiung-fukuoka",
-   "url": "/deals/2026-11-10-kaohsiung-fukuoka/",
-   "h1": "高雄飛福岡 NT$5,877 來回含稅｜台灣虎航 11/20 出發",
-   "title": "高雄飛福岡 NT$5,877 來回含稅｜台灣虎航 11/20 出發"
-  },
-  {
    "slug": "deals-2026-11-10-taipei-oita",
    "url": "/deals/2026-11-10-taipei-oita/",
-   "h1": "台北飛大分・別府 NT$5,977 來回含稅｜台灣虎航 11/21 出發",
-   "title": "台北飛大分・別府 NT$5,977 來回含稅｜台灣虎航 11/21 出發"
+   "h1": "台北飛大分・別府 NT$5,777 來回含稅｜台灣虎航 11/21 出發",
+   "title": "台北飛大分・別府 NT$5,777 來回含稅｜台灣虎航 11/21 出發"
   },
   {
    "slug": "deals-2026-11-10-taipei-fukuoka",
@@ -926,8 +926,8 @@
   {
    "slug": "tokyo-teamlab",
    "url": "/tokyo/teamlab/",
-   "h1": "teamLab 兩館怎麼分，訂哪一個",
-   "title": "teamLab 兩館怎麼分：麻布台常設、豊洲到 2027 年末，票價與改期規則都不同"
+   "h1": "teamLab 門票怎麼買：兩館怎麼分，訂哪一個",
+   "title": "teamLab 門票怎麼買：Planets（豊洲・DMM 官方）與無界 Borderless（麻布台）票價、通路、改期"
   },
   {
    "slug": "japan-autumn-leaves",
