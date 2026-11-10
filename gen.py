@@ -1589,6 +1589,7 @@ def topnav(cur=''):
             + link('/tokyo/autumn-leaves/', '🍁 東京賞楓要買票的地方')
             + link('/japan-shirakawago-lightup/', '🏮 白川鄉點燈怎麼預約')
             + link('/japan-ginzan-onsen/', '♨️ 銀山溫泉冬季怎麼預約')
+            + link('/japan-ryuhyo-monogatari/', '🧊 流冰物語號怎麼訂')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -1748,6 +1749,7 @@ _AD_MAP = [
     ('japan-shirakawago-lightup', 'esim'),
     ('japan-ginzan-onsen', 'esim'),
     ('japan-burton-rental', 'esim'),
+    ('japan-ryuhyo-monogatari', 'esim'),
     ('japan-park-ticket', 'activity2'), ('japan-seasonal-event', 'activity2'), ('tigerair-nagoya', 'transfer'),
     ('taiwan-holiday', 'activity2'), ('japan-holiday-calendar', 'activity2'),
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
@@ -23373,6 +23375,172 @@ if os.path.exists('burton-rental.json'):
       + f'<p class="disc">規定以 Burton 日本官網與租借網站為準，整理可能有疏漏。查證於 {BR["checked"]}。</p>'
       + foot())
     pages.append(('/japan-burton-rental/', 0.7))
+
+# ---------- 流冰物語號 2027 ----------
+# 資料在 ryuhyo.json。指定席的開賣日每天不一樣（乘車日 1 個月前 10:00，えきねっと 事前受付 再前一週 14:00），
+# 這裡逐日算，不寫死。
+if os.path.exists('ryuhyo.json'):
+    RY = json.load(open('ryuhyo.json', encoding='utf-8'))
+    _ry_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _ry_wd = '一二三四五六日'
+
+    def _ry_md(d, wd=True):
+        return f'{d.month}/{d.day}' + (f'（{_ry_wd[d.weekday()]}）' if wd else '')
+
+    def _ry_src(u, label='官方頁面'):
+        return f'<a href="{html.escape(u)}" rel="nofollow noopener" target="_blank">{label}</a>'
+
+    def _ry_minus_month(d):
+        return d.replace(year=d.year - 1, month=12) if d.month == 1 else d.replace(month=d.month - 1)
+
+    # 運行日：展開區間
+    _ry_groups = []
+    for x in RY['dates']:
+        a, _, b = x.partition('..')
+        a = datetime.date.fromisoformat(a)
+        b = datetime.date.fromisoformat(b) if b else a
+        _ry_groups.append([a + datetime.timedelta(days=i) for i in range((b - a).days + 1)])
+    _ry_days = [d for g in _ry_groups for d in g]
+    _ry_sale = {d: _ry_minus_month(d) for d in _ry_days}
+    _ry_pre = {d: _ry_sale[d] - datetime.timedelta(days=7) for d in _ry_days}
+
+    def _ry_span(ds, wd=True):
+        return _ry_md(ds[0], wd) if len(ds) == 1 else f'{_ry_md(ds[0], wd)}～{_ry_md(ds[-1], wd)}'
+
+    _ry_sale_rows = ''
+    for g in _ry_groups:
+        s = [_ry_sale[d] for d in g]
+        p = [_ry_pre[d] for d in g]
+        each = '每天 ' if len(g) > 1 else ''
+        _ry_sale_rows += (f'<tr><td>{_ry_span(g)}</td>'
+                          f'<td>{_ry_span(s)} {each}10:00<br><small>台灣 9:00</small></td>'
+                          f'<td>{_ry_span(p)} {each}14:00<br><small>台灣 13:00</small></td></tr>')
+
+    _ry_first, _ry_last = _ry_days[0], _ry_days[-1]
+    if _ry_today < _ry_sale[_ry_first]:
+        _n = (_ry_sale[_ry_first] - _ry_today).days
+        _ry_ans = f'第一天 {_ry_md(_ry_first)}的指定席 {_ry_md(_ry_sale[_ry_first])}10:00 開賣，還有 {_n} 天'
+        _ry_sub = (f'用えきねっと的事前受付，{_ry_md(_ry_pre[_ry_first])}14:00 起就可以先申請'
+                   '（日本時間，台灣時間減 1 小時）。')
+    elif _ry_today <= _ry_last:
+        _on = [d for d in _ry_days if _ry_sale[d] <= _ry_today and d >= _ry_today]
+        _off = [d for d in _ry_days if _ry_sale[d] > _ry_today]
+        if _ry_today in _ry_days:
+            _ry_ans = '今天有開'
+        elif _ry_today >= _ry_first:
+            _nx = next(d for d in _ry_days if d > _ry_today)
+            _ry_ans = f'今天沒有開，下一天是 {_ry_md(_nx)}'
+        else:
+            _ry_ans = f'{_ry_md(_ry_first)}開始，已經開賣到 {_ry_md(_on[-1])}' if _on else f'{_ry_md(_ry_first)}開始'
+        _ry_sub = (f'下一天開賣的是 {_ry_md(_off[0])}的班次（{_ry_md(_ry_sale[_off[0]])}10:00）。' if _off
+                   else '所有日期都已經開賣，買不到的話隔幾天再看有沒有人退票。')
+    else:
+        _ry_ans = f'{RY["year"]} 年的流冰物語號 {_ry_md(_ry_last)} 已經結束'
+        _ry_sub = 'JR 北海道寫明年起換成新的「青い星」編成，列車名稱保留。'
+
+    _ry_tt = lambda rows, dirn: ''.join(f'<tr><td>{html.escape(r[0])}（{dirn}）</td>' + ''.join(f'<td>{html.escape(c)}</td>' for c in r[1:]) + '</tr>' for r in rows)
+    _ry_buy = ''.join(f'<li><b>{html.escape(a)}</b>：{html.escape(b)}</li>' for a, b in RY['buy'])
+    _ry_pts = ''.join(f'<li>{html.escape(x)}</li>' for x in RY['points'])
+    _IC = RY['ice']
+    _AU = RY['aurora']
+    _ry_total = RY['fare'] + RY['seat']
+    _ry_dates_txt = '、'.join(_ry_span(g, False) for g in _ry_groups)
+
+    ry_faq = [
+     (f'流冰物語號 {RY["year"]} 什麼時候開？',
+      f'{RY["year"]} 年的運行日是 {_ry_dates_txt}，網走到知床斜里之間一天來回各兩班。'),
+     ('流冰物語號要預約嗎？',
+      f'要。今年全車指定席，沒有指定席券不能上車。單程是乘車券 {RY["fare"]:,} 円加指定席券 {RY["seat"]:,} 円，'
+      f'共 {_ry_total:,} 円，小孩半價。'),
+     ('流冰物語號什麼時候開賣？',
+      '指定席在乘車日的 1 個月前 10:00（日本時間）開賣，例如 '
+      f'{_ry_md(_ry_first)}的班次是 {_ry_md(_ry_sale[_ry_first])}10:00。'
+      'えきねっと（JR 東日本的訂票網站）的事前受付再早一週，在前一週同一天的 14:00 起可以先申請。'),
+     ('流冰物語號時刻表',
+      '往知床斜里：1 號網走 9:50 開、知床斜里 10:41 到；3 號網走 13:04 開、知床斜里 13:55 到。'
+      '往網走：2 號知床斜里 11:40 開、網走 12:44 到；4 號知床斜里 14:10 開、網走 15:14 到。中途停北濱、濱小清水。'),
+     ('北海道鐵路周遊券可以坐流冰物語號嗎？',
+      RY['buy'][2][1]),
+     ('坐流冰物語號一定看得到流冰嗎？',
+      f'不一定。網走的流冰初日平年是 {_IC["normal_first"]}、靠岸初日平年是 {_IC["normal_shore"]}，'
+      f'但 2025 年流冰 {_IC["y2025_first"]} 才到，是有統計以來最晚的一次。流冰會隨風和海流移動，今天有、明天不一定有。'),
+     ('網走破冰船 Aurora 號要預約嗎？',
+      _AU['rsv']),
+    ]
+    ry_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in ry_faq]}, ensure_ascii=False)
+
+    write('japan-ryuhyo-monogatari/index.html',
+      head(f'流冰物語號 {RY["year"]} 時刻表與預約：運行日、指定席開賣日、票價、周遊券能不能坐',
+           f'流冰物語號 {RY["year"]} 年 {_ry_dates_txt}行駛，網走到知床斜里，今年全車指定席。'
+           '整理時刻表、每一天的指定席開賣時間、票價、北海道鐵路周遊券怎麼劃位，以及網走的流冰平年什麼時候來。',
+           'japan-ryuhyo-monogatari/',
+           '<script type="application/ld+json">' + ry_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), (f'流冰物語號 {RY["year"]}', None)])
+      + f'<h1>流冰物語號 {RY["year"]}：時刻表、什麼時候開賣、怎麼訂</h1>'
+      + '<p class="lede">流冰物語號是 JR 北海道冬天在網走到知床斜里之間開的觀光列車，沿著鄂霍次克海走，'
+        f'運氣好可以從車窗看到流冰。{RY["year"]} 年全車指定席，沒有指定席券不能上車。</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_ry_md(_ry_today)}</div>'
+        f'<div class="tans">{html.escape(_ry_ans)}</div>'
+        f'<div class="tsub">{html.escape(_ry_sub)}</div></div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>運行日</b>：{_ry_dates_txt}。</li>'
+        f'<li><b>全車指定席</b>：單程 {_ry_total:,} 円（乘車券 {RY["fare"]:,} 円＋指定席券 {RY["seat"]:,} 円），小孩半價。</li>'
+        '<li><b>開賣</b>：乘車日的 1 個月前 10:00（日本時間），每一天各自開賣。</li>'
+        f'<li><b>不一定看得到流冰</b>：平年的靠岸初日是 {_IC["normal_shore"]}，比第一天 {_ry_md(_ry_first, False)}晚。</li>'
+        '</ul></div>'
+      + '<h2>時刻表</h2>'
+      + '<div class="tw"><table><thead><tr><th>車次</th><th>網走</th><th>北濱</th><th>濱小清水</th><th>知床斜里</th>'
+        '</tr></thead><tbody>' + _ry_tt(RY['down'], '往知床斜里') + '</tbody></table></div>'
+      + '<div class="tw"><table><thead><tr><th>車次</th><th>知床斜里</th><th>濱小清水</th><th>北濱</th><th>網走</th>'
+        '</tr></thead><tbody>' + _ry_tt(RY['up'], '往網走') + '</tbody></table></div>'
+      + f'<p class="disc">時刻引自 {_ry_src(RY["src"], "JR 北海道官網")}與 {_ry_src(RY["src_pdf"], "10/22 的冬季臨時列車公告")}，'
+        '官方寫運行日與時刻可能不經預告變更。</p>'
+      + '<h2>每一天的指定席什麼時候開賣</h2>'
+      + '<p class="lede">JR 的指定席在乘車日 1 個月前的 10:00 開賣。'
+        f'{_ry_src(RY["src_ekinet"], "えきねっと的事前受付")}可以再早一週先申請，'
+        '開賣當天 10:00 才幫你劃位，不保證一定訂得到；事前受付期間取消不收手續費。</p>'
+      + '<div class="tw"><table><thead><tr><th>乘車日</th><th>指定席開賣（日本時間）</th><th>えきねっと事前受付（日本時間）</th>'
+        '</tr></thead><tbody>' + _ry_sale_rows + '</tbody></table></div>'
+      + '<h2>怎麼買</h2>'
+      + f'<div class="tldr"><ul>{_ry_buy}</ul></div>'
+      + f'<p class="disc">出處：{_ry_src(RY["src_pass"], "JR 北海道周遊券官方頁（英文）")}、'
+        f'{_ry_src(RY["src_free"], "釧網線周遊券公告")}。</p>'
+      + '<h2>車上與沿途</h2>'
+      + f'<div class="tldr"><ul>{_ry_pts}</ul></div>'
+      + '<h2>流冰什麼時候會來</h2>'
+      + '<div class="tw"><table><thead><tr><th>網走</th><th>流冰初日</th><th>靠岸初日</th></tr></thead><tbody>'
+        f'<tr><td>平年</td><td>{_IC["normal_first"]}</td><td>{_IC["normal_shore"]}</td></tr>'
+        f'<tr><td>2025 年</td><td>{_IC["y2025_first"]}</td><td>{_IC["y2025_shore"]}</td></tr>'
+        f'<tr><td>2026 年</td><td>{_IC["y2026_first"]}</td><td><small>本站沒有查</small></td></tr>'
+        '</tbody></table></div>'
+      + f'<p class="disc">流冰初日是第一次從陸地看到漂來的流冰的日子。{html.escape(_IC["note"])}'
+        f'出處：{_ry_src(RY["src_ice"], "流冰館 2026 年第 1 號海氷情報")}、{_ry_src(RY["src_jma2025"], "氣象廳 2025 年 2 月概況")}。'
+        f'今年的消息看 {_ry_src(RY["src_ice_home"], "鄂霍次克流冰館")}。</p>'
+      + '<h2>網走破冰船 Aurora 號</h2>'
+      + f'<p class="lede">流冰季（{_AU["period"]}）在網走港出航的破冰觀光船。{html.escape(_AU["where"])}</p>'
+      + f'<div class="tldr"><ul><li>{html.escape(_AU["big"])}</li><li>{html.escape(_AU["small"])}</li>'
+        f'<li>{html.escape(_AU["ice_note"])}</li><li><b>預約</b>：{html.escape(_AU["rsv"])}</li></ul></div>'
+      + f'<p class="disc">出處：{_ry_src(RY["src_aurora"], "Aurora 號官網的料金與時刻表")}、'
+        f'{_ry_src(RY["src_aurora_rsv"], "預約頁")}。</p>'
+      + '<h2>從札幌過去</h2>'
+      + f'<p class="lede">{html.escape(RY["red_star"])}</p>'
+      + '<div class="cities">'
+      + f'<a class="ct" href="{U("/sapporo/")}"><b>✈️ 札幌機票</b><s>從札幌轉 JR 去網走</s></a></div>'
+      + '<h2>這一頁查不到的</h2>'
+      + '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(x)}</li>' for x in RY['unverified']) + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-ginzan-onsen/")}"><b>♨️ 銀山溫泉冬季預約</b><s>一樣要先訂的冬季雪景</s></a>'
+      + f'<a class="ct" href="{U("/japan-shirakawago-lightup/")}"><b>🏮 白川鄉點燈 2027</b><s>1 月的四天點燈</s></a>'
+      + f'<a class="ct" href="{U("/japan-burton-rental/")}"><b>🏂 Burton 宅配租雪板</b><s>同一趟北海道順便滑雪</s></a>'
+      + f'<a class="ct" href="{U("/taiwan-holiday-2027/")}"><b>📅 2027 請假攻略</b><s>寒假與春節怎麼請</s></a></div>'
+      + faq_visible(ry_faq)
+      + f'<p class="disc">規定以 JR 北海道官網為準，整理可能有疏漏。查證於 {RY["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-ryuhyo-monogatari/', 0.7))
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
