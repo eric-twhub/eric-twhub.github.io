@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-10-taipei-okinawa",
- "generated": "2026-11-10 18:22",
+ "generated": "2026-11-10 21:46",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 2141,
+  "price": 2603,
   "dep": "2026-11-17",
   "ret": "2026-12-01",
   "dept": "18:20",
@@ -25,8 +25,7 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "廉航低於 NT$6,000",
-  "這條航線平常最低落在 NT$2,603–NT$6,018，這張是近期 28 筆紀錄中第 1 低"
+  "廉航低於 NT$6,000"
  ],
  "med": 11174,
  "n_rt": 28,

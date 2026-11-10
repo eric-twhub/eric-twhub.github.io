@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-10-taipei-nagoya",
- "generated": "2026-11-10 18:22",
+ "generated": "2026-11-10 21:46",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -27,7 +27,7 @@
  "reasons": [
   "這條航線平常最低落在 NT$8,167–NT$9,341，這張是近期 12 筆紀錄中第 1 低"
  ],
- "med": 13388,
+ "med": 13390,
  "n_rt": 12,
  "others": [
   {

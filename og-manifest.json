@@ -288,16 +288,16 @@
    "title": "日本 eSIM 怎麼選：232 個方案的每日單價比較（含吃到飽的真相）"
   },
   {
-   "slug": "deals-2026-11-10-taipei-okinawa",
-   "url": "/deals/2026-11-10-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,141 來回含稅｜台灣虎航 11/17 出發",
-   "title": "台北飛沖繩 NT$2,141 來回含稅｜台灣虎航 11/17 出發"
-  },
-  {
    "slug": "deals-2026-11-10-kaohsiung-okinawa",
    "url": "/deals/2026-11-10-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$3,003 來回含稅｜台灣虎航 12/17 出發",
-   "title": "高雄飛沖繩 NT$3,003 來回含稅｜台灣虎航 12/17 出發"
+   "h1": "高雄飛沖繩 NT$2,541 來回含稅｜台灣虎航 12/17 出發",
+   "title": "高雄飛沖繩 NT$2,541 來回含稅｜台灣虎航 12/17 出發"
+  },
+  {
+   "slug": "deals-2026-11-10-taipei-okinawa",
+   "url": "/deals/2026-11-10-taipei-okinawa/",
+   "h1": "台北飛沖繩 NT$2,603 來回含稅｜台灣虎航 11/17 出發",
+   "title": "台北飛沖繩 NT$2,603 來回含稅｜台灣虎航 11/17 出發"
   },
   {
    "slug": "deals-2026-11-10-taipei-ishigaki",
@@ -314,8 +314,8 @@
   {
    "slug": "deals-2026-11-10-taipei-saga",
    "url": "/deals/2026-11-10-taipei-saga/",
-   "h1": "台北飛佐賀 NT$4,284 來回含稅｜台灣虎航 11/12 出發",
-   "title": "台北飛佐賀 NT$4,284 來回含稅｜台灣虎航 11/12 出發"
+   "h1": "台北飛佐賀 NT$4,745 來回含稅｜台灣虎航 11/12 出發",
+   "title": "台北飛佐賀 NT$4,745 來回含稅｜台灣虎航 11/12 出發"
   },
   {
    "slug": "deals-2026-11-10-taichung-okinawa",
@@ -338,14 +338,14 @@
   {
    "slug": "deals-2026-11-10-taichung-nagoya",
    "url": "/deals/2026-11-10-taichung-nagoya/",
-   "h1": "台中飛名古屋 NT$5,677 來回含稅｜台灣虎航 11/20 出發",
-   "title": "台中飛名古屋 NT$5,677 來回含稅｜台灣虎航 11/20 出發"
+   "h1": "台中飛名古屋 NT$5,977 來回含稅｜台灣虎航 11/20 出發",
+   "title": "台中飛名古屋 NT$5,977 來回含稅｜台灣虎航 11/20 出發"
   },
   {
    "slug": "deals-2026-11-10-taipei-fukuoka",
    "url": "/deals/2026-11-10-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$5,694 來回含稅｜台灣虎航 11/12 出發",
-   "title": "台北飛福岡 NT$5,694 來回含稅｜台灣虎航 11/12 出發"
+   "h1": "台北飛福岡 NT$7,194 來回含稅｜台灣虎航 11/21 出發",
+   "title": "台北飛福岡 NT$7,194 來回含稅｜台灣虎航 11/21 出發"
   },
   {
    "slug": "deals-2026-11-10-taipei-nagoya",
@@ -356,8 +356,8 @@
   {
    "slug": "deals-2026-11-10-transfer-osaka-hiroshima",
    "url": "/deals/2026-11-10-transfer-osaka-hiroshima/",
-   "h1": "飛大阪轉乘去廣島，比直飛省 NT$464",
-   "title": "飛大阪轉乘去廣島，比直飛省 NT$464"
+   "h1": "飛大阪轉乘去廣島，比直飛省 NT$6,139",
+   "title": "飛大阪轉乘去廣島，比直飛省 NT$6,139"
   },
   {
    "slug": "apple-japan-price",
@@ -453,7 +453,7 @@
    "slug": "japan-flight-good-times",
    "url": "/japan-flight-good-times/",
    "h1": "不浪費假期的日本機票",
-   "title": "早去晚回的日本機票｜不浪費假期的班次，目前 9 組"
+   "title": "早去晚回的日本機票｜不浪費假期的班次，目前 8 組"
   },
   {
    "slug": "japan-card-register",
@@ -970,6 +970,12 @@
    "url": "/japan-ginzan-onsen/",
    "h1": "銀山溫泉冬季預約：接駁巴士怎麼訂、什麼時候開賣",
    "title": "銀山溫泉冬季預約 2026–2027：接駁巴士怎麼訂、傍晚時段開賣日、票價與回程班次"
+  },
+  {
+   "slug": "japan-burton-rental",
+   "url": "/japan-burton-rental/",
+   "h1": "Burton 日本官網租雪板：寄到飯店，滑完寄回去",
+   "title": "Burton 日本官網租借 2026–2027：STEP ON 雪板宅配到飯店、價錢、怎麼還、跟雪場現場租比"
   }
  ]
 }
