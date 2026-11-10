@@ -1581,6 +1581,8 @@ def topnav(cur=''):
             + link('/japan-harry-potter-tokyo/', '🪄 東京哈利波特影城門票怎麼買')
             + link('/japan-skytree/', '🗼 晴空塔門票怎麼買')
             + link('/japan-tokyo-tower/', '🗼 東京鐵塔門票怎麼買')
+            + link('/tokyo/teamlab/', '🎨 teamLab 門票怎麼買')
+            + link('/japan-fujiko-museum/', '🔔 藤子不二雄博物館門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1714,6 +1716,7 @@ _AD_MAP = [
     ('japan-airport-last-train', 'transfer'),
     ('japan-esim', 'esim'), ('japan-sms', 'esim'),
     ('japan-pokemon-cafe', 'esim'),
+    ('japan-fujiko-museum', 'esim'),
     ('japan-nintendo-museum', 'activity2'),
     ('japan-shibuya-sky', 'activity2'),
     ('japan-harry-potter-tokyo', 'activity2'),
@@ -8869,6 +8872,145 @@ if os.path.exists('tokyo-tower.json'):
       + '<p class="disc">票價、營業時間與點燈以東京鐵塔官網為準，整理可能有疏漏。</p>'
       + foot())
     pages.append(('/japan-tokyo-tower/', 0.6))
+
+# ---------- 藤子・F・不二雄博物館門票怎麼買 ----------
+# 資料在 fujiko-museum.json，引官網来館のご案内、よくあるご質問與官方售票網站 e-tix。
+# e-tix 寫明只能在官網預約、禁止轉售，官網沒有列任何代理商，所以比照寶可夢咖啡廳不放代購商品，只連官方售票網站。
+# 售票日程是固定規則（每月 5 日 10:00 賣當月 16 日到月底、20 日 10:00 賣下個月 1～15 日），用日本時間當場算。
+if os.path.exists('fujiko-museum.json'):
+    FZM = json.load(open('fujiko-museum.json', encoding='utf-8'))
+    _fzm_now = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))
+    _fzm_today = _fzm_now.date()
+    _fzm_wd = '一二三四五六日'
+
+    def _fzm_md(d):
+        return f'{d.month}/{d.day}（{_fzm_wd[d.weekday()]}）'
+
+    def _fzm_ym(y, m, k):
+        m += k
+        while m > 12:
+            y, m = y + 1, m - 12
+        while m < 1:
+            y, m = y - 1, m + 12
+        return y, m
+
+    def _fzm_last(y, m):
+        ny, nm = _fzm_ym(y, m, 1)
+        return datetime.date(ny, nm, 1) - datetime.timedelta(days=1)
+
+    _fzm_ev = []
+    for _k in range(-1, 3):
+        _y, _m = _fzm_ym(_fzm_today.year, _fzm_today.month, _k)
+        _fzm_ev.append((datetime.datetime(_y, _m, 5, 10, 0), datetime.date(_y, _m, 16), _fzm_last(_y, _m)))
+        _ny, _nm = _fzm_ym(_y, _m, 1)
+        _fzm_ev.append((datetime.datetime(_y, _m, 20, 10, 0), datetime.date(_ny, _nm, 1), datetime.date(_ny, _nm, 15)))
+    _fzm_ev.sort()
+    _fzm_nowl = _fzm_now.replace(tzinfo=None)
+    _fzm_past = [e for e in _fzm_ev if e[0] <= _fzm_nowl]
+    _fzm_up = [e for e in _fzm_ev if e[0] > _fzm_nowl]
+    _fzm_until = _fzm_past[-1][2]
+    _fzm_next = _fzm_up[0]
+    _fzm_left = (_fzm_next[0].date() - _fzm_today).days
+    _fzm_when = '今天' if _fzm_left == 0 else ('明天' if _fzm_left == 1 else f'還有 {_fzm_left} 天')
+    _fzm_tue = _fzm_today.weekday() == 1
+
+    _fzm_rows = ''.join(
+        f'<tr><td class="nm"><b>{_fzm_md(e[0].date())} 10:00</b></td>'
+        f'<td class="nm">{_fzm_md(e[1])}～{_fzm_md(e[2])}</td>'
+        + ('<td class="nm">已開賣</td>' if e[0] <= _fzm_nowl else '<td class="nm"><b>還沒開賣</b></td>')
+        + '</tr>' for e in ([_fzm_past[-1]] + _fzm_up[:3]))
+
+    _fzm_price = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(n)}</b></td><td class="nm">{html.escape(a)}</td>'
+        f'<td class="nm"><b>{y:,} 円</b></td></tr>' for n, a, y in FZM['price'])
+
+    _fzm_slots = ''.join(
+        f'<tr><td class="nm"><b>{s}</b></td><td class="nm">{int(s[:2]) + 1}:00 前</td></tr>'
+        for s in FZM['slots'])
+
+    _fzm_cta = (f'<a class="cta" href="{html.escape(FZM["_來源"]["etix_tw"])}" target="_blank" rel="nofollow noopener">'
+                '<span class="ci">🎫</span><span class="ct"><b>到官方售票網站買票（有繁體中文）</b>'
+                '<s>信用卡付款，QR code 門票不收手續費</s></span><span class="ca">→</span></a>')
+
+    fzm_faq = [
+     ('藤子不二雄博物館的門票什麼時候開賣？',
+      FZM['sale'] + f'下一次是 {_fzm_next[0].month} 月 {_fzm_next[0].day} 日 10:00，'
+      f'賣 {_fzm_next[1].month}/{_fzm_next[1].day}～{_fzm_next[2].month}/{_fzm_next[2].day} 入館的票。'
+      '日本時間 10:00 是台灣時間 9:00。'),
+     ('可以到現場再買票嗎？', FZM['same_day']),
+     ('可以在 Klook 或 KKday 買嗎？',
+      'Klook 上查得到平日、指定日期的入館券，而且不能取消；KKday 搜不到。'
+      '但官方售票網站寫明只能透過官網預約、禁止轉售，官網也沒有列出任何代理商，所以本頁只介紹官方售票網站。'
+      '官方售票網站有繁體中文，用信用卡就能買。'),
+     ('外國人怎麼買？',
+      '到官方售票網站 e-tix 選繁體中文，選日期、時段和張數，用 VISA、MASTER、JCB 或 AMEX 信用卡付款，'
+      '選 QR code 門票不收手續費，確認信裡的 QR code 就是門票。' + FZM['max']),
+     ('票價多少？', '大人與大學生 1,000 円、高中生與國中生 700 円、4 歲以上的兒童 500 円。' + FZM['price_note']),
+     ('可以取消或改日期嗎？', FZM['cancel'] + FZM['change']),
+     ('要幾點到？遲到怎麼辦？',
+      '要在票上的入館時段開始後 60 分鐘內進場，例如 10:00 的票是 10:00～11:00 進場；提早到也不能先進去。'),
+     ('可以待多久？可以出去再進來嗎？', '進場以後沒有停留時間限制，可以待到 18:00 閉館；出來就不能再進去。'),
+     ('哪天休館？', FZM['closed']),
+     ('只想去博物館商店或咖啡廳也要買票嗎？', '要。館內的商店與咖啡廳只有拿入館門票的人能用。'),
+     ('怎麼去？', FZM['access'][0] + FZM['access'][1]),
+    ]
+    fzm_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in fzm_faq]}, ensure_ascii=False)
+
+    write('japan-fujiko-museum/index.html',
+      head('藤子不二雄博物館門票怎麼買：每月 5 日、20 日開賣，Klook 能買嗎、取消規定（哆啦A夢博物館）',
+           '川崎市 藤子・F・不二雄博物館（哆啦A夢博物館）現場不賣票，要先在官方售票網站買指定日期時段的票：'
+           '每月 5 日 10:00 賣當月 16 日到月底、20 日 10:00 賣下個月 1～15 日。'
+           '本頁每天算好下一次開賣，並整理票價、7 個入館時段、取消期限、週二休館與交通。',
+           'japan-fujiko-museum/',
+           '<script type="application/ld+json">' + fzm_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('藤子不二雄博物館門票怎麼買', None)])
+      + '<h1>藤子不二雄博物館門票怎麼買</h1>'
+      + '<p class="lede">川崎市 藤子・F・不二雄博物館（常被叫做哆啦A夢博物館）在神奈川縣川崎市，'
+        '是完全預約制，現場不賣票。下面的規則引博物館官網與官方售票網站 e-tix，'
+        f'查證於 {FZM["checked"]}；開賣日期照官方固定的售票日程，每天自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_fzm_md(_fzm_today)}</div>'
+        f'<div class="tans">現在買得到 {_fzm_md(_fzm_until)} 以前的票</div>'
+        f'<div class="tsub">下一次開賣是 {_fzm_md(_fzm_next[0].date())} 10:00（台灣 9:00），{_fzm_when}，'
+        f'賣 {_fzm_md(_fzm_next[1])}～{_fzm_md(_fzm_next[2])} 入館的票。'
+        + ('今天是週二，照規則是休館日。' if _fzm_tue else '') + '</div>'
+        '<div class="tbuf">每個時段的票賣完就買不到，官方也不受理電話預約。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>現場不賣票</b>：一定要先在官方售票網站買；當天時段還有空位的話，最晚能買到時段開始後 45 分鐘。</li>'
+        '<li><b>週二休館</b>：年底年初也休館，週二偶爾特別開館，以官網公告為準。</li>'
+        '<li><b>只在官網賣、禁止轉售</b>：所以本頁不放任何代購商品，只連官方售票網站。</li>'
+        '</ul></div>'
+      + '<h2>哪天開賣哪些日期</h2>'
+      + '<div class="tw"><table><tr><th>開賣（日本時間）</th><th>開賣的入館日期</th><th>狀態</th></tr>'
+      + _fzm_rows + '</table></div>'
+      + f'<p class="disc">{html.escape(FZM["sale"])}這是官方固定的售票日程，本頁照規則推算；實際剩下哪些時段要到官方售票網站看。</p>'
+      + '<h2>票價</h2>'
+      + '<div class="tw narrow"><table><tr><th>票種</th><th>年齡</th><th>價格</th></tr>' + _fzm_price + '</table></div>'
+      + f'<p class="disc">{html.escape(FZM["price_note"])}{html.escape(FZM["max"])}價格含稅。</p>'
+      + '<h2>入館時段</h2>'
+      + f'<p class="lede">{html.escape(FZM["slot_rule"])}</p>'
+      + '<div class="tw narrow"><table><tr><th>入館時段</th><th>要在幾點前進場</th></tr>' + _fzm_slots + '</table></div>'
+      + f'<p class="disc">開館時間 {FZM["hours"]}，最後入館 {FZM["last_entry"]}。</p>'
+      + '<h2>怎麼買</h2>'
+      + '<ul class="lede">'
+        f'<li><b>QR code 門票（建議）</b>：{html.escape(FZM["pay_qr"])}</li>'
+        f'<li><b>7-Eleven 付款取票</b>：{html.escape(FZM["pay_711"])}</li></ul>'
+      + _fzm_cta
+      + '<p class="disc">這是博物館的官方售票網站，本站沒有分潤。</p>'
+      + '<h2>取消與改日期</h2>'
+      + f'<ul class="lede"><li>{html.escape(FZM["cancel"])}</li><li>{html.escape(FZM["change"])}</li></ul>'
+      + '<h2>館內</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in FZM['inside']) + '</ul>'
+      + '<h2>交通</h2>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in FZM['access'])
+      + f'<li>地址：{html.escape(FZM["address"])}</li></ul>'
+      + '<p class="lede">同樣要先買指定時段門票的，還有<a href="/japan-ghibli-museum/">吉卜力美術館</a>。</p>'
+      + faq_visible(fzm_faq)
+      + '<p class="disc">票價、售票日程與入館規定以藤子・F・不二雄博物館官網與官方售票網站為準，整理可能有疏漏。</p>'
+      + foot())
+    pages.append(('/japan-fujiko-museum/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
@@ -22025,14 +22167,15 @@ if os.path.exists('teamlab.json'):
                        for q, a in _tl_faq]}, ensure_ascii=False)
 
     write('tokyo/teamlab/index.html',
-      head('teamLab 兩館怎麼分：麻布台常設、豊洲到 2027 年末，票價與改期規則都不同',
-           '台灣人最常訂錯的是把麻布台的 teamLab 無界和豊洲的 teamLab Planets 搞混。'
+      head('teamLab 門票怎麼買：Planets（豊洲・DMM 官方）與無界 Borderless（麻布台）票價、通路、改期',
+           'teamLab Planets 的官方售票是 DMM 經營的網站，麻布台的 teamLab 無界（Borderless）則是官方票務網站與 Klook。'
+           '最常訂錯的是把兩館搞混。'
            '兩館的展期、票價制度、現場售票、官方認可的購票通路、遲到的處理都不一樣。'
            '全部引官方繁體中文頁原文。',
            'tokyo/teamlab/',
            '<script type="application/ld+json">' + _tl_ld + '</script>')
       + topnav() + crumbs([('首頁', '/'), ('東京', '/kanto/'), ('teamLab 兩館', None)])
-      + '<h1>teamLab 兩館怎麼分，訂哪一個</h1>'
+      + '<h1>teamLab 門票怎麼買：兩館怎麼分，訂哪一個</h1>'
       + '<p class="lede">東京有兩個 teamLab，名字像、票分開賣、規則不一樣，'
         '而且訂錯了不能退。這一頁把兩館會影響決定的差別逐項列出來，數字與引文'
         '全部出自官方繁體中文頁。</p>'
