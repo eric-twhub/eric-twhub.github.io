@@ -23305,8 +23305,8 @@ if os.path.exists('burton-rental.json'):
       '線上租借只能宅配，不能在門市領或還。另外有些雪場的租借店可以現場租 STEP ON，'
       '那是雪場自己的租借，價錢和規定看各雪場。'),
      ('還的時候會有人到飯店來收嗎？',
-      '不會自動來收。回寄單已經放在板袋裡（運費到付），要自己在最後一天之內把東西交給佐川急便：'
-      '可以上佐川的網站預約到府取件，官方附了日文和英文的預約頁。飯店櫃台能不能幫忙交件，官網沒寫，要問飯店。'),
+      '不會自動來收。回寄單已經放在板袋裡（運費到付），要自己在最後一天之內交給回寄單上的那家物流：'
+      '可以上網約到府取件，官方附了日文和英文的預約頁。飯店櫃台能不能幫忙交件，官網沒寫，要問飯店。'),
      ('只缺一部分裝備，可以只租需要的嗎？',
       f'可以只租 STEP ON 鞋＋固定器（15 天 {BR["sets"][3]["p"][1]:,} 円、30 天 {BR["sets"][3]["p"][2]:,} 円，沒有 7 天方案）。'
       f'只租雪板的話，目前列出來的只有 Family Tree 的試乘板（30 天 {BR["sets"][4]["p"][2]:,} 円）。'
@@ -23326,13 +23326,13 @@ if os.path.exists('burton-rental.json'):
     write('japan-burton-rental/index.html',
       head(f'Burton 日本官網租借 {BR["season"]}：STEP ON 雪板宅配到飯店、價錢、怎麼還、跟雪場現場租比',
            f'Burton 日本官網的線上租借：雪板＋STEP ON 固定器與鞋子三件組，7／15／30 天方案，可以寄到飯店、'
-           '滑完交給佐川急便寄回。整理價錢、外國人怎麼租、退還與逾期規定，以及和雪場現場租的價差。',
+           '滑完交給物流寄回。整理價錢、外國人怎麼租、退還與逾期規定，以及和雪場現場租的價差。',
            'japan-burton-rental/',
            '<script type="application/ld+json">' + br_ld + '</script>')
       + topnav() + crumbs([('首頁', '/'), ('Burton 日本官網租借', None)])
       + '<h1>Burton 日本官網租雪板：寄到飯店，滑完寄回去</h1>'
       + '<p class="lede">Burton 日本官網有線上租借：雪板、固定器、鞋子三件組裝在板袋裡，宅配到你指定的地址，'
-        '飯店也可以；滑完照原樣裝好，交給佐川急便寄回。固定器和鞋子全部是 STEP ON（踩進去就固定、拉起後跟的拉桿就鬆開）。'
+        '飯店也可以；滑完照原樣裝好，交給物流寄回。固定器和鞋子全部是 STEP ON（踩進去就固定、拉起後跟的拉桿就鬆開）。'
         '不住日本的人用護照就能租。</p>'
       + '<div class="today">'
         f'<div class="tday">日本時間 {_br_md(_br_today)}</div>'
@@ -23341,7 +23341,7 @@ if os.path.exists('burton-rental.json'):
       + '<div class="tldr"><ul>'
         '<li><b>方案只有 7、15、30 天</b>：只滑 3 天也付 7 天的錢，訂好不能延長。</li>'
         f'<li><b>短天數不一定划算</b>：{html.escape(_br_cross_txt)}（見下面的對照表）。</li>'
-        '<li><b>最後一天要交給佐川急便</b>：回寄單附在裡面，逾期每天 3,000 円。</li>'
+        '<li><b>最後一天要交給物流寄回</b>：用附在裡面的回寄單，逾期每天 3,000 円。</li>'
         '<li><b>只能刷信用卡</b>：金融卡和預付型的卡不能用。</li>'
         '</ul></div>'
       + '<h2>價錢</h2>'
@@ -23362,7 +23362,7 @@ if os.path.exists('burton-rental.json'):
       + '<h2>收到與歸還</h2>'
       + f'<p class="lede">{html.escape(BR["receive"])}</p>'
       + f'<p class="lede">{html.escape(BR["return"])}'
-        f'（{_br_src(BR["src_sagawa_en"], "佐川急便英文頁")}）</p>'
+        f'（{_br_src(BR["src_sagawa_en"], "英文的到府取件預約頁")}）</p>'
       + '<h2>要注意的規定</h2>'
       + '<div class="tldr"><ul>' + _br_rules + '</ul></div>'
       + f'<p class="lede"><b>取消</b>：{html.escape(BR["cancel"])}</p>'
