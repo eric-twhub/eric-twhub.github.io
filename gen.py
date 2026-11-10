@@ -1586,6 +1586,7 @@ def topnav(cur=''):
             + link('/japan-autumn-leaves/', '🍁 紅葉預測與賞楓預約')
             + link('/kyoto/autumn-leaves/', '🍁 京都賞楓要預約的地方')
             + link('/tokyo/autumn-leaves/', '🍁 東京賞楓要買票的地方')
+            + link('/japan-shirakawago-lightup/', '🏮 白川鄉點燈怎麼預約')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -1742,6 +1743,7 @@ _AD_MAP = [
     ('japan-autumn-leaves', 'activity2'),
     ('kyoto/autumn-leaves', 'esim'),
     ('tokyo/autumn-leaves', 'esim'),
+    ('japan-shirakawago-lightup', 'esim'),
     ('japan-park-ticket', 'activity2'), ('japan-seasonal-event', 'activity2'), ('tigerair-nagoya', 'transfer'),
     ('taiwan-holiday', 'activity2'), ('japan-holiday-calendar', 'activity2'),
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
@@ -22919,6 +22921,152 @@ if os.path.exists('tokyo-autumn.json'):
       + f'<p class="disc">規定以各官方頁面為準，整理可能有疏漏。查證於 {TKA["checked"]}，之後官方若有更改，本頁不一定跟上。</p>'
       + foot())
     pages.append(('/tokyo/autumn-leaves/', 0.7))
+
+# ---------- 白川鄉點燈 2027 ----------
+# 資料在 shirakawago.json，規則引白川郷観光協会的開催概要，巴士團引各巴士公司頁面。
+# 每天會變的在這裡算：下一個截止（住宿追加、停車場第二輪、旅行社名單）與離下一場還有幾天。
+# 巴士團空位是 seats_checked 那天的快照，頁面照寫日期。沒有放商品，理由在 JSON 的 _分潤。
+if os.path.exists('shirakawago.json'):
+    SKG = json.load(open('shirakawago.json', encoding='utf-8'))
+    _skg_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _skg_iso = _skg_today.isoformat()
+    _skg_wd = '一二三四五六日'
+
+    def _skg_md(s):
+        d = datetime.date.fromisoformat(s) if isinstance(s, str) else s
+        return f'{d.month}/{d.day}（{_skg_wd[d.weekday()]}）'
+
+    def _skg_src(u, label='官方頁面'):
+        return f'<a href="{html.escape(u)}" rel="nofollow noopener" target="_blank">{label}</a>'
+
+    def _skg_tw(t):
+        h, m = t.split(':')
+        return f'日本時間 {t}（台灣 {int(h) - 1}:{m}）'
+
+    _skg_dates = '、'.join(_skg_md(d) for d in SKG['dates'])
+    _skg_up = [d for d in SKG['dates'] if d >= _skg_iso]
+    if not _skg_up:
+        _skg_ans = f'{SKG["edition"]}的四場點燈都已經結束。'
+    elif _skg_up[0] == _skg_iso:
+        _skg_ans = f'今天就有點燈（{SKG["time"]}），只有事先預約、拿到入場票的人進得去。'
+    else:
+        _n = (datetime.date.fromisoformat(_skg_up[0]) - _skg_today).days
+        _skg_ans = (('離第一場 ' if _skg_up[0] == SKG['dates'][0] else '離下一場 ')
+                    + f'{_skg_md(_skg_up[0])}還有 {_n} 天')
+    _skg_dl = [x for x in SKG['deadlines'] if x[0] >= _skg_iso]
+    if _skg_dl:
+        _d, _t, _w = _skg_dl[0]
+        _skg_next = (('今天' if _d == _skg_iso else f'下一個時間點 {_skg_md(_d)}')
+                     + f' {_skg_tw(_t)}：{_w}。')
+    elif _skg_up:
+        _skg_next = '官方公布的開賣時間都已經過了，剩下的只有巴士團取消後空出來的位子。'
+    else:
+        _skg_next = '官方 2026 年是 10/1 公布 2027 年的參加辦法。'
+
+    _skg_ways = ''.join(
+        f'<h3>{w["no"]} {html.escape(w["name"])}</h3>'
+        f'<ul class="lede"><li><b>展望台</b>：{html.escape(w["deck"])}</li>'
+        f'<li>{html.escape(w["status"])}</li></ul>'
+        f'<p class="disc">出處：{_skg_src(w["src"])}。</p>'
+        for w in SKG['ways'])
+    _skg_rows = ''.join(
+        f'<tr><td><b>{html.escape(t["co"])}</b><br><small>{html.escape(t["from"])}出發</small></td>'
+        f'<td>{html.escape(t["course"])}</td>'
+        f'<td>{"有" if t["deck"] else "沒有"}</td>'
+        f'<td>{html.escape(t["price"])}</td>'
+        f'<td>{html.escape(t["time"])}</td>'
+        f'<td>{html.escape(t["seats"])}<br><small>{_skg_src(t["url"], "巴士公司頁面")}</small></td></tr>'
+        for t in SKG['tours'])
+
+    _skg_park = SKG['ways'][1]['status']
+    skg_faq = [
+     ('白川鄉點燈 2027 是哪幾天？',
+      f'{SKG["edition"]}只有四天：{_skg_dates}，每天 {SKG["time"]}。地點是白川村荻町的合掌集落。'),
+     ('白川鄉點燈要預約嗎？當天可以直接去嗎？',
+      '要。官方寫完全事前預約制，當天不賣入場票，沒有入場票的人在集落入口就會被請回。'
+      '活動當天 15:30 起入口設閘門，白天去玩的人也要在那之前進去。'),
+     ('白川鄉點燈有哪些參加方法？',
+      '官方列了五種：住白川村內、自己開車預約專用停車場、搭計程車一樣預約停車場、'
+      '五家路線巴士公司的點燈團、旅行社的點燈團。觀光協會只賣前三種，巴士團和旅行社團要直接找各家。'),
+     ('白川鄉點燈的展望台怎麼上去？',
+      SKG['deck']),
+     ('白川鄉點燈停車場怎麼預約？多少錢？',
+      _skg_park),
+     ('沒有車，可以搭巴士去看白川鄉點燈嗎？',
+      f'一般的路線巴士不行：{SKG["bus_last"]}要搭濃飛、加越能、富山地鐵、北鐵、伊魯卡交通的點燈團。'
+      f'{SKG["seats_checked"]} 看的時候，含展望台票的團都已經客滿。'),
+     ('白川鄉點燈的住宿抽籤怎麼報名？',
+      '2027 年的抽籤 10/1～10/31 用電子郵件報名，11/10 寄當選信，沒收到就是沒中。'
+      '不遞補、不收候補；有人放棄時 11/26 13:00 追加募集，先到先得，會另外在觀光協會官網公告。'),
+     ('白川鄉點燈當天白天可以去嗎？',
+      SKG['day']),
+    ]
+    skg_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in skg_faq]}, ensure_ascii=False)
+
+    write('japan-shirakawago-lightup/index.html',
+      head('白川鄉點燈 2027 預約：四天日期、巴士團空位、停車場 12/1 開賣、展望台票怎麼拿',
+           '白川鄉合掌村點燈 2027 只有 1/11、1/17、1/24、1/31 四天，完全預約制、當天不賣票。'
+           '整理官方的五種參加方法、住宿抽籤與 11/26 追加募集、停車場第二輪 12/1 開賣、'
+           '五家巴士公司點燈團的價錢與空位，以及展望台票只有哪兩種方式拿得到。',
+           'japan-shirakawago-lightup/',
+           '<script type="application/ld+json">' + skg_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('白川鄉點燈 2027', None)])
+      + '<h1>白川鄉點燈 2027：怎麼預約、現在還剩哪些方法</h1>'
+      + f'<p class="lede">白川鄉合掌村的冬季點燈 2027 年只辦四天：{_skg_dates}，{SKG["time"]}。'
+        '從住宿、停車場到巴士團都要事先預約，當天不賣入場票，沒有票在集落入口就會被請回。'
+        f'下面的規則都引自白川郷観光協会與各巴士公司的官方頁面，查證於 {SKG["checked"]}。</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_skg_md(_skg_today)}</div>'
+        f'<div class="tans">{html.escape(_skg_ans)}</div>'
+        f'<div class="tsub">{html.escape(_skg_next)}</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>當天不賣票</b>：一定要先預約，方法只有官方列的五種。</li>'
+        '<li><b>展望台票不單獨賣</b>：只有住村內的「含展望台票方案」或巴士公司的「含展望台票」團拿得到，'
+        f'{SKG["seats_checked"]} 看的時候這些團都客滿了。</li>'
+        '<li><b>還有機會的</b>：停車場第二輪 12/1 13:00 開賣、只看集落的巴士團零星空位、12/2 公布的旅行社團。</li>'
+        '</ul></div>'
+      + '<h2>五種參加方法</h2>'
+      + '<p class="lede">觀光協會只賣 ①②③，④⑤要直接找巴士公司或旅行社。</p>'
+      + _skg_ways
+      + '<h2>路線巴士公司的點燈團</h2>'
+      + f'<p class="lede">空位是 {SKG["seats_checked"]} 在訂位網站上看到的，會隨取消與加開變動，訂之前以訂位頁為準。'
+        f'{html.escape(SKG["tour_rules"])}</p>'
+      + '<div class="tw"><table><thead><tr><th>巴士公司</th><th>團</th><th>展望台</th><th>價錢</th>'
+        f'<th>時間</th><th>{SKG["seats_checked"][5:].replace("-", "/")} 的空位</th></tr></thead><tbody>'
+      + _skg_rows + '</tbody></table></div>'
+      + '<h2>展望台</h2>'
+      + f'<p class="lede">{html.escape(SKG["deck"])}</p>'
+      + '<h2>活動當天白天去</h2>'
+      + f'<p class="lede">{html.escape(SKG["day"])}</p>'
+      + f'<p class="disc">出處：{_skg_src(SKG["src_day"], "活動當天的注意事項")}。</p>'
+      + '<h2>交通、天氣與規定</h2>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>回程</b>：{html.escape(SKG["bus_last"])}</li>'
+        f'<li><b>天氣</b>：{html.escape(SKG["cold"])}</li>'
+        f'<li><b>規定</b>：{html.escape(SKG["rules"])}</li>'
+        '</ul></div>'
+      + '<h2>飛哪裡比較近</h2>'
+      + '<p class="lede">巴士團從高山、富山、高岡、金澤出發。從台灣飛的話，'
+        '富山、小松（金澤）、名古屋是比較常見的入口。</p>'
+      + '<div class="cities">'
+      + f'<a class="ct" href="{U("/toyama/")}"><b>✈️ 富山機票</b><s>富山地鐵的團從富山站前出發</s></a>'
+      + f'<a class="ct" href="{U("/kanazawa/")}"><b>✈️ 金澤・小松機票</b><s>北鐵的團從金澤站出發</s></a>'
+      + f'<a class="ct" href="{U("/nagoya/")}"><b>✈️ 名古屋機票</b><s>到高山搭特急 Hida</s></a></div>'
+      + '<h2>這一頁查不到的</h2>'
+      + '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(x)}</li>' for x in SKG['unverified']) + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/taiwan-holiday-2027/")}"><b>📅 2027 請假攻略</b><s>1 月的連假怎麼請</s></a>'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b><s>1/11 是日本的連假</s></a>'
+      + f'<a class="ct" href="{U("/japan-ski-resort/")}"><b>🏔 雪場官網現場價</b><s>同一趟冬天順便滑雪</s></a></div>'
+      + faq_visible(skg_faq)
+      + f'<p class="disc">規定以白川郷観光協会與各巴士公司的公告為準，整理可能有疏漏。查證於 {SKG["checked"]}。'
+        f'出處：{_skg_src(SKG["src"], "開催概要")}、{_skg_src(SKG["src_lodge"], "住宿抽籤結果")}、'
+        f'{_skg_src(SKG["src_park"], "停車場預約")}。</p>'
+      + foot())
+    pages.append(('/japan-shirakawago-lightup/', 0.7))
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
