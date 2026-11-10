@@ -1583,7 +1583,7 @@ def topnav(cur=''):
             + link('/japan-tokyo-tower/', '🗼 東京鐵塔門票怎麼買')
             + link('/tokyo/teamlab/', '🎨 teamLab 門票怎麼買')
             + link('/japan-fujiko-museum/', '🔔 藤子不二雄博物館門票怎麼買')
-            + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
+            + link('/japan-autumn-leaves/', '🍁 紅葉預測與賞楓預約')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -22371,6 +22371,42 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
         f'<td>{html.escape(r["w"]) if r["w"] else "—"}</td></tr>'
         for r in AU['two']['rows'])
 
+    # 要先預約的地方：每列有 until，過期自動拿掉；整段在 hide_after 之後不輸出。
+    # 商品不標價（價格前端算繪、會變），只寫為什麼放它。
+    _BK = AU.get('book') or {}
+    _bk_rows = [r for r in _BK.get('rows', []) if r['until'] >= TODAY]
+    _bk_html = ''
+    if _bk_rows and TODAY <= _BK.get('hide_after', '0000'):
+        _bk_html = (
+            f'<h2 id="{_hid(_BK["title"])}">{html.escape(_BK["title"])}</h2>'
+            + f'<p class="lede">{html.escape(_BK["intro"])}</p>'
+            + '<div class="tw"><table><thead><tr><th>地方</th><th>規定</th>'
+              '<th>怎麼訂</th></tr></thead><tbody>'
+            + ''.join(
+                f'<tr><td><b>{html.escape(r["spot"])}</b>{_SM3}{html.escape(r["area"])}</small></td>'
+                f'<td>{html.escape(r["rule"])}</td>'
+                f'<td>{html.escape(r["how"])}'
+                f'<br><small><a href="{html.escape(r["src"])}" rel="nofollow noopener" '
+                f'target="_blank">官方頁面</a></small></td></tr>'
+                for r in _bk_rows)
+            + '</tbody></table></div>')
+        _bk_picks = ''
+        for _pk in _BK.get('picks', []):
+            _u = (klook(_pk['url'], 'ticket') if _pk['p'] == 'klook'
+                  else kkday(_pk['url'], 'ticket', 'autumn-leaves'))
+            _uh = html.escape(_u)
+            _bk_picks += (
+                f'<a class="cta" href="{_uh}" target="_blank" rel="{_rel(_uh)}">'
+                f'<span class="ci">🍁</span><span class="ct"><b>'
+                f'{"Klook" if _pk["p"] == "klook" else "KKday"}：{html.escape(_pk["name"])}</b>'
+                f'<s>{html.escape(_pk["why"])}</s></span><span class="ca">→</span></a>')
+        if _bk_picks:
+            _bk_html += (f'<h3>{html.escape(_BK["picks_title"])}</h3>'
+                         f'<p class="lede">{html.escape(_BK["picks_intro"])}</p>'
+                         + _bk_picks)
+        _bk_html += ('<p class="disc">規定以各官方頁面為準，整理可能有疏漏。'
+                     '查證於 2026-11-10，之後官方若有更改，本表不一定跟上。</p>')
+
     _au_plan = ''.join(f'<li>{html.escape(x)}</li>' for x in AU['plan']['rows'])
     _au_unv = ''.join(f'<li>{html.escape(x)}</li>' for x in AU['unverified'])
     _au_faq = ''.join('<details class="faq"><summary>' + html.escape(q)
@@ -22432,14 +22468,14 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
         + '<th>見頃預測</th></tr></thead><tbody>' + _au_dayrows
         + '</tbody></table></div>'))
     write('japan-autumn-leaves/index.html',
-      head('紅葉見頃對上逐日機票：哪幾天貴、兩家預測為什麼差那麼多',
-           '把日本気象協会 與 ウェザーニュース 的 2026 年見頃預想，'
-           '對上台灣虎航官網的逐日最低票價與日本的連假。'
-           '兩家給的日期量的不是同一件事，而日本三連休正好壓在京都的見頃上。',
+      head('日本紅葉預測 2026：見頃日期、要先預約的賞楓景點，與逐日機票',
+           '日本気象協会 與 ウェザーニュース 的 2026 年見頃預想，'
+           '東福寺夜間、圓光寺、嵐山小火車、保津川、六義園夜間這些要先預約的地方，'
+           '以及台灣虎航官網的逐日最低票價與日本的連假。',
            'japan-autumn-leaves/',
            '<script type="application/ld+json">' + _au_ld + '</script>')
-      + topnav() + crumbs([('首頁', '/'), ('紅葉見頃與機票', None)])
-      + '<h1>紅葉見頃那幾天，機票貴多少</h1>'
+      + topnav() + crumbs([('首頁', '/'), ('紅葉預測與賞楓預約', None)])
+      + '<h1>紅葉見頃 2026：哪幾天、要先訂什麼、機票多少</h1>'
       + f'<p class="lede">{html.escape(AU["why"])}</p>'
       + f'<div class="today"><div class="tday">見頃預測查證於 {AU["checked"]}'
         f'　·　票價為虎航官網 {(_TGF.get("generated") or "")[:16]} 的抓取結果</div>'
@@ -22459,6 +22495,8 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
         f'target="_blank">{html.escape(_TW["src_tenki_name"])}</a>、'
         f'<a href="{_TW["src_wni"]}" rel="nofollow noopener" target="_blank">'
         f'{html.escape(_TW["src_wni_name"])}</a>。</p>'
+
+      + _bk_html
 
       + _au_fare_html
 
