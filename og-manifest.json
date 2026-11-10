@@ -324,16 +324,22 @@
    "title": "台中飛沖繩 NT$4,864 來回含稅｜台灣虎航 11/30 出發"
   },
   {
-   "slug": "deals-2026-11-10-taipei-miyazaki",
-   "url": "/deals/2026-11-10-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$5,584 來回含稅｜台灣虎航 11/20 出發",
-   "title": "台北飛宮崎 NT$5,584 來回含稅｜台灣虎航 11/20 出發"
-  },
-  {
    "slug": "deals-2026-11-10-taipei-fukuoka",
    "url": "/deals/2026-11-10-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$6,655 來回含稅｜台灣虎航 11/12 出發",
-   "title": "台北飛福岡 NT$6,655 來回含稅｜台灣虎航 11/12 出發"
+   "h1": "台北飛福岡 NT$5,355 來回含稅｜台灣虎航 11/12 出發",
+   "title": "台北飛福岡 NT$5,355 來回含稅｜台灣虎航 11/12 出發"
+  },
+  {
+   "slug": "deals-2026-11-10-taipei-miyazaki",
+   "url": "/deals/2026-11-10-taipei-miyazaki/",
+   "h1": "台北飛宮崎 NT$5,775 來回含稅｜台灣虎航 12/07 出發",
+   "title": "台北飛宮崎 NT$5,775 來回含稅｜台灣虎航 12/07 出發"
+  },
+  {
+   "slug": "deals-2026-11-10-taipei-oita",
+   "url": "/deals/2026-11-10-taipei-oita/",
+   "h1": "台北飛大分・別府 NT$5,777 來回含稅｜台灣虎航 11/21 出發",
+   "title": "台北飛大分・別府 NT$5,777 來回含稅｜台灣虎航 11/21 出發"
   },
   {
    "slug": "deals-2026-11-10-taipei-nagoya",
@@ -435,7 +441,7 @@
    "slug": "japan-flight-good-times",
    "url": "/japan-flight-good-times/",
    "h1": "不浪費假期的日本機票",
-   "title": "早去晚回的日本機票｜不浪費假期的班次，目前 9 組"
+   "title": "早去晚回的日本機票｜不浪費假期的班次，目前 8 組"
   },
   {
    "slug": "japan-card-register",
@@ -934,6 +940,12 @@
    "url": "/kyoto/autumn-leaves/",
    "h1": "京都賞楓 2026：哪些要先預約",
    "title": "京都賞楓 2026 要預約的地方：東福寺夜楓、瑠璃光院、圓光寺、嵐山小火車、保津川怎麼訂"
+  },
+  {
+   "slug": "tokyo-autumn-leaves",
+   "url": "/tokyo/autumn-leaves/",
+   "h1": "東京賞楓 2026：哪些要先買票",
+   "title": "東京賞楓 2026 要買票的地方：六義園夜楓預約、小石川後樂園門票、昭和紀念公園點燈、目白庭園"
   }
  ]
 }

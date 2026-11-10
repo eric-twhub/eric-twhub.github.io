@@ -52,8 +52,9 @@
  "deals-2026-11-10-kaohsiung-ishigaki": "1b6ebd8efa378bdc",
  "deals-2026-11-10-taipei-saga": "a86107babc26102f",
  "deals-2026-11-10-taichung-okinawa": "10508345998fdc5d",
- "deals-2026-11-10-taipei-miyazaki": "09b6a3512b445e60",
- "deals-2026-11-10-taipei-fukuoka": "bb1c5f1a698e23ca",
+ "deals-2026-11-10-taipei-fukuoka": "565c1d012e680c22",
+ "deals-2026-11-10-taipei-miyazaki": "d5b7d7397c46421a",
+ "deals-2026-11-10-taipei-oita": "eac9b83a23de4b5f",
  "deals-2026-11-10-taipei-nagoya": "bb990cee56fbcb22",
  "apple-japan-price": "28d0f5c59012c52d",
  "iphone-duo": "421c58e7c5552814",
@@ -154,5 +155,6 @@
  "tokyo-teamlab": "941de284e4cb8b2a",
  "japan-autumn-leaves": "c7212c281b7115e3",
  "kyoto-autumn-leaves": "c2c01cda8b21a169",
+ "tokyo-autumn-leaves": "1663353c3f0f312f",
  "default": "4d963435e4937aea"
 }
