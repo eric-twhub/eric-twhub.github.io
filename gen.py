@@ -1564,7 +1564,8 @@ def topnav(cur=''):
             + link('/japan-flight-seat/', '💺 選位要錢嗎')
             + link('/japan-flight-fuji/', '🗻 看富士山坐哪邊')
             + link('/japan-ski-baggage/', '🎿 雪具託運')
-            + link('/japan-ski-lift-ticket/', '🎟️ 雪票早鳥'))
+            + link('/japan-ski-lift-ticket/', '🎟️ 雪票早鳥')
+            + link('/japan-burton-rental/', '🏂 Burton 租雪板'))
 
     # 訂完票之後才會看的東西。同一層放太多會找不到，所以分兩組小標。
     trip = ('<b>挑日期</b>'
@@ -1746,6 +1747,7 @@ _AD_MAP = [
     ('tokyo/autumn-leaves', 'esim'),
     ('japan-shirakawago-lightup', 'esim'),
     ('japan-ginzan-onsen', 'esim'),
+    ('japan-burton-rental', 'esim'),
     ('japan-park-ticket', 'activity2'), ('japan-seasonal-event', 'activity2'), ('tigerair-nagoya', 'transfer'),
     ('taiwan-holiday', 'activity2'), ('japan-holiday-calendar', 'activity2'),
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
@@ -5385,7 +5387,8 @@ if os.path.exists('ski.json'):
         f'<s>雪季便宜的班次時段通常很差</s></a>'
       + f'<a class="ct" href="{U("/tokyo/hostel/")}"><b>🛏️ 東京平價住宿</b>'
         f'<s>紅眼班機的最後一晚怎麼睡</s></a>'
-      + f'<a class="ct" href="{U("/sapporo/")}"><b>札幌機票</b><s>北海道雪場門戶</s></a></div>'
+      + f'<a class="ct" href="{U("/sapporo/")}"><b>札幌機票</b><s>北海道雪場門戶</s></a>'
+      + f'<a class="ct" href="{U("/japan-burton-rental/")}"><b>🏂 Burton 宅配租雪板</b><s>不帶板，寄到飯店再寄回</s></a></div>'
       + f'<p class="disc">各航空的行李規定與費率隨時可能調整，本頁條款查證於 {SK["checked"]}，'
         f'出發前請以航空公司官網為準。雪具能否託運最終以航空公司現場判定為準。</p>'
       + foot())
@@ -23205,6 +23208,171 @@ if os.path.exists('ginzan.json'):
       + f'<p class="disc">規定以銀山溫泉官網與售票頁為準，整理可能有疏漏。查證於 {GZ["checked"]}。</p>'
       + foot())
     pages.append(('/japan-ginzan-onsen/', 0.7))
+
+# ---------- Burton 日本官網線上租借（雪板宅配） ----------
+# 資料在 burton-rental.json。和雪場現場租的對照在這裡算，不寫死：
+# Burton 是 7／15／30 天固定方案，雪場是逐日價（第 N 天以後用最後一格）。
+if os.path.exists('burton-rental.json'):
+    BR = json.load(open('burton-rental.json', encoding='utf-8'))
+    _br_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _br_iso = _br_today.isoformat()
+    _br_wd = '一二三四五六日'
+
+    def _br_md(s):
+        d = datetime.date.fromisoformat(s) if isinstance(s, str) else s
+        return f'{d.month}/{d.day}（{_br_wd[d.weekday()]}）'
+
+    def _br_src(u, label='官方頁面'):
+        return f'<a href="{html.escape(u)}" rel="nofollow noopener" target="_blank">{label}</a>'
+
+    def _br_yen(n):
+        return '<small>沒有這個方案</small>' if n is None else f'{n:,} 円'
+
+    def _br_plan(p, days):
+        """Burton 的方案價：用得到天數的最短方案。"""
+        for lim, price in zip((7, 15, 30), p):
+            if price is not None and days <= lim:
+                return price, lim
+        return None, None
+
+    def _br_site(daily, days):
+        return sum(daily[:days]) + daily[-1] * max(0, days - len(daily))
+
+    if _br_iso <= BR['early_until']:
+        _n = (datetime.date.fromisoformat(BR['early_until']) - _br_today).days
+        _br_ans = (f'早鳥 9 折到 {_br_md(BR["early_until"])}，今天是最後一天' if _n == 0
+                   else f'早鳥 9 折到 {_br_md(BR["early_until"])}，還有 {_n} 天')
+        _br_sub = f'{BR["season"]} 雪季的收貨日從 {_br_md(BR["start"])}開始，可以選到 {_br_md(BR["last_receive"])}。'
+    elif _br_iso < BR['start']:
+        _br_ans = f'早鳥已經結束，收貨日從 {_br_md(BR["start"])}開始'
+        _br_sub = f'收貨日可以選到 {_br_md(BR["last_receive"])}。'
+    elif _br_iso <= BR['last_receive']:
+        _br_ans = f'{BR["season"]} 雪季租借中，收貨日可以選到 {_br_md(BR["last_receive"])}'
+        _br_sub = '收貨日官方建議選滑雪的前一天，訂之前先看下面的取消規定。'
+    else:
+        _br_ans = f'{BR["season"]} 雪季的收貨日 {_br_md(BR["last_receive"])} 已經結束'
+        _br_sub = '下一季的方案要等 Burton 官網公告。'
+
+    _br_set_rows = ''
+    for g in ('大人', '小孩'):
+        for s in [x for x in BR['sets'] if x['g'] == g]:
+            _br_set_rows += (f'<tr><td>{g}</td><td><b>{html.escape(s["name"])}</b><br><small>{html.escape(s["for"])}</small></td>'
+                             f'<td>{html.escape(s["size"])}</td>'
+                             + ''.join(f'<td>{_br_yen(x)}</td>' for x in s['p']) + '</tr>')
+
+    # 對照：入門套組（最便宜的三件組）與 Custom，對白馬五竜現場租
+    _br_cheap = BR['sets'][0]['p']
+    _br_mid = BR['sets'][2]['p']
+    _br_gd = BR['goryu']['set_daily']
+    _br_cmp_rows = ''
+    for d in (3, 5, 7, 10, 15):
+        c, cl = _br_plan(_br_cheap, d)
+        m, ml = _br_plan(_br_mid, d)
+        g = _br_site(_br_gd, d)
+        lo = min(c, g)
+        _br_cmp_rows += (f'<tr><td>{d} 天</td>'
+                         f'<td>{"<b>" if g == lo else ""}{g:,} 円{"</b>" if g == lo else ""}</td>'
+                         f'<td>{"<b>" if c == lo else ""}{c:,} 円{"</b>" if c == lo else ""}<br><small>{cl} 天方案</small></td>'
+                         f'<td>{m:,} 円<br><small>{ml} 天方案</small></td></tr>')
+    _br_cross = next((d for d in range(1, 31) if _br_plan(_br_cheap, d)[0] < _br_site(_br_gd, d)), None)
+    _br_cross_txt = (f'以最便宜的入門套組來算，滑 {_br_cross} 天以上 Burton 宅配比較便宜，{_br_cross - 1} 天以內在白馬五竜現場租比較便宜'
+                     if _br_cross else '以入門套組來算，30 天以內都是雪場現場租比較便宜')
+    _br_early = int(_br_cheap[0] * 0.9)
+
+    _br_steps = ''.join(f'<li>{html.escape(x)}</li>' for x in BR['steps'])
+    _br_rules = ''.join(f'<li>{html.escape(x)}</li>' for x in BR['rules'])
+
+    br_faq = [
+     ('Burton 日本官網可以租雪板嗎？',
+      'Burton 日本官網有線上租借：雪板、固定器、鞋子三件組（固定器和鞋子都是 STEP ON）宅配到你指定的地址，'
+      f'方案只有 7、15、30 天三種。入門套組 7 天 {_br_cheap[0]:,} 円起，來回運費已經含在裡面。'),
+     ('外國人或不住日本的人可以租嗎？',
+      '可以，官方寫本人確認用護照。付款只能刷信用卡，金融卡和預付型的卡不能用。'),
+     ('可以寄到日本的飯店嗎？',
+      '可以，申請時把收貨地址填飯店；不能選便利商店取貨，沖繩和離島不送。'
+      '要改地址最晚在租借開始日一週前聯絡。'),
+     ('滑完要怎麼還？',
+      BR['return']),
+     ('只滑 3 天可以租嗎？',
+      f'可以，但最短就是 7 天方案，3 天也付 7 天的錢，提早還不退差額。{_br_cross_txt}。'),
+     ('Burton 租借可以取消嗎？',
+      BR['cancel']),
+     ('晚還會怎樣？',
+      '逾期從還件日隔天起每天 3,000 円，一直算到他們確認收到為止。訂好以後不能延長天數。'),
+     ('可以在 Burton 門市或雪場領嗎？',
+      '線上租借只能宅配，不能在門市領或還。另外有些雪場的租借店可以現場租 STEP ON，'
+      '那是雪場自己的租借，價錢和規定看各雪場。'),
+    ]
+    br_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in br_faq]}, ensure_ascii=False)
+
+    write('japan-burton-rental/index.html',
+      head(f'Burton 日本官網租借 {BR["season"]}：STEP ON 雪板宅配到飯店、價錢、怎麼還、跟雪場現場租比',
+           f'Burton 日本官網的線上租借：雪板＋STEP ON 固定器與鞋子三件組，7／15／30 天方案，可以寄到飯店、'
+           '滑完交給佐川急便寄回。整理價錢、外國人怎麼租、退還與逾期規定，以及和雪場現場租的價差。',
+           'japan-burton-rental/',
+           '<script type="application/ld+json">' + br_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('Burton 日本官網租借', None)])
+      + '<h1>Burton 日本官網租雪板：寄到飯店，滑完寄回去</h1>'
+      + '<p class="lede">Burton 日本官網有線上租借：雪板、固定器、鞋子三件組裝在板袋裡，宅配到你指定的地址，'
+        '飯店也可以；滑完照原樣裝好，交給佐川急便寄回。固定器和鞋子全部是 STEP ON（踩進去就固定、拉起後跟的拉桿就鬆開）。'
+        '不住日本的人用護照就能租。</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_br_md(_br_today)}</div>'
+        f'<div class="tans">{html.escape(_br_ans)}</div>'
+        f'<div class="tsub">{html.escape(_br_sub)}</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>方案只有 7、15、30 天</b>：只滑 3 天也付 7 天的錢，訂好不能延長。</li>'
+        f'<li><b>短天數不一定划算</b>：{html.escape(_br_cross_txt)}（見下面的對照表）。</li>'
+        '<li><b>最後一天要交給佐川急便</b>：回寄單附在裡面，逾期每天 3,000 円。</li>'
+        '<li><b>只能刷信用卡</b>：金融卡和預付型的卡不能用。</li>'
+        '</ul></div>'
+      + '<h2>價錢</h2>'
+      + f'<p class="lede">含稅，含來回運費。{_br_md(BR["early_until"])}以前預約全部 9 折（入門套組 7 天是 {_br_early:,} 円）。</p>'
+      + '<div class="tw"><table><thead><tr><th>對象</th><th>套組</th><th>尺寸</th><th>7 天</th><th>15 天</th><th>30 天</th>'
+        '</tr></thead><tbody>' + _br_set_rows + '</tbody></table></div>'
+      + '<p class="disc">小孩的鞋子最大到 23 cm，更大的要租女款套組（小孩的鞋不能配女款的板）。'
+        '商品頁建議鞋子選比平常穿的鞋大 0.5～1 cm。</p>'
+      + '<h2>跟雪場現場租比</h2>'
+      + f'<p class="lede">拿{_br_src(BR["goryu"]["src"], html.escape(BR["goryu"]["name"]))}當例子，'
+        '它的雪板也是 Burton，而且一樣提供 STEP ON。每個雪場的租借價都不一樣，這裡只是一個雪場的價錢。</p>'
+      + '<div class="tw"><table><thead><tr><th>滑幾天</th><th>白馬五竜現場租</th><th>Burton 入門套組</th><th>Burton Custom／Feelgood</th>'
+        '</tr></thead><tbody>' + _br_cmp_rows + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(BR["goryu"]["note"])}粗體是同一列比較便宜的那一邊；Burton 的價錢沒有算早鳥 9 折。</p>'
+      + '<h2>怎麼租</h2>'
+      + f'<ol class="lede">{_br_steps}</ol>'
+      + f'<p class="lede">從 {_br_src(BR["src"], "Burton 日本官網的租借頁")}進去選套組。</p>'
+      + '<h2>收到與歸還</h2>'
+      + f'<p class="lede">{html.escape(BR["receive"])}</p>'
+      + f'<p class="lede">{html.escape(BR["return"])}'
+        f'（{_br_src(BR["src_sagawa_en"], "佐川急便英文頁")}）</p>'
+      + '<h2>要注意的規定</h2>'
+      + '<div class="tldr"><ul>' + _br_rules + '</ul></div>'
+      + f'<p class="lede"><b>取消</b>：{html.escape(BR["cancel"])}</p>'
+      + f'<p class="lede"><b>壞了或弄丟</b>：{html.escape(BR["damage"])}{html.escape(BR["loss_ref"])}</p>'
+      + f'<p class="disc">出處：{_br_src(BR["src_terms"], "租借規約")}、{_br_src(BR["src_cancel"], "取消政策")}、'
+        f'{_br_src(BR["src_faq"], "常見問題")}。</p>'
+      + '<h2>想在雪場現場租 STEP ON</h2>'
+      + f'<p class="lede">{html.escape(BR["resorts"])}這是 {_br_src(BR["src_resort"], "Burton 官網的雪場名單")}，'
+        '價錢和能不能預約看各雪場自己的租借店。</p>'
+      + '<h2>飛哪裡</h2>'
+      + '<div class="cities">'
+      + f'<a class="ct" href="{U("/sapporo/")}"><b>✈️ 札幌機票</b><s>二世谷、手稻</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>✈️ 東京機票</b><s>轉新幹線去神立、白馬</s></a>'
+      + f'<a class="ct" href="{U("/niigata/")}"><b>✈️ 新潟機票</b><s>湯澤一帶的雪場</s></a></div>'
+      + '<h2>這一頁查不到的</h2>'
+      + '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(x)}</li>' for x in BR['unverified']) + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-ski-baggage/")}"><b>🎿 雪具託運</b><s>自己帶板的話，九家航空怎麼收</s></a>'
+      + f'<a class="ct" href="{U("/japan-ski-resort/")}"><b>🏔 雪場官網現場價</b><s>雪票早鳥不一定比較便宜</s></a>'
+      + f'<a class="ct" href="{U("/japan-ski-lift-ticket/")}"><b>🎟️ 雪票早鳥</b><s>折扣與截止日</s></a>'
+      + f'<a class="ct" href="{U("/japan-ginzan-onsen/")}"><b>♨️ 銀山溫泉冬季預約</b><s>同一趟冬天的雪景</s></a></div>'
+      + faq_visible(br_faq)
+      + f'<p class="disc">規定以 Burton 日本官網與租借網站為準，整理可能有疏漏。查證於 {BR["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-burton-rental/', 0.7))
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期

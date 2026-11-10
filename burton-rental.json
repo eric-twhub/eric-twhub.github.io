@@ -1,0 +1,62 @@
+{
+ "_說明": "/japan-burton-rental/ Burton 日本官網的線上租借（雪板三件組宅配）。規則引 Burton 日本官網的租借頁（jp.burton.com/ja-jp/pages/online-rental）與實際接單的租借網站 Kauriru 的規約、取消政策、破損頁、FAQ。價錢抄自 Burton 官網，Kauriru 商品頁的 9 折價與官網的早鳥 9 折一致。雪場對照只拿白馬五竜一家：價錢是它官網試算器的逐日價（頁面裡的 P 陣列，11/10 用試算器 7 天 2 人 = 64,600 円驗證過）。",
+ "_分潤": "沒有放商品。Burton 自己的租借不在 KKday、Klook 上；雪場租借的商品沒逐一查證，先不放。",
+ "_回查": "11/20 早鳥截止後看官網有沒有換文案；每季重查價錢與套組（款式每季換）；resort-rental 頁 11/10 還是 2025-26 的營業期，看有沒有更新成 2026-27；白馬五竜試算器的 P 陣列每季重抓。",
+ "checked": "2026-11-10",
+ "season": "2026–2027",
+ "src": "https://jp.burton.com/ja-jp/pages/online-rental",
+ "src_shop": "https://kauriru.com/burton-rental",
+ "src_terms": "https://kauriru.com/burton-rental/operation_informations/terms",
+ "src_cancel": "https://kauriru.com/burton-rental/operation_informations/cancel_policy",
+ "src_faq": "https://kauriru.com/burton-rental/operation_informations/helps",
+ "src_resort": "https://jp.burton.com/ja-jp/pages/resort-rental",
+ "src_sagawa_en": "https://www.sagawa-exp.co.jp/english/contact/",
+ "early_until": "2026-11-20",
+ "start": "2026-11-24",
+ "last_receive": "2027-05-06",
+ "sets": [
+  {"g": "大人", "name": "入門 Cultivator ＋ STEP ON", "for": "初學", "size": "女款板 140／145／150／155 cm、鞋 23.5～25.5 cm；男款板 150／155／160 cm、鞋 25.5～29.0 cm", "p": [27500, 33000, 44000]},
+  {"g": "大人", "name": "Family Tree Hometown Hero ＋ STEP ON", "for": "全山滑行", "size": "板 144～160 cm；鞋女款 23.5～25.5 cm、男款 25.5～28.5 cm", "p": [38500, 46200, 66000]},
+  {"g": "大人", "name": "Custom（男款）／Feelgood（女款）＋ STEP ON", "for": "公園與自由滑", "size": "Custom 板 150／154／158／162 cm、Feelgood 板 142／146／149 cm", "p": [38500, 46200, 66000]},
+  {"g": "大人", "name": "只租 STEP ON 鞋＋固定器", "for": "自己有板、想試 STEP ON", "size": "女款 23.5～25.5 cm、男款 25.5～28.5 cm", "p": [null, 22000, 33000]},
+  {"g": "大人", "name": "試乘板 Family Tree（Full Nelson、Time Thief、Smooth Operator）", "for": "只有板，30 天", "size": "依款式 144～164 cm", "p": [null, null, 44000]},
+  {"g": "大人", "name": "Anon 安全帽（Merak WaveCel）", "for": "加租", "size": "M／L", "p": [11000, 16500, 22000]},
+  {"g": "小孩", "name": "A 組（約 5～8 歲）", "for": "板＋鞋＋固定器", "size": "板 90／110 cm、鞋 17.5～20.5 cm", "p": [14300, 16500, 27500]},
+  {"g": "小孩", "name": "B 組（約 8～12 歲）", "for": "板＋鞋＋固定器", "size": "板 110／130 cm、鞋 21～23 cm", "p": [14300, 16500, 27500]},
+  {"g": "小孩", "name": "雪衣上下一套", "for": "加租", "size": "XS～L", "p": [8800, 14300, 27500]}
+ ],
+ "loss_ref": "Custom 套組商品頁標的參考價：板 107,800 円、固定器 42,900 円、鞋 71,500 円（含稅）。",
+ "goryu": {
+  "name": "白馬五竜雪場直營的租借店",
+  "src": "https://www.hakubagoryu.jp/ski/rental/goryu-rentals/",
+  "set_daily": [6800, 5800, 4200, 4000, 4000, 4000, 3500],
+  "note": "雪場官網 2026–2027 試算器的大人整套（板＋鞋）逐日價，第 8 天起每天 3,500 円。雪板是 Burton 的入門款，官網寫標準提供 STEP ON 但數量有限、不能預約，沒有庫存時會換一般綁帶固定器；可以前一天下午先領。"
+ },
+ "steps": [
+  "在 Burton 日本官網的租借頁選套組，按預約按鈕會連到租借網站 Kauriru（右上角可以切英文）。",
+  "註冊 Kauriru 會員：要信用卡和身分證件，不住日本的人用護照。",
+  "選收貨日（就是租借開始日）、天數、板長、鞋子尺寸、站姿（regular 或 goofy）。官方建議收貨日選滑雪的前一天，因為可能下午以後才送到。",
+  "填收貨地址：可以填飯店，不能選便利商店取貨；沖繩和離島不送。要改地址最晚在租借開始日一週前聯絡。",
+  "送出後是「暫時預約」，確認有庫存才算訂好。"
+ ],
+ "receive": "三件組裝在 Burton 板袋裡用佐川急便送來，回寄用的運費到付單已經放在裡面。收到後 24 小時內沒反應有問題，就當作東西正常，之後不再受理。",
+ "return": "照收到時的樣子裝回板袋，填好附的回寄單，在租借最後一天之內交給佐川急便；交出去那天就算還了。用其他物流寄回，運費要自己付。佐川可以上網預約到府取件，有日文和英文頁面。",
+ "rules": [
+  "只能刷信用卡，金融卡和預付型的卡不能用，也不能貨到付款或轉帳。",
+  "天數只有 7、15、30 天三種，只滑 3 天也要付 7 天的錢；提早還不退差額，訂好後不能延長或改天數。",
+  "逾期從還件日隔天起每天 3,000 円，一直算到他們確認收到為止。",
+  "不能在 Burton 門市領或還，只能宅配。",
+  "鞋子或安全帽尺寸不合可以換，來回運費自己付。",
+  "不能轉借給別人用。"
+ ],
+ "cancel": "租借開始日 4 天以前取消免費，3 天前到前一天收租金的 50%，當天以後收 100%。",
+ "damage": "壞了或弄髒，他們看過還回來的東西再報處理方式和費用；遺失或被偷，收同款或同等級新品的價錢。被偷要先報警，把受理號碼告訴客服。",
+ "resorts": "Burton 官網另外列了 12 個可以現場租 STEP ON 的雪場：二世谷東急 Grand Hirafu、札幌手稻、猪苗代、星野 Nekoma Mountain、神立、Hunter Mountain 鹽原、玉原、白馬五竜、勝山 Ski Jam、Wing Hills 白鳥、琵琶湖 Valley、九重森林公園。",
+ "unverified": [
+  "註冊 Kauriru 要不要日本的手機號碼：本站沒有實際註冊。",
+  "台灣發行的信用卡能不能刷：條款只排除金融卡和預付卡，沒寫發卡國家。",
+  "寄到飯店要寫誰的名字、飯店會不會在入住前代收：官網沒寫，訂之前先問飯店。",
+  "規約寫寄送地「原則上」是身分證件上的地址，但 Burton 官網和 Kauriru 的 FAQ 都寫可以寄自宅以外（包括飯店）；兩邊寫法不一樣。",
+  "Burton 官網的雪場現場租借頁，11/10 寫的還是 2025–26 季的營業期間，今年每個雪場還有沒有 STEP ON 要看雪場自己的公告（白馬五竜的官網寫今年有）。"
+ ]
+}
