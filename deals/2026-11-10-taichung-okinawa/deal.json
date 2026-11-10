@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-10-taichung-okinawa",
- "generated": "2026-11-10 16:18",
+ "generated": "2026-11-10 18:22",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -56,7 +56,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4935,
+   "price": 5506,
    "dep": "2026-12-07",
    "ret": "2026-12-10",
    "dept": "07:10",
