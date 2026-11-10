@@ -1,0 +1,144 @@
+{
+ "_說明": "/japan-tokyo-tower/ 東京鐵塔門票與點燈頁的資料。票價、營業時間引官網料金・営業時間頁；入場、再入場、三腳架、付款引よくある質問；網路票的效期與取消規定引官網連過去的 Asoview 購票頁（Main Deck ticket0000004110、Top Deck ticket0000032971）；1DAY パス引 /fee/1day/；外階梯引 /plan/open_air_stair/；點燈規則與每日點燈引 /lightup/ 與它讀的 /lightup/json/YYYY/MM.json。",
+ "_來源": {
+  "fee": "https://www.tokyotower.co.jp/fee/",
+  "ticket": "https://www.tokyotower.co.jp/ticket/",
+  "faq": "https://www.tokyotower.co.jp/access/faq/",
+  "main_web": "https://www.asoview.com/channel/ticket/PnEMubBNOx/ticket0000004110/",
+  "top_web": "https://www.asoview.com/channel/ticket/PnEMubBNOx/ticket0000032971/",
+  "oneday": "https://www.tokyotower.co.jp/fee/1day/",
+  "stairs": "https://www.tokyotower.co.jp/plan/open_air_stair/",
+  "lightup": "https://www.tokyotower.co.jp/lightup/",
+  "lightup_json": "https://www.tokyotower.co.jp/lightup/json/2026/11.json",
+  "access": "https://www.tokyotower.co.jp/access/"
+ },
+ "_點燈": "月份 JSON 只列有變化的日子：優先度 2 是週一、週四的 Diamond Veil 例行點燈，優先度 1 是特別點燈；沒列出的日子是 Landmark Light 日落到 24:00。2026-12 的 JSON 查證時還沒公布（302）。lightup_until 之後只用固定規則推，頁面要標明特別點燈以官網日曆為準。",
+ "_通路判斷": "官網網路票走 Asoview，價格同官網。Klook 4911 一般景點 5%（圖卡 adid 1556491），KKday 12271 不在 1% 清單（3.5%），Klook 放前面。",
+ "_沒查到": "Klook、KKday 的票種是 Main Deck 還是含 Top Deck、取消規定；Top Deck 網路票開放多久以後的日期；12 月起的特別點燈。",
+ "_回查": "每月初抓下個月的點燈 JSON 補 specials 與 lightup_until；票價（1DAY パス 10/5 改過價）；Top Deck 取消規定。",
+ "checked": "2026-11-10",
+ "hours": "9:00～23:00",
+ "main_last": "22:30",
+ "top_hours": "9:00～22:45",
+ "top_last": "22:15",
+ "price": {
+  "main": [
+   1500,
+   1200,
+   900,
+   600
+  ],
+  "top_web": [
+   3300,
+   3100,
+   2100,
+   1500
+  ],
+  "top_counter": [
+   3500,
+   3300,
+   2300,
+   1700
+  ],
+  "diamond": [
+   7000,
+   6500,
+   4700,
+   3300
+  ],
+  "oneday": [
+   2700,
+   2200,
+   1400,
+   1000
+  ]
+ },
+ "age": [
+  "大人（大學生以上）",
+  "高中生",
+  "兒童（國小、國中）",
+  "幼兒（4 歲以上）"
+ ],
+ "age_note": "未滿 4 歲免費。",
+ "main_web": "Main Deck 網路票不用預約、不指定時間，買了 60 天內有效，價格和現場一樣；一經售出不能取消或退費。",
+ "top_web": "Top Deck Tour 要先預約、指定入場時段（每 15 分鐘一梯，第一梯 9:00～9:15，最後一梯 22:00～22:15），網路價比現場每張便宜 200 円。取消費從使用日 2 天前起收 100%。",
+ "top_late": "Top Deck 的預約時段過了才到，預約就作廢、不退費，但還是可以參觀 Main Deck。",
+ "top_weather": "Top Deck Tour 與 Diamond Tour 遇到天候不佳等原因可能停止營業；Main Deck 人多時最後入場可能提早。",
+ "diamond": "TOKYO DIAMOND TOUR 一天限 70 人，出發時間 12:00 到 18:00 每小時一梯，含 Top Deck 與專屬休息室，網路購買保證入場。",
+ "oneday": "1DAY Pass 只在 1 樓售票處賣（9:00～19:30），當天可以無限次上 Main Deck，進出時在手背蓋章；有不販售的日子，元旦看日出的時段不賣。",
+ "reentry": "一般門票只能進一次，出來就不能再進去；不限停留時間，Main Deck 待到 23:00、Top Deck 待到 22:45。",
+ "tripod": "三腳架不能帶上 Top Deck，Main Deck 可以。",
+ "pay": "官網網路票（Asoview）可用信用卡（Visa、Mastercard、JCB、Amex、Diners）、Paidy、PayPay；現金只能在 1 樓售票處付。電話不接受預約。",
+ "stairs": "外階梯（約 600 階，走到 150 m 的 Main Deck）：上樓只在週六、週日與假日 9:00～16:00 開放，下樓每天 9:00～20:00；要買一般展望台門票，雨天可能停開。",
+ "entry": "從 Foot Town 1 樓的電梯口出示票或 QR code 上樓，手機截圖也可以。",
+ "access": [
+  [
+   "都營大江戶線 赤羽橋站",
+   "赤羽橋口",
+   5
+  ],
+  [
+   "日比谷線 神谷町站",
+   "1 號出口",
+   7
+  ],
+  [
+   "都營三田線 御成門站",
+   "A1 出口",
+   6
+  ],
+  [
+   "都營三田線 芝公園站",
+   "A4 出口",
+   10
+  ],
+  [
+   "都營淺草線 大門站",
+   "A6 出口",
+   10
+  ],
+  [
+   "JR 濱松町站",
+   "北口",
+   15
+  ]
+ ],
+ "address": "東京都港區芝公園 4-2-8",
+ "lightup_until": "2026-11-30",
+ "landmark": "Landmark Light 日落到 24:00",
+ "landmark_summer": "Landmark Light 每年 7 月 7 日晚上起換成白色的夏季版，10 月初起換回橘色的冬季版",
+ "veil_rule": "每週一、週四 20:00～22:00 點 Infinity Diamond Veil，用當月的顏色，兩種圖案每 30 分鐘交替",
+ "chime": "日落到 24:00 每個整點有 2 分鐘的純白燈光（特別點燈時可能不點）",
+ "veil_colors": {
+  "1": "黃金色",
+  "2": "紅梅色",
+  "3": "櫻色",
+  "4": "新綠色",
+  "5": "空色（天藍）",
+  "6": "藤色",
+  "7": "海色",
+  "8": "山色（綠）",
+  "9": "秋草色（紫）",
+  "10": "茜色（橘）",
+  "11": "紅葉色",
+  "12": "常盤色（綠）"
+ },
+ "specials": {
+  "2026-11-11": {
+   "name": "東京商工會議所紀念首任會頭澀澤榮一的特別點燈",
+   "time": "17:30 左右～24:00"
+  },
+  "2026-11-24": {
+   "name": "滿月 Diamond Veil",
+   "time": "日落～22:00，之後 Landmark Light 到 24:00"
+  }
+ },
+ "klook": {
+  "id": 4911,
+  "url": "https://www.klook.com/zh-TW/activity/4911-tokyo-tower-main-observatory-ticket-tokyo/"
+ },
+ "kkday": {
+  "id": 12271,
+  "url": "https://www.kkday.com/zh-tw/product/12271-japan-tokyo-tower-observatory-e-ticket"
+ }
+}

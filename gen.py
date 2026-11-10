@@ -927,7 +927,7 @@ def faq_visible(items):
             + ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in items))
 
-KLOOK_CARD = {'619': '1556136', '171099': '1556138', '229535': '1556139', '84374': '1556185', '41352': '1556201'}
+KLOOK_CARD = {'619': '1556136', '171099': '1556138', '229535': '1556139', '84374': '1556185', '41352': '1556201', '4911': '1556491'}
 
 def klook_card(act_id):
     adid = KLOOK_CARD.get(str(act_id))
@@ -1245,15 +1245,17 @@ table.cardz td[colspan]{max-width:none;grid-column:1/-1}
 table.cardz td[data-l]:not([data-l=""])::before{content:attr(data-l)"：";display:block;
 color:var(--dim);font-size:.78rem;font-weight:400}
 /* 卡片在寬螢幕有一整排空白，所以格子改成並排。手機維持單欄。
+   表頭列（data-hdr）要排除：這條和上面藏表頭那條特異性一樣、又寫在後面，
+   不排除的話 600px 以上表頭會被排成一張多出來的卡片（2026-11-10 東京鐵塔頁）。
    信用卡回饋記錄（.ttab）有自己的卡片版面（進度條、勾選、按鈕），排進格線會散掉，
    所以排除。 */
 @media(min-width:600px){
-table.cardz:not(.ttab) tr{display:grid;
+table.cardz:not(.ttab) tr:not([data-hdr]){display:grid;
 grid-template-columns:repeat(var(--cm,2),minmax(0,1fr));gap:1px 24px;align-items:start}
 table.cardz:not(.ttab) td:first-child{grid-column:1/-1}
 }
 @media(min-width:880px){
-table.cardz:not(.ttab) tr{grid-template-columns:repeat(var(--cw,2),minmax(0,1fr))}
+table.cardz:not(.ttab) tr:not([data-hdr]){grid-template-columns:repeat(var(--cw,2),minmax(0,1fr))}
 }
 .tw td.win{color:var(--lcc);font-weight:700}
 /* 左右兩欄對照的表。格子裡裝的是整句話不是數字，所以不套 .tw 的 nowrap，
@@ -1578,6 +1580,7 @@ def topnav(cur=''):
             + link('/japan-shibuya-sky/', '🌇 SHIBUYA SKY 門票怎麼買')
             + link('/japan-harry-potter-tokyo/', '🪄 東京哈利波特影城門票怎麼買')
             + link('/japan-skytree/', '🗼 晴空塔門票怎麼買')
+            + link('/japan-tokyo-tower/', '🗼 東京鐵塔門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉見頃與機票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1715,6 +1718,7 @@ _AD_MAP = [
     ('japan-shibuya-sky', 'activity2'),
     ('japan-harry-potter-tokyo', 'activity2'),
     ('japan-skytree', 'activity2'),
+    ('japan-tokyo-tower', 'activity2'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -8698,6 +8702,173 @@ if os.path.exists('skytree.json'):
       + '<p class="disc">票價、營業時間與規定以東京晴空塔官網為準，整理可能有疏漏。</p>'
       + foot())
     pages.append(('/japan-skytree/', 0.6))
+
+# ---------- 東京鐵塔門票怎麼買 ----------
+# 資料在 tokyo-tower.json。票價固定，引官網料金頁；網路票的效期與取消引官網連過去的 Asoview 購票頁。
+# 點燈：月份 JSON 只列有變化的日子（優先度 1 特別點燈存在 specials），其餘照官網公布的固定規則算：
+# 每天日落到 24:00 Landmark Light，週一、週四 20:00～22:00 Diamond Veil。
+# lightup_until 之後還沒公布的日子只用固定規則，並標明特別點燈以官網為準。
+# 日落借 SHIBUYA SKY 區塊的 NOAA 公式，座標換成東京鐵塔。
+# Klook 4911 一般景點 5%，KKday 12271 不在 1% 清單（3.5%），Klook 放前面。
+if os.path.exists('tokyo-tower.json'):
+    TTW = json.load(open('tokyo-tower.json', encoding='utf-8'))
+    _ttw_jst = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _ttw_wd = '一二三四五六日'
+
+    def _ttw_md(d):
+        return f'{d.month}/{d.day}（{_ttw_wd[d.weekday()]}）'
+
+    def _ttw_sunset(d):
+        if '_sky_sunset' not in globals():
+            return ''
+        m = int(round(_sky_sunset(d, lat=35.6586, lon=139.7454)))
+        return f'{m // 60}:{m % 60:02d}'
+
+    _ttw_until = datetime.date.fromisoformat(TTW['lightup_until'])
+    _ttw_sp = {datetime.date.fromisoformat(k): v for k, v in TTW['specials'].items()}
+
+    def _ttw_light(d):
+        """回傳 (主要說明, 是否特別點燈, 是否已在官網日曆公布)"""
+        if d in _ttw_sp:
+            s = _ttw_sp[d]
+            return f'特別點燈：{s["name"]}（{s["time"]}）', True, True
+        col = TTW['veil_colors'][str(d.month)]
+        if d.weekday() in (0, 3):
+            txt = f'日落～20:00 Landmark Light；20:00～22:00 Diamond Veil（{col}）；22:00～24:00 Landmark Light'
+        else:
+            txt = '日落～24:00 Landmark Light'
+        return txt, False, d <= _ttw_until
+
+    _ttw_rows = ''
+    for k in range(7):
+        d = _ttw_jst + datetime.timedelta(days=k)
+        txt, sp, known = _ttw_light(d)
+        ss = _ttw_sunset(d)
+        _ttw_rows += (f'<tr><td class="nm"><b>{_ttw_md(d)}</b></td>'
+                      f'<td class="nm">{ss or "–"}</td>'
+                      f'<td class="nm">{"<b>" if sp else ""}{html.escape(txt)}{"</b>" if sp else ""}'
+                      + ('' if known else '<br><small style="color:var(--dim)">官網日曆還沒公布，這是固定規則</small>')
+                      + '</td></tr>')
+
+    _ttw_t, _ttw_tsp, _ttw_tknown = _ttw_light(_ttw_jst)
+    _ttw_ss = _ttw_sunset(_ttw_jst)
+    _ttw_next_sp = [d for d in sorted(_ttw_sp) if d > _ttw_jst]
+    _ttw_spbuf = ''
+    if _ttw_next_sp:
+        _ttw_spbuf = ('<div class="tbuf"><b>接下來的特別點燈</b>：'
+                      + '；'.join(f'{_ttw_md(d)}{_ttw_sp[d]["name"]}' for d in _ttw_next_sp) + '。</div>')
+
+    _ttw_p = TTW['price']
+
+    def _ttw_li(label, text):
+        t = html.escape(text)
+        return f'<li>{t}</li>' if text.startswith(label) else f'<li><b>{label}</b>：{t}</li>'
+
+    def _ttw_y(p):
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    def _ttw_row(name, ps):
+        return (f'<tr><td class="nm"><b>{name}</b></td>'
+                + ''.join(f'<td class="nm">{_ttw_y(p)}</td>' for p in ps) + '</tr>')
+
+    _ttw_price = (_ttw_row('Main Deck（150 m）', _ttw_p['main'])
+                  + _ttw_row('Top Deck Tour（網路）', _ttw_p['top_web'])
+                  + _ttw_row('Top Deck Tour（現場）', _ttw_p['top_counter'])
+                  + _ttw_row('TOKYO DIAMOND TOUR', _ttw_p['diamond'])
+                  + _ttw_row('1DAY Pass（只在現場賣）', _ttw_p['oneday']))
+    _ttw_hdr = '<tr><th>票種</th>' + ''.join(f'<th>{a}</th>' for a in TTW['age']) + '</tr>'
+
+    _ttw_kl_h = html.escape(klook(TTW['klook']['url'], 'ticket'))
+    _ttw_kk_h = html.escape(kkday(TTW['kkday']['url'], 'ticket', 'tokyo-tower'))
+    _ttw_of_h = html.escape(TTW['_來源']['ticket'])
+    _ttw_acc = ''.join(f'<li>{a}（{b}）走路約 {m} 分鐘</li>' for a, b, m in TTW['access'])
+
+    ttw_faq = [
+     ('東京鐵塔門票多少錢？',
+      f'Main Deck（150 m）大人 {_ttw_p["main"][0]:,}、高中生 {_ttw_p["main"][1]:,}、國中小 {_ttw_p["main"][2]:,}、'
+      f'4 歲以上幼兒 {_ttw_p["main"][3]:,} 円，網路與現場同價。Top Deck Tour（150 m＋250 m）網路大人 {_ttw_p["top_web"][0]:,} 円，'
+      f'現場 {_ttw_p["top_counter"][0]:,} 円。' + TTW['age_note']),
+     ('Main Deck 和 Top Deck 差在哪？',
+      'Main Deck 是 150 m 的兩層展望台，不用預約；Top Deck Tour 是到 250 m 的導覽行程，含 Main Deck，要指定入場時段。'
+      + TTW['tripod']),
+     ('Main Deck 網路票要預約時間嗎？', TTW['main_web']),
+     ('Top Deck 可以取消嗎？', TTW['top_web'] + TTW['top_late']),
+     ('營業時間是幾點？',
+      f'{TTW["hours"]}，Main Deck 最後入場 {TTW["main_last"]}；Top Deck Tour {TTW["top_hours"]}，最後一梯 {TTW["top_last"]}。'
+      + TTW['top_weather']),
+     ('東京鐵塔點燈時間是幾點？',
+      f'{TTW["landmark"]}；{TTW["veil_rule"]}；{TTW["chime"]}。特別點燈的日子會換掉固定的燈，以官網點燈日曆為準。'),
+     ('今天東京鐵塔點什麼燈？',
+      f'日本時間 {_ttw_md(_ttw_jst)}：{_ttw_t}' + (f'，日落約 {_ttw_ss}' if _ttw_ss else '') + '。'
+      + ('' if _ttw_tknown else '官網日曆還沒公布這天，這是照固定規則推的。')),
+     ('可以出來再進去嗎？', TTW['reentry'] + TTW['oneday']),
+     ('可以走樓梯上去嗎？', TTW['stairs']),
+     ('Klook、KKday 買的票是哪一種？', '平台的票種、使用方式與取消規定以平台頁面為準，下單前看清楚是 Main Deck 還是含 Top Deck。'),
+     ('怎麼去？', '最近的是都營大江戶線赤羽橋站（赤羽橋口）走路約 5 分鐘，日比谷線神谷町站約 7 分鐘、JR 濱松町站約 15 分鐘。'),
+    ]
+    ttw_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in ttw_faq]}, ensure_ascii=False)
+
+    write('japan-tokyo-tower/index.html',
+      head('東京鐵塔門票怎麼買：Main Deck／Top Deck 票價、今天點燈時間、取消與交通',
+           '東京鐵塔 Main Deck（150 m）網路票不用預約、60 天內有效；Top Deck Tour（250 m）要指定時段，網路比現場便宜 200 円。'
+           '本頁整理官網票價、營業時間、取消規定，並每天更新今天與接下來一週的點燈內容（Landmark Light、週一週四 Diamond Veil、特別點燈）。',
+           'japan-tokyo-tower/',
+           '<script type="application/ld+json">' + ttw_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('東京鐵塔門票怎麼買', None)])
+      + '<h1>東京鐵塔門票怎麼買</h1>'
+      + '<p class="lede">東京鐵塔有兩層展望台：150 m 的 Main Deck 與 250 m 的 Top Deck。'
+        '下面的票價與規定引東京鐵塔官網與官網連過去的購票頁，點燈內容引官網點燈日曆，'
+        f'查證於 {TTW["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_ttw_md(_ttw_jst)}</div>'
+        f'<div class="tans">今天的點燈：{html.escape(_ttw_t)}</div>'
+        f'<div class="tsub">' + (f'東京日落約 {_ttw_ss}。' if _ttw_ss else '')
+        + f'展望台營業 {TTW["hours"]}，Main Deck 最後入場 {TTW["main_last"]}。'
+        + ('' if _ttw_tknown else '官網點燈日曆還沒公布這天，這是照固定規則推的。') + '</div>'
+        + _ttw_spbuf + '</div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>只上 Main Deck</b>：網路票不用預約，60 天內有效，但不能取消；價格和現場一樣，省的是排隊。</li>'
+        f'<li><b>要上 Top Deck</b>：先在網路預約時段，比現場每張便宜 {_ttw_p["top_counter"][0] - _ttw_p["top_web"][0]} 円；遲到預約就作廢。</li>'
+        '<li><b>想白天和晚上都看</b>：1DAY Pass 當天可以無限次上 Main Deck，只在現場賣。</li>'
+        '</ul></div>'
+      + '<h2>票價</h2>'
+      + '<div class="tw"><table>' + _ttw_hdr + _ttw_price + '</table></div>'
+      + f'<p class="disc">價格含稅，引官網料金頁。{TTW["age_note"]}Top Deck Tour 含 Main Deck。</p>'
+      + '<h2>Main Deck 和 Top Deck 怎麼選</h2>'
+      + '<ul class="lede">'
+        + _ttw_li('Main Deck', TTW['main_web']) + _ttw_li('Top Deck Tour', TTW['top_web'] + TTW['top_late'])
+        + _ttw_li('TOKYO DIAMOND TOUR', TTW['diamond']) + _ttw_li('1DAY Pass', TTW['oneday']) + '</ul>'
+      + '<h2>接下來一週的點燈</h2>'
+      + '<div class="tw narrow"><table><tr><th>日期</th><th>日落</th><th>點燈</th></tr>' + _ttw_rows + '</table></div>'
+      + f'<p class="disc">日落是用天文公式推算的東京時間。{html.escape(TTW["chime"])}。'
+        f'{html.escape(TTW["landmark_summer"])}。點燈可能臨時變更，以官網點燈日曆為準。</p>'
+      + '<h2>在哪裡買</h2>'
+      + klook_card(TTW['klook']['id'])
+      + f'<a class="cta" href="{_ttw_kl_h}" target="_blank" rel="{_rel(_ttw_kl_h)}">'
+        '<span class="ci">🎫</span><span class="ct"><b>Klook 的東京鐵塔門票</b>'
+        '<s>用台幣付款，票種與價格以 Klook 頁面為準</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_ttw_kk_h}" target="_blank" rel="{_rel(_ttw_kk_h)}">'
+        '<span class="ci">🎫</span><span class="ct"><b>KKday 的東京鐵塔門票</b>'
+        '<s>用台幣付款，票種與價格以 KKday 頁面為準</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_ttw_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🗼</span><span class="ct"><b>東京鐵塔官網購票</b>'
+        '<s>日文介面，連到 Asoview 購票，日圓原價，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官網購票本站沒有分潤。平台的票種、售價與取消規定本站沒有查證，以平台頁面為準。</p>'
+      + f'<p class="lede"><b>官網付款</b>：{html.escape(TTW["pay"])}</p>'
+      + '<h2>現場要知道的事</h2>'
+      + '<ul class="lede">'
+        + _ttw_li('入場', TTW['entry']) + _ttw_li('再入場', TTW['reentry']) + _ttw_li('三腳架', TTW['tripod'])
+        + _ttw_li('外階梯', TTW['stairs']) + _ttw_li('天氣', TTW['top_weather']) + '</ul>'
+      + '<h2>交通</h2>'
+      + f'<p class="lede">地址：{html.escape(TTW["address"])}。</p>'
+      + '<ul class="lede">' + _ttw_acc + '</ul>'
+      + faq_visible(ttw_faq)
+      + '<p class="disc">票價、營業時間與點燈以東京鐵塔官網為準，整理可能有疏漏。</p>'
+      + foot())
+    pages.append(('/japan-tokyo-tower/', 0.6))
 
 # ---------- 台日開車習慣差異 ----------
 # 影片列的十個差異是題目，不是來源。逐項回查道交法與施行令原文，
