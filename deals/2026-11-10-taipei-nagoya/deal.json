@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-10-taipei-nagoya",
- "generated": "2026-11-10 22:28",
+ "generated": "2026-11-10 22:36",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -51,6 +51,25 @@
   {
    "o": "TPE",
    "d": "NGO",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 8698,
+   "dep": "2026-11-22",
+   "ret": "2026-11-27",
+   "dept": "15:05",
+   "rett": "22:55",
+   "rt": true,
+   "tr": 0,
+   "dur": 380,
+   "dur_to": 165,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-NGO&departureDate=2026-11-22&inbound=NGO-TPE&returnDate=2026-11-27&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "NGO",
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
@@ -65,25 +84,6 @@
    "dur_to": 150,
    "gate": "Farera",
    "url": "https://www.aviasales.com/search/TPE0912NGO13121?t=MM17967849001796797500000150TPENGO17972022001797211800000220NGOTPE_a8ed81cec9928ab5b39db21ee4fceafb_22744&search_date=03112026&expected_price_uuid=01a1a2ea-7b37-8040-628b-ce9762adea59&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0xt-UazPO-XkhEKnMzoC_g&expected_price_source=share&expected_price_currency=twd&expected_price=9138&marker=775639"
-  },
-  {
-   "o": "TPE",
-   "d": "NGO",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 9269,
-   "dep": "2026-11-22",
-   "ret": "2026-11-27",
-   "dept": "15:05",
-   "rett": "22:55",
-   "rt": true,
-   "tr": 0,
-   "dur": 380,
-   "dur_to": 165,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-NGO&departureDate=2026-11-22&inbound=NGO-TPE&returnDate=2026-11-27&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
   }
  ]
 }
