@@ -1,0 +1,33 @@
+{
+ "schema": 1,
+ "slug": "2026-11-11-taichung-nagoya",
+ "generated": "2026-11-11 06:35",
+ "kind": "fare",
+ "origin": "taichung",
+ "city": "nagoya",
+ "fare": {
+  "o": "RMQ",
+  "d": "NGO",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 5677,
+  "dep": "2026-11-20",
+  "ret": "2026-11-27",
+  "dept": "16:45",
+  "rett": "13:15",
+  "rt": true,
+  "tr": 0,
+  "dur": 350,
+  "dur_to": 160,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-11-20&inbound=NGO-RMQ&returnDate=2026-11-27&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 5677,
+ "n_rt": 1,
+ "others": []
+}
