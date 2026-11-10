@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-10-taipei-okinawa",
- "generated": "2026-11-10 13:22",
+ "generated": "2026-11-10 16:18",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 2541,
+  "price": 2603,
   "dep": "2026-11-17",
   "ret": "2026-12-01",
   "dept": "18:20",
