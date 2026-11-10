@@ -1585,6 +1585,7 @@ def topnav(cur=''):
             + link('/japan-fujiko-museum/', '🔔 藤子不二雄博物館門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉預測與賞楓預約')
             + link('/kyoto/autumn-leaves/', '🍁 京都賞楓要預約的地方')
+            + link('/tokyo/autumn-leaves/', '🍁 東京賞楓要買票的地方')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -1740,6 +1741,7 @@ _AD_MAP = [
     ('japan-airline-card', 'transport'),
     ('japan-autumn-leaves', 'activity2'),
     ('kyoto/autumn-leaves', 'esim'),
+    ('tokyo/autumn-leaves', 'esim'),
     ('japan-park-ticket', 'activity2'), ('japan-seasonal-event', 'activity2'), ('tigerair-nagoya', 'transfer'),
     ('taiwan-holiday', 'activity2'), ('japan-holiday-calendar', 'activity2'),
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
@@ -22393,7 +22395,9 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
                 for r in _bk_rows)
             + '</tbody></table></div>'
             + f'<p class="lede">京都每一處的細節（東福寺夜間的 EX旅先予約要先辦什麼會員、嵐山小火車哪天開賣哪天的票、'
-              f'不用預約的夜間參拜時間）整理在 <a href="{U("/kyoto/autumn-leaves/")}">京都賞楓要預約的地方</a>。</p>')
+              f'不用預約的夜間參拜時間）整理在 <a href="{U("/kyoto/autumn-leaves/")}">京都賞楓要預約的地方</a>；'
+              f'東京的（六義園、小石川後樂園的夜間票怎麼買、目白庭園的預約場次）整理在 '
+              f'<a href="{U("/tokyo/autumn-leaves/")}">東京賞楓要買票的地方</a>。</p>')
         _bk_picks = ''
         for _pk in _BK.get('picks', []):
             _u = (klook(_pk['url'], 'ticket') if _pk['p'] == 'klook'
@@ -22535,6 +22539,8 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/kyoto/autumn-leaves/")}"><b>🍁 京都賞楓要預約的地方</b>'
         f'<s>東福寺夜間、圓光寺、嵐山小火車、保津川怎麼訂</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/autumn-leaves/")}"><b>🍁 東京賞楓要買票的地方</b>'
+        f'<s>六義園、小石川後樂園夜間票，目白庭園預約</s></a>'
       + f'<a class="ct" href="{U("/tokyo/ginkgo/")}"><b>🍂 神宮外苑銀杏並木</b>'
         f'<s>銀杏比楓葉晚，而且絵画館在施工</s></a>'
       + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b>'
@@ -22751,12 +22757,168 @@ if os.path.exists('kyoto-autumn.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-autumn-leaves/")}"><b>🍁 日本紅葉預測 2026</b>'
         f'<s>兩家見頃預測、東京要預約的庭園、逐日機票</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/autumn-leaves/")}"><b>🍁 東京賞楓要買票的地方</b>'
+        f'<s>六義園、小石川後樂園夜間票，目白庭園預約</s></a>'
       + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b>'
         f'<s>11/21～23 是日本的三連休</s></a></div>'
       + faq_visible(kya_faq)
       + f'<p class="disc">規定以各官方頁面為準，整理可能有疏漏。查證於 {KYA["checked"]}，之後官方若有更改，本頁不一定跟上。</p>'
       + foot())
     pages.append(('/kyoto/autumn-leaves/', 0.7))
+
+# ---------- 東京賞楓要買票的地方 ----------
+# 資料在 tokyo-autumn.json，每一列都引官方頁面（2026-11-10 查）。
+# 每天會變的兩件事在這裡算：今晚開放的夜間點燈（要買票的和不用買票的都算），
+# 以及接下來最近的一個截止日（前售票、活動結束）。hide_after 之後不放行程商品。
+# 商品分潤與挑選理由寫在 JSON 的 _分潤。
+if os.path.exists('tokyo-autumn.json'):
+    TKA = json.load(open('tokyo-autumn.json', encoding='utf-8'))
+    _tka_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _tka_iso = _tka_today.isoformat()
+    _tka_wd = '一二三四五六日'
+
+    def _tka_md(d):
+        return f'{d.month}/{d.day}（{_tka_wd[d.weekday()]}）'
+
+    def _tka_d(s):
+        return f'{int(s[5:7])}/{int(s[8:10])}'
+
+    def _tka_src(u, label='官方頁面'):
+        return f'<a href="{html.escape(u)}" rel="nofollow noopener" target="_blank">{label}</a>'
+
+    _tka_all = TKA['must'] + TKA['night']
+    _tka_tonight = [n['name'] for n in _tka_all if n['from'] <= _tka_iso <= n['to']]
+    _tka_soon = sorted([n for n in _tka_all if n['from'] > _tka_iso], key=lambda n: n['from'])
+    if _tka_tonight:
+        _tka_tn = '今晚開放的夜間點燈：' + '、'.join(_tka_tonight) + '。'
+    elif _tka_soon:
+        _tka_tn = f'今晚還沒有夜間點燈，最早的是 {_tka_soon[0]["name"]}（{_tka_d(_tka_soon[0]["from"])} 起）。'
+    else:
+        _tka_tn = '今年的夜間點燈都已經結束。'
+    _tka_dl = [(d, t) for d, t in TKA['deadlines'] if d >= _tka_iso]
+    if _tka_dl:
+        _d, _t = _tka_dl[0]
+        _tka_next = ('今天就是截止日：' if _d == _tka_iso else f'接下來的截止（{_tka_d(_d)}）：') + _t + '。'
+    else:
+        _tka_next = '今年的夜間點燈都已經結束。'
+    _tka_season = _tka_iso <= TKA['hide_after']
+    _tka_peak = '、'.join(f'{a} {b}' for a, b in TKA['peak'])
+
+    def _tka_on(n):
+        return n['from'] <= _tka_iso <= n['to']
+
+    _tka_must = ''.join(
+        f'<h3>{html.escape(n["name"])}</h3>'
+        f'<ul class="lede"><li><b>日期</b>：{_tka_d(n["from"])}～{_tka_d(n["to"])}'
+        + ('（今晚有開）' if _tka_on(n) else '')
+        + f'，{html.escape(n["time"])}</li>'
+        f'<li><b>票價</b>：{html.escape(n["price"])}</li>'
+        f'<li><b>怎麼買</b>：{html.escape(n["how"])}</li>'
+        f'<li>{html.escape(n["note"])}</li></ul>'
+        f'<p class="disc">出處：{_tka_src(n["src"])}。</p>'
+        for n in TKA['must'])
+    _tka_night_rows = ''.join(
+        f'<tr><td><b>{html.escape(n["name"])}</b></td>'
+        f'<td>{_tka_d(n["from"])}～{_tka_d(n["to"])}'
+        + ('<br><small class="warn">今晚有開</small>' if _tka_on(n) else '')
+        + f'</td><td>{html.escape(n["time"])}</td><td>{html.escape(n["fee"])}</td>'
+        f'<td>{html.escape(n["note"])}<br><small>{_tka_src(n["src"])}</small></td></tr>'
+        for n in TKA['night'])
+    _tka_day_rows = ''.join(
+        f'<tr><td><b>{html.escape(n["name"])}</b></td><td>{html.escape(n["peak"] or "寺方寫 11 月下旬～12 月中旬")}</td>'
+        f'<td>{html.escape(n["time"])}</td><td>{html.escape(n["fee"])}</td>'
+        f'<td>{html.escape(n["note"])}' + ('<br>' if n['note'] else '')
+        + f'<small>{_tka_src(n["src"])}</small></td></tr>'
+        for n in TKA['day'])
+
+    _tka_picks = ''
+    for _pk in TKA['picks']:
+        _u = (klook(_pk['url'], 'ticket') if _pk['p'] == 'klook'
+              else kkday(_pk['url'], 'ticket', 'tokyo-autumn'))
+        _uh = html.escape(_u)
+        _tka_picks += (
+            f'<a class="cta" href="{_uh}" target="_blank" rel="{_rel(_uh)}">'
+            f'<span class="ci">🍁</span><span class="ct"><b>'
+            f'{"Klook" if _pk["p"] == "klook" else "KKday"}：{html.escape(_pk["name"])}</b>'
+            f'<s>{html.escape(_pk["why"])}</s></span><span class="ca">→</span></a>')
+
+    _R, _K, _S, _M = TKA['must']
+    _O, _H = TKA['night'][0], TKA['night'][1]
+    _SG2 = TKA['day'][0]
+    _TK2 = TKA['day'][1]
+    tka_faq = [
+     ('六義園夜楓要預約嗎？門票怎麼買？',
+      f'要買夜間觀賞票，不用另外預約。2026 年是 {_tka_d(_R["from"])}～{_tka_d(_R["to"])}，{_R["time"]}。'
+      f'{_R["price"]}。{_R["how"]}'),
+     ('小石川後樂園夜楓門票在哪裡買？',
+      f'{_tka_d(_K["from"])}～{_tka_d(_K["to"])}，{_K["time"]}。{_K["price"]}。{_K["how"]}'),
+     ('昭和紀念公園點燈要買票嗎？',
+      f'銀杏並木只要付公園入園費。日本庭園 16:30 以後要另買點燈觀賞券：{_S["price"]}。{_S["how"]}'),
+     ('目白庭園點燈要預約嗎？',
+      f'週末與連假的部分場次要預約。{_M["how"]}'),
+     ('大田黑公園點燈要門票嗎？',
+      f'要付入園費，但不用預約。{_tka_d(_O["from"])}～{_tka_d(_O["to"])}，{_O["time"]}；{_O["fee"]}。{_O["note"]}'),
+     ('新宿御苑賞楓要預約嗎？',
+      f'不用。{_SG2["time"]}；{_SG2["fee"]}。{_SG2["note"]}'),
+     ('高尾山纜車要預約嗎？',
+      f'不能預約。{_TK2["note"]}{_TK2["time"]}；{_TK2["fee"]}。'),
+     ('東京賞楓 2026 什麼時候去？',
+      f'Weathernews 在 {TKA["checked"]} 的見頃預想日：{_tka_peak}。高尾山和昭和紀念公園在 11 月中，'
+      '市區的庭園多半要到 11 月底、12 月初。'),
+    ]
+    tka_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in tka_faq]}, ensure_ascii=False)
+
+    write('tokyo/autumn-leaves/index.html',
+      head('東京賞楓 2026 要買票的地方：六義園夜楓預約、小石川後樂園門票、昭和紀念公園點燈、目白庭園',
+           '2026 年東京賞楓要先買票或預約的地方：六義園與小石川後樂園的夜間觀賞票、昭和紀念公園日本庭園點燈、'
+           '目白庭園的預約場次；大田黑公園、肥後細川庭園等不用預約的點燈，以及新宿御苑、高尾山的見頃日期與入園費。',
+           'tokyo/autumn-leaves/',
+           '<script type="application/ld+json">' + tka_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('東京賞楓要買票的地方', None)])
+      + '<h1>東京賞楓 2026：哪些要先買票</h1>'
+      + '<p class="lede">東京的紅葉多半在公園和庭園，白天付入園費就能進。要先買票的主要是晚上的點燈：'
+        '六義園和小石川後樂園夜間只能拿夜間票入園，目白庭園週末的場次要預約。'
+        f'下面每一項都引自庭園、區公所或鐵道的官方頁面，查證於 {TKA["checked"]}。</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_tka_md(_tka_today)}</div>'
+        f'<div class="tans">{html.escape(_tka_tn)}</div>'
+        f'<div class="tsub">{html.escape(_tka_next)}</div>'
+        f'<div class="tbuf">Weathernews 的見頃預想日（{TKA["checked"]} 查）：{html.escape(_tka_peak)}。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>六義園、小石川後樂園的夜間要買夜間票</b>：前售票 1,000 円只在網路賣，當日票 1,200 円，窗口只收現金。</li>'
+        '<li><b>目白庭園</b>週末與連假的場次用 Google 表單預約，其他時間現場買。</li>'
+        '<li><b>新宿御苑、高尾山、大田黑公園都不用預約</b>，高尾山纜車也不能預約。</li>'
+        '</ul></div>'
+      + '<h2>要先買票或預約的點燈</h2>' + _tka_must
+      + '<h2>不用預約的點燈</h2>'
+      + '<p class="lede">這些都是現場付費。人多的晚上可能要排隊或限制入園。</p>'
+      + '<div class="tw"><table><thead><tr><th>地方</th><th>日期</th><th>時間</th><th>費用</th><th>備註</th></tr></thead><tbody>'
+      + _tka_night_rows + '</tbody></table></div>'
+      + '<h2>白天去的庭園與高尾山</h2>'
+      + '<p class="lede">都不用預約。見頃預想日是 Weathernews 的值，會隨天氣更新。</p>'
+      + '<div class="tw"><table><thead><tr><th>地方</th><th>見頃預想</th><th>時間</th><th>費用</th><th>備註</th></tr></thead><tbody>'
+      + _tka_day_rows + '</tbody></table></div>'
+      + f'<p class="disc">見頃預想日出處：{_tka_src(TKA["peak_src"], "Weathernews 紅葉情報")}（各景點頁，{TKA["checked"]} 查）。'
+        f'明治神宮外苑的銀杏另外整理在 <a href="{U("/tokyo/ginkgo/")}">神宮外苑銀杏並木</a>。</p>'
+      + (('<h2>行程與票券</h2>'
+          '<p class="lede">日期、名額與價格以各平台頁面為準，本站不標價。</p>'
+          + _tka_picks) if _tka_season else '')
+      + '<h2>這一頁查不到的</h2>'
+      + '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(x)}</li>' for x in TKA['unverified']) + '</ul></div>'
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-autumn-leaves/")}"><b>🍁 日本紅葉預測 2026</b>'
+        f'<s>兩家見頃預測、河口湖紅葉祭、逐日機票</s></a>'
+      + f'<a class="ct" href="{U("/kyoto/autumn-leaves/")}"><b>🍁 京都賞楓要預約的地方</b>'
+        f'<s>東福寺夜間、圓光寺、嵐山小火車</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/ginkgo/")}"><b>🍂 神宮外苑銀杏並木</b>'
+        f'<s>銀杏比楓葉早一點</s></a></div>'
+      + faq_visible(tka_faq)
+      + f'<p class="disc">規定以各官方頁面為準，整理可能有疏漏。查證於 {TKA["checked"]}，之後官方若有更改，本頁不一定跟上。</p>'
+      + foot())
+    pages.append(('/tokyo/autumn-leaves/', 0.7))
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
