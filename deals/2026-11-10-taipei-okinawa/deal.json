@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-10-taipei-okinawa",
- "generated": "2026-11-10 12:09",
+ "generated": "2026-11-10 12:32",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -12,8 +12,8 @@
   "airname": "台灣虎航",
   "cls": "lcc",
   "price": 2541,
-  "dep": "2026-12-14",
-  "ret": "2026-12-18",
+  "dep": "2026-11-17",
+  "ret": "2026-12-01",
   "dept": "18:20",
   "rett": "09:45",
   "rt": true,
@@ -21,12 +21,11 @@
   "dur": 175,
   "dur_to": 80,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-14&inbound=OKA-TPE&returnDate=2026-12-18&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-17&inbound=OKA-TPE&returnDate=2026-12-01&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
-  "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$4,209（7 天有紀錄），這張低 40%"
+  "廉航低於 NT$6,000"
  ],
  "med": 11174,
  "n_rt": 24,
@@ -37,9 +36,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 3003,
-   "dep": "2026-11-17",
-   "ret": "2026-12-01",
+   "price": 2541,
+   "dep": "2026-12-14",
+   "ret": "2026-12-18",
    "dept": "18:20",
    "rett": "09:45",
    "rt": true,
@@ -47,7 +46,7 @@
    "dur": 175,
    "dur_to": 80,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-17&inbound=OKA-TPE&returnDate=2026-12-01&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-14&inbound=OKA-TPE&returnDate=2026-12-18&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
@@ -56,7 +55,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 3003,
+   "price": 2603,
    "dep": "2026-12-01",
    "ret": "2026-12-05",
    "dept": "18:20",
@@ -76,7 +75,7 @@
    "airname": "台灣虎航",
    "cls": "lcc",
    "price": 3003,
-   "dep": "2026-12-05",
+   "dep": "2026-12-03",
    "ret": "2026-12-09",
    "dept": "18:20",
    "rett": "09:45",
@@ -85,7 +84,7 @@
    "dur": 175,
    "dur_to": 80,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-05&inbound=OKA-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-03&inbound=OKA-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
