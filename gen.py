@@ -1584,6 +1584,7 @@ def topnav(cur=''):
             + link('/tokyo/teamlab/', '🎨 teamLab 門票怎麼買')
             + link('/japan-fujiko-museum/', '🔔 藤子不二雄博物館門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉預測與賞楓預約')
+            + link('/kyoto/autumn-leaves/', '🍁 京都賞楓要預約的地方')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -1738,6 +1739,7 @@ _AD_MAP = [
     ('japan-credit-card', 'transport'), ('japan-card', 'transport'),
     ('japan-airline-card', 'transport'),
     ('japan-autumn-leaves', 'activity2'),
+    ('kyoto/autumn-leaves', 'esim'),
     ('japan-park-ticket', 'activity2'), ('japan-seasonal-event', 'activity2'), ('tigerair-nagoya', 'transfer'),
     ('taiwan-holiday', 'activity2'), ('japan-holiday-calendar', 'activity2'),
     ('japan-travel-rules', 'esim'), ('japan-jttp', 'esim'),
@@ -22389,7 +22391,9 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
                 f'<br><small><a href="{html.escape(r["src"])}" rel="nofollow noopener" '
                 f'target="_blank">官方頁面</a></small></td></tr>'
                 for r in _bk_rows)
-            + '</tbody></table></div>')
+            + '</tbody></table></div>'
+            + f'<p class="lede">京都每一處的細節（東福寺夜間的 EX旅先予約要先辦什麼會員、嵐山小火車哪天開賣哪天的票、'
+              f'不用預約的夜間參拜時間）整理在 <a href="{U("/kyoto/autumn-leaves/")}">京都賞楓要預約的地方</a>。</p>')
         _bk_picks = ''
         for _pk in _BK.get('picks', []):
             _u = (klook(_pk['url'], 'ticket') if _pk['p'] == 'klook'
@@ -22529,6 +22533,8 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
       + f'<div class="tldr"><ul>{_au_unv}</ul></div>'
 
       + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/kyoto/autumn-leaves/")}"><b>🍁 京都賞楓要預約的地方</b>'
+        f'<s>東福寺夜間、圓光寺、嵐山小火車、保津川怎麼訂</s></a>'
       + f'<a class="ct" href="{U("/tokyo/ginkgo/")}"><b>🍂 神宮外苑銀杏並木</b>'
         f'<s>銀杏比楓葉晚，而且絵画館在施工</s></a>'
       + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b>'
@@ -22542,6 +22548,215 @@ if os.path.exists('autumn.json') and 'HOL' in dir():
         f'預測會隨氣溫移動，票價隨時變動，出發前請以各自官方頁面為準。</p>'
       + foot())
     pages.append(('/japan-autumn-leaves/', 0.8))
+
+# ---------- 京都賞楓要預約的地方 ----------
+# 資料在 kyoto-autumn.json，每一列都引官方頁面（2026-11-10 查）。
+# 每天會變的兩件事在這裡算：小火車今天 0:00 開賣的是哪一天的票（乘車日一個月前、前月同一天），
+# 以及今晚開放、不用預約的夜間參拜。hide_after 之後整頁仍輸出、但不放行程商品；
+# 夜間參拜都過了，「今天」那格會自己變成「今年的夜間參拜都已經結束」。
+# 小火車開賣日只處理 11～12 月：一月底那種「下個月沒有同一天」的情況這一季碰不到。
+# Klook 183500、92794 行程觀光 5%；KKday 573654、772331、17678 不在 1% 清單（3.5%）。
+# Klook 17066 嵐山小火車單票是特別活動 2%，不放。
+if os.path.exists('kyoto-autumn.json'):
+    KYA = json.load(open('kyoto-autumn.json', encoding='utf-8'))
+    _kya_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _kya_wd = '一二三四五六日'
+
+    def _kya_md(d):
+        return f'{d.month}/{d.day}（{_kya_wd[d.weekday()]}）'
+
+    def _kya_next_month(d):
+        y, m = (d.year + 1, 1) if d.month == 12 else (d.year, d.month + 1)
+        try:
+            return datetime.date(y, m, d.day)
+        except ValueError:
+            return None   # 下個月沒有同一天：那些日子是在當月 1 日開賣，不在今天
+
+    _SG = KYA['sagano']
+    _kya_last = datetime.date.fromisoformat(_SG['last'])
+    _kya_rel = _kya_next_month(_kya_today)
+    if _kya_rel and _kya_rel <= _kya_last:
+        _kya_sale = (f'嵐山小火車今天日本時間 0:00（台灣前一天 23:00）開賣的是 {_kya_md(_kya_rel)} 的票'
+                     + ('，不過那天停駛' if _kya_rel.isoformat() in _SG['closed'] else '') + '。')
+    elif _kya_today <= _kya_last:
+        _kya_sale = f'嵐山小火車今年到 {_kya_md(_kya_last)} 的票都已經開賣，之後冬季停駛。'
+    else:
+        _kya_sale = '嵐山小火車今年已經停駛，新車 2027 年 3 月 1 日上路。'
+
+    _kya_tonight = [n for n in KYA['night']
+                    if n['from'] <= _kya_today.isoformat() <= n['to']]
+    _kya_soon = sorted([n for n in KYA['night'] if n['from'] > _kya_today.isoformat()],
+                       key=lambda n: n['from'])
+    _kya_season = _kya_today.isoformat() <= KYA['hide_after']
+    if _kya_tonight:
+        _kya_tn = ('今晚開放、不用預約的夜間參拜：'
+                   + '、'.join(n['name'] for n in _kya_tonight) + '。')
+    elif _kya_soon:
+        _kya_tn = f'今晚還沒有夜間參拜，最早的是 {_kya_soon[0]["name"]}（{_kya_soon[0]["from"][5:].replace("-", "/")} 起）。'
+    else:
+        _kya_tn = '今年的夜間參拜都已經結束。'
+
+    def _kya_src(u, label='官方頁面'):
+        return f'<a href="{html.escape(u)}" rel="nofollow noopener" target="_blank">{label}</a>'
+
+    def _kya_d(s):
+        return s[5:].replace('-', '/').lstrip('0').replace('/0', '/')
+
+    _kya_night_rows = ''.join(
+        f'<tr><td><b>{html.escape(n["name"])}</b></td>'
+        f'<td>{_kya_d(n["from"])}～{_kya_d(n["to"])}'
+        + ('<br><small class="warn">今晚有開</small>' if n in _kya_tonight else '')
+        + f'</td><td>{html.escape(n["time"])}</td><td>{html.escape(n["fee"])}</td>'
+        f'<td>{html.escape(n["note"])}<br><small>{_kya_src(n["src"])}</small></td></tr>'
+        for n in KYA['night'])
+    _kya_ex_rows = ''.join(
+        f'<tr><td><b>{html.escape(a)}</b></td><td>{html.escape(b)}</td>'
+        f'<td>{html.escape(c)}</td><td>{html.escape(d)}</td><td>{html.escape(e)}</td></tr>'
+        for a, b, c, d, e in KYA['ex_plans'])
+    _TF, _EX, _EN, _RK, _HZ, _ED, _NZ = (KYA['tofukuji'], KYA['ex'], KYA['enkouji'],
+                                         KYA['rurikoin'], KYA['hozu'], KYA['eiden'], KYA['nanzen'])
+    _kya_tf_night = '、'.join(f'{a} {b}' for a, b in _TF['night'])
+
+    _kya_picks = ''
+    for _pk in KYA['picks']:
+        _u = (klook(_pk['url'], 'ticket') if _pk['p'] == 'klook'
+              else kkday(_pk['url'], 'ticket', 'kyoto-autumn'))
+        _uh = html.escape(_u)
+        _kya_picks += (
+            f'<a class="cta" href="{_uh}" target="_blank" rel="{_rel(_uh)}">'
+            f'<span class="ci">🍁</span><span class="ct"><b>'
+            f'{"Klook" if _pk["p"] == "klook" else "KKday"}：{html.escape(_pk["name"])}</b>'
+            f'<s>{html.escape(_pk["why"])}</s></span><span class="ca">→</span></a>')
+
+    _kya_peak = '、'.join(f'{a} {b}' for a, b in KYA['peak'])
+
+    kya_faq = [
+     ('東福寺夜楓要預約嗎？怎麼訂？',
+      '要。2026 年東福寺的夜間是 11/18～12/6 的包場參拜，只能透過 JR 東海的「EX旅先予約」申請，'
+      f'有兩個入場時間：{_kya_tf_night}，都看到 19:30。東福寺官網寫明寺方不受理詢問。'
+      '白天 9:00～16:00 的一般參拜不用預約。'),
+     ('台灣人可以用 EX旅先予約嗎？',
+      '要先有 スマートEX（免年費）或 エクスプレス予約 的會員才能登入，用會員登錄的信用卡付款。'
+      'スマートEX 官網有英文版註冊，要年滿 18 歲、信用卡要通過 3D 驗證；'
+      '但官方沒有寫明海外發行的卡一定能用，本站也沒有用台灣的卡實際試過。EX旅先予約的預約頁是日文。'),
+     ('瑠璃光院要預約嗎？',
+      '夜間特別拜觀在 JR 東海的 EX旅先予約賣，11/14、15 與 11/20～12/6，分兩場，6,000 円含叡山電車一日券與纜車來回。'
+      '白天的秋季特別拜觀怎麼訂，瑠璃光院官網擋自動讀取，本站沒讀到原文，請以官網為準。'),
+     ('嵐山小火車什麼時候開賣？賣完了怎麼辦？',
+      '乘車日一個月前（前月同一天）的日本時間 0:00 在官網開賣，也就是台灣前一天 23:00。'
+      f'{_SG["sold"]}網路賣完時，{_SG["counter"]}'),
+     ('保津川遊船要預約嗎？',
+      f'不一定。{_HZ["book"]}{_HZ["day"]}'),
+     ('清水寺夜楓要預約嗎？',
+      '不用。2026 年秋季夜間特別拜觀是 11/21～11/30，17:30 到 21:00 受理（21:30 關門），清水寺官網寫不需要預約。'),
+     ('叡山電車楓葉隧道要預約嗎？',
+      f'點燈不用預約。{_ED["light"]}另外 11/13～30 有每天 55 人的夜間特別列車，要透過セブンチケット報名。'),
+     ('圓光寺要預約嗎？',
+      f'要。{_EN["rule"]}'),
+    ]
+    kya_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in kya_faq]}, ensure_ascii=False)
+
+    write('kyoto/autumn-leaves/index.html',
+      head('京都賞楓 2026 要預約的地方：東福寺夜楓、瑠璃光院、圓光寺、嵐山小火車、保津川怎麼訂',
+           '2026 年京都賞楓要先預約或先買票的地方：東福寺夜間只能用 JR 東海 EX旅先予約、'
+           '圓光寺指定時段、嵐山小火車一個月前 0:00 開賣、保津川遊船與叡山電車特別列車；'
+           '以及清水寺、永観堂等不用預約的夜間參拜時間與票價。',
+           'kyoto/autumn-leaves/',
+           '<script type="application/ld+json">' + kya_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('京都賞楓要預約的地方', None)])
+      + '<h1>京都賞楓 2026：哪些要先預約</h1>'
+      + '<p class="lede">京都的賞楓季，有幾個地方不是到了就能進：有的只在 JR 東海的網站賣，'
+        '有的要指定時段，嵐山小火車的網路票已經賣完一大段。'
+        f'下面每一項都引自寺院、鐵道或 JR 東海的官方頁面，查證於 {KYA["checked"]}；'
+        '小火車開賣日與今晚開放的夜間參拜每天自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">日本時間 {_kya_md(_kya_today)}</div>'
+        f'<div class="tans">{html.escape(_kya_tn)}</div>'
+        f'<div class="tsub">{html.escape(_kya_sale)}</div>'
+        f'<div class="tbuf">Weathernews 的見頃預想日（{KYA["checked"]} 查）：{html.escape(_kya_peak)}。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>東福寺夜間只能用 JR 東海的「EX旅先予約」申請</b>：要先有 スマートEX 之類的會員，寺方不受理詢問；白天不用預約。</li>'
+        f'<li><b>嵐山小火車</b>：{html.escape(_SG["sold"])}</li>'
+        '<li><b>不用預約的也很多</b>：清水寺、永観堂、北野天滿宮、高台寺、青蓮院、東寺的夜間，和叡山電車楓葉隧道，都是現場買票。</li>'
+        '</ul></div>'
+
+      + '<h2>東福寺</h2>'
+      + f'<p class="lede">{html.escape(_TF["day"])}</p>'
+      + '<div class="tw narrow"><table><thead><tr><th>夜間包場</th><th>大人價</th></tr></thead><tbody>'
+      + ''.join(f'<tr><td>{a}</td><td>{b}</td></tr>' for a, b in _TF['night'])
+      + '</tbody></table></div>'
+      + f'<ul class="lede"><li>{html.escape(_TF["night_note"])}</li>'
+        f'<li>{html.escape(_TF["morning"])}</li>'
+        f'<li>{html.escape(_TF["avail"])}</li></ul>'
+      + f'<p class="disc">出處：東福寺 {_kya_src(_TF["src"], "夜間包場公告")}、{_kya_src(_TF["src_fee"], "拜觀費公告")}。</p>'
+
+      + '<h2>EX旅先予約怎麼用</h2>'
+      + f'<p class="lede">{html.escape(_EX["what"])}</p>'
+      + f'<ul class="lede"><li>{html.escape(_EX["member"])}</li>'
+        f'<li>{html.escape(_EX["caveat"])}</li><li>{html.escape(_EX["help"])}</li></ul>'
+      + '<h3>EX旅先予約上的京都秋季方案</h3>'
+      + '<div class="tw"><table><thead><tr><th>寺院</th><th>方案</th><th>日期</th><th>時間</th><th>大人價</th></tr></thead><tbody>'
+      + _kya_ex_rows + '</tbody></table></div>'
+      + f'<p class="disc">{html.escape(KYA["ex_plans_note"])}出處：{_kya_src(_EX["src_list"], "JR 東海京都秋季特別拜觀活動頁")}、'
+        f'{_kya_src(_EX["src"], "EX旅先予約 申込流程")}、{_kya_src(_EX["src_smartex"], "スマートEX 英文註冊說明")}。</p>'
+
+      + '<h2>圓光寺</h2>'
+      + f'<ul class="lede"><li>{html.escape(_EN["rule"])}</li><li>{html.escape(_EN["how"])}</li></ul>'
+      + f'<p class="disc">出處：{_kya_src(_EN["src"], "圓光寺 2026 紅葉特別拜觀公告")}。</p>'
+
+      + '<h2>瑠璃光院</h2>'
+      + f'<ul class="lede"><li>{html.escape(_RK["rule"])}</li><li>{html.escape(_RK["unv"])}</li></ul>'
+
+      + '<h2>嵐山小火車（嵯峨野觀光鐵道）</h2>'
+      + '<ul class="lede">'
+        '<li><b>開賣</b>：乘車日一個月前（前月同一天）的日本時間 0:00，在官網買，一次最多 8 張。'
+        f'{html.escape(_SG["sold"])}</li>'
+        f'<li><b>當日券</b>：{html.escape(_SG["counter"])}</li>'
+        f'<li><b>票價</b>：{html.escape(_SG["fare"])}。{html.escape(_SG["jrpass"])}</li>'
+        f'<li><b>取消</b>：{html.escape(_SG["cancel"])}</li>'
+        f'<li><b>5 號車</b>：{html.escape(_SG["rich"])}</li>'
+        f'<li><b>點燈</b>：{html.escape(_SG["light"])}{html.escape(_SG["extra"])}</li>'
+        f'<li><b>停駛</b>：11 月到 12/29 只有 12/16 停駛。{html.escape(_SG["retire"])}</li></ul>'
+      + f'<p class="disc">出處：{_kya_src(_SG["src"], "嵯峨野觀光鐵道 常見問題")}、{_kya_src(_SG["src_light"], "點燈列車公告")}。</p>'
+
+      + '<h2>保津川遊船</h2>'
+      + f'<ul class="lede"><li>{html.escape(_HZ["fare"])}</li><li>{html.escape(_HZ["book"])}</li>'
+        f'<li>{html.escape(_HZ["day"])}</li><li>{html.escape(_HZ["time"])}</li><li>{html.escape(_HZ["cancel"])}</li></ul>'
+      + f'<p class="disc">出處：{_kya_src(_HZ["src"], "保津川遊船 預約說明")}。</p>'
+
+      + '<h2>叡山電車：楓葉隧道與夜間特別列車</h2>'
+      + f'<ul class="lede"><li>{html.escape(_ED["light"])}</li><li>{html.escape(_ED["special"])}</li>'
+        f'<li>{html.escape(_ED["price"])}</li><li>{html.escape(_ED["how"])}</li><li>{html.escape(_ED["pass"])}</li></ul>'
+      + f'<p class="disc">出處：叡山電車 {_kya_src(_ED["src"], "點燈公告")}、{_kya_src(_ED["src_sp"], "特別列車公告")}。</p>'
+
+      + '<h2>南禪寺 早晨特別拜觀</h2>'
+      + f'<ul class="lede"><li>{html.escape(_NZ["rule"])}</li><li>{html.escape(_NZ["how"])}</li></ul>'
+      + f'<p class="disc">出處：{_kya_src(_NZ["src"], "南禪寺官網")}。</p>'
+
+      + '<h2>不用預約的夜間參拜</h2>'
+      + '<p class="lede">這些都是現場買票。人多的晚上要排隊，但不需要先訂。</p>'
+      + '<div class="tw"><table><thead><tr><th>地方</th><th>日期</th><th>時間</th><th>票價</th><th>備註</th></tr></thead><tbody>'
+      + _kya_night_rows + '</tbody></table></div>'
+
+      + (('<h2>包了交通的行程</h2>'
+          '<p class="lede">下面這幾個含了上面要先訂的東西。日期、名額與價格以各平台頁面為準，本站不標價。</p>'
+          + _kya_picks) if _kya_season else '')
+
+      + '<h2>這一頁查不到的</h2>'
+      + '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(x)}</li>' for x in KYA['unverified']) + '</ul></div>'
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-autumn-leaves/")}"><b>🍁 日本紅葉預測 2026</b>'
+        f'<s>兩家見頃預測、東京要預約的庭園、逐日機票</s></a>'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b>'
+        f'<s>11/21～23 是日本的三連休</s></a></div>'
+      + faq_visible(kya_faq)
+      + f'<p class="disc">規定以各官方頁面為準，整理可能有疏漏。查證於 {KYA["checked"]}，之後官方若有更改，本頁不一定跟上。</p>'
+      + foot())
+    pages.append(('/kyoto/autumn-leaves/', 0.7))
 
 # ---------- sitemap / robots ----------
 LASTMOD=NOW.strftime('%Y-%m-%dT%H:%M:%S%z')      # 含時區偏移，避免相對 UTC 變成未來日期
