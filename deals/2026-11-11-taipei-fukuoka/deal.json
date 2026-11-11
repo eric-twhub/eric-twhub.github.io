@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-11-taipei-fukuoka",
- "generated": "2026-11-11 23:15",
+ "generated": "2026-11-11 23:29",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -25,8 +25,7 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "廉航低於 NT$6,000",
-  "這條航線平常最低落在 NT$7,607–NT$9,323，這張是近期 16 筆紀錄中第 1 低"
+  "這條航線平常最低落在 NT$7,107–NT$9,323，這張是近期 16 筆紀錄中第 1 低"
  ],
  "med": 13680,
  "n_rt": 16,
@@ -37,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7607,
+   "price": 7107,
    "dep": "2026-12-14",
    "ret": "2026-12-18",
    "dept": "13:40",
