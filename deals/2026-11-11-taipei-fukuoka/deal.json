@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-11-taipei-fukuoka",
- "generated": "2026-11-11 06:35",
+ "generated": "2026-11-11 12:21",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5294,
+  "price": 6207,
   "dep": "2026-11-12",
   "ret": "2026-11-17",
   "dept": "06:45",
@@ -25,10 +25,9 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "廉航低於 NT$6,000",
-  "這條航線平常最低落在 NT$8,127–NT$9,027，這張是近期 14 筆紀錄中第 1 低"
+  "這條航線平常最低落在 NT$8,114–NT$9,067，這張是近期 14 筆紀錄中第 1 低"
  ],
- "med": 13392,
+ "med": 13388,
  "n_rt": 14,
  "others": [
   {
@@ -37,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8127,
+   "price": 8114,
    "dep": "2026-12-14",
    "ret": "2026-12-18",
    "dept": "13:40",
@@ -56,7 +55,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8194,
+   "price": 8607,
    "dep": "2026-11-21",
    "ret": "2026-11-24",
    "dept": "06:45",
@@ -72,21 +71,20 @@
   {
    "o": "TPE",
    "d": "FUK",
-   "air": "IT",
-   "airname": "台灣虎航",
+   "air": "TW",
+   "airname": "德威航空",
    "cls": "lcc",
-   "price": 8616,
-   "dep": "2026-12-06",
-   "ret": "2026-12-10",
-   "dept": "06:45",
+   "price": 8837,
+   "dep": "2026-11-28",
+   "ret": "2026-12-02",
+   "dept": "14:25",
    "rett": "10:55",
    "rt": true,
-   "tr": 0,
-   "dur": 300,
-   "dur_to": 135,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-06&inbound=FUK-TPE&returnDate=2026-12-10&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
+   "tr": 1,
+   "dur": 1505,
+   "dur_to": 185,
+   "gate": "City.Travel",
+   "url": "https://www.aviasales.com/search/TPE2811FUK02121?t=IT17958759001795959900001340TPECJUFUK17962089001796215200000165FUKTPE_d281893c26481550a08fefd8ae44ff0c_21811&search_date=05112026&expected_price_uuid=01a1ac6d-1b5b-8040-2661-36ab42618fc1&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=geKCYV4Kr1gwYqeC0flkMw&expected_price_source=share&expected_price_currency=twd&expected_price=8837&marker=775639"
   }
  ]
 }
