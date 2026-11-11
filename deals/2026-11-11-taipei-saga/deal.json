@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-11-taipei-saga",
- "generated": "2026-11-11 15:44",
+ "generated": "2026-11-11 23:02",
  "kind": "fare",
  "origin": "taipei",
  "city": "saga",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 3858,
+  "price": 4077,
   "dep": "2026-11-12",
   "ret": "2026-11-19",
   "dept": "08:10",
@@ -27,8 +27,8 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11679,
- "n_rt": 6,
+ "med": 14914,
+ "n_rt": 8,
  "others": [
   {
    "o": "TPE",
@@ -55,7 +55,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5058,
+   "price": 5358,
    "dep": "2026-11-19",
    "ret": "2026-11-26",
    "dept": "08:10",
@@ -71,20 +71,20 @@
   {
    "o": "TPE",
    "d": "HSG",
-   "air": "NH",
-   "airname": "全日空",
-   "cls": "fsc",
-   "price": 18301,
-   "dep": "2026-12-03",
-   "ret": "2026-12-10",
-   "dept": "16:50",
-   "rett": "06:50",
+   "air": "MM",
+   "airname": "樂桃航空",
+   "cls": "lcc",
+   "price": 12689,
+   "dep": "2026-12-16",
+   "ret": "2026-12-22",
+   "dept": "17:15",
+   "rett": "12:00",
    "rt": true,
-   "tr": 2,
-   "dur": 1325,
-   "dur_to": 290,
-   "gate": "Wingie",
-   "url": "https://www.aviasales.com/search/TSA0312HSG10121?t=NH17963166001796375700000925TSAHNDHSG17968854001796905800000400HSGHNDTSA_01390081758cf37266a72cb2b748bf21_46391&search_date=11112026&expected_price_uuid=01a1c932-9d28-8040-6649-bb88f13012ce&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=1hbTlJuJJabGqyJam6LQoQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=18301&marker=775639"
+   "tr": 1,
+   "dur": 1040,
+   "dur_to": 315,
+   "gate": "Kiwi.com",
+   "url": "https://www.aviasales.com/search/TPE1612HSG22121?t=MM17974413001797498900000900TPENRTHNDHSG17979408001797945600000140HSGTPE_4190f543f7ea70406afa3f2920343ea0_31996&search_date=11112026&expected_price_uuid=01a1caa3-e3f2-8040-a495-402459d520a2&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tKyRFSdNUA9Ha1ElCXcBEw&expected_price_source=share&expected_price_currency=twd&expected_price=12689&marker=775639"
   }
  ]
 }
