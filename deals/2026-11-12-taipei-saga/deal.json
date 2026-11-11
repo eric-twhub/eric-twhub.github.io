@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-12-taipei-saga",
- "generated": "2026-11-12 00:58",
+ "generated": "2026-11-12 06:06",
  "kind": "fare",
  "origin": "taipei",
  "city": "saga",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 3858,
-  "dep": "2026-11-12",
-  "ret": "2026-11-19",
+  "price": 4718,
+  "dep": "2026-12-03",
+  "ret": "2026-12-10",
   "dept": "08:10",
   "rett": "12:15",
   "rt": true,
@@ -21,34 +21,15 @@
   "dur": 275,
   "dur_to": 125,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-12&inbound=HSG-TPE&returnDate=2026-11-19&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-12-03&inbound=HSG-TPE&returnDate=2026-12-10&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 14929,
+ "med": 14933,
  "n_rt": 8,
  "others": [
-  {
-   "o": "TPE",
-   "d": "HSG",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 4718,
-   "dep": "2026-12-03",
-   "ret": "2026-12-10",
-   "dept": "08:10",
-   "rett": "12:15",
-   "rt": true,
-   "tr": 0,
-   "dur": 275,
-   "dur_to": 125,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-12-03&inbound=HSG-TPE&returnDate=2026-12-10&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
   {
    "o": "TPE",
    "d": "HSG",
@@ -71,10 +52,28 @@
   {
    "o": "TPE",
    "d": "HSG",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 7365,
+   "dep": "2026-11-12",
+   "ret": "2026-11-19",
+   "dept": "08:10",
+   "rett": "12:15",
+   "rt": true,
+   "tr": 0,
+   "dur": 275,
+   "dur_to": 125,
+   "gate": "Kiwi.com",
+   "url": "https://www.aviasales.com/search/TPE1211HSG19111?t=IT17944710001794482100000125TPEHSG17950905001795095900000150HSGTPE_175bdafab8d506f644b73c8393a53309_18232&search_date=05112026&expected_price_uuid=01a1aa4c-de7f-8040-a694-7953dc336fb5&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3II9Jt7bqFJLnaOplbcRXw&expected_price_source=share&expected_price_currency=twd&expected_price=7365&marker=775639"
+  },
+  {
+   "o": "TPE",
+   "d": "HSG",
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 12701,
+   "price": 12705,
    "dep": "2026-12-16",
    "ret": "2026-12-22",
    "dept": "17:15",
@@ -84,7 +83,7 @@
    "dur": 1040,
    "dur_to": 315,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TPE1612HSG22121?t=MM17974413001797498900000900TPENRTHNDHSG17979408001797945600000140HSGTPE_4190f543f7ea70406afa3f2920343ea0_31996&search_date=11112026&expected_price_uuid=01a1caa3-e3f2-8040-a495-402459d520a2&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tKyRFSdNUA9Ha1ElCXcBEw&expected_price_source=share&expected_price_currency=twd&expected_price=12701&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE1612HSG22121?t=MM17974413001797498900000900TPENRTHNDHSG17979408001797945600000140HSGTPE_4190f543f7ea70406afa3f2920343ea0_31996&search_date=11112026&expected_price_uuid=01a1caa3-e3f2-8040-a495-402459d520a2&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tKyRFSdNUA9Ha1ElCXcBEw&expected_price_source=share&expected_price_currency=twd&expected_price=12705&marker=775639"
   }
  ]
 }
