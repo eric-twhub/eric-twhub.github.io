@@ -1611,6 +1611,7 @@ def topnav(cur=''):
             + link('/japan-harry-potter-tokyo/', '🪄 東京哈利波特影城門票怎麼買')
             + link('/japan-skytree/', '🗼 晴空塔門票怎麼買')
             + link('/japan-tokyo-tower/', '🗼 東京鐵塔門票怎麼買')
+            + link('/okinawa/churaumi/', '🐋 美麗海水族館門票要先買嗎')
             + link('/tokyo/teamlab/', '🎨 teamLab 門票怎麼買')
             + link('/japan-fujiko-museum/', '🔔 藤子不二雄博物館門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉預測與賞楓預約')
@@ -1761,6 +1762,7 @@ _AD_MAP = [
     ('japan-harry-potter-tokyo', 'activity2'),
     ('japan-skytree', 'activity2'),
     ('japan-tokyo-tower', 'activity2'),
+    ('okinawa/churaumi', 'activity2'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -3134,6 +3136,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'<a href="{U("/tokyo/worth-flying-for/")}">東京值得為它再飛一次的 45 家店</a>'
                      f'（Threads 上七千多則回覆挑出來的，每家都查過官方地址與公休，'
                      f'其中一家已經歇業）。</p>')
+        if slug == 'okinawa' and os.path.exists('churaumi.json'):
+            body += (f'<p class="lede">要去美麗海水族館？'
+                     f'<a href="{U("/okinawa/churaumi/")}">門票要不要先買、現場和 Klook／KKday 差在哪</a>'
+                     f'（官網原文整理：不用預約、網路票和現場同價、買了不能取消）。</p>')
         if slug == 'okinawa' and os.path.exists('churasun6.json'):
             body += (f'<p class="lede">晚上想找點事做？'
                      f'<a href="{U("/okinawa/churasun6/")}">那霸ちゅらさん6 的座位方案與取消規定</a>'
@@ -8823,6 +8829,188 @@ if os.path.exists('skytree.json'):
       + foot())
     pages.append(('/japan-skytree/', 0.6))
 
+# ---------- 美麗海水族館門票要先買嗎 ----------
+# 資料在 churaumi.json。票價、營業時間、FAQ 引官網；官網網路票的效期與取消引官網連過去的 Asoview 購票頁。
+# 官網 FAQ 只寫售票口與 Asoview 兩種買法，沒有說非官方通路的票不能用；Klook 1421 自稱授權通路、
+# KKday 18680 寫 QR code 直接入場，兩家都放，Klook（5%）在前、KKday（3.5%，不在 1% 清單）在後。
+# 延長營業、休館、海豚劇場停演都用日本日期當場比，過期自動改口。
+if os.path.exists('churaumi.json'):
+    CHU = json.load(open('churaumi.json', encoding='utf-8'))
+    _chu_today = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _chu_wd = '一二三四五六日'
+    _chu_D = datetime.date.fromisoformat
+
+    def _chu_md(d, wd=True):
+        return f'{d.year}/{d.month}/{d.day}' + (f'（{_chu_wd[d.weekday()]}）' if wd else '')
+
+    def _chu_y(p):
+        if p is None:
+            return '–'
+        if p == 0:
+            return '免費'
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    _chu_p = CHU['price']
+    _chu_g = _chu_p['general']
+    _chu_hdr = '<tr><th>票種</th>' + ''.join(f'<th>{a}</th>' for a in CHU['age']) + '</tr>'
+    _chu_rows = ''.join(
+        f'<tr><td class="nm"><b>{n}</b></td>' + ''.join(f'<td class="nm">{_chu_y(p)}</td>' for p in ps) + '</tr>'
+        for n, ps in (('一般', _chu_g), ('年票（一年內不限次數）', _chu_p['passport']),
+                      ('團體（20 人以上一起付）', _chu_p['group'])))
+    _chu_pp_twice = _chu_p['passport'][0] == 2 * _chu_g[0]
+
+    # 延長營業：只列還沒結束的；全都過了就說明年還沒公布
+    _chu_ext = [e for e in CHU['extended'] if _chu_D(e['to']) >= _chu_today]
+    if _chu_ext:
+        _chu_ext_txt = '延長營業：' + '；'.join(
+            f'{_chu_md(_chu_D(e["from"]), False)}～{_chu_md(_chu_D(e["to"]), False)} {e["hours"]}（{e["last"]} 停止入館）'
+            for e in _chu_ext) + '。'
+    else:
+        _chu_y0 = _chu_D(CHU['extended'][-1]['to']).year
+        _chu_ext_txt = (f'{_chu_y0} 年在黃金週與 7、8 月延長到 20:00 或 21:00；'
+                        f'{_chu_y0 + 1} 年的延長日期官網還沒公布。')
+    _chu_cu = _chu_D(CHU['closed_until'])
+    if _chu_today <= _chu_cu:
+        _chu_closed = f'官網寫 {_chu_md(_chu_cu, False)} 前沒有預定休館日（颱風等臨時休館除外）。'
+    else:
+        _chu_closed = f'官網公布的無休館期間到 {_chu_md(_chu_cu, False)} 為止，之後的休館安排以官網為準。'
+    _chu_dp = CHU['dolphin_pause']
+    _chu_dp_on = _chu_today <= _chu_D(_chu_dp['to'])
+    _chu_dp_txt = (f'{_chu_md(_chu_D(_chu_dp["from"]))}～{_chu_md(_chu_D(_chu_dp["to"]))}海豚劇場整修，海豚秀暫停。'
+                   if _chu_dp_on else '')
+    _chu_bogo = _chu_D(CHU['bogo_note'])
+
+    _chu_w = CHU['web']
+    _chu_kl = CHU['klook']
+    _chu_kk = CHU['kkday']
+    _chu_a = CHU['access']
+    _chu_bk = CHU['backyard']
+    _chu_ex = CHU['exploration']
+    _chu_feed = ''.join(f'<tr><td class="nm"><b>{a}</b></td><td class="nm">{b}</td><td class="nm">{c or "–"}</td></tr>'
+                        for a, b, c in CHU['feed'])
+
+    _chu_kl_h = html.escape(klook(_chu_kl['url'], 'ticket'))
+    _chu_kk_h = html.escape(kkday(_chu_kk['url'], 'ticket', 'churaumi'))
+    _chu_of_h = html.escape(CHU['src_web'])
+
+    def _chu_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    chu_faq = [
+     ('美麗海水族館門票要先買嗎？',
+      f'不用。美麗海水族館不用預約、不指定日期，現場售票口就買得到。官網網路票和現場同價（大人 {_chu_g[0]:,} 円），'
+      f'{_chu_w["valid"]}，先買省的是售票口排隊；{_chu_w["queue"]}。'),
+     ('可以現場買票嗎？',
+      '可以，在水族館售票口買。官網 FAQ 寫門票可以在售票口或官網網路票（Asoview）買；團體票和年票只在售票口賣。'),
+     ('門票多少錢？',
+      f'大人 {_chu_g[0]:,} 円、高中生 {_chu_g[1]:,} 円、國中小 {_chu_g[2]:,} 円，未滿 6 歲免費。' + CHU['age_note']),
+     ('有 16 點以後入館的優惠價嗎？',
+      '官網現在的票價表只有一般、年票、團體三種，沒有 16 點以後入館的價格。網路上寫「16 點後比較便宜」的是舊資料。'),
+     ('Klook、KKday 的票怎麼用？',
+      f'Klook：{_chu_kl["valid"]}，{_chu_kl["cancel"]}，{_chu_kl["entry"]}。'
+      f'KKday：{_chu_kk["valid"]}；{_chu_kk["cancel"]}；{_chu_kk["entry"]}。兩家都以下單頁面的規定為準。'),
+     ('美麗海水族館門票有買一送一嗎？',
+      f'買一送一是訂票平台不定期的促銷，不是官方票種，官網沒有這種票。本站 {_chu_bogo.month}/{_chu_bogo.day} 查證時，'
+      'Klook 與 KKday 的美麗海門票頁都沒有買一送一方案。'),
+     ('年票划算嗎？',
+      f'大人年票 {_chu_p["passport"][0]:,} 円，'
+      + (f'剛好是兩次入館的價格，一年內去第二次就回本。' if _chu_pp_twice else f'一般票 {_chu_g[0]:,} 円。')
+      + '只在售票口辦，限本人使用，不能轉讓。'),
+     ('可以出來再進去嗎？', CHU['reentry']),
+     ('海豚秀要另外買票嗎？', CHU['dolphin_free'] + _chu_dp_txt),
+     ('鯨鯊餵食秀幾點？',
+      '黑潮之海大水槽 9:30 看鬼蝠魟進食，15:00、17:00 是大水槽的魚一起進食；熱帶魚之海 13:00、15:30。' + CHU['feed_note']),
+     ('要逛多久？營業到幾點？',
+      f'{CHU["duration"]}水族館 {CHU["hours"]}，{CHU["last_entry"]} 停止入館；'
+      f'{CHU["outside"]} {CHU["outside_hours"]}，比水族館早關。'),
+     ('怎麼從那霸過去？',
+      f'{_chu_a["car"]}；{_chu_a["bus"]}。{_chu_a["walk"]}。{_chu_a["park"]}，地圖碼 {_chu_a["mapcode"]}。'),
+    ]
+    chu_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in chu_faq]}, ensure_ascii=False)
+
+    write('okinawa/churaumi/index.html',
+      head('美麗海水族館門票要先買嗎？票價、現場買與 Klook／KKday 差在哪、餵食時間',
+           f'美麗海水族館不用預約、不指定日期，現場買得到；官網網路票和現場同價（大人 {_chu_g[0]:,} 円），'
+           '購買日起 1 個月內有效、不能取消。本頁整理官網票價、營業時間、Klook 與 KKday 的票怎麼用、'
+           '鯨鯊大水槽餵食時間、年票划不划算與從那霸過去的交通。',
+           'okinawa/churaumi/',
+           '<script type="application/ld+json">' + chu_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('沖繩', '/okinawa/'), ('美麗海水族館門票', None)])
+      + '<h1>美麗海水族館門票要先買嗎</h1>'
+      + '<p class="lede">沖繩美麗海水族館在本島北部本部町的海洋博公園裡。下面的票價與規定引美麗海水族館官網，'
+        f'網路票的效期與取消規定引官網連過去的購票頁，查證於 {CHU["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>不用先買</b>：不用預約、不指定日期，現場售票口就買得到。官網網路票和現場同價（大人 {_chu_g[0]:,} 円），先買只省售票口排隊。</li>'
+        '<li><b>網路票、Klook、KKday 都不能取消</b>：效期 30 天到 1 個月，買了沒去就浪費，行程確定再買。</li>'
+        f'<li><b>想看鯨鯊吃東西</b>：黑潮之海大水槽 15:00、17:00 餵食，水族館 {CHU["last_entry"]} 停止入館，下午到的話別拖太晚。</li>'
+        + (f'<li><b>{_chu_D(_chu_dp["from"]).month}/{_chu_D(_chu_dp["from"]).day}～{_chu_D(_chu_dp["to"]).month}/{_chu_D(_chu_dp["to"]).day} 沒有海豚秀</b>：海豚劇場整修。</li>'
+           if _chu_dp_on else '')
+        + '</ul></div>'
+      + '<h2>票價</h2>'
+      + '<div class="tw"><table>' + _chu_hdr + _chu_rows + '</table></div>'
+      + f'<p class="disc">價格含稅，引官網入館料金頁。{html.escape(CHU["age_note"])}'
+        '團體票只在當天售票口賣，年票只在售票口辦。</p>'
+      + '<h2>現場、官網網路票、Klook、KKday 差在哪</h2>'
+      + '<div class="tw"><table><tr><th>買法</th><th>效期</th><th>取消</th><th>怎麼進場</th></tr>'
+        '<tr><td class="nm"><b>現場售票口</b></td><td class="nm">當天</td><td class="nm">–</td><td class="nm">買了直接進</td></tr>'
+        f'<tr><td class="nm"><b>官網網路票</b></td><td class="nm">{html.escape(_chu_w["valid"])}</td>'
+        f'<td class="nm">{html.escape(_chu_w["cancel"])}</td><td class="nm">{html.escape(_chu_w["entry"])}</td></tr>'
+        f'<tr><td class="nm"><b>Klook</b></td><td class="nm">{html.escape(_chu_kl["valid"])}</td>'
+        f'<td class="nm">{html.escape(_chu_kl["cancel"])}</td><td class="nm">{html.escape(_chu_kl["entry"])}</td></tr>'
+        f'<tr><td class="nm"><b>KKday</b></td><td class="nm">{html.escape(_chu_kk["valid"])}</td>'
+        f'<td class="nm">{html.escape(_chu_kk["cancel"])}</td><td class="nm">{html.escape(_chu_kk["entry"])}</td></tr>'
+        '</table></div>'
+      + '<p class="disc">官網 FAQ 寫的購票管道是售票口與官網網路票（Asoview），沒有提到 Klook、KKday；'
+        'Klook 商品頁寫自己是授權的銷售通路。平台價格隨匯率與活動變動，下單前可以和上面的日圓價換算比一下。'
+        f'官網網路票付款方式：{html.escape(_chu_w["pay"])}。{html.escape(_chu_w["queue"])}。</p>'
+      + '<h2>在哪裡買</h2>'
+      + klook_card(_chu_kl['id'])
+      + f'<a class="cta" href="{_chu_kl_h}" target="_blank" rel="{_rel(_chu_kl_h)}">'
+        '<span class="ci">🐋</span><span class="ct"><b>Klook 的美麗海水族館門票</b>'
+        '<s>用台幣付款，電子憑證直接入場，不能取消</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_chu_kk_h}" target="_blank" rel="{_rel(_chu_kk_h)}">'
+        '<span class="ci">🐋</span><span class="ct"><b>KKday 的美麗海水族館門票</b>'
+        f'<s>用台幣付款，QR code 直接入場；{html.escape(_chu_kk["combo"])}</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_chu_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>美麗海水族館官網網路票</b>'
+        '<s>日文介面，連到 Asoview 購票，日圓原價，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官網網路票本站沒有分潤。平台的售價與方案以平台頁面為準。</p>'
+      + '<h2>營業時間與休館</h2>'
+      + '<ul class="lede">'
+        f'<li><b>水族館</b>：{CHU["hours"]}，{CHU["last_entry"]} 停止入館。{html.escape(_chu_ext_txt)}</li>'
+        f'<li><b>年底年初</b>：{html.escape(CHU["new_year"])}。</li>'
+        f'<li><b>休館</b>：{html.escape(_chu_closed)}</li>'
+        f'<li><b>館外設施</b>：{html.escape(CHU["outside"])} {CHU["outside_hours"]}，比水族館早關；{html.escape(CHU["dolphin_free"])}'
+        + (html.escape(_chu_dp_txt) if _chu_dp_on else '') + '</li>'
+        + _chu_li('再入館', CHU['reentry']) + _chu_li('要逛多久', CHU['duration'])
+        + '</ul>'
+      + '<h2>餵食與水槽上方參觀的時間</h2>'
+      + '<div class="tw narrow"><table><tr><th>水槽</th><th>時間</th><th>看什麼</th></tr>' + _chu_feed + '</table></div>'
+      + f'<p class="disc">{html.escape(CHU["feed_note"])}</p>'
+      + '<ul class="lede">'
+        f'<li><b>黑潮探檢</b>（{"、".join(_chu_ex["slots"])}）：{html.escape(_chu_ex["text"])}</li>'
+        f'<li><b>後場導覽（要預約）</b>：{html.escape(_chu_bk["text"])}</li>'
+        '</ul>'
+      + '<h2>交通</h2>'
+      + '<ul class="lede">'
+        + _chu_li('開車', _chu_a['car'] + f'，地圖碼 {_chu_a["mapcode"]}') + _chu_li('停車', _chu_a['park'])
+        + _chu_li('巴士', _chu_a['bus'] + '。' + _chu_a['bus_co']) + _chu_li('下車後', _chu_a['walk'])
+        + '</ul>'
+      + faq_visible(chu_faq)
+      + fare_cta('okinawa', '飛沖繩的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + (f'<a class="ct" href="{U("/okinawa/churasun6/")}"><b>🎭 那霸ちゅらさん6</b>'
+         f'<s>晚上的表演，座位方案與取消規定</s></a>' if os.path.exists('churasun6.json') else '')
+      + f'<a class="ct" href="{U("/okinawa/")}"><b>🏝️ 沖繩機票</b><s>各出發地的票價</s></a>'
+      + f'<a class="ct" href="{U("/japan-park-ticket/")}"><b>🎢 日本樂園門票</b><s>迪士尼、USJ 哪天便宜</s></a>'
+      + f'<a class="ct" href="{U("/japan-rentacar-noc/")}"><b>🚗 日本租車的 NOC</b><s>買了免責補償還要賠的部分</s></a></div>'
+      + '<p class="disc">票價、營業時間與規定以美麗海水族館官網為準，整理可能有疏漏。本頁為公開資訊整理，與水族館無合作關係。</p>'
+      + foot())
+    pages.append(('/okinawa/churaumi/', 0.6))
+
 # ---------- 東京鐵塔門票怎麼買 ----------
 # 資料在 tokyo-tower.json。票價固定，引官網料金頁；網路票的效期與取消引官網連過去的 Asoview 購票頁。
 # 點燈：月份 JSON 只列有變化的日子（優先度 1 特別點燈存在 specials），其餘照官網公布的固定規則算：
@@ -11231,6 +11419,8 @@ if os.path.exists('churasun6.json'):
         f'<s>同系列的東京店，三個場次</s></a>'
       + (f'<a class="ct" href="{U("/tokyo/superspark/")}"><b>🎭 六本木 SUPER SPARK</b>'
          f'<s>63 同一棟樓的 B1</s></a>' if os.path.exists('superspark.json') else '')
+      + (f'<a class="ct" href="{U("/okinawa/churaumi/")}"><b>🐋 美麗海水族館</b>'
+         f'<s>門票要不要先買</s></a>' if os.path.exists('churaumi.json') else '')
       + f'<a class="ct" href="{U("/okinawa/")}"><b>🏝️ 沖繩機票</b><s>各出發地的票價</s></a>'
       + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
         f'<s>在日本刷哪張卡</s></a></div>'
