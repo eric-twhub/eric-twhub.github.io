@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-11-taipei-saga",
- "generated": "2026-11-11 23:02",
+ "generated": "2026-11-11 23:15",
  "kind": "fare",
  "origin": "taipei",
  "city": "saga",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4077,
+  "price": 4318,
   "dep": "2026-11-12",
   "ret": "2026-11-19",
   "dept": "08:10",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 14914,
+ "med": 14917,
  "n_rt": 8,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4718,
+   "price": 4937,
    "dep": "2026-12-03",
    "ret": "2026-12-10",
    "dept": "08:10",
@@ -74,7 +74,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 12689,
+   "price": 12691,
    "dep": "2026-12-16",
    "ret": "2026-12-22",
    "dept": "17:15",
@@ -84,7 +84,7 @@
    "dur": 1040,
    "dur_to": 315,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TPE1612HSG22121?t=MM17974413001797498900000900TPENRTHNDHSG17979408001797945600000140HSGTPE_4190f543f7ea70406afa3f2920343ea0_31996&search_date=11112026&expected_price_uuid=01a1caa3-e3f2-8040-a495-402459d520a2&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tKyRFSdNUA9Ha1ElCXcBEw&expected_price_source=share&expected_price_currency=twd&expected_price=12689&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE1612HSG22121?t=MM17974413001797498900000900TPENRTHNDHSG17979408001797945600000140HSGTPE_4190f543f7ea70406afa3f2920343ea0_31996&search_date=11112026&expected_price_uuid=01a1caa3-e3f2-8040-a495-402459d520a2&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tKyRFSdNUA9Ha1ElCXcBEw&expected_price_source=share&expected_price_currency=twd&expected_price=12691&marker=775639"
   }
  ]
 }

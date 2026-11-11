@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-11-taipei-oita",
- "generated": "2026-11-11 23:02",
+ "generated": "2026-11-11 23:15",
  "kind": "fare",
  "origin": "taipei",
  "city": "oita",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 13651,
+ "med": 13655,
  "n_rt": 4,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 10456,
+   "price": 10459,
    "dep": "2026-12-14",
    "ret": "2026-12-19",
    "dept": "18:20",
@@ -46,7 +46,7 @@
    "dur": 2480,
    "dur_to": 345,
    "gate": "Tickets",
-   "url": "https://www.aviasales.com/search/TPE1412OIT19121?t=IT17972724001797415200002320TPEOKANRTOIT17976978001797703800000160OITTPE_1b345243d77eea7ef7624f115bf1ebb3_26367&search_date=11112026&expected_price_uuid=01a1caa7-8b50-8040-2f87-1e4fca7b169f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=RL1FBD_oS5eyCoGc1UNAeA&expected_price_source=share&expected_price_currency=twd&expected_price=10456&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE1412OIT19121?t=IT17972724001797415200002320TPEOKANRTOIT17976978001797703800000160OITTPE_1b345243d77eea7ef7624f115bf1ebb3_26367&search_date=11112026&expected_price_uuid=01a1caa7-8b50-8040-2f87-1e4fca7b169f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=RL1FBD_oS5eyCoGc1UNAeA&expected_price_source=share&expected_price_currency=twd&expected_price=10459&marker=775639"
   },
   {
    "o": "TPE",
@@ -54,7 +54,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 16847,
+   "price": 16851,
    "dep": "2026-12-14",
    "ret": "2026-12-19",
    "dept": "16:50",
@@ -64,7 +64,7 @@
    "dur": 1815,
    "dur_to": 305,
    "gate": "Wingie",
-   "url": "https://www.aviasales.com/search/TSA1412OIT19121?t=NH17972670001797349800001320TSAHNDITMOIT17976693001797695400000495OITHNDTSA_dbbc61ecfe9077b810add0bc25a6a2f6_42483&search_date=11112026&expected_price_uuid=01a1caa7-8b50-8040-2f87-1e4fca7b169f&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=Gau2Ot6ri-_0EpjC0yDotw&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=16847&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA1412OIT19121?t=NH17972670001797349800001320TSAHNDITMOIT17976693001797695400000495OITHNDTSA_dbbc61ecfe9077b810add0bc25a6a2f6_42483&search_date=11112026&expected_price_uuid=01a1caa7-8b50-8040-2f87-1e4fca7b169f&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=Gau2Ot6ri-_0EpjC0yDotw&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=16851&marker=775639"
   },
   {
    "o": "TPE",
@@ -72,7 +72,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 19289,
+   "price": 19293,
    "dep": "2026-11-21",
    "ret": "2026-11-28",
    "dept": "16:50",
@@ -82,7 +82,7 @@
    "dur": 1335,
    "dur_to": 275,
    "gate": "Vayama",
-   "url": "https://www.aviasales.com/search/TSA2111OIT28111?t=NH17952798001795340100000945TSAHNDOIT17958612001795881000000390OITHNDTSA_92950a8501148690e25b2b51d22a9f4f_48843&search_date=11112026&expected_price_uuid=01a1c933-617a-8040-620f-5327d030244e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=iO6EJD3UmO0hhSIEr7lNiQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=19289&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA2111OIT28111?t=NH17952798001795340100000945TSAHNDOIT17958612001795881000000390OITHNDTSA_92950a8501148690e25b2b51d22a9f4f_48843&search_date=11112026&expected_price_uuid=01a1c933-617a-8040-620f-5327d030244e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=iO6EJD3UmO0hhSIEr7lNiQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=19293&marker=775639"
   }
  ]
 }

@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-11-taipei-miyazaki",
- "generated": "2026-11-11 23:02",
+ "generated": "2026-11-11 23:15",
  "kind": "fare",
  "origin": "taipei",
  "city": "miyazaki",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4866,
-  "dep": "2026-12-14",
-  "ret": "2026-12-21",
+  "price": 4477,
+  "dep": "2026-12-07",
+  "ret": "2026-12-14",
   "dept": "06:20",
   "rett": "10:30",
   "rt": true,
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 10718,
+ "med": 10692,
  "n_rt": 4,
  "others": [
   {
@@ -36,9 +36,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4918,
-   "dep": "2026-12-07",
-   "ret": "2026-12-14",
+   "price": 4866,
+   "dep": "2026-12-14",
+   "ret": "2026-12-21",
    "dept": "06:20",
    "rett": "10:30",
    "rt": true,
@@ -73,7 +73,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 16630,
+   "price": 16634,
    "dep": "2026-12-14",
    "ret": "2026-12-21",
    "dept": "16:50",
@@ -83,7 +83,7 @@
    "dur": 2225,
    "dur_to": 335,
    "gate": "Wingie",
-   "url": "https://www.aviasales.com/search/TSA1412KMI21121?t=NH17972670001797339900001155TSAHNDFUKKMI17978820001797942600001070KMIFUKHNDTSA_519b61c7bb5062d0c6de3cc020495ad2_41923&search_date=11112026&expected_price_uuid=01a1cae0-a110-8040-24c7-9f5c9c1fcb02&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=ykJHTk5Jbv6QfuGE09a2Aw&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=16630&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA1412KMI21121?t=NH17972670001797339900001155TSAHNDFUKKMI17978820001797942600001070KMIFUKHNDTSA_519b61c7bb5062d0c6de3cc020495ad2_41923&search_date=11112026&expected_price_uuid=01a1cae0-a110-8040-24c7-9f5c9c1fcb02&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=ykJHTk5Jbv6QfuGE09a2Aw&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=16634&marker=775639"
   }
  ]
 }
