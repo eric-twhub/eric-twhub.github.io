@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-12-taipei-fukuoka",
- "generated": "2026-11-12 06:06",
+ "generated": "2026-11-12 07:46",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 6647,
+  "price": 7107,
   "dep": "2026-12-14",
   "ret": "2026-12-18",
   "dept": "13:40",
@@ -25,10 +25,10 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,084（5 天有紀錄），這張低 18%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,176（5 天有紀錄），這張低 13%"
  ],
- "med": 13691,
- "n_rt": 18,
+ "med": 17454,
+ "n_rt": 17,
  "others": [
   {
    "o": "TPE",
@@ -55,24 +55,6 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7375,
-   "dep": "2026-11-12",
-   "ret": "2026-11-17",
-   "dept": "06:45",
-   "rett": "17:55",
-   "rt": true,
-   "tr": 0,
-   "dur": 295,
-   "dur_to": 135,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE1211FUK17111?t=IT17944659001794477600000135TPEFUK17949381001794944100000160FUKTPE_46cb279ab7006031d9de782d24b00302_18434&search_date=07112026&expected_price_uuid=01a1b454-1abd-8040-a92f-46d317a3519b&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ErPQ9K_lf3KzqdTTJuztdg&expected_price_source=share&expected_price_currency=twd&expected_price=7375&marker=775639"
-  },
-  {
-   "o": "TPE",
-   "d": "FUK",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
    "price": 8067,
    "dep": "2026-12-09",
    "ret": "2026-12-13",
@@ -85,6 +67,24 @@
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-09&inbound=FUK-TPE&returnDate=2026-12-13&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "FUK",
+   "air": "TW",
+   "airname": "德威航空",
+   "cls": "lcc",
+   "price": 8837,
+   "dep": "2026-11-28",
+   "ret": "2026-12-02",
+   "dept": "14:25",
+   "rett": "10:55",
+   "rt": true,
+   "tr": 1,
+   "dur": 1505,
+   "dur_to": 185,
+   "gate": "City.Travel",
+   "url": "https://www.aviasales.com/search/TPE2811FUK02121?t=IT17958759001795959900001340TPECJUFUK17962089001796215200000165FUKTPE_d281893c26481550a08fefd8ae44ff0c_21811&search_date=05112026&expected_price_uuid=01a1ac6d-1b5b-8040-2661-36ab42618fc1&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=geKCYV4Kr1gwYqeC0flkMw&expected_price_source=share&expected_price_currency=twd&expected_price=8837&marker=775639"
   }
  ]
 }

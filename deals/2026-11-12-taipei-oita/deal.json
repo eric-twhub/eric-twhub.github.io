@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-12-taipei-oita",
- "generated": "2026-11-12 06:06",
+ "generated": "2026-11-12 07:46",
  "kind": "fare",
  "origin": "taipei",
  "city": "oita",
@@ -72,7 +72,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 19313,
+   "price": 19314,
    "dep": "2026-11-21",
    "ret": "2026-11-28",
    "dept": "16:50",
@@ -82,7 +82,7 @@
    "dur": 1335,
    "dur_to": 275,
    "gate": "Vayama",
-   "url": "https://www.aviasales.com/search/TSA2111OIT28111?t=NH17952798001795340100000945TSAHNDOIT17958612001795881000000390OITHNDTSA_92950a8501148690e25b2b51d22a9f4f_48843&search_date=11112026&expected_price_uuid=01a1c933-617a-8040-620f-5327d030244e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=iO6EJD3UmO0hhSIEr7lNiQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=19313&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA2111OIT28111?t=NH17952798001795340100000945TSAHNDOIT17958612001795881000000390OITHNDTSA_92950a8501148690e25b2b51d22a9f4f_48843&search_date=11112026&expected_price_uuid=01a1c933-617a-8040-620f-5327d030244e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=iO6EJD3UmO0hhSIEr7lNiQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=19314&marker=775639"
   }
  ]
 }

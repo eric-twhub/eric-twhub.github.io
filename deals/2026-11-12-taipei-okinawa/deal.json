@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-12-taipei-okinawa",
- "generated": "2026-11-12 06:06",
+ "generated": "2026-11-12 07:46",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -75,9 +75,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 2598,
-   "dep": "2026-12-14",
-   "ret": "2026-12-18",
+   "price": 2998,
+   "dep": "2026-11-17",
+   "ret": "2026-12-01",
    "dept": "18:20",
    "rett": "09:45",
    "rt": true,
@@ -85,7 +85,7 @@
    "dur": 175,
    "dur_to": 80,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-14&inbound=OKA-TPE&returnDate=2026-12-18&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-17&inbound=OKA-TPE&returnDate=2026-12-01&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
