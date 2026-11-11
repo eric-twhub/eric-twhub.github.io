@@ -1612,6 +1612,7 @@ def topnav(cur=''):
             + link('/japan-skytree/', '🗼 晴空塔門票怎麼買')
             + link('/japan-tokyo-tower/', '🗼 東京鐵塔門票怎麼買')
             + link('/okinawa/churaumi/', '🐋 美麗海水族館門票要先買嗎')
+            + link('/osaka/kaiyukan/', '🦈 海遊館門票可以現場買嗎')
             + link('/tokyo/teamlab/', '🎨 teamLab 門票怎麼買')
             + link('/japan-fujiko-museum/', '🔔 藤子不二雄博物館門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉預測與賞楓預約')
@@ -1763,6 +1764,7 @@ _AD_MAP = [
     ('japan-skytree', 'activity2'),
     ('japan-tokyo-tower', 'activity2'),
     ('okinawa/churaumi', 'activity2'),
+    ('osaka/kaiyukan', 'activity2'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -3136,6 +3138,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'<a href="{U("/tokyo/worth-flying-for/")}">東京值得為它再飛一次的 45 家店</a>'
                      f'（Threads 上七千多則回覆挑出來的，每家都查過官方地址與公休，'
                      f'其中一家已經歇業）。</p>')
+        if slug == 'osaka' and os.path.exists('kaiyukan.json'):
+            body += (f'<p class="lede">要去海遊館？'
+                     f'<a href="{U("/osaka/kaiyukan/")}">門票可以現場買嗎、每日票價、Klook／KKday 差在哪</a>'
+                     f'（官網原文整理：票價每天不同、平台的票下午 3 點後才能進、行李箱不能帶進館）。</p>')
         if slug == 'okinawa' and os.path.exists('churaumi.json'):
             body += (f'<p class="lede">要去美麗海水族館？'
                      f'<a href="{U("/okinawa/churaumi/")}">門票要不要先買、現場和 Klook／KKday 差在哪</a>'
@@ -9010,6 +9016,213 @@ if os.path.exists('churaumi.json'):
       + '<p class="disc">票價、營業時間與規定以美麗海水族館官網為準，整理可能有疏漏。本頁為公開資訊整理，與水族館無合作關係。</p>'
       + foot())
     pages.append(('/okinawa/churaumi/', 0.6))
+
+# ---------- 海遊館門票可以現場買嗎 ----------
+# 資料在 kaiyukan.json。每日票價與營業時間是官網日曆 API 的快照（每月初補下兩個月），
+# 頁面用日本日期當場挑「今天以後」的日子，過去的日子自動消失；快照用完就改口說官網還沒公布。
+# 官網 FAQ 寫非官方售票網站的票不能入館，但沒列哪些算官方；Klook／KKday 商品頁都寫 15 點後才能進，
+# 所以官網電子票排第一，平台放後面並把 15 點限制寫在按鈕上。
+if os.path.exists('kaiyukan.json'):
+    KYK = json.load(open('kaiyukan.json', encoding='utf-8'))
+    _kyk_today = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _kyk_wd = '一二三四五六日'
+    _kyk_D = datetime.date.fromisoformat
+    _kyk_T = KYK['tiers']
+    _kyk_days = sorted((_kyk_D(d), v) for d, v in KYK['days'].items() if _kyk_D(d) >= _kyk_today)
+    _kyk_until = _kyk_D(KYK['published_until'])
+
+    def _kyk_y(p):
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    def _kyk_span(ns):
+        # 連續的日子併成「21～23 日」
+        out, i = [], 0
+        while i < len(ns):
+            j = i
+            while j + 1 < len(ns) and ns[j + 1] == ns[j] + 1:
+                j += 1
+            out.append(f'{ns[i]}' if i == j else f'{ns[i]}～{ns[j]}')
+            i = j + 1
+        return '、'.join(out) + ' 日'
+
+    def _kyk_hm(s):
+        return s.lstrip('0') if s[:1] == '0' else s
+
+    # 接下來 30 天的價格範圍與最貴的日子
+    _kyk_30 = [(d, v) for d, v in _kyk_days if v and (d - _kyk_today).days < 30]
+    _kyk_p30 = sorted({_kyk_T[v[0]][0] for _, v in _kyk_30})
+    _kyk_closed = [d for d, v in _kyk_days if v is None]
+
+    # 每個月：大人票價依日子分組，最常見的那一檔寫「其他日子」
+    _kyk_months = {}
+    for d, v in _kyk_days:
+        _kyk_months.setdefault((d.year, d.month), []).append((d, v))
+    _kyk_mlines = []
+    for (yy, mm), rows in _kyk_months.items():
+        by = {}
+        for d, v in rows:
+            if v:
+                by.setdefault(_kyk_T[v[0]][0], []).append(d.day)
+        if not by:
+            continue
+        common = max(by, key=lambda p: len(by[p]))
+        parts = [f'{p:,} 円（' + ('其他日子' if p == common else _kyk_span(by[p])) + '）' for p in sorted(by)]
+        cl = [d.day for d, v in rows if v is None]
+        _kyk_mlines.append(f'<li><b>{yy}/{mm}</b>：' + '、'.join(parts)
+                           + (f'；<b>{_kyk_span(cl)}休館</b>' if cl else '') + '</li>')
+
+    # 未來 14 天逐日
+    _kyk_14 = ''.join(
+        f'<tr><td class="nm"><b>{d.month}/{d.day}（{_kyk_wd[d.weekday()]}）</b></td>'
+        + (f'<td class="nm">¥{_kyk_T[v[0]][0]:,}</td><td class="nm">{_kyk_hm(v[1])}～{v[2]}</td>'
+           f'<td class="nm">{v[3]}</td>' if v else '<td class="nm">休館</td><td class="nm">–</td><td class="nm">–</td>')
+        + '</tr>'
+        for d, v in _kyk_days[:14])
+
+    def _kyk_rng(i):
+        xs = sorted({v[i] for v in _kyk_T.values()})
+        return f'{xs[0]:,}' + (f'～{xs[-1]:,}' if len(xs) > 1 else '')
+
+    _kyk_hdr = '<tr><th>大人票價</th>' + ''.join(f'<th>{a}</th>' for a in KYK['age']) + '</tr>'
+    _kyk_tier_rows = ''.join(
+        f'<tr><td class="nm"><b>{ps[0]:,} 円的日子</b></td>' + ''.join(f'<td class="nm">{_kyk_y(p)}</td>' for p in ps) + '</tr>'
+        for k, ps in sorted(_kyk_T.items(), key=lambda kv: kv[1][0]))
+
+    if _kyk_p30:
+        _kyk_range = (f'接下來 30 天大人 {_kyk_p30[0]:,}～{_kyk_p30[-1]:,} 円' if len(_kyk_p30) > 1
+                      else f'接下來 30 天大人都是 {_kyk_p30[0]:,} 円')
+        _kyk_top = [d for d, v in _kyk_30 if _kyk_T[v[0]][0] == _kyk_p30[-1]]
+        _kyk_top_txt = ('，最貴的是 ' + '、'.join(f'{d.month}/{d.day}' for d in _kyk_top[:6])
+                        + (' 等' if len(_kyk_top) > 6 else '')) if len(_kyk_p30) > 1 else ''
+    else:
+        _kyk_range, _kyk_top_txt = '', ''
+    _kyk_unpub = f'{_kyk_until.month}/{_kyk_until.day} 以後的票價與營業時間官網還沒公布。'
+
+    _kyk_w = KYK['web']
+    _kyk_kl = KYK['klook']
+    _kyk_kk = KYK['kkday']
+    _kyk_a = KYK['access']
+    _kyk_kl_h = html.escape(klook(_kyk_kl['url'], 'ticket'))
+    _kyk_kk_h = html.escape(kkday(_kyk_kk['url'], 'ticket', 'kaiyukan'))
+    _kyk_of_h = html.escape(KYK['src_web'])
+
+    def _kyk_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    _kyk_cl_txt = ('、'.join(f'{d.year}/{d.month}/{d.day}（{_kyk_wd[d.weekday()]}）' for d in _kyk_closed) + ' 休館。'
+                   if _kyk_closed else '')
+
+    kyk_faq = [
+     ('海遊館門票可以現場買嗎？',
+      '可以。' + KYK['counter'] + '。官網建議先買可以指定日期時段的電子票，入館比較順。'),
+     ('海遊館一定要先預約嗎？',
+      '不用，當天在窗口或官網買都可以。但海遊館' + KYK['slot'] + '，當天才買可能要等到下一個有空的時段。'),
+     ('海遊館門票多少錢？',
+      '票價依日期浮動，官網日曆每天標價。' + (_kyk_range + _kyk_top_txt + '。' if _kyk_range else '')
+      + f'官網公布到 {_kyk_until.month}/{_kyk_until.day} 的日子裡，大人 {_kyk_rng(0)} 円、國中小 {_kyk_rng(1)} 円、幼兒 {_kyk_rng(2)} 円。'
+      + KYK['age_note']),
+     ('買了官網電子票但會遲到怎麼辦？',
+      _kyk_w['late'] + '。改時段' + _kyk_w['change'].replace('可以改日期時段 ', '最多 ') + '。' + _kyk_w['early'] + '。'),
+     ('Klook、KKday 的海遊館門票可以早上進場嗎？',
+      f'看商品頁寫的不行：Klook {_kyk_kl["time"]}，KKday {_kyk_kk["time"]}。想早上或中午進場，買官網電子票或現場買。'),
+     ('官網說只有官方網站的票能入館，Klook、KKday 能用嗎？',
+      KYK['official_only'] + f'Klook 寫{_kyk_kl["entry"].split("；")[0]}，KKday 寫{_kyk_kk["entry"].split("；")[0]}。'
+      '想完全不擔心，就用官網電子票。'),
+     ('門票可以取消嗎？',
+      f'官網電子票{_kyk_w["cancel"]}。Klook {_kyk_kl["cancel"]}；KKday {_kyk_kk["cancel"]}，下單前看清楚該方案的規定。'),
+     ('可以出館再進來嗎？', KYK['reentry']),
+     ('行李箱可以帶進去嗎？', KYK['luggage'] + KYK['locker'] + '。'),
+     ('大阪周遊卡可以用嗎？', '不行，' + KYK['osaka_pass'] + '。'),
+     ('營業到幾點？要逛多久？',
+      '開館時間每天不同（多在 8:30～10:30），閉館多半 20:00，最後入館是閉館前 1 小時。'
+      + KYK['night'] + '。' + KYK['duration'] + '。' + _kyk_cl_txt),
+     ('海遊館怎麼去？',
+      f'{_kyk_a["metro"]}。{_kyk_a["bus"]}。{_kyk_a["kix"]}。{_kyk_a["ship"]}。'),
+    ]
+    kyk_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in kyk_faq]}, ensure_ascii=False)
+
+    write('osaka/kaiyukan/index.html',
+      head('海遊館門票可以現場買嗎？每日票價、官網電子票與 Klook／KKday 差在哪、遲到怎麼辦',
+           '海遊館現場只賣當天票、每個時段有上限；票價每天不同。本頁整理官網每日票價與開館時間、'
+           '官網電子票怎麼改時段與取消、Klook 與 KKday 的票為什麼只能下午 3 點後進場、行李箱規定與交通。',
+           'osaka/kaiyukan/',
+           '<script type="application/ld+json">' + kyk_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('大阪', '/osaka/'), ('海遊館門票', None)])
+      + '<h1>海遊館門票可以現場買嗎</h1>'
+      + '<p class="lede">大阪海遊館在大阪港天保山。下面的票價、營業時間與規定引海遊館官網與官網連過去的 Webket 購票頁，'
+        f'查證於 {KYK["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>'
+        '<li><b>可以現場買</b>：窗口只賣當天票，每個時段有上限，週末假日可能等很久。先在官網買可以指定時段。</li>'
+        + (f'<li><b>票價每天不同</b>：{_kyk_range}{_kyk_top_txt}。</li>' if _kyk_range else '')
+        + '<li><b>Klook、KKday 的票下午 3 點後才能進</b>：兩家商品頁都這樣寫，Klook 還寫只限工作日。想早上或週末去，買官網電子票或現場買。</li>'
+        '<li><b>官網電子票能改能退</b>：會遲到就自己改時段（最多 2 次、同價格帶），到當天都能免費取消。</li>'
+        '<li><b>行李箱不能帶進館</b>：入口外有置物櫃。</li>'
+        + (f'<li><b>{"、".join(f"{d.month}/{d.day}" for d in _kyk_closed)} 休館</b>：官網寫每年 1 月有 2 天休館。</li>'
+           if _kyk_closed else '')
+        + '</ul></div>'
+      + '<h2>票價：每天不同</h2>'
+      + '<p class="lede">海遊館採浮動票價，每天的價錢標在官網日曆上。官網目前公布的日子出現過這幾個價格帶：</p>'
+      + '<div class="tw"><table>' + _kyk_hdr + _kyk_tier_rows + '</table></div>'
+      + ('<p class="lede">各月份大人票價落在哪幾天：</p><ul class="lede">' + ''.join(_kyk_mlines) + '</ul>' if _kyk_mlines else '')
+      + f'<p class="disc">{html.escape(KYK["age_note"])}{_kyk_unpub}價格含稅，以官網日曆為準。</p>'
+      + (f'<details class="faq"><summary>未來 14 天的票價與開館時間</summary><div>'
+         '<div class="tw narrow"><table><tr><th>日期</th><th>大人</th><th>營業時間</th><th>最後入館</th></tr>'
+         + _kyk_14 + '</table></div></div></details>' if _kyk_14 else '')
+      + '<h2>現場、官網電子票、Klook、KKday 差在哪</h2>'
+      + '<div class="tw"><table><tr><th>買法</th><th>幾點能進</th><th>取消與改時段</th><th>怎麼進場</th></tr>'
+        '<tr><td class="nm"><b>現場窗口</b></td><td class="nm">當天還有空位的時段</td><td class="nm">–</td><td class="nm">買了照票上時段進</td></tr>'
+        f'<tr><td class="nm"><b>官網電子票</b></td><td class="nm">任何已開賣的時段（{html.escape(_kyk_w["advance"])}）</td>'
+        f'<td class="nm">{html.escape(_kyk_w["cancel"])}；{html.escape(_kyk_w["change"])}</td><td class="nm">手機出示 QR code</td></tr>'
+        f'<tr><td class="nm"><b>Klook</b></td><td class="nm">{html.escape(_kyk_kl["time"])}</td>'
+        f'<td class="nm">{html.escape(_kyk_kl["cancel"])}</td><td class="nm">{html.escape(_kyk_kl["entry"])}</td></tr>'
+        f'<tr><td class="nm"><b>KKday</b></td><td class="nm">{html.escape(_kyk_kk["time"])}</td>'
+        f'<td class="nm">{html.escape(_kyk_kk["cancel"])}</td><td class="nm">{html.escape(_kyk_kk["entry"])}</td></tr>'
+        '</table></div>'
+      + f'<p class="disc">{html.escape(KYK["official_only"])}'
+        '平台的取消規定在同一頁裡前後寫法不一，以下單時方案頁的規定為準。'
+        f'官網電子票{html.escape(_kyk_w["login"])}，付款方式：{html.escape(_kyk_w["pay"])}。</p>'
+      + '<h2>在哪裡買</h2>'
+      + f'<a class="cta" href="{_kyk_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>海遊館官網電子票（Webket）</b>'
+        '<s>任何時段都能買，能改時段、當天前免費取消；日文介面，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_kyk_kl_h}" target="_blank" rel="{_rel(_kyk_kl_h)}">'
+        '<span class="ci">🦈</span><span class="ct"><b>Klook 的海遊館門票</b>'
+        '<s>用台幣付款；商品頁寫只適用工作日 15:00 後</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_kyk_kk_h}" target="_blank" rel="{_rel(_kyk_kk_h)}">'
+        '<span class="ci">🦈</span><span class="ct"><b>KKday 的海遊館門票</b>'
+        '<s>用台幣付款，QR code 入場；商品頁寫下午 3 點前不能入場</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官網電子票本站沒有分潤。平台的售價與方案以平台頁面為準。</p>'
+      + '<h2>入館前要知道的事</h2>'
+      + '<ul class="lede">'
+        + _kyk_li('時段', KYK['slot'] + '；' + _kyk_w['early'])
+        + _kyk_li('再入館', KYK['reentry'])
+        + _kyk_li('行李', KYK['luggage'])
+        + _kyk_li('置物櫃', KYK['locker'])
+        + _kyk_li('晚上去', KYK['night'] + '，Klook、KKday 的 15 點後票剛好碰得到')
+        + _kyk_li('小孩自己去', KYK['kids_alone'])
+        + _kyk_li('窗口付款', KYK['counter_pay'])
+        + _kyk_li('要逛多久', KYK['duration'])
+        + _kyk_li('大阪周遊卡', KYK['osaka_pass'])
+        + '</ul>'
+      + '<h2>交通</h2>'
+      + '<ul class="lede">'
+        + _kyk_li('地鐵', _kyk_a['metro']) + _kyk_li('巴士', _kyk_a['bus'])
+        + _kyk_li('從關西機場', _kyk_a['kix']) + _kyk_li('從環球影城', _kyk_a['ship'])
+        + '</ul>'
+      + faq_visible(kyk_faq)
+      + fare_cta('osaka', '飛大阪的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-park-ticket/")}"><b>🎢 日本樂園門票</b><s>環球影城哪天便宜</s></a>'
+      + f'<a class="ct" href="{U("/osaka/")}"><b>🏯 大阪機票</b><s>各出發地的票價</s></a>'
+      + (f'<a class="ct" href="{U("/okinawa/churaumi/")}"><b>🐋 美麗海水族館</b>'
+         f'<s>門票要不要先買</s></a>' if os.path.exists('churaumi.json') else '')
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📶 日本 eSIM</b><s>買電子票要用手機出示</s></a></div>'
+      + '<p class="disc">票價、營業時間與規定以海遊館官網為準，整理可能有疏漏。本頁為公開資訊整理，與海遊館無合作關係。</p>'
+      + foot())
+    pages.append(('/osaka/kaiyukan/', 0.6))
 
 # ---------- 東京鐵塔門票怎麼買 ----------
 # 資料在 tokyo-tower.json。票價固定，引官網料金頁；網路票的效期與取消引官網連過去的 Asoview 購票頁。
