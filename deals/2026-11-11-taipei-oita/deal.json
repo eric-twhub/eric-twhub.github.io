@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-11-taipei-oita",
- "generated": "2026-11-11 12:21",
+ "generated": "2026-11-11 15:44",
  "kind": "fare",
  "origin": "taipei",
  "city": "oita",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5416,
+  "price": 4937,
   "dep": "2026-11-21",
   "ret": "2026-11-28",
   "dept": "12:00",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11838,
+ "med": 12102,
  "n_rt": 2,
  "others": [
   {
@@ -36,17 +36,17 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 18261,
+   "price": 19268,
    "dep": "2026-11-21",
    "ret": "2026-11-28",
    "dept": "16:50",
-   "rett": "16:45",
+   "rett": "10:20",
    "rt": true,
    "tr": 2,
-   "dur": 2100,
+   "dur": 1335,
    "dur_to": 275,
-   "gate": "Wingie",
-   "url": "https://www.aviasales.com/search/TSA2111OIT28111?t=NH17952798001795334700000855TSAHNDOIT17958843001795955400001245OITHNDTSA_39e2a09ea1782ac3c65267e07c9d5417_45366&search_date=06112026&expected_price_uuid=01a1af73-3ace-8040-a93e-b1ca82275bad&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=L2Qxli1GqiBV_HSYgeNEzA&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=18261&marker=775639"
+   "gate": "Vayama",
+   "url": "https://www.aviasales.com/search/TSA2111OIT28111?t=NH17952798001795340100000945TSAHNDOIT17958612001795881000000390OITHNDTSA_92950a8501148690e25b2b51d22a9f4f_48843&search_date=11112026&expected_price_uuid=01a1c933-617a-8040-620f-5327d030244e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=iO6EJD3UmO0hhSIEr7lNiQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=19268&marker=775639"
   }
  ]
 }
