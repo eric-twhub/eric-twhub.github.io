@@ -1615,6 +1615,8 @@ def topnav(cur=''):
             + link('/osaka/kaiyukan/', '🦈 海遊館門票可以現場買嗎')
             + link('/nagasaki/huis-ten-bosch/', '🌷 豪斯登堡門票價格')
             + link('/japan-fuji-q/', '🎢 富士急樂園門票怎麼買')
+            + link('/osaka/amazing-pass/', '🏯 大阪周遊卡哪些景點免費')
+            + link('/japan-hakone-freepass/', '🚠 箱根周遊券有沒有一日券')
             + link('/tokyo/teamlab/', '🎨 teamLab 門票怎麼買')
             + link('/japan-fujiko-museum/', '🔔 藤子不二雄博物館門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉預測與賞楓預約')
@@ -1769,6 +1771,8 @@ _AD_MAP = [
     ('osaka/kaiyukan', 'activity2'),
     ('nagasaki/huis-ten-bosch', 'activity2'),
     ('japan-fuji-q', 'activity2'),
+    ('osaka/amazing-pass', 'activity2'),
+    ('japan-hakone-freepass', 'activity2'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -3146,6 +3150,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要去豪斯登堡？'
                      f'<a href="{U("/nagasaki/huis-ten-bosch/")}">門票價格、哪些日子比較貴、住園區飯店隔天免費</a>'
                      f'（官網原文整理：特定日加價、官網網路票不能退、Klook／KKday 是官方合作通路）。</p>')
+        if slug == 'osaka' and os.path.exists('osakapass.json'):
+            body += (f'<p class="lede">要買大阪周遊卡？'
+                     f'<a href="{U("/osaka/amazing-pass/")}">哪些景點免費、海遊館能不能用、1 日券和 2 日券差在哪</a>'
+                     f'（官網原文整理：沒有兒童票、凌晨 3 點換日、沒用過可以全額退）。</p>')
         if slug == 'osaka' and os.path.exists('kaiyukan.json'):
             body += (f'<p class="lede">要去海遊館？'
                      f'<a href="{U("/osaka/kaiyukan/")}">門票可以現場買嗎、每日票價、Klook／KKday 差在哪</a>'
@@ -3159,6 +3167,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'<a href="{U("/okinawa/churasun6/")}">那霸ちゅらさん6 的座位方案與取消規定</a>'
                      f'（六本木 63 ANGEL 官網連過去的沖繩店，官網原文整理；演出前 10 分鐘沒到就取消，'
                      f'未滿 20 歲不得入場）。</p>')
+        if slug == 'tokyo' and os.path.exists('hakone.json'):
+            body += (f'<p class="lede">要去箱根？'
+                     f'<a href="{U("/japan-hakone-freepass/")}">箱根周遊券怎麼買、有沒有一日券、浪漫特快要不要另外買</a>'
+                     f'（小田急官方資料整理：沒有一日券、浪漫特快另付、KKday 憑證只能在新宿西口或小田原換）。</p>')
         if slug == 'tokyo' and os.path.exists('fujiq.json'):
             body += (f'<p class="lede">要去富士急樂園？'
                      f'<a href="{U("/japan-fuji-q/")}">門票怎麼買、每日票價與休園日、Klook／KKday 差在哪</a>'
@@ -9218,6 +9230,7 @@ if os.path.exists('kaiyukan.json'):
         + _kyk_li('窗口付款', KYK['counter_pay'])
         + _kyk_li('要逛多久', KYK['duration'])
         + _kyk_li('大阪周遊卡', KYK['osaka_pass'])
+        + (f'<li><a href="{U("/osaka/amazing-pass/")}">大阪周遊卡能用的景點</a></li>' if os.path.exists('osakapass.json') else '')
         + '</ul>'
       + '<h2>交通</h2>'
       + '<ul class="lede">'
@@ -9661,6 +9674,328 @@ if os.path.exists('fujiq.json'):
       + '<p class="disc">票價、營業時間與規定以富士急樂園官網為準，整理可能有疏漏。本頁為公開資訊整理，與富士急樂園無合作關係。</p>'
       + foot())
     pages.append(('/japan-fuji-q/', 0.6))
+
+# ---------- 大阪周遊卡 ----------
+# 資料在 osakapass.json，全部引官方站 osaka-amazing-pass.com 與 Surutto KANSAI 新聞稿。
+# 官方連結規範只准連首頁，所以官方 CTA 連 src_top。停用公告與樂高可用日用日本日期當場篩，過了就消失。
+# 台灣讀者常搜「大阪周遊卡 海遊館／阿倍野展望台」，答案（不含／只打 9 折）放在 TLDR 與 FAQ 前面。
+if os.path.exists('osakapass.json'):
+    OPS = json.load(open('osakapass.json', encoding='utf-8'))
+    _op_today = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _op_D = datetime.date.fromisoformat
+    _op_p = OPS['price']
+    _op_t = OPS['transport']
+    _op_w = OPS['web']
+    _op_kl = OPS['klook']
+    _op_kk = OPS['kkday']
+    _op_stops = [s for s in OPS['stops'] if _op_D(s['until']) >= _op_today]
+    _op_lego = [_op_D(d) for d in OPS['lego_dates'] if _op_D(d) >= _op_today]
+    _op_lego_until = _op_D(OPS['lego_until'])
+    _op_sale_until = _op_D(OPS['sale_until'])
+    _op_bogo = _op_D(OPS['bogo_checked'])
+
+    def _op_md(d):
+        return f'{d.month}/{d.day}'
+
+    def _op_mds(ds):
+        out, i = [], 0
+        while i < len(ds):
+            j = i
+            while j + 1 < len(ds) and (ds[j + 1] - ds[j]).days == 1:
+                j += 1
+            out.append(_op_md(ds[i]) if i == j else
+                       (f'{_op_md(ds[i])}～{ds[j].day}' if ds[i].month == ds[j].month else f'{_op_md(ds[i])}～{_op_md(ds[j])}'))
+            i = j + 1
+        return '、'.join(out)
+
+    def _op_y(p):
+        return f'{p:,} 円（約 {money(round(p * JPY))}）'
+
+    def _op_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    _op_lego_txt = (f'接下來能用周遊卡免費進的日子：{_op_mds(_op_lego)}（官方只公布到 {_op_md(_op_lego_until)}）'
+                    if _op_lego else f'官方公布的免費日期只到 {_op_md(_op_lego_until)}，之後的日子還沒公布')
+    _op_kl_h = html.escape(klook(_op_kl['url'], 'ticket'))
+    _op_kk_h = html.escape(kkday(_op_kk['url'], 'ticket', 'osakapass'))
+    _op_of_h = html.escape(OPS['src_top'])
+
+    op_faq = [
+     ('大阪周遊卡多少錢？',
+      f'1 日券 {_op_p["1day"]:,} 円、2 日券 {_op_p["2day"]:,} 円；伊丹機場版 1 日 {_op_p["itami_1day"]:,} 円、2 日 {_op_p["itami_2day"]:,} 円；'
+      f'關西機場版 28 小時券 {_op_p["kix_28h"]:,} 円。{OPS["price_note"]}。{OPS["price_history"]}。'),
+     ('大阪周遊卡可以去海遊館嗎？',
+      '不行。海遊館不在免費名單，也不在優惠名單，要另外買票。海遊館旁邊的天保山大摩天輪、往返環球影城的 Captain Line 船倒是可以免費搭。'),
+     ('大阪周遊卡可以上阿倍野 HARUKAS 展望台嗎？',
+      '不是免費。出示周遊卡，HARUKAS 300 展望台入場費打 9 折，不能和其他折扣一起用。'),
+     ('大阪周遊卡有兒童票嗎？', f'沒有。{OPS["price_note"]}。'),
+     ('大阪周遊卡有買一送一嗎？',
+      f'{_op_bogo.year}/{_op_md(_op_bogo)} 查官方網站、營運公司新聞稿與 Osaka Metro 頁面，都沒有買一送一或降價活動。'
+      '平台不定期有折扣碼，以下單當下的頁面為準。'),
+     ('1 日券和 2 日券差在哪？',
+      f'能搭的交通一樣。2 日券是連續 2 天，{OPS["facility_rule"]}。{OPS["day_rule"]}。'),
+     ('大阪周遊卡能搭哪些車？',
+      f'{_op_t["metro"]}、{_op_t["bus"]}，以及大阪市內指定區間的阪急、阪神、京阪、近鐵、南海。{_op_t["no"]}。'),
+     ('大阪周遊卡在哪裡買？',
+      f'{_op_w["where"]}。{_op_w["how"]}。{_op_w["pay"]}。'),
+     ('買了可以退嗎？', _op_w['refund'] + '。'),
+     ('哪些設施要預約或有時間限制？',
+      '空中庭園展望台要 15:00 前入場；通天閣、道頓堀水上觀光船、大阪城御座船要當天到現場換時段或班次；'
+      f'樂高探索中心要先上官網預約，而且只有指定日子免費，{_op_lego_txt}。'),
+    ]
+    op_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in op_faq]}, ensure_ascii=False)
+
+    write('osaka/amazing-pass/index.html',
+      head('大阪周遊卡怎麼買、哪些景點免費：海遊館不能用、阿倍野展望台只打 9 折、1 日券和 2 日券差在哪',
+           f'大阪周遊卡 1 日券 {_op_p["1day"]:,} 円、2 日券 {_op_p["2day"]:,} 円，沒有兒童票。本頁整理官網的價格、能搭的車、'
+           '39 個免費設施的使用規定、海遊館與 HARUKAS 能不能用、電子票怎麼啟用與退票，以及 Klook、KKday 的差別。',
+           'osaka/amazing-pass/',
+           '<script type="application/ld+json">' + op_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('大阪', '/osaka/'), ('大阪周遊卡', None)])
+      + '<h1>大阪周遊卡怎麼買、哪些景點免費</h1>'
+      + '<p class="lede">大阪周遊卡（大阪周遊パス，Osaka Amazing Pass）是交通加景點的電子票。下面的價格與規定引官方網站與營運公司スルッとKANSAI 的公告，'
+        f'查證於 {OPS["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>1 日券 {_op_p["1day"]:,} 円、2 日券 {_op_p["2day"]:,} 円</b>：沒有兒童票，小孩也買大人票。</li>'
+        '<li><b>海遊館不能用</b>：不在免費也不在優惠名單；旁邊的天保山大摩天輪、Captain Line 船可以。</li>'
+        '<li><b>阿倍野 HARUKAS 展望台只打 9 折</b>，不是免費。</li>'
+        '<li><b>每個設施只能進一次</b>：2 日券也是兩天合計一次。</li>'
+        '<li><b>凌晨 3 點換日</b>：不是 24 小時制，當天 3:00 以後再按「開始使用」。</li>'
+        '<li><b>沒用過可以全額退</b>：一按開始使用就不能退。</li>'
+        '<li><b>不含 JR</b>：地鐵、市營巴士加市內指定區間的五家私鐵。</li>'
+        + '</ul></div>'
+      + '<h2>價格</h2>'
+      + '<div class="tw narrow"><table><tr><th>票種</th><th>價格（大人）</th></tr>'
+        f'<tr><td class="nm"><b>1 日券</b></td><td class="nm">{_op_y(_op_p["1day"])}</td></tr>'
+        f'<tr><td class="nm"><b>2 日券</b></td><td class="nm">{_op_y(_op_p["2day"])}</td></tr>'
+        f'<tr><td class="nm"><b>伊丹機場版 1 日</b></td><td class="nm">{_op_y(_op_p["itami_1day"])}</td></tr>'
+        f'<tr><td class="nm"><b>伊丹機場版 2 日</b></td><td class="nm">{_op_y(_op_p["itami_2day"])}</td></tr>'
+        f'<tr><td class="nm"><b>關西機場版 28 小時</b></td><td class="nm">{_op_y(_op_p["kix_28h"])}</td></tr>'
+        '</table></div>'
+      + f'<p class="disc">{html.escape(OPS["price_note"])}。{html.escape(OPS["price_history"])}。'
+        f'這一版賣到 {_op_sale_until.year}/{_op_md(_op_sale_until)}，{html.escape(OPS["valid"])}。</p>'
+      + '<h2>能搭哪些車</h2><ul class="lede">'
+        + _op_li('地鐵', _op_t['metro']) + _op_li('巴士', _op_t['bus'])
+        + ''.join(_op_li(n, s) for n, s in _op_t['private'])
+        + _op_li('不包含', _op_t['no']) + _op_li('伊丹機場版', _op_t['itami']) + _op_li('關西機場版', _op_t['kix'])
+        + '</ul>'
+      + f'<h2>免費設施：{OPS["facility_count"]} 個，各進一次</h2>'
+      + f'<p class="lede">{html.escape(OPS["facility_rule"])}。常去的幾個：</p><ul class="lede">'
+        + ''.join(_op_li(n, s) for n, s in OPS['facilities'])
+        + '</ul>'
+      + f'<p class="lede"><b>樂高探索中心大阪</b>：只有官方列出的日子免費，{html.escape(OPS["lego_rule"])}。{_op_lego_txt}。其他日子比當日票便宜 500 円。</p>'
+      + '<h3>不免費的熱門景點</h3><ul class="lede">'
+        + ''.join(_op_li(n, s) for n, s in OPS['not_free']) + '</ul>'
+      + ('<h3>目前停用或休館</h3><ul class="lede">' + ''.join(f'<li>{html.escape(s["text"])}</li>' for s in _op_stops)
+         + f'<li>{html.escape(OPS["hepfive"])}</li></ul>')
+      + '<p class="disc">完整名單在官網「可使用設施」頁，各設施營業時間可能臨時變更，以官網為準。</p>'
+      + '<h2>怎麼買、怎麼用</h2><ul class="lede">'
+        + _op_li('票的形式', _op_w['how']) + _op_li('付款', _op_w['pay']) + _op_li('哪裡買', _op_w['where'])
+        + _op_li('幾張', _op_w['max']) + _op_li('手機', _op_w['device']) + _op_li('換日', OPS['day_rule'])
+        + _op_li('進出站', _op_w['gate']) + _op_li('退票', _op_w['refund'])
+        + _op_li('別買錯', OPS['rakuyu'])
+        + '</ul>'
+      + '<h2>官網、Klook、KKday 差在哪</h2>'
+      + '<div class="tw"><table><tr><th>買法</th><th>效期</th><th>取消</th><th>要注意</th></tr>'
+        f'<tr><td class="nm"><b>官網</b></td><td class="nm">購買日起 3 個月</td><td class="nm">沒開始使用可全額退</td>'
+        f'<td class="nm">{html.escape(_op_w["pay"])}；要註冊帳號</td></tr>'
+        f'<tr><td class="nm"><b>Klook</b></td><td class="nm">{html.escape(_op_kl["valid"])}</td>'
+        f'<td class="nm">{html.escape(_op_kl["cancel"])}</td><td class="nm">{html.escape(_op_kl["note"])}</td></tr>'
+        f'<tr><td class="nm"><b>KKday</b></td><td class="nm">{html.escape(_op_kk["valid"])}</td>'
+        f'<td class="nm">{html.escape(_op_kk["cancel"])}</td><td class="nm">{html.escape(_op_kk["note"])}</td></tr>'
+        '</table></div>'
+      + '<p class="disc">官方公告的販售處包含海外代理商的網站，但沒有列出是哪幾家。三種買法拿到的都是同一種 QR 電子票，啟用規則相同。</p>'
+      + '<h2>在哪裡買</h2>'
+      + f'<a class="cta" href="{_op_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>大阪周遊卡官方網站</b>'
+        '<s>有繁體中文；只收信用卡，沒用過可全額退；本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_op_kl_h}" target="_blank" rel="{_rel(_op_kl_h)}">'
+        '<span class="ci">🏯</span><span class="ct"><b>Klook 的大阪周遊卡</b>'
+        '<s>用台幣付款；有加關西機場單程的方案</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_op_kk_h}" target="_blank" rel="{_rel(_op_kk_h)}">'
+        '<span class="ci">🏯</span><span class="ct"><b>KKday 的大阪周遊卡</b>'
+        '<s>用台幣付款；兩天各用一張 1 日券要分開下單</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官網本站沒有分潤。平台的售價與方案以平台頁面為準。</p>'
+      + faq_visible(op_faq)
+      + fare_cta('osaka', '飛大阪的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + (f'<a class="ct" href="{U("/osaka/kaiyukan/")}"><b>🦈 海遊館門票</b><s>周遊卡不能用，門票怎麼買</s></a>'
+         if os.path.exists('kaiyukan.json') else '')
+      + f'<a class="ct" href="{U("/japan-park-ticket/")}"><b>🎢 環球影城門票</b><s>哪天便宜</s></a>'
+      + f'<a class="ct" href="{U("/osaka/")}"><b>🏯 大阪機票</b><s>各出發地的票價</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📶 日本 eSIM</b><s>周遊卡是手機電子票</s></a></div>'
+      + '<p class="disc">價格、設施與規定以大阪周遊卡官方網站為準，整理可能有疏漏。本頁為公開資訊整理，與發行公司無合作關係。</p>'
+      + foot())
+    pages.append(('/osaka/amazing-pass/', 0.6))
+
+# ---------- 箱根周遊券 ----------
+# 資料在 hakone.json，全部引小田急官方來源（價目表 PDF、條款、EMot、箱根ナビ、空中纜車公告）。
+# Google 自動完成第二名是「箱根周遊券一日」，答案（沒有一日券）放在 TLDR 第一條與 FAQ 第一題。
+# 空中纜車停駛用日本日期當場篩：還沒結束的才列，全部過了整塊消失。
+if os.path.exists('hakone.json'):
+    HKP = json.load(open('hakone.json', encoding='utf-8'))
+    _hk_today = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _hk_D = datetime.date.fromisoformat
+    _hk_rc = HKP['romancecar']
+    _hk_em = HKP['emot']
+    _hk_bp = HKP['buy_paper']
+    _hk_kl = HKP['klook']
+    _hk_kk = HKP['kkday']
+    _hk_sj = HKP['prices'][0][1]
+    _hk_od = HKP['prices'][-1][1]
+    _hk_old = HKP['price_old_shinjuku']
+    _hk_from = _hk_D(HKP['price_from'])
+    _hk_stops = [s for s in HKP['ropeway_stops'] if _hk_D(s['until']) >= _hk_today]
+
+    def _hk_md(d):
+        return f'{d.month}/{d.day}'
+
+    def _hk_li(label, text):
+        return f'<li><b>{html.escape(label)}</b>：{html.escape(text)}</li>'
+
+    def _hk_yc(a, c):
+        return f'大人 {a:,} 円<br>小孩 {c:,} 円'
+
+    _hk_stop_txt = '、'.join(
+        f'{s["seg"]}（{_hk_md(_hk_D(s["from"]))}～{_hk_md(_hk_D(s["until"]))}）' for s in _hk_stops)
+    _hk_kl_h = html.escape(klook(_hk_kl['url'], 'ticket'))
+    _hk_kk_h = html.escape(kkday(_hk_kk['url'], 'ticket', 'hakonefreepass'))
+    _hk_of_h = html.escape(HKP['src_official'])
+    _hk_em_h = html.escape(HKP['src_emot_tc'])
+    _hk_rt = _hk_sj[0] + _hk_rc['fee'][0] * 2
+    _hk_ctr = '、'.join(f'{n} {h}' for n, h in HKP['centers'])
+
+    hk_faq = [
+     ('箱根周遊券有一日券嗎？',
+      f'沒有。箱根周遊券只有 2 日券和 3 日券，只去一天也是買 2 日券。新宿出發的 2 日券大人 {_hk_sj[0]:,} 円、小孩 {_hk_sj[1]:,} 円。'),
+     ('箱根周遊券多少錢？',
+      f'新宿出發 2 日券大人 {_hk_sj[0]:,} 円、小孩 {_hk_sj[1]:,} 円，3 日券大人 {_hk_sj[2]:,} 円、小孩 {_hk_sj[3]:,} 円；'
+      f'從小田原、箱根湯本、御殿場、三島開始用的版本 2 日券大人 {_hk_od[0]:,} 円、3 日券大人 {_hk_od[2]:,} 円。'
+      f'{_hk_from.year}/{_hk_md(_hk_from)} 起漲價，新宿出發 2 日券原本是 {_hk_old[0]:,} 円。網路（EMot）和窗口同價。'),
+     ('箱根周遊券包含浪漫特快嗎？',
+      f'不包含。浪漫特快要另外買特急券，新宿到箱根湯本單程大人 {_hk_rc["fee"][0]:,} 円、小孩 {_hk_rc["fee"][1]:,} 円，'
+      f'在 EMot 上買便宜 {_hk_rc["emot_discount"]} 円。{_hk_rc["local_time"]}。'),
+     ('箱根周遊券在新宿哪裡買？',
+      f'新宿站的小田急售票機和窗口都能買，也可以到新宿站西口（{HKP["centers"][0][1]}）或南口（{HKP["centers"][1][1]}）的小田急旅遊服務中心買。'
+      f'{_hk_bp["when"]}。也可以先在 EMot 買電子票。'),
+     ('從小田原出發比較便宜嗎？',
+      f'小田原版 2 日券大人 {_hk_od[0]:,} 円，比新宿版少 {_hk_sj[0] - _hk_od[0]:,} 円，但不含小田急線，新宿到小田原的車資要另外付。'
+      '如果是從東京搭新幹線或 JR 到小田原，買小田原版就好。'),
+     ('電子票和實體票差在哪？',
+      f'價格一樣。電子票（EMot）{_hk_em["date"]}；{_hk_em["device"]}；{_hk_em["net"]}。實體票{_hk_bp["when"]}。'),
+     ('KKday 買的箱根周遊券要去哪裡換？',
+      f'{_hk_kk["exchange"]}。新宿站西口的服務中心營業到 {HKP["centers"][0][1].split("～")[1]}，'
+      '晚到換不到。兌換時指定開始日，可選兌換當天起 1 個月內。'),
+     ('箱根周遊券可以退嗎？',
+      f'實體票還沒開始用，每張扣 220 円手續費退剩下的錢；電子票{_hk_em["refund"]}。'
+      '已經開始用的只有在去程出發站到箱根湯本之間提出才能退。'),
+     ('冬天箱根空中纜車有開嗎？',
+      (f'有，{HKP["ropeway_hours"]}。另外 {_hk_stop_txt} 定期檢修停駛，{HKP["ropeway_stop_note"]}。'
+       if _hk_stops else f'有，{HKP["ropeway_hours"]}。')),
+     ('小孩怎麼算？', f'{HKP["child_rule"]}。'),
+    ]
+    hk_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in hk_faq]}, ensure_ascii=False)
+
+    write('japan-hakone-freepass/index.html',
+      head(f'箱根周遊券怎麼買、有沒有一日券：新宿出發 2 日 {_hk_sj[0]:,} 円、浪漫特快另付、電子票和 KKday 兌換要注意什麼',
+           f'箱根周遊券沒有一日券，新宿出發 2 日券大人 {_hk_sj[0]:,} 円。本頁整理小田急官方的各站票價、包含與不包含的交通、'
+           '浪漫特快特急券、新宿哪裡買、EMot 電子票規則、退票、冬季空中纜車停駛，以及 Klook、KKday 的差別。',
+           'japan-hakone-freepass/',
+           '<script type="application/ld+json">' + hk_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('箱根周遊券', None)])
+      + '<h1>箱根周遊券怎麼買、有沒有一日券</h1>'
+      + '<p class="lede">箱根周遊券（箱根フリーパス，Hakone Freepass）是小田急發行、箱根地區 8 種交通工具不限次數搭的票。'
+        f'下面的價格與規定引小田急官方網站、條款與 EMot 售票頁，查證於 {HKP["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>沒有一日券</b>：只有 2 日和 3 日，只去一天也是買 2 日券。</li>'
+        f'<li><b>新宿出發 2 日 {_hk_sj[0]:,} 円</b>（約 {money(round(_hk_sj[0] * JPY))}），含小田急來回各一次；小田原起用版 {_hk_od[0]:,} 円。</li>'
+        f'<li><b>浪漫特快不含</b>：特急券單程 {_hk_rc["fee"][0]:,} 円另付；不搭的話坐一般電車約 2 小時。</li>'
+        '<li><b>電子票要選使用日</b>：一支手機一張票，當天 3:00 以後才能啟用。</li>'
+        '<li><b>KKday 憑證只能在新宿西口或小田原換</b>，箱根湯本不能換；新宿西口櫃台 16:00 就關。</li>'
+        + (f'<li><b>空中纜車冬季檢修</b>：{html.escape(_hk_stop_txt)} 停駛改搭代駛巴士，周遊券可以坐。</li>'
+           if _hk_stops else '')
+        + '<li><b>退票</b>：還沒開始用，每張扣 220 円手續費。</li>'
+        + '</ul></div>'
+      + '<h2>價格</h2>'
+      + '<div class="tw"><table><tr><th>從哪裡開始用</th><th>2 日券</th><th>3 日券</th></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{html.escape(n)}</b>' + (f'<br><small>{html.escape(note)}</small>' if note else '')
+                  + f'</td><td class="nm">{_hk_yc(p[0], p[1])}</td><td class="nm">{_hk_yc(p[2], p[3])}</td></tr>'
+                  for n, p, note in HKP['prices'])
+        + '</table></div>'
+      + f'<p class="disc">{html.escape(HKP["child_rule"])}。{_hk_from.year}/{_hk_md(_hk_from)} 起漲價，'
+        f'新宿出發 2 日券原本大人 {_hk_old[0]:,} 円、小孩 {_hk_old[1]:,} 円。EMot 電子票和窗口同價。'
+        '新宿版的價格已經含新宿到小田原的小田急來回車資。</p>'
+      + f'<p class="lede">新宿出發、去回都搭浪漫特快：周遊券 {_hk_sj[0]:,} 円 + 特急券來回 {_hk_rc["fee"][0] * 2:,} 円 = '
+        f'<b>{_hk_rt:,} 円</b>（約 {money(round(_hk_rt * JPY))}），這是官方繁中頁的算法。</p>'
+      + '<h2>包含哪些交通</h2><ul class="lede">'
+        + ''.join(_hk_li(n, s) for n, s in HKP['covers'])
+        + '</ul>'
+      + f'<p class="disc">{html.escape(HKP["discount_note"])}。{html.escape(HKP["returned"])}。</p>'
+      + '<h3>不包含、要另外付的</h3><ul class="lede">'
+        + ''.join(_hk_li(n, s) for n, s in HKP['not_covers'])
+        + '</ul>'
+      + '<h2>浪漫特快要另外買</h2><ul class="lede">'
+        + _hk_li('價格', f'新宿～箱根湯本單程大人 {_hk_rc["fee"][0]:,} 円、小孩 {_hk_rc["fee"][1]:,} 円；在 EMot 上買便宜 {_hk_rc["emot_discount"]} 円，可以和周遊券一起買')
+        + _hk_li('時間', _hk_rc['time']) + _hk_li('不搭的話', _hk_rc['local_time'])
+        + _hk_li('什麼時候訂', _hk_rc['booking']) + _hk_li('退票', _hk_rc['cancel'])
+        + _hk_li('EMot 限制', _hk_rc['emot_rule']) + _hk_li('小田原起用版', _hk_rc['odawara'])
+        + '</ul>'
+      + '<h2>新宿哪裡買、怎麼買</h2><ul class="lede">'
+        + _hk_li('什麼時候買', _hk_bp['when']) + _hk_li('哪裡買', _hk_bp['where']) + _hk_li('刷卡', _hk_bp['card'])
+        + '</ul>'
+      + f'<h3>小田急旅遊服務中心</h3><p class="lede">{html.escape(HKP["centers_note"])}：{html.escape(_hk_ctr)}。</p>'
+      + '<h3>電子票（EMot）</h3><ul class="lede">'
+        + _hk_li('是什麼', _hk_em['what']) + _hk_li('付款', _hk_em['pay']) + _hk_li('使用日', _hk_em['date'])
+        + _hk_li('票種', _hk_em['types']) + _hk_li('手機', _hk_em['device']) + _hk_li('多人共用', _hk_em['group'])
+        + _hk_li('怎麼用', _hk_em['use']) + _hk_li('網路', _hk_em['net'])
+        + '</ul>'
+      + '<h2>退票</h2><ul class="lede">'
+        + ''.join(f'<li>{html.escape(s)}</li>' for s in HKP['refund_paper'])
+        + _hk_li('電子票', f'{_hk_em["refund"]}；{_hk_em["weather"]}')
+        + '</ul>'
+      + '<h2>冬天的空中纜車</h2><ul class="lede">'
+        + f'<li>{html.escape(HKP["ropeway_hours"])}</li>'
+        + ''.join(f'<li><b>{_hk_md(_hk_D(s["from"]))}～{_hk_md(_hk_D(s["until"]))}</b>：{html.escape(s["seg"])} 定期檢修停駛</li>'
+                  for s in _hk_stops)
+        + (f'<li>{html.escape(HKP["ropeway_stop_note"])}</li>' if _hk_stops else '')
+        + '</ul>'
+      + '<h2>官網、Klook、KKday 差在哪</h2>'
+      + '<div class="tw"><table><tr><th>買法</th><th>開始日</th><th>取消</th><th>要注意</th></tr>'
+        f'<tr><td class="nm"><b>官方 EMot</b></td><td class="nm">買的時候選使用日</td><td class="nm">每張扣 220 円手續費</td>'
+        f'<td class="nm">一支手機一張票；群組票最多 4 人要同行</td></tr>'
+        f'<tr><td class="nm"><b>Klook</b></td><td class="nm">{html.escape(_hk_kl["valid"])}</td>'
+        f'<td class="nm">{html.escape(_hk_kl["cancel"])}</td><td class="nm">{html.escape(_hk_kl["note"])}</td></tr>'
+        f'<tr><td class="nm"><b>KKday</b></td><td class="nm">{html.escape(_hk_kk["valid"])}</td>'
+        f'<td class="nm">{html.escape(_hk_kk["cancel"])}</td><td class="nm">{html.escape(_hk_kk["note"])}</td></tr>'
+        '</table></div>'
+      + f'<p class="disc">{html.escape(HKP["foreign_note"])}。官方條款寫在海外旅行社買的票處理方式可能不同，退票與兌換照各平台的規定。</p>'
+      + '<h2>在哪裡買</h2>'
+      + f'<a class="cta" href="{_hk_em_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>小田急官方 EMot 電子票</b>'
+        '<s>繁體中文介面；可以一起買浪漫特快；本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_hk_kl_h}" target="_blank" rel="{_rel(_hk_kl_h)}">'
+        '<span class="ci">🚠</span><span class="ct"><b>Klook 的箱根周遊券</b>'
+        '<s>用台幣付款；有實體票和電子車票</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_hk_kk_h}" target="_blank" rel="{_rel(_hk_kk_h)}">'
+        '<span class="ci">🚠</span><span class="ct"><b>KKday 的箱根周遊券</b>'
+        '<s>用台幣付款；要到新宿西口或小田原換實體票</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        f'官方 EMot 本站沒有分潤。平台的售價與方案以平台頁面為準。官方中文說明在<a href="{_hk_of_h}" target="_blank" rel="nofollow noopener">小田急箱根周遊券頁</a>。</p>'
+      + faq_visible(hk_faq)
+      + fare_cta('tokyo', '飛東京的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + (f'<a class="ct" href="{U("/japan-fuji-q/")}"><b>🎢 富士急樂園門票</b><s>每天不同價</s></a>'
+         if os.path.exists('fujiq.json') else '')
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>🗼 東京機票</b><s>各出發地的票價</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📶 日本 eSIM</b><s>電子票要能上網</s></a></div>'
+      + '<p class="disc">價格、範圍與規定以小田急官方網站為準，整理可能有疏漏。本頁為公開資訊整理，與發行公司無合作關係。</p>'
+      + foot())
+    pages.append(('/japan-hakone-freepass/', 0.6))
 
 # ---------- 東京鐵塔門票怎麼買 ----------
 # 資料在 tokyo-tower.json。票價固定，引官網料金頁；網路票的效期與取消引官網連過去的 Asoview 購票頁。
