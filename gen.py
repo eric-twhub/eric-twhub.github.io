@@ -1614,6 +1614,7 @@ def topnav(cur=''):
             + link('/okinawa/churaumi/', '🐋 美麗海水族館門票要先買嗎')
             + link('/osaka/kaiyukan/', '🦈 海遊館門票可以現場買嗎')
             + link('/nagasaki/huis-ten-bosch/', '🌷 豪斯登堡門票價格')
+            + link('/japan-fuji-q/', '🎢 富士急樂園門票怎麼買')
             + link('/tokyo/teamlab/', '🎨 teamLab 門票怎麼買')
             + link('/japan-fujiko-museum/', '🔔 藤子不二雄博物館門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉預測與賞楓預約')
@@ -1767,6 +1768,7 @@ _AD_MAP = [
     ('okinawa/churaumi', 'activity2'),
     ('osaka/kaiyukan', 'activity2'),
     ('nagasaki/huis-ten-bosch', 'activity2'),
+    ('japan-fuji-q', 'activity2'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -3157,6 +3159,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'<a href="{U("/okinawa/churasun6/")}">那霸ちゅらさん6 的座位方案與取消規定</a>'
                      f'（六本木 63 ANGEL 官網連過去的沖繩店，官網原文整理；演出前 10 分鐘沒到就取消，'
                      f'未滿 20 歲不得入場）。</p>')
+        if slug == 'tokyo' and os.path.exists('fujiq.json'):
+            body += (f'<p class="lede">要去富士急樂園？'
+                     f'<a href="{U("/japan-fuji-q/")}">門票怎麼買、每日票價與休園日、Klook／KKday 差在哪</a>'
+                     f'（官網原文整理：入園免費、一日券每天不同價、戰慄迷宮要另外買）。</p>')
         if slug == 'tokyo' and os.path.exists('angel63.json'):
             body += (f'<p class="lede">晚上想找點事做？'
                      f'<a href="{U("/tokyo/63angel/")}">六本木 63 ANGEL 的座位方案與取消規定</a>'
@@ -9444,6 +9450,217 @@ if os.path.exists('htb.json'):
       + '<p class="disc">票價、營業時間與規定以豪斯登堡官網為準，整理可能有疏漏。本頁為公開資訊整理，與豪斯登堡無合作關係。</p>'
       + foot())
     pages.append(('/nagasaki/huis-ten-bosch/', 0.6))
+
+# ---------- 富士急樂園門票怎麼買 ----------
+# 資料在 fujiq.json。一日券逐日票價是官網月曆 PDF 逐格讀的（每月初補下個月），營業時間與大型設施停駛是官網月頁的快照。
+# 官網沒有點名任何海外平台；Klook／KKday 的票是訪日旅客專用、不分日期一個價、不能取消，
+# 官網票每天價格不同但 60 天內能改日期。平台價格會變，頁面不寫，只說「換成日圓跟官網當天價比」。
+if os.path.exists('fujiq.json'):
+    FQ = json.load(open('fujiq.json', encoding='utf-8'))
+    _fq_today = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _fq_wd = '一二三四五六日'
+    _fq_D = datetime.date.fromisoformat
+    _fq_T = FQ['tiers']
+    _fq_until = _fq_D(FQ['published_until'])
+    _fq_days = sorted((_fq_D(d), v) for d, v in FQ['days'].items() if _fq_D(d) >= _fq_today)
+    _fq_hours = {_fq_D(d): v for d, v in FQ['hours'].items() if _fq_D(d) >= _fq_today}
+    _fq_hlast = max(_fq_hours) if _fq_hours else None
+    _fq_closed = sorted(d for d, v in _fq_hours.items() if v is None)
+
+    def _fq_md(d):
+        return f'{d.month}/{d.day}'
+
+    def _fq_mds(ds):
+        out, i = [], 0
+        while i < len(ds):
+            j = i
+            while j + 1 < len(ds) and (ds[j + 1] - ds[j]).days == 1:
+                j += 1
+            out.append(_fq_md(ds[i]) if i == j else
+                       (f'{_fq_md(ds[i])}～{ds[j].day}' if ds[i].month == ds[j].month else f'{_fq_md(ds[i])}～{_fq_md(ds[j])}'))
+            i = j + 1
+        return '、'.join(out)
+
+    def _fq_close(c):
+        h, m = c.split(':')
+        return f'翌 {int(h) - 24}:{m}' if int(h) >= 24 else c
+
+    def _fq_stops(v):
+        if not v or not v[2]:
+            return '–'
+        return '、'.join(n + (f'（到 {t} 點）' if t else '') for n, t in v[2])
+
+    # 每個月：大人價依日子分組，最常見的寫「其他日子」
+    _fq_months = {}
+    for d, v in _fq_days:
+        _fq_months.setdefault((d.year, d.month), []).append((d, v))
+    _fq_mlines = []
+    for (yy, mm), rows in _fq_months.items():
+        by = {}
+        for d, v in rows:
+            if v:
+                by.setdefault(_fq_T[v][0], []).append(d)
+        if not by:
+            continue
+        common = max(by, key=lambda p: len(by[p]))
+        parts = [f'{p:,} 円（' + ('其他日子' if p == common and len(by) > 1 else
+                                  '每天' if len(by) == 1 else _fq_mds(by[p])) + '）' for p in sorted(by)]
+        cl = [d for d, v in rows if v is None]
+        _fq_mlines.append(f'<li><b>{yy}/{mm}</b>：' + '、'.join(parts)
+                          + (f'；<b>{_fq_mds(cl)} 休園</b>' if cl else '') + '</li>')
+
+    _fq_30 = [(d, v) for d, v in _fq_days if v and (d - _fq_today).days < 30]
+    _fq_p30 = sorted({_fq_T[v][0] for _, v in _fq_30})
+    _fq_allp = sorted({_fq_T[v][0] for _, v in _fq_days if v})
+    _fq_cheap = [d for d, v in _fq_days if v and _fq_T[v][0] == _fq_allp[0]] if _fq_allp else []
+
+    _fq_14 = ''.join(
+        f'<tr><td class="nm"><b>{_fq_md(d)}（{_fq_wd[d.weekday()]}）</b></td>'
+        + (f'<td class="nm">¥{_fq_T[FQ["days"][d.isoformat()]][0]:,}</td>' if FQ['days'].get(d.isoformat()) else
+           ('<td class="nm">休園</td>' if d.isoformat() in FQ['days'] else '<td class="nm">未公布</td>'))
+        + (f'<td class="nm">{v[0]}～{_fq_close(v[1])}</td><td class="nm">{_fq_stops(v)}</td>' if v else
+           '<td class="nm">–</td><td class="nm">–</td>')
+        + '</tr>'
+        for d, v in sorted(_fq_hours.items())[:14])
+
+    _fq_hdr = '<tr><th>大人票價</th>' + ''.join(f'<th>{a}</th>' for a in FQ['age']) + '</tr>'
+    _fq_tier_rows = ''.join(
+        f'<tr><td class="nm"><b>{ps[0]:,} 円的日子</b></td>' + ''.join(f'<td class="nm">¥{p:,}</td>' for p in ps) + '</tr>'
+        for k, ps in sorted(_fq_T.items(), key=lambda kv: kv[1][0]))
+
+    if _fq_p30:
+        _fq_range = (f'接下來 30 天大人 {_fq_p30[0]:,}～{_fq_p30[-1]:,} 円' if len(_fq_p30) > 1
+                     else f'接下來 30 天大人都是 {_fq_p30[0]:,} 円')
+    else:
+        _fq_range = ''
+    _fq_cheap_txt = (f'官網公布到 {_fq_md(_fq_until)} 的日子裡最便宜是 {_fq_allp[0]:,} 円（{_fq_mds(_fq_cheap)}）'
+                     if _fq_cheap and len(_fq_allp) > 1 else '')
+    _fq_unpub = f'{_fq_until.year}/{_fq_md(_fq_until)} 之後的票價官網還沒公布。'
+    _fq_cl_txt = (f'{_fq_mds(_fq_closed)} 休園。' if _fq_closed else '')
+
+    _fq_w = FQ['web']
+    _fq_kl = FQ['klook']
+    _fq_kk = FQ['kkday']
+    _fq_s = FQ['senritsu']
+    _fq_a = FQ['access']
+    _fq_kl_h = html.escape(klook(_fq_kl['url'], 'ticket'))
+    _fq_kk_h = html.escape(kkday(_fq_kk['url'], 'ticket', 'fujiq'))
+    _fq_of_h = html.escape(FQ['src_ticket'])
+
+    def _fq_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    _fq_sen_txt = (f'一日券不包含戰慄迷宮。有一日券的人{_fq_s["with_pass"]}；沒有一日券 {_fq_s["without"]}。'
+                   f'{_fq_s["sale"]}。{_fq_s["kids"]}。')
+
+    fq_faq = [
+     ('富士急樂園門票多少錢？',
+      '入園免費，要玩設施才買票。一日券（ワンデイパス）價格每天不同'
+      + (f'，{_fq_range}' if _fq_range else '') + '。'
+      + (_fq_cheap_txt + '。' if _fq_cheap_txt else '')
+      + '國高中、小學、幼兒與 65 歲以上各有票價。'),
+     ('富士急樂園休園日是哪幾天？',
+      (f'官網營業時間表上：{_fq_cl_txt}' if _fq_closed else '')
+      + (f'{_fq_hlast.year}/{_fq_md(_fq_hlast)} 之後的營業時間官網還沒公布。' if _fq_hlast else '')
+      + '個別設施另有檢修停駛日，列在官網每月的營業時間頁。'),
+     ('富士急門票要先買嗎？會賣完嗎？',
+      _fq_w['soldout'] + '。' + FQ['counter'] + '。旺日現場窗口很擠，官網建議先在網路買。'),
+     ('官網票可以退嗎？',
+      f'不行，{_fq_w["cancel"]}。但{_fq_w["change"]}。'),
+     ('Klook、KKday 的富士急門票跟官網差在哪？',
+      f'平台的一日券不用選日期，一個價格：Klook {_fq_kl["valid"].split("，")[0]}，KKday {_fq_kk["valid"].split("，")[0]}；兩家都不能取消，'
+      f'而且都是訪日旅客專用（Klook {_fq_kl["who"]}；KKday {_fq_kk["who"]}）。官網票每天價格不同、60 天內能改日期。'
+      '買之前把平台價換成日圓，跟官網那天的價格比一下。'),
+     ('Klook、KKday 的票是官方授權的嗎？',
+      '富士急官網沒有列出任何海外代售平台。Klook 商品頁寫自己是富士急授權的售票通路；'
+      f'KKday 寫的入園方式是{_fq_kk["entry"]}，和官網的 QR 發券流程一樣。' + FQ['resale'] + '。'),
+     ('一日券包含戰慄迷宮（鬼屋）嗎？',
+      _fq_sen_txt),
+     ('富士急怎麼入園？要人臉辨識嗎？', _fq_w['entry'] + '。'),
+     ('有哪些設施停駛？',
+      '長期停駛：' + '；'.join(FQ['long_stop']) + '。大型雲霄飛車輪流檢修，哪天停哪台看下面的 14 天表或官網營業時間頁。'),
+     ('從東京怎麼去富士急？',
+      f'{_fq_a["bus"]}。{_fq_a["train"]}。'),
+    ]
+    fq_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in fq_faq]}, ensure_ascii=False)
+
+    write('japan-fuji-q/index.html',
+      head('富士急樂園門票怎麼買：每日票價、休園日、戰慄迷宮要另外買、官網和 Klook／KKday 差在哪',
+           '富士急樂園入園免費、一日券價格每天不同。本頁整理官網逐日票價與休園日、哪天哪台雲霄飛車停駛、'
+           '官網票怎麼改日期、戰慄迷宮怎麼買、Klook 與 KKday 的票不分日期但不能取消，以及從東京怎麼去。',
+           'japan-fuji-q/',
+           '<script type="application/ld+json">' + fq_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('富士急樂園門票', None)])
+      + '<h1>富士急樂園門票怎麼買</h1>'
+      + '<p class="lede">富士急樂園在山梨縣富士吉田，從新宿搭高速巴士約 1 小時 40 分。下面的票價、營業時間與規定引富士急官網，'
+        f'查證於 {FQ["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>入園免費，一日券每天不同價</b>：{_fq_range}' + (f'；{_fq_cheap_txt}' if _fq_cheap_txt else '') + '。</li>'
+        + (f'<li><b>休園日</b>：{_fq_mds(_fq_closed)}。</li>' if _fq_closed else '')
+        + '<li><b>不會賣完</b>：一日券沒有名額上限，當天買也行；旺日窗口很擠，先在網路買比較快。</li>'
+        '<li><b>官網票不能退、能改日期</b>：購買後 60 天內，最晚原訂日當天 23:00 前改。</li>'
+        '<li><b>Klook、KKday 的票不分日期一個價、不能取消</b>：只限訪日旅客。把平台價換成日圓跟官網當天價比一下再決定。</li>'
+        '<li><b>戰慄迷宮不在一日券裡</b>：另買時間指定券，一組最多 4 人。</li>'
+        + '</ul></div>'
+      + '<h2>一日券票價：每天不同</h2>'
+      + '<p class="lede">官網月曆每天標價，目前公布的日子出現過這幾組價格：</p>'
+      + '<div class="tw"><table>' + _fq_hdr + _fq_tier_rows + '</table></div>'
+      + ('<p class="lede">各月份大人票價落在哪幾天：</p><ul class="lede">' + ''.join(_fq_mlines) + '</ul>' if _fq_mlines else '')
+      + f'<p class="disc">{_fq_unpub}價格含稅，以官網月曆為準。</p>'
+      + (f'<details class="faq"><summary>未來 14 天的票價、營業時間與停駛的大型設施</summary><div>'
+         '<div class="tw narrow"><table><tr><th>日期</th><th>大人</th><th>營業時間</th><th>停駛</th></tr>'
+         + _fq_14 + '</table></div>'
+         '<p class="disc">停駛欄只列 FUJIYAMA、ZOKKON、高飛車、ええじゃないか、進撃の巨人 THE RIDE、戦慄迷宮，官網寫停駛計畫可能不預告變更。</p>'
+         '</div></details>' if _fq_14 else '')
+      + '<h2>其他票種</h2><ul class="lede">'
+        + ''.join(_fq_li(n, t) for n, t in FQ['other_pass'])
+        + _fq_li('不買一日券', FQ['free_entry']) + '</ul>'
+      + '<h2>官網、Klook、KKday 差在哪</h2>'
+      + '<div class="tw"><table><tr><th>買法</th><th>日期與價格</th><th>取消與改期</th><th>誰能買</th></tr>'
+        f'<tr><td class="nm"><b>官網（CLUBフジQ）</b></td><td class="nm">選日期，每天價格不同</td>'
+        f'<td class="nm">{html.escape(_fq_w["cancel"])}；60 天內可改日期</td><td class="nm">要先註冊會員</td></tr>'
+        '<tr><td class="nm"><b>現場</b></td><td class="nm">當天價</td><td class="nm">–</td><td class="nm">不限</td></tr>'
+        f'<tr><td class="nm"><b>Klook</b></td><td class="nm">{html.escape(_fq_kl["valid"])}</td>'
+        f'<td class="nm">{html.escape(_fq_kl["cancel"])}</td><td class="nm">{html.escape(_fq_kl["who"])}；{html.escape(_fq_kl["when"])}</td></tr>'
+        f'<tr><td class="nm"><b>KKday</b></td><td class="nm">{html.escape(_fq_kk["valid"])}</td>'
+        f'<td class="nm">{html.escape(_fq_kk["cancel"])}</td><td class="nm">{html.escape(_fq_kk["who"])}</td></tr>'
+        '</table></div>'
+      + '<p class="disc">富士急官網沒有列出任何海外代售平台；Klook 商品頁自稱授權通路。'
+        f'KKday 的票{html.escape(_fq_kk["entry"])}，{html.escape(_fq_kk["excl"])}。'
+        f'兩家的提早入園方案寫依當天營業時間而定，{html.escape(FQ["early_entry"])}。{html.escape(FQ["resale"])}。</p>'
+      + '<h2>在哪裡買</h2>'
+      + f'<a class="cta" href="{_fq_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>富士急官網票價與購票</b>'
+        '<s>每天價格不同、60 天內能改日期；日文介面，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_fq_kl_h}" target="_blank" rel="{_rel(_fq_kl_h)}">'
+        '<span class="ci">🎢</span><span class="ct"><b>Klook 的富士急樂園門票</b>'
+        '<s>用台幣付款，不分日期；不可取消，最快隔天用</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_fq_kk_h}" target="_blank" rel="{_rel(_fq_kk_h)}">'
+        '<span class="ci">🎢</span><span class="ct"><b>KKday 的富士急樂園門票</b>'
+        '<s>用台幣付款，3 個月內兌換；不可取消</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官網本站沒有分潤。平台的售價與方案以平台頁面為準。</p>'
+      + '<h2>戰慄迷宮（鬼屋）</h2>'
+      + f'<p class="lede">{html.escape(_fq_sen_txt)}{html.escape(_fq_s["length"])}。</p>'
+      + '<h2>入園與停駛</h2><ul class="lede">'
+        + _fq_li('入園方式', _fq_w['entry'])
+        + _fq_li('長期停駛', '；'.join(FQ['long_stop']))
+        + '</ul>'
+      + '<h2>從東京怎麼去</h2><ul class="lede">'
+        + _fq_li('高速巴士', _fq_a['bus']) + _fq_li('電車', _fq_a['train']) + _fq_li('巴士套票', _fq_a['pack'])
+        + '</ul>'
+      + faq_visible(fq_faq)
+      + fare_cta('tokyo', '飛東京的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-park-ticket/")}"><b>🎢 日本樂園門票</b><s>環球影城、迪士尼哪天便宜</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>🗼 東京機票</b><s>各出發地的票價</s></a>'
+      + f'<a class="ct" href="{U("/japan-shibuya-sky/")}"><b>🌇 SHIBUYA SKY</b><s>門票怎麼買</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📶 日本 eSIM</b><s>電子票要用手機出示</s></a></div>'
+      + '<p class="disc">票價、營業時間與規定以富士急樂園官網為準，整理可能有疏漏。本頁為公開資訊整理，與富士急樂園無合作關係。</p>'
+      + foot())
+    pages.append(('/japan-fuji-q/', 0.6))
 
 # ---------- 東京鐵塔門票怎麼買 ----------
 # 資料在 tokyo-tower.json。票價固定，引官網料金頁；網路票的效期與取消引官網連過去的 Asoview 購票頁。
