@@ -1613,6 +1613,7 @@ def topnav(cur=''):
             + link('/japan-tokyo-tower/', '🗼 東京鐵塔門票怎麼買')
             + link('/okinawa/churaumi/', '🐋 美麗海水族館門票要先買嗎')
             + link('/osaka/kaiyukan/', '🦈 海遊館門票可以現場買嗎')
+            + link('/nagasaki/huis-ten-bosch/', '🌷 豪斯登堡門票價格')
             + link('/tokyo/teamlab/', '🎨 teamLab 門票怎麼買')
             + link('/japan-fujiko-museum/', '🔔 藤子不二雄博物館門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉預測與賞楓預約')
@@ -1765,6 +1766,7 @@ _AD_MAP = [
     ('japan-tokyo-tower', 'activity2'),
     ('okinawa/churaumi', 'activity2'),
     ('osaka/kaiyukan', 'activity2'),
+    ('nagasaki/huis-ten-bosch', 'activity2'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -3138,6 +3140,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'<a href="{U("/tokyo/worth-flying-for/")}">東京值得為它再飛一次的 45 家店</a>'
                      f'（Threads 上七千多則回覆挑出來的，每家都查過官方地址與公休，'
                      f'其中一家已經歇業）。</p>')
+        if slug in ('nagasaki', 'fukuoka') and os.path.exists('htb.json'):
+            body += (f'<p class="lede">要去豪斯登堡？'
+                     f'<a href="{U("/nagasaki/huis-ten-bosch/")}">門票價格、哪些日子比較貴、住園區飯店隔天免費</a>'
+                     f'（官網原文整理：特定日加價、官網網路票不能退、Klook／KKday 是官方合作通路）。</p>')
         if slug == 'osaka' and os.path.exists('kaiyukan.json'):
             body += (f'<p class="lede">要去海遊館？'
                      f'<a href="{U("/osaka/kaiyukan/")}">門票可以現場買嗎、每日票價、Klook／KKday 差在哪</a>'
@@ -9223,6 +9229,221 @@ if os.path.exists('kaiyukan.json'):
       + '<p class="disc">票價、營業時間與規定以海遊館官網為準，整理可能有疏漏。本頁為公開資訊整理，與海遊館無合作關係。</p>'
       + foot())
     pages.append(('/osaka/kaiyukan/', 0.6))
+
+# ---------- 豪斯登堡門票價格 ----------
+# 資料在 htb.json。票價分一般日／特定日／活動日三種，特定日清單引官網 FAQ（只公布到 special_until），
+# special_until 以後的日子頁面寫「官網還沒公布」，不能當成一般日。
+# 營業時間是 /opentime/ calendarJSON 的快照；值是 null 的日子（2027/1/12～15）官網沒寫原因，頁面只說表上空白、不說休園。
+# 官網多語頁點名 Klook 7254、KKday 3988 是官方合作通路，所以三個 CTA 並列；官網網路票買了不能退，平台標免費取消。
+if os.path.exists('htb.json'):
+    HTB = json.load(open('htb.json', encoding='utf-8'))
+    _htb_today = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _htb_wd = '一二三四五六日'
+    _htb_D = datetime.date.fromisoformat
+    _htb_P = HTB['price']
+    _htb_until = _htb_D(HTB['special_until'])
+    _htb_sp = [_htb_D(d) for d in HTB['special_days'] if _htb_D(d) >= _htb_today]
+    _htb_ev = {_htb_D(d): t for d, t in HTB['event_days'].items() if _htb_D(d) >= _htb_today}
+    _htb_hours = sorted((_htb_D(d), v) for d, v in HTB['hours'].items() if _htb_D(d) >= _htb_today)
+    _htb_blank = [d for d, v in _htb_hours if v is None]
+    _htb_hlast = _htb_hours[-1][0] if _htb_hours else None
+
+    def _htb_md(d):
+        return f'{d.month}/{d.day}'
+
+    def _htb_mds(ds):
+        # 同月連續日併成「12/24～30」
+        out, i = [], 0
+        while i < len(ds):
+            j = i
+            while j + 1 < len(ds) and (ds[j + 1] - ds[j]).days == 1:
+                j += 1
+            if i == j:
+                out.append(_htb_md(ds[i]))
+            elif ds[i].month == ds[j].month:
+                out.append(f'{_htb_md(ds[i])}～{ds[j].day}')
+            else:
+                out.append(f'{_htb_md(ds[i])}～{_htb_md(ds[j])}')
+            i = j + 1
+        return '、'.join(out)
+
+    def _htb_kind(d):
+        if d in _htb_ev:
+            return '花火日'
+        if d in _htb_sp:
+            return '特定日'
+        if d <= _htb_until:
+            return '一般日'
+        return '官網未公布'
+
+    def _htb_hm(v):
+        o, c, l = v
+        return f'{o}～{c}', l
+
+    _htb_rows = []
+    for key, label, note in [('1day', '1DAY', '整天'), ('after3', 'After 3', '15:00 後入園'),
+                             ('1.5day', '1.5DAY', '第一天 15:00 起＋隔天整天，只在現場賣'),
+                             ('2day', '2DAY', '連續 2 天，只在現場賣')]:
+        for k2, l2 in [('general', '一般日'), ('special', '特定日'), ('event', '花火日')]:
+            ps = _htb_P[key].get(k2)
+            if not ps or (k2 == 'event' and not _htb_ev):
+                continue
+            _htb_rows.append(f'<tr><td class="nm"><b>{label}・{l2}</b><br><small style="color:var(--dim)">{note}</small></td>'
+                             + ''.join(f'<td class="nm">¥{p:,}</td>' for p in ps) + '</tr>')
+    _htb_hdr = '<tr><th>票種</th>' + ''.join(f'<th>{a}</th>' for a in HTB['age']) + '</tr>'
+
+    _htb_a1 = _htb_P['1day']['general'][0]
+    _htb_a1s = _htb_P['1day']['special'][0]
+    _htb_a1e = _htb_P['1day']['event'][0]
+    _htb_ev_txt = '、'.join(_htb_md(d) for d in sorted(_htb_ev)) + ' 花火大會當天'
+
+    _htb_sp_txt = _htb_mds(_htb_sp)
+
+    _htb_14 = ''.join(
+        f'<tr><td class="nm"><b>{_htb_md(d)}（{_htb_wd[d.weekday()]}）</b></td><td class="nm">{_htb_kind(d)}</td>'
+        + (f'<td class="nm">{_htb_hm(v)[0]}</td><td class="nm">{_htb_hm(v)[1]}</td>' if v
+           else '<td class="nm">官網表上空白</td><td class="nm">–</td>')
+        + '</tr>'
+        for d, v in _htb_hours[:14])
+
+    _htb_evs = [e for e in HTB['events'] if _htb_D(e['to']) >= _htb_today]
+
+    def _htb_evli(e):
+        f, t = _htb_D(e['from']), _htb_D(e['to'])
+        when = (_htb_md(f) if f == t else f'{_htb_md(f)}～{_htb_md(t)}' if f.year == t.year
+                else f'{f.year}/{_htb_md(f)}～{t.year}/{_htb_md(t)}')
+        return f'<li><b>{html.escape(e["name"])}</b>（{when}）' + (f'：{html.escape(e["text"])}' if e['text'] else '') + '</li>'
+
+    _htb_w = HTB['web']
+    _htb_kl = HTB['klook']
+    _htb_kk = HTB['kkday']
+    _htb_a = HTB['access']
+    _htb_kl_h = html.escape(klook(_htb_kl['url'], 'ticket'))
+    _htb_kk_h = html.escape(kkday(_htb_kk['url'], 'ticket', 'huistenbosch'))
+    _htb_of_h = html.escape(HTB['src_ticket'])
+    _htb_bogo = _htb_D(HTB['bogo_checked'])
+
+    def _htb_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    _htb_blank_txt = (f'官網營業時間表上 {_htb_mds(_htb_blank)} 是空白的，沒有寫原因，這幾天要去先看官網。'
+                      if _htb_blank else '')
+    _htb_hl_txt = (f'{_htb_hlast.year}/{_htb_md(_htb_hlast)} 以後的營業時間官網還沒公布。' if _htb_hlast else '')
+
+    htb_faq = [
+     ('豪斯登堡門票多少錢？',
+      f'1DAY 護照大人一般日 {_htb_a1:,} 円，特定日 {_htb_a1s:,} 円'
+      + (f'，{_htb_ev_txt} {_htb_a1e:,} 円' if _htb_ev else '')
+      + f'。國高中、小學、4 歲到學齡前、65 歲以上各有票價，{HTB["age_note"]}15:00 後入園的 After 3 比較便宜。'),
+     ('哪些日子是特定日？',
+      (f'官網 FAQ 列出的特定日（還沒過的）：{_htb_sp_txt}。' if _htb_sp else '')
+      + f'{_htb_until.year}/{_htb_md(_htb_until)} 之後的特定日官網還沒公布。' + HTB['multi_day_rule']),
+     ('豪斯登堡門票有買一送一嗎？',
+      f'官網沒有買一送一或外國旅客專屬價。{_htb_bogo.year}/{_htb_md(_htb_bogo)} 看 Klook、KKday 的商品頁，方案裡也沒有買一送一；'
+      'Klook 有 3 人、4 人一起買的團體方案，那是揪團價。平台不定期有活動，以下單當下的頁面為準。'),
+     ('住豪斯登堡的飯店有送門票嗎？',
+      HTB['hotel'] + '。外面的飯店沒有這個安排。'),
+     ('官網買的票可以退嗎？',
+      f'不行，{_htb_w["cancel"]}。但{_htb_w["change"]}。'),
+     ('Klook、KKday 的票可以用嗎？',
+      '可以。官網的外語購票頁把 Klook、KKday 列為入場券的合作通路。'
+      f'KKday {_htb_kk["entry"]}；Klook {_htb_kl["entry"]}。{HTB["agency_qr"]}。{HTB["resale"]}。'),
+     ('門票可以現場買嗎？', HTB['counter'] + '。'),
+     ('營業到幾點？',
+      '平日多半 10:00～21:00，週六與連假前一天開到 22:00；最後入場是閉園前 1 小時。'
+      + _htb_blank_txt + _htb_hl_txt),
+     ('煙火時間是幾點？',
+      ''.join(f'{e["name"]}（{_htb_md(_htb_D(e["from"]))}' + (f'～{_htb_md(_htb_D(e["to"]))}' if e['to'] != e['from'] else '')
+              + f'）：{e["text"]}。' for e in _htb_evs if '花火' in e['name'] or '倒數' in e['name'])
+      + HTB['nightshow'] + '。'),
+     ('從福岡怎麼去豪斯登堡？',
+      f'{_htb_a["jr"]}。{_htb_a["bus_fuk"]}。從長崎機場：{_htb_a["bus_ngs"]}。'),
+    ]
+    htb_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in htb_faq]}, ensure_ascii=False)
+
+    write('nagasaki/huis-ten-bosch/index.html',
+      head('豪斯登堡門票價格：哪些日子比較貴、有沒有買一送一、住園區飯店隔天免費、Klook／KKday 差在哪',
+           '豪斯登堡 1DAY 護照分一般日、特定日與花火日三種價格。本頁整理官網票價與特定日清單、'
+           '官網網路票能不能退、住官方飯店隔天門票免費、Klook 與 KKday 是不是官方通路、營業時間、煙火與交通。',
+           'nagasaki/huis-ten-bosch/',
+           '<script type="application/ld+json">' + htb_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('長崎', '/nagasaki/'), ('豪斯登堡門票', None)])
+      + '<h1>豪斯登堡門票價格</h1>'
+      + '<p class="lede">豪斯登堡在長崎縣佐世保市，從博多搭 JR 約 1 小時 45 分。下面的票價、營業時間與規定引豪斯登堡官網、'
+        f'官網 FAQ 與官網的外語購票頁，查證於 {HTB["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>大人 1DAY {_htb_a1:,} 円起</b>（約 {money(round(_htb_a1 * JPY))}）：特定日 {_htb_a1s:,} 円'
+        + (f'，{_htb_ev_txt} {_htb_a1e:,} 円' if _htb_ev else '') + '。15:00 後入園的 After 3 便宜一截。</li>'
+        + (f'<li><b>接下來的特定日</b>：{_htb_sp_txt}（官網公布到 {_htb_md(_htb_until)}）。</li>' if _htb_sp else '')
+        + '<li><b>住官方 5 家飯店，隔天門票免費</b>：入住當天買 1DAY 或 After 3，隔天的票由飯店櫃台提供。</li>'
+        '<li><b>沒有買一送一</b>：官網沒有；Klook、KKday 的方案裡也沒有，Klook 有 3 人、4 人團體方案。</li>'
+        '<li><b>官網網路票不能退</b>：3 天前可以改日期。KKday 標免費取消；Klook 的門票兌換前可免費取消。</li>'
+        '<li><b>Klook、KKday 是官方點名的通路</b>：官網外語購票頁直接連過去。</li>'
+        + (f'<li><b>{_htb_mds(_htb_blank)} 營業時間表空白</b>：官網沒寫原因，那幾天去之前先看官網。</li>' if _htb_blank else '')
+        + '</ul></div>'
+      + '<h2>票價：一般日、特定日、花火日</h2>'
+      + '<p class="lede">官網把日子分成一般日與特定日（部分週末、聖誕到年初），1DAY、After 3、1.5DAY、2DAY 都跟著分兩種價格；'
+        '花火大會當天另有一個價格。</p>'
+      + '<div class="tw"><table>' + _htb_hdr + ''.join(_htb_rows) + '</table></div>'
+      + f'<p class="disc">{html.escape(HTB["age_note"])}{html.escape(HTB["multi_day_rule"])}'
+        '官網一般日的價格標「起」，以購票頁顯示為準。價格含稅。</p>'
+      + (f'<p class="lede"><b>特定日</b>（官網 FAQ，還沒過的日子）：{_htb_sp_txt}。'
+         f'{_htb_until.year}/{_htb_md(_htb_until)} 之後的特定日官網還沒公布。</p>' if _htb_sp else
+         f'<p class="lede">{_htb_until.year}/{_htb_md(_htb_until)} 之後的特定日官網還沒公布。</p>')
+      + (f'<details class="faq"><summary>未來 14 天的營業時間與票價類別</summary><div>'
+         '<div class="tw narrow"><table><tr><th>日期</th><th>票價</th><th>營業時間</th><th>最後入場</th></tr>'
+         + _htb_14 + '</table></div></div></details>' if _htb_14 else '')
+      + '<h2>現場、官網網路票、Klook、KKday 差在哪</h2>'
+      + '<div class="tw"><table><tr><th>買法</th><th>取消與改期</th><th>怎麼入園</th><th>備註</th></tr>'
+        '<tr><td class="nm"><b>現場窗口</b></td><td class="nm">–</td><td class="nm">買了直接進</td>'
+        '<td class="nm">1.5DAY、2DAY 只在這裡賣；After 3 當天 14:30 開賣</td></tr>'
+        f'<tr><td class="nm"><b>官網網路票</b></td><td class="nm">{html.escape(_htb_w["cancel"])}；3 天前可改日期</td>'
+        f'<td class="nm">{html.escape(_htb_w["entry"])}</td><td class="nm">{html.escape(_htb_w["login"])}，{html.escape(_htb_w["pay"])}</td></tr>'
+        f'<tr><td class="nm"><b>Klook</b></td><td class="nm">{html.escape(_htb_kl["cancel"])}</td>'
+        f'<td class="nm">{html.escape(_htb_kl["entry"])}</td><td class="nm">用台幣付款；有團體方案與交通套票</td></tr>'
+        f'<tr><td class="nm"><b>KKday</b></td><td class="nm">{html.escape(_htb_kk["cancel"])}</td>'
+        f'<td class="nm">{html.escape(_htb_kk["entry"])}</td><td class="nm">用台幣付款；有加 JR PASS 或巴士券的套票</td></tr>'
+        '</table></div>'
+      + f'<p class="disc">{html.escape(HTB["agency_qr"])}。平台的取消規定以下單時方案頁為準。{html.escape(HTB["resale"])}。</p>'
+      + '<h2>在哪裡買</h2>'
+      + f'<a class="cta" href="{_htb_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>豪斯登堡官網票價與網路票</b>'
+        '<s>要註冊會員、只收信用卡、買了不能退；本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_htb_kl_h}" target="_blank" rel="{_rel(_htb_kl_h)}">'
+        '<span class="ci">🌷</span><span class="ct"><b>Klook 的豪斯登堡門票</b>'
+        '<s>用台幣付款；有 After 3、3～4 人團體與 JR 套票</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_htb_kk_h}" target="_blank" rel="{_rel(_htb_kk_h)}">'
+        '<span class="ci">🌷</span><span class="ct"><b>KKday 的豪斯登堡門票</b>'
+        '<s>用台幣付款，入口掃 QR code 直接進</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官網本站沒有分潤。平台的售價與方案以平台頁面為準。</p>'
+      + '<h2>住園區飯店：隔天門票免費</h2>'
+      + f'<p class="lede">{html.escape(HTB["hotel"])}。只有入住當天的票是自己買的，第二天的票不用另外買。</p>'
+      + '<h2>燈海、煙火與活動</h2>'
+      + '<ul class="lede">' + ''.join(_htb_evli(e) for e in _htb_evs)
+        + _htb_li('每晚', HTB['nightshow']) + _htb_li('港區', HTB['harbor']) + '</ul>'
+      + '<p class="disc">燈飾與夜間秀的開演時間官網活動頁沒有列，以當天園內公告為準。</p>'
+      + '<h2>營業時間</h2>'
+      + f'<p class="lede">平日多半 10:00～21:00，週六與連假前一天開到 22:00；{html.escape(HTB["hours_note"])}'
+        f'{_htb_blank_txt}{_htb_hl_txt}</p>'
+      + '<h2>交通</h2>'
+      + '<ul class="lede">'
+        + _htb_li('從博多', _htb_a['jr']) + _htb_li('從福岡機場', _htb_a['bus_fuk'])
+        + _htb_li('從長崎機場', _htb_a['bus_ngs'])
+        + (_htb_li('花火日', _htb_a['fw_bus']) if _htb_ev else '')
+        + '</ul>'
+      + faq_visible(htb_faq)
+      + fare_cta('fukuoka', '飛福岡的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-park-ticket/")}"><b>🎢 日本樂園門票</b><s>環球影城哪天便宜</s></a>'
+      + f'<a class="ct" href="{U("/fukuoka/")}"><b>🍜 福岡機票</b><s>各出發地的票價</s></a>'
+      + f'<a class="ct" href="{U("/nagasaki/")}"><b>⛪ 長崎機票</b><s>各出發地的票價</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📶 日本 eSIM</b><s>網路票要用手機出示</s></a></div>'
+      + '<p class="disc">票價、營業時間與規定以豪斯登堡官網為準，整理可能有疏漏。本頁為公開資訊整理，與豪斯登堡無合作關係。</p>'
+      + foot())
+    pages.append(('/nagasaki/huis-ten-bosch/', 0.6))
 
 # ---------- 東京鐵塔門票怎麼買 ----------
 # 資料在 tokyo-tower.json。票價固定，引官網料金頁；網路票的效期與取消引官網連過去的 Asoview 購票頁。
