@@ -198,6 +198,18 @@
    "title": "富士急樂園門票怎麼買：每日票價、休園日、戰慄迷宮要另外買、官網和 Klook／KKday 差在哪"
   },
   {
+   "slug": "osaka-amazing-pass",
+   "url": "/osaka/amazing-pass/",
+   "h1": "大阪周遊卡怎麼買、哪些景點免費",
+   "title": "大阪周遊卡怎麼買、哪些景點免費：海遊館不能用、阿倍野展望台只打 9 折、1 日券和 2 日券差在哪"
+  },
+  {
+   "slug": "japan-hakone-freepass",
+   "url": "/japan-hakone-freepass/",
+   "h1": "箱根周遊券怎麼買、有沒有一日券",
+   "title": "箱根周遊券怎麼買、有沒有一日券：新宿出發 2 日 7,100 円、浪漫特快另付、電子票和 KKday 兌換要注意什麼"
+  },
+  {
    "slug": "japan-tokyo-tower",
    "url": "/japan-tokyo-tower/",
    "h1": "東京鐵塔門票怎麼買",
@@ -312,52 +324,52 @@
    "title": "日本 eSIM 怎麼選：232 個方案的每日單價比較（含吃到飽的真相）"
   },
   {
-   "slug": "deals-2026-11-11-taipei-okinawa",
-   "url": "/deals/2026-11-11-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,538 來回含稅｜台灣虎航 11/17 出發",
-   "title": "台北飛沖繩 NT$2,538 來回含稅｜台灣虎航 11/17 出發"
+   "slug": "deals-2026-11-12-taipei-okinawa",
+   "url": "/deals/2026-11-12-taipei-okinawa/",
+   "h1": "台北飛沖繩 NT$2,598 來回含稅｜台灣虎航 11/30 出發",
+   "title": "台北飛沖繩 NT$2,598 來回含稅｜台灣虎航 11/30 出發"
   },
   {
-   "slug": "deals-2026-11-11-kaohsiung-okinawa",
-   "url": "/deals/2026-11-11-kaohsiung-okinawa/",
+   "slug": "deals-2026-11-12-kaohsiung-okinawa",
+   "url": "/deals/2026-11-12-kaohsiung-okinawa/",
    "h1": "高雄飛沖繩 NT$2,998 來回含稅｜台灣虎航 12/17 出發",
    "title": "高雄飛沖繩 NT$2,998 來回含稅｜台灣虎航 12/17 出發"
   },
   {
-   "slug": "deals-2026-11-11-taipei-ishigaki",
-   "url": "/deals/2026-11-11-taipei-ishigaki/",
+   "slug": "deals-2026-11-12-taipei-saga",
+   "url": "/deals/2026-11-12-taipei-saga/",
+   "h1": "台北飛佐賀 NT$3,858 來回含稅｜台灣虎航 11/12 出發",
+   "title": "台北飛佐賀 NT$3,858 來回含稅｜台灣虎航 11/12 出發"
+  },
+  {
+   "slug": "deals-2026-11-12-taipei-ishigaki",
+   "url": "/deals/2026-11-12-taipei-ishigaki/",
    "h1": "台北飛石垣島 NT$4,058 來回含稅｜台灣虎航 12/05 出發",
    "title": "台北飛石垣島 NT$4,058 來回含稅｜台灣虎航 12/05 出發"
   },
   {
-   "slug": "deals-2026-11-11-taipei-saga",
-   "url": "/deals/2026-11-11-taipei-saga/",
-   "h1": "台北飛佐賀 NT$4,277 來回含稅｜台灣虎航 11/12 出發",
-   "title": "台北飛佐賀 NT$4,277 來回含稅｜台灣虎航 11/12 出發"
+   "slug": "deals-2026-11-12-taipei-miyazaki",
+   "url": "/deals/2026-11-12-taipei-miyazaki/",
+   "h1": "台北飛宮崎 NT$4,477 來回含稅｜台灣虎航 12/07 出發",
+   "title": "台北飛宮崎 NT$4,477 來回含稅｜台灣虎航 12/07 出發"
   },
   {
-   "slug": "deals-2026-11-11-taipei-miyazaki",
-   "url": "/deals/2026-11-11-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$4,718 來回含稅｜台灣虎航 12/07 出發",
-   "title": "台北飛宮崎 NT$4,718 來回含稅｜台灣虎航 12/07 出發"
-  },
-  {
-   "slug": "deals-2026-11-11-taichung-okinawa",
-   "url": "/deals/2026-11-11-taichung-okinawa/",
+   "slug": "deals-2026-11-12-taichung-okinawa",
+   "url": "/deals/2026-11-12-taichung-okinawa/",
    "h1": "台中飛沖繩 NT$4,858 來回含稅｜台灣虎航 11/30 出發",
    "title": "台中飛沖繩 NT$4,858 來回含稅｜台灣虎航 11/30 出發"
   },
   {
-   "slug": "deals-2026-11-11-taipei-oita",
-   "url": "/deals/2026-11-11-taipei-oita/",
+   "slug": "deals-2026-11-12-taipei-oita",
+   "url": "/deals/2026-11-12-taipei-oita/",
    "h1": "台北飛大分・別府 NT$5,466 來回含稅｜台灣虎航 11/21 出發",
    "title": "台北飛大分・別府 NT$5,466 來回含稅｜台灣虎航 11/21 出發"
   },
   {
-   "slug": "deals-2026-11-11-taipei-fukuoka",
-   "url": "/deals/2026-11-11-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$5,747 來回含稅｜台灣虎航 11/12 出發",
-   "title": "台北飛福岡 NT$5,747 來回含稅｜台灣虎航 11/12 出發"
+   "slug": "deals-2026-11-12-taipei-fukuoka",
+   "url": "/deals/2026-11-12-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$6,207 來回含稅｜台灣虎航 11/12 出發",
+   "title": "台北飛福岡 NT$6,207 來回含稅｜台灣虎航 11/12 出發"
   },
   {
    "slug": "apple-japan-price",
@@ -369,7 +381,7 @@
    "slug": "iphone-duo",
    "url": "/iphone-duo/",
    "h1": "iPhone Duo 在日本買划算嗎？",
-   "title": "iPhone Duo 日本買划算嗎？四種容量實算，扣掉入境補稅還省 NT$4,935"
+   "title": "iPhone Duo 日本買划算嗎？四種容量實算，扣掉入境補稅還省 NT$4,770"
   },
   {
    "slug": "japan-camera-price",
