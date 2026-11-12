@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-12-taipei-saga",
- "generated": "2026-11-12 16:48",
+ "generated": "2026-11-12 18:57",
  "kind": "fare",
  "origin": "taipei",
  "city": "saga",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4703,
+  "price": 4903,
   "dep": "2026-12-03",
   "ret": "2026-12-10",
   "dept": "08:10",
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7237,
+   "price": 5346,
    "dep": "2026-11-19",
    "ret": "2026-11-26",
    "dept": "08:10",
@@ -45,8 +45,9 @@
    "tr": 0,
    "dur": 275,
    "dur_to": 125,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE1911HSG26111?t=IT17950758001795086900000125TPEHSG17956953001795700700000150HSGTPE_ebdec6829e7a61408db8425aa51d1859_18093&search_date=10112026&expected_price_uuid=01a1c40c-bcb6-8040-6e23-a7b305bad307&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3II9Jt7bqFJLnaOplbcRXw&expected_price_source=share&expected_price_currency=twd&expected_price=7237&marker=775639"
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-19&inbound=HSG-TPE&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
   },
   {
    "o": "TPE",
