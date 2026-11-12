@@ -1630,6 +1630,7 @@ def topnav(cur=''):
             + link('/sapporo/snow-festival/', '❄️ 札幌雪祭 2027')
             + link('/japan-asahiyama-zoo/', '🐧 旭山動物園企鵝散步時間')
             + link('/nagoya/nabana-no-sato/', '🌸 名花之里燈海門票')
+            + link('/japan-zao-juhyo/', '🌲 藏王樹冰點燈與雪怪車')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -1799,6 +1800,7 @@ _AD_MAP = [
     ('sapporo/snow-festival', 'esim'),
     ('japan-asahiyama-zoo', 'esim'),
     ('nagoya/nabana-no-sato', 'activity2'),
+    ('japan-zao-juhyo', 'esim'),
     ('tokyo/autumn-leaves', 'esim'),
     ('japan-shirakawago-lightup', 'esim'),
     ('japan-ginzan-onsen', 'esim'),
@@ -3162,6 +3164,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要買大阪周遊卡？'
                      f'<a href="{U("/osaka/amazing-pass/")}">哪些景點免費、海遊館能不能用、1 日券和 2 日券差在哪</a>'
                      f'（官網原文整理：沒有兒童票、凌晨 3 點換日、沒用過可以全額退）。</p>')
+        if slug == 'sendai' and os.path.exists('zao.json'):
+            body += (f'<p class="lede">要去看藏王樹冰？'
+                     f'<a href="{U("/japan-zao-juhyo/")}">纜車票價、夜間點燈哪幾天、宮城側雪怪車怎麼訂、從仙台怎麼去</a>'
+                     f'（官網原文整理：夜間雪上車 7 天前開賣、山形站回程末班比點燈結束早）。</p>')
         if slug == 'nagoya' and os.path.exists('nabana.json'):
             body += (f'<p class="lede">要去名花之里看燈海？'
                      f'<a href="{U("/nagoya/nabana-no-sato/")}">門票怎麼買、聖誕節要日期指定券、從名古屋怎麼去</a>'
@@ -10673,6 +10679,278 @@ if os.path.exists('nabana.json'):
       + '<p class="disc">票價、時間與規定以名花之里官網為準，整理可能有疏漏。本頁為公開資訊整理，與名花之里無合作關係。</p>'
       + foot())
     pages.append(('/nagoya/nabana-no-sato/', 0.6))
+
+# ---------- 藏王樹冰（山形側纜車／夜間點燈、宮城側雪上車） ----------
+# 資料在 zao.json。山形側引藏王纜車官網與 2026-10-04 公告的點燈、樹冰幻想回廊海報；宮城側引すみかわ官網 /tour/、/bus/；
+# 山形站巴士引山交巴士路線頁。今天的生長期、接下來的點燈日、夜間雪上車哪天開賣都用日本日期當場算。
+# 纜車往返官網票價頁 4,400 與今年海報 4,600 並列，不要擅自選一個。仙台直達巴士只有上一季的資料，頁面要寫明是上一季。
+if os.path.exists('zao.json'):
+    ZO = json.load(open('zao.json', encoding='utf-8'))
+    _zo_today = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _zo_D = datetime.date.fromisoformat
+    _zo_wd = '一二三四五六日'
+
+    def _zo_md(d, wd=True):
+        return f'{d.month}/{d.day}' + (f'（{_zo_wd[d.weekday()]}）' if wd else '')
+
+    def _zo_ymd(d):
+        return (f'{d.year}/' if d.year != _zo_today.year else '') + _zo_md(d, False)
+
+    def _zo_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    def _zo_y(p):
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    _zo_rw, _zo_lu, _zo_cr = ZO['ropeway'], ZO['lightup'], ZO['cruiser']
+    _zo_sk, _zo_skb = ZO['sumikawa'], ZO['sumikawa']['bus']
+    _zo_by, _zo_bs = ZO['bus_yamagata'], ZO['bus_sendai_prev']
+    _zo_kd, _zo_kc, _zo_kn = ZO['kkday_day'], ZO['kkday_cat'], ZO['klook_night']
+    _zo_lu_dates = [_zo_D(x) for x in _zo_lu['dates']]
+    _zo_lu_from, _zo_lu_until = _zo_lu_dates[0], _zo_lu_dates[-1]
+    _zo_sk_from, _zo_sk_until = _zo_D(_zo_sk['from']), _zo_D(_zo_sk['until'])
+    _zo_open_days = _zo_cr['open_days']
+
+    # 樹冰的生長期（依月份）
+    _zo_phase = None
+    for _a, _b, _n, _t in ZO['phases']:
+        if _a <= _zo_today.month <= _b:
+            _zo_phase = (_n, _t)
+    _zo_peak = next(p for p in ZO['phases'] if p[2] == '最盛期')
+
+    # 接下來的點燈日（最多 7 天）
+    _zo_next = [d for d in _zo_lu_dates if d >= _zo_today][:7]
+    _zo_lu_left = len([d for d in _zo_lu_dates if d >= _zo_today])
+
+    def _zo_sale(d):
+        s = d - datetime.timedelta(days=_zo_open_days)
+        if _zo_today > s:
+            return '已經開賣，看預約頁剩幾位'
+        if _zo_today == s:
+            return f'今天 {_zo_cr["open_time"]} 開賣'
+        return f'{_zo_md(s)} {_zo_cr["open_time"]} 開賣'
+
+    # すみかわ雪上車：今天落在哪一期
+    _zo_sk_per = None
+    for _k, _f, _u, _st, _dx in _zo_sk['periods']:
+        if _zo_D(_f) <= _zo_today <= _zo_D(_u):
+            _zo_sk_per = (_k, _st, _dx)
+    _zo_sk_lo = min(p[3] for p in _zo_sk['periods'])
+    _zo_sk_hi = max(p[3] for p in _zo_sk['periods'])
+
+    def _zo_prange(f, u):
+        return f'{_zo_ymd(_zo_D(f))}～{_zo_ymd(_zo_D(u))}'
+
+    _zo_rt_a, _zo_rt_b = _zo_rw['summit_rt'][0], _zo_rw['summit_rt_poster'][0]
+    _zo_kd_h = html.escape(kkday(_zo_kd['url'], 'ticket', 'zao'))
+    _zo_kc_h = html.escape(kkday(_zo_kc['url'], 'ticket', 'zao'))
+    _zo_kn_h = html.escape(klook(_zo_kn['url'], 'ticket'))
+    _zo_cancel = '、'.join(f'{w}收 {p}%' for w, p in _zo_sk['cancel'])
+    _zo_late_deps = [t for t in _zo_cr['deps'] if int(t.split(':')[0]) >= 19]
+
+    # 今天的狀態（一句話）
+    if _zo_phase:
+        _zo_now_txt = (f'現在（{_zo_today.month} 月）是樹冰的{_zo_phase[0]}：{_zo_phase[1]}'
+                       + ('' if _zo_phase[0] == _zo_peak[2] else f'；官網說 {_zo_peak[0]} 月是最盛期'))
+    else:
+        _zo_now_txt = '現在不是樹冰季，樹冰從 11 月開始長，2 月最大'
+
+    _zo_tldr = ''
+    _zo_tldr += f'<li><b>{html.escape(_zo_now_txt)}</b>。</li>'
+    if _zo_today <= _zo_lu_until:
+        _zo_tldr += (f'<li><b>夜間點燈只有 {len(_zo_lu_dates)} 天</b>（{_zo_ymd(_zo_lu_from)}～{_zo_ymd(_zo_lu_until)} 挑日子辦），'
+                     + (f'下一次是 {_zo_md(_zo_next[0])}' if _zo_next else '') + '；只搭纜車上去看不用預約。</li>')
+        _zo_tldr += (f'<li><b>夜間雪上車（{_zo_cr["name"]}）{_zo_open_days} 天前 {_zo_cr["open_time"]} 開賣</b>，'
+                     f'每梯 {_zo_cr["cap"]} 人、只能在官網訂、不接電話。</li>')
+    if _zo_today <= _zo_lu_until:
+        _zo_tldr += (f'<li><b>山形站回程巴士末班 {_zo_by["back_last"]}</b>，比點燈結束早，'
+                     f'{"、".join(_zo_late_deps)} 出發的雪上車當天搭不到巴士回山形。</li>')
+    if _zo_today <= _zo_sk_until:
+        _zo_tldr += (f'<li><b>宮城側雪怪車要打電話訂</b>，'
+                     + (f'現在是 {_zo_sk_per[0]} 期，標準艙大人 {_zo_sk_per[1]:,} 円' if _zo_sk_per
+                        else f'{_zo_ymd(_zo_sk_from)} 開始，標準艙大人 {_zo_sk_lo:,}～{_zo_sk_hi:,} 円')
+                     + '，當天現場付款。</li>')
+    _zo_tldr += (f'<li><b>纜車往返兩個數字</b>：官網票價頁寫 {_zo_rt_a:,} 円，今年的點燈海報寫 {_zo_rt_b:,} 円，'
+                 '以當天窗口為準。</li>')
+
+    zo_faq = [
+     ('藏王樹冰什麼時候最好看？',
+      '藏王纜車官網把樹冰分四個階段：'
+      + '；'.join(f'{a}～{b} 月{n}，{t}' if a != b else f'{a} 月{n}，{t}' for a, b, n, t in ZO['phases'])
+      + '。'),
+     ('山形側和宮城側差在哪？',
+      f'山形側在藏王溫泉，搭藏王纜車到地藏山頂站看，晚上有點燈和夜間雪上車；從山形站搭巴士{_zo_by["time"]}。'
+      f'宮城側在{_zo_sk["where"]}，搭雪上車開進樹冰原，只有白天兩梯；從仙台有預約制的接駁巴士。'),
+     ('藏王纜車到山頂多少錢？',
+      f'地藏山頂站往返，官網票價頁寫大人 {_zo_rt_a:,} 円、小孩 {_zo_rw["summit_rt"][1]:,} 円；'
+      f'2026～2027 點燈海報寫大人 {_zo_rt_b:,} 円、小孩 {_zo_rw["summit_rt_poster"][1]:,} 円。'
+      f'只到樹冰高原站往返是大人 {_zo_rw["kogen_rt"][0]:,} 円。{_zo_rw["kids"]}。'),
+     ('樹冰點燈哪幾天？要預約嗎？',
+      f'{_zo_ymd(_zo_lu_from)}～{_zo_ymd(_zo_lu_until)} 之間挑 {len(_zo_lu_dates)} 天辦，{_zo_lu["time"]}，'
+      f'上山末班 {_zo_lu["last_up"]}。只搭纜車看不用預約，{_zo_lu["rules"]}。'),
+     (f'夜間雪上車「{_zo_cr["name"]}」怎麼訂？',
+      f'{_zo_cr["book"]}，乘車日 {_zo_open_days} 天前的 {_zo_cr["open_time"]} 開賣。大人 {_zo_cr["fare"][0]:,} 円、'
+      f'{_zo_cr["kids"]} {_zo_cr["fare"][1]:,} 円，含{_zo_cr["includes"]}。'
+      f'{"、".join(_zo_cr["deps"])} 從藏王山麓站出發，每梯 {_zo_cr["cap"]} 人，{_zo_cr["dur"]}。'),
+     ('宮城側的雪怪車怎麼訂？',
+      f'{_zo_sk["book"]}。運行 {_zo_prange(_zo_sk["from"], _zo_sk["until"])}，每天 '
+      f'{"、".join(d for d, _ in _zo_sk["deps"])} 兩梯。{_zo_sk["pay"]}。取消費：{_zo_cancel}。'),
+     ('看完夜間點燈回得了山形市區嗎？',
+      f'山交巴士藏王溫泉回山形站的末班是 {_zo_by["back_last"]}（{_zo_by["rev"]}的時刻表），'
+      f'點燈開到 {_zo_lu["time"].split("～")[1]}。搭 {"、".join(_zo_late_deps)} 的雪上車就趕不上，'
+      '要住藏王溫泉，或參加有接送的夜間行程。'),
+     ('從仙台怎麼去？',
+      f'宮城側：すみかわ的「樹冰號」接駁巴士 {_zo_skb["go"][0]} 從仙台站東口出發、{_zo_skb["back"][1]} 回到，'
+      f'來回大人 {_zo_skb["fare"][0]:,} 円，要預約。山形側：冬天有仙台直達藏王溫泉的預約制巴士，'
+      f'上一季（{_zo_bs["season"]}）單程 {_zo_bs["fare"]:,} 円，這一季的班次還沒公布；或搭 JR 到山形站再轉巴士。'),
+     ('Klook、KKday 的一日遊有含纜車或雪上車嗎？',
+      f'要看各團的「費用包含」。{_zo_D(ZO["checked"]).month}/{_zo_D(ZO["checked"]).day} 查證時，'
+      f'KKday {_zo_kd["id"]} {_zo_kd["inc"]}；KKday {_zo_kc["id"]} {_zo_kc["inc"]}；'
+      f'Klook {_zo_kn["id"]}（夜間）{_zo_kn["inc"]}。也有很多團的纜車費要當天另外付。'),
+    ]
+    zo_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in zo_faq]}, ensure_ascii=False)
+
+    _zo_cr_rows = (
+        '<div class="tw"><table><tr><th>項目</th><th>樹冰點燈（只搭纜車）</th><th>樹冰幻想回廊（夜間雪上車）</th></tr>'
+        f'<tr><td class="nm"><b>內容</b></td><td class="nm">搭纜車到地藏山頂站，在車站附近看點燈</td>'
+        f'<td class="nm">{html.escape(_zo_cr["includes"])}；{html.escape(_zo_cr["route"])}</td></tr>'
+        f'<tr><td class="nm"><b>大人</b></td><td class="nm">{_zo_y(_zo_lu["fare"][0])}</td><td class="nm">{_zo_y(_zo_cr["fare"][0])}</td></tr>'
+        f'<tr><td class="nm"><b>小孩</b></td><td class="nm">{_zo_lu["fare"][1]:,} 円<br><small>{html.escape(_zo_lu["kids"])}</small></td>'
+        f'<td class="nm">{_zo_cr["fare"][1]:,} 円<br><small>{html.escape(_zo_cr["kids"])}</small></td></tr>'
+        f'<tr><td class="nm"><b>時間</b></td><td class="nm">{_zo_lu["time"]}，上山末班 {_zo_lu["last_up"]}</td>'
+        f'<td class="nm">{"、".join(_zo_cr["deps"])} 出發，{html.escape(_zo_cr["dur"])}</td></tr>'
+        f'<tr><td class="nm"><b>預約</b></td><td class="nm">不用（20 人以上團體要）</td>'
+        f'<td class="nm">{_zo_open_days} 天前 {_zo_cr["open_time"]} 開賣，只能官網訂，每梯 {_zo_cr["cap"]} 人</td></tr>'
+        '</table></div>')
+
+    write('japan-zao-juhyo/index.html',
+      head(f'藏王樹冰怎麼看：纜車往返 {_zo_rt_a:,}～{_zo_rt_b:,} 円、夜間點燈 {len(_zo_lu_dates)} 天、雪怪車電話預約，山形與仙台交通',
+           f'藏王樹冰 {_zo_lu_from.year}～{_zo_lu_until.year} 冬季整理：山形側藏王纜車票價、夜間點燈與夜間雪上車哪天開賣、'
+           '宮城側すみかわ雪怪車價格與電話預約、山形站巴士末班時間、從仙台怎麼去，以及 Klook、KKday 一日遊有沒有含纜車。',
+           'japan-zao-juhyo/',
+           '<script type="application/ld+json">' + zo_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('仙台', '/sendai/'), ('藏王樹冰', None)])
+      + '<h1>藏王樹冰怎麼看</h1>'
+      + '<p class="lede">藏王樹冰在山形縣和宮城縣交界的藏王連峰，兩邊看法不一樣：山形側在藏王溫泉，搭纜車上山頂站看，晚上還有點燈；'
+        '宮城側在すみかわ滑雪場，搭雪上車開進樹冰原。'
+        f'下面的票價與時間引藏王纜車、すみかわ與山交巴士官網，查證於 {ZO["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>' + _zo_tldr + '</ul></div>'
+      + (('<h2>接下來的點燈日</h2>'
+          + '<div class="tw"><table><tr><th>日期</th><th>點燈</th><th>夜間雪上車</th></tr>'
+          + ''.join(f'<tr><td class="nm"><b>{_zo_md(d)}</b></td><td class="nm">{_zo_lu["time"]}</td>'
+                    f'<td class="nm">{_zo_sale(d)}</td></tr>' for d in _zo_next)
+          + '</table></div>'
+          + f'<p class="disc">這一季還剩 {_zo_lu_left} 個點燈日。全部日期：'
+          + '、'.join(_zo_md(d, False) for d in _zo_lu_dates)
+          + '。</p>') if _zo_next else '')
+      + '<h2>山形側：藏王纜車</h2>'
+      + f'<p class="lede">{html.escape(_zo_rw["route"])}。</p>'
+      + '<div class="tw"><table><tr><th>區間</th><th>大人</th><th>小孩</th></tr>'
+        f'<tr><td class="nm"><b>地藏山頂站往返</b><br><small>官網票價頁</small></td><td class="nm">{_zo_y(_zo_rt_a)}</td>'
+        f'<td class="nm">{_zo_rw["summit_rt"][1]:,} 円</td></tr>'
+        f'<tr><td class="nm"><b>地藏山頂站往返</b><br><small>2026～2027 點燈海報</small></td><td class="nm">{_zo_y(_zo_rt_b)}</td>'
+        f'<td class="nm">{_zo_rw["summit_rt_poster"][1]:,} 円</td></tr>'
+        f'<tr><td class="nm"><b>地藏山頂站單程</b></td><td class="nm">{_zo_rw["summit_ow"][0]:,} 円</td>'
+        f'<td class="nm">{_zo_rw["summit_ow"][1]:,} 円</td></tr>'
+        f'<tr><td class="nm"><b>樹冰高原站往返</b></td><td class="nm">{_zo_rw["kogen_rt"][0]:,} 円</td>'
+        f'<td class="nm">{_zo_rw["kogen_rt"][1]:,} 円</td></tr>'
+        '</table></div>'
+      + f'<p class="disc">兩個往返價格都出自官方，官網沒有漲價公告，以當天窗口為準。{html.escape(_zo_rw["kids"])}；'
+        f'{html.escape(_zo_rw["refund"])}。</p>'
+      + '<ul class="lede">'
+        + _zo_li('營業時間', f'山麓線 {_zo_rw["hours_base"]}、山頂線 {_zo_rw["hours_top"]}（會變動）；'
+                 f'到地藏山頂站往返的上山末班是藏王山麓站 {_zo_rw["last_up"]} 發')
+        + _zo_li('網路預約', f'{_zo_rw["web"]}；{_zo_rw["web_rule"]}；{_zo_rw["web_refund"]}；{_zo_rw["web_status"]}')
+        + _zo_li('滑雪的人', _zo_rw['ski'])
+        + _zo_li('穿什麼', _zo_lu['cold'])
+        + '</ul>'
+      + f'<h2>山形側晚上：點燈與夜間雪上車</h2>'
+      + (f'<p class="lede">{_zo_ymd(_zo_lu_from)}～{_zo_ymd(_zo_lu_until)} 的 {len(_zo_lu_dates)} 個晚上，'
+         '山頂站一帶的樹冰會打燈。可以只搭纜車上去看，或訂夜間雪上車開進樹冰群。</p>'
+         if _zo_today <= _zo_lu_until else
+         f'<p class="lede">這一季的點燈 {_zo_ymd(_zo_lu_until)} 已經結束，下一季的日期以藏王纜車官網公告為準。'
+         '下面是這一季的內容。</p>')
+      + _zo_cr_rows
+      + f'<p class="disc">夜間雪上車{html.escape(_zo_cr["meet"])}；{html.escape(_zo_cr["book"])}。'
+        f'{html.escape(_zo_cr["cancel"])}。點燈{html.escape(_zo_lu["rules"])}。</p>'
+      + '<h2>宮城側：すみかわ雪怪車</h2>'
+      + f'<p class="lede">在{html.escape(_zo_sk["where"])}。{_zo_prange(_zo_sk["from"], _zo_sk["until"])} 每天兩梯，'
+        f'{"、".join(f"{a} 出發 {b} 回來" for a, b in _zo_sk["deps"])}；{html.escape(_zo_sk["dur"])}。'
+        f'{html.escape(_zo_sk["name"])}。</p>'
+      + '<div class="tw"><table><tr><th>期間</th><th>標準艙（大人）</th><th>豪華艙（大人）</th></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{k} 期</b><br><small>{_zo_prange(f, u)}</small></td>'
+                  f'<td class="nm">{_zo_y(st)}</td><td class="nm">{_zo_y(dx)}</td></tr>'
+                  for k, f, u, st, dx in _zo_sk['periods'])
+        + '</table></div>'
+      + f'<p class="disc">小孩不分期：標準艙 {_zo_sk["child"][0]:,} 円、豪華艙 {_zo_sk["child"][1]:,} 円；'
+        f'{html.escape(_zo_sk["kids"])}。{html.escape(_zo_sk["boots"])}。</p>'
+      + '<ul class="lede">'
+        + _zo_li('怎麼訂', _zo_sk['book'])
+        + _zo_li('付款', _zo_sk['pay'])
+        + _zo_li('集合', _zo_sk['meet'])
+        + _zo_li('取消費', _zo_cancel)
+        + _zo_li('看不到樹冰', _zo_sk['no_refund'])
+        + '</ul>'
+      + '<h2>交通</h2>'
+      + '<div class="tw"><table><tr><th>路線</th><th>時間</th><th>車資（大人）</th><th>注意</th></tr>'
+        f'<tr><td class="nm"><b>山形站→藏王溫泉</b><br><small>山交巴士</small></td><td class="nm">{_zo_by["time"]}</td>'
+        f'<td class="nm">官網路線頁沒列</td>'
+        f'<td class="nm">回山形末班 {_zo_by["back_last"]}</td></tr>'
+        f'<tr><td class="nm"><b>仙台站→すみかわ</b><br><small>樹冰號接駁巴士</small></td>'
+        f'<td class="nm">{_zo_skb["go"][0]} 發、{_zo_skb["go"][1]} 到</td>'
+        f'<td class="nm">來回 {_zo_y(_zo_skb["fare"][0])}</td><td class="nm">要預約，只賣當天來回</td></tr>'
+        f'<tr><td class="nm"><b>仙台站→藏王溫泉</b><br><small>冬季直達巴士</small></td><td class="nm">約 1 小時 25 分鐘</td>'
+        f'<td class="nm">上一季單程 {_zo_bs["fare"]:,} 円</td><td class="nm">這一季的班次還沒公布</td></tr>'
+        '</table></div>'
+      + '<ul class="lede">'
+        + _zo_li('山形站巴士去程', f'{_zo_by["stop_go"]}，首班 {_zo_by["to_first"]}、末班 {_zo_by["to_last"]}，'
+                 f'{_zo_by["to_note"]}；{_zo_by["stop_end"]}')
+        + _zo_li('山形站巴士回程', f'藏王溫泉巴士總站首班平日 {_zo_by["back_first_wd"]}、週末假日 {_zo_by["back_first_hol"]}，'
+                 f'末班 {_zo_by["back_last"]}（{_zo_by["back_last_arr"]} 到山形站）；以上是 {_zo_by["rev"]}的時刻表')
+        + _zo_li('樹冰號', f'{_zo_prange(_zo_skb["from"], _zo_skb["until"])} 每天開；回程 {_zo_skb["back"][0]} 從すみかわ發、'
+                 f'{_zo_skb["back"][1]} 到仙台；{_zo_skb["stop"]}；{_zo_skb["rule"]}；小孩來回 {_zo_skb["fare"][1]:,} 円')
+        + _zo_li('仙台直達藏王溫泉（上一季）', f'{_zo_bs["season"]}；{_zo_bs["go"]}；{_zo_bs["back"]}；{_zo_bs["book"]}')
+        + '</ul>'
+      + '<h2>Klook、KKday 一日遊</h2>'
+      + '<div class="tw"><table><tr><th>平台</th><th>行程</th><th>含什麼</th><th>取消</th></tr>'
+        f'<tr><td class="nm"><b>KKday {_zo_kd["id"]}</b></td><td class="nm">{html.escape(_zo_kd["route"])}</td>'
+        f'<td class="nm"><b>{html.escape(_zo_kd["inc"])}</b><br><small>{html.escape(_zo_kd["exc"])}</small></td>'
+        f'<td class="nm">{html.escape(_zo_kd["cancel"])}</td></tr>'
+        f'<tr><td class="nm"><b>KKday {_zo_kc["id"]}</b></td><td class="nm">{html.escape(_zo_kc["route"])}</td>'
+        f'<td class="nm"><b>{html.escape(_zo_kc["inc"])}</b><br><small>{html.escape(_zo_kc["exc"])}</small></td>'
+        f'<td class="nm">{html.escape(_zo_kc["cancel"])}</td></tr>'
+        f'<tr><td class="nm"><b>Klook {_zo_kn["id"]}</b></td><td class="nm">{html.escape(_zo_kn["route"])}</td>'
+        f'<td class="nm"><b>{html.escape(_zo_kn["inc"])}</b><br><small>{html.escape(_zo_kn["exc"])}</small></td>'
+        f'<td class="nm">{html.escape(_zo_kn["cancel"])}；{html.escape(_zo_kn["first"])}</td></tr>'
+        '</table></div>'
+      + '<p class="disc">很多仙台出發的團纜車費要當天另外付，比價時要加上去。Klook 那團有接送，'
+        '晚上不用趕山形站的末班巴士。平台的售價、方案與包含項目隨時會改，以下單頁面為準。</p>'
+      + f'<a class="cta" href="{_zo_kd_h}" target="_blank" rel="{_rel(_zo_kd_h)}">'
+        '<span class="ci">🚡</span><span class="ct"><b>KKday 仙台出發 銀山溫泉＋藏王樹冰</b>'
+        '<s>用台幣付款；含藏王纜車票</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_zo_kc_h}" target="_blank" rel="{_rel(_zo_kc_h)}">'
+        '<span class="ci">🚜</span><span class="ct"><b>KKday 仙台出發 宮城側雪怪車</b>'
+        '<s>用台幣付款；不用自己打電話訂</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_zo_kn_h}" target="_blank" rel="{_rel(_zo_kn_h)}">'
+        '<span class="ci">🌌</span><span class="ct"><b>Klook 仙台出發 樹冰夜間點燈</b>'
+        '<s>用台幣付款；含纜車與夜間雪上車</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{html.escape(ZO["src_rw_night"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>藏王纜車官網：樹冰幻想回廊</b>'
+        '<s>日文介面，夜間雪上車從這裡預約，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官網本站沒有分潤。</p>'
+      + faq_visible(zo_faq)
+      + fare_cta('sendai', '飛仙台的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-ginzan-onsen/")}"><b>♨️ 銀山溫泉冬季預約</b><s>常和樹冰排在同一天</s></a>'
+      + f'<a class="ct" href="{U("/japan-ryuhyo-monogatari/")}"><b>🧊 流冰物語號</b><s>另一個冬天才有的景色</s></a>'
+      + f'<a class="ct" href="{U("/japan-ski-resort/")}"><b>🏔 雪場官網現場價</b><s>藏王溫泉也能滑雪</s></a>'
+      + f'<a class="ct" href="{U("/sendai/")}"><b>✈️ 仙台機票</b><s>各出發地的票價</s></a></div>'
+      + '<p class="disc">票價、時間與規定以各官網為準，整理可能有疏漏。本頁為公開資訊整理，與藏王纜車、すみかわ無合作關係。</p>'
+      + foot())
+    pages.append(('/japan-zao-juhyo/', 0.6))
 
 # ---------- 東京地鐵 24／48／72 小時券 ----------
 # 資料在 tsub.json。價格、對象、範圍、時效引東京メトロ官網與英文說明 PDF；兌換機與「機場不能換」引官網連過去的販售站附件。
@@ -25314,6 +25592,7 @@ if os.path.exists('ginzan.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-shirakawago-lightup/")}"><b>🏮 白川鄉點燈 2027</b><s>一樣是完全預約制的冬季雪景</s></a>'
       + f'<a class="ct" href="{U("/taiwan-holiday-2027/")}"><b>📅 2027 請假攻略</b><s>寒假與春節怎麼請</s></a>'
+      + f'<a class="ct" href="{U("/japan-zao-juhyo/")}"><b>🌲 藏王樹冰</b><s>纜車、夜間點燈與雪怪車</s></a>'
       + f'<a class="ct" href="{U("/japan-ski-resort/")}"><b>🏔 雪場官網現場價</b><s>同一趟冬天順便滑雪</s></a></div>'
       + faq_visible(gz_faq)
       + f'<p class="disc">規定以銀山溫泉官網與售票頁為準，整理可能有疏漏。查證於 {GZ["checked"]}。</p>'
