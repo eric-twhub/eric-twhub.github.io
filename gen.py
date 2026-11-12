@@ -2422,6 +2422,12 @@ def write_deal_data(slug, payload):
                      ensure_ascii=False, indent=1))
 
 PAGE_HASH = {}          # 產生路徑 → 內容雜湊，給 sitemap 判斷這頁到底有沒有變
+# 不給搜尋引擎收錄的 URL（加 noindex、不進 sitemap，頁面照樣存在、站內連結照常）。
+# 2026-11-12 起的站台測試：Google 認得的頁有七成是模板句佔七成以上的頁，
+# 收錄從 10/18 崩到 21 頁，而且手寫頁和模板頁收錄率一樣低，像是對整站的判定。
+# 先把模板比例最高的幾類退出索引，看幾週內手寫頁會不會翻成已收錄。
+# 地區頁、航線頁在產生處加進來；特價快照與信用卡子頁用 _noindex_url() 判斷。
+NOINDEX = set()
 PAGE_META = {}          # 產生路徑 → {title, h1, fare}，給 og 圖卡用
 
 _TOC_RE = re.compile(r'<h2(?![^>]*\bclass=)([^>]*)>(.*?)</h2>', re.S)
@@ -16004,7 +16010,7 @@ for reg,rname in REGIONS:
         + f'<h1>{rname}機票</h1><p class="lede">台灣飛{rname}共 {len(cs)} 個航點'
         + (f'，目前最低 <b>{money(b)}</b>。' if b else '。') + '點選城市查看詳細票價。</p>'
         + f'<p class="upd">更新於 {NOWS}</p><div class="cities">{cards}</div>' + foot())
-    pages.append((f'/{reg}/',0.6))
+    pages.append((f'/{reg}/',0.6)); NOINDEX.add(f'/{reg}/')
 
 # ---------- 出發地頁 & 航線頁 ----------
 by_route=collections.defaultdict(list)
@@ -16065,7 +16071,7 @@ for (oslug,cslug),fs in by_route.items():
         + topnav(reg)
         + crumbs([('首頁','/'),(f'{oname}出發',f'/{oslug}/'),(f'{oname}飛{cname}機票',None)]) + f'<h1>{oname}飛{cname}機票</h1>' + intro
         + f'<p class="upd">更新於 {NOWS}　·　共 {len(fs)} 筆票價</p>' + body + foot())
-    pages.append((f'/{oslug}/{cslug}/',0.9))
+    pages.append((f'/{oslug}/{cslug}/',0.9)); NOINDEX.add(f'/{oslug}/{cslug}/')
 
 for oslug,oname,codes in ORIGINS:
     fs=by_origin.get(oslug,[])
@@ -26551,6 +26557,29 @@ def _page_hash(u):
     except OSError:
         return ''
 
+# noindex 要在算 lastmod 之前寫進檔案：特價快照不會重產、雜湊是讀磁碟算的，
+# 這樣只會在第一次加上時變動一次。往期快照超過 120 則就不在 pages 裡，所以直接掃目錄。
+def _noindex_url(u):
+    return (u in NOINDEX
+            or bool(re.match(rf'^/{DEALDIR}/\d{{4}}-\d{{2}}-\d{{2}}-[^/]+/$', u))
+            or bool(re.match(r'^/japan-credit-card/[^/]+/(shopping|flights)/$', u)))
+
+_NI_META = '<meta name="robots" content="noindex, follow">'
+_ni_files = {_page_file(_u) for _u, _p in pages if _noindex_url(_u)}
+_ni_files |= set(glob.glob(f'{DEALDIR}/[0-9][0-9][0-9][0-9]-*/index.html'))
+_ni_added = 0
+for _f in sorted(_ni_files):
+    try:
+        _t = open(_f, encoding='utf-8').read()
+    except OSError:
+        continue
+    if 'name="robots"' in _t:
+        continue
+    _t2 = _t.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n' + _NI_META, 1)
+    if _t2 != _t:
+        open(_f, 'w', encoding='utf-8').write(_t2); _ni_added += 1
+print(f'   noindex：{len(_ni_files)} 頁（這次新加 {_ni_added} 頁）')
+
 _lm_new, _lm_same = {}, 0
 for _u, _p in pages:
     _h = _page_hash(_u)
@@ -26582,10 +26611,12 @@ write(_LMF, json.dumps({'_說明': '逐頁 lastmod。h 是該頁內容的 sha1 �
                         'pages': _lm_new}, ensure_ascii=False, indent=1))
 
 # changefreq 原本一律寫 daily，內容頁根本不是。與其猜不如不寫，這個欄位本來就不具約束力。
+_sm_pages = [(u, p) for u, p in pages if not _noindex_url(u)]
 urls='\n'.join(f'  <url><loc>{SITE}{U(u)}</loc>'
              f'<lastmod>{_lm_new[u]["d"]}</lastmod>'
-             f'<priority>{p}</priority></url>' for u,p in pages)
-print(f'   sitemap：{len(pages)} 個 URL，其中 {_lm_same} 個內容未變、沿用原 lastmod')
+             f'<priority>{p}</priority></url>' for u,p in _sm_pages)
+print(f'   sitemap：{len(_sm_pages)} 個 URL（另有 {len(pages) - len(_sm_pages)} 個 noindex 不列），'
+      f'其中 {_lm_same} 個內容未變、沿用原 lastmod')
 write('sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n'
       f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n')
 
