@@ -1616,7 +1616,9 @@ def topnav(cur=''):
             + link('/nagasaki/huis-ten-bosch/', '🌷 豪斯登堡門票價格')
             + link('/japan-fuji-q/', '🎢 富士急樂園門票怎麼買')
             + link('/osaka/amazing-pass/', '🏯 大阪周遊卡哪些景點免費')
+            + link('/osaka/abeno-harukas/', '🌇 阿倍野展望台門票要先買嗎')
             + link('/japan-hakone-freepass/', '🚠 箱根周遊券有沒有一日券')
+            + link('/tokyo/subway-ticket/', '🚇 東京地鐵三日券怎麼買')
             + link('/tokyo/teamlab/', '🎨 teamLab 門票怎麼買')
             + link('/japan-fujiko-museum/', '🔔 藤子不二雄博物館門票怎麼買')
             + link('/japan-autumn-leaves/', '🍁 紅葉預測與賞楓預約')
@@ -1626,6 +1628,7 @@ def topnav(cur=''):
             + link('/japan-ginzan-onsen/', '♨️ 銀山溫泉冬季怎麼預約')
             + link('/japan-ryuhyo-monogatari/', '🧊 流冰物語號怎麼訂')
             + link('/sapporo/snow-festival/', '❄️ 札幌雪祭 2027')
+            + link('/japan-asahiyama-zoo/', '🐧 旭山動物園企鵝散步時間')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -1772,7 +1775,9 @@ _AD_MAP = [
     ('nagasaki/huis-ten-bosch', 'activity2'),
     ('japan-fuji-q', 'activity2'),
     ('osaka/amazing-pass', 'activity2'),
+    ('osaka/abeno-harukas', 'activity2'),
     ('japan-hakone-freepass', 'activity2'),
+    ('tokyo/subway-ticket', 'esim'),
     ('japan-ski-baggage', 'transport'), ('japan-ski', 'activity2'),
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
@@ -1791,6 +1796,7 @@ _AD_MAP = [
     ('japan-autumn-leaves', 'activity2'),
     ('kyoto/autumn-leaves', 'esim'),
     ('sapporo/snow-festival', 'esim'),
+    ('japan-asahiyama-zoo', 'esim'),
     ('tokyo/autumn-leaves', 'esim'),
     ('japan-shirakawago-lightup', 'esim'),
     ('japan-ginzan-onsen', 'esim'),
@@ -3154,6 +3160,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要買大阪周遊卡？'
                      f'<a href="{U("/osaka/amazing-pass/")}">哪些景點免費、海遊館能不能用、1 日券和 2 日券差在哪</a>'
                      f'（官網原文整理：沒有兒童票、凌晨 3 點換日、沒用過可以全額退）。</p>')
+        if slug == 'osaka' and os.path.exists('harukas.json'):
+            body += (f'<p class="lede">要上阿倍野 HARUKAS 展望台？'
+                     f'<a href="{U("/osaka/abeno-harukas/")}">門票要不要先買、周遊卡怎麼用、Klook／KKday 要不要換票</a>'
+                     f'（官網原文整理：前一天以前網路買便宜一成、官方沒有買一送一）。</p>')
         if slug == 'osaka' and os.path.exists('kaiyukan.json'):
             body += (f'<p class="lede">要去海遊館？'
                      f'<a href="{U("/osaka/kaiyukan/")}">門票可以現場買嗎、每日票價、Klook／KKday 差在哪</a>'
@@ -3167,6 +3177,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'<a href="{U("/okinawa/churasun6/")}">那霸ちゅらさん6 的座位方案與取消規定</a>'
                      f'（六本木 63 ANGEL 官網連過去的沖繩店，官網原文整理；演出前 10 分鐘沒到就取消，'
                      f'未滿 20 歲不得入場）。</p>')
+        if slug == 'tokyo' and os.path.exists('tsub.json'):
+            body += (f'<p class="lede">要買東京地鐵券？'
+                     f'<a href="{U("/tokyo/subway-ticket/")}">24／48／72 小時券怎麼買、機場能不能換、坐幾趟回本</a>'
+                     f'（官方規定整理：臨櫃買要護照上的入境章、線上憑證在機場不能換、不能坐 JR）。</p>')
         if slug == 'tokyo' and os.path.exists('hakone.json'):
             body += (f'<p class="lede">要去箱根？'
                      f'<a href="{U("/japan-hakone-freepass/")}">箱根周遊券怎麼買、有沒有一日券、浪漫特快要不要另外買</a>'
@@ -9824,6 +9838,8 @@ if os.path.exists('osakapass.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + (f'<a class="ct" href="{U("/osaka/kaiyukan/")}"><b>🦈 海遊館門票</b><s>周遊卡不能用，門票怎麼買</s></a>'
          if os.path.exists('kaiyukan.json') else '')
+      + (f'<a class="ct" href="{U("/osaka/abeno-harukas/")}"><b>🌇 阿倍野展望台門票</b><s>周遊卡 9 折，要不要先買</s></a>'
+         if os.path.exists('harukas.json') else '')
       + f'<a class="ct" href="{U("/japan-park-ticket/")}"><b>🎢 環球影城門票</b><s>哪天便宜</s></a>'
       + f'<a class="ct" href="{U("/osaka/")}"><b>🏯 大阪機票</b><s>各出發地的票價</s></a>'
       + f'<a class="ct" href="{U("/japan-esim/")}"><b>📶 日本 eSIM</b><s>周遊卡是手機電子票</s></a></div>'
@@ -9996,6 +10012,538 @@ if os.path.exists('hakone.json'):
       + '<p class="disc">價格、範圍與規定以小田急官方網站為準，整理可能有疏漏。本頁為公開資訊整理，與發行公司無合作關係。</p>'
       + foot())
     pages.append(('/japan-hakone-freepass/', 0.6))
+
+# ---------- 旭山動物園企鵝散步時間 ----------
+# 資料在 asahiyama.json。開園期間、企鵝散步、票價引旭川市旭山動物園官網；巴士班次引旭川電気軌道冬季時刻表 PDF
+# （網頁表格多一班 14:40 去程，PDF 沒有，以 PDF 為準）。企鵝散步開始日官方還沒公告時，只寫前兩季的實際開始日。
+# KKday 22061 與官網連過去的 128506 商品說明逐字相同，放不在 1% 清單的 22061。
+if os.path.exists('asahiyama.json'):
+    ASA = json.load(open('asahiyama.json', encoding='utf-8'))
+    _as_today = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _as_D = datetime.date.fromisoformat
+    _as_wd = '一二三四五六日'
+
+    def _as_md(d, wd=True):
+        return f'{d.month}/{d.day}' + (f'（{_as_wd[d.weekday()]}）' if wd else '')
+
+    def _as_ymd(d, wd=True):
+        return f'{d.year}/' + _as_md(d, wd)
+
+    def _as_min(t):
+        h, m = t.split(':')
+        return int(h) * 60 + int(m)
+
+    def _as_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    _as_s = ASA['season']
+    _as_s_from, _as_s_to = _as_D(_as_s['from']), _as_D(_as_s['until'])
+    _as_in_season = _as_today <= _as_s_to
+    _as_pg = ASA['penguin']
+    _as_t1, _as_t2 = _as_pg['times']
+    _as_start = _as_D(_as_pg['start']) if _as_pg['start'] else None
+    _as_past = [p for p in _as_pg['past']]
+    _as_past_txt = '、'.join(f'{p["season"]} 季是 {_as_ymd(_as_D(p["start"]))}' for p in _as_past)
+    if _as_start and _as_start <= _as_today:
+        _as_start_txt = f'這一季的企鵝散步已經在 {_as_ymd(_as_start)} 開始'
+    elif _as_start:
+        _as_start_txt = f'官方公告這一季的企鵝散步 {_as_ymd(_as_start)} 開始'
+    else:
+        _as_start_txt = ('這一季的開始日官方還沒公告，官網寫決定後會在官方社群帳號通知；'
+                         f'往年要等積雪夠厚，{_as_past_txt}開始')
+    _as_p0 = _as_past[0]
+    _as_p0_end = (f'，{_as_ymd(_as_D(_as_p0["end"]))}{_as_p0["end_note"]}' if _as_p0['end'] else '')
+
+    _as_closed = [c for c in ASA['closed'] if _as_D(c['until']) >= _as_today]
+    _as_closed_txt = '；'.join(f'{_as_md(_as_D(c["from"]))}～{_as_md(_as_D(c["until"]))}{c["why"]}' for c in _as_closed)
+    _as_n = ASA['night']
+    _as_night_on = _as_D(_as_n['until']) >= _as_today
+    _as_night_txt = (f'{_as_ymd(_as_D(_as_n["from"]))}～{_as_md(_as_D(_as_n["until"]))}是「{_as_n["name"]}」夜間開園，'
+                     f'開到 {_as_n["hours"].split("～")[1]}（{_as_n["last"]} 停止入園）')
+
+    _as_pr = ASA['price']
+    _as_new = ASA['price_new']
+    _as_new_on = _as_today < _as_D(_as_new['from'])
+    _as_adult = _as_pr['adult'] if _as_new_on else _as_new['adult']
+    _as_new_txt = (f'{_as_ymd(_as_D(_as_new["from"]), False)} 夏季開園起漲到 {_as_new["adult"]:,} 円' if _as_new_on else '')
+
+    _as_w = ASA['web']
+    _as_kk = ASA['kkday']
+    _as_b = ASA['bus']
+    _as_ap = ASA['airport']
+    _as_sp = ASA['sapporo']
+
+    # 要看某一場企鵝散步：抵達時間至少早 20 分鐘的最後一班（買票、走到企鵝館要時間）
+    def _as_catch(t, wk=True):
+        ok = [r for r in _as_b['out'] if _as_min(r[2]) <= _as_min(t) - 20 and (wk or not r[3])]
+        return ok[-1] if ok else None
+    _as_c1 = _as_catch(_as_t1, False)
+    _as_c2 = _as_catch(_as_t2, False)
+    _as_lastback = _as_b['back'][-1]
+
+    def _as_bus_rows(rows):
+        return ''.join(f'<tr><td>{html.escape(r[0])}' + (f'<br><small>只有{html.escape(r[3])}</small>' if r[3] else '')
+                       + f'</td><td>{r[1]}</td><td>{r[2]}</td></tr>' for r in rows)
+
+    _as_kk_h = html.escape(kkday(_as_kk['url'], 'ticket', 'asahiyama'))
+    _as_tour_h = html.escape(_as_sp['tour_url'])
+    _as_bus_h = html.escape(ASA['src_bus'])
+    _as_of_h = html.escape(ASA['src_winter'])
+
+    as_faq = [
+     ('旭山動物園企鵝散步幾點？',
+      f'每天 {_as_t1} 和 {_as_t2} 兩場，{_as_pg["march"]}。{_as_pg["season"]}。{_as_pg["cancel"]}。'),
+     ('企鵝散步 2026 年什麼時候開始？',
+      f'{_as_start_txt}。' + (f'{_as_p0["season"]} 季{_as_p0_end[1:]}。' if _as_p0_end and not _as_start else '')),
+     ('旭山動物園冬天營業時間？',
+      f'{_as_ymd(_as_s_from)}～{_as_ymd(_as_s_to)}是冬季開園，{_as_s["hours"]}，{_as_s["last"]} 停止入園。'
+      + (f'休園：{_as_closed_txt}。' if _as_closed else '')
+      + (f'{_as_night_txt}。' if _as_night_on else '')),
+     ('門票多少錢？要先買嗎？',
+      f'大人 {_as_adult:,} 円，{_as_pr["child_free"]}。' + (f'{_as_new_txt}。' if _as_new_on else '')
+      + f'不用先買：{_as_w["what"]}，{_as_w["note"]}。{_as_w["refund"]}。'),
+     ('從旭川站怎麼去？可以刷 Suica 嗎？',
+      f'在{_as_b["stop"]}搭 41、47 號（或 42 號急行），{_as_b["time"]}，大人 {_as_b["fare"][0]} 円。'
+      f'{_as_b["ic"]}。'),
+     ('從旭川機場可以直接去嗎？',
+      f'{_as_ap["line"]}{_as_ap["days"]}：機場 {_as_ap["times"][0][1]} 發、{_as_ap["times"][0][3]} 到動物園；'
+      f'回程動物園 {_as_ap["times"][1][1]} 發。大人 {_as_ap["fare"][0]} 円，{_as_ap["note"]}。{_as_ap["taxi"]}。'),
+     ('從札幌當天來回來得及嗎？',
+      f'來得及。{_as_sp["jr"]}；{_as_sp["bus"]}。也可以參加{_as_sp["tour_name"]}：{_as_sp["tour"]}，'
+      f'但{_as_sp["tour_note"]}。'),
+     ('冬天去要注意什麼？',
+      '；'.join(f'{a}：{b}' for a, b in ASA['winter'][:3]) + '。'),
+     ('要逛多久？', ASA['winter'][4][1] + '。'),
+    ]
+    as_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in as_faq]}, ensure_ascii=False)
+
+    _as_y = f'{_as_s_from.year}～{_as_s_to.year}'
+    write('japan-asahiyama-zoo/index.html',
+      head(f'旭山動物園企鵝散步時間 {_as_y}：每天 {_as_t1}、{_as_t2}，冬季營業時間、旭川站巴士班次、門票要先買嗎',
+           f'旭山動物園企鵝散步每天 {_as_t1}、{_as_t2} 兩場，12 月下旬到 3 月中旬的積雪期才有。本頁整理官網公布的'
+           f'{_as_y} 冬季營業時間與休園日、企鵝散步開始日、門票、旭川站與機場的巴士班次、從札幌怎麼去與冬天要注意的事。',
+           'japan-asahiyama-zoo/',
+           '<script type="application/ld+json">' + as_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('札幌', '/sapporo/'), ('旭山動物園企鵝散步', None)])
+      + f'<h1>旭山動物園企鵝散步時間 {_as_y}</h1>'
+      + '<p class="lede">旭山動物園在北海道旭川市，冬天最有名的是國王企鵝排隊在雪地上走的「企鵝散步」。'
+        f'下面的時間與票價引旭川市旭山動物園官網，巴士班次引旭川電氣軌道的冬季時刻表，查證於 {ASA["checked"]}；'
+        f'台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>企鵝散步每天 {_as_t1}、{_as_t2}</b>：{html.escape(_as_pg["march"])}。{html.escape(_as_start_txt)}。</li>'
+        + (f'<li><b>冬季 {_as_s["hours"]}</b>：{_as_s["last"]} 停止入園，{_as_md(_as_s_from, False)}～{_as_md(_as_s_to, False)}。'
+           + (f'{html.escape(_as_closed_txt)}。' if _as_closed else '') + '</li>' if _as_in_season else
+           '<li><b>這一季冬季開園已經結束</b>，下一季的日期以官網公告為準。</li>')
+        + f'<li><b>門票大人 {_as_adult:,} 円</b>（約 {money(round(_as_adult * JPY))}），國中生以下免費；不用預約，現場就買得到。</li>'
+        + (f'<li><b>旭川站搭巴士約 40 分鐘</b>：要看 {_as_t1} 那場，最晚搭 {_as_c1[1]} 的 {_as_c1[0]} 號（{_as_c1[2]} 到）。'
+           f'Suica 不能刷，付現或刷卡感應。</li>' if _as_c1 else '')
+        + (f'<li><b>{_as_night_txt}</b>。</li>' if _as_night_on else '')
+        + '</ul></div>'
+      + '<h2>企鵝散步</h2><ul class="lede">'
+        + _as_li('時間', f'每天 {_as_t1}、{_as_t2}；{_as_pg["march"]}')
+        + _as_li('期間', _as_pg['season'])
+        + _as_li('今年什麼時候開始', _as_start_txt)
+        + ''.join(_as_li(f'{p["season"]} 季', f'{_as_ymd(_as_D(p["start"]))}開始'
+                         + (f'，{_as_ymd(_as_D(p["end"]))}{p["end_note"]}' if p['end'] else ''))
+                  for p in _as_past)
+        + _as_li('路線', _as_pg['route'])
+        + _as_li('會取消的情況', _as_pg['cancel'])
+        + _as_li('觀看規則', _as_pg['rules'])
+        + _as_li('小技巧', _as_pg['tip'])
+        + '</ul>'
+      + f'<p class="disc">{html.escape(ASA["mogumogu"])}。</p>'
+      + '<h2>冬季營業時間與休園</h2><ul class="lede">'
+        + _as_li('冬季開園', f'{_as_ymd(_as_s_from)}～{_as_ymd(_as_s_to)}，{_as_s["hours"]}，{_as_s["last"]} 停止入園')
+        + ''.join(_as_li('休園', f'{_as_ymd(_as_D(c["from"]))}～{_as_ymd(_as_D(c["until"]))}（{c["why"]}）') for c in _as_closed)
+        + (_as_li('夜間開園', _as_night_txt) if _as_night_on else '')
+        + '</ul>'
+      + '<h2>門票</h2><ul class="lede">'
+        + f'<li><b>大人 {_as_adult:,} 円</b>（約 {money(round(_as_adult * JPY))}），{_as_pr["child_free"]}。'
+        + (f'{html.escape(_as_new_txt)}。' if _as_new_on else '') + '</li>'
+        + _as_li('其他票種', ASA['price_note'])
+        + _as_li('住旭川的人', ASA['omotenashi'])
+        + _as_li('付款', ASA['pay'])
+        + _as_li('網路票', f'{_as_w["what"]}，{_as_w["note"]}')
+        + _as_li('網路票限制', f'{_as_w["together"]}；{_as_w["gate"]}；{_as_w["refund"]}')
+        + '</ul>'
+      + f'<a class="cta" href="{_as_kk_h}" target="_blank" rel="{_rel(_as_kk_h)}">'
+        '<span class="ci">🐧</span><span class="ct"><b>KKday 的旭山動物園門票</b>'
+        f'<s>官網的網路票也是 KKday 代售；{html.escape(_as_kk["use"])}，不能退</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格。'
+        '現場買和網路票同價，網路票只省售票窗口排隊。平台的售價以平台頁面為準。</p>'
+      + '<h2>從旭川站搭巴士</h2><ul class="lede">'
+        + _as_li('站牌', f'{_as_b["stop"]}，{_as_b["time"]}，大人 {_as_b["fare"][0]} 円、小孩 {_as_b["fare"][1]} 円')
+        + _as_li('付款', _as_b['ic'])
+        + _as_li('路線', _as_b['diff'])
+        + (_as_li(f'要看 {_as_t1} 那場', f'最晚搭 {_as_c1[1]} 的 {_as_c1[0]} 號，{_as_c1[2]} 到') if _as_c1 else '')
+        + (_as_li(f'要看 {_as_t2} 那場', f'最晚搭 {_as_c2[1]} 的 {_as_c2[0]} 號，{_as_c2[2]} 到') if _as_c2 else '')
+        + _as_li('回程末班', f'動物園 {_as_lastback[1]} 發的 {_as_lastback[0]} 號，{_as_lastback[2]} 到旭川站')
+        + '</ul>'
+      + '<p class="disc">「最晚搭」是讓抵達時間比散步開始早 20 分鐘以上，留時間買票、走到企鵝館；只算每天都有的班次。</p>'
+      + '<h3>去程（旭川站 → 動物園）</h3>'
+      + '<div class="tw narrow"><table><tr><th>路線</th><th>旭川站發</th><th>動物園到</th></tr>'
+        + _as_bus_rows(_as_b['out']) + '</table></div>'
+      + '<h3>回程（動物園 → 旭川站）</h3>'
+      + '<div class="tw narrow"><table><tr><th>路線</th><th>動物園發</th><th>旭川站到</th></tr>'
+        + _as_bus_rows(_as_b['back']) + '</table></div>'
+      + f'<p class="disc">沒有另外標註的班次每天都有。時刻表適用 {html.escape(_as_b["valid"])}，出處：<a href="{_as_bus_h}" target="_blank" rel="nofollow noopener">旭川電氣軌道</a>。'
+        '42 號急行 9:35 那班是從 7 条昭和通 9:25 發車。休園日 42 號停駛。</p>'
+      + '<h2>從旭川機場直接去</h2><ul class="lede">'
+        + _as_li(_as_ap['line'], _as_ap['days'])
+        + ''.join(_as_li(f'{a} {b} 發', f'{d} 到{c}') for a, b, c, d in _as_ap['times'])
+        + _as_li('車資', f'大人 {_as_ap["fare"][0]} 円、小孩 {_as_ap["fare"][1]} 円，{_as_ap["note"]}')
+        + _as_li('計程車', _as_ap['taxi'])
+        + '</ul>'
+      + '<h2>從札幌過去</h2><ul class="lede">'
+        + _as_li('JR', _as_sp['jr'] + '，再轉上面的巴士')
+        + _as_li('高速巴士', _as_sp['bus'])
+        + f'<li><b>一日遊巴士</b>：{html.escape(_as_sp["tour_name"])}，{html.escape(_as_sp["tour"])}；'
+          f'{html.escape(_as_sp["tour_note"])}。行駛期間 {html.escape(_as_sp["tour_period"])}。'
+          f'<a href="{_as_tour_h}" target="_blank" rel="nofollow noopener">中央巴士官網</a></li>'
+        + '</ul>'
+      + (f'<p class="lede">KKday 上也有札幌出發、包含旭山動物園的中文導覽一日遊，'
+         f'<a href="{U("/japan-bogo/")}">目前有買一送一方案的整理在這裡</a>。</p>' if os.path.exists('bogo.json') else '')
+      + '<h2>冬天要注意的事</h2><ul class="lede">'
+        + ''.join(_as_li(a, b) for a, b in ASA['winter'])
+        + '</ul>'
+      + faq_visible(as_faq)
+      + fare_cta('sapporo', '飛札幌的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + (f'<a class="ct" href="{U("/sapporo/snow-festival/")}"><b>❄️ 札幌雪祭 2027</b><s>同一趟北海道</s></a>'
+         if os.path.exists('snowfes.json') else '')
+      + (f'<a class="ct" href="{U("/japan-ryuhyo-monogatari/")}"><b>🧊 流冰物語號</b><s>旭川再往東去網走</s></a>'
+         if os.path.exists('ryuhyo.json') else '')
+      + f'<a class="ct" href="{U("/sapporo/")}"><b>✈️ 札幌機票</b><s>各出發地的票價</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📶 日本 eSIM</b><s>企鵝散步的消息看官方社群</s></a></div>'
+      + f'<p class="disc">時間、票價與規定以<a href="{_as_of_h}" target="_blank" rel="nofollow noopener">旭山動物園官網</a>為準，'
+        '整理可能有疏漏。本頁為公開資訊整理，與動物園無合作關係。</p>'
+      + foot())
+    pages.append(('/japan-asahiyama-zoo/', 0.6))
+
+# ---------- 阿倍野 HARUKAS 300 展望台門票 ----------
+# 資料在 harukas.json。價格與規定引展望台日文官網（繁中、英文營業案內頁還是舊價，不用）；
+# 2026-07-23 起改兩級票價並加網路預售 9 折。官方沒有買一送一，FAQ 照實寫。
+# 柯南、EDGE、こたつ 都用日本日期當場比，過期自動消失。Klook 2424、KKday 19513 都列在官方繁中門票頁。
+if os.path.exists('harukas.json'):
+    HRK = json.load(open('harukas.json', encoding='utf-8'))
+    _hr_today = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _hr_D = datetime.date.fromisoformat
+    _hr_wd = '一二三四五六日'
+
+    def _hr_md(d, wd=True):
+        return f'{d.month}/{d.day}' + (f'（{_hr_wd[d.weekday()]}）' if wd else '')
+
+    def _hr_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    def _hr_y(p):
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    _hr_p = HRK['price']
+    _hr_door, _hr_adv = _hr_p['door'], _hr_p['web_adv']
+    _hr_from = _hr_D(HRK['price_from'])
+    _hr_pct = round((1 - _hr_adv[0] / _hr_door[0]) * 100)
+    _hr_pass = round(_hr_door[0] * 0.9)          # 周遊卡 9 折
+    _hr_pass_same = _hr_pass == _hr_adv[0]
+    _hr_w = HRK['web']
+    _hr_kl = HRK['klook']
+    _hr_kk = HRK['kkday']
+    _hr_cn = HRK['conan']
+    _hr_cn_on = _hr_today <= _hr_D(_hr_cn['until'])
+    _hr_cn_txt = (f'{_hr_cn["name"]}辦到 {_hr_md(_hr_D(_hr_cn["until"]))}：{_hr_cn["what"]}。'
+                  f'限量聯名票大人 {_hr_cn["ticket"][0]:,} 円、小人 {_hr_cn["ticket"][1]:,} 円，{_hr_cn["ticket_note"]}')
+    _hr_kt = HRK['kotatsu']
+    _hr_kt_on = _hr_today <= _hr_D(_hr_kt['until'])
+    _hr_ed = HRK['edge']
+    _hr_ed_on = _hr_today <= _hr_D(_hr_ed['season_until'])
+    _hr_ed_season = (f'這一季開放到 {_hr_md(_hr_D(_hr_ed["season_until"]))}，只在{_hr_ed["season_days"]}'
+                     if _hr_ed_on else '這一季已經結束，下一季的開放日以官網公告為準')
+    _hr_hp = HRK['heliport']
+    _hr_old = '、'.join(f'{n} {p:,} 円' for n, p in HRK['price_old'])
+
+    _hr_kl_h = html.escape(klook(_hr_kl['url'], 'ticket'))
+    _hr_kk_h = html.escape(kkday(_hr_kk['url'], 'ticket', 'harukas'))
+    _hr_of_h = html.escape(HRK['src_ticket'])
+
+    hr_faq = [
+     ('阿倍野展望台門票多少錢？',
+      f'大人（15 歲以上）{_hr_door[0]:,} 円、小人（6～14 歲）{_hr_door[1]:,} 円，5 歲以下免費。'
+      f'前一天以前在官方網站買預售票是 {_hr_adv[0]:,} 円、{_hr_adv[1]:,} 円。{_hr_from.year}/{_hr_md(_hr_from, False)} 起改成這個價格。'),
+     ('阿倍野展望台門票要先買嗎？',
+      f'不一定要，16 樓櫃台當天買得到。先買的好處是：前一天以前買便宜 {_hr_pct}%，而且{_hr_w["entry"]}。'
+      f'現場的話，官網寫{HRK["crowd"][0]}，{HRK["crowd"][1]}。'),
+     ('阿倍野展望台門票有買一送一嗎？',
+      '官方沒有買一送一的票種。網路上說的買一送一是訂票平台不定期的限量促銷，不是一直都有。'
+      f'本站 {_hr_D(HRK["checked"]).month}/{_hr_D(HRK["checked"]).day} 查證時，Klook 與 KKday 的展望台門票頁都沒有買一送一方案。'),
+     ('大阪周遊卡可以用嗎？',
+      f'不是免費。出示大阪周遊卡入場費打 9 折，大人 {_hr_pass:,} 円，不能和其他折扣併用，而且只能在 16 樓櫃台買當日票時用。'
+      + (f'這個價格和官方網路預售票一樣，前一天就確定要去的話直接買預售票，不用排櫃台。' if _hr_pass_same else '')),
+     ('營業時間？幾點最後入場？',
+      f'{HRK["hours"]}，{HRK["last"]} 最後入場。{HRK["no_reentry"]}。'),
+     ('Klook、KKday 的票可以直接進場嗎？',
+      '不行，兩家的票都要先到 16 樓櫃台出示憑證換票。'
+      f'官方網站買的網路票才是直接刷 QR code 過閘門。Klook：{_hr_kl["valid"]}，{_hr_kl["cancel"]}，{_hr_kl["note"]}。'
+      f'KKday：{_hr_kk["note"]}，效期與取消以方案頁為準。'),
+     ('小孩怎麼算？', HRK['age'] + '。'),
+     ('EDGE THE HARUKAS 要另外付錢嗎？',
+      f'要，每人 {_hr_ed["price"]:,} 円，不含展望台門票。{_hr_ed["rule"]}。{_hr_ed["book"]}。{_hr_ed_season}。'),
+     ('直升機停機坪可以去嗎？',
+      f'可以參加停機坪導覽，{_hr_hp["price"]:,} 円另付。{_hr_hp["rule"]}。'),
+    ]
+    if _hr_cn_on:
+        hr_faq.insert(3, ('柯南活動要另外買票嗎？',
+                          f'{_hr_cn_txt}。'))
+    hr_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in hr_faq]}, ensure_ascii=False)
+
+    write('osaka/abeno-harukas/index.html',
+      head(f'阿倍野展望台門票要先買嗎：大人 {_hr_door[0]:,} 円、前一天網路買 {_hr_adv[0]:,} 円，周遊卡 9 折、買一送一與 Klook／KKday 差在哪',
+           f'阿倍野 HARUKAS 300 展望台大人 {_hr_door[0]:,} 円、前一天以前網路買 {_hr_adv[0]:,} 円。本頁整理官網票價、'
+           '要不要先買、現場會不會排隊、大阪周遊卡怎麼用、有沒有買一送一、Klook 與 KKday 的票要不要換票，'
+           '以及 EDGE THE HARUKAS 與停機坪導覽。',
+           'osaka/abeno-harukas/',
+           '<script type="application/ld+json">' + hr_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('大阪', '/osaka/'), ('阿倍野展望台門票', None)])
+      + '<h1>阿倍野展望台門票要先買嗎</h1>'
+      + '<p class="lede">阿倍野 HARUKAS 是大阪天王寺的超高層大樓，58～60 樓是展望台「HARUKAS 300」。'
+        f'下面的票價與規定引展望台日文官網，查證於 {HRK["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>大人 {_hr_door[0]:,} 円、小人 {_hr_door[1]:,} 円</b>，5 歲以下免費。{_hr_from.year}/{_hr_md(_hr_from, False)} 起改價，'
+        '中文版官網有些頁面還是舊價。</li>'
+        f'<li><b>前一天以前網路買 {_hr_adv[0]:,} 円</b>（便宜 {_hr_pct}%）：不用指定日期，到了直接刷 QR code 進場；當天才買沒有折扣。</li>'
+        f'<li><b>大阪周遊卡打 9 折</b>，只能在 16 樓櫃台用'
+        + (f'，折完 {_hr_pass:,} 円和網路預售同價' if _hr_pass_same else '') + '。</li>'
+        '<li><b>官方沒有買一送一</b>：那是訂票平台不定期的限量促銷。</li>'
+        '<li><b>Klook、KKday 的票要到 16 樓櫃台換票</b>，不能直接過閘門。</li>'
+        + (f'<li><b>柯南合作活動到 {_hr_md(_hr_D(_hr_cn["until"]))}</b>：展示在展望台裡，限量聯名票是門票加一個資料夾。</li>' if _hr_cn_on else '')
+        + '</ul></div>'
+      + '<h2>票價</h2>'
+      + '<div class="tw"><table><tr><th>票種</th><th>大人（15 歲以上）</th><th>小人（6～14 歲）</th></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{n}</b>' + (f'<br><small>{s}</small>' if s else '') + f'</td>'
+                  f'<td class="nm">{_hr_y(p[0])}</td><td class="nm">{_hr_y(p[1])}</td></tr>'
+                  for n, s, p in (('16 樓櫃台當日票', '', _hr_door),
+                                  ('官網網路預售票', '前一天以前買', _hr_adv),
+                                  ('官網網路當日票', '當天買', _hr_p['web_day']),
+                                  ('團體', '15 人以上', _hr_p['group'])))
+        + '</table></div>'
+      + f'<p class="disc">{html.escape(HRK["age"])}。{_hr_from.year}/{_hr_md(_hr_from, False)} 以前的舊價是 {html.escape(_hr_old)}，'
+        f'網路上的舊攻略寫的是這組價格。{html.escape(HRK["no_refund"])}，{html.escape(HRK["no_reentry"])}。</p>'
+      + '<h2>要不要先買</h2><ul class="lede">'
+        + _hr_li('網路預售票', f'{_hr_w["adv_rule"]}；{_hr_w["adv_valid"]}')
+        + _hr_li('怎麼進場', _hr_w['entry'])
+        + _hr_li('付款', _hr_w['pay'])
+        + _hr_li('網路上不能做的', _hr_w['limit'])
+        + _hr_li('現場買', HRK['door_sale'])
+        + _hr_li('現場會不會排隊', '官網寫' + '；'.join(HRK['crowd']))
+        + _hr_li('櫃台付款', HRK['pay_door'])
+        + '</ul>'
+      + '<h2>官網、Klook、KKday 差在哪</h2>'
+      + '<div class="tw"><table><tr><th>買法</th><th>效期</th><th>取消</th><th>怎麼進場</th></tr>'
+        f'<tr><td class="nm"><b>官網網路預售票</b></td><td class="nm">{html.escape(_hr_w["adv_valid"])}</td>'
+        f'<td class="nm">不能退</td><td class="nm">QR code 直接過閘門</td></tr>'
+        f'<tr><td class="nm"><b>Klook</b></td><td class="nm">{html.escape(_hr_kl["valid"])}</td>'
+        f'<td class="nm">{html.escape(_hr_kl["cancel"])}</td><td class="nm">{html.escape(_hr_kl["entry"])}</td></tr>'
+        f'<tr><td class="nm"><b>KKday</b></td><td class="nm">{html.escape(_hr_kk["valid"])}</td>'
+        f'<td class="nm">{html.escape(_hr_kk["cancel"])}</td><td class="nm">{html.escape(_hr_kk["entry"])}</td></tr>'
+        '</table></div>'
+      + f'<p class="disc">Klook：{html.escape(_hr_kl["note"])}；KKday：{html.escape(_hr_kk["note"])}。'
+        '兩家都列在官方中文門票頁的合作旅行社。平台價格隨匯率與活動變動，下單前可以和上面的日圓價換算比一下。</p>'
+      + '<h2>在哪裡買</h2>'
+      + klook_card(_hr_kl['id'])
+      + f'<a class="cta" href="{_hr_kl_h}" target="_blank" rel="{_rel(_hr_kl_h)}">'
+        '<span class="ci">🌇</span><span class="ct"><b>Klook 的阿倍野展望台門票</b>'
+        '<s>用台幣付款；不用指定日期，換票前可免費取消</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_hr_kk_h}" target="_blank" rel="{_rel(_hr_kk_h)}">'
+        '<span class="ci">🌇</span><span class="ct"><b>KKday 的阿倍野展望台門票</b>'
+        '<s>用台幣付款；到 16 樓櫃台換實體票</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_hr_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>展望台官網門票頁</b>'
+        f'<s>日文介面，前一天以前買 {_hr_adv[0]:,} 円，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官網本站沒有分潤。平台的售價與方案以平台頁面為準。</p>'
+      + '<h2>折扣</h2><ul class="lede">'
+        + ''.join(_hr_li(n, t) for n, t in HRK['discounts'])
+        + _hr_li('年票', f'大人 {HRK["passport"][0]:,} 円、小人 {HRK["passport"][1]:,} 円；{HRK["passport_note"]}')
+        + '</ul>'
+      + ('<h2>期間限定</h2><ul class="lede">'
+         + (_hr_li('名偵探柯南', _hr_cn_txt) if _hr_cn_on else '')
+         + (_hr_li(_hr_kt['name'], f'{_hr_md(_hr_D(_hr_kt["from"]), False)}～{_hr_D(_hr_kt["until"]).year}/{_hr_md(_hr_D(_hr_kt["until"]), False)}，'
+                   f'{_hr_kt["what"]}；{_hr_kt["hours"]}') if _hr_kt_on else '')
+         + '</ul>' if (_hr_cn_on or _hr_kt_on) else '')
+      + '<h2>要另外付錢的體驗</h2><ul class="lede">'
+        + _hr_li(f'EDGE THE HARUKAS（{_hr_ed["price"]:,} 円）', f'{_hr_ed["what"]}。{_hr_ed["rule"]}。{_hr_ed["book"]}。{_hr_ed["weather"]}。{_hr_ed_season}')
+        + _hr_li(f'直升機停機坪導覽（{_hr_hp["price"]:,} 円）', f'{_hr_hp["what"]}。{_hr_hp["rule"]}')
+        + '</ul>'
+      + '<h2>營業時間與怎麼上去</h2><ul class="lede">'
+        + _hr_li('營業時間', f'{HRK["hours"]}，{HRK["last"]} 最後入場；官網沒有公告固定休館日')
+        + _hr_li('怎麼上去', HRK['access'])
+        + '</ul>'
+      + faq_visible(hr_faq)
+      + fare_cta('osaka', '飛大阪的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + (f'<a class="ct" href="{U("/osaka/amazing-pass/")}"><b>🏯 大阪周遊卡</b><s>哪些景點免費、HARUKAS 打 9 折</s></a>'
+         if os.path.exists('osakapass.json') else '')
+      + (f'<a class="ct" href="{U("/osaka/kaiyukan/")}"><b>🦈 海遊館門票</b><s>可以現場買嗎</s></a>'
+         if os.path.exists('kaiyukan.json') else '')
+      + f'<a class="ct" href="{U("/japan-park-ticket/")}"><b>🎢 環球影城門票</b><s>哪天便宜</s></a>'
+      + f'<a class="ct" href="{U("/osaka/")}"><b>🏯 大阪機票</b><s>各出發地的票價</s></a></div>'
+      + '<p class="disc">票價、時間與規定以阿倍野 HARUKAS 300 展望台官網為準，整理可能有疏漏。本頁為公開資訊整理，與展望台無合作關係。</p>'
+      + foot())
+    pages.append(('/osaka/abeno-harukas/', 0.6))
+
+# ---------- 東京地鐵 24／48／72 小時券 ----------
+# 資料在 tsub.json。價格、對象、範圍、時效引東京メトロ官網與英文說明 PDF；兌換機與「機場不能換」引官網連過去的販售站附件。
+# 臨櫃買要護照上的短期滯在章、自動通關不蓋章，這條原文在英文 PDF 第 1 頁的圖片裡（2026-11-12 用 pdf.js 畫出來看過）。
+# 回本趟數只用東京メトロ運賃表當場算（都營現行運賃頁讀不到）。KKday 5989 在 1% 清單，Klook 在前。
+if os.path.exists('tsub.json'):
+    TST = json.load(open('tsub.json', encoding='utf-8'))
+    _ts_D = datetime.date.fromisoformat
+
+    def _ts_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    def _ts_y(p):
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    _ts_p = TST['price']
+    _ts_from = _ts_D(TST['price_from'])
+    _ts_min_ic = TST['metro_fare'][0][2]       # 東京 Metro 最短區間 IC 票價
+    _ts_min_tk = TST['metro_fare'][0][1]
+    _ts_be = [(h, a, -(-a // _ts_min_ic)) for h, a, c in _ts_p]   # 回本趟數（無條件進位）
+    _ts_st = TST['stamp']
+    _ts_kl = TST['klook']
+    _ts_kk = TST['kkday']
+    _ts_c1 = TST['combo'][0]
+    _ts_c1_save = _ts_c1['base'] + _ts_p[0][1] - _ts_c1['price'][0]
+    _ts_o = {n: (p, s) for n, p, s in TST['others']}
+    _ts_m24 = TST['others'][0][1]
+    _ts_one = TST['others'][1][1]
+
+    _ts_kl_h = html.escape(klook(_ts_kl['url'], 'ticket'))
+    _ts_kk_h = html.escape(kkday(_ts_kk['url'], 'ticket', 'tokyosubway'))
+    _ts_of_h = html.escape(TST['src_shop'])
+    _ts_tc_h = html.escape(TST['src_official'])
+
+    ts_faq = [
+     ('東京地鐵三日券多少錢？',
+      f'72 小時券大人 {_ts_p[2][1]:,} 円、小孩 {_ts_p[2][2]:,} 円；48 小時 {_ts_p[1][1]:,} 円，24 小時 {_ts_p[0][1]:,} 円。'
+      f'{_ts_from.year}/{_ts_from.month}/{_ts_from.day} 起漲價，三日券原本 {TST["price_old"][2]:,} 円。'),
+     ('東京地鐵三日券的範圍？可以坐 JR 嗎？',
+      f'{TST["scope"]}。{TST["scope_jr"]}。{TST["scope_through"]}。'),
+     ('72 小時怎麼算？',
+      f'{TST["valid"]}。例如第一天 15:00 第一次進站，72 小時券用到第四天 15:00。'),
+     ('東京地鐵三日券哪裡買？要護照嗎？',
+      f'在日本臨櫃買：{_ts_st["rule"]}。{_ts_st["gate"]}。{_ts_st["online"]}。'),
+     ('線上買的東京地鐵券在成田、羽田機場可以換嗎？',
+      f'不行。{TST["ways"][1]["note"]}。要換票請到{TST["ways"][1]["where"][1:] if TST["ways"][1]["where"].startswith("到") else TST["ways"][1]["where"]}。'
+      '買 QR 電子票的話不用換，直接刷閘門。'),
+     ('在機場可以直接買嗎？',
+      '可以臨櫃買紙票（要有護照章）：' + '；'.join(f'{a}：{b}' for a, b in TST['airport']) + f'。{TST["airport_note"]}。'),
+     ('東京地鐵一日券划算嗎？',
+      f'以東京 Metro 最短區間的 IC 票價 {_ts_min_ic} 円算，' + '、'.join(f'{h} 小時券要坐 {n} 趟' for h, a, n in _ts_be)
+      + f'才回本。只坐東京 Metro 的話，東京メトロ 24 時間券 {_ts_m24:,} 円更便宜，而且沒有身分限制。'),
+     ('可以退票嗎？',
+      '；'.join(f'{w["name"]}：{w["refund"]}' for w in TST['ways'] if w['refund'])
+      + f'。Klook：{_ts_kl["cancel"]}；KKday：{_ts_kk["cancel"]}。'),
+     ('小孩怎麼算？', TST['child'] + '。'),
+    ]
+    ts_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in ts_faq]}, ensure_ascii=False)
+
+    write('tokyo/subway-ticket/index.html',
+      head(f'東京地鐵三日券怎麼買、哪裡換：24／48／72 小時 {_ts_p[0][1]:,}／{_ts_p[1][1]:,}／{_ts_p[2][1]:,} 円，範圍、護照章、機場能不能換、坐幾趟回本',
+           f'東京地鐵券（Tokyo Subway Ticket）24／48／72 小時大人 {_ts_p[0][1]:,}／{_ts_p[1][1]:,}／{_ts_p[2][1]:,} 円，'
+           '東京 Metro 與都營地下鐵全線不限次數，不能坐 JR。本頁整理官方規定：臨櫃買要護照上的短期滯在章、'
+           '線上憑證在成田羽田不能換、QR 電子票怎麼用、退票，以及坐幾趟才回本。',
+           'tokyo/subway-ticket/',
+           '<script type="application/ld+json">' + ts_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('東京地鐵三日券', None)])
+      + '<h1>東京地鐵三日券怎麼買、哪裡換</h1>'
+      + '<p class="lede">Tokyo Subway Ticket 是給外國旅客的東京地鐵 24／48／72 小時券，東京 Metro 與都營地下鐵兩家全線不限次數搭。'
+        f'下面的價格與規定引東京 Metro 官網與官方說明 PDF，查證於 {TST["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>24／48／72 小時 {_ts_p[0][1]:,}／{_ts_p[1][1]:,}／{_ts_p[2][1]:,} 円</b>，{_ts_from.year}/{_ts_from.month}/{_ts_from.day} 起漲價。</li>'
+        '<li><b>不能坐 JR</b>：只有東京 Metro 和都營地下鐵，山手線不行。</li>'
+        '<li><b>在日本臨櫃買要護照上的短期滯在章</b>：入境走自動通關不會蓋章，沒章就買不到。</li>'
+        '<li><b>線上買的兌換憑證在成田、羽田都不能換</b>，要到市區車站的旅客專用售票機換；QR 電子票不用換。</li>'
+        f'<li><b>坐幾趟回本</b>：以最短區間 {_ts_min_ic} 円算，24 小時券坐 {_ts_be[0][2]} 趟、72 小時券三天合計 {_ts_be[2][2]} 趟。</li>'
+        '</ul></div>'
+      + '<h2>價格</h2>'
+      + '<div class="tw"><table><tr><th>票種</th><th>大人</th><th>小孩（6～11 歲）</th><th>舊價（大人）</th></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{h} 小時券</b></td><td class="nm">{_ts_y(a)}</td><td class="nm">{_ts_y(c)}</td>'
+                  f'<td class="nm">¥{o:,}</td></tr>' for (h, a, c), o in zip(_ts_p, TST['price_old']))
+        + '</table></div>'
+      + f'<p class="disc">{html.escape(TST["child"])}。紙票、QR 電子票、PASMO 版同價。舊價是 {_ts_from.year}/{_ts_from.month}/{_ts_from.day} 以前的價格，網路上的舊攻略寫的是舊價。</p>'
+      + '<h3>和其他地鐵一日券比</h3><ul class="lede">'
+        + ''.join(_ts_li(f'{n}（{p:,} 円）', s) for n, p, s in TST['others'])
+        + '</ul>'
+      + '<h2>範圍與時效</h2><ul class="lede">'
+        + _ts_li('能坐的', TST['scope']) + _ts_li('JR', TST['scope_jr'])
+        + _ts_li('直通運轉', TST['scope_through']) + _ts_li('怎麼算時間', TST['valid'])
+        + '</ul>'
+      + '<h2>誰可以買、要不要護照章</h2><ul class="lede">'
+        + _ts_li('對象', TST['who']) + _ts_li('在日本臨櫃買', _ts_st['rule'])
+        + _ts_li('自動通關', _ts_st['gate']) + _ts_li('線上買', _ts_st['online'])
+        + '</ul>'
+      + '<h2>四種買法</h2>'
+      + ''.join(f'<h3>{html.escape(w["name"])}</h3><ul class="lede">' + _ts_li('在哪裡', w['where']) + _ts_li('要注意', w['note'])
+                + (_ts_li('退票', w['refund']) if w['refund'] else '') + '</ul>' for w in TST['ways'])
+      + f'<p class="disc">QR 電子票沒有讀取機的車站：{html.escape("、".join(TST["qr_no_reader"]))}，在這些站要請站務員處理。</p>'
+      + '<h2>在機場買</h2><ul class="lede">'
+        + ''.join(_ts_li(a, b) for a, b in TST['airport'])
+        + f'<li>{html.escape(TST["airport_note"])}。</li></ul>'
+      + '<h3>Skyliner 套票（成田）</h3>'
+      + '<div class="tw"><table><tr><th>套票</th><th>24 小時</th><th>48 小時</th><th>72 小時</th></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{html.escape(c["name"].replace("＋Tokyo Subway Ticket", ""))}</b></td>'
+                  + ''.join(f'<td class="nm">{_ts_y(p)}</td>' for p in c['price']) + '</tr>' for c in TST['combo'])
+        + '</table></div>'
+      + f'<p class="disc">大人價。{html.escape(TST["combo_note"])}；單程套票 24 小時版比分開買便宜 {_ts_c1_save:,} 円。在{html.escape(_ts_c1["where"])}買，出處：{html.escape(_ts_c1["src"])}。</p>'
+      + '<h2>坐幾趟才回本</h2>'
+      + '<div class="tw narrow"><table><tr><th>票種</th><th>價格</th><th>最短區間要坐幾趟</th></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{h} 小時</b></td><td class="nm">¥{a:,}</td><td class="nm">{n} 趟</td></tr>' for h, a, n in _ts_be)
+        + '</table></div>'
+      + f'<p class="disc">用東京 Metro 1～6 公里的 IC 票價 {_ts_min_ic} 円（紙票 {_ts_min_tk} 円）算，坐得越遠越快回本。'
+        f'東京 Metro 7～11 公里是 IC {TST["metro_fare"][1][2]} 円。只坐東京 Metro 的話，東京メトロ 24 時間券 {_ts_m24:,} 円比 24 小時券便宜，'
+        f'要坐都營線才需要 Tokyo Subway Ticket；共通 1 日乗車券 {_ts_one:,} 円只限一天，比 24 小時券貴。</p>'
+      + f'<p class="lede">{html.escape(TST["bic"])}。</p>'
+      + '<h2>官方、Klook、KKday 差在哪</h2>'
+      + '<div class="tw"><table><tr><th>買法</th><th>票種</th><th>取消</th><th>要注意</th></tr>'
+        '<tr><td class="nm"><b>官方販售站</b></td><td class="nm">QR 電子票、兌換版</td>'
+        '<td class="nm">沒用過退款收 220 円</td><td class="nm">東京 Metro 官網中文頁的購票按鈕連到這裡</td></tr>'
+        f'<tr><td class="nm"><b>Klook</b></td><td class="nm">{html.escape(_ts_kl["type"])}</td>'
+        f'<td class="nm">{html.escape(_ts_kl["cancel"])}</td><td class="nm">{html.escape(_ts_kl["note"])}</td></tr>'
+        f'<tr><td class="nm"><b>KKday</b></td><td class="nm">{html.escape(_ts_kk["type"])}</td>'
+        f'<td class="nm">{html.escape(_ts_kk["cancel"])}</td><td class="nm">{html.escape(_ts_kk["note"])}</td></tr>'
+        '</table></div>'
+      + '<p class="disc">實體票都要到市區車站的旅客專用售票機換，機場不能換。三家要不要出示護照章，官方沒有寫。</p>'
+      + '<h2>在哪裡買</h2>'
+      + klook_card(_ts_kl['id'])
+      + f'<a class="cta" href="{_ts_kl_h}" target="_blank" rel="{_rel(_ts_kl_h)}">'
+        '<span class="ci">🚇</span><span class="ct"><b>Klook 的東京地鐵券</b>'
+        '<s>用台幣付款；有電子車票，也有加 Skyliner 的方案</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_ts_kk_h}" target="_blank" rel="{_rel(_ts_kk_h)}">'
+        '<span class="ci">🚇</span><span class="ct"><b>KKday 的東京地鐵券</b>'
+        '<s>用台幣付款；有 QR 電子票與實體票兩種</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_ts_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>官方販售站的 QR 電子票</b>'
+        '<s>繁體中文介面，日圓原價，要 3D 驗證信用卡；本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        f'官方販售站本站沒有分潤。平台的售價與方案以平台頁面為準。官方中文說明在<a href="{_ts_tc_h}" target="_blank" rel="nofollow noopener">東京 Metro 官網</a>。</p>'
+      + faq_visible(ts_faq)
+      + fare_cta('tokyo', '飛東京的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + (f'<a class="ct" href="{U("/japan-hakone-freepass/")}"><b>🚠 箱根周遊券</b><s>從新宿出發的那一天</s></a>'
+         if os.path.exists('hakone.json') else '')
+      + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b><s>成田、羽田進市區</s></a>'
+      + f'<a class="ct" href="{U("/japan-transit-card/")}"><b>💳 交通卡怎麼儲值</b><s>地鐵券以外的車</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>🗼 東京機票</b><s>各出發地的票價</s></a></div>'
+      + '<p class="disc">價格、範圍與規定以東京 Metro 官網為準，整理可能有疏漏。本頁為公開資訊整理，與東京 Metro、都營地下鐵無合作關係。</p>'
+      + foot())
+    pages.append(('/tokyo/subway-ticket/', 0.6))
 
 # ---------- 東京鐵塔門票怎麼買 ----------
 # 資料在 tokyo-tower.json。票價固定，引官網料金頁；網路票的效期與取消引官網連過去的 Asoview 購票頁。
