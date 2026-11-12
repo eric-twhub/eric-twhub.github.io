@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-12-taipei-saga",
- "generated": "2026-11-12 10:50",
+ "generated": "2026-11-12 16:11",
  "kind": "fare",
  "origin": "taipei",
  "city": "saga",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4903,
+  "price": 5203,
   "dep": "2026-12-03",
   "ret": "2026-12-10",
   "dept": "08:10",
@@ -27,8 +27,8 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 17162,
- "n_rt": 7,
+ "med": 14933,
+ "n_rt": 6,
  "others": [
   {
    "o": "TPE",
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5646,
+   "price": 5264,
    "dep": "2026-11-19",
    "ret": "2026-11-26",
    "dept": "08:10",
