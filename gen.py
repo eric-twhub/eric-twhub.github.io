@@ -1629,6 +1629,7 @@ def topnav(cur=''):
             + link('/japan-ryuhyo-monogatari/', '🧊 流冰物語號怎麼訂')
             + link('/sapporo/snow-festival/', '❄️ 札幌雪祭 2027')
             + link('/japan-asahiyama-zoo/', '🐧 旭山動物園企鵝散步時間')
+            + link('/nagoya/nabana-no-sato/', '🌸 名花之里燈海門票')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -1797,6 +1798,7 @@ _AD_MAP = [
     ('kyoto/autumn-leaves', 'esim'),
     ('sapporo/snow-festival', 'esim'),
     ('japan-asahiyama-zoo', 'esim'),
+    ('nagoya/nabana-no-sato', 'activity2'),
     ('tokyo/autumn-leaves', 'esim'),
     ('japan-shirakawago-lightup', 'esim'),
     ('japan-ginzan-onsen', 'esim'),
@@ -3160,6 +3162,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要買大阪周遊卡？'
                      f'<a href="{U("/osaka/amazing-pass/")}">哪些景點免費、海遊館能不能用、1 日券和 2 日券差在哪</a>'
                      f'（官網原文整理：沒有兒童票、凌晨 3 點換日、沒用過可以全額退）。</p>')
+        if slug == 'nagoya' and os.path.exists('nabana.json'):
+            body += (f'<p class="lede">要去名花之里看燈海？'
+                     f'<a href="{U("/nagoya/nabana-no-sato/")}">門票怎麼買、聖誕節要日期指定券、從名古屋怎麼去</a>'
+                     f'（官網原文整理：超商預購比現場便宜、直達巴士末班比閉園早、一日遊不一定含門票）。</p>')
         if slug == 'osaka' and os.path.exists('harukas.json'):
             body += (f'<p class="lede">要上阿倍野 HARUKAS 展望台？'
                      f'<a href="{U("/osaka/abeno-harukas/")}">門票要不要先買、周遊卡怎麼用、Klook／KKday 要不要換票</a>'
@@ -10393,6 +10399,280 @@ if os.path.exists('harukas.json'):
       + '<p class="disc">票價、時間與規定以阿倍野 HARUKAS 300 展望台官網為準，整理可能有疏漏。本頁為公開資訊整理，與展望台無合作關係。</p>'
       + foot())
     pages.append(('/osaka/abeno-harukas/', 0.6))
+
+# ---------- 名花之里（なばなの里）燈海門票 ----------
+# 資料在 nabana.json。票價、期間、營業時間、點燈時間引名花之里官網；近鐵套票與近鐵長島站巴士引近鐵頁與 2026-09-11 聯合新聞稿；
+# 名鐵直達車引名鐵巴士頁與 12/14 運賃改定公告。今天的票價、未來 7 天的點燈與營業時間都用日本日期當場算。
+# 營業日曆只公布到 hours.cal_until，之後的日子寫「官網還沒公布」，不要用規則猜。
+# 一日遊：KKday 136896 含門票、Klook 31711 不含，這個差別是頁面的重點之一。
+if os.path.exists('nabana.json'):
+    NB = json.load(open('nabana.json', encoding='utf-8'))
+    _nb_today = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _nb_D = datetime.date.fromisoformat
+    _nb_wd = '一二三四五六日'
+
+    def _nb_md(d, wd=True):
+        return f'{d.month}/{d.day}' + (f'（{_nb_wd[d.weekday()]}）' if wd else '')
+
+    def _nb_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    def _nb_y(p):
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    _nb_from, _nb_until = _nb_D(NB['season']['from']), _nb_D(NB['season']['until'])
+    _nb_closed = {_nb_D(x) for x in NB['closed']}
+    _nb_xm = NB['xmas']
+    _nb_xdates = [_nb_D(x) for x in _nb_xm['dates']]
+    _nb_hol = ({_x['d'] for _x in HOL['days'] if _x.get('jp')} if 'HOL' in globals() else set())
+    _nb_h = NB['hours']
+    _nb_late = set(_nb_h['late_extra'])
+    _nb_cal_until = _nb_D(_nb_h['cal_until'])
+    _nb_lt = [(_nb_D(d), t) for d, t in NB['light']]
+
+    def _nb_period(d):
+        for p in NB['periods']:
+            if _nb_D(p['from']) <= d <= _nb_D(p['until']):
+                return p
+        return None
+
+    def _nb_light(d):
+        t = None
+        for s, v in _nb_lt:
+            if s <= d:
+                t = v
+        return t
+
+    def _nb_hours(d):
+        """回傳營業時間字串；休園回 '休園'；官網日曆還沒公布回 None。"""
+        if d in _nb_closed:
+            return '休園'
+        if d.isoformat() in _nb_xm['hours']:
+            return _nb_xm['hours'][d.isoformat()]
+        if d > _nb_cal_until:
+            return None
+        if d.weekday() >= 5 or d.isoformat() in _nb_hol or d.isoformat() in _nb_late:
+            return _nb_h['holiday']
+        return _nb_h['weekday']
+
+    _nb_in = _nb_from <= _nb_today <= _nb_until
+    _nb_p_now = _nb_period(_nb_today)
+    _nb_xm_on = _nb_today <= _nb_xdates[-1]
+    _nb_xm_open = _nb_today >= _nb_D(_nb_xm['sale_from'])
+    _nb_xm_rng = f'{_nb_md(_nb_xdates[0], False)}～{_nb_md(_nb_xdates[-1], False)}'
+    _nb_kt = NB['kintetsu']
+    _nb_bk = NB['bus_kintetsu']
+    _nb_bm = NB['bus_meitetsu']
+    _nb_bm_new = _nb_today >= _nb_D(_nb_bm['fare_from'])
+    _nb_bm_fd = _nb_D(_nb_bm['fare_from'])
+    _nb_bm_fare = (f'大人單程 {_nb_bm["fare_new"][0]:,} 円、來回 {_nb_bm["rt_new"]:,} 円' if _nb_bm_new else
+                   f'大人單程 {_nb_bm["fare_old"][0]:,} 円、來回 {_nb_bm["rt_old"]:,} 円；'
+                   f'{_nb_md(_nb_bm_fd, False)} 起漲到單程 {_nb_bm["fare_new"][0]:,} 円、來回 {_nb_bm["rt_new"]:,} 円')
+    _nb_tr = NB['train']
+    _nb_kl, _nb_kk = NB['klook'], NB['kkday']
+    _nb_kl_h = html.escape(klook(_nb_kl['url'], 'ticket'))
+    _nb_kk_h = html.escape(kkday(_nb_kk['url'], 'ticket', 'nabana'))
+    _nb_of_h = html.escape(NB['src_fee'])
+    _nb_conv_lo = min(p['conv'] for p in NB['periods'])
+    _nb_conv_hi = max(p['conv'] for p in NB['periods'])
+
+    def _nb_prange(p):
+        a, b = _nb_D(p['from']), _nb_D(p['until'])
+        ya = f'{a.year}/' if a.year != _nb_today.year else ''
+        yb = f'{b.year}/' if b.year != a.year else ''
+        return f'{ya}{_nb_md(a, False)}～{yb}{_nb_md(b, False)}'
+
+    # 今天的狀態（一句話）
+    if not _nb_in:
+        _nb_now_txt = (f'這一季從 {_nb_from.year}/{_nb_md(_nb_from, False)} 開始' if _nb_today < _nb_from
+                       else '這一季已經結束，下一季的日期以官網公告為準')
+    elif _nb_today in _nb_xdates:
+        _nb_now_txt = f'今天是聖誕特別營業，只收日期指定券 {_nb_xm["price"]:,} 円'
+    elif _nb_today in _nb_closed:
+        _nb_now_txt = '今天休園'
+    elif _nb_p_now:
+        _nb_now_txt = (f'今天 {_nb_md(_nb_today)} 超商預購 {_nb_p_now["conv"]:,} 円、現場窗口 {_nb_p_now["door"]:,} 円，'
+                       f'這個價格到 {_nb_md(_nb_D(_nb_p_now["until"]), False)}')
+    else:
+        _nb_now_txt = ''
+
+    # 未來 7 天
+    _nb_days = []
+    if _nb_today <= _nb_until:
+        _d0 = max(_nb_today, _nb_from)
+        for _i in range(7):
+            _d = _d0 + datetime.timedelta(days=_i)
+            if _d > _nb_until:
+                break
+            _nb_days.append(_d)
+
+    def _nb_row(d):
+        hrs = _nb_hours(d)
+        if hrs == '休園':
+            return (f'<tr><td class="nm"><b>{_nb_md(d)}</b></td><td class="nm">休園</td>'
+                    '<td class="nm">—</td><td class="nm">休園</td></tr>')
+        if d in _nb_xdates:
+            price = f'日期指定券 ¥{_nb_xm["price"]:,}'
+        else:
+            p = _nb_period(d)
+            price = f'超商 ¥{p["conv"]:,}<br><small style="color:var(--dim)">現場 ¥{p["door"]:,}</small>'
+        hrs_txt = hrs if hrs else '官網日曆還沒公布'
+        return (f'<tr><td class="nm"><b>{_nb_md(d)}</b></td><td class="nm">{price}</td>'
+                f'<td class="nm">{_nb_light(d)} 左右</td><td class="nm">{hrs_txt}</td></tr>')
+
+    nb_faq = [
+     ('名花之里門票多少錢？',
+      '依入場日期分四段：'
+      + '；'.join(f'{_nb_prange(p)} 超商預購 {p["conv"]:,} 円、現場 {p["door"]:,} 円' for p in NB['periods'])
+      + f'。{_nb_xm_rng} 聖誕特別營業另外賣日期指定券 {_nb_xm["price"]:,} 円。{NB["kids"]}。'),
+     ('票價裡包含什麼？',
+      f'{NB["ticket_includes"]}。聖誕日期指定券的金券是 {_nb_xm["coupon"]:,} 円。{NB["coupon"]}。'),
+     ('要先買票嗎？現場買得到嗎？',
+      f'現場窗口買得到，但除了 3～5 月以外，現場比超商貴 200 円；{NB["door_wait"]}。'
+      f'{NB["conv_rule"]}，{NB["conv_entry"]}。'),
+     (f'{_nb_xm_rng} 聖誕節可以去嗎？',
+      f'可以，但{_nb_xm["rule"]}。日期指定券 {_nb_xm["price"]:,} 円，{_nb_xm["sale"]}。{_nb_xm["free"]}。'),
+     ('幾點點燈？開到幾點？',
+      f'點燈時間配合日落，{_nb_md(_nb_lt[0][0], False)} 約 {_nb_lt[0][1]}，最早是 11～12 月的 17:00 左右，'
+      f'5 月下旬晚到 {_nb_lt[-1][1]}。平日營業 {_nb_h["weekday"]}，週末假日 {_nb_h["holiday"]}，{_nb_h["last_entry"]}。{NB["rain"]}。'),
+     ('從名古屋怎麼去？',
+      f'搭近鐵到近鐵長島站（準急約 25 分鐘），再轉直達巴士{_nb_bk["time"]}、{_nb_bk["fare"][0]} 円；'
+      f'或在名鐵巴士中心搭直達車{_nb_bm["time_to"]}，{_nb_bm_fare}。直達車回名古屋的末班是 {_nb_bm["last_back"]}，'
+      '待到閉園的話要搭近鐵回去。'),
+     ('Klook、KKday 的一日遊有含門票嗎？',
+      f'不一定，要看各團的「費用包含」。本站 {_nb_D(NB["checked"]).month}/{_nb_D(NB["checked"]).day} 查證時，'
+      f'KKday {_nb_kk["id"]}（名古屋出發）{_nb_kk["ticket"]}；Klook {_nb_kl["id"]}（名古屋出發）{_nb_kl["ticket"]}。'),
+     ('有免費入場的方法嗎？',
+      f'有兩種：{NB["restaurant"]}。{NB["hotels"]}。'),
+    ]
+    nb_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in nb_faq]}, ensure_ascii=False)
+
+    write('nagoya/nabana-no-sato/index.html',
+      head(f'名花之里門票怎麼買：超商 {_nb_conv_lo:,}～{_nb_conv_hi:,} 円比現場便宜，聖誕節要日期指定券，名古屋交通與一日遊含不含門票',
+           f'名花之里（なばなの里）燈海 {_nb_from.year}/{_nb_md(_nb_from, False)}～{_nb_until.year}/{_nb_md(_nb_until, False)}，'
+           f'門票依日期 {_nb_conv_lo:,}～{_nb_conv_hi:,} 円。本頁整理官網票價、超商預購怎麼買、聖誕節日期指定券、'
+           '每天幾點點燈、從名古屋搭近鐵或直達巴士怎麼去，以及 Klook、KKday 一日遊有沒有含門票。',
+           'nagoya/nabana-no-sato/',
+           '<script type="application/ld+json">' + nb_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('名古屋', '/nagoya/'), ('名花之里門票', None)])
+      + '<h1>名花之里門票怎麼買</h1>'
+      + '<p class="lede">名花之里（なばなの里）在三重縣桑名市長島，從名古屋搭車 30～40 分鐘，冬天的燈海是這裡最有名的活動。'
+        f'下面的票價與時間引名花之里官網，查證於 {NB["checked"]}；台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>'
+        + (f'<li><b>{html.escape(_nb_now_txt)}</b>。</li>' if _nb_now_txt else '')
+        + f'<li><b>超商預購比現場便宜 200 円</b>（3～5 月同價），當天在全家或 7-11 買也算，印出來直接進場。</li>'
+        + (f'<li><b>{_nb_xm_rng} 只收日期指定券</b> {_nb_xm["price"]:,} 円，限量'
+           + ('，已經開賣' if _nb_xm_open else f'，{_nb_md(_nb_D(_nb_xm["sale_from"]), False)} 0:00 開賣') + '。</li>'
+           if _nb_xm_on else '')
+        + f'<li><b>門票含 1,000 円金券</b>，在里內吃飯、買東西都能用。</li>'
+        + f'<li><b>名古屋直達巴士末班 {_nb_bm["last_back"]}</b>，比閉園早，晚走的人要搭近鐵回去。</li>'
+        + '<li><b>一日遊不一定含門票</b>：KKday 那團有含，Klook 那團沒含，下單前看「費用包含」。</li>'
+        '</ul></div>'
+      + (('<h2>這幾天的票價與點燈時間</h2>'
+          + '<div class="tw"><table><tr><th>日期</th><th>票價（大人）</th><th>點燈</th><th>營業時間</th></tr>'
+          + ''.join(_nb_row(d) for d in _nb_days)
+          + '</table></div>'
+          + f'<p class="disc">{html.escape(NB["light_note"])}。{html.escape(_nb_h["last_entry"])}。'
+            f'{html.escape(NB["kids"])}。</p>') if _nb_days else '')
+      + '<h2>票價</h2>'
+      + '<div class="tw"><table><tr><th>入場日期</th><th>超商預購</th><th>現場窗口</th></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{_nb_prange(p)}</b></td><td class="nm">{_nb_y(p["conv"])}</td>'
+                  f'<td class="nm">{_nb_y(p["door"])}</td></tr>' for p in NB['periods'])
+        + f'<tr><td class="nm"><b>{_nb_xm_rng}</b><br><small>聖誕特別營業</small></td>'
+          f'<td class="nm">日期指定券 {_nb_y(_nb_xm["price"])}</td>'
+          f'<td class="nm">有剩才賣 {_nb_y(_nb_xm["price"])}</td></tr>'
+        + '</table></div>'
+      + f'<p class="disc">票價包含{html.escape(NB["ticket_includes"])}；聖誕日期指定券的金券是 {_nb_xm["coupon"]:,} 円。'
+        f'{html.escape(NB["kids"])}。{html.escape(NB["no_refund"])}。{_nb_D(NB["closed"][0]).year}/'
+        f'{_nb_md(_nb_D(NB["closed"][0]), False)}、{_nb_md(_nb_D(NB["closed"][1]), False)} 休園。</p>'
+      + '<h2>怎麼買</h2><ul class="lede">'
+        + _nb_li('超商預購', f'{NB["conv_rule"]}；{NB["conv_entry"]}')
+        + _nb_li('現場窗口', f'{NB["door_wait"]}；{NB["door_pay"]}')
+        + _nb_li('金券', NB['coupon'])
+        + _nb_li('訂餐廳免費入場', NB['restaurant'])
+        + _nb_li('住官方飯店', NB['hotels'])
+        + '</ul>'
+      + '<div class="tw"><table><tr><th>入場日期</th><th>全家（JTB 商品編號）</th><th>7-11（7 Ticket 代碼）</th><th>金券用到</th></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{_nb_prange(p)}</b></td><td class="nm">{p["fami"]}</td>'
+                  f'<td class="nm">{p["seven"]}</td><td class="nm">{_nb_D(p["coupon_until"]).year}/{_nb_md(_nb_D(p["coupon_until"]), False)}</td></tr>'
+                  for p in NB['periods'])
+        + '</table></div>'
+      + f'<p class="disc">編號與代碼引官網預購票時程頁；每一期的票只在那一期賣，賣到最後一天 19:00。</p>'
+      + ((f'<h2>{_nb_xm_rng} 聖誕特別營業</h2><ul class="lede">'
+          + _nb_li('規定', _nb_xm['rule'])
+          + _nb_li('營業時間', '、'.join(f'{_nb_md(_nb_D(d))} {h}' for d, h in _nb_xm['hours'].items()))
+          + _nb_li('日期指定券', f'{_nb_xm["price"]:,} 円，含入場、{_nb_xm["coupon"]:,} 円金券（用到 '
+                   f'{_nb_D(_nb_xm["coupon_until"]).year}/{_nb_md(_nb_D(_nb_xm["coupon_until"]), False)}）與秋海棠花園')
+          + _nb_li('怎麼買', f'{_nb_md(_nb_D(_nb_xm["sale_from"]), False)} 0:00 起在全家（JTB 商品編號 '
+                   + '／'.join(_nb_xm['fami']) + f'，依日期）或 7-11（代碼 {_nb_xm["seven"]}）；{_nb_xm["asoview"]}')
+          + _nb_li('賣完怎麼辦', _nb_xm['sale'])
+          + _nb_li('不用買的人', _nb_xm['free'])
+          + '</ul>') if _nb_xm_on else '')
+      + '<h2>從名古屋怎麼去</h2>'
+      + '<div class="tw"><table><tr><th>方法</th><th>時間</th><th>車資（大人）</th><th>注意</th></tr>'
+        f'<tr><td class="nm"><b>近鐵＋直達巴士</b><br><small>近鐵名古屋→近鐵長島→名花之里</small></td>'
+        f'<td class="nm">電車約 25 分鐘＋巴士{html.escape(_nb_bk["time"])}</td>'
+        f'<td class="nm">巴士單程 {_nb_bk["fare"][0]} 円（電車另計）</td>'
+        f'<td class="nm">巴士末班跟著閉園時間</td></tr>'
+        f'<tr><td class="nm"><b>名鐵巴士中心直達車</b></td><td class="nm">去程{html.escape(_nb_bm["time_to"])}、回程{html.escape(_nb_bm["time_back"])}</td>'
+        f'<td class="nm">{html.escape(_nb_bm_fare)}</td>'
+        f'<td class="nm">回名古屋末班 {_nb_bm["last_back"]}</td></tr>'
+        f'<tr><td class="nm"><b>近鐵套票</b><br><small>電車＋巴士＋門票＋金券</small></td><td class="nm">電車約 25 分鐘＋巴士{html.escape(_nb_bk["time"])}</td>'
+        f'<td class="nm">近鐵名古屋出發 {_nb_kt["rows"][0][1]:,}～{_nb_kt["rows"][0][2]:,} 円</td>'
+        f'<td class="nm">分開買省 {_nb_kt["rows"][0][3]} 円</td></tr>'
+        '</table></div>'
+      + '<ul class="lede">'
+        + _nb_li('近鐵', f'{_nb_tr["semi"]}；{_nb_tr["express"]}；{_nb_tr["transfer"]}')
+        + _nb_li('近鐵長島站巴士', f'{_nb_bk["freq"]}，{_nb_bk["first"]}；{_nb_bk["last"]}；小孩 {_nb_bk["fare"][1]} 円；{_nb_bk["ic"]}')
+        + _nb_li('桑名站', _nb_bk['kuwana'])
+        + _nb_li('名鐵直達車', f'{_nb_bm["where"]}；{_nb_bm["ic"]}；{_nb_bm["no_adv"]}')
+        + _nb_li('什麼時候到', f'{NB["visit"]["arrive"]}；{NB["visit"]["leave"]}')
+        + '</ul>'
+      + '<h3>近鐵套票（大人）</h3>'
+      + '<div class="tw"><table><tr><th>出發站</th><th>A 期間</th><th>B 期間</th><th>比分開買省</th></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{n}</b></td><td class="nm">{_nb_y(a)}</td><td class="nm">{_nb_y(b)}</td>'
+                  f'<td class="nm">{s:,} 円</td></tr>' for n, a, b, s in _nb_kt['rows'])
+        + '</table></div>'
+      + f'<p class="disc">A 期間：{html.escape(_nb_kt["A_dates"])}；B 期間：{html.escape(_nb_kt["B_dates"])}。'
+        f'內容是{html.escape(_nb_kt["what"])}。{html.escape(_nb_kt["where"])}買，{html.escape(_nb_kt["when"])}，'
+        f'{html.escape(_nb_kt["valid"])}；{html.escape(_nb_kt["no_xmas"])}；{html.escape(_nb_kt["limited_express"])}；'
+        f'{html.escape(_nb_kt["refund"])}。</p>'
+      + '<h2>Klook、KKday 一日遊</h2>'
+      + '<div class="tw"><table><tr><th>平台</th><th>行程</th><th>名花之里門票</th><th>取消</th></tr>'
+        f'<tr><td class="nm"><b>KKday {_nb_kk["id"]}</b></td><td class="nm">{html.escape(_nb_kk["route"])}</td>'
+        f'<td class="nm"><b>{html.escape(_nb_kk["ticket"])}</b></td><td class="nm">{html.escape(_nb_kk["cancel"])}</td></tr>'
+        f'<tr><td class="nm"><b>Klook {_nb_kl["id"]}</b></td><td class="nm">{html.escape(_nb_kl["route"])}</td>'
+        f'<td class="nm"><b>{html.escape(_nb_kl["ticket"])}</b></td><td class="nm">{html.escape(_nb_kl["cancel"])}；{html.escape(_nb_kl["min"])}</td></tr>'
+        '</table></div>'
+      + '<p class="disc">兩團都從名古屋出發、先逛長島 Outlet 再看燈海。比價時，不含門票的那團要再加上當天的門票價格。'
+        '平台的售價、方案與包含項目隨時會改，以下單頁面為準。</p>'
+      + f'<a class="cta" href="{_nb_kk_h}" target="_blank" rel="{_rel(_nb_kk_h)}">'
+        '<span class="ci">🌸</span><span class="ct"><b>KKday 名古屋出發 Outlet＋名花之里</b>'
+        '<s>用台幣付款；含名花之里門票</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_nb_kl_h}" target="_blank" rel="{_rel(_nb_kl_h)}">'
+        '<span class="ci">🌸</span><span class="ct"><b>Klook 名古屋出發 Outlet＋名花之里</b>'
+        '<s>用台幣付款；門票要另外買</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_nb_of_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>名花之里官網票價頁</b>'
+        '<s>日文介面，超商預購的說明，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官網本站沒有分潤。</p>'
+      + '<h2>里內還能看什麼</h2><ul class="lede">'
+        + _nb_li('秋海棠花園', NB['begonia'])
+        + ''.join(_nb_li(n, t) for n, t in NB['seasonal'])
+        + '</ul>'
+      + faq_visible(nb_faq)
+      + fare_cta('nagoya', '飛名古屋的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-ghibli-park/")}"><b>🌳 吉卜力公園門票</b><s>也在名古屋</s></a>'
+      + f'<a class="ct" href="{U("/japan-shirakawago-lightup/")}"><b>🏮 白川鄉點燈</b><s>名古屋出發也到得了</s></a>'
+      + f'<a class="ct" href="{U("/japan-seasonal-event/")}"><b>🎄 日本聖誕節活動</b><s>兩大樂園的檔期</s></a>'
+      + f'<a class="ct" href="{U("/nagoya/")}"><b>🏯 名古屋機票</b><s>各出發地的票價</s></a></div>'
+      + '<p class="disc">票價、時間與規定以名花之里官網為準，整理可能有疏漏。本頁為公開資訊整理，與名花之里無合作關係。</p>'
+      + foot())
+    pages.append(('/nagoya/nabana-no-sato/', 0.6))
 
 # ---------- 東京地鐵 24／48／72 小時券 ----------
 # 資料在 tsub.json。價格、對象、範圍、時效引東京メトロ官網與英文說明 PDF；兌換機與「機場不能換」引官網連過去的販售站附件。
