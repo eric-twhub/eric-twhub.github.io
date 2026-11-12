@@ -11004,8 +11004,8 @@ if os.path.exists('tsurunoyu.json'):
     _ts_snap_txt = f'{_ts_md(_ts_snap_d)} 查秘湯を守る会的訂房日曆'
 
     _ts_tldr = (
-        f'<li><b>訂房只有兩條路</b>：打電話 {TS["tel"]}（日本時間 {TS["tel_hours"]}，台灣時間 {_ts_tel_tw}），'
-        '或在「日本秘湯を守る会」網站訂；官網寫不接 email。</li>'
+        f'<li><b>官網列的訂房方法只有兩個</b>：打電話 {TS["tel"]}（日本時間 {TS["tel_hours"]}，台灣時間 {_ts_tel_tw}），'
+        f'或在「日本秘湯を守る会」網站訂；官網寫不接 email。{html.escape(TS["ota"])}。</li>'
         f'<li><b>冬天網路上幾乎訂不到</b>：{_ts_snap_txt}，{html.escape(_ts_snap["winter"])}。</li>'
         f'<li><b>最便宜是{_ts_cheap_room["name"]}（{_ts_cheap_room["tag"]}）每人 {_ts_cheap:,} 円</b>，'
         f'也是唯一能一個人住的房型；茅草屋頂的本陣每人 {_ts_honjin["official"]:,} 円。</li>'
@@ -11016,7 +11016,7 @@ if os.path.exists('tsurunoyu.json'):
     ts_faq = [
      ('鶴之湯怎麼訂房？',
       f'官網列的方法只有兩個：打電話 {TS["tel"]}（日本時間 {TS["tel_hours"]}），或在「日本秘湯を守る会」網站訂。'
-      f'官網寫不接 email。網路訂是{_ts_w["instant"]}，{_ts_w["pay"]}付款。'),
+      f'官網寫不接 email。網路訂是{_ts_w["instant"]}，{_ts_w["pay"]}付款。{TS["ota"]}。'),
      ('鶴之湯多久前可以訂？',
       f'鶴之湯官網沒有寫開放規則。{_ts_snap_txt}，有空房的日子最遠到 {_ts_md(_ts_far)}；'
       f'別館山之宿官網寫 {_ts_ya["ahead"]}。'),
