@@ -26617,8 +26617,13 @@ urls='\n'.join(f'  <url><loc>{SITE}{U(u)}</loc>'
              f'<priority>{p}</priority></url>' for u,p in _sm_pages)
 print(f'   sitemap：{len(_sm_pages)} 個 URL（另有 {len(pages) - len(_sm_pages)} 個 noindex 不列），'
       f'其中 {_lm_same} 個內容未變、沿用原 lastmod')
-write('sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n'
-      f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n')
+_SM_XML = (f'<?xml version="1.0" encoding="UTF-8"?>\n'
+           f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n')
+write('sitemap.xml', _SM_XML)
+# 同一份內容換個檔名。GSC 裡的 sitemap.xml 從 2026-09-11 起一直是「無法擷取」、
+# 從沒被讀過（檔案本身 200、XML 正常），11/12 換檔名另送一份，排除 GSC 卡在舊紀錄。
+# sitemap.xml 照留：Bing 與 indexnow.py 都用它。
+write('sitemap-pages.xml', _SM_XML)
 
 # 新頁面忘了加進 _AD_MAP 的話，那一頁會靜靜地沒有任何廣告版位。
 # 內容夠長卻一個版位都沒有的，建置時列出來，不要等到上線才發現。
@@ -26659,6 +26664,7 @@ print(f'   og 圖卡清單：{len(_og_items)} 個內容頁'
 
 _card_stamp_warn()
 
-write('robots.txt', f'User-agent: *\nAllow: /\n\nSitemap: {SITE}{BASE}/sitemap.xml\n')
+write('robots.txt', f'User-agent: *\nAllow: /\n\nSitemap: {SITE}{BASE}/sitemap.xml\n'
+                     f'Sitemap: {SITE}{BASE}/sitemap-pages.xml\n')
 write('.nojekyll','')
 
