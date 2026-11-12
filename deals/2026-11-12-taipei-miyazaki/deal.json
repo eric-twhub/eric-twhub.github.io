@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-12-taipei-miyazaki",
- "generated": "2026-11-12 07:46",
+ "generated": "2026-11-12 10:50",
  "kind": "fare",
  "origin": "taipei",
  "city": "miyazaki",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4477,
+  "price": 4664,
   "dep": "2026-12-07",
   "ret": "2026-12-14",
   "dept": "06:20",
@@ -27,8 +27,8 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11097,
- "n_rt": 4,
+ "med": 10932,
+ "n_rt": 6,
  "others": [
   {
    "o": "TPE",
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5895,
+   "price": 5048,
    "dep": "2026-12-14",
    "ret": "2026-12-21",
    "dept": "06:20",
@@ -47,6 +47,25 @@
    "dur_to": 120,
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-14&inbound=KMI-TPE&returnDate=2026-12-21&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "KMI",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 5564,
+   "dep": "2026-11-20",
+   "ret": "2026-11-27",
+   "dept": "06:20",
+   "rett": "10:30",
+   "rt": true,
+   "tr": 0,
+   "dur": 270,
+   "dur_to": 120,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-11-20&inbound=KMI-TPE&returnDate=2026-11-27&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
@@ -66,24 +85,6 @@
    "dur_to": 335,
    "gate": "Wingie",
    "url": "https://www.aviasales.com/search/TSA1412KMI21121?t=NH17972670001797339900001155TSAHNDFUKKMI17978820001797942600001070KMIFUKHNDTSA_519b61c7bb5062d0c6de3cc020495ad2_40992&search_date=11112026&expected_price_uuid=01a1cb3e-6eaf-8030-6a00-595d7c5685ae&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=ykJHTk5Jbv6QfuGE09a2Aw&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=16300&marker=775639"
-  },
-  {
-   "o": "TPE",
-   "d": "KMI",
-   "air": "NH",
-   "airname": "全日空",
-   "cls": "fsc",
-   "price": 16518,
-   "dep": "2026-12-07",
-   "ret": "2026-12-14",
-   "dept": "16:50",
-   "rett": "19:40",
-   "rt": true,
-   "tr": 4,
-   "dur": 2225,
-   "dur_to": 335,
-   "gate": "Wingie",
-   "url": "https://www.aviasales.com/search/TSA0712KMI14121?t=NH17966622001796735100001155TSAHNDFUKKMI17972772001797337800001070KMIFUKHNDTSA_6085071ed08681549c36bd5039d5af50_41289&search_date=07112026&expected_price_uuid=01a1b499-c943-8040-6218-6de5423ab857&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=ykJHTk5Jbv6QfuGE09a2Aw&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=16518&marker=775639"
   }
  ]
 }
