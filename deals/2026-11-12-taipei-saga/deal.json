@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-12-taipei-saga",
- "generated": "2026-11-12 18:57",
+ "generated": "2026-11-12 19:32",
  "kind": "fare",
  "origin": "taipei",
  "city": "saga",
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5346,
+   "price": 5046,
    "dep": "2026-11-19",
    "ret": "2026-11-26",
    "dept": "08:10",

@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-12-taipei-ishigaki",
- "generated": "2026-11-12 18:57",
+ "generated": "2026-11-12 19:32",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -75,9 +75,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4264,
-   "dep": "2026-11-27",
-   "ret": "2026-12-04",
+   "price": 4303,
+   "dep": "2026-11-20",
+   "ret": "2026-11-27",
    "dept": "06:35",
    "rett": "09:25",
    "rt": true,
@@ -85,7 +85,7 @@
    "dur": 130,
    "dur_to": 60,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-27&inbound=ISG-TPE&returnDate=2026-12-04&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-20&inbound=ISG-TPE&returnDate=2026-11-27&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
