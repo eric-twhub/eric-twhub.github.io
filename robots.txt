@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://eric-twhub.github.io/sitemap.xml
+Sitemap: https://eric-twhub.github.io/sitemap-pages.xml
