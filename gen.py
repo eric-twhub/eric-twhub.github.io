@@ -1631,6 +1631,7 @@ def topnav(cur=''):
             + link('/japan-asahiyama-zoo/', '🐧 旭山動物園企鵝散步時間')
             + link('/nagoya/nabana-no-sato/', '🌸 名花之里燈海門票')
             + link('/japan-zao-juhyo/', '🌲 藏王樹冰點燈與雪怪車')
+            + link('/japan-tsurunoyu/', '♨️ 鶴之湯訂房與交通')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
             + link('/taiwan-holiday-2027/', '📅 2027 請假攻略')
@@ -1801,6 +1802,7 @@ _AD_MAP = [
     ('japan-asahiyama-zoo', 'esim'),
     ('nagoya/nabana-no-sato', 'activity2'),
     ('japan-zao-juhyo', 'esim'),
+    ('japan-tsurunoyu', 'transport'),
     ('tokyo/autumn-leaves', 'esim'),
     ('japan-shirakawago-lightup', 'esim'),
     ('japan-ginzan-onsen', 'esim'),
@@ -3168,6 +3170,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要去看藏王樹冰？'
                      f'<a href="{U("/japan-zao-juhyo/")}">纜車票價、夜間點燈哪幾天、宮城側雪怪車怎麼訂、從仙台怎麼去</a>'
                      f'（官網原文整理：夜間雪上車 7 天前開賣、山形站回程末班比點燈結束早）。</p>')
+        if slug == 'akita' and os.path.exists('tsurunoyu.json'):
+            body += (f'<p class="lede">要去乳頭溫泉鄉的鶴之湯？'
+                     f'<a href="{U("/japan-tsurunoyu/")}">電話與網路怎麼訂、各房型價格、不住宿泡湯、從田澤湖站怎麼去</a>'
+                     f'（官網原文整理：冬天網路上幾乎訂不到、週一不開放日歸、送迎車要先打電話）。</p>')
         if slug == 'nagoya' and os.path.exists('nabana.json'):
             body += (f'<p class="lede">要去名花之里看燈海？'
                      f'<a href="{U("/nagoya/nabana-no-sato/")}">門票怎麼買、聖誕節要日期指定券、從名古屋怎麼去</a>'
@@ -10951,6 +10957,220 @@ if os.path.exists('zao.json'):
       + '<p class="disc">票價、時間與規定以各官網為準，整理可能有疏漏。本頁為公開資訊整理，與藏王纜車、すみかわ無合作關係。</p>'
       + foot())
     pages.append(('/japan-zao-juhyo/', 0.6))
+
+# ---------- 乳頭溫泉鄉 鶴之湯（訂房、日歸入浴、交通） ----------
+# 資料在 tsurunoyu.json。房價、預約方式引鶴之湯官網日文頁；網路方案起價、取消費與空房快照引日本秘湯を守る会；
+# 巴士引羽後交通乳頭線時刻表 PDF；湯めぐり號引乳頭溫泉組合官網。
+# 空房是 web_snapshot.date 那天的快照，頁面一律寫明查的日期，不要寫成「現在」。
+if os.path.exists('tsurunoyu.json'):
+    TS = json.load(open('tsurunoyu.json', encoding='utf-8'))
+    _ts_today = (NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))).date()
+    _ts_D = datetime.date.fromisoformat
+
+    def _ts_md(d):
+        return (f'{d.year}/' if d.year != _ts_today.year else '') + f'{d.month}/{d.day}'
+
+    def _ts_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    def _ts_y(p):
+        return f'¥{p:,}<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    def _ts_src(u, label):
+        return f'<a href="{html.escape(u)}" rel="nofollow noopener" target="_blank">{label}</a>'
+
+    _ts_w, _ts_snap, _ts_ya = TS['web'], TS['web_snapshot'], TS['yama']
+    _ts_du, _ts_mx, _ts_bus, _ts_yg = TS['dayuse'], TS['mixed'], TS['bus'], TS['yumeguri']
+    _ts_snap_d = _ts_D(_ts_snap['date'])
+    _ts_far = _ts_D(_ts_snap['far'])
+    _ts_cancel = '、'.join(f'{w}收 {p}%' for w, p in _ts_w['cancel'])
+    _ts_cheap = min(r['official'] for r in TS['rooms'] if isinstance(r['official'], int))
+    _ts_cheap_room = next(r for r in TS['rooms'] if r['official'] == _ts_cheap)
+    _ts_honjin = next(r for r in TS['rooms'] if r['name'].startswith('本陣'))
+    _ts_hi = max(max(r['official']) if isinstance(r['official'], list) else r['official'] for r in TS['rooms'])
+    _ts_yg_on = _ts_today <= _ts_D(_ts_yg['show_until'])
+    _ts_tel_tw = '～'.join(f'{int(t.split(":")[0]) - 1}:{t.split(":")[1]}' for t in TS['tel_hours'].split('～'))
+
+    def _ts_price(r):
+        o = r['official']
+        if isinstance(o, list):
+            return (f'¥{o[0]:,}～{o[1]:,}<br><small style="color:var(--dim)">約 {money(round(o[0] * JPY))}～'
+                    f'{money(round(o[1] * JPY))}</small>')
+        s = _ts_y(o)
+        if r.get('official_solo'):
+            s += f'<br><small>一個人住 {r["official_solo"]:,} 円</small>'
+        return s
+
+    _ts_snap_txt = f'{_ts_md(_ts_snap_d)} 查秘湯を守る会的訂房日曆'
+
+    _ts_tldr = (
+        f'<li><b>訂房只有兩條路</b>：打電話 {TS["tel"]}（日本時間 {TS["tel_hours"]}，台灣時間 {_ts_tel_tw}），'
+        '或在「日本秘湯を守る会」網站訂；官網寫不接 email。</li>'
+        f'<li><b>冬天網路上幾乎訂不到</b>：{_ts_snap_txt}，{html.escape(_ts_snap["winter"])}。</li>'
+        f'<li><b>最便宜是{_ts_cheap_room["name"]}（{_ts_cheap_room["tag"]}）每人 {_ts_cheap:,} 円</b>，'
+        f'也是唯一能一個人住的房型；茅草屋頂的本陣每人 {_ts_honjin["official"]:,} 円。</li>'
+        f'<li><b>不住也能泡</b>：大人 {_ts_du["fee"][0]} 円，{_ts_du["hours"]}，週一不開放日歸。</li>'
+        f'<li><b>交通</b>：田澤湖站搭乳頭線 {_ts_bus["to_alpa_min"]} 分鐘到アルパこまくさ（{_ts_bus["fare_alpa"]} 円），'
+        f'先打電話請鶴之湯派車來接；在「鶴の湯温泉入口」站下車的話，要走約 50 分鐘。</li>')
+
+    ts_faq = [
+     ('鶴之湯怎麼訂房？',
+      f'官網列的方法只有兩個：打電話 {TS["tel"]}（日本時間 {TS["tel_hours"]}），或在「日本秘湯を守る会」網站訂。'
+      f'官網寫不接 email。網路訂是{_ts_w["instant"]}，{_ts_w["pay"]}付款。'),
+     ('鶴之湯多久前可以訂？',
+      f'鶴之湯官網沒有寫開放規則。{_ts_snap_txt}，有空房的日子最遠到 {_ts_md(_ts_far)}；'
+      f'別館山之宿官網寫 {_ts_ya["ahead"]}。'),
+     ('鶴之湯一晚多少錢？',
+      f'官網價目表是兩人一室時每人的一泊二食價：'
+      + '；'.join(f'{r["name"]} '
+                 + (f'{r["official"][0]:,}～{r["official"][1]:,} 円' if isinstance(r['official'], list)
+                    else f'{r["official"]:,} 円') for r in TS['rooms'])
+      + f'。{TS["heating_note"]}。網路方案的價格和價目表不完全一樣，以訂房畫面為準，另收入湯稅 {_ts_w["tax"]} 円。'),
+     ('鶴之湯可以一個人住嗎？',
+      f'可以，但只有{_ts_cheap_room["name"]}（{_ts_cheap_room["tag"]}）：官網寫一個人住 {_ts_cheap_room["official_solo"]:,} 円。'
+      f'網路訂房也一樣，{_ts_w["solo"]}。'),
+     ('不住宿可以去鶴之湯泡湯嗎？',
+      f'可以，大人 {_ts_du["fee"][0]} 円、小孩 {_ts_du["fee"][1]} 円，{_ts_du["hours"]}，毛巾現場賣 {_ts_du["towel"]} 円。'
+      f'{_ts_du["closed"]}。{_ts_du["crowd"]}。'),
+     ('鶴之湯是混浴嗎？',
+      f'{_ts_mx["what"]}。{_ts_mx["towel"]}，{_ts_mx["photo"]}。{_ts_mx["yuami"]}。'),
+     ('怎麼去鶴之湯？',
+      f'搭秋田新幹線到田澤湖站，在站前搭羽後交通乳頭線，約 {_ts_bus["to_alpa_min"]} 分鐘到アルパこまくさ，'
+      f'車資 {_ts_bus["fare_alpa"]} 円。{_ts_bus["pickup"]}。乳頭線大約一小時一班。'),
+     ('本陣是什麼？哪幾間有地爐？',
+      f'{TS["honjin"]}。本陣 1～5 番晚餐在房間的地爐旁吃；'
+      f'新本陣 5 番、東本陣 1 番與 5 番也有地爐。'),
+     ('山之宿和鶴之湯本館差在哪？',
+      f'山之宿{_ts_ya["where"]}，每人 {min(x[1] for x in _ts_ya["rooms"]):,}～{max(x[1] for x in _ts_ya["rooms"]):,} 円，'
+      f'{_ts_ya["book"]}。{_ts_ya["note"]}。'),
+     ('湯めぐり帖是什麼？',
+      f'乳頭溫泉鄉的溫泉巡禮券，可以在{_ts_yg["covers"]}。{_ts_yg["book"]}，'
+      f'大人 {_ts_yg["price"][0]:,} 円、小孩 {_ts_yg["price"][1]:,} 円。'),
+    ]
+    ts_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in ts_faq]}, ensure_ascii=False)
+
+    _ts_room_rows = ''.join(
+        f'<tr><td class="nm"><b>{html.escape(r["name"])}</b>'
+        + (f'<br><small>{html.escape(r["tag"])}</small>' if r['tag'] else '')
+        + f'</td><td class="nm">{_ts_price(r)}</td>'
+        f'<td class="nm">{html.escape(r["web"])}</td><td class="nm">{html.escape(r["note"])}</td></tr>'
+        for r in TS['rooms'])
+
+    _ts_bus_go = ''.join(f'<tr><td class="nm"><b>{a}</b></td><td class="nm">{b}</td></tr>' for a, b in _ts_bus['go'])
+    _ts_bus_back = ''.join(f'<tr><td class="nm"><b>{a}</b></td><td class="nm">{b}</td></tr>' for a, b in _ts_bus['back'])
+
+    write('japan-tsurunoyu/index.html',
+      head(f'鶴之湯訂房攻略：電話與網路怎麼訂、本陣每人 {_ts_honjin["official"]:,} 円、日歸泡湯 {_ts_du["fee"][0]} 円、從田澤湖站怎麼去',
+           f'乳頭溫泉鄉鶴之湯整理：電話與日本秘湯を守る会網路預約、{_ts_snap_d.month}/{_ts_snap_d.day} 查的網路空房、'
+           '各房型價格與哪幾間有地爐、一個人能不能住、日歸入浴時間與週一公休、混浴規定、'
+           '乳頭線巴士時刻與送迎車、別館山之宿與湯めぐり帖。',
+           'japan-tsurunoyu/',
+           '<script type="application/ld+json">' + ts_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('秋田', '/akita/'), ('鶴之湯', None)])
+      + '<h1>鶴之湯怎麼訂、怎麼去</h1>'
+      + f'<p class="lede">鶴之湯在秋田縣乳頭山腳下，是{html.escape(TS["history"])}。'
+        f'下面的房價、預約方式與規定引鶴之湯官網、日本秘湯を守る会與羽後交通，查證於 {TS["checked"]}；'
+        f'台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="tldr"><ul>' + _ts_tldr + '</ul></div>'
+      + '<h2>怎麼訂房</h2>'
+      + '<ul class="lede">'
+        + _ts_li('電話', f'{TS["tel"]}，日本時間 {TS["tel_hours"]}（台灣時間 {_ts_tel_tw}）；官網寫不接 email')
+        + _ts_li('網路', f'日本秘湯を守る会網站，{_ts_w["instant"]}，{_ts_w["pay"]}付款；{_ts_w["solo"]}；'
+                 f'價格不含入湯稅 {_ts_w["tax"]} 円；入住 {_ts_w["checkin"]}、退房 {_ts_w["checkout"]}')
+        + _ts_li('網路訂的取消費', _ts_cancel)
+        + _ts_li('小孩', _ts_w['kids'])
+        + _ts_li('多久前開放', f'鶴之湯官網沒有寫；別館山之宿官網寫 {_ts_ya["ahead"]}')
+        + '</ul>'
+      + f'<p class="lede"><b>{_ts_snap_txt}</b>：{html.escape(_ts_snap["winter"])}。'
+        f'{html.escape(_ts_snap["summer"])}。網路上訂不到的日子，可以再打電話問。</p>'
+      + '<h2>房型與價格</h2>'
+      + '<div class="tw"><table><tr><th>房型</th><th>官網價<small>（兩人一室，每人一泊二食）</small></th>'
+        '<th>網路方案</th><th>房間與用餐</th></tr>'
+      + _ts_room_rows + '</table></div>'
+      + f'<p class="disc">{html.escape(TS["heating_note"])}。{html.escape(TS["includes"])}；{html.escape(TS["card"])}。'
+        '網路方案的價格和官網價目表不完全一樣，以訂房畫面顯示的為準。</p>'
+      + '<h2>別館山之宿</h2>'
+      + f'<p class="lede">{html.escape(_ts_ya["where"])}。電話 {TS["tel_yama"]}，{html.escape(_ts_ya["book"])}，'
+        f'{html.escape(_ts_ya["ahead"])}。</p>'
+      + '<div class="tw"><table><tr><th>房型</th><th>每人一泊二食</th><th>特色</th></tr>'
+      + ''.join(f'<tr><td class="nm"><b>{html.escape(a)}</b></td><td class="nm">{_ts_y(b)}</td>'
+                f'<td class="nm">{html.escape(c)}</td></tr>' for a, b, c in _ts_ya['rooms'])
+      + '</table></div>'
+      + f'<p class="disc">冬天每間房另收 {_ts_ya["heating"]:,} 円暖氣費。{html.escape(_ts_ya["note"])}。'
+        f'{html.escape(_ts_ya["note_en"])}。</p>'
+      + '<h2>不住宿泡湯（日歸入浴）</h2>'
+      + '<ul class="lede">'
+        + _ts_li('費用', f'大人 {_ts_du["fee"][0]} 円、小孩 {_ts_du["fee"][1]} 円，毛巾現場賣 {_ts_du["towel"]} 円')
+        + _ts_li('時間', f'{_ts_du["hours"]}（{_ts_du["hours_src"]}）；{_ts_du["crowd"]}')
+        + _ts_li('公休', f'{_ts_du["closed"]}；{_ts_du["closed_union"]}')
+        + _ts_li('休息與置物', f'{_ts_du["rest"]}；{_ts_du["locker"]}')
+        + '</ul>'
+      + '<div class="tw"><table><tr><th>源泉</th><th>官網的說明</th></tr>'
+      + ''.join(f'<tr><td class="nm"><b>{a}</b></td><td class="nm">{html.escape(b)}</td></tr>' for a, b in TS['springs'])
+      + '</table></div>'
+      + f'<p class="disc">{html.escape(TS["springs_note"])}。</p>'
+      + '<h2>混浴的規定</h2>'
+      + '<ul class="lede">'
+        + _ts_li('哪一池', _ts_mx['what'])
+        + _ts_li('毛巾', _ts_mx['towel'])
+        + _ts_li('拍照', _ts_mx['photo'])
+        + _ts_li('湯浴み着', _ts_mx['yuami'])
+        + '</ul>'
+      + '<h2>交通</h2>'
+      + '<div class="tw"><table><tr><th>路線</th><th>時間</th><th>車資（大人）</th><th>注意</th></tr>'
+        f'<tr><td class="nm"><b>田澤湖站→アルパこまくさ</b><br><small>羽後交通乳頭線</small></td>'
+        f'<td class="nm">約 {_ts_bus["to_alpa_min"]} 分鐘</td><td class="nm">{_ts_y(_ts_bus["fare_alpa"])}</td>'
+        '<td class="nm">先打電話，鶴之湯的送迎車在這站接</td></tr>'
+        f'<tr><td class="nm"><b>田澤湖站→鶴の湯温泉入口</b><br><small>羽後交通乳頭線</small></td>'
+        f'<td class="nm">約 {_ts_bus["to_ent_min"]} 分鐘</td><td class="nm">{_ts_y(_ts_bus["fare_ent"])}</td>'
+        '<td class="nm">下車後走約 50 分鐘</td></tr>'
+        '</table></div>'
+      + '<ul class="lede">'
+        + _ts_li('送迎車', _ts_bus['pickup'])
+        + _ts_li('新幹線到田澤湖站', '、'.join(f'{a} {b}' for a, b in TS['shinkansen']))
+        + _ts_li('計程車', TS['taxi'])
+        + _ts_li('從秋田機場', TS['airport'])
+        + '</ul>'
+      + f'<h3>乳頭線時刻（{_ts_bus["rev"]}）</h3>'
+      + '<div class="tw"><table><tr><th>田澤湖站發</th><th>アルパこまくさ到</th></tr>' + _ts_bus_go + '</table></div>'
+      + '<div class="tw"><table><tr><th>アルパこまくさ發</th><th>田澤湖站到</th></tr>' + _ts_bus_back + '</table></div>'
+      + f'<p class="disc">{html.escape(_ts_bus["note"])}。時刻引羽後交通的時刻表 PDF。</p>'
+      + '<h2>湯めぐり號與湯めぐり帖</h2>'
+      + (('<p class="lede">乳頭溫泉鄉有一台在七家旅館之間繞的接駁車（湯めぐり號），'
+          f'{html.escape(_ts_yg["route"])}。{html.escape(_ts_yg["who"])}。</p>'
+          f'<div class="tw"><table><tr><th>鶴之湯發</th><th>回到鶴之湯</th></tr>'
+          + ''.join(f'<tr><td class="nm"><b>{a}</b></td><td class="nm">{b}</td></tr>'
+                    for a, b in zip(_ts_yg['dep'], _ts_yg['arr']))
+          + '</table></div>'
+          + f'<p class="disc">{_ts_D(_ts_yg["from"]).year}/{_ts_D(_ts_yg["from"]).month}/{_ts_D(_ts_yg["from"]).day} 起的冬季時刻表。</p>')
+         if _ts_yg_on else
+         '<p class="lede">乳頭溫泉鄉有一台在七家旅館之間繞的接駁車（湯めぐり號），本頁收的冬季時刻表已經過期，現在的班次以乳頭溫泉組合官網為準。</p>')
+      + '<ul class="lede">'
+        + _ts_li('湯めぐり帖', f'{_ts_yg["covers"]}；{_ts_yg["book"]}；大人 {_ts_yg["price"][0]:,} 円、小孩 {_ts_yg["price"][1]:,} 円')
+        + '</ul>'
+      + f'<a class="cta" href="{html.escape(TS["src_web"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🛏</span><span class="ct"><b>日本秘湯を守る会：鶴之湯的方案與空房</b>'
+        '<s>日文介面，網路訂房從這裡，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{html.escape(TS["official"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">♨️</span><span class="ct"><b>鶴之湯官網</b>'
+        '<s>電話、交通與山之宿，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + f'<p class="disc">出處：{_ts_src(TS["src_heya"], "鶴之湯房價")}、{_ts_src(TS["src_onsen"], "溫泉")}、'
+        f'{_ts_src(TS["src_access"], "交通")}、{_ts_src(TS["src_yama"], "山之宿")}、{_ts_src(TS["src_en"], "英文頁")}、'
+        f'{_ts_src(TS["src_bus"], "乳頭線時刻表")}、{_ts_src(TS["src_fare"], "車資表")}、'
+        f'{_ts_src(TS["src_yumeguri"], "湯めぐり號時刻")}、{_ts_src(TS["src_union"], "乳頭溫泉組合")}。</p>'
+      + faq_visible(ts_faq)
+      + fare_cta('akita', '飛秋田的機票多少')
+      + fare_cta('morioka', '飛花卷的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-ginzan-onsen/")}"><b>♨️ 銀山溫泉冬季預約</b><s>另一個東北的雪景溫泉</s></a>'
+      + f'<a class="ct" href="{U("/japan-zao-juhyo/")}"><b>🌲 藏王樹冰</b><s>冬天東北的另一個重點</s></a>'
+      + f'<a class="ct" href="{U("/akita/")}"><b>✈️ 秋田機票</b><s>各出發地的票價</s></a>'
+      + f'<a class="ct" href="{U("/morioka/")}"><b>✈️ 盛岡・花卷機票</b><s>花卷機場到田澤湖站要經過盛岡</s></a></div>'
+      + '<p class="disc">房價、時間與規定以各官網為準，整理可能有疏漏。本頁為公開資訊整理，與鶴之湯、日本秘湯を守る会無合作關係。</p>'
+      + foot())
+    pages.append(('/japan-tsurunoyu/', 0.6))
 
 # ---------- 東京地鐵 24／48／72 小時券 ----------
 # 資料在 tsub.json。價格、對象、範圍、時效引東京メトロ官網與英文說明 PDF；兌換機與「機場不能換」引官網連過去的販售站附件。
