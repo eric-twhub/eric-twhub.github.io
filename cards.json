@@ -353,6 +353,16 @@
      "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/rights/airportparking"
     ]
    },
+   "_2026-11-12_複查": {
+    "查了什麼": "排程 cathay-point-parking-2027 被提早觸發（預定 2027/1/1），重開 2027 公告與機場停車權益頁核對。",
+    "結論": "2027 公告沒有改版：大園 135 點、連統 150 點、大程／大鵬 155 點，活動期間仍是 2027/1/1～2027/12/31。機場停車權益頁仍是大園 130 點、連統 145 點、大鵬／大程 155 點。站上的 130／145／155 在 2026/12/31 前是對的，今天不改。",
+    "待辦": "同 2026-10-27 的待辦，2027/1/1 起再改。",
+    "順帶查到": "2027 市區停車仍只列嘟嘟房、台灣聯通、24TPS、廣朋（沒有詮營）；肯驛仍是龍騰出行一點／二點會籍卡 900／1,800 點。",
+    "來源": [
+     "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/discount/2027/pointannounceInfo/index.html",
+     "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/rights/airportparking"
+    ]
+   },
    "parking": {
     "has": false,
     "status": "官網明文排除",
