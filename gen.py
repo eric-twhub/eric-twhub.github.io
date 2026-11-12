@@ -18291,12 +18291,24 @@ if os.path.exists('cobrand-cards.json'):
                          if p.get('new') and tier_of(p['name']) == tier and p['spec'] == spec), None)
         _P, _PM = _pick('Pro'), _pick('Pro Max')
         _hl = ''
+        # 「滿幾年」是拿上市日和 NOW 四捨五入算的，同一份 resale.json 放久了，
+        # 每支機器都會往後滑一格：2027 年春天起已經沒有「滿一年」的機型，
+        # 再晚一點連「滿兩年」也會空掉。缺哪一格就整句不出現，不要讓 build 崩潰。
+        _a2 = _b2 = _a1 = _b1 = None
         if _P and _PM:
             _a2, _b2 = mcost(_P['twd'], 'Pro', 2, '256GB'), mcost(_PM['twd'], 'Pro Max', 2, '256GB')
             _a1, _b1 = mcost(_P['twd'], 'Pro', 1, '256GB'), mcost(_PM['twd'], 'Pro Max', 1, '256GB')
+        if _a2 and _b2:
             _gap = _PM['twd'] - _P['twd']
             _d2 = _b2['m'] - _a2['m']
-            _d1 = _b1['m'] - _a1['m']
+            _tbuf = ''
+            if _a1 and _b1:
+                _d1 = _b1['m'] - _a1['m']
+                _tbuf = (f'<div class="tbuf">一年就換的人更極端：Pro 每月 <b>NT${_a1["m"]:,}</b>、'
+                         f'Pro Max 每月 <b>NT${_b1["m"]:,}</b>，'
+                         + (f'<b>Pro Max 反而便宜 NT${-_d1:,}</b>：高階機種掉價慢，持有期越短越吃香。'
+                            if _d1 < 0 else f'差距 NT${_d1:,}。') +
+                         '</div>')
             _hl = (f'<div class="today">'
                    f'<div class="tday">{RS["updated"]} · 殘值取自{RS["src_name"]}當日公開報價</div>'
                    f'<div class="tans">{_P["name"]} 每月 NT${_a2["m"]:,}，'
@@ -18305,11 +18317,7 @@ if os.path.exists('cobrand-cards.json'):
                    f'<div class="tsub">標價差 {money(_gap)} 看起來很多，但 Pro Max 兩年後的回收價'
                    f'（{money(_b2["keep"])}）比 Pro（{money(_a2["keep"])}）高 '
                    f'{money(_b2["keep"] - _a2["keep"])}，把差價吃掉了大半。</div>'
-                   f'<div class="tbuf">一年就換的人更極端：Pro 每月 <b>NT${_a1["m"]:,}</b>、'
-                   f'Pro Max 每月 <b>NT${_b1["m"]:,}</b>，'
-                   + (f'<b>Pro Max 反而便宜 NT${-_d1:,}</b>：高階機種掉價慢，持有期越短越吃香。'
-                      if _d1 < 0 else f'差距 NT${_d1:,}。') +
-                   f'</div></div>')
+                   + _tbuf + '</div>')
 
         # 6. 去日本買，攤到每月剩多少
         _jt = by_city.get('tokyo') or []
@@ -18526,9 +18534,10 @@ if os.path.exists('cobrand-cards.json'):
             f'　·　共 {len(RS["rows"])} 款機型、{sum(len(r["caps"]) for r in RS["rows"])} 個容量組合</p>'
           + '<h2>今天的答案</h2>' + _hl
           + '<h3>細節</h3><div class="tldr"><ul>'
-          + '<li><b>掉價最快的不是最便宜的機型，是 iPhone Air。</b>'
-            f'上市滿一年殘值只剩 {rate_of("Air", 1) * 100:.0f}%，'
-            f'同期的 Pro Max 還有 {rate_of("Pro Max", 1) * 100:.0f}%。</li>'
+          + ('<li><b>掉價最快的不是最便宜的機型，是 iPhone Air。</b>'
+             f'上市滿一年殘值只剩 {rate_of("Air", 1) * 100:.0f}%，'
+             f'同期的 Pro Max 還有 {rate_of("Pro Max", 1) * 100:.0f}%。</li>'
+             if rate_of("Air", 1) and rate_of("Pro Max", 1) else '')
           + '<li><b>容量升級是折舊最快的一筆錢。</b>整機兩年後還有五成上下，'
             '但多付的容量費用通常只剩三成。</li>'
           + f'<li><b>舊機今年反而漲價。</b>{HK.get("date", "").replace("-", "/")} Apple 調高在售舊機售價，'
