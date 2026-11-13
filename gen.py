@@ -1449,7 +1449,8 @@ border:1px solid var(--line)}
 .art h3{font-size:1.28rem;margin:4px 0 10px}
 .ap{font-size:1.02rem;line-height:1.95;margin:0 0 14px}
 .hand mark{background:linear-gradient(transparent 58%,var(--mk) 58%);color:inherit;padding:0 2px}
-.note{background:#fff3c4;border-radius:4px;padding:12px 16px;margin:18px 4px;transform:rotate(-.6deg);
+/* 便利貼。不能叫 .note：頁尾的 p.note 是全站共用的 */
+.sticky{background:#fff3c4;border-radius:4px;padding:12px 16px;margin:18px 4px;transform:rotate(-.6deg);
  box-shadow:2px 3px 0 rgba(90,61,43,.12);font-size:.96rem;line-height:1.8}
 .atoc{border:2px dashed var(--edge);border-radius:14px;padding:12px 18px;margin:18px 0 6px;background:var(--paper)}
 .atoc b{color:var(--ink);font-size:1.02rem}
@@ -1494,15 +1495,33 @@ details.more summary{cursor:pointer;font-weight:700}
 details.more ul{margin:10px 0 4px;padding-left:1.2em;font-size:.9rem;line-height:1.75;color:var(--dim)}
 /* 全站共用的手繪風（2026-11-13 使用者要「全站都改用這個風格」）：
    標題旁一張主題貼紙（_sticker() 依網址挑）、紙張色的卡片、虛線書籤列、暖色表頭。 */
-.hd1{display:flex;align-items:center;gap:14px}
-.hd1>h1{flex:1;min-width:0}
-.stk{flex:none;width:150px;height:auto;transform:rotate(3deg);margin:6px 2px 0 0}
-@media(max-width:600px){.stk{width:92px}.hd1{gap:8px}}
+.bnr{max-width:760px;margin:12px 0 18px}
+.bnr img{display:block;width:100%;height:auto}
 .hand .ct{background:#fffaf2;box-shadow:2px 3px 0 rgba(90,61,43,.07)}
 .hand .card{box-shadow:2px 3px 0 rgba(90,61,43,.07)}
 .hand .toc{border:2px dashed var(--edge);background:var(--paper)}
 .hand details.faq{background:#fffaf2}
 .hand .tw th{background:#fbefe2;color:var(--ink)}
+/* 全站共用元件換成聖誕頁的樣子（2026-11-13「新的頁面比較活潑可愛，全站都需要這樣」）：
+   今天的答案框＝便條紙加紙膠帶，三點重點＝綠色虛線框加星星，常見問題的題目用手寫字。 */
+.hand .today{position:relative;background:var(--paper);border:1.5px solid var(--edge);border-radius:8px;
+ box-shadow:2px 3px 0 rgba(90,61,43,.08);margin-top:22px;padding:22px 22px 18px}
+.hand .today::before{content:"";position:absolute;top:-10px;left:50%;width:96px;height:20px;margin-left:-48px;
+ background:var(--tape);transform:rotate(-2deg)}
+.hand .tday{font-family:"Huninn","PingFang TC",sans-serif;font-weight:400;color:#a0714f;letter-spacing:0;font-size:.9rem}
+.hand .tans{color:var(--ink)}
+.hand .tbuf{border-top:1.5px dashed var(--edge)}
+.hand .tldr{background:#eef7f0;border:1.5px dashed #9cc9ab;border-radius:14px;padding:14px 18px}
+.hand .tldr ul{list-style:none;padding:0}
+.hand .tldr li{position:relative;padding-left:32px}
+.hand .tldr li::before{content:"";position:absolute;left:0;top:4px;width:20px;height:20px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z' fill='%23f4c152' stroke='%235a3d2b' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
+.hand .lede{color:var(--fg);font-size:1rem;line-height:1.9}
+.hand details.faq summary{font-family:"Huninn","PingFang TC",sans-serif;font-weight:400;font-size:1.02rem;color:var(--ink)}
+.hand details.faq summary::before{content:"Q";font-family:"Huninn",sans-serif;color:var(--acc);margin-right:8px}
+.hand .cta{border-radius:16px;box-shadow:3px 4px 0 rgba(90,61,43,.18)}
+.hand .ct:nth-child(odd){transform:rotate(-.5deg)}
+.hand .ct:nth-child(even){transform:rotate(.5deg)}
+.hand blockquote.q{background:var(--paper);border-left:4px solid #f4c152}
 /* 外連按鈕做成實心色塊：白底框線的版本讀者看不出是連結（2026-11-10 使用者回報），
    整頁的重點動作要一眼就看得出能點。 */
 .cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
@@ -2954,7 +2973,7 @@ _H1_RE = re.compile(r'<h1\b[^>]*>.*?</h1>', re.S)
 
 def _sticker(path, content):
     url = '/' + path[:-len('index.html')] if path.endswith('index.html') else None
-    if not url or 'class="hd1"' in content:
+    if not url or 'class="bnr"' in content:
         return content
     name = _STK_EXACT.get(url)
     if name is None:
@@ -2964,9 +2983,14 @@ def _sticker(path, content):
     m = _H1_RE.search(content)
     if not m:
         return content
-    img = (f'<img class="stk" src="{U("/illust/" + name + ".svg")}" alt="" width="180" height="150" '
-           'decoding="async">')
-    return content[:m.start()] + '<div class="hd1">' + m.group(0) + img + '</div>' + content[m.end():]
+    # 2026-11-13 第二版：使用者說聖誕頁「比較活潑可愛，全站都需要這樣」，
+    # 從標題旁的小貼紙改成標題下面一張寬版手繪封面（illust/make_banners.py 把同一張貼紙放進場景）。
+    bn = 'banner/' + name.split('/')[-1]
+    if not os.path.exists(f'illust/{bn}.svg'):
+        return content
+    img = (f'<div class="bnr"><img src="{U("/illust/" + bn + ".svg")}" alt="" width="720" height="210" '
+           'decoding="async"></div>')
+    return content[:m.end()] + img + content[m.end():]
 
 def write(path,content):
     d=os.path.dirname(path)
@@ -25895,7 +25919,7 @@ if os.path.exists('tokyo-xmas.json'):
         '我把今年東京附近 13 個聖誕市集的日期、門票和交通整理在這一篇，每一個都是回去翻主辦或場地的官網查的。</p>'
       + '<p class="ap">先講結論：<mark>大部分市集都不用門票</mark>，走進去就好，吃喝另外付。'
         '真正要先買票的，是新豐洲和芝公園那兩個「東京聖誕市集」，網路上只有 KKday 在賣。</p>'
-      + f'<p class="note">{html.escape(_txm_today_s)}</p>'
+      + f'<p class="sticky">{html.escape(_txm_today_s)}</p>'
       + '<nav class="atoc"><b>這篇有</b><ol>'
         '<li><a href="#all">先看總表</a></li>'
         '<li><a href="#pick">只有一個晚上的話，我會這樣挑</a></li>'
