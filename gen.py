@@ -16698,7 +16698,9 @@ def _card_stamp_warn():
             ('make_shops_cards', 'tokyo-shops-raw.json',
              'tokyo/street-fashion/cards', '東京潮牌選物店'),
             ('make_cardreg_cards', 'cards.json',
-             'japan-card-register/cards', '登錄日曆')):
+             'japan-card-register/cards', '登錄日曆'),
+            ('make_shoprank_cards', 'cards.json',
+             'japan-coupon/rank-cards', '各店刷哪張卡')):
         stamp = os.path.join(outdir, 'stamp.txt')
         if not (os.path.exists(src_json) and os.path.exists(stamp)):
             continue
