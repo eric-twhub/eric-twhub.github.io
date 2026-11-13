@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-13-kaohsiung-sendai",
- "generated": "2026-11-13 10:55",
+ "generated": "2026-11-13 12:40",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "sendai",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 6766,
+ "med": 7916,
  "n_rt": 2,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7788,
+   "price": 10088,
    "dep": "2026-11-28",
    "ret": "2026-12-07",
    "dept": "13:25",
