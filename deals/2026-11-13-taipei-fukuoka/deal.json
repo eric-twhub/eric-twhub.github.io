@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-13-taipei-fukuoka",
- "generated": "2026-11-13 18:15",
+ "generated": "2026-11-13 18:53",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -25,7 +25,7 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,608（5 天有紀錄），這張低 18%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,211（5 天有紀錄），這張低 14%"
  ],
  "med": 13692,
  "n_rt": 12,
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8148,
+   "price": 7583,
    "dep": "2026-12-09",
    "ret": "2026-12-13",
    "dept": "06:45",
@@ -47,6 +47,25 @@
    "dur_to": 135,
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-09&inbound=FUK-TPE&returnDate=2026-12-13&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "FUK",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 8039,
+   "dep": "2026-12-06",
+   "ret": "2026-12-10",
+   "dept": "06:45",
+   "rett": "10:55",
+   "rt": true,
+   "tr": 0,
+   "dur": 300,
+   "dur_to": 135,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-06&inbound=FUK-TPE&returnDate=2026-12-10&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
@@ -66,24 +85,6 @@
    "dur_to": 180,
    "gate": "Farera",
    "url": "https://www.aviasales.com/search/TPE1312FUK17121?t=IT17971728001797255900001325TPECJUFUK17975049001797511200000165FUKTPE_1d945697711e87333adaa927e2a6d5c6_22563&search_date=08112026&expected_price_uuid=01a1bb9a-59e8-8040-ac5f-2cafc490a71c&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=W38v32T0Tn1hs7HGM4-_8w&expected_price_source=share&expected_price_currency=twd&expected_price=9027&marker=775639"
-  },
-  {
-   "o": "TPE",
-   "d": "FUK",
-   "air": "AK",
-   "airname": "馬來西亞亞航",
-   "cls": "lcc",
-   "price": 9323,
-   "dep": "2026-12-01",
-   "ret": "2026-12-05",
-   "dept": "11:45",
-   "rett": "16:20",
-   "rt": true,
-   "tr": 0,
-   "dur": 315,
-   "dur_to": 145,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE0112FUK05121?t=AK17961255001796137800000145TPEFUK17964876001796494200000170FUKTPE_45319558696bc3334bee0426b24f80b6_23416&search_date=10112026&expected_price_uuid=01a1c5e1-6a57-8040-6a33-e38b5e498b95&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ODqd0oWUX8645A3oDX52-Q&expected_price_source=share&expected_price_currency=twd&expected_price=9323&marker=775639"
   }
  ]
 }
