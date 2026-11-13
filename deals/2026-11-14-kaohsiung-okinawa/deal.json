@@ -1,0 +1,52 @@
+{
+ "schema": 1,
+ "slug": "2026-11-14-kaohsiung-okinawa",
+ "generated": "2026-11-14 00:16",
+ "kind": "fare",
+ "origin": "kaohsiung",
+ "city": "okinawa",
+ "fare": {
+  "o": "KHH",
+  "d": "OKA",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 3387,
+  "dep": "2026-12-17",
+  "ret": "2026-12-25",
+  "dept": "17:30",
+  "rett": "10:30",
+  "rt": true,
+  "tr": 0,
+  "dur": 195,
+  "dur_to": 85,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-17&inbound=OKA-KHH&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 4512,
+ "n_rt": 2,
+ "others": [
+  {
+   "o": "KHH",
+   "d": "OKA",
+   "air": "GK",
+   "airname": "捷星日本",
+   "cls": "lcc",
+   "price": 5637,
+   "dep": "2026-12-11",
+   "ret": "2026-12-18",
+   "dept": "14:35",
+   "rett": "10:30",
+   "rt": true,
+   "tr": 0,
+   "dur": 210,
+   "dur_to": 100,
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/KHH1112OKA18121?t=IT17969997001797009300000100KHHOKA17975898001797592800000110OKAKHH_785226ed9fefc7e2e218c1512b023382_14177&search_date=11112026&expected_price_uuid=01a1cb4f-70d7-8040-277d-1fa98e7c7363&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=jboGw3O9WNwXap-Ljv3_-g&expected_price_source=share&expected_price_currency=twd&expected_price=5637&marker=775639"
+  }
+ ]
+}

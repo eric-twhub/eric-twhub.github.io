@@ -1,0 +1,53 @@
+{
+ "schema": 1,
+ "slug": "2026-11-14-kaohsiung-sendai",
+ "generated": "2026-11-14 00:16",
+ "kind": "fare",
+ "origin": "kaohsiung",
+ "city": "sendai",
+ "fare": {
+  "o": "KHH",
+  "d": "SDJ",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 5744,
+  "dep": "2026-11-21",
+  "ret": "2026-11-30",
+  "dept": "13:25",
+  "rett": "18:50",
+  "rt": true,
+  "tr": 0,
+  "dur": 490,
+  "dur_to": 210,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-SDJ&departureDate=2026-11-21&inbound=SDJ-KHH&returnDate=2026-11-30&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 6766,
+ "n_rt": 2,
+ "others": [
+  {
+   "o": "KHH",
+   "d": "SDJ",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 7788,
+   "dep": "2026-11-28",
+   "ret": "2026-12-07",
+   "dept": "13:25",
+   "rett": "18:50",
+   "rt": true,
+   "tr": 0,
+   "dur": 490,
+   "dur_to": 210,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=KHH-SDJ&departureDate=2026-11-28&inbound=SDJ-KHH&returnDate=2026-12-07&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  }
+ ]
+}
