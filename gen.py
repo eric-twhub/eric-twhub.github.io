@@ -1498,18 +1498,18 @@ details.more ul{margin:10px 0 4px;padding-left:1.2em;font-size:.9rem;line-height
 .bnr{max-width:760px;margin:12px 0 18px}
 .bnr img{display:block;width:100%;height:auto}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px 16px;margin:14px 0 22px}
-figure.dd{margin:0}
-figure.dd img{display:block;width:100%;height:auto}
-figure.dd:nth-child(odd) img{transform:rotate(-1deg)}
-figure.dd:nth-child(even) img{transform:rotate(.8deg)}
-figure.dd figcaption{font-size:.9rem;line-height:1.65;color:var(--ink,#5a3d2b);margin-top:8px}
-figure.dd figcaption::before{content:"▲ ";color:#e4625a}
+figure.spf{margin:0}
+figure.spf img{display:block;width:100%;height:auto}
+figure.spf:nth-child(odd) img{transform:rotate(-1deg)}
+figure.spf:nth-child(even) img{transform:rotate(.8deg)}
+figure.spf figcaption{font-size:.9rem;line-height:1.65;color:var(--ink,#5a3d2b);margin-top:8px}
+figure.spf figcaption::before{content:"▲ ";color:#e4625a}
 .rem{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:start;background:#fff7e0;border:2px dashed #f4c152;border-radius:14px;padding:12px 14px;margin:16px 0}
 .rem img{width:96px;height:auto;display:block}
 .rem b{font-family:"Huninn",sans-serif;font-weight:400;font-size:1.06rem;color:#9a6440;display:block;margin-bottom:2px}
 .rem b::before{content:"注意！";background:#e4625a;color:#fff;border-radius:8px;padding:0 6px;margin-right:6px;font-size:.82rem;vertical-align:2px}
 .rem p{margin:0;font-size:.95rem;line-height:1.75}
-@media(max-width:520px){.gal{grid-template-columns:1fr 1fr;gap:14px 10px}figure.dd figcaption{font-size:.84rem}.rem{grid-template-columns:72px 1fr}.rem img{width:72px}}
+@media(max-width:520px){.gal{grid-template-columns:1fr 1fr;gap:14px 10px}figure.spf figcaption{font-size:.84rem}.rem{grid-template-columns:72px 1fr}.rem img{width:72px}}
 .hand .ct{background:#fffaf2;box-shadow:2px 3px 0 rgba(90,61,43,.07)}
 .hand .card{box-shadow:2px 3px 0 rgba(90,61,43,.07)}
 .hand .toc{border:2px dashed var(--edge);background:var(--paper)}
@@ -3035,7 +3035,7 @@ def _spots(path, content):
                 'loading="lazy" decoding="async">')
     for b in sd['blocks']:
         if 'gallery' in b:
-            figs = ''.join(f'<figure class="dd">{img(n, 240, 180)}<figcaption>{html.escape(c)}</figcaption></figure>'
+            figs = ''.join(f'<figure class="spf">{img(n, 240, 180)}<figcaption>{html.escape(c)}</figcaption></figure>'
                            for n, c in b['gallery'])
             sec = (f'<h2>{html.escape(b["h2"])}</h2>'
                    + (f'<p>{html.escape(b["intro"])}</p>' if b.get('intro') else '')
