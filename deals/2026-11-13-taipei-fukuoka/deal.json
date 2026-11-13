@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-13-taipei-fukuoka",
- "generated": "2026-11-13 14:05",
+ "generated": "2026-11-13 14:56",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -28,7 +28,7 @@
   "12 月出發的票，每天最便宜的平均要 NT$8,520（5 天有紀錄），這張低 17%"
  ],
  "med": 13692,
- "n_rt": 14,
+ "n_rt": 12,
  "others": [
   {
    "o": "TPE",
