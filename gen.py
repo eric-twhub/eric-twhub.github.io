@@ -23535,7 +23535,9 @@ if os.path.exists('cards.json'):
                  f'<div class="today"><div class="tday">常見折扣 {html.escape(st["rate"])}'
                 f'　·　{html.escape(st["combo"])}　·　{html.escape(st["tax_min"])}</div>'
                 f'<div class="tans">{html.escape(st["tiers"])}</div>'
-                f'<div class="tsub">券以<b>免稅後</b>的金額計算，不是和免稅相加。'
+                + (f'<div class="tsub" style="color:var(--ink)"><b>重點</b>：'
+                   f'{html.escape(st["note"])}</div>' if st.get('note') else '')
+                + f'<div class="tsub">券以<b>免稅後</b>的金額計算，不是和免稅相加。'
                 f'{_exs}，再折 {st["max"]}%，'
                 f'合計約省 {(1-(10000/1.1*(1-st["max"]/100))/10000)*100:.1f}%。</div>'
                 f'<div class="tbuf">{html.escape(st["when"])}</div></div>')
