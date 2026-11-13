@@ -23380,6 +23380,31 @@ if os.path.exists('cards.json'):
             out.sort(key=lambda x: -x['v'])
             return b, out
 
+        # 同一份排名做成一張圖，給想存起來或轉發的人。
+        # 圖是 make_shoprank_cards.py 產的，不在每日 workflow 上，
+        # 所以檔案不在就整塊不出現，不要留一個破圖。
+        _RKC = os.path.join('japan-coupon', 'rank-cards')
+
+        def _rank_card_img(st):
+            rel = f'rank-{st["slug"]}.png'
+            if not os.path.exists(os.path.join(_RKC, rel)):
+                return ''
+            u = U('/japan-coupon/rank-cards/' + rel)
+            return (
+              '<h3>存成圖片</h3>'
+              '<p class="lede">同一份排名做成一張圖，存下來或轉發都可以，'
+              '不用註明出處。點圖放大。</p>'
+              '<style>'
+              '.rkc{margin:14px 0;max-width:340px}'
+              '.rkc a{display:block;border:1px solid var(--line);border-radius:12px;'
+              'overflow:hidden;background:var(--card)}'
+              '.rkc img{display:block;width:100%;height:auto;aspect-ratio:1080/1350}'
+              '</style>'
+              f'<div class="rkc"><a href="{u}" target="_blank">'
+              f'<img src="{u}" alt="在{html.escape(st["name"])}刷哪張卡：'
+              f'三個金額的前三名與條件" width="1080" height="1350" loading="lazy">'
+              '</a></div>')
+
         def _store_rank_block(st):
             cols, picked = [], {}
             for y in _RANK_Y:
@@ -23433,7 +23458,8 @@ if os.path.exists('cards.json'):
                 f'一律以既有卡友計算，新戶限定加碼與這一期名額已滿的加碼都不算。'
                 f'「只剩基本回饋」是官方的一般海外消費費率，'
                 f'有幾張卡連這個費率都要先完成設定，寫在上面那一行裡。'
-                f'卡片條件查證於 {_CDCHK}。</p>')
+                f'卡片條件查證於 {_CDCHK}。</p>'
+              + _rank_card_img(st))
 
         def _store_card_calc(st):
             """店家頁最上面的試算：輸入日幣金額，列出每張卡實拿與實際負擔。
