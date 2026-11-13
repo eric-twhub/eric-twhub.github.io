@@ -1,32 +1,32 @@
 [
  {
   "slug": "2026-11-13-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,987 來回含稅｜台灣虎航 11/17 出發",
+  "title": "台北飛沖繩 NT$2,587 來回含稅｜台灣虎航 11/30 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
-  "price": 2987,
+  "price": 2587,
   "air": "台灣虎航",
-  "dep": "2026-11-17",
-  "ret": "2026-12-01",
+  "dep": "2026-11-30",
+  "ret": "2026-12-04",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,326（6 天有紀錄），這張低 31%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,472（6 天有紀錄），這張低 42%"
   ],
-  "med": 6018,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-17&inbound=OKA-TPE&returnDate=2026-12-01&type=return&adult=1&language=zh-TW",
+  "med": 6412,
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-30&inbound=OKA-TPE&returnDate=2026-12-04&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 2987,
-   "hi": 5182,
+   "hi": 6018,
    "days": 16
   },
   "mbase": {
-   "avg": 4326,
+   "avg": 4472,
    "days": 6,
    "month": 11
   },
@@ -60,31 +60,35 @@
  },
  {
   "slug": "2026-11-13-taipei-ishigaki",
-  "title": "台北飛石垣島 NT$4,043 來回含稅｜台灣虎航 12/05 出發",
+  "title": "台北飛石垣島 NT$4,061 來回含稅｜台灣虎航 11/14 出發",
   "o": "台北",
   "c": "石垣島",
   "_oiata": "TPE",
   "_diata": "ISG",
-  "price": 4043,
+  "price": 4061,
   "air": "台灣虎航",
-  "dep": "2026-12-05",
-  "ret": "2026-12-09",
+  "dep": "2026-11-14",
+  "ret": "2026-11-20",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "這條航線平常最低落在 NT$4,061–NT$7,487，這張是近期 16 筆紀錄中第 1 低"
+   "11 月出發的票，每天最便宜的平均要 NT$5,539（5 天有紀錄），這張低 27%"
   ],
   "med": 14331,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-05&inbound=ISG-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-14&inbound=ISG-TPE&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
   "hotelcity": "石垣島",
   "cslug": "ishigaki",
   "usual": {
-   "lo": 4061,
+   "lo": 4261,
    "hi": 7487,
    "days": 8
   },
-  "mbase": null,
+  "mbase": {
+   "avg": 5539,
+   "days": 5,
+   "month": 11
+  },
   "rank": 1,
   "n": 16
  },
@@ -153,9 +157,9 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$9,229（18 天有紀錄），這張低 48%"
+   "11 月出發的票，每天最便宜的平均要 NT$9,154（18 天有紀錄），這張低 47%"
   ],
-  "med": 10576,
+  "med": 10568,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-30&inbound=OKA-RMQ&returnDate=2026-12-03&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -165,12 +169,12 @@
    "days": 39
   },
   "mbase": {
-   "avg": 9229,
+   "avg": 9154,
    "days": 18,
    "month": 11
   },
   "rank": 1,
-  "n": 91
+  "n": 92
  },
  {
   "slug": "2026-11-13-kaohsiung-sendai",
@@ -188,7 +192,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 8137,
+  "med": 6766,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-SDJ&departureDate=2026-11-21&inbound=SDJ-KHH&returnDate=2026-11-30&type=return&adult=1&language=zh-TW",
   "hotelcity": "仙台",
   "cslug": "sendai",
@@ -211,7 +215,7 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "12 月出發的票，每天最便宜的平均要 NT$8,620（5 天有紀錄），這張低 18%"
+   "12 月出發的票，每天最便宜的平均要 NT$8,520（5 天有紀錄），這張低 17%"
   ],
   "med": 13692,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-14&inbound=FUK-TPE&returnDate=2026-12-18&type=return&adult=1&language=zh-TW",
@@ -223,40 +227,11 @@
    "days": 7
   },
   "mbase": {
-   "avg": 8620,
+   "avg": 8520,
    "days": 5,
    "month": 12
   },
   "rank": 1,
   "n": 14
- },
- {
-  "slug": "2026-11-13-taipei-nagoya",
-  "title": "台北飛名古屋 NT$8,083 來回含稅｜台灣虎航 12/08 出發",
-  "o": "台北",
-  "c": "名古屋",
-  "_oiata": "TPE",
-  "_diata": "NGO",
-  "price": 8083,
-  "air": "台灣虎航",
-  "dep": "2026-12-08",
-  "ret": "2026-12-12",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "這條航線平常最低落在 NT$8,557–NT$10,779，這張是近期 16 筆紀錄中第 1 低"
-  ],
-  "med": 14614,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-NGO&departureDate=2026-12-08&inbound=NGO-TPE&returnDate=2026-12-12&type=return&adult=1&language=zh-TW",
-  "hotelcity": "名古屋",
-  "cslug": "nagoya",
-  "usual": {
-   "lo": 8557,
-   "hi": 10779,
-   "days": 8
-  },
-  "mbase": null,
-  "rank": 1,
-  "n": 16
  }
 ]
