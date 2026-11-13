@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-13-taipei-ishigaki",
- "generated": "2026-11-13 22:48",
+ "generated": "2026-11-13 23:15",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -26,10 +26,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "這條航線平常最低落在 NT$4,061–NT$7,487，這張是近期 16 筆紀錄中第 1 低"
+  "這條航線平常最低落在 NT$4,061–NT$7,487，這張是近期 18 筆紀錄中第 1 低"
  ],
  "med": 14331,
- "n_rt": 16,
+ "n_rt": 18,
  "others": [
   {
    "o": "TPE",
