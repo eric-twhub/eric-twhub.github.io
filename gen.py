@@ -1497,6 +1497,19 @@ details.more ul{margin:10px 0 4px;padding-left:1.2em;font-size:.9rem;line-height
    標題旁一張主題貼紙（_sticker() 依網址挑）、紙張色的卡片、虛線書籤列、暖色表頭。 */
 .bnr{max-width:760px;margin:12px 0 18px}
 .bnr img{display:block;width:100%;height:auto}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px 16px;margin:14px 0 22px}
+figure.dd{margin:0}
+figure.dd img{display:block;width:100%;height:auto}
+figure.dd:nth-child(odd) img{transform:rotate(-1deg)}
+figure.dd:nth-child(even) img{transform:rotate(.8deg)}
+figure.dd figcaption{font-size:.9rem;line-height:1.65;color:var(--ink,#5a3d2b);margin-top:8px}
+figure.dd figcaption::before{content:"▲ ";color:#e4625a}
+.rem{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:start;background:#fff7e0;border:2px dashed #f4c152;border-radius:14px;padding:12px 14px;margin:16px 0}
+.rem img{width:96px;height:auto;display:block}
+.rem b{font-family:"Huninn",sans-serif;font-weight:400;font-size:1.06rem;color:#9a6440;display:block;margin-bottom:2px}
+.rem b::before{content:"注意！";background:#e4625a;color:#fff;border-radius:8px;padding:0 6px;margin-right:6px;font-size:.82rem;vertical-align:2px}
+.rem p{margin:0;font-size:.95rem;line-height:1.75}
+@media(max-width:520px){.gal{grid-template-columns:1fr 1fr;gap:14px 10px}figure.dd figcaption{font-size:.84rem}.rem{grid-template-columns:72px 1fr}.rem img{width:72px}}
 .hand .ct{background:#fffaf2;box-shadow:2px 3px 0 rgba(90,61,43,.07)}
 .hand .card{box-shadow:2px 3px 0 rgba(90,61,43,.07)}
 .hand .toc{border:2px dashed var(--edge);background:var(--paper)}
@@ -2992,10 +3005,57 @@ def _sticker(path, content):
            'decoding="async"></div>')
     return content[:m.end()] + img + content[m.end():]
 
+# 2026-11-13 使用者：「我們沒有照片，那就放圖片，參考官網照片手繪一個相似的可愛版本」，
+# 「要注意的地方（例如出入口不好找）也用手繪的方式提醒」。
+# 每個景點一份 illust/spots/<名稱>.json：page 指頁面網址，blocks 逐段描述：
+#   {"before": "某個 h2", "h2": ..., "intro": ..., "gallery": [[圖檔, 說明], ...]} → 在那個 h2 前面插一段插圖牆
+#   {"end_of": "某個 h2", "remind": [[圖檔, 標題, 內文], ...]} → 插在那一段的最後（下一個 h2 前面）
+# 圖檔在 illust/sp/<dir>/，由 illust/sp_<名稱>.py 畫。說明文字只寫官網查得到的事。
+_SPOTS = {}
+for _sp in sorted(glob.glob('illust/spots/*.json')):
+    _sd = json.load(open(_sp, encoding='utf-8'))
+    _SPOTS[_sd['page']] = _sd
+
+def _h2_at(content, text):
+    m = re.search(r'<h2[^>]*>\s*' + re.escape(text) + r'\s*</h2>', content)
+    if not m:
+        raise SystemExit(f'spots：找不到 h2「{text}」')
+    return m
+
+def _spots(path, content):
+    url = '/' + path[:-len('index.html')] if path.endswith('index.html') else None
+    sd = _SPOTS.get(url)
+    if not sd:
+        return content
+    base = '/illust/sp/' + sd['dir'] + '/'
+    def img(n, w, h):
+        if not os.path.exists('illust/sp/' + sd['dir'] + '/' + n + '.svg'):
+            raise SystemExit(f'spots：缺圖 {sd["dir"]}/{n}.svg')
+        return (f'<img src="{U(base + n + ".svg")}" alt="" width="{w}" height="{h}" '
+                'loading="lazy" decoding="async">')
+    for b in sd['blocks']:
+        if 'gallery' in b:
+            figs = ''.join(f'<figure class="dd">{img(n, 240, 180)}<figcaption>{html.escape(c)}</figcaption></figure>'
+                           for n, c in b['gallery'])
+            sec = (f'<h2>{html.escape(b["h2"])}</h2>'
+                   + (f'<p>{html.escape(b["intro"])}</p>' if b.get('intro') else '')
+                   + f'<div class="gal">{figs}</div>')
+            m = _h2_at(content, b['before'])
+            content = content[:m.start()] + sec + content[m.start():]
+        if 'remind' in b:
+            cards = ''.join(f'<div class="rem">{img(n, 120, 120)}<div><b>{html.escape(t)}</b>'
+                            f'<p>{html.escape(x)}</p></div></div>' for n, t, x in b['remind'])
+            m = _h2_at(content, b['end_of'])
+            nx = re.compile(r'<h2[\s>]').search(content, m.end())
+            at = nx.start() if nx else content.index('</article>', m.end())
+            content = content[:at] + cards + content[at:]
+    return content
+
 def write(path,content):
     d=os.path.dirname(path)
     if d: os.makedirs(d,exist_ok=True)
     if path.endswith('.html'):
+        content = _spots(path, content)
         content = _toc(content)
         content = _sticker(path, content)
         _search_capture(path, content)
