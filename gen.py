@@ -23328,17 +23328,110 @@ if os.path.exists('cards.json'):
             """
             return _tier_state(c, t, st) == 'yes'
 
+        def _shop_tiers(c, st):
+            """這家店、既有卡友實際拿得到的加碼層。
+
+            sold_out 是這一期名額已滿、現在登錄不到的層。全站其他地方
+            （比較表、計算機、小抄、圖卡）都已經排除它，店家頁本來漏掉，
+            於是同一張永豐 JCB 在比較表是 5%、在店家頁卻是 10%。
+            """
+            return [t for t in c['tiers']
+                    if t['scope'] in ('shop', 'any')
+                    and not _NB.search(t['label'] + t.get('cond', ''))
+                    and not t.get('sold_out')
+                    and _tier_ok(c, t, st)]
+
         def _store_cards(st):
             """這家店可用的卡，去掉新戶限定與不適用這家店的加碼之後的費率"""
+            return [{'n': c['name'], 's': c['slug'], 'base': c['base'],
+                     'tiers': _shop_tiers(c, st),
+                     'reg': c.get('reg_short', '')}
+                    for c in CD['cards']]
+
+        # ── 刷多少，哪張卡拿最多 ──────────────────────────
+        # 上面的試算要自己打金額，而且是 JS 算的，不打字就看不到答案。
+        # 這一段把三個常見金額的前三名直接寫成靜態表格。名次會在金額之間
+        # 換人，因為加碼有上限：中信 uniopen 的 11% 在台幣帳單 NT$6,250
+        # 就到頂，聯邦吉鶴的 8% 要到 NT$20,000，所以小額 uniopen 贏、
+        # 大額反而是吉鶴。只寫百分比看不出這件事。
+        _RANK_Y = (10000, 30000, 50000)
+
+        def _rank_at(st, jpy):
+            """這家店、這個日圓金額，各卡實拿多少（做滿條件）與只剩基本回饋多少。"""
+            b = jpy * _MIDC * (1 + _fx['typical'] / 100)
             out = []
             for c in CD['cards']:
-                out.append({'n': c['name'], 's': c['slug'], 'base': c['base'],
-                            'tiers': [t for t in c['tiers']
-                                      if t['scope'] in ('shop', 'any')
-                                      and not _NB.search(t['label'] + t.get('cond', ''))
-                                      and _tier_ok(c, t, st)],
-                            'reg': c.get('reg_short', '')})
-            return out
+                ts = _shop_tiers(c, st)
+                nb = any(t.get('no_base') for t in ts)
+                v = 0 if nb else c['base'] / 100 * b
+                capped = False
+                for t in ts:
+                    x = t['rate'] / 100 * b
+                    if t['cap'] and x > t['cap']:
+                        x, capped = t['cap'], True
+                    v += x
+                out.append({
+                    'c': c, 'v': v, 'capped': capped,
+                    'rate': round((0 if nb else c['base']) + sum(t['rate'] for t in ts), 2),
+                    'basev': 0 if nb else c['base'] / 100 * b,
+                })
+            out.sort(key=lambda x: -x['v'])
+            return b, out
+
+        def _store_rank_block(st):
+            cols, picked = [], {}
+            for y in _RANK_Y:
+                b, rows = _rank_at(st, y)
+                top = rows[:3]
+                cols.append((y, b, top))
+                for r in top:
+                    picked[r['c']['slug']] = r
+            if not cols:
+                return ''
+            # 表格在窄螢幕會被 TBL_JS 攤成卡片，第一欄當卡片標題、其餘欄用
+            # 表頭當標籤。所以第一欄放金額、每列一個金額，攤開之後讀起來是
+            # 「刷 ¥10,000 ／ 第 1 名：… ／ 第 2 名：…」。反過來把名次放第一欄，
+            # 卡片標題會變成孤零零的「01」，標籤則是整串黏住的表頭文字。
+            head_ = ('<div class="tw"><table><thead><tr><th>刷多少</th>'
+                     + ''.join(f'<th>第 {i} 名</th>' for i in (1, 2, 3))
+                     + '</tr></thead><tbody>')
+            body = ''
+            for y, b, top in cols:
+                body += (f'<tr><td><b>¥{y:,}</b>{SMALL}帳單約 {money(round(b))}'
+                         f'</small></td>')
+                for r in top:
+                    body += (f'<td><b>{html.escape(r["c"]["name"])}</b>{SMALL}'
+                             f'{money(round(r["v"]))}　·　{r["rate"]:g}%'
+                             + ('　加碼已滿' if r['capped'] else '')
+                             + '</small></td>')
+                body += '</tr>'
+            # 條件只列有進前三名的那幾張，而且每張只寫一次。
+            # 「什麼都沒做」用的是官方的基本回饋費率；有幾張卡連這個費率
+            # 都要先完成設定，那一句寫在同一行的條件裡，不另外給數字。
+            li = ''
+            for r in sorted(picked.values(), key=lambda x: -x['rate']):
+                c = r['c']
+                li += (f'<li><b>{html.escape(c["name"])}</b>　'
+                       f'做滿條件 {r["rate"]:g}%，只剩基本回饋 {c["base"]:g}%。'
+                       f'<br><small style="color:var(--dim)">要做的事：'
+                       f'{html.escape(c.get("reg_short") or "官方沒寫")}'
+                       f'　·　活動期間 {html.escape(c["period"])}'
+                       f'　·　<a href="{U("/japan-credit-card/" + c["slug"] + "/")}">'
+                       f'逐層條件</a></small></li>')
+            return (
+              '<h2>刷多少，哪張卡拿最多</h2>'
+              f'<p class="lede">以日圓標價試算，三個金額各取前三名。'
+              f'名次在金額之間會換人，因為各卡的加碼上限不一樣，'
+              f'小額贏的那張到了大額可能已經刷滿。</p>'
+              + head_ + body + '</tbody></table></div>'
+              + '<h3>這幾張卡要做什麼</h3><div class="tldr"><ul>' + li + '</ul></div>'
+              + f'<p class="disc">金額是刷在卡上的日圓金額，11/1 起是含稅價；'
+                f'券與退稅是另外兩件事，上面的試算器才會把它們一起算。'
+                f'換算匯率 {_MIDC}，加計 {_fx["typical"]}% 國外交易手續費。'
+                f'一律以既有卡友計算，新戶限定加碼與這一期名額已滿的加碼都不算。'
+                f'「只剩基本回饋」是官方的一般海外消費費率，'
+                f'有幾張卡連這個費率都要先完成設定，寫在上面那一行裡。'
+                f'卡片條件查證於 {_CDCHK}。</p>')
 
         def _store_card_calc(st):
             """店家頁最上面的試算：輸入日幣金額，列出每張卡實拿與實際負擔。
@@ -23533,6 +23626,7 @@ if os.path.exists('cards.json'):
                     if st.get('top_warn_src') else '')
                  + '</li></ul></div>') if st.get('top_warn') else '')
               + _store_card_calc(st)
+              + _store_rank_block(st)
               + ('' if st.get('kind') == 'card' else
                  f'<div class="today"><div class="tday">常見折扣 {html.escape(st["rate"])}'
                 f'　·　{html.escape(st["combo"])}　·　{html.escape(st["tax_min"])}</div>'
