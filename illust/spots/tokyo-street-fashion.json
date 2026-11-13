@@ -1,0 +1,59 @@
+{
+ "page": "/tokyo/street-fashion/",
+ "dir": "tokyo-street-fashion",
+ "_說明": "街景畫一般的巷子與建築，不畫店家招牌、品牌服飾或真實人物；說明依 tokyo-shops-raw.json 與 gen.py 本頁內文（各店官方頁標在頁面表上：wackomaria.co.jp/paradisetokyo、visvim.tv/jp/stockist_visvim/、laforet.ne.jp/shop_search/shop66、HUMAN MADE 開幕新聞稿 prtimes.jp），nonnative 營業時間另對過 nonnative.com（11:00 - 19:00）；免稅那張依 /japan-tax-free-2026/ 引的觀光廳旅客說明；2026-11-13 整理",
+ "blocks": [
+  {
+   "before": "按實際位置重排",
+   "h2": "原宿、澀谷、中目黑，走起來不一樣",
+   "intro": "清單上的店分在原宿、澀谷、中目黑、南青山一帶，地址上的町名常和大家口頭講的地名不一樣。",
+   "gallery": [
+    [
+     "harajuku",
+     "清單上最多店的是原宿一帶，地址多寫神宮前，走明治神宮前站或原宿站"
+    ],
+    [
+     "shibuya",
+     "地址寫渋谷区不等於在澀谷站旁；Stussy 在神南的那家，才是真的在澀谷"
+    ],
+    [
+     "nakameguro",
+     "說是中目黑的幾家，地址寫的是青葉台和東山，走得到，但地圖上町名不同"
+    ],
+    [
+     "floor",
+     "百貨裡的櫃位先記樓層，Laforet 原宿就有 2.5F 這種樓層"
+    ],
+    [
+     "queue",
+     "發售日的熱門店可能要抽選或拿整理券才進得去；這是社群說法，以品牌官方當期公告為準"
+    ]
+   ]
+  },
+  {
+   "end_of": "按實際位置重排",
+   "remind": [
+    [
+     "r-mapname",
+     "地圖要搜店名，不是品牌名",
+     "WACKO MARIA 的旗艦店叫 PARADISE TOKYO，visvim 那家叫 VISVIM GENERAL STORE；用品牌名搜地圖可能找不到。"
+    ],
+    [
+     "r-close",
+     "有幾家 19:00 就關門",
+     "nonnative 和 HUMAN MADE TOKYO 平日 19:00 就關，比多數店早一小時；PARADISE TOKYO 公休不定，排最後一站前先看官網。"
+    ]
+   ]
+  },
+  {
+   "end_of": "什麼時候去，比逛哪幾家更影響花費",
+   "remind": [
+    [
+     "r-passport",
+     "幫朋友代買，免稅綁的是你的護照",
+     "購買紀錄登記在結帳那個人的護照上，官方寫的出境確認是本人出示護照；同一張收據少帶一件就整張不退。"
+    ]
+   ]
+  }
+ ]
+}

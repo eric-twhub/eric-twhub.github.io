@@ -3050,7 +3050,11 @@ def _spots(path, content):
                             f'<p>{html.escape(it[2])}</p></div></div>' for it in b['remind'] if live(it, 3))
             m = _h2_at(content, b['end_of'])
             nx = re.compile(r'<h2[\s>]').search(content, m.end())
-            at = nx.start() if nx else content.index('</article>', m.end())
+            if nx:
+                at = nx.start()
+            else:  # 最後一個 h2：插在文章結尾（頁面不一定有 </article>）
+                ends = [i for i in (content.find(t, m.end()) for t in ('</article>', '<footer', '</main>', '</body>')) if i >= 0]
+                at = min(ends)
             content = content[:at] + cards + content[at:]
     return content
 
@@ -17163,8 +17167,8 @@ if os.path.exists('apple.json'):
       + '<h2>買之前要知道的三件事</h2>'
       + '<h3>1. Apple 直營店已經不能退稅</h3>'
       + '<p class="lede">Apple 日本直營店自 2024 年 6 月起取消對外國旅客的免稅服務。'
-        '要拿到免稅價，必須到有 Tax-Free 標示的家電量販店（Bic Camera、Yodobashi Camera 等），'
-        '結帳時出示護照。量販店定價未必與 Apple 官網相同，且部分店家收取手續費，請現場確認。</p>'
+        '要退稅，必須到有 Tax-Free 標示的家電量販店（Bic Camera、Yodobashi Camera 等），'
+        '結帳時出示護照；2026 年 11 月 1 日起是先付含稅全額，出境時經海關確認後才退回。量販店定價未必與 Apple 官網相同，且部分店家收取手續費，請現場確認。</p>'
       + fare_cta('tokyo','要去量販店掃貨？機票現在多少')
       + '<h3>2. 量販店的折扣券，Apple 用不到</h3>'
       + f'<p class="lede">Bic Camera 常見的那張「免稅 10% ＋ 最高 7% 折扣」優惠券，'
@@ -17188,7 +17192,7 @@ if os.path.exists('apple.json'):
       + f'<p class="disc">補充：台灣入境旅客行李物品免稅額為 {money(ALLOW)}，'
         f'多數 iPhone 單機已超過，依規定應主動向海關申報，超出部分課徵進口稅捐。'
         f'手機關稅為 0%，主要為 5% 營業稅，實際以海關核定為準。<br>'
-        f'本頁售價取自 Apple 日本與台灣官網，匯率取自臺灣銀行牌告，僅供參考，'
+        f'本頁售價取自 Apple 日本與台灣官網，匯率以國際中間匯率加計換匯成本估算，僅供參考，'
         f'實際價格與稅務規定請以官方公告為準。頁內部分連結為聯盟行銷連結，'
         f'本站可能獲得分潤，不影響你的價格。</p>'
       + foot())
@@ -17263,8 +17267,8 @@ if os.path.exists('apple.json'):
             '依規定應主動向海關申報。上表的「實際成本」就是老實申報之後的數字。</li>'
             '<li><b>日版的快門聲。</b>限制綁在銷售地版本，帶出國是否就會靜音'
             '各方實測說法不一，Apple 未公布判定規則，在意的話不要買日版。</li>'
-            '<li><b>保固。</b>Apple 的保固多數情況跨國適用，但維修零件供應與'
-            '服務內容各地不同，送修前先確認。</li>'
+            '<li><b>保固。</b>Apple 的保固條款寫明 iPhone 的保固服務可能限在原銷售國家或地區，'
+            '日本買的機器在台灣送修可能不受理、要寄回日本，送修前先確認。</li>'
             '<li><b>刷卡還有一層。</b>日本刷卡的回饋與國外交易手續費會再動到實際成本，'
             '下面有逐卡比較。</li>'
             '</ul></div>'
@@ -17282,7 +17286,7 @@ if os.path.exists('apple.json'):
           + f'<a class="ct" href="{U("/iphone-card/")}"><b>💰 買 iPhone 刷哪張卡</b>'
             f'<s>國內外通路的回饋差別</s></a></div>'
           + f'<p class="disc">售價取自 Apple 日本與台灣官網，核對於 {AP["price_checked"]}；'
-            f'匯率取自臺灣銀行牌告，每日更新。稅務規定請以海關公告為準。'
+            f'匯率以國際中間匯率加計換匯成本估算，每日更新。稅務規定請以海關公告為準。'
             f'本頁為公開資訊整理，非購買建議。</p>'
           + foot())
         pages.append(('/iphone-duo/', 0.8))
@@ -19371,9 +19375,9 @@ if os.path.exists('cobrand-cards.json'):
      ('行李已經託運了還能辦嗎？',
       '不能。辦確認時免稅品要全部帶在身上，行李託運後也不能為了辦手續再拿回來。'
       '所以要先辦確認、再託運。'),
-     ('10 月底之前買還是舊制嗎？',
-      f'是。10 月 31 日之前購買仍適用現行的購買時免稅，結帳當下就是免稅價。'
-      f'制度以購買日為準，{_cd.replace("<b>","").replace("</b>","")}。'),
+     ('10 月底之前買的，算哪一種？',
+      '算舊制。制度以購買日為準，10 月 31 日之前購買的適用購買時免稅，結帳當下就是免稅價；'
+      '11 月 1 日起購買的一律是新制，先付含稅全額、出境確認後才退。'),
     ]
     tf_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in tf_faq)
@@ -19640,7 +19644,7 @@ if os.path.exists('cobrand-cards.json'):
         f'逾期就不算免稅。</div></div>'
       + '<h2>新舊制對照</h2>'
       + '<div class="tw"><table><thead><tr><th>　</th>'
-        '<th>10/31 前（現行）</th><th>11/1 起（新制）</th></tr></thead><tbody>'
+        '<th>10/31 前（舊制）</th><th>11/1 起（新制，現在）</th></tr></thead><tbody>'
         '<tr><td><b>結帳金額</b></td><td>直接扣掉 10%，當場就是免稅價</td>'
         '<td class="lose">先付含稅全額</td></tr>'
         '<tr><td><b>拿到退稅</b></td><td>結帳當下</td>'
@@ -19664,11 +19668,11 @@ if os.path.exists('cobrand-cards.json'):
       + '<p class="disc">刷卡另有約 1.5% 國外交易手續費。'
         '至於退回來的會不會是完整的 10%，那是另一件事，'
         '<a href="#refund-fee">下面有官方說法</a>。</p>'
-      + fare_cta('tokyo', '趕在改制前去？先看機票多少', before='2026-11-01')
+      + fare_cta('tokyo', '去東京掃貨？先看機票多少')
       + '<h2>什麼時候去，適用哪個制度？</h2>'
-      + '<p class="lede">制度以<b>購買日</b>為準，不是出境日。10 月 31 日當天買仍是舊制，'
-        '11 月 1 日起買就是新制。如果你的行程橫跨兩邊，大筆採購排在 10 月底結帳，'
-        '結帳當下就能拿到免稅價，不必墊錢也不用擔心 90 天期限。</p>'
+      + '<p class="lede">制度以<b>購買日</b>為準，不是出境日。10 月 31 日以前買的是舊制，'
+        '11 月 1 日起買的一律是新制，所以現在出發去買，都是先付含稅全額、'
+        '出境經海關確認後才退，購買日起 90 天內要完成確認。</p>'
       + fare_cta('osaka', '大阪也有便宜票', '')
       + search_form('查你自己的日期',
                     '上面是近期最低紀錄，選好日期可查目前實際可訂的價格。', 'TPE', 'TYO')

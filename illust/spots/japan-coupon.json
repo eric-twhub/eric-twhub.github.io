@@ -1,0 +1,55 @@
+{
+ "page": "/japan-coupon/",
+ "dir": "japan-coupon",
+ "_說明": "插圖是三種店與手機券的可愛版，招牌留白；提醒卡依據 LIVE JAPAN 唐吉訶德頁（livejapan.com/public/operation/coupon/donki/zh-tw.html）、Bic Camera 頁（livejapan.com/public/operation/coupon/biccamera/zh-tw.html）、愛電王頁（livejapan.com/public/operation/coupon/edion/zh-tw.html）與 TAXFREESHOPS.JP 的 COSMOS 券面（taxfreeshops.jp/ja/tieup/10）；2026-11-13 查",
+ "blocks": [
+  {
+   "before": "直接去領券",
+   "h2": "這幾種店大概長這樣",
+   "intro": "表裡的店大致分成藥妝、電器量販和綜合折扣三類，券多半是手機上的條碼畫面。",
+   "gallery": [
+    [
+     "drug",
+     "藥妝店：藥品、化妝品、日用品都在同一家，松本清、大國、COSMOS 都屬這類"
+    ],
+    [
+     "denki",
+     "電器量販店：相機、手錶、家電是主力，Bic Camera、山田、愛電王、LAOX 屬這類"
+    ],
+    [
+     "discount",
+     "綜合折扣店：唐吉訶德官方介紹店裡從食品、日用品、服裝到家電、名牌精品都有"
+    ],
+    [
+     "scan",
+     "大多數的券是手機上的條碼畫面，結帳前給店員掃"
+    ]
+   ]
+  },
+  {
+   "end_of": "三個常犯的錯",
+   "remind": [
+    [
+     "r-screenshot",
+     "能不能先截圖，每家不一樣",
+     "唐吉訶德官方寫明截圖無效，要連網開即時頁面；Bic Camera 官方卻說可以把條碼存成圖片，用之前看那家發券頁怎麼寫。"
+    ],
+    [
+     "r-passport",
+     "沒帶護照，連折扣都拿不到",
+     "Bic Camera 與 COSMOS 的券只限免稅結帳時使用，愛電王要求券和護照正本一起出示；護照放飯店，券也用不了。"
+    ]
+   ]
+  },
+  {
+   "end_of": "11/1 之後會不一樣",
+   "remind": [
+    [
+     "r-customs",
+     "海關要在託運行李前看",
+     "新制下出境要先讓海關確認免稅商品，Bic Camera 收據注意事項寫明要在託運行李前完成，買的東西先別塞進託運箱。"
+    ]
+   ]
+  }
+ ]
+}

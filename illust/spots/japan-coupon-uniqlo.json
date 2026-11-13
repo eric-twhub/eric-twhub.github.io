@@ -1,0 +1,23 @@
+{
+ "page": "/japan-coupon/uniqlo/",
+ "dir": "japan-coupon-uniqlo",
+ "_說明": "服飾店畫成可愛版，招牌留白、不畫商標與招牌配色；說明依 coupons.json；提醒卡依 refund-fees.json 記錄的 UNIQLO 官方 FAQ（faq.uniqlo.com/articles/Knowledge/100015848，退稅由 J&J 處理、到 J-TaxRefund 申請）與觀光廳旅客問答（mlit.go.jp/kankocho/tax-free/page01_000001_00027.html）；UNIQLO FAQ 這次 403 讀不到，沿用 11/5 查證的內容；2026-11-13 查",
+ "blocks": [
+  {
+   "before": "適合誰",
+   "h2": "店裡大概長這樣",
+   "gallery": [
+    ["front", "UNIQLO 沒有給旅客的折價券，在日本買省的是免稅和刷卡回饋"],
+    ["fold", "有些款式是日本限定，台灣買不到"],
+    ["winter", "冬天的外套、毛線帽體積大，買多了要留行李空間"]
+   ]
+  },
+  {
+   "end_of": "適合誰",
+   "remind": [
+    ["r-refund", "退稅要自己上網登錄", "UNIQLO 的退稅由業者 J&J 處理，要在期限內自己到 J-TaxRefund 登錄護照和退款方式；沒登錄，錢就退不回來。"],
+    ["r-checkin", "衣服先別塞進託運行李", "免稅品要在託運行李之前先辦海關確認，託運了就辦不成；買的衣服打算放大行李箱的話，到機場先辦確認再去託運。"]
+   ]
+  }
+ ]
+}
