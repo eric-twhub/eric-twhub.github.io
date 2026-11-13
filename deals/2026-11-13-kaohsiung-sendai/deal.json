@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-13-kaohsiung-sendai",
- "generated": "2026-11-13 12:47",
+ "generated": "2026-11-13 13:01",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "sendai",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 7916,
+ "med": 8137,
  "n_rt": 2,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 10088,
+   "price": 10531,
    "dep": "2026-11-28",
    "ret": "2026-12-07",
    "dept": "13:25",
@@ -45,9 +45,8 @@
    "tr": 0,
    "dur": 490,
    "dur_to": 210,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=KHH-SDJ&departureDate=2026-11-28&inbound=SDJ-KHH&returnDate=2026-12-07&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/KHH2811SDJ07121?t=IT17958723001795888500000210KHHSDJ17966694001796682600000280SDJKHH_adfec0c50909184902330a7c4cab2847_26323&search_date=07112026&expected_price_uuid=01a1b49f-4809-8040-2fb8-d6f2372baed9&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=dN8Zo2lsJi_OXJL_vUwwlQ&expected_price_source=share&expected_price_currency=twd&expected_price=10531&marker=775639"
   }
  ]
 }
