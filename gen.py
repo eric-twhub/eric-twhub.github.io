@@ -23467,6 +23467,10 @@ if os.path.exists('cards.json'):
                         f'<td class="win"><b>¥{round(after):,}</b></td>'
                         f'<td>{(1-after/y)*100:.1f}%</td></tr>')
             _ex += '</tbody></table></div>'
+            # 頁首與 FAQ 的「以多少為例」要挑真的拿得到最高折扣的金額，有級距的店 ¥10,000 可能還沒到門檻
+            _exy = next((y for y in (10000, 30000, 50000, 100000, 300000)
+                         if _rate_at(st, y / 1.1) == st['max']), 10000)
+            _exs = f'以 ¥{_exy:,} 含稅商品為例，免稅後約 ¥{round(_exy / 1.1):,}'
 
             _oth = ''.join(
                 f'<tr><td><a href="{U("/japan-coupon/"+o["slug"]+"/")}">{html.escape(o["name"])}</a></td>'
@@ -23486,7 +23490,7 @@ if os.path.exists('cards.json'):
             ] if st.get('kind') == 'card' else [
              (f'{st["name"]}的折價券可以折多少？',
               f'{st["tiers"]}。券以免稅後的金額計算，不是直接和免稅相加，'
-              f'以 ¥10,000 含稅商品為例，免稅後約 ¥9,091，再折 {st["max"]}% 之後，'
+              f'{_exs}，再折 {st["max"]}% 之後，'
               f'合計約省 {(1-(10000/1.1*(1-st["max"]/100))/10000)*100:.1f}%。'),
              (f'{st["name"]}的券可以和免稅一起用嗎？', f'{st["combo"]}。{st["tax_min"]}。'),
              (f'{st["name"]}的券去哪裡拿？什麼時候出示？', f'{st["how"]}。{st["when"]}。'),
@@ -23532,7 +23536,7 @@ if os.path.exists('cards.json'):
                 f'　·　{html.escape(st["combo"])}　·　{html.escape(st["tax_min"])}</div>'
                 f'<div class="tans">{html.escape(st["tiers"])}</div>'
                 f'<div class="tsub">券以<b>免稅後</b>的金額計算，不是和免稅相加。'
-                f'以 ¥10,000 含稅商品為例，免稅後約 ¥9,091，再折 {st["max"]}%，'
+                f'{_exs}，再折 {st["max"]}%，'
                 f'合計約省 {(1-(10000/1.1*(1-st["max"]/100))/10000)*100:.1f}%。</div>'
                 f'<div class="tbuf">{html.escape(st["when"])}</div></div>')
               + ('' if st.get('kind') == 'card' else
