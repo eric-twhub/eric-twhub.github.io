@@ -25672,7 +25672,7 @@ if os.path.exists('tokyo-xmas.json'):
         for v in _TCM['venues']) + '</div>'
     # 票價：三欄小表，列名短到手機也放得下，維持表格
     _txm_fee = (
-        '<div class="tw"><table><thead><tr><th>入場日</th><th>大人</th><th>小學生</th></tr></thead><tbody>'
+        '<div class="tw" style="max-width:560px"><table><thead><tr><th>入場日</th><th>大人</th><th>小學生</th></tr></thead><tbody>'
         '<tr><td>平日</td><td>1,000 円</td><td>500 円</td></tr>'
         '<tr><td>週末、國定假日</td><td>1,500 円</td><td>500 円</td></tr>'
         '<tr><td>12/24、12/25</td><td>2,000 円</td><td>1,000 円</td></tr>'
