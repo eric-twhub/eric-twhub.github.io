@@ -1427,6 +1427,50 @@ border:1px solid var(--line)}
 .xv dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;font-size:.92rem;line-height:1.6}
 .xv dt{color:var(--dim);white-space:nowrap}
 .xv dd{margin:0}
+/* 文章樣板（2026-11-13，先用在東京聖誕市集頁）：使用者認為全站像高密度參考資料、手機要滑很久，
+   參考一般旅遊網站改成「三句話結論 → 目錄 → 一覽表 → 編號段落（短文＋資訊框＋地圖／官網按鈕）」。
+   內文限寬 760px，行距放大，段落短。 */
+.art{max-width:760px;margin:0 auto}
+.art h1{font-size:1.8rem}
+.art h2{display:flex;align-items:center;gap:10px;font-size:1.32rem;margin:48px 0 14px;padding-bottom:10px}
+.art h2>i{flex:none;font-style:normal;width:32px;height:32px;border-radius:50%;background:var(--acc);color:#fff;
+ display:inline-flex;align-items:center;justify-content:center;font-size:1rem}
+.art h3{font-size:1.12rem;margin:30px 0 8px}
+.ap{font-size:1rem;line-height:1.9;margin:0 0 14px}
+.sum3{background:var(--soft);border-radius:16px;padding:18px 20px 8px;margin:18px 0 22px}
+.sum3h{font-weight:800;font-size:1.05rem;margin-bottom:10px}
+.sum3h span{font-weight:600;font-size:.8rem;color:var(--dim);margin-left:8px}
+.sum3 ol{list-style:none;counter-reset:s;padding:0;margin:0}
+.sum3 li{counter-increment:s;position:relative;padding:0 0 12px 40px;font-size:1.04rem;line-height:1.75}
+.sum3 li::before{content:counter(s);position:absolute;left:0;top:1px;width:28px;height:28px;border-radius:50%;
+ background:var(--acc);color:#fff;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center}
+.atoc{border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:0 0 8px;background:var(--card)}
+.atoc b{font-size:.85rem;color:var(--dim)}
+.atoc ol{margin:6px 0 0;padding-left:1.4em;line-height:2}
+.atoc a{color:var(--fg)}
+.qk table{width:100%}
+.qk th{background:var(--acc);color:#fff;border-color:var(--acc)}
+.qk td.xpay{color:var(--acc);font-weight:700}
+.xdot{color:#16a34a;font-size:.8em}
+div.ibox{border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:12px;background:var(--card);
+ padding:14px 16px;margin:10px 0 18px}
+.xv>div.ibox{margin:0}
+.ibox .it{font-weight:800;font-size:1.02rem;margin-bottom:8px}
+.ibox dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 14px;font-size:.94rem;line-height:1.65}
+.ibox dt{color:var(--acc);font-weight:700;white-space:nowrap}
+.ibox dd{margin:0}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pill{display:inline-block;padding:7px 14px;border:1.5px solid var(--acc);border-radius:999px;color:var(--acc);
+ font-weight:700;font-size:.88rem;text-decoration:none;background:var(--card)}
+.pill:hover{background:var(--acc);color:#fff}
+.steps{list-style:none;counter-reset:st;padding:0;margin:10px 0 18px;display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px}
+.steps li{counter-increment:st;background:var(--soft);border-radius:12px;padding:14px 15px;font-size:.94rem;line-height:1.7}
+.steps li::before{content:"STEP " counter(st);display:block;color:var(--acc);font-weight:800;font-size:.78rem;letter-spacing:.08em}
+.steps li b{display:block;font-size:1.02rem;margin:2px 0 4px}
+details.more{border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin:14px 0;background:var(--card)}
+details.more summary{cursor:pointer;font-weight:700}
+details.more ul{margin:10px 0 4px;padding-left:1.2em;font-size:.9rem;line-height:1.75;color:var(--dim)}
 /* 外連按鈕做成實心色塊：白底框線的版本讀者看不出是連結（2026-11-10 使用者回報），
    整頁的重點動作要一眼就看得出能點。 */
 .cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
@@ -25580,9 +25624,9 @@ if os.path.exists('tokyo-autumn.json'):
 # 每天會變的在這裡算：今天（日本時間）有開的市集、下一個開幕的，
 # 以及今天去東京聖誕市集（新豐洲、芝公園）的大人票價（平日／週末假日／12/24・25 不同價）。
 # hide_after 之後不放 KKday 門票。商品分潤與挑選理由寫在 JSON 的 _分潤。
-# 版面：同類活動的清單用 .xl（一行一項），要比較的會場用 .xv（並排小卡，窄螢幕上下疊）。
-# 2026-11-13 第一版把免費市集攤成卡片，每張重複「日期／時間／入場／備註」與「官方寫入場免費」，
-# 會場比較表的格子是整句話、桌機也被擠成卡片，使用者說不好讀，所以改成現在這樣。
+# 版面是「文章樣板」（2026-11-13 試做，之後要套到其他門票頁）：三句話結論 → 一覽表 →
+# 編號段落（短文＋資訊框＋地圖／官網按鈕）→ 買票步驟 → FAQ → 收起來的出處與查不到的。
+# 起因是使用者認為全站像高密度參考資料、手機要滑很久，一般旅遊文章是短段落加資訊框。
 if os.path.exists('tokyo-xmas.json'):
     TXM = json.load(open('tokyo-xmas.json', encoding='utf-8'))
     _txm_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
@@ -25590,6 +25634,7 @@ if os.path.exists('tokyo-xmas.json'):
     _txm_wd = '一二三四五六日'
     _TCM = TXM['tcm']
     _txm_v = {v['key']: v for v in _TCM['venues']}
+    _sv, _sh = _txm_v['shintoyosu'], _txm_v['shiba']
     _YK = TXM['yokohama']
     _MG = TXM['meguro']
     _CK = TXM['chiikawa']
@@ -25599,9 +25644,6 @@ if os.path.exists('tokyo-xmas.json'):
 
     def _txm_d(s):
         return f'{int(s[5:7])}/{int(s[8:10])}'
-
-    def _txm_src(u, label='官方頁面'):
-        return f'<a href="{html.escape(u)}" rel="nofollow noopener" target="_blank">{label}</a>'
 
     def _txm_open(n, iso=None):
         iso = iso or _txm_iso
@@ -25625,52 +25667,59 @@ if os.path.exists('tokyo-xmas.json'):
             return 1500
         return 1000
 
-    # 今天的狀態：免費與要門票分兩行，名稱用短名，一眼掃得完
+    def _txm_pills(n):
+        _m = 'https://www.google.com/maps/search/?api=1&query=' + urllib.parse.quote(n['map'])
+        return ('<div class="pills">'
+                f'<a class="pill" href="{html.escape(_m)}" target="_blank" rel="nofollow noopener">📍 Google 地圖</a>'
+                f'<a class="pill" href="{html.escape(n["src"])}" target="_blank" rel="nofollow noopener">官方網站 ↗</a>'
+                '</div>')
+
+    def _txm_box(title, n, rows):
+        return (f'<div class="ibox"><div class="it">{title} {_txm_badge(n)}</div><dl>'
+                + ''.join(f'<dt>{k}</dt><dd>{v}</dd>' for k, v in rows)
+                + '</dl>' + _txm_pills(n) + '</div>')
+
+    # 今天的狀態
     _txm_all = ([dict(v, paid=True) for v in _TCM['venues']]
                 + [dict(n, paid=False) for n in TXM['free']]
                 + [dict(n, paid=True) for n in (_MG, _YK, _CK)])
-    _txm_now = [n for n in _txm_all if _txm_open(n)]
-    _txm_now_free = [n['short'] for n in _txm_now if not n['paid']]
-    _txm_now_paid = [n['short'] for n in _txm_now if n['paid']]
+    _txm_now = [n['short'] for n in _txm_all if _txm_open(n)]
     _txm_soon = sorted([n for n in _txm_all if n['from'] > _txm_iso], key=lambda n: n['from'])
     if _txm_now:
-        _txm_tn = f'今天有 {len(_txm_now)} 個聖誕市集開著'
+        _txm_s3 = f'今天開著的有 {len(_txm_now)} 個：{"、".join(_txm_now)}。'
     elif _txm_soon:
-        _txm_tn = f'今天還沒有開的市集，最早 {_txm_d(_txm_soon[0]["from"])} 開始'
+        _txm_s3 = '今天還沒有市集開著。'
     else:
-        _txm_tn = '今年的聖誕市集都已經結束'
-    _txm_lines = []
-    if _txm_now_free:
-        _txm_lines.append(('不用買票', '、'.join(_txm_now_free)))
-    if _txm_now_paid:
-        _txm_lines.append(('要門票', '、'.join(_txm_now_paid)))
+        _txm_s3 = '今年的聖誕市集都已經結束。'
     if _txm_soon:
         _s = _txm_soon[0]['from']
-        _txm_lines.append((f'下一個開幕 {_txm_d(_s)}',
-                           '、'.join(n['short'] for n in _txm_soon if n['from'] == _s)))
+        _txm_s3 += f'下一個是 {_txm_d(_s)} 的' + '、'.join(n['short'] for n in _txm_soon if n['from'] == _s) + '。'
     _txm_tcm_open = [v for v in _TCM['venues'] if _txm_open(v)]
+    _txm_s2 = (f'要門票的是新豐洲（{_txm_d(_sv["from"])} 起）和芝公園（{_txm_d(_sh["from"])} 起），'
+               '大人 1,000～2,000 円，網路只有 KKday 在賣。')
     if _txm_tcm_open:
-        _txm_price = (f'今天去東京聖誕市集（{"、".join(v["short"] for v in _txm_tcm_open)}），'
-                      f'大人票 {_txm_tcm_price(_txm_iso):,} 円。')
-    elif _txm_iso < _txm_v['shintoyosu']['from']:
-        _d = _txm_v['shintoyosu']['from']
-        _txm_price = f'要門票的東京聖誕市集 {_txm_d(_d)} 開幕，開幕那天大人票 {_txm_tcm_price(_d):,} 円。'
-    else:
-        _txm_price = ''
+        _txm_s2 += f'今天去是 {_txm_tcm_price(_txm_iso):,} 円。'
     _txm_season = _txm_iso <= TXM['hide_after']
 
-    def _txm_dl(rows):
-        return '<dl>' + ''.join(f'<dt>{k}</dt><dd>{v}</dd>' for k, v in rows) + '</dl>'
+    # 一覽表：三欄，名稱用短名，手機也是表格
+    def _txm_fee_short(n):
+        if 'fee_short' in n:
+            return n['fee_short']
+        return '官方沒寫' if '沒寫' in n.get('fee', '') else '免費'
+    _txm_rows = ([(v['short'], v, '1,000 円起') for v in _TCM['venues']]
+                 + [(n['short'], n, _txm_fee_short(n)) for n in TXM['free']]
+                 + [('目黑', _MG, '1,500 円'), ('橫濱紅磚倉庫', _YK, '500 円起'),
+                    ('吉伊卡哇（千葉）', _CK, '2,500 円起' + ('（已售完）' if '售完' in _CK['status'] else ''))])
+    _txm_rows.sort(key=lambda r: r[1]['from'])
+    _txm_quick = ('<div class="tw qk"><table><thead><tr><th>市集</th><th>日期</th><th>入場</th></tr></thead><tbody>'
+        + ''.join(f'<tr><td><b>{html.escape(s)}</b>' + (' <span class="xdot" title="今天有開">●</span>' if _txm_open(n) else '')
+                  + f'</td><td>{_txm_d(n["from"])}～{_txm_d(n["to"])}</td>'
+                  + ('<td class="xpay">' if f[0].isdigit() else '<td>') + f'{html.escape(f)}</td></tr>'
+                  for s, n, f in _txm_rows)
+        + '</tbody></table></div>'
+        '<p class="disc"><span class="xdot">●</span> 是今天（日本時間）有開的。</p>')
 
-    # 東京聖誕市集兩個會場：並排小卡
-    _txm_venues = '<div class="xv">' + ''.join(
-        f'<div><h3>{html.escape(v["name"])} {_txm_badge(v)}</h3>'
-        + _txm_dl([('日期', f'{_txm_d(v["from"])}～{_txm_d(v["to"])}'),
-                   ('時間', html.escape(v['hours'])),
-                   ('交通', html.escape(v['station']))])
-        + f'<p class="xo">{html.escape(v["note"])}{_txm_src(v["src"])}</p></div>'
-        for v in _TCM['venues']) + '</div>'
-    # 票價：三欄小表，列名短到手機也放得下，維持表格
+    # 1. 東京聖誕市集
     _txm_fee = (
         '<div class="tw" style="max-width:560px"><table><thead><tr><th>入場日</th><th>大人</th><th>小學生</th></tr></thead><tbody>'
         '<tr><td>平日</td><td>1,000 円</td><td>500 円</td></tr>'
@@ -25678,47 +25727,17 @@ if os.path.exists('tokyo-xmas.json'):
         '<tr><td>12/24、12/25</td><td>2,000 円</td><td>1,000 円</td></tr>'
         '</tbody></table></div>'
         '<p class="disc">大人指中學生以上，學齡前免費。新豐洲的 11/23（一，勤勞感謝日）算假日價。</p>')
-
-    # 不用買票的市集：一行一項，依開始日排序
-    _txm_nofee = [n['short'] for n in TXM['free'] if '沒寫' in n['fee']]
-    _txm_free_list = '<ul class="xl">' + ''.join(
-        f'<li><div class="xh"><span class="xn">{html.escape(n["name"])}</span>{_txm_badge(n)}</div>'
-        f'<div class="xw">{html.escape(n["where"])}</div>'
-        f'<div class="xt"><b>{_txm_d(n["from"])}～{_txm_d(n["to"])}</b>，{html.escape(n["hours"])}</div>'
-        f'<div class="xo">' + (f'{html.escape(n["fee"])}。' if '沒寫' in n['fee'] else '')
-        + f'{html.escape(n["note"])}{_txm_src(n["src"])}</div></li>'
-        for n in sorted(TXM['free'], key=lambda n: n['from'])) + '</ul>'
-
-    # 其他要門票的：目黑、橫濱、幕張，三張小卡
-    _yk_sp = '、'.join(_txm_d(x) for x in _YK['special'])
-    _yk_kind = ''
-    if _txm_open(_YK):
-        _yk_kind = f'（今天是{"特定日" if _txm_iso in _YK["special"] else "通常日"}）'
-    _txm_others = ('<div class="xv">'
-        + f'<div><h3>目黑街角聖誕市集 {_txm_badge(_MG)}</h3>'
-        + _txm_dl([('日期', f'{_txm_d(_MG["from"])}～{_txm_d(_MG["to"])}，只辦三天'),
-                   ('時間', html.escape(_MG['hours'])),
-                   ('地點', html.escape(_MG['where'])),
-                   ('票價', html.escape(_MG['fee']))])
-        + f'<p class="xo">{html.escape(_MG["note"])}{_txm_src(_MG["src"])}</p></div>'
-        + f'<div><h3>{html.escape(_YK["name"])} {_txm_badge(_YK)}</h3>'
-        + _txm_dl([('日期', f'{_txm_d(_YK["from"])}～{_txm_d(_YK["to"])}{_yk_kind}'),
-                   ('時間', html.escape(_YK['hours'])),
-                   ('票價', html.escape(_YK['price'])),
-                   ('特定日', _yk_sp),
-                   ('怎麼買', html.escape(_YK['how'])),
-                   ('免費', html.escape(_YK['free']))])
-        + f'<p class="xo">{_txm_src(_YK["src"])}</p></div>'
-        + f'<div><h3>{html.escape(_CK["name"])}（千葉）{_txm_badge(_CK)}</h3>'
-        + _txm_dl([('日期', f'{_txm_d(_CK["from"])}～{_txm_d(_CK["to"])}'),
-                   ('時間', html.escape(_CK['hours'])),
-                   ('地點', html.escape(_CK['where'])),
-                   ('票價', html.escape(_CK['price'])),
-                   ('怎麼買', html.escape(_CK['how'])),
-                   ('票況', f'<b>{html.escape(_CK["status"])}</b>')])
-        + f'<p class="xo">{_txm_src(_CK["src"])}</p></div>'
-        + '</div>')
-
+    _txm_venues = '<div class="xv">' + ''.join(
+        _txm_box(f'{html.escape(v["short"])}會場', v,
+                 [('日期', f'{_txm_d(v["from"])}～{_txm_d(v["to"])}'),
+                  ('時間', html.escape(v['hours'])),
+                  ('交通', html.escape(v['station']))])
+        for v in _TCM['venues']) + '</div>'
+    _txm_steps = ('<ol class="steps">'
+        '<li><b>選日期與時段</b>在 KKday 選會場、日期和 30 分鐘一格的入場時段。也可以到全家便利商店的多功能事務機買。</li>'
+        '<li><b>收電子票</b>拿到 QR code。買了不能取消，也不能改日期或人數。</li>'
+        '<li><b>照時段入場</b>預約的時段到會場的「預約入口」出示 QR code。</li>'
+        '</ol>')
     _txm_picks = ''
     if _txm_season:
         for _v in _TCM['venues']:
@@ -25731,7 +25750,40 @@ if os.path.exists('tokyo-xmas.json'):
                 f'<span class="ci">🎄</span><span class="ct"><b>KKday：東京聖誕市集 {html.escape(_v["short"])}會場入場券</b>'
                 f'<s>官方唯一的網路售票，選日期與 30 分鐘時段</s></span><span class="ca">→</span></a>')
 
-    _sv, _sh = _txm_v['shintoyosu'], _txm_v['shiba']
+    # 2. 不用買票的市集：每個一小段＋資訊框
+    _txm_nofee = [n['short'] for n in TXM['free'] if '沒寫' in n['fee']]
+    _txm_free = ''.join(
+        f'<h3>{html.escape(n["name"])}</h3>'
+        f'<p class="ap">{html.escape(n["desc"])}</p>'
+        + _txm_box(html.escape(n['short']), n,
+                   [('日期', f'{_txm_d(n["from"])}～{_txm_d(n["to"])}'),
+                    ('時間', html.escape(n['hours'])),
+                    ('地點', html.escape(n['where']))]
+                   + ([('入場', html.escape(n['fee']))] if '沒寫' in n['fee'] else []))
+        for n in sorted(TXM['free'], key=lambda n: n['from']))
+
+    # 3. 其他要門票的
+    _yk_sp = '、'.join(_txm_d(x) for x in _YK['special'])
+    _txm_others = (
+        f'<h3>目黑街角聖誕市集</h3><p class="ap">{html.escape(_MG["desc"])}</p>'
+        + _txm_box('目黑', _MG, [('日期', f'{_txm_d(_MG["from"])}～{_txm_d(_MG["to"])}'),
+                                 ('時間', html.escape(_MG['hours'])),
+                                 ('地點', html.escape(_MG['where'])),
+                                 ('票價', html.escape(_MG['fee']))])
+        + f'<h3>{html.escape(_YK["name"])}</h3><p class="ap">{html.escape(_YK["desc"])}</p>'
+        + _txm_box('橫濱紅磚倉庫', _YK, [('日期', f'{_txm_d(_YK["from"])}～{_txm_d(_YK["to"])}'),
+                                       ('時間', html.escape(_YK['hours'])),
+                                       ('票價', html.escape(_YK['price'])),
+                                       ('特定日', _yk_sp),
+                                       ('怎麼買', html.escape(_YK['how'])),
+                                       ('免費', html.escape(_YK['free']))])
+        + f'<h3>{html.escape(_CK["name"])}</h3><p class="ap">{html.escape(_CK["desc"])}</p>'
+        + _txm_box('吉伊卡哇（千葉）', _CK, [('日期', f'{_txm_d(_CK["from"])}～{_txm_d(_CK["to"])}'),
+                                          ('時間', html.escape(_CK['hours'])),
+                                          ('地點', html.escape(_CK['where'])),
+                                          ('票價', html.escape(_CK['price'])),
+                                          ('票況', f'<b>{html.escape(_CK["status"])}</b>')]))
+
     txm_faq = [
      ('東京聖誕市集 2026 要門票嗎？',
       '大部分不用。要買票的是「東京聖誕市集」的新豐洲與芝公園兩個會場（大人平日 1,000 円起），'
@@ -25760,6 +25812,14 @@ if os.path.exists('tokyo-xmas.json'):
                         "acceptedAnswer": {"@type": "Answer", "text": a}}
                        for q, a in txm_faq]}, ensure_ascii=False)
 
+    _txm_srcs = ''.join(
+        f'<li>{html.escape(n.get("short", ""))}：<a href="{html.escape(n["src"])}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(n["src"].split("//")[1].split("/")[0])}</a></li>'
+        for n in _txm_all)
+    _txm_srcs += (f'<li>購票方式：<a href="{html.escape(_TCM["src_kkday_pr"])}" rel="nofollow noopener" target="_blank">KKday 新聞稿</a>、'
+                  f'<a href="{html.escape(_TCM["src_famima"])}" rel="nofollow noopener" target="_blank">全家販售公告</a>、'
+                  f'<a href="{html.escape(_TCM["src_faq"])}" rel="nofollow noopener" target="_blank">東京聖誕市集 Q&amp;A</a></li>')
+
     write('tokyo/christmas-market/index.html',
       head('東京聖誕市集 2026：新豐洲、芝公園門票怎麼買，東京鐵塔、六本木、上野免費市集日期',
            '2026 年東京聖誕市集整理：要門票的新豐洲（11/20 起）與芝公園（12/4 起）票價、KKday 與全家購票、'
@@ -25768,44 +25828,38 @@ if os.path.exists('tokyo-xmas.json'):
            'tokyo/christmas-market/',
            '<script type="application/ld+json">' + txm_ld + '</script>')
       + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('東京聖誕市集', None)])
-      + '<h1>東京聖誕市集 2026：哪些要門票、哪天開</h1>'
-      + '<p class="lede">東京的聖誕市集大多免費，走進去就好。要先買票、選時段的主要是「東京聖誕市集」，'
-        '今年分新豐洲、芝公園兩個會場。'
-        f'每一項都引自主辦或場地的官方頁面，查證於 {TXM["checked"]}。</p>'
-      + '<div class="today">'
-        f'<div class="tday">日本時間 {_txm_md(_txm_today)}</div>'
-        f'<div class="tans">{html.escape(_txm_tn)}</div>'
-        + ''.join(f'<div class="tsub"><b>{html.escape(k)}</b>：{html.escape(v)}</div>' for k, v in _txm_lines)
-        + (f'<div class="tbuf">{html.escape(_txm_price)}</div>' if _txm_price else '')
-        + '</div>'
-      + '<div class="tldr"><ul>'
-        '<li><b>要門票</b>：東京聖誕市集（新豐洲 11/20 起、芝公園 12/4 起），大人 1,000～2,000 円；目黑街角聖誕市集只辦 12/11～12/13。</li>'
-        '<li><b>網路票只有 KKday</b>，全家便利商店也有預售。預售要選 30 分鐘一格的時段，不能取消。</li>'
-        '<li><b>不用買票</b>：東京鐵塔、晴空塔城、上野、六本木之丘、麻布台之丘、丸之內，大多做到 12/25。</li>'
-        '</ul></div>'
-      + '<h2>東京聖誕市集：新豐洲、芝公園（要門票）</h2>'
-      + '<p class="lede">同一個主辦單位，兩個會場同樣票價，可以再入場。</p>'
+      + '<article class="art"><h1>東京聖誕市集 2026：哪些要門票、哪天開</h1>'
+      + f'<p class="lede">13 個市集的日期、門票與交通，資料都來自主辦或場地官網（{TXM["checked"]} 查證）。</p>'
+      + '<div class="sum3">'
+        f'<div class="sum3h">三句話看懂 <span>日本時間 {_txm_md(_txm_today)}</span></div><ol>'
+        '<li>東京的聖誕市集<b>大多免費</b>，走進去就好，吃喝另外付。</li>'
+        f'<li>{html.escape(_txm_s2)}</li>'
+        f'<li>{html.escape(_txm_s3)}</li>'
+        '</ol></div>'
+      + '<nav class="atoc"><b>目錄</b><ol>'
+        '<li><a href="#all">一覽：日期與門票</a></li>'
+        '<li><a href="#tcm">東京聖誕市集：新豐洲、芝公園</a></li>'
+        '<li><a href="#free">不用買票的市集</a></li>'
+        '<li><a href="#paid">其他要門票的：目黑、橫濱、幕張</a></li>'
+        '<li><a href="#faq">常見問題</a></li></ol></nav>'
+      + '<h2 id="all">一覽：日期與門票</h2>' + _txm_quick
+      + '<h2 id="tcm"><i>1</i>東京聖誕市集：新豐洲、芝公園（要門票）</h2>'
+      + '<p class="ap">這是唯一要先想好怎麼買票的大型市集。今年分兩個會場：'
+        f'新豐洲 {_txm_d(_sv["from"])} 先開，芝公園 {_txm_d(_sh["from"])} 才開，同一個主辦、同樣票價，可以再入場。</p>'
+      + '<p class="ap">官網今年只列這兩個會場，沒有神宮外苑。芝公園會場和東京鐵塔正門前那個免費市集是不同活動。</p>'
       + _txm_fee + _txm_venues
-      + '<h3>怎麼買票</h3>'
-      + '<ul class="lede">'
-        '<li><b>網路</b>：只有 KKday（' + _txm_src(_TCM['src_kkday_pr'], 'KKday 新聞稿') + '）。'
-        '選日期與 30 分鐘一格的時段，買了不能取消或改日期、人數。</li>'
-        '<li><b>全家便利商店</b>：店內的多功能事務機買得到預售（' + _txm_src(_TCM['src_famima'], '官網公告') + '）。</li>'
-        '<li><b>現場當日券</b>：和預售同價，賣完為止。人多時會先限制當日券入場，官網建議先買預售。</li>'
-        '<li><b>馬克杯</b>：大人的預售票附會場限定的杯子，小學生的票沒有。</li>'
-        '<li><b>待多久</b>：官網 Q&amp;A 請大家以 3 小時為準，KKday 新聞稿寫 2 小時，兩份說法不一樣。</li>'
-        '</ul>'
-      + f'<p class="disc">出處：{_txm_src(_TCM["src_faq"], "東京聖誕市集官網 Q&amp;A")}。</p>'
-      + (('<p class="lede">時段與剩餘張數以 KKday 頁面為準，本站不標價。</p>' + _txm_picks) if _txm_picks else '')
-      + '<h2>不用買票的聖誕市集</h2>'
-      + '<p class="lede">走進去不用錢，吃喝另外付。'
-        + (f'除了{"、".join(_txm_nofee)}官方頁沒寫入場費，其他都是官方寫明免費。' if _txm_nofee else '官方都寫明入場免費。')
+      + '<h3>買票三步驟</h3>' + _txm_steps
+      + '<p class="ap">沒買預售也能在現場買當日券，價格一樣，但賣完就沒有，人多時會先限制當日券入場。'
+        '大人的預售票附會場限定的馬克杯，小學生的票沒有。</p>'
+      + '<p class="ap">要待多久，官網 Q&amp;A 請大家以 3 小時為準，KKday 新聞稿寫 2 小時，兩份說法不一樣。</p>'
+      + (('<p class="disc">時段與剩餘張數以 KKday 頁面為準，本站不標價。</p>' + _txm_picks) if _txm_picks else '')
+      + '<h2 id="free"><i>2</i>不用買票的市集</h2>'
+      + '<p class="ap">走進去不用錢，吃喝另外付。'
+        + (f'{"、".join(_txm_nofee)}官方頁沒寫入場費，其他都是官方寫明免費。' if _txm_nofee else '')
         + '六本木之丘、麻布台之丘官方寫人多時會限制排隊。</p>'
-      + _txm_free_list
-      + '<h2>其他要門票的：目黑、橫濱、幕張</h2>'
+      + _txm_free
+      + '<h2 id="paid"><i>3</i>其他要門票的：目黑、橫濱、幕張</h2>'
       + _txm_others
-      + '<h2>這一頁查不到的</h2>'
-      + '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(x)}</li>' for x in TXM['unverified']) + '</ul></div>'
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-seasonal-event/")}"><b>🎄 日本聖誕節活動</b>'
         f'<s>迪士尼、USJ、丸之內與東京中城燈飾</s></a>'
@@ -25813,8 +25867,11 @@ if os.path.exists('tokyo-xmas.json'):
         f'<s>六義園夜楓做到 12/6</s></a>'
       + f'<a class="ct" href="{U("/tokyo/subway-ticket/")}"><b>🚇 東京地鐵三日券</b>'
         f'<s>御成門、神谷町、六本木都在線上</s></a></div>'
-      + faq_visible(txm_faq)
-      + f'<p class="disc">規定以各官方頁面為準，整理可能有疏漏。查證於 {TXM["checked"]}，之後官方若有更改，本頁不一定跟上。</p>'
+      + '<div id="faq"></div>' + faq_visible(txm_faq)
+      + '<details class="more"><summary>這一頁查不到的</summary><ul>'
+      + ''.join(f'<li>{html.escape(x)}</li>' for x in TXM['unverified']) + '</ul></details>'
+      + '<details class="more"><summary>資料來源</summary><ul>' + _txm_srcs + '</ul></details>'
+      + f'<p class="disc">規定以各官方頁面為準，整理可能有疏漏。查證於 {TXM["checked"]}，之後官方若有更改，本頁不一定跟上。</p></article>'
       + foot())
     pages.append(('/tokyo/christmas-market/', 0.7))
 
