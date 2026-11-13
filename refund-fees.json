@@ -7,10 +7,10 @@
     "none": "沒有查到官方公告。沒查到不等於不收，也不等於收"
   },
   "_線索未採用": {
-    "bic-camera": "今周刊引述 Bic 官方粉專 10/13 貼文寫「退稅手續費0元」，官網的新制說明沒有這句。",
+    "bic-camera": "今周刊引述 Bic 官方粉專 10/13 貼文寫「退稅手續費0元」；LIVE JAPAN（Bic 是其聯盟成員）10/26 的文章與 11/5 的發券頁也寫手續費由 Bic 負擔、依據 Bic 公告。但 Bic 官網的新制說明到 11/13 仍沒有這句。",
     "tsuruha": "鏡週刊 10/15 寫鶴羽用 J&J、由店家吸收手續費，出處是部落客與記者確認，官方頁面沒有。",
-    "takeya": "民報引述多慶屋台灣粉專寫手續費 0 日圓，官網沒有新制公告。",
-    "edion": "HK01 寫每筆定額 210 日圓，沒附出處。",
+    "takeya": "民報引述多慶屋台灣粉專寫手續費 0 日圓；LIVE JAPAN 發券頁 11/12 更新也寫 0 日圓。多慶屋官網沒有新制公告。",
+    "edion": "HK01 寫每筆定額 210 日圓，沒附出處。LIVE JAPAN 發券頁 11/6 更新只寫退稅要另付手續費，沒寫金額。",
     "yamada": "Ocean 的業者頁有「1.55% 系統利用料」字樣，看起來是舊制時期寫的，不是山田公告的費率。",
     "3coins": "Threads 上有旅客說被收 5.7%，找不到原文。"
   },
@@ -98,7 +98,10 @@
     {"name": "Alpen", "slug": "alpen", "status": "none"},
     {"name": "寶可夢中心", "slug": "pokemon-center", "status": "none"},
     {"name": "三麗鷗", "slug": "sanrio", "status": "none"},
-    {"name": "KIDDY LAND", "slug": "kiddy-land", "status": "none", "old": true}
+    {"name": "KIDDY LAND", "slug": "kiddy-land", "status": "no_rate", "rate": "沒寫", "base": "",
+     "note": "大阪梅田店 11/4 更新了免稅櫃台公告：改到店外的 Global Blue 免稅櫃台辦，同日合計稅前滿 ¥5,000，要在購買當天櫃台營業時間內申請，沒寫手續費。原宿店的免稅說明還是 11/1 以前的舊制內容，不要照著做。",
+     "quote": "払い戻しは、購入当日の免税カウンター営業時間内に申請していただく必要があります。",
+     "src": "https://www.kiddyland.co.jp/etc/umeda_taxfree/", "src_name": "KIDDY LAND 大阪梅田店公告"}
   ],
   "airport_cash": {
     "_說明": "機場退現金機台另收的手續費，和店家、退稅業者的手續費分開計算。只採機台業者自己的條款與官網。per1k 以店家不收手續費、本來退 ¥1,000 計算。",

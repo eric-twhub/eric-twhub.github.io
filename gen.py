@@ -448,6 +448,8 @@ def _rate_basis(st):
     if st.get('basis'):
         return st['basis']
     if st['steps']:
+        if st.get('steps_tax') == 'incl':
+            return '該店有滿額級距，門檻是<b>含稅</b>金額，含稅金額決定適用哪一檔。'
         return '該店有滿額級距，未稅金額決定適用哪一檔。'
     if st.get('cat_tiers'):
         return ('該店的折扣率依<b>商品類別</b>而不是金額決定，'
@@ -458,6 +460,18 @@ def _rate_basis(st):
                 '官方頁沒有寫分級依據是金額還是商品類別，'
                 f'下表一律以最高的 {st["max"]}% 試算，<b>你實際拿到的可能更低</b>。')
     return f'該店為單一費率 {st["max"]}%。'
+
+def _bic_cp_exp(cp):
+    """相機、Dyson、Panasonic 三頁共用的那張 Bic 券的期限。
+
+    過期了要直接講，不能留著「X 到期」讓人以為還能用；
+    沒過期也不替官方預告下一版，只說本頁照哪一天核對的條款算。
+    """
+    if cp['expires'] < TODAY:
+        return (f'<li><b>這張券 {cp["expires"]} 已經到期。</b>'
+                f'本頁的條款核對於 {cp["checked"]}，新版的條件以發券頁為準。</li>')
+    return (f'<li><b>這張券 {cp["expires"]} 到期。</b>'
+            f'本頁照 {cp["checked"]} 核對的條款寫，發券頁換版時條件可能跟著變。</li>')
 
 def _visa_block(st):
     """這家店有沒有被 Visa Select 優選回饋涵蓋。
@@ -4975,7 +4989,9 @@ if os.path.exists('shoppoints.json'):
                 f'<td class="nm">{html.escape(s["rate"])}</td>'
                 f'<td class="nm">{cell}<br><small style="color:var(--dim)">'
                 f'{html.escape(s["taxfree_note"])}</small></td>'
-                f'<td class="nm">{html.escape(s["tourist"]) if s.get("tourist") else "—"}</td>'
+                f'<td class="nm">{html.escape(s["tourist"]) if s.get("tourist") else "—"}'
+                + (f'　<a href="{s["tourist_src"]}" rel="nofollow noopener" target="_blank">出處</a>'
+                   if s.get('tourist_src') else '') + '</td>'
                 f'<td><a href="{s["src"]}" rel="nofollow noopener" target="_blank">官方</a></td>'
                 '</tr>')
 
@@ -17174,8 +17190,8 @@ if os.path.exists('apple.json'):
       + f'<p class="lede">Bic Camera 常見的那張「免稅 10% ＋ 最高 7% 折扣」優惠券，'
         f'官方 FAQ 有一題直接問「iPhone 或 MacBook 等 Apple 產品可以使用這張優惠券嗎？」，'
         f'答案是<b>不行</b>，只能享有 10% 的免稅價。'
-        f'同樣被排除的還有進口品牌手錶、Grand Seiko、各種遊戲主機與軟體、'
-        f'Meta Quest、DJI、特價品與 Outlet 品。'
+        f'同樣被排除的還有部分進口手錶、SEIKO 部分商品、各種遊戲主機與軟體、'
+        f'Meta Quest、DJI、Outlet 與二手商品。'
         f'DJI 這一條影響到 Osmo Pocket，逐套裝的台日價差算在'
         f'<a href="{U("/japan-camera-price/")}">雲台相機那一頁</a>。'
         f'所以本頁的價差算的是<b>免稅價</b>，沒有把那 7% 算進去。'
@@ -17455,8 +17471,7 @@ if os.path.exists('cameras.json') and os.path.exists('apple.json'):
         f'<li><b>怎麼用。</b>'
         f'{html.escape(_ccp["only_taxfree"])}'
         f'門檻是{html.escape(_ccp["min_spend"])}</li>'
-        f'<li><b>這張券 {_ccp["expires"]} 到期。</b>'
-        f'之後的版本還沒公布，本頁的試算以現行條款為準。</li>'
+        + _bic_cp_exp(_ccp) +
         '</ul></div>'
 
       + '<h2>兩邊都買得到的套裝，逐一算</h2>'
@@ -17835,8 +17850,7 @@ if os.path.exists('dyson.json') and os.path.exists('apple.json'):
         f'最終決定權在店鋪與結帳人員。</li>'
         f'<li><b>有人被拒絕過嗎。</b>網路上有這個說法，但我們查不到可以引用的'
         f'第一手來源，所以不寫成事實，也不寫成可用。請店員當場刷看看最快。</li>'
-        f'<li><b>這張券 {_dcp["expires"]} 到期。</b>'
-        f'之後的版本還沒公布。</li>'
+        + _bic_cp_exp(_dcp) +
         '</ul></div>'
       + f'<p class="disc">DJI 與 Insta360 的折價券狀況不同，'
         f'逐項查證在 <a href="{U("/japan-camera-price/")}">雲台相機那一頁</a>。</p>'
@@ -18058,10 +18072,10 @@ if os.path.exists('panasonic.json') and os.path.exists('apple.json'):
       + '</tbody></table></div>'
       + '<div class="tldr"><ul>'
         f'<li><b>查不到的是什麼。</b>{html.escape(_pcp["_查不到的部分"])}</li>'
-        f'<li><b>這張券 {_pcp["expires"]} 到期。</b>'
-        f'核對於 {_pcp["checked"]}'
-        f'（<a href="{_pcp["src"]}" rel="nofollow noopener" target="_blank">'
-        f'{html.escape(_pcp["src_name"])}</a>）。</li>'
+        + _bic_cp_exp(_pcp)
+        + f'<li><b>出處。</b>'
+        f'<a href="{_pcp["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(_pcp["src_name"])}</a></li>'
         f'<li><b>加起來的結果。</b>旗艦機種沒有點數，折價券狀況不明，'
         f'所以在日本買 {_pv["model"]} 多半就是免稅 10% 而已。'
         f'旁邊的 Dyson 同時有 10% 點數，這個差別在結帳時才會看出來。</li>'
@@ -18197,6 +18211,8 @@ if os.path.exists('bic-points.json'):
       + '<div class="tldr"><ul>'
         f'<li><b>怎麼選。</b>{html.escape(_bp["_怎麼選"])}</li>'
         f'<li><b>免稅有門檻。</b>{html.escape(_bp["_免稅門檻"])}</li>'
+        + (f'<li><b>11/1 新制之後。</b>{html.escape(BP["newrule"]["text"])}'
+           f'（核對於 {BP["newrule"]["checked"]}）</li>' if BP.get('newrule') else '') +
         f'<li><b>點數會過期。</b>最後一次消費起算兩年沒再用就失效。'
         f'一年去一次日本的話，這個期限不算寬。</li>'
         '</ul></div>'
@@ -22952,6 +22968,12 @@ if os.path.exists('cards.json'):
                 f'<a href="{U("/japan-tax-free-2026/")}#store-fees">各店比較</a></li>')
     if os.path.exists('coupons.json'):
         CP = json.load(open('coupons.json', encoding='utf-8'))
+        # steps 預設是未稅門檻。steps_tax == 'incl' 的店（鶴羽、唐吉訶德）發券頁寫的是
+        # 含稅門檻，這裡換成未稅等值，下游的試算（頁面與 JS 都用 含稅/1.1 比門檻）就不用分兩套。
+        # 不四捨五入：t/1.1 與 JS 的 y/1.1 是同一個浮點運算，剛好等於門檻時才會判定成立。
+        for _st in CP['stores']:
+            if _st.get('steps_tax') == 'incl':
+                _st['steps'] = [[_t / 1.1, _r] for _t, _r in _st['steps']]
         # 免稅門檻從 tax_min 的文字取數字；取不到就用日本通則 ¥5,000
         def _tmin(st):
             m = re.search(r'([\d,]+)', st.get('tax_min', '') or '')
@@ -22991,7 +23013,9 @@ if os.path.exists('cards.json'):
          ('01', '同一筆錢，哪家實付最低', '14 家與關鍵數字'),
          ('02', '免稅、券、刷卡要照順序疊', '含稅 ¥10,000 的實算'),
          ('03', '14 家常見店家 ①', '依券的最高折扣'),
-         ('04', '14 家常見店家 ②', '含已過期的'),
+         ('04', '14 家常見店家 ②',
+          '含已過期的' if any((s.get('expires') or '9') < TODAY for s in CP['stores'])
+          else '依券的最高折扣（續）'),
          ('05', '有滿額級距的幾家', '什麼時候值得湊'),
          ('06', '三個常犯的錯', '最容易少拿到折扣的'),
          ('07', '券長什麼樣', '有些不能先截圖'),

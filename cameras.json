@@ -14,13 +14,13 @@
  "coupon": {
   "name": "Bic Camera 免稅＋最高 7% 折價券",
   "rate": 7,
-  "expires": "2026-10-31",
+  "expires": "2027-04-30",
   "src": "https://livejapan.com/public/operation/coupon/biccamera/zh-tw.html",
   "src_name": "LIVE JAPAN・Bic Camera 優惠券（繁體中文版）",
-  "checked": "2026-10-14",
+  "checked": "2026-11-13",
   "only_taxfree": "只能在免稅結帳時使用。",
   "final_say": "最終決定權始終歸店鋪及結帳人員所有。",
-  "min_spend": "免稅折抵後的一般免稅對象金額合計需達 5,000 日圓（未稅）。",
+  "min_spend": "折完券之後的購買金額要滿 5,000 日圓。",
   "brands": {
    "DJI": {
     "ok": false,
@@ -37,17 +37,16 @@
    }
   },
   "exclude_list": [
-   "Apple 商品",
-   "進口品牌手錶",
-   "Grand Seiko 系列商品",
-   "各種遊戲主機及官方配件",
+   "Apple 原廠商品",
+   "部分進口手錶",
+   "SEIKO 部分商品",
+   "遊戲主機與原廠配件",
    "遊戲軟體",
    "PlayStation VR",
    "Meta Quest",
    "Panasonic 部分商品",
    "DJI 商品",
    "FUJIFILM 部分商品",
-   "特價商品",
    "Outlet 商品",
    "二手商品"
   ],

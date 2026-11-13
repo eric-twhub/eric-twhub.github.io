@@ -10,7 +10,7 @@
 用法：python3 make_coupon_cards.py
 輸出：japan-coupon/cards/cp-01.png … -16.png
 """
-import json, os, re, sys, shutil, subprocess, tempfile, hashlib, datetime
+import json, os, re, sys, shutil, subprocess, tempfile, hashlib, datetime, copy
 import html as htm
 
 W, H = 1080, 1350
@@ -158,9 +158,24 @@ def yen(v):
     return f'¥{round(v):,}'
 
 
+def _norm_steps(d):
+    """steps_tax == 'incl' 的店，發券頁寫的是含稅門檻。留一份原值給圖上顯示，
+    steps 換成未稅等值給試算用，跟 gen.py 載入時做的是同一件事。
+    回傳的是副本：fingerprint 要用 coupons.json 的原值，不能被改到。"""
+    d = copy.deepcopy(d)
+    for s in d['stores']:
+        if s.get('steps_tax') == 'incl':
+            s['steps_disp'] = s['steps']
+            s['steps'] = [[t / (1 + TAX / 100), r] for t, r in s['steps']]
+    return d
+
+
 def build(d, today):
     n = 16
+    d = _norm_steps(d)
     sts = _coupon_stores(d)
+    incl = [s['name'].split()[0] for s in sts if s.get('steps_tax') == 'incl']
+    incl_t = '、'.join(incl)
     fnote = f'發券頁逐家查證於 {d["checked"]}'
     out = []
 
@@ -169,9 +184,8 @@ def build(d, today):
 
     live = [s for s in sts if not dead(s)]
     hi = max(live, key=lambda s: s['max'])
-    # 試算要用條件講清楚的那一家。最高的 COSMOS 官方頁只寫「最大 9%」，
-    # 沒有門檻也沒有排除品項（資料裡的 calc_caveat 就是在講這件事），
-    # 拿它當範例等於把未查證的數字當成人人拿得到。
+    # 試算要用條件講清楚的那一家：有級距或有 basis 的。只寫「最大 X%」、
+    # 沒公布門檻的店不拿來當範例，免得把未查證的數字當成人人拿得到。
     spec = [s for s in live if s.get('basis') or s.get('steps')]
     best = max(spec, key=lambda s: s['max']) if spec else hi
     # 免稅先扣，券再以免稅後金額計算。兩個百分比不能直接相加。
@@ -256,15 +270,20 @@ def build(d, today):
     tiered.sort(key=lambda s: -len(s['steps']))
     rows = ''
     for s in tiered:
-        seg = '　'.join(f'滿 {yen(a)} 折 {b}%' for a, b in s['steps'])
+        pre = '含稅 ' if s.get('steps_disp') else ''
+        seg = '　'.join(f'滿 {pre}{yen(a)} 折 {b}%'
+                       for a, b in (s.get('steps_disp') or s['steps']))
         rows += (f'<div class="blk"><b>{E(s["name"])}'
                  f'<span class="tag">最高 {s["max"]}%</span></b>'
                  f'<s>{E(seg)}</s></div>')
     inner = ('<div class="kick">湊到下一階划不划算</div>'
              f'<h1>有滿額級距的 <em>{len(tiered)} 家</em></h1>'
-             '<div class="sub">級距一律以未稅金額計算，'
-             '所以架上的含稅標價要先除以 1.1 再看。</div>'
-             f'<div class="list">{rows}</div>' + foot(5, n, fnote))
+             + ('<div class="sub">多數看未稅金額，含稅標價先除以 1.1；'
+                '標「含稅」的直接看架上標價。</div>'
+                if incl else
+                '<div class="sub">級距一律以未稅金額計算，'
+                '所以架上的含稅標價要先除以 1.1 再看。</div>')
+             + f'<div class="list">{rows}</div>' + foot(5, n, fnote))
     out.append(('cp-05.png', page(inner)))
 
     # ── 6 三個常犯的錯 ──
@@ -355,10 +374,12 @@ def build(d, today):
                  f'<s>{E(s["cat"])}・這筆適用 {r}%</s></div>'
                  f'<div class="rate">{yen(pay)}</div>'
                  f'<div class="exp">{yen(DEMO - pay)}</div></div>')
+    incl_t = '、'.join(s['name'].split()[0] for s in shop if s.get('steps_disp'))
     inner = ('<div class="kick">藥妝以外的那幾家</div>'
              f'<h1>同一筆 {yen(DEMO)}，<em>實付多少</em></h1>'
              '<div class="sub">免稅每家都是 10%，差的全在券。</div>'
-             f'<div class="legend">券的級距看未稅金額，含稅標價要先除以 1.1。'
+             '<div class="legend">券的級距多數看未稅金額，含稅標價要先除以 1.1'
+             + (f'（{E(incl_t)}的門檻寫含稅金額）' if incl_t else '') + '。'
              f'這裡以含稅 {yen(DEMO)}、未稅約 {yen(untaxed)} 試算。</div>'
              f'<div class="list">{rows}</div>' + foot(10, n, fnote))
     out.append(('cp-10.png', page(inner)))
@@ -391,43 +412,52 @@ def build(d, today):
         return next((x for x in (st.get('watch') or []) if kw in x), '')
 
     # 每家挑不重複的兩條。watch 和 note 常講同一件事，直接接起來會變複讀。
-    PICK = [('唐吉訶德', lambda x: [x.get('form_note'), _w(x, '限用一張')]),
+    PICK = [('唐吉訶德', lambda x: [x.get('form_note'), _w(x, 'majica')]),
             ('Bic Camera', lambda x: [x.get('note')]),
             ('LAOX', lambda x: [_w(x, '指定分店'), _w(x, '排除')]),
             ('愛電王', lambda x: [x.get('note')])]
-    rows = ''
+    # 另存一個變數：下面第 13 張會重設 rows，第 12 張若沿用 rows 會印出門檻那張的內容
+    rows12 = ''
     for pre, pick in PICK:
         st = next((x for x in sts if x['name'].startswith(pre)), None)
         if not st:
             continue
         body = '。'.join(t.rstrip('。') for t in pick(st) if t) + '。'
-        rows += (f'<div class="blk"><b><i>!</i>{E(st["name"])}</b>'
+        rows12 += (f'<div class="blk"><b><i>!</i>{E(st["name"])}</b>'
                  f'<s>{E(body)}</s></div>')
     # ── 13 級距門檻 ──
+    # 一張圖放得下的筆數。級距的店變多之後只列差額最大的幾個門檻。
+    CLIFF_N = 5
+    # 門檻寫含稅的店，用含稅金額講（架上看到的就是它），實付一律是免稅後再折券的金額。
     cliff = []
     for st in sts:
-        steps = st.get('steps') or []
+        disp = st.get('steps_disp')
+        steps = disp or st.get('steps') or []
+        k_tax = 1 + TAX / 100 if disp else 1      # 含稅門檻換回未稅才算實付
         for i in range(1, len(steps)):
             amt, pc = steps[i]
             prev = steps[i - 1][1]
-            below = (amt - 1) * (1 - prev / 100)
-            at = amt * (1 - pc / 100)
+            below = (amt - 1) / k_tax * (1 - prev / 100)
+            at = amt / k_tax * (1 - pc / 100)
             if at < below:
-                cliff.append((below - at, st, amt, prev, pc, below, at))
+                cliff.append((below - at, st, ('含稅' if disp else '未稅', amt),
+                              prev, pc, below, at))
     # 級距一樣的併成一列：松本清與 SUNDRUG 的表完全相同，分開列只是重複
     grp = {}
     for g, st, amt, p, c, b, a in cliff:
         grp.setdefault((amt, p, c), [g, [], b, a])[1].append(st['name'].split()[0])
     rows = ''.join(
         f'<div class="blk"><b>{E("、".join(v[1]))}'
-        f'<span class="tag">未稅 {yen(k[0])}</span></b>'
-        f'<s>{yen(k[0] - 1)} 實付 {yen(v[2])}，{yen(k[0])} 實付 {yen(v[3])}。'
+        f'<span class="tag">{k[0][0]} {yen(k[0][1])}</span></b>'
+        f'<s>{k[0][0]} {yen(k[0][1] - 1)} 實付 {yen(v[2])}，{yen(k[0][1])} 實付 {yen(v[3])}。'
         f'多 1 圓少付 {yen(v[0])}，折扣 {k[1]}% 跳 {k[2]}%。</s></div>'
-        for k, v in sorted(grp.items(), key=lambda x: -x[1][0]))
+        for k, v in sorted(grp.items(), key=lambda x: -x[1][0])[:CLIFF_N])
     inner = ('<div class="kick">差一圓，差幾百圓</div>'
              '<h1>快到門檻時<br><em>再拿一件</em></h1>'
-             '<div class="sub">券的級距看未稅金額。停在門檻下面一圓，'
-             '整筆都少一級的折扣。</div>'
+             '<div class="sub">停在門檻下面一圓，整筆都少一級的折扣。'
+             '實付是免稅後再折券的金額'
+             + (f'，只列差額最大的 {CLIFF_N} 個門檻' if len(grp) > CLIFF_N else '')
+             + '。</div>'
              f'<div class="list">{rows}</div>' + foot(13, n, fnote))
     out.append(('cp-13.png', page(inner)))
 
@@ -435,7 +465,7 @@ def build(d, today):
              '<h1>這四家<em>要先知道</em></h1>'
              '<div class="sub">折扣率一樣不代表拿得到，'
              '排除的商品與分店範圍各家不同。</div>'
-             f'<div class="list">{rows}</div>' + foot(12, n, fnote))
+             f'<div class="list">{rows12}</div>' + foot(12, n, fnote))
     out.append(('cp-12.png', page(inner)))
     out[-2], out[-1] = out[-1], out[-2]   # 12 是排除條款、13 是門檻，頁碼本來就對
 
