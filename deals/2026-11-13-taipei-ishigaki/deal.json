@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-13-taipei-ishigaki",
- "generated": "2026-11-13 12:40",
+ "generated": "2026-11-13 12:47",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4061,
-  "dep": "2026-11-14",
-  "ret": "2026-11-20",
+  "price": 4043,
+  "dep": "2026-12-05",
+  "ret": "2026-12-09",
   "dept": "06:35",
   "rett": "09:25",
   "rt": true,
@@ -21,16 +21,35 @@
   "dur": 130,
   "dur_to": 60,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-14&inbound=ISG-TPE&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-05&inbound=ISG-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "11 月出發的票，每天最便宜的平均要 NT$5,499（5 天有紀錄），這張低 26%"
+  "這條航線平常最低落在 NT$4,061–NT$7,487，這張是近期 16 筆紀錄中第 1 低"
  ],
  "med": 14331,
  "n_rt": 16,
  "others": [
+  {
+   "o": "TPE",
+   "d": "ISG",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 4061,
+   "dep": "2026-11-14",
+   "ret": "2026-11-20",
+   "dept": "06:35",
+   "rett": "09:25",
+   "rt": true,
+   "tr": 0,
+   "dur": 130,
+   "dur_to": 60,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-14&inbound=ISG-TPE&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
   {
    "o": "TPE",
    "d": "ISG",
@@ -67,25 +86,6 @@
    "dur_to": 60,
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-27&inbound=ISG-TPE&returnDate=2026-12-04&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
-  {
-   "o": "TPE",
-   "d": "ISG",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 4261,
-   "dep": "2026-12-05",
-   "ret": "2026-12-09",
-   "dept": "06:35",
-   "rett": "09:25",
-   "rt": true,
-   "tr": 0,
-   "dur": 130,
-   "dur_to": 60,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-05&inbound=ISG-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
