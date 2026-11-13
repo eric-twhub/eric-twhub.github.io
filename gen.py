@@ -1085,8 +1085,8 @@ CSS='''*{box-sizing:border-box}
 /* 固定淺色主題：color-scheme 讓下拉選單與日期選擇器等原生元件也維持淺色，
    否則使用者系統為深色模式時表單控制項會變黑，與頁面不一致 */
 :root{color-scheme:light;
---bg:#f7f7f5;--card:#fff;--fg:#1a1a1a;--dim:#63605c;--line:#e5e3de;--acc:#c2410c;
---hot:#dc2626;--lcc:#0f766e;--fsc:#4f46e5;--soft:#faf9f7}
+--bg:#fbf7f0;--card:#fff;--fg:#1a1a1a;--dim:#63605c;--line:#ebe2d4;--acc:#c2410c;
+--hot:#dc2626;--lcc:#0f766e;--fsc:#4f46e5;--soft:#fdf7ec}
 body{margin:0;background:var(--bg);color:var(--fg);
 font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif}
 .wrap{max-width:1080px;margin:0 auto;padding:0 16px 72px}
@@ -1433,7 +1433,7 @@ border:1px solid var(--line)}
    插圖由 illust/make_xmas.py 產生、內嵌 SVG。 */
 .art{max-width:760px;margin:0 auto}
 .hand{--ink:#5a3d2b;--paper:#fff8ec;--tape:rgba(246,165,173,.55);--mk:#ffe48a;--edge:#ead9c4}
-.hand h1,.hand h2,.hand h3,.hand .mt,.hand .tip>b,.hand .atoc b,.hand .pick b,.hand .flow li::before{font-family:"Huninn","PingFang TC","Noto Sans TC",sans-serif;font-weight:400}
+.hand h1,.hand h2,.hand h3,.memo .mt,.hand .tip>b,.hand .atoc b,.hand .pick b,.hand .flow li::before{font-family:"Huninn","PingFang TC","Noto Sans TC",sans-serif;font-weight:400}
 .hand h1{font-size:1.9rem;line-height:1.45;margin:18px 0 6px;letter-spacing:0;color:var(--ink)}
 .hand .by{color:var(--dim);font-size:.85rem;margin:0 0 14px}
 .ill svg{display:block;width:100%;height:auto}
@@ -1441,9 +1441,12 @@ border:1px solid var(--line)}
 .ill.gar{margin:30px auto 0;max-width:520px}
 .hand h2{border:0;font-size:1.5rem;line-height:1.5;margin:34px 0 16px;padding:0 0 12px;color:var(--ink);
  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 10'%3E%3Cpath d='M2 6Q12 0 22 6T42 6T62 6T82 6T102 6T122 6T142 6T162 6T178 6' fill='none' stroke='%23f4c152' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") left bottom/200px 10px no-repeat}
-.hand h2::before{content:"";display:inline-block;width:24px;height:24px;margin-right:8px;vertical-align:-3px;
- background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg stroke='%2368a7d8' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat}
-.hand h3{font-size:1.28rem;line-height:1.5;color:var(--ink);margin:4px 0 10px}
+.hand h2::before{content:"";display:inline-block;width:22px;height:22px;margin-right:8px;vertical-align:-3px;
+ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3c.8 4.2 2.2 6.6 7 8-4.8 1.4-6.2 3.8-7 8-.8-4.2-2.2-6.6-7-8 4.8-1.4 6.2-3.8 7-8z' fill='%23f4c152' stroke='%235a3d2b' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
+/* 聖誕頁的標題前面換成雪花 */
+.xm h2::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg stroke='%2368a7d8' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat}
+.hand h3{font-size:1.14rem;line-height:1.5;color:var(--ink)}
+.art h3{font-size:1.28rem;margin:4px 0 10px}
 .ap{font-size:1.02rem;line-height:1.95;margin:0 0 14px}
 .hand mark{background:linear-gradient(transparent 58%,var(--mk) 58%);color:inherit;padding:0 2px}
 .note{background:#fff3c4;border-radius:4px;padding:12px 16px;margin:18px 4px;transform:rotate(-.6deg);
@@ -1489,6 +1492,17 @@ border:1px solid var(--line)}
 details.more{border:1.5px dashed var(--edge,#e5e3de);border-radius:12px;padding:10px 16px;margin:14px 0;background:var(--paper,#fff)}
 details.more summary{cursor:pointer;font-weight:700}
 details.more ul{margin:10px 0 4px;padding-left:1.2em;font-size:.9rem;line-height:1.75;color:var(--dim)}
+/* 全站共用的手繪風（2026-11-13 使用者要「全站都改用這個風格」）：
+   標題旁一張主題貼紙（_sticker() 依網址挑）、紙張色的卡片、虛線書籤列、暖色表頭。 */
+.hd1{display:flex;align-items:center;gap:14px}
+.hd1>h1{flex:1;min-width:0}
+.stk{flex:none;width:150px;height:auto;transform:rotate(3deg);margin:6px 2px 0 0}
+@media(max-width:600px){.stk{width:92px}.hd1{gap:8px}}
+.hand .ct{background:#fffaf2;box-shadow:2px 3px 0 rgba(90,61,43,.07)}
+.hand .card{box-shadow:2px 3px 0 rgba(90,61,43,.07)}
+.hand .toc{border:2px dashed var(--edge);background:var(--paper)}
+.hand details.faq{background:#fffaf2}
+.hand .tw th{background:#fbefe2;color:var(--ink)}
 /* 外連按鈕做成實心色塊：白底框線的版本讀者看不出是連結（2026-11-10 使用者回報），
    整頁的重點動作要一眼就看得出能點。 */
 .cta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 18px;
@@ -1634,7 +1648,9 @@ def head(title,desc,path,extra='',wrap_cls=''):
 <meta property="og:image" content="{_og_img(path)}">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<style>{CSS}</style>{extra}{DRIVE}</head><body><div class="wrap{' ' + wrap_cls if wrap_cls else ''}">'''
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&amp;display=swap">
+<style>{CSS}</style>{extra}{DRIVE}</head><body><div class="wrap hand{' ' + wrap_cls if wrap_cls else ''}">'''
 
 def crumbs(items,root='/'):
     # 只有一項的麵包屑沒有意義：它顯示不出任何路徑，而首頁的那一項文字又正好和
@@ -2890,11 +2906,74 @@ def _search_capture(path, content):
         'x': '' if fare else unicodedata.normalize('NFKC', _sr_txt(body)),
     }
 
+# 每頁標題旁的手繪貼紙（2026-11-13 全站改成旅遊創作者風格）。
+# 圖由 illust/st_*.py、illust/make_xmas.py 畫，這裡只決定哪一頁配哪一張：
+# 先查完整網址，再查前綴（越長越先），都沒有就用小飛機（本站本來就是機票站）。
+# 圖檔不存在就不放，不會壞頁。
+_STK_EXACT = {
+    '/tokyo/': 'xmas/tower', '/kanto/': 'xmas/tower', '/osaka/': 'st/castle', '/kansai/': 'st/castle',
+    '/sapporo/': 'st/snowman', '/hokkaido/': 'st/snowman', '/hakodate/': 'st/snowman', '/wakkanai/': 'st/snowman',
+    '/okinawa/': 'st/whaleshark', '/okinawa-islands/': 'st/whaleshark', '/ishigaki/': 'st/whaleshark',
+    '/miyakojima/': 'st/whaleshark', '/shizuoka/': 'st/plane-fuji',
+}
+_STK_PREFIX = sorted({
+    '/tokyo/christmas-market/': '',
+    '/japan-tokyo-tower/': 'xmas/tower', '/japan-skytree/': 'xmas/skytree', '/japan-chiikawa-park/': 'xmas/gift',
+    '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
+    '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
+    '/japan-sumo/': 'st/sumo', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
+    '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
+    '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
+    '/osaka/abeno-harukas/': 'st/harukas', '/osaka/amazing-pass/': 'st/castle',
+    '/japan-hakone-freepass/': 'st/hakone', '/japan-fuji-q/': 'st/fujicoaster',
+    '/nagasaki/huis-ten-bosch/': 'st/windmill', '/okinawa/churaumi/': 'st/whaleshark', '/osaka/kaiyukan/': 'st/whaleshark',
+    '/japan-asahiyama-zoo/': 'st/penguin', '/japan-shirakawago-lightup/': 'st/gassho',
+    '/japan-ginzan-onsen/': 'st/ginzan', '/japan-tsurunoyu/': 'st/rotenburo',
+    '/japan-ryuhyo-monogatari/': 'st/icebreaker', '/sapporo/snow-festival/': 'st/snowman',
+    '/japan-zao-juhyo/': 'st/juhyo', '/nagoya/nabana-no-sato/': 'st/lights', '/tokyo/teamlab/': 'st/teamlab',
+    '/japan-autumn-leaves/': 'st/maple', '/kyoto/autumn-leaves/': 'st/maple', '/tokyo/autumn-leaves/': 'st/maple',
+    '/tokyo/ginkgo/': 'st/ginkgo', '/japan-seasonal-event/': 'st/seasonal',
+    '/tokyo/budget-hotel/': 'st/bunk', '/tokyo/hostel/': 'st/bunk',
+    '/hotel-price-check/': 'st/hotel', '/kawaguchiko-hotel-case/': 'st/hotel', '/japan-hotel-check/': 'st/ghosthouse',
+    '/japan-medicine-limit/': 'st/medicine', '/threads-japan/': 'st/speech', '/tokyo/street-fashion/': 'st/shirt',
+    '/tokyo/worth-flying-for/': 'st/shop', '/japan-worth-buying/': 'st/shop', '/search/': 'st/search', '/about/': 'st/notebook',
+    '/japan-credit-card/': 'st/card', '/japan-airline-card/': 'st/card', '/japan-card-': 'st/card', '/iphone-card/': 'st/card',
+    '/japan-coupon/': 'st/coupon', '/japan-bogo/': 'st/coupon', '/japan-store-points/': 'st/coupon', '/japan-bic-points/': 'st/coupon',
+    '/japan-tax-free-2026/': 'st/receipt', '/japan-esim': 'st/phone', '/japan-sms-roaming/': 'st/phone',
+    '/japan-yen-exchange/': 'st/yen', '/japan-payment/': 'st/yen', '/japan-transit-card/': 'st/iccard',
+    '/tokyo/subway-ticket/': 'st/subway',
+    '/apple-japan-price/': 'st/phoneprice', '/iphone-cost/': 'st/phoneprice', '/iphone-duo/': 'st/phoneprice',
+    '/japan-camera-price/': 'st/camera', '/japan-dyson-price/': 'st/dryer', '/japan-panasonic-dryer/': 'st/dryer',
+    '/japan-rentacar-noc/': 'st/car', '/japan-driving-': 'st/car', '/taiwan-airport-parking/': 'st/car',
+    '/japan-travel-rules/': 'st/luggage', '/japan-travel-insurance/': 'st/luggage', '/japan-jttp/': 'st/luggage',
+    '/japan-flight-baggage/': 'st/luggage', '/japan-flight-seat/': 'st/seat', '/japan-flight-fuji/': 'st/plane-fuji',
+    '/japan-airport-last-train/': 'st/nighttrain', '/taiwan-holiday-': 'st/calendar', '/japan-holiday-calendar/': 'st/calendar',
+}.items(), key=lambda kv: -len(kv[0]))
+_H1_RE = re.compile(r'<h1\b[^>]*>.*?</h1>', re.S)
+
+def _sticker(path, content):
+    url = '/' + path[:-len('index.html')] if path.endswith('index.html') else None
+    if not url or 'class="hd1"' in content:
+        return content
+    name = _STK_EXACT.get(url)
+    if name is None:
+        name = next((v for k, v in _STK_PREFIX if url.startswith(k)), 'st/plane')
+    if not name or not os.path.exists(f'illust/{name}.svg'):
+        return content
+    m = _H1_RE.search(content)
+    if not m:
+        return content
+    img = (f'<img class="stk" src="{U("/illust/" + name + ".svg")}" alt="" width="180" height="150" '
+           'decoding="async">')
+    return content[:m.start()] + '<div class="hd1">' + m.group(0) + img + '</div>' + content[m.end():]
+
 def write(path,content):
     d=os.path.dirname(path)
     if d: os.makedirs(d,exist_ok=True)
     if path.endswith('.html'):
         content = _toc(content)
+        content = _sticker(path, content)
         _search_capture(path, content)
         content = _ad_inject(path, content)
         content = _trim_note(content)
@@ -25806,12 +25885,9 @@ if os.path.exists('tokyo-xmas.json'):
            '30 分鐘入場時段；東京鐵塔、六本木之丘、麻布台之丘、晴空塔城、上野、丸之內、惠比壽的免費市集日期與時間；'
            '橫濱紅磚倉庫與吉伊卡哇聖誕市集的門票。',
            'tokyo/christmas-market/',
-           '<link rel="preconnect" href="https://fonts.googleapis.com">'
-           '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-           '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&amp;display=swap">'
            '<script type="application/ld+json">' + txm_ld + '</script>')
       + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('東京聖誕市集', None)])
-      + '<article class="art hand">'
+      + '<article class="art xm">'
       + '<h1>2026 東京聖誕市集懶人包：13 個市集的日期、門票，晚上怎麼逛</h1>'
       + f'<p class="by">更新於 {TXM["checked"]}・資料來自各主辦與場地官網</p>'
       + _ill('hero', 'ill hero')
