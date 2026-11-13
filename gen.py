@@ -1466,7 +1466,8 @@ border:1px solid var(--line)}
 .spot{display:grid;grid-template-columns:136px minmax(0,1fr);gap:20px;align-items:start;margin:30px 0 10px}
 .ill.sp{transform:rotate(-2deg)}
 .spot:nth-of-type(even) .ill.sp{transform:rotate(2deg)}
-@media(max-width:600px){.spot{grid-template-columns:1fr;gap:4px}.ill.sp{width:118px}}
+/* 手機：插圖縮小浮在左邊，標題和第一段繞著排，資訊卡從插圖下面開始，右邊才不會空一大片 */
+@media(max-width:600px){.spot{display:block}.ill.sp{float:left;width:96px;margin:2px 14px 6px 0}.spot .memo,.spot .memos{clear:both}.spot::after{content:"";display:block;clear:both}}
 .memos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:18px;margin:12px 0 18px}
 .memo{position:relative;background:var(--paper);border:1.5px solid var(--edge);border-radius:6px;padding:18px 16px 12px;
  margin:18px 0;box-shadow:2px 3px 0 rgba(90,61,43,.08)}
