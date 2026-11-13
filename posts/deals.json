@@ -14,9 +14,9 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$4,538（6 天有紀錄），這張低 34%"
+   "11 月出發的票，每天最便宜的平均要 NT$4,576（6 天有紀錄），這張低 35%"
   ],
-  "med": 6412,
+  "med": 6636,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-11-17&inbound=OKA-TPE&returnDate=2026-12-01&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
@@ -26,7 +26,7 @@
    "days": 16
   },
   "mbase": {
-   "avg": 4538,
+   "avg": 4576,
    "days": 6,
    "month": 11
   },
@@ -60,32 +60,32 @@
  },
  {
   "slug": "2026-11-13-taipei-ishigaki",
-  "title": "台北飛石垣島 NT$4,061 來回含稅｜台灣虎航 11/14 出發",
+  "title": "台北飛石垣島 NT$4,061 來回含稅｜台灣虎航 11/28 出發",
   "o": "台北",
   "c": "石垣島",
   "_oiata": "TPE",
   "_diata": "ISG",
   "price": 4061,
   "air": "台灣虎航",
-  "dep": "2026-11-14",
-  "ret": "2026-11-20",
+  "dep": "2026-11-28",
+  "ret": "2026-12-04",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$5,499（5 天有紀錄），這張低 26%"
+   "11 月出發的票，每天最便宜的平均要 NT$5,546（5 天有紀錄），這張低 27%"
   ],
   "med": 14331,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-14&inbound=ISG-TPE&returnDate=2026-11-20&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-28&inbound=ISG-TPE&returnDate=2026-12-04&type=return&adult=1&language=zh-TW",
   "hotelcity": "石垣島",
   "cslug": "ishigaki",
   "usual": {
-   "lo": 4061,
+   "lo": 4261,
    "hi": 7487,
    "days": 8
   },
   "mbase": {
-   "avg": 5499,
+   "avg": 5546,
    "days": 5,
    "month": 11
   },
