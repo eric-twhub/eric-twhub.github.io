@@ -1221,7 +1221,9 @@ padding-top:6px;border-top:1px dashed var(--line)}
 .dt{font-size:.81rem;color:var(--dim);font-variant-numeric:tabular-nums}
 .btn{margin-top:auto;display:block;text-align:center;background:var(--acc);color:#fff;
 text-decoration:none;padding:7px;border-radius:7px;font-size:.83rem;font-weight:600}
-.cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:9px;margin-top:12px}
+.cities{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:9px;margin-top:12px}
+/* auto-fit：卡片少時撐滿整排，不在右邊留空欄；只有一張時不要拉成整條 */
+.cities>.ct:only-child{max-width:340px}
 .ct{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;
 padding:12px 13px;text-decoration:none;color:var(--fg)}
 .ct:hover{border-color:var(--acc)}
@@ -1509,7 +1511,7 @@ details.more summary{cursor:pointer;font-weight:700}
 details.more ul{margin:10px 0 4px;padding-left:1.2em;font-size:.9rem;line-height:1.75;color:var(--dim)}
 /* 全站共用的手繪風（2026-11-13 使用者要「全站都改用這個風格」）：
    標題旁一張主題貼紙（_sticker() 依網址挑）、紙張色的卡片、虛線書籤列、暖色表頭。 */
-.bnr{max-width:760px;margin:12px 0 18px}
+.bnr{margin:12px 0 18px}
 .bnr img{display:block;width:100%;height:auto}
 .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 16px;margin:14px 0 22px}
 figure.spf{margin:0}
