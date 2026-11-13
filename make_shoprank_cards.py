@@ -9,12 +9,12 @@
 那邊改了這邊跟著變。
 
 用法：python3 make_shoprank_cards.py
-輸出：japan-coupon/rank-cards/rank-01.png … -05.png
+輸出：japan-coupon/rank-cards/rank-<店家 slug>.png，一家店一張
 """
 import json, os, re, sys, subprocess, tempfile, hashlib
 import html as htm
 
-from make_creditcard_cards import (W, H, E, CSS, page, foot, check, _chrome)
+from make_creditcard_cards import (W, H, E, CSS, page, foot, _chrome)
 
 # 自己一個資料夾：gen.py 的圖卡過期檢查是逐資料夾讀 stamp.txt，
 # 和 make_coupon_cards 共用 japan-coupon/cards 會把對方的指紋蓋掉。
@@ -24,10 +24,22 @@ NEW = re.compile(r'新戶|核卡')
 MARK = ('①', '②', '③')
 
 # .grp 的三行名次要有自己的標記顏色，其餘沿用 make_creditcard_cards 的 CSS
+# 一家店一張，九個名次加條件都要塞進同一頁，所以把 grp 收緊，
+# 條件另外用單行的 .cond，不用 .step（一張兩行太高，五張就滿了）。
 EXTRA = """
-.grp s em{font-style:normal;color:#c2410c;font-weight:800;margin-right:10px}
-.grp b i{font-weight:500}
+.grp{padding:11px 0}
+.grp b{font-size:27px;margin-bottom:5px}
+.grp b i{font-weight:500;font-size:23px}
+.grp s{font-size:23px;line-height:1.62}
+.grp s em{font-style:normal;color:#c2410c;font-weight:800;margin-right:9px}
 .sub b{color:#1a1a1a}
+.ch{font-size:22px;color:#8a847c;font-weight:700;letter-spacing:.04em;
+ margin-top:20px;padding-bottom:7px;border-bottom:2px solid #1a1a1a}
+.cond div{padding:9px 0;border-bottom:1px solid #e5e3de;font-size:22px;
+ line-height:1.55;color:#63605c}
+.cond div:last-child{border-bottom:0}
+.cond b{color:#1a1a1a;font-weight:700;font-size:25px}
+.cond em{font-style:normal;color:#c2410c;font-weight:800}
 """
 
 
@@ -92,102 +104,81 @@ def money(n):
     return f'NT${round(n):,}'
 
 
-def groups(CD, CP, mid, fee, catmap):
-    """把 22 家店按「三個金額的前三名完全相同」分組。
+def check(chrome, tmp, name, src):
+    """量最後一個區塊的底部有沒有撞到頁尾。
 
-    分組是算出來的不是手列的：哪張卡的指定店家名單改了，組就跟著變，
-    不會變成圖上寫 Bic 和唐吉訶德一組、實際上已經不是。
+    和 make_creditcard_cards.check 同一套，只是多量 .cond 與 .ch，
+    那兩個是這支自己的區塊，不加進去就等於沒量到條件那一段。
     """
-    g = {}
-    for st in CP['stores']:
-        key, cols = [], []
-        for y in YEN:
-            b, rows = rank_at(CD, st, y, mid, fee, catmap)
-            top = rows[:3]
-            key.append(tuple(r['c']['slug'] for r in top))
-            cols.append((y, b, top))
-        g.setdefault(tuple(key), {'stores': [], 'cols': cols})['stores'].append(st)
-    # 店家少的組排前面：那幾家才是「這家店特別不一樣」的重點
-    return sorted(g.values(), key=lambda x: len(x['stores']))
+    probe = os.path.join(tmp, 'probe.html')
+    open(probe, 'w', encoding='utf-8').write(src.replace(
+        '</body>',
+        '<script>document.title=JSON.stringify((()=>{'
+        'const f=document.querySelector(".foot").getBoundingClientRect().top;'
+        'const it=[...document.querySelectorAll(".row,.grp,.step,.note,.stat,'
+        '.hd,.cond div,.ch")];'
+        'const b=it.length?Math.max(...it.map(e=>e.getBoundingClientRect().bottom)):0;'
+        'return{gap:Math.round(f-b)}})())</script></body>'))
+    r = subprocess.run([chrome, '--headless', '--disable-gpu', '--dump-dom',
+                        '--virtual-time-budget=1500', f'file://{os.path.abspath(probe)}'],
+                       capture_output=True, text=True, timeout=60)
+    m = re.search(r'<title>(\{.*?\})</title>', r.stdout)
+    if not m:
+        print(f'   ! {name} 量不到版面，略過檢查')
+        return
+    gap = json.loads(htm.unescape(m.group(1)))['gap']
+    if gap < 0:
+        sys.exit(f'{name}：內容超出頁尾 {-gap}px，會被切掉')
+    print(f'   {name}  底部餘裕 {gap}px')
+
+
+def store_card(CD, st, mid, fee, catmap, i, n, rate_note):
+    """一家店一張：三個金額各前三名，底下是那幾張卡的條件與沒做滿的數字。"""
+    rows, picked = '', {}
+    for y in YEN:
+        b, ranked = rank_at(CD, st, y, mid, fee, catmap)
+        top = ranked[:3]
+        li = ''
+        for k, r in enumerate(top):
+            picked[r['c']['slug']] = r
+            li += (f'<em>{MARK[k]}</em>{E(r["c"]["name"])}　'
+                   f'{money(r["v"])}・{r["rate"]:g}%'
+                   + ('（加碼已滿）' if r['capped'] else '') + '<br>')
+        rows += (f'<div class="grp"><b>刷 ¥{y:,}<i>　帳單約 {money(b)}</i></b>'
+                 f'<s>{li.rstrip("<br>")}</s></div>')
+
+    # 第一名會不會隨金額換人，是這張卡唯一的「新聞」，沒有就不要硬掰
+    firsts = [rank_at(CD, st, y, mid, fee, catmap)[1][0]['c'] for y in YEN]
+    if len({x['slug'] for x in firsts}) > 1:
+        lead = (f'刷 ¥{YEN[0]:,} 是{E(firsts[0]["name"])}，'
+                f'刷到 ¥{YEN[-1]:,} 要換成{E(firsts[-1]["name"])}。')
+    else:
+        lead = f'{E(firsts[0]["name"])}三個金額都第一。'
+
+    cond = ''
+    for r in sorted(picked.values(), key=lambda x: -x['rate']):
+        c = r['c']
+        cond += (f'<div><b>{E(c["name"])}</b>　{E(c.get("reg_short") or "官方沒寫")}'
+                 f'　<em>{r["rate"]:g}%</em>，沒做滿只剩 {c["base"]:g}%</div>')
+
+    inner = ('<div class="kick">旅日購物</div>'
+             # 「在Bic Camera」中文字緊貼西文很醜，開頭是半形就補一個空格
+             + f'<h1>在{" " if st["name"][0].isascii() else ""}{E(st["name"])}'
+               f'<br><em>刷哪張卡</em></h1>'
+             f'<div class="sub"><b>{lead}</b></div>'
+             f'<div class="list">{rows}'
+             '<div class="ch">這幾張卡要做什麼，沒做滿剩多少</div>'
+             f'<div class="cond">{cond}</div></div>'
+             + foot(i, n, rate_note))
+    return rank_page(inner)
 
 
 def build(CD, CP, mid, fee, catmap, rate_note):
-    gs = groups(CD, CP, mid, fee, catmap)
-    n = len(gs) + 2
-    out, picked = [], {}
-
-    # ── 1 封面 ──
-    flips = 0
-    for g in gs:
-        if len({c[2][0]['c']['slug'] for c in g['cols']}) > 1:
-            flips += len(g['stores'])
-    cover = ('<div class="kick">旅日購物</div>'
-             '<h1>同一張卡，<br><em>不是每家店都最強</em></h1>'
-             f'<div class="sub">{len(CP["stores"])} 家常去的店，各自算 '
-             f'¥10,000、¥30,000、¥50,000 三個金額<br>該刷哪張卡。'
-             f'答案分成 {len(gs)} 組，而且會隨金額換人。</div>'
-             '<div class="stat">'
-             f'<div><b>{len(CP["stores"])}</b><span>家店<br>逐家算</span></div>'
-             f'<div><b>{len(gs)}</b><span>種答案<br>不是一張卡通吃</span></div>'
-             f'<div><b>{flips}</b><span>家店的第一名<br>會隨金額換人</span></div>'
-             '</div>'
-             '<div class="note">回饋有上限，所以「％最高」不等於「拿最多」。'
-             '中信 uniopen 的 11% 在台幣帳單 NT$6,250 就到頂，'
-             '聯邦吉鶴的 8% 要刷到 NT$20,000，於是小額 uniopen 贏、'
-             '大額換吉鶴。</div>'
-             + foot(1, n, rate_note))
-    out.append(('rank-01.png', rank_page(cover, 'cover')))
-
-    # ── 2..k 每一組 ──
-    for i, g in enumerate(gs, 2):
-        names = '、'.join(s['name'] for s in g['stores'])
-        rows = ''
-        for y, b, top in g['cols']:
-            li = ''
-            for k, r in enumerate(top):
-                picked[r['c']['slug']] = r
-                li += (f'<em>{MARK[k]}</em>{E(r["c"]["name"])}　'
-                       f'{money(r["v"])}・{r["rate"]:g}%'
-                       + ('（加碼已滿）' if r['capped'] else '') + '<br>')
-            rows += (f'<div class="grp"><b>刷 ¥{y:,}<i>　帳單約 {money(b)}</i></b>'
-                     f'<s>{li.rstrip("<br>")}</s></div>')
-        # 標題要講這一組的news，不是「有幾家店」。第一名會不會隨金額換人，
-        # 是這組最值得單獨做一張的理由，不講出來等於白分組。
-        firsts = [c[2][0]['c'] for c in g['cols']]
-        flip = len({x['slug'] for x in firsts}) > 1
-        if flip:
-            h1 = (f'<h1>這 {len(g["stores"])} 家店<br>'
-                  f'<em>大額要換一張卡</em></h1>')
-            lead = (f'刷 ¥{YEN[0]:,} 是{E(firsts[0]["name"])}，'
-                    f'刷到 ¥{YEN[-1]:,} 換成{E(firsts[-1]["name"])}。')
-        else:
-            h1 = (f'<h1>這 {len(g["stores"])} 家店<br>'
-                  f'<em>三個金額同一張</em></h1>')
-            lead = f'{E(firsts[0]["name"])}三個金額都第一。'
-        inner = ('<div class="kick">旅日購物</div>'
-                 + h1
-                 + f'<div class="sub"><b>{lead}</b></div>'
-                 + f'<div class="legend">{E(names)}</div>'
-                 + f'<div class="list">{rows}</div>' + foot(i, n, rate_note))
-        out.append((f'rank-{i:02}.png', rank_page(inner)))
-
-    # ── 最後一張：條件 ──
-    li = ''
-    for r in sorted(picked.values(), key=lambda x: -x['rate']):
-        c = r['c']
-        li += ('<div class="grp">'
-               f'<b>{E(c["name"])}<i>　做滿 {r["rate"]:g}%</i></b>'
-               f'<s>{E(c.get("reg_short") or "官方沒寫")}。'
-               f'沒做滿只剩基本回饋 {c["base"]:g}%。</s></div>')
-    cond = ('<div class="kick">旅日購物</div>'
-            '<h1>這些數字<br><em>都有前提</em></h1>'
-            '<div class="sub">上面的％是把該做的事都做完才有。'
-            '沒做的話掉到基本回饋，差距比選錯卡還大。</div>'
-            f'<div class="list">{li}</div>'
-            + foot(n, n, '以發卡行官方公告為準'))
-    out.append((f'rank-{n:02}.png', rank_page(cond)))
-    return out
-
+    sts = CP['stores']
+    n = len(sts)
+    return [(f'rank-{st["slug"]}.png',
+             store_card(CD, st, mid, fee, catmap, i, n, rate_note))
+            for i, st in enumerate(sts, 1)]
 
 def fingerprint(CD):
     """gen.py 的過期檢查只會餵 cards.json，店家清單自己讀。"""
