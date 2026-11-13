@@ -1449,6 +1449,9 @@ border:1px solid var(--line)}
 .atoc ol{margin:6px 0 0;padding-left:1.4em;line-height:2}
 .atoc a{color:var(--fg)}
 .qk table{width:100%}
+/* 一覽表在手機也要維持表格：.tw 預設不換行，最長那格（「已售完」）會把表撐出容器、被攤成卡片 */
+.qk th,.qk td{white-space:normal;padding:9px 9px}
+.qk td:nth-child(2){white-space:nowrap}
 .qk th{background:var(--acc);color:#fff;border-color:var(--acc)}
 .qk td.xpay{color:var(--acc);font-weight:700}
 .xdot{color:#16a34a;font-size:.8em}
@@ -2512,6 +2515,8 @@ def _toc(content):
 
     只有三段以上才做。一兩段的頁面加了反而多一層東西要看。
     """
+    if 'class="atoc"' in content:   # 文章樣板自己有編號目錄，不要再插一排書籤
+        return content
     hs = list(_TOC_RE.finditer(content))
     out, seen = [], set()
     items = []          # (文件位置, id, 文字)
