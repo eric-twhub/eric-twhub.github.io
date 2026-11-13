@@ -17,28 +17,34 @@ def cloud(x, y, s=1.0, col=WHITE):
 
 
 def plane(x, y, s=1.0, col=WHITE):
-    # 機身朝右的小飛機，窗戶與臉
-    return (f'<path d="M{x-4*s},{y-2*s} L{x+14*s},{y-30*s} L{x+26*s},{y-30*s} L{x+20*s},{y-2*s} Z" fill="{SKY}"/>'
-            f'<path d="M{x-38*s},{y-10*s} L{x-46*s},{y-28*s} L{x-36*s},{y-28*s} L{x-24*s},{y-12*s} Z" fill="{SKY}"/>'
-            f'<path d="M{x-44*s},{y-12*s} Q{x-44*s},{y-22*s} {x-30*s},{y-22*s} L{x+30*s},{y-22*s} '
-            f'Q{x+50*s},{y-22*s} {x+52*s},{y-8*s} Q{x+50*s},{y+6*s} {x+30*s},{y+6*s} L{x-30*s},{y+6*s} '
-            f'Q{x-44*s},{y+6*s} {x-44*s},{y-12*s} Z" fill="{col}"/>'
-            + ''.join(f'<circle cx="{x+dx*s}" cy="{y-12*s}" r="{2.6*s}" fill="{SKY}" stroke-width="1.3"/>' for dx in (-24, -14, -4, 6))
-            + f'<path d="M{x-2*s},{y+2*s} L{x+16*s},{y+22*s} L{x+26*s},{y+22*s} L{x+20*s},{y+2*s} Z" fill="{SKY}"/>'
-            + face(x + 36*s, y - 8*s, .7*s))
+    # 側面的小客機，機頭朝右：機尾上翹接垂直尾翼、後掠主翼掛一具引擎、遠側主翼從機身上方露一角。
+    # 2026-11-13 使用者說「飛機不是長這個樣子」：舊版是膠囊機身加上下兩片直角翅膀，看起來像魚。
+    def P(*pts):
+        return ' '.join(f'{x+a*s:.1f},{y+b*s:.1f}' for a, b in pts)
+    far_wing = f'<path d="M{P((10,-19))} L{P((-6,-33))} L{P((2,-33))} L{P((22,-19))} Z" fill="{SKY}"/>'
+    fin = f'<path d="M{P((-26,-19))} L{P((-44,-44))} L{P((-54,-44))} L{P((-50,-17))} Z" fill="{SKY}"/>'
+    body = (f'<path d="M{P((-50,-19))} L{P((30,-19))} Q{P((52,-19))} {P((54,-5))} '
+            f'Q{P((52,6))} {P((34,6))} L{P((-26,6))} Q{P((-44,6))} {P((-54,-17))} Z" fill="{col}"/>')
+    wins = ''.join(f'<circle cx="{x+dx*s:.1f}" cy="{y-9*s:.1f}" r="{2.3*s:.2f}" fill="{SKY}" stroke-width="1.3"/>'
+                   for dx in (-28, -19, -10, -1, 8, 17))
+    tailplane = f'<path d="M{P((-30,-4))} L{P((-48,6))} L{P((-40,7))} L{P((-20,-2))} Z" fill="{SKY}"/>'
+    wing = f'<path d="M{P((6,1))} L{P((-18,27))} L{P((-8,27))} L{P((22,1))} Z" fill="{SKY}"/>'
+    engine = (f'<rect x="{x-3*s:.1f}" y="{y+11*s:.1f}" width="{19*s:.1f}" height="{9*s:.1f}" rx="{4.5*s:.1f}" fill="{col}"/>'
+              f'<path d="M{P((14,12.5))} L{P((14,18.5))}" fill="none" stroke-width="1.3"/>')
+    return far_wing + fin + body + wins + tailplane + wing + engine + face(x + 40*s, y - 6*s, .62*s)
 
 
 # 1 plane：小飛機與雲
 put('plane', '手繪可愛小飛機和雲朵',
-    cloud(26, 118, 1.2) + cloud(118, 56, 1.0) + plane(84, 92, 1.2)
-    + sparkle(150, 100) + star(36, 40, 6))
+    cloud(118, 50, 1.0) + plane(84, 88, 1.2)
+    + sparkle(150, 100) + star(22, 112, 6))
 
 # 2 plane-fuji：飛過富士山
 put('plane-fuji', '手繪小飛機飛過富士山',
     f'<path d="M20,132 L72,64 Q90,56 108,64 L160,132 Z" fill="#8fb3d9"/>'
     f'<path d="M72,64 Q90,56 108,64 L118,78 Q108,84 100,78 Q92,86 84,78 Q74,84 62,78 Z" fill="{WHITE}"/>'
     + face(90, 104, .8)
-    + plane(110, 40, .62) + cloud(24, 56, .8) + f'<path d="M14,132 L166,132"/>')
+    + plane(120, 36, .62) + cloud(24, 56, .8) + f'<path d="M14,132 L166,132"/>')
 
 # 3 seat：靠窗座位
 put('seat', '手繪飛機靠窗座位，窗外有雲',
