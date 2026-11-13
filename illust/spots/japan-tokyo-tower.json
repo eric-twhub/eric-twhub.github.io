@@ -1,0 +1,49 @@
+{
+ "page": "/japan-tokyo-tower/",
+ "dir": "japan-tokyo-tower",
+ "_說明": "插圖參考官網施設案內（tokyotower.co.jp/guidance/、/maindeck/、/plan/open_air_stair/）與 Top Deck Tour 頁（tdt.tokyotower.co.jp/topdecktour/）畫的可愛版，不畫官方吉祥物；點燈說明取自 tokyo-tower 頁面資料；2026-11-13 查",
+ "blocks": [
+  {
+   "before": "票價",
+   "h2": "東京鐵塔上面有什麼",
+   "intro": "展望台有兩層：150 公尺的 Main Deck（分上下兩層）和 250 公尺的 Top Deck。塔腳下的 Foot Town 1 樓是搭電梯的地方，屋頂是外階梯的出入口。",
+   "gallery": [
+    [
+     "maindeck",
+     "150 公尺的 Main Deck 有上下兩層，有咖啡廳和紀念品店，可以坐下來邊休息邊看景色"
+    ],
+    [
+     "skywalk",
+     "Main Deck 1 樓有一塊玻璃地板，可以直接往下看 150 公尺下面的地面"
+    ],
+    [
+     "topdeck",
+     "250 公尺的 Top Deck 用幾何形狀的鏡子和 LED 燈布置，鏡子會映出外面的東京"
+    ],
+    [
+     "stairs",
+     "約 600 階的外階梯從 Foot Town 屋頂爬到 150 公尺，官網說大約 12～13 分鐘，走上去送非賣品的認證書"
+    ],
+    [
+     "lightup",
+     "晚上的點燈 Landmark Light 冬季版是橘色、夏季版是白色，有些晚上會換成特別點燈 Diamond Veil"
+    ]
+   ]
+  },
+  {
+   "end_of": "現場要知道的事",
+   "remind": [
+    [
+     "r-transfer",
+     "Top Deck 要在半路換電梯",
+     "沒有直達 250 公尺的電梯：先搭到 150 公尺的 Main Deck，在 2 樓的 Top Deck Gate 換電梯上去；回程下樓的電梯在 Main Deck 1 樓。"
+    ],
+    [
+     "r-stairs",
+     "外階梯走上去就不能改搭電梯",
+     "外階梯途中沒有地方換電梯，上樓和下樓是兩條不同的路線；下雨、天氣差或發布熱中症警戒時兩邊都會停開，到了 Main Deck 之後才能搭電梯下樓。"
+    ]
+   ]
+  }
+ ]
+}

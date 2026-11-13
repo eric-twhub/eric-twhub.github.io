@@ -1497,7 +1497,7 @@ details.more ul{margin:10px 0 4px;padding-left:1.2em;font-size:.9rem;line-height
    標題旁一張主題貼紙（_sticker() 依網址挑）、紙張色的卡片、虛線書籤列、暖色表頭。 */
 .bnr{max-width:760px;margin:12px 0 18px}
 .bnr img{display:block;width:100%;height:auto}
-.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px 16px;margin:14px 0 22px}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 16px;margin:14px 0 22px}
 figure.spf{margin:0}
 figure.spf img{display:block;width:100%;height:auto}
 figure.spf:nth-child(odd) img{transform:rotate(-1deg)}
@@ -3033,18 +3033,21 @@ def _spots(path, content):
             raise SystemExit(f'spots：缺圖 {sd["dir"]}/{n}.svg')
         return (f'<img src="{U(base + n + ".svg")}" alt="" width="{w}" height="{h}" '
                 'loading="lazy" decoding="async">')
+    # 有期限的那一張（活動期間、停駛期間）在最後多放一個 YYYY-MM-DD，過了那天自動拿掉
+    def live(it, n):
+        return len(it) <= n or it[n] >= TODAY
     for b in sd['blocks']:
-        if 'gallery' in b:
-            figs = ''.join(f'<figure class="spf">{img(n, 240, 180)}<figcaption>{html.escape(c)}</figcaption></figure>'
-                           for n, c in b['gallery'])
+        if 'gallery' in b and any(live(it, 2) for it in b['gallery']):
+            figs = ''.join(f'<figure class="spf">{img(it[0], 240, 180)}<figcaption>{html.escape(it[1])}</figcaption></figure>'
+                           for it in b['gallery'] if live(it, 2))
             sec = (f'<h2>{html.escape(b["h2"])}</h2>'
                    + (f'<p>{html.escape(b["intro"])}</p>' if b.get('intro') else '')
                    + f'<div class="gal">{figs}</div>')
             m = _h2_at(content, b['before'])
             content = content[:m.start()] + sec + content[m.start():]
         if 'remind' in b:
-            cards = ''.join(f'<div class="rem">{img(n, 120, 120)}<div><b>{html.escape(t)}</b>'
-                            f'<p>{html.escape(x)}</p></div></div>' for n, t, x in b['remind'])
+            cards = ''.join(f'<div class="rem">{img(it[0], 120, 120)}<div><b>{html.escape(it[1])}</b>'
+                            f'<p>{html.escape(it[2])}</p></div></div>' for it in b['remind'] if live(it, 3))
             m = _h2_at(content, b['end_of'])
             nx = re.compile(r'<h2[\s>]').search(content, m.end())
             at = nx.start() if nx else content.index('</article>', m.end())
