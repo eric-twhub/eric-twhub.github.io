@@ -6,6 +6,11 @@
     "no_rate": "官方有公告新制，但沒寫費率",
     "none": "沒有查到官方公告。沒查到不等於不收，也不等於收"
   },
+  "_待複查": {
+    "edion": "免稅說明頁 edion.com/ito/contents/special/lp/edion_inbound/taxfree/ 從 11/7 22 時起整站維護（503），11/13 仍打不開，無法確認是否還是舊制，先從舊制名單拿掉，恢復後重查。",
+    "muji": "muji.com 11/11 起因安全強化停站，免稅說明頁 /jp/feature/welcome/ 也導到維護頁，11/13 無法確認是否還是舊制，先從舊制名單拿掉，恢復後重查。",
+    "abc-mart": "11/13 查官網：只有店舖頁標「免税対応店」，FAQ 與指南都沒有免稅手續說明，找不到舊制內容的頁面，所以從舊制名單拿掉。"
+  },
   "_線索未採用": {
     "bic-camera": "今周刊引述 Bic 官方粉專 10/13 貼文寫「退稅手續費0元」；LIVE JAPAN（Bic 是其聯盟成員）10/26 的文章與 11/5 的發券頁也寫手續費由 Bic 負擔、依據 Bic 公告。日文媒體 Fun-Japan 10/28 也寫 Bic「發表」退稅申請手續費免費，沒附原文。但 Bic 官網的新制說明、FAQ、企業新聞與 IR 新聞到 11/13 都沒有這句。",
     "tsuruha": "鏡週刊 10/15 寫鶴羽用 J&J、由店家吸收手續費，出處是部落客與記者確認，官方頁面沒有。",
@@ -89,16 +94,16 @@
      "note": "官方優惠券頁寫從退稅金額扣掉這筆匯款手續費再退，但沒寫 3.3% 是以什麼金額計算。稅前 ¥10,000 本來退 ¥1,000：若以退稅金額計，扣 ¥33、退約 ¥967；若以購買金額計，扣 ¥330、退約 ¥670。同集團的 Cocokara Fine 券頁也是同一句。",
      "quote": "免税額から手数料3.3%（税込）を差し引いた金額が返金されます。",
      "src": "https://tw.matsumotokiyoshi.net/coupon", "src_name": "松本清官方優惠券頁"},
-    {"name": "SUNDRUG", "slug": "sundrug", "status": "none", "old": true},
+    {"name": "SUNDRUG", "slug": "sundrug", "status": "none", "old": true, "old_src": "https://sundrug-online.com/pages/tax-free_cnt", "old_checked": "2026-11-13"},
     {"name": "大國藥妝", "slug": "daikoku", "status": "none"},
-    {"name": "鶴羽藥妝", "slug": "tsuruha", "status": "none", "old": true},
+    {"name": "鶴羽藥妝", "slug": "tsuruha", "status": "none", "old": true, "old_src": "https://www.tsuruha.co.jp/tw/", "old_checked": "2026-11-13"},
     {"name": "COSMOS 藥品", "slug": "cosmos", "status": "none"},
-    {"name": "EDION", "slug": "edion", "status": "none", "old": true},
+    {"name": "EDION", "slug": "edion", "status": "none"},
     {"name": "多慶屋", "slug": "takeya", "status": "none"},
     {"name": "AEON", "slug": null, "status": "none"},
-    {"name": "無印良品", "slug": "muji", "status": "none", "old": true},
+    {"name": "無印良品", "slug": "muji", "status": "none"},
     {"name": "3COINS", "slug": "3coins", "status": "none"},
-    {"name": "ABC-MART", "slug": "abc-mart", "status": "none", "old": true},
+    {"name": "ABC-MART", "slug": "abc-mart", "status": "none"},
     {"name": "Alpen", "slug": "alpen", "status": "none"},
     {"name": "寶可夢中心", "slug": "pokemon-center", "status": "none"},
     {"name": "三麗鷗", "slug": "sanrio", "status": "none"},
