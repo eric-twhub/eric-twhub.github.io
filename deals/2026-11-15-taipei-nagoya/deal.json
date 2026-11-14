@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-15-taipei-nagoya",
- "generated": "2026-11-15 01:54",
+ "generated": "2026-11-15 04:02",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -25,7 +25,7 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "這條航線平常最低落在 NT$8,075–NT$9,581，這張是近期 12 筆紀錄中第 1 低"
+  "這條航線平常最低落在 NT$8,575–NT$9,581，這張是近期 12 筆紀錄中第 1 低"
  ],
  "med": 13356,
  "n_rt": 12,
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8075,
+   "price": 8575,
    "dep": "2026-12-07",
    "ret": "2026-12-11",
    "dept": "08:45",
