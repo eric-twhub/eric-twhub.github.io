@@ -30,12 +30,12 @@
  },
  {
   "slug": "2026-11-15-kaohsiung-okinawa",
-  "title": "高雄飛沖繩 NT$3,384 來回含稅｜台灣虎航 12/17 出發",
+  "title": "高雄飛沖繩 NT$3,839 來回含稅｜台灣虎航 12/17 出發",
   "o": "高雄",
   "c": "沖繩",
   "_oiata": "KHH",
   "_diata": "OKA",
-  "price": 3384,
+  "price": 3839,
   "air": "台灣虎航",
   "dep": "2026-12-17",
   "ret": "2026-12-25",
@@ -44,7 +44,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 4510,
+  "med": 4738,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-17&inbound=OKA-KHH&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
