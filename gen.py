@@ -1443,6 +1443,10 @@ border:1px solid var(--line)}
 .xv dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;font-size:.92rem;line-height:1.6}
 .xv dt{color:var(--dim);white-space:nowrap}
 .xv dd{margin:0}
+/* 收合的紀錄清單（不用 details.faq，手繪風會在 summary 前面加 Q） */
+details.recd{border:1px solid var(--line);border-radius:10px;background:var(--card);margin:12px 0 16px}
+details.recd>summary{cursor:pointer;padding:12px 15px;font-weight:600;font-size:.95rem}
+details.recd>ul{margin:0 15px 10px}
 /* 創作者樣板（2026-11-13，先用在東京聖誕市集頁）。使用者先說全站像高密度參考資料，
    改成文章樣板又被說「一看就知道是 AI 產出的」，要像旅遊創作者的頁面、配可愛手繪插圖。
    手寫圓體（粉圓 Huninn）只用在標題與標籤，內文維持系統字，長段落才讀得舒服。
@@ -16727,6 +16731,8 @@ for _af, _alabel, _acycle, _ahow in (
         ('seasonal.json', '萬聖節與聖誕節的活動', 30,
          '點燈活動多半 11 月才公布當年日期，公布後要補進 seasonal.json；'
          '活動結束的項目狀態會自己變，但清單要人工擴充'),
+        ('flash-sales.json', '要搶的便宜機票（平台秒殺、航空限時特價）', 14,
+         '照 flash-sales.json 的 _怎麼回查 看各平台有沒有新公告；開搶過的場次搬進 record'),
         ('park-ticket.json', '樂園門票的逐日票價', 30,
          '官網每日 14:00 只賣兩個月後同一日期的票，資料滾動得快。'
          '更新方法寫在 park-ticket.json 的 _怎麼更新')):
@@ -16741,7 +16747,7 @@ for _af, _alabel, _acycle, _ahow in (
         continue
     if _age >= _acycle:
         print(f'   ⚠ {_alabel}已經 {_age} 天沒回查（{_ac}）：{_ahow}')
-    elif _age >= _acycle - 15:
+    elif _age >= _acycle - min(15, _acycle // 3):
         print(f'   · {_alabel}再 {_acycle - _age} 天該回查了（上次 {_ac}）')
 
 import glob as _glob
@@ -16763,14 +16769,61 @@ _pit=''.join(
 past_html=(f'<h2>往期特價</h2><p class="lede">過去的特價紀錄，可用來判斷目前價格是否划算。</p>'
            f'<div class="cities">{_pit}</div>') if _past else ''
 
+# 要搶的便宜機票：旅遊平台秒殺與航空公司限時特價（資料在 flash-sales.json）。
+# upcoming 過了 end 自動拿掉；沒有已公告的場次時，只寫查證日期，不說「沒有」。
+_FS = json.load(open('flash-sales.json', encoding='utf-8')) if os.path.exists('flash-sales.json') else None
+flash_html = ''
+if _FS:
+    _now = NOW.strftime('%Y-%m-%d %H:%M')
+    def _fsmd(ts):
+        return f'{int(ts[5:7])}/{int(ts[8:10])}' + (' ' + ts[11:16] if len(ts) > 10 else '')
+    def _fsrc(u, n):
+        return f'<a href="{u}" rel="nofollow noopener" target="_blank">{html.escape(n)}</a>'
+    _up = [x for x in _FS['upcoming'] if x['end'] >= _now]
+    _chk = _FS['checked']; _chk_md = f'{int(_chk[5:7])}/{int(_chk[8:10])}'
+    flash_html = ('<h2 id="flash-sale">要搶的便宜機票：Trip.com 999 元、易遊網 1 元這類秒殺</h2>'
+                  '<p class="lede">旅遊平台的秒殺和航空公司的限時特價，都是名額有限、準時開搶。'
+                  '先看接下來有哪一檔，再看各家通常什麼時候辦。</p>')
+    if _up:
+        _li = ''
+        for x in _up:
+            _st = ('<span class="xbadge on">開賣中</span>' if x['start'] <= _now
+                   else f'<span class="xbadge on">{_fsmd(x["start"])} 開賣</span>')
+            _li += ('<li><div class="xh"><span class="xn">' + html.escape(x['who'] + '・' + x['name']) + '</span>'
+                    + _st + f'<span class="xbadge">到 {_fsmd(x["end"])}</span></div>'
+                    + '<div class="xt"><b>' + html.escape(x['price']) + '</b></div>'
+                    + '<div class="xt">' + html.escape(x['what']) + '</div>'
+                    + '<p class="xo">' + '．'.join(html.escape(n) for n in x['notes'])
+                    + _fsrc(x['src'], x['src_name']) + '</p></li>')
+        flash_html += f'<h3>接下來要開搶的（查於 {_chk_md}）</h3><ul class="xl">{_li}</ul>'
+    else:
+        flash_html += (f'<p>{_chk_md} 查各平台與航空公司官網，還沒有已公告、尚未開搶的場次。'
+                       '下面是過去一年的規律，可以照這個時間點留意。</p>')
+    flash_html += '<h3>各家通常什麼時候辦</h3><ul class="xl">' + ''.join(
+        '<li><div class="xh"><span class="xn">' + html.escape(p['who']) + '</span></div>'
+        + '<div class="xt"><b>' + html.escape(p['what']) + '</b></div>'
+        + '<div class="xw">' + html.escape(p['when']) + '</div>'
+        + '<p class="xo">' + html.escape(p['evidence']) + _fsrc(p['src'], p['src_name']) + '</p></li>'
+        for p in _FS['patterns']) + '</ul>'
+    flash_html += '<h3>搶之前先知道</h3><ul>' + ''.join(
+        '<li>' + html.escape(h['t']) + '（' + _fsrc(h['src'], h['src_name']) + '）</li>'
+        for h in _FS['how_to']) + '</ul>'
+    _rec = sorted(_FS['record'], key=lambda r: r['d'], reverse=True)
+    flash_html += ('<details class="recd"><summary>過去一年查得到的日韓場次（' + str(len(_rec)) + ' 筆）</summary>'
+                   '<ul class="xl">' + ''.join(
+        '<li><div class="xh"><span class="xn">' + html.escape(r['who']) + ' <b>' + html.escape(r['price']) + '</b></span>'
+        + f'<span class="xbadge">{r["d"][:4]}/{int(r["d"][5:7])}/{int(r["d"][8:10])}</span></div>'
+        + '<p class="xo">' + html.escape(r['what']) + _fsrc(r['src'], '出處') + '</p></li>'
+        for r in _rec) + '</ul></details>')
+
 write(f'{DEALDIR}/index.html',
-  head(f'機票特價｜台灣飛日本便宜機票每日更新（{TODAY}）',
+  head(f'機票特價｜台灣飛日本便宜機票、999 元秒殺活動整理（{TODAY}）',
        f'台灣飛日本的機票特價整理，{TODAY} 共 {len(deals_out)} 則，含稅價格、航空公司與出發日期。',
        f'{DEALDIR}/')
   + topnav() + crumbs([('首頁','/'),('機票特價',None)])
   + f'<h1>機票特價</h1><p class="lede">低於門檻、或明顯低於該航線平常最低價的票，今日共 <b>{len(deals_out)}</b> 則。</p>'
   + f'<p class="upd">更新於 {NOWS}</p><h2>{TODAY} 特價</h2><div class="cities">{items_today}</div>'
-  + past_html + jp_runs_block(4, key='tw') + foot())
+  + flash_html + past_html + jp_runs_block(4, key='tw') + foot())
 pages.append((f'/{DEALDIR}/',0.95))
 
 # 有自家訂位頁的航空公司，貼文的查證連結直接開它自己的，不要繞 Trip.com。

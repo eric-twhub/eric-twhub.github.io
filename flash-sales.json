@@ -1,0 +1,288 @@
+{
+ "_說明": "/deals/ 的「要搶的便宜機票」一區。upcoming 過了 end 自動不顯示；patterns 與 record 只放有官方出處的（旅遊平台官方活動頁、官方部落格、官方新聞稿或 Wayback 存檔）。每兩週回查一次有沒有新公告。",
+ "_怎麼回查": "Trip.com 看 mega-sale（旅展）與 tw-payday（月底救星）兩頁，舊檔會被新檔覆蓋；易遊網官網會跳人機驗證，改看 blog.eztravel.com.tw；雄獅看 event.liontravel.com；航空公司看各自新聞稿。",
+ "checked": "2026-11-15",
+ "upcoming": [
+  {
+   "who": "捷星日本",
+   "name": "黑色星期五特賣",
+   "start": "2026-11-20 11:00",
+   "end": "2026-11-26 15:59",
+   "price": "亞洲航線單程 7,696 日圓起",
+   "what": "日本出發或抵達的全部航線，含台北、高雄飛日本",
+   "notes": [
+    "日本官網的特賣，用日圓計價；台灣官網有沒有同步沒有公告",
+    "搭乘期間 12/6～隔年 3/24，有除外日",
+    "售完提前結束，也可能延長",
+    "票價不含託運行李，機場使用費、稅另計"
+   ],
+   "src": "https://files.jetstar.com/api/public/content/20261113",
+   "src_name": "捷星日本新聞稿（日文）"
+  }
+ ],
+ "patterns": [
+  {
+   "who": "Trip.com",
+   "what": "旅展日：$99 日本單程、$999 日韓單程",
+   "when": "3/3、5/5、7/7、9/9、11/11 這幾天，中午 12:00 或晚上 21:30～22:00 開搶",
+   "evidence": "2026 年五次旅展都有，同一檔不同航點分場開搶",
+   "src": "https://tw.trip.com/sale/w/4497/mega-sale.html",
+   "src_name": "Trip.com 旅展活動頁"
+  },
+  {
+   "who": "Trip.com",
+   "what": "月底救星：$999 單一航點",
+   "when": "月底 25～30 日",
+   "evidence": "查得到的有 2025 年 11 月，2026 年 1、3、8、10 月",
+   "src": "https://tw.trip.com/sale/w/4491/tw-payday.html",
+   "src_name": "Trip.com 月底救星活動頁"
+  },
+  {
+   "who": "Trip.com",
+   "what": "銀行、支付卡友場：$999",
+   "when": "多半跟著旅展或月底救星一起開",
+   "evidence": "Visa、星展、國泰世華 CUBE、玉山 Wallet、街口支付都辦過；要用指定的卡或錢包付款",
+   "src": "https://tw.trip.com/sale/w/4497/mega-sale.html",
+   "src_name": "Trip.com 旅展活動頁"
+  },
+  {
+   "who": "易遊網",
+   "what": "主題數字機票：$1、$5、$10、$100",
+   "when": "大約每 1～2 個月一檔，平日 11:00 或 12:00",
+   "evidence": "2026 年：3 月 $1、5 月 $5、7 月 $717、9 月 $10、10～11 月 $100，同一檔不同航點分天開搶",
+   "src": "https://blog.eztravel.com.tw/2026-itf/",
+   "src_name": "易遊網官方部落格"
+  },
+  {
+   "who": "雄獅旅遊",
+   "what": "單一航空的來回一口價",
+   "when": "不定期，上午 10:00 或 11:00",
+   "evidence": "2026 年 1 月長榮神戶 6,999 元，8 月華航東京、首爾、沖繩 3,888 元（來回含稅）",
+   "src": "https://event.liontravel.com/zh-tw/chinaairlines/sale",
+   "src_name": "雄獅・華航搶機票活動頁"
+  },
+  {
+   "who": "台灣虎航",
+   "what": "官網限時促銷",
+   "when": "上午 10:00 開賣；換季班表、旅展這類大檔，尊榮虎會員會提早一天",
+   "evidence": "2025、2026 年 11 月 ITF 旅展期間都有官網促銷，2026 年是單程未稅 999 元起",
+   "src": "https://www.tigerairtw.com/zh-TW/news/261102",
+   "src_name": "虎航新聞稿"
+  },
+  {
+   "who": "捷星日本",
+   "what": "黑色星期五特賣",
+   "when": "每年 11 月下旬",
+   "evidence": "2026 年是第 3 次",
+   "src": "https://files.jetstar.com/api/public/content/20261113",
+   "src_name": "捷星日本新聞稿（日文）"
+  }
+ ],
+ "how_to": [
+  {
+   "t": "多半只能用 App 搶。Trip.com 的一口價條款只列 App，易遊網也寫 APP 下單限定",
+   "src": "https://tw.trip.com/sale/w/4497/mega-sale.html",
+   "src_name": "Trip.com 條款"
+  },
+  {
+   "t": "名額按完成付款的先後算，進到付款頁不算數。付款方式先準備好",
+   "src": "https://event.liontravel.com/zh-tw/chinaairlines/sale",
+   "src_name": "雄獅條款"
+  },
+  {
+   "t": "Trip.com 要選有「一口價」標籤的票，限成人、一筆訂單 1 位旅客，每個帳號限 1～2 筆",
+   "src": "https://tw.trip.com/sale/w/4491/tw-payday.html",
+   "src_name": "Trip.com 條款"
+  },
+  {
+   "t": "卡友場要用指定的卡、新台幣付款。Visa 和星展那幾場，Apple Pay、Google Pay 不算",
+   "src": "https://tw.trip.com/sale/w/kzmywjhbqnldv8xe/twdbsbank.html",
+   "src_name": "Trip.com 星展活動頁"
+  },
+  {
+   "t": "雄獅的一口價要去回都訂到指定艙等（華航 N 艙、長榮 V 艙），訂不到就不適用",
+   "src": "https://event.liontravel.com/zh-tw/evaair/ticket",
+   "src_name": "雄獅條款"
+  },
+  {
+   "t": "Trip.com 退票要扣掉活動價與原價的差額。搶之前先確定日期",
+   "src": "https://tw.trip.com/sale/w/4497/mega-sale.html",
+   "src_name": "Trip.com 條款"
+  },
+  {
+   "t": "$99、$999 多半是單程票價，條款沒寫含不含稅，付款前看結帳頁的總價",
+   "src": "https://tw.trip.com/sale/w/4497/mega-sale.html",
+   "src_name": "Trip.com 條款"
+  }
+ ],
+ "record": [
+  {
+   "d": "2026-11-11",
+   "who": "Trip.com",
+   "price": "$11",
+   "what": "捷星單程：東京、沖繩、釜山、首爾",
+   "src": "https://tw.trip.com/sale/w/4497/mega-sale.html"
+  },
+  {
+   "d": "2026-11-11",
+   "who": "易遊網",
+   "price": "$1,111",
+   "what": "大阪、釜山",
+   "src": "https://blog.eztravel.com.tw/2026-itf/"
+  },
+  {
+   "d": "2026-11-11",
+   "who": "Trip.com",
+   "price": "$999",
+   "what": "玉山 Wallet 場：大阪、札幌、福岡",
+   "src": "https://tw.trip.com/sale/w/muifbam2rslkh9xy/esunwallet.html"
+  },
+  {
+   "d": "2026-11-04",
+   "who": "易遊網",
+   "price": "$100",
+   "what": "沖繩",
+   "src": "https://blog.eztravel.com.tw/2026-itf/"
+  },
+  {
+   "d": "2026-10-28",
+   "who": "易遊網",
+   "price": "$100",
+   "what": "北海道、首爾",
+   "src": "https://blog.eztravel.com.tw/2026-itf/"
+  },
+  {
+   "d": "2026-10-27",
+   "who": "Trip.com",
+   "price": "$999",
+   "what": "東京（會員日）",
+   "src": "https://tw.trip.com/sale/w/wrjdvj6d5p9db25f/member-day.html"
+  },
+  {
+   "d": "2026-10-26",
+   "who": "Trip.com",
+   "price": "$999",
+   "what": "釜山（月底救星）",
+   "src": "https://tw.trip.com/sale/w/4491/tw-payday.html"
+  },
+  {
+   "d": "2026-09-22",
+   "who": "易遊網",
+   "price": "$10",
+   "what": "釜山",
+   "src": "https://blog.eztravel.com.tw/autumn-travel/"
+  },
+  {
+   "d": "2026-09-16",
+   "who": "易遊網",
+   "price": "$1,010",
+   "what": "星宇沖繩來回含稅",
+   "src": "https://blog.eztravel.com.tw/autumn-travel/"
+  },
+  {
+   "d": "2026-09-14",
+   "who": "易遊網",
+   "price": "$10",
+   "what": "東京",
+   "src": "https://blog.eztravel.com.tw/autumn-travel/"
+  },
+  {
+   "d": "2026-09-09",
+   "who": "Trip.com",
+   "price": "$99",
+   "what": "大阪、釜山（東京 $999）",
+   "src": "https://web.archive.org/web/20261016040156/https://tw.trip.com/sale/w/4497/mega-sale.html?locale=zh_tw"
+  },
+  {
+   "d": "2026-08-25",
+   "who": "Trip.com",
+   "price": "$999",
+   "what": "酷航東京（月底救星）",
+   "src": "https://web.archive.org/web/20260828125555/https://tw.trip.com/sale/w/4491/tw-payday.html"
+  },
+  {
+   "d": "2026-08-05",
+   "who": "雄獅旅遊",
+   "price": "$3,888",
+   "what": "華航東京來回含稅（首爾 8/7、沖繩 8/14）",
+   "src": "https://event.liontravel.com/zh-tw/chinaairlines/sale"
+  },
+  {
+   "d": "2026-07-15",
+   "who": "易遊網",
+   "price": "$717",
+   "what": "北海道、首爾",
+   "src": "https://blog.eztravel.com.tw/midyear-sale/"
+  },
+  {
+   "d": "2026-07-07",
+   "who": "Trip.com",
+   "price": "$99",
+   "what": "東京、首爾、大阪（沖繩、釜山 $999）",
+   "src": "https://web.archive.org/web/20260707020742/https://tw.trip.com/sale/w/4497/mega-sale.html?locale=zh_tw"
+  },
+  {
+   "d": "2026-05-05",
+   "who": "Trip.com",
+   "price": "$99",
+   "what": "東京、沖繩、大阪（首爾、釜山 $999）",
+   "src": "https://web.archive.org/web/20260513041728/https://tw.trip.com/sale/w/34686/double-sale.html?locale=zh-TW&promo_referer=4083_34686_1"
+  },
+  {
+   "d": "2026-03-30",
+   "who": "Trip.com",
+   "price": "$999",
+   "what": "首爾；Visa 卡友東京、大阪（月底救星）",
+   "src": "https://web.archive.org/web/20260328144157/https://tw.trip.com/sale/w/4491/tw-payday.html"
+  },
+  {
+   "d": "2026-03-25",
+   "who": "Trip.com",
+   "price": "$999",
+   "what": "札幌（月底救星）",
+   "src": "https://web.archive.org/web/20260328144157/https://tw.trip.com/sale/w/4491/tw-payday.html"
+  },
+  {
+   "d": "2026-03-05",
+   "who": "Trip.com",
+   "price": "$999",
+   "what": "國泰世華 CUBE 卡友場：名古屋、札幌",
+   "src": "https://web.archive.org/web/20260305140848/https://tw.trip.com/sale/w/34099/cub.html?locale=zh-tw&promo_referer=97_34099_12"
+  },
+  {
+   "d": "2026-03-03",
+   "who": "Trip.com",
+   "price": "$99",
+   "what": "東京、沖繩、大阪（首爾、釜山 $999）",
+   "src": "https://web.archive.org/web/20260305152147/https://tw.trip.com/sale/w/4497/mega-sale.html?locale=zh_tw"
+  },
+  {
+   "d": "2026-01-26",
+   "who": "雄獅旅遊",
+   "price": "$6,999",
+   "what": "長榮神戶來回含稅",
+   "src": "https://event.liontravel.com/zh-tw/evaair/ticket"
+  },
+  {
+   "d": "2025-12-26",
+   "who": "Trip.com",
+   "price": "$999",
+   "what": "星展卡友場：沖繩",
+   "src": "https://tw.trip.com/sale/w/10677/dbs-bank.html"
+  },
+  {
+   "d": "2025-11-28",
+   "who": "Trip.com",
+   "price": "$999",
+   "what": "星展卡友場：首爾、釜山",
+   "src": "https://tw.trip.com/sale/w/10677/dbs-bank.html"
+  },
+  {
+   "d": "2025-11-11",
+   "who": "Trip.com",
+   "price": "$11",
+   "what": "東京、大阪、沖繩",
+   "src": "https://web.archive.org/web/20251127083626/https://tw.trip.com/sale/w/4497/mega-sale.html?locale=zh-TW"
+  }
+ ]
+}
