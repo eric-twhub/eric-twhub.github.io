@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-14-taipei-nagoya",
- "generated": "2026-11-14 06:55",
+ "generated": "2026-11-14 15:34",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 8583,
+  "price": 8075,
   "dep": "2026-12-07",
   "ret": "2026-12-11",
   "dept": "08:45",
@@ -25,10 +25,10 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "這條航線平常最低落在 NT$8,654–NT$10,779，這張是近期 16 筆紀錄中第 1 低"
+  "這條航線平常最低落在 NT$8,656–NT$9,581，這張是近期 12 筆紀錄中第 1 低"
  ],
- "med": 14614,
- "n_rt": 16,
+ "med": 13356,
+ "n_rt": 12,
  "others": [
   {
    "o": "TPE",
@@ -36,7 +36,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 8654,
+   "price": 8656,
    "dep": "2026-12-27",
    "ret": "2026-12-31",
    "dept": "02:55",
@@ -46,7 +46,7 @@
    "dur": 370,
    "dur_to": 150,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2712NGO31121?t=MM17983401001798352700000150TPENGO17987574001798767000000220NGOTPE_376242052560ba603bb3e5d44b4dbbde_21665&search_date=13112026&expected_price_uuid=01a1d56a-56f2-8040-64a0-e3a5d92e0e32&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0xt-UazPO-XkhEKnMzoC_g&expected_price_source=share&expected_price_currency=twd&expected_price=8654&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2712NGO31121?t=MM17983401001798352700000150TPENGO17987574001798767000000220NGOTPE_376242052560ba603bb3e5d44b4dbbde_21665&search_date=13112026&expected_price_uuid=01a1d56a-56f2-8040-64a0-e3a5d92e0e32&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0xt-UazPO-XkhEKnMzoC_g&expected_price_source=share&expected_price_currency=twd&expected_price=8656&marker=775639"
   },
   {
    "o": "TPE",
@@ -72,7 +72,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 9526,
+   "price": 9528,
    "dep": "2026-12-09",
    "ret": "2026-12-13",
    "dept": "02:55",
@@ -82,7 +82,7 @@
    "dur": 370,
    "dur_to": 150,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE0912NGO13121?t=MM17967849001796797500000150TPENGO17972022001797211800000220NGOTPE_a8ed81cec9928ab5b39db21ee4fceafb_23849&search_date=13112026&expected_price_uuid=01a1d56a-bbf4-8040-ac3c-0571c801e05b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0xt-UazPO-XkhEKnMzoC_g&expected_price_source=share&expected_price_currency=twd&expected_price=9526&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE0912NGO13121?t=MM17967849001796797500000150TPENGO17972022001797211800000220NGOTPE_a8ed81cec9928ab5b39db21ee4fceafb_23849&search_date=13112026&expected_price_uuid=01a1d56a-bbf4-8040-ac3c-0571c801e05b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0xt-UazPO-XkhEKnMzoC_g&expected_price_source=share&expected_price_currency=twd&expected_price=9528&marker=775639"
   }
  ]
 }
