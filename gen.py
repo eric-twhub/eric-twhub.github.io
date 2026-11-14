@@ -1339,9 +1339,9 @@ margin-bottom:8px;letter-spacing:.02em}
 .toc>div+b{margin-top:12px}
 .toc a{font-size:.82rem;line-height:1.4;color:var(--fg);background:var(--card);
 border:1px solid var(--line);border-radius:999px;padding:5px 11px;
-text-decoration:none;white-space:nowrap}
+text-decoration:none;white-space:nowrap;max-width:100%}
 .toc a:hover{color:var(--acc);border-color:var(--acc)}
-@media(max-width:560px){.toc a{font-size:.78rem;padding:4px 9px}}
+@media(max-width:560px){.toc a{font-size:.78rem;padding:4px 9px;white-space:normal}}
 /* 圖卡燈箱：原本點圖是另開分頁，一次只能看一張，要按上一頁才能看下一張 */
 .lbx{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.93);
 display:none;align-items:center;justify-content:center;padding:46px 16px 0}
@@ -2632,6 +2632,8 @@ def _toc(content):
         attrs, inner = m.group(1), m.group(2)
         txt = html.unescape(re.sub(r'<[^>]+>', '', inner)).strip()
         if not txt:
+            continue
+        if 'data-toc=' in attrs:               # 標題太長時用 data-toc 給短字，上面已經收過
             continue
         if 'id=' in attrs:                     # 已經有 id 的沿用
             hid = re.search(r'id="([^"]+)"', attrs).group(1)
@@ -16806,7 +16808,7 @@ if _FS:
         return f'<a href="{u}" rel="nofollow noopener" target="_blank">{html.escape(n)}</a>'
     _up = [x for x in _FS['upcoming'] if x['end'] >= _now]
     _chk = _FS['checked']; _chk_md = f'{int(_chk[5:7])}/{int(_chk[8:10])}'
-    flash_html = ('<h2 id="flash-sale">要搶的便宜機票：Trip.com 999 元、易遊網 1 元這類秒殺</h2>'
+    flash_html = ('<h2 id="flash-sale" data-toc="要搶的便宜機票">要搶的便宜機票：Trip.com 999 元、易遊網 1 元這類秒殺</h2>'
                   '<p class="lede">旅遊平台的秒殺和航空公司的限時特價，都是名額有限、準時開搶。'
                   '先看接下來有哪一檔，再看各家通常什麼時候辦。</p>')
     if _up:
