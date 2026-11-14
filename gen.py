@@ -18301,12 +18301,56 @@ if os.path.exists('airline-card.json'):
                      + html.escape(src_name or '來源') + '</a></small>')
         return '<td>' + body + '</td>'
 
+    # 2026-11-14 使用者：「每個航空公司都做，這個很適合被搜尋到」。
+    # 「虎航 信用卡優惠」「星宇 信用卡回饋」這類詞 Google 自動完成每家都有，大型比價站沒在做。
+    # 資料在 airline-card.json 的 bank_deals：每家航空一段，每筆優惠帶 end（過了就不顯示）
+    # 與 full_until（這天之前顯示「額滿」標記，例如每月 1 日重開的名額）。
+    # 每月回查一次：大多是按月、按季換的活動，過期的會自動消失，但新的不會自己出現。
+    _BD = AC.get('bank_deals') or {'airlines': [], 'cross': []}
+
+    def _live_deals(ds):
+        return [x for x in ds if not x.get('end') or x['end'] >= TODAY]
+
+    def _deal_li(x):
+        b = ''
+        if x.get('full_until') and TODAY < x['full_until']:
+            b += f'<span class="xbadge on">{html.escape(x["full_txt"])}</span>'
+        elif x.get('reg'):
+            b += '<span class="xbadge on">要先登錄</span>'
+        b += ('<span class="xbadge">到 ' + str(int(x['end'][5:7])) + '/' + str(int(x['end'][8:10]))
+              + '</span>' if x.get('end') else '<span class="xbadge">常態權益</span>')
+        return ('<li><div class="xh"><span class="xn">' + html.escape(x['card']) + '</span>' + b + '</div>'
+                '<div class="xt"><b>' + html.escape(x['benefit']) + '</b></div>'
+                '<div class="xt">' + html.escape(x['how']) + '</div>'
+                + (f'<div class="xw">{html.escape(x["airlines"])}</div>' if x.get('airlines') else '')
+                + '<p class="xo">' + '．'.join(html.escape(n) for n in x.get('notes', []))
+                + f'<a href="{x["src"]}" rel="nofollow noopener" target="_blank">'
+                + html.escape(x['src_name']) + '</a></p></li>')
+
+    _bd_html = ''
+    _bd_count = {}
+    for al in _BD['airlines']:
+        live = _live_deals(al['deals'])
+        _bd_count[al['name']] = (al['anchor'], len(live))
+        _bd_html += f'<h2 id="{al["anchor"]}">{html.escape(al["name"])}刷哪張卡</h2>'
+        if live:
+            _bd_html += '<ul class="xl">' + ''.join(_deal_li(x) for x in live) + '</ul>'
+        else:
+            _bd_html += ('<p class="lede">' + html.escape(al.get('none') or '目前沒查到進行中的銀行購票優惠。')
+                         + '可以再看下面「不限航空」那一段，名單裡有沒有這家。</p>')
+        if al.get('fee'):
+            _bd_html += f'<p class="disc">{html.escape(al["fee"])}</p>'
+    _cross = _live_deals(_BD['cross'])
+    if _cross:
+        _bd_html += ('<h2 id="any-airline">不限航空：買哪家都算的刷卡活動</h2>'
+                     '<ul class="xl">' + ''.join(_deal_li(x) for x in _cross) + '</ul>')
+    _bd_names = '、'.join(al['name'] for al in _BD['airlines'])
+
     _arow = ''
     for a in AC['airlines']:
-        card = ('<td class="dimcell">沒有發卡行逐家列費率</td>' if not a.get('card') else
-                '<td class="win">' + html.escape(a['card'])
-                + (f'{SMALL}<a href="{U("/japan-credit-card/" + a["card_slug"] + "/flights/")}">'
-                   f'這張卡的機票頁</a></small>' if a.get('card_slug') else '') + '</td>')
+        _bc = _bd_count.get(a['name'])
+        card = ('<td class="dimcell">沒查到進行中的優惠</td>' if not _bc or not _bc[1] else
+                f'<td class="win">{_bc[1]} 筆，見<a href="#{_bc[0]}">{html.escape(a["name"])}那一段</a></td>')
         fx = (_acell(a['fx_fee'], note=a.get('fx_fee_note')) if a.get('fx_fee')
               else ('<td class="dimcell">' + html.escape(a['fx_fee_note']) + '</td>'
                     if a.get('fx_fee_note') else '<td class="dimcell">未查</td>'))
@@ -18324,10 +18368,10 @@ if os.path.exists('airline-card.json'):
          f'航空公司沒有公開自己的收單行，所以只能刷了之後看。{_ar["how_to_check"]}'
          f'中國信託的說明也寫到，跨國交易在帳單上「交易國別則會看到非TW的國家」。'),
         ('那買機票到底要刷哪張卡？',
-         f'先確認交易國別。是 TW，{_ao["domestic"]["fee"]}，'
-         f'{_ao["domestic"]["reward"]}；不是 TW，{_ao["foreign"]["fee"]}，'
-         f'{_ao["foreign"]["reward"]}。目前唯一有逐家航空公司列費率的是國泰世華 CUBE，'
-         f'台灣虎航與國泰航空官網直購各 3.5%。'),
+         f'先看這家航空有沒有銀行合作的購票優惠，本頁逐家整理了{_bd_names}。'
+         f'大多要從專屬購票頁買、或先登錄，名額每月重開。沒有的話，再確認交易國別：是 TW，'
+         f'{_ao["domestic"]["fee"]}，{_ao["domestic"]["reward"]}；不是 TW，'
+         f'{_ao["foreign"]["fee"]}，{_ao["foreign"]["reward"]}。'),
         ('酷航用台幣付還是新幣付比較好？',
          f'{_asc["_說明"]}'),
     ]
@@ -18337,10 +18381,10 @@ if os.path.exists('airline-card.json'):
                         'acceptedAnswer': {'@type': 'Answer', 'text': a}}
                        for q, a in _afaq]}, ensure_ascii=False)
 
-    _att = '買機票刷哪張卡？先看這家航空算國內還是國外（台幣付也可能收 1.5%）'
-    _atd = ('在航空公司官網買機票，海外交易手續費收不收，看的是收單行在哪，'
-            '不是付款幣別，用台幣付也可能被收 1.5%。附銀行官方說明、自己確認的方法，'
-            '以及台灣虎航、樂桃、酷航、國泰航空官網查得到的付款規則。')
+    _att = '買機票刷哪張卡？虎航、星宇、華航、長榮等航空的信用卡優惠整理'
+    _atd = ('逐家整理台灣出發飛日本的航空公司有哪些信用卡購票優惠：專屬購票頁折扣、'
+            '登錄回饋、每月名額什麼時候重開。另附海外交易手續費怎麼判斷，'
+            '用台幣付也可能被收 1.5%。')
 
     write('japan-airline-card/index.html',
       head(_att, _atd, 'japan-airline-card/',
@@ -18348,9 +18392,12 @@ if os.path.exists('airline-card.json'):
       + topnav()
       + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'),
                 ('買機票刷哪張卡', None)])
-      + '<h1>買機票刷哪張卡，先看這筆算國內還是國外</h1>'
-      + f'<p class="lede">判斷規則取自發卡行官方說明，航空公司的部分取自各家官網，'
-        f'核對於 {AC["checked"]}</p>'
+      + '<h1>買機票刷哪張卡：各航空的信用卡優惠</h1>'
+      + f'<p class="lede">每家航空的銀行合作優惠取自航空公司與發卡銀行官網，'
+        f'核對於 {_BD.get("checked", AC["checked"])}。過期的優惠會自動從頁面拿掉。'
+        f'後半段是買機票那一筆算國內還是國外、會不會被收 1.5%。</p>'
+      + _bd_html
+      + '<h2>買機票這一筆，算國內還是國外</h2>'
       + '<div class="today">'
         '<div class="tday">海外交易手續費看的是</div>'
         '<div class="tans">收單行在哪，不是幣別</div>'
@@ -18398,7 +18445,7 @@ if os.path.exists('airline-card.json'):
       + f'<p class="lede">{html.escape(AC["_airlines_只列這幾家的原因"])}</p>'
       + '<div class="tw"><table><thead><tr><th>航空公司</th>'
         '<th>官網能用台幣付嗎</th><th>跟付款幣別有關的收費</th>'
-        '<th>有發卡行針對這家加碼嗎</th></tr></thead><tbody>'
+        '<th>銀行購票優惠</th></tr></thead><tbody>'
       + _arow + '</tbody></table></div>'
       + '<p class="disc">「能用台幣付」只代表結帳幣別，不代表算國內。'
         '收單行在哪，每一家都沒有公開。</p>'
