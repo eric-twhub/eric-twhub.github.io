@@ -1210,7 +1210,7 @@ display:flex;flex-direction:column;gap:6px}
 .tg.lcc{background:color-mix(in srgb,var(--lcc) 15%,transparent);color:var(--lcc)}
 .tg.fsc{background:color-mix(in srgb,var(--fsc) 15%,transparent);color:var(--fsc)}
 .tg.other{background:var(--line);color:var(--dim)}
-.tg.gt{background:color-mix(in srgb,#b45309 16%,transparent);color:#b45309}.tg.hol{background:color-mix(in srgb,#be123c 15%,transparent);color:#be123c}
+.tg.gt{background:color-mix(in srgb,#b45309 16%,transparent);color:#b45309}.tg.dn{background:color-mix(in srgb,#15803d 15%,transparent);color:#15803d}.ct .dx{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:6px;font-style:normal}.tg.hol{background:color-mix(in srgb,#be123c 15%,transparent);color:#be123c}
 .gate{font-size:.73rem;color:var(--dim);display:flex;align-items:center;gap:6px;flex-wrap:wrap;
 padding-top:6px;border-top:1px dashed var(--line)}
 .gate b{color:var(--fg);font-weight:600}
@@ -2397,6 +2397,21 @@ def jp_badge(*dates):
             nm = '、'.join(j['names']) if j['names'] else '週末連休'
             return (f'<span class="tg gt" title="{html.escape(nm)}：'
                     f'日本自己放假，住宿貴但機票未必">🗾 日本連假</span>')
+    return ''
+
+def _deal_hol(*dates):
+    """特價列表用的連假標籤：連假名稱直接印出來（jp_badge 只放在滑鼠提示裡，手機看不到）。"""
+    for d in dates:
+        if not d:
+            continue
+        j, t = _in_run(d, JPH_RUN), _in_run(d, TWH_RUN)
+        if t:
+            nm = '、'.join(t['names']) if t['names'] else ''
+            lbl = (f'{nm}連假' if nm else '台灣連假')
+            return (f'<span class="tg hol">🔥 {html.escape(lbl)}・日本也放假</span>' if j
+                    else f'<span class="tg hol">📈 {html.escape(lbl)}</span>')
+        if j:
+            return '<span class="tg gt">🗾 日本連假</span>'
     return ''
 
 def jp_runs_block(n=4, heading=None, key='jp'):
@@ -16642,9 +16657,19 @@ for d in deals_out:
     _u=U('/'+DEALDIR+'/'+d['slug']+'/')
     _lbl='總計' if d['cls']=='transfer' else '來回含稅'
     _sub=d['air']+' · '+d['stops']+' · '+d['dep']
+    # 比「出發那個月每天最便宜的票平均」低多少；沒有月基準就不寫，不拿中位數湊數字
+    _dx=''
+    _mb=d.get('mbase')
+    if d['cls']!='transfer' and _mb and d['price']<_mb['avg']:
+        _pc=round((1-d['price']/_mb['avg'])*100)
+        if _pc>=5:
+            _dx+=f'<span class="tg dn">比 {_mb["month"]} 月平常低 {_pc}%</span>'
+    if d['cls']!='transfer':
+        _dx+=_deal_hol(d['dep'], d.get('ret'))
     _it.append(f'<a class="ct" href="{_u}" style="display:block">'
                f'<b>{d["o"]} → {d["c"]}</b><s>{_sub}</s>'
-               f'<u>{money(d["price"])}<small> {_lbl}</small></u></a>')
+               f'<u>{money(d["price"])}<small> {_lbl}</small></u>'
+               + (f'<em class="dx">{_dx}</em>' if _dx else '') + '</a>')
 items_today=''.join(_it)
 
 # 往期貼文：掃描 deals/ 既有目錄，讓貼文累積而非每天覆蓋
