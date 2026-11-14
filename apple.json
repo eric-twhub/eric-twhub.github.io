@@ -1,12 +1,12 @@
 {
-  "updated": "2026-11-13",
+  "updated": "2026-11-14",
   "rate": {
-    "jpy_twd": 0.2095,
-    "jpy_twd_mid": 0.206247,
+    "jpy_twd": 0.2092,
+    "jpy_twd_mid": 0.20589,
     "spread": 0.016,
     "source": "open.er-api.com 中間匯率，加計約 1.6% 換匯成本",
-    "quoted_at": "Fri, 13 Nov 2026 00:02:31 +0000",
-    "fetched_on": "2026-11-14"
+    "quoted_at": "Sat, 14 Nov 2026 00:02:31 +0000",
+    "fetched_on": "2026-11-15"
   },
   "tax": {
     "jp_consumption": 0.1,
