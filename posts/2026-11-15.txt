@@ -1,4 +1,4 @@
-台日機票速報 2026-11-15 — 共 10 則
+台日機票速報 2026-11-15 — 共 11 則
 ====================================================
 ⚠️ 發文前務必點「查證連結」確認價格仍在，並截圖存證。
    票價變動快，昨日的好票今天常已失效；對不上就不要發。
@@ -48,24 +48,10 @@
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-28&inbound=ISG-TPE&returnDate=2026-12-04&type=return&adult=1&language=zh-TW
 ----------------------------------------------------
-✈️【台北 → 佐賀】NT$4,739 來回含稅
+✈️【台中 → 沖繩】NT$4,404 來回含稅
 
 　🛫 台灣虎航｜直飛
-　📅 2026-11-19 – 2026-11-26
-　💡 廉航低於 NT$6,000
-
-#日本機票 #佐賀機票 #台北出發 #便宜機票 #日本自由行
-#機票特價 #廉航 #省錢旅遊 #小資旅行 #日本旅遊
-
-　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
-　　 https://eric-twhub.github.io/deals/2026-11-15-taipei-saga/
-　🔍 查證用，發文前自己開，不要貼出去：
-　　 https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-19&inbound=HSG-TPE&returnDate=2026-11-26&type=return&adult=1&language=zh-TW
-----------------------------------------------------
-✈️【台中 → 沖繩】NT$4,904 來回含稅
-
-　🛫 台灣虎航｜直飛
-　📅 2026-11-16 – 2026-11-19
+　📅 2026-12-21 – 2026-12-31
 　💡 廉航低於 NT$6,000
 
 #日本機票 #沖繩機票 #台中出發 #便宜機票 #日本自由行
@@ -74,7 +60,7 @@
 　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
 　　 https://eric-twhub.github.io/deals/2026-11-15-taichung-okinawa/
 　🔍 查證用，發文前自己開，不要貼出去：
-　　 https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-16&inbound=OKA-RMQ&returnDate=2026-11-19&type=return&adult=1&language=zh-TW
+　　 https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-12-21&inbound=OKA-RMQ&returnDate=2026-12-31&type=return&adult=1&language=zh-TW
 ----------------------------------------------------
 ✈️【台北 → 宮崎】NT$4,912 來回含稅
 
@@ -89,6 +75,20 @@
 　　 https://eric-twhub.github.io/deals/2026-11-15-taipei-miyazaki/
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-07&inbound=KMI-TPE&returnDate=2026-12-14&type=return&adult=1&language=zh-TW
+----------------------------------------------------
+✈️【台北 → 佐賀】NT$4,956 來回含稅
+
+　🛫 台灣虎航｜直飛
+　📅 2026-11-19 – 2026-11-26
+　💡 廉航低於 NT$6,000
+
+#日本機票 #佐賀機票 #台北出發 #便宜機票 #日本自由行
+#機票特價 #廉航 #省錢旅遊 #小資旅行 #日本旅遊
+
+　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
+　　 https://eric-twhub.github.io/deals/2026-11-15-taipei-saga/
+　🔍 查證用，發文前自己開，不要貼出去：
+　　 https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-19&inbound=HSG-TPE&returnDate=2026-11-26&type=return&adult=1&language=zh-TW
 ----------------------------------------------------
 ✈️【台北 → 名古屋】NT$7,033 來回含稅
 
@@ -145,6 +145,21 @@
 
 　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
 　　 https://eric-twhub.github.io/deals/2026-11-15-transfer-fukuoka-nagasaki/
+　🔍 查證用，發文前自己開，不要貼出去：
+　　 （轉乘方案，請分段查證）
+----------------------------------------------------
+✈️【台灣 → 福島】NT$11,173 總計
+
+　🛫 飛東京再轉乘｜東北新幹線
+　📅 2026-12-23
+　💡 比直飛省 NT$4,766
+　🧮 組成：機票飛東京 NT$7,409（來回含稅） ＋ 東北新幹線 NT$1,882×2
+
+#日本機票 #福島機票 #台灣出發 #便宜機票 #日本自由行
+#機票特價 #轉乘方案 #省錢旅遊 #小資旅行 #日本旅遊
+
+　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
+　　 https://eric-twhub.github.io/deals/2026-11-15-transfer-tokyo-fukushima/
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 （轉乘方案，請分段查證）
 ----------------------------------------------------
