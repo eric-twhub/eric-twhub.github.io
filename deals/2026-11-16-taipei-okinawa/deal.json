@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-16-taipei-okinawa",
- "generated": "2026-11-16 04:30",
+ "generated": "2026-11-16 06:08",
  "kind": "fare",
  "origin": "taipei",
  "city": "okinawa",
@@ -27,8 +27,8 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 10341,
- "n_rt": 30,
+ "med": 13030,
+ "n_rt": 34,
  "others": [
   {
    "o": "TPE",
@@ -56,6 +56,25 @@
    "airname": "台灣虎航",
    "cls": "lcc",
    "price": 2984,
+   "dep": "2026-12-06",
+   "ret": "2026-12-10",
+   "dept": "18:20",
+   "rett": "09:45",
+   "rt": true,
+   "tr": 0,
+   "dur": 175,
+   "dur_to": 80,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-06&inbound=OKA-TPE&returnDate=2026-12-10&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 2984,
    "dep": "2026-12-07",
    "ret": "2026-12-11",
    "dept": "18:20",
@@ -66,25 +85,6 @@
    "dur_to": 80,
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-07&inbound=OKA-TPE&returnDate=2026-12-11&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
-  {
-   "o": "TPE",
-   "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 2984,
-   "dep": "2026-12-01",
-   "ret": "2026-12-05",
-   "dept": "18:20",
-   "rett": "09:45",
-   "rt": true,
-   "tr": 0,
-   "dur": 175,
-   "dur_to": 80,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-01&inbound=OKA-TPE&returnDate=2026-12-05&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]

@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-16-taipei-sapporo",
- "generated": "2026-11-16 04:30",
+ "generated": "2026-11-16 06:08",
  "kind": "fare",
  "origin": "taipei",
  "city": "sapporo",
@@ -24,10 +24,10 @@
   "url": "https://www.aviasales.com/search/TPE0212CTS06121?t=FD17961942001796229300000525TPENRTCTS17965656001796579700000295CTSTPE_69affaaacbf9d5f2421b17523b287bc0_29015&search_date=15112026&expected_price_uuid=01a1dfb6-0b7f-8040-a46a-4c156c7bfd67&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6YJvlpr77kKzL7oNj7Bigg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=11522&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$13,489（6 天有紀錄），這張低 15%"
+  "12 月出發的票，每天最便宜的平均要 NT$14,325（7 天有紀錄），這張低 20%"
  ],
- "med": 17193,
- "n_rt": 18,
+ "med": 17278,
+ "n_rt": 20,
  "others": [
   {
    "o": "TPE",
