@@ -104,8 +104,8 @@
   {
    "slug": "about",
    "url": "/about/",
-   "h1": "關於台日機票速報",
-   "title": "關於台日機票速報：資料從哪裡來、怎麼查證、靠什麼維持"
+   "h1": "關於日本旅遊小卡",
+   "title": "關於日本旅遊小卡：資料從哪裡來、怎麼查證、靠什麼維持"
   },
   {
    "slug": "japan-bogo",
@@ -360,82 +360,82 @@
    "title": "日本 eSIM 怎麼選：232 個方案的每日單價比較（含吃到飽的真相）"
   },
   {
-   "slug": "deals-2026-11-16-taipei-okinawa",
-   "url": "/deals/2026-11-16-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,930 來回含稅｜台灣虎航 12/10 出發",
-   "title": "台北飛沖繩 NT$2,930 來回含稅｜台灣虎航 12/10 出發"
+   "slug": "deals-2026-11-17-taipei-okinawa",
+   "url": "/deals/2026-11-17-taipei-okinawa/",
+   "h1": "台北飛沖繩 NT$2,530 來回含稅｜台灣虎航 12/13 出發",
+   "title": "台北飛沖繩 NT$2,530 來回含稅｜台灣虎航 12/13 出發"
   },
   {
-   "slug": "deals-2026-11-16-kaohsiung-okinawa",
-   "url": "/deals/2026-11-16-kaohsiung-okinawa/",
+   "slug": "deals-2026-11-17-taichung-okinawa",
+   "url": "/deals/2026-11-17-taichung-okinawa/",
+   "h1": "台中飛沖繩 NT$3,843 來回含稅｜台灣虎航 12/21 出發",
+   "title": "台中飛沖繩 NT$3,843 來回含稅｜台灣虎航 12/21 出發"
+  },
+  {
+   "slug": "deals-2026-11-17-kaohsiung-okinawa",
+   "url": "/deals/2026-11-17-kaohsiung-okinawa/",
    "h1": "高雄飛沖繩 NT$3,843 來回含稅｜台灣虎航 12/17 出發",
    "title": "高雄飛沖繩 NT$3,843 來回含稅｜台灣虎航 12/17 出發"
   },
   {
-   "slug": "deals-2026-11-16-taipei-saga",
-   "url": "/deals/2026-11-16-taipei-saga/",
+   "slug": "deals-2026-11-17-taipei-ishigaki",
+   "url": "/deals/2026-11-17-taipei-ishigaki/",
+   "h1": "台北飛石垣島 NT$4,204 來回含稅｜台灣虎航 12/12 出發",
+   "title": "台北飛石垣島 NT$4,204 來回含稅｜台灣虎航 12/12 出發"
+  },
+  {
+   "slug": "deals-2026-11-17-taipei-saga",
+   "url": "/deals/2026-11-17-taipei-saga/",
    "h1": "台北飛佐賀 NT$4,261 來回含稅｜台灣虎航 11/19 出發",
    "title": "台北飛佐賀 NT$4,261 來回含稅｜台灣虎航 11/19 出發"
   },
   {
-   "slug": "deals-2026-11-16-taichung-okinawa",
-   "url": "/deals/2026-11-16-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$4,409 來回含稅｜台灣虎航 12/21 出發",
-   "title": "台中飛沖繩 NT$4,409 來回含稅｜台灣虎航 12/21 出發"
+   "slug": "deals-2026-11-17-taipei-fukuoka",
+   "url": "/deals/2026-11-17-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$5,083 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$5,083 來回含稅｜台灣虎航 12/01 出發"
   },
   {
-   "slug": "deals-2026-11-16-taipei-ishigaki",
-   "url": "/deals/2026-11-16-taipei-ishigaki/",
-   "h1": "台北飛石垣島 NT$4,500 來回含稅｜台灣虎航 11/28 出發",
-   "title": "台北飛石垣島 NT$4,500 來回含稅｜台灣虎航 11/28 出發"
-  },
-  {
-   "slug": "deals-2026-11-16-taipei-miyazaki",
-   "url": "/deals/2026-11-16-taipei-miyazaki/",
+   "slug": "deals-2026-11-17-taipei-miyazaki",
+   "url": "/deals/2026-11-17-taipei-miyazaki/",
    "h1": "台北飛宮崎 NT$5,418 來回含稅｜台灣虎航 12/07 出發",
    "title": "台北飛宮崎 NT$5,418 來回含稅｜台灣虎航 12/07 出發"
   },
   {
-   "slug": "deals-2026-11-16-kaohsiung-fukuoka",
-   "url": "/deals/2026-11-16-kaohsiung-fukuoka/",
+   "slug": "deals-2026-11-17-kaohsiung-fukuoka",
+   "url": "/deals/2026-11-17-kaohsiung-fukuoka/",
    "h1": "高雄飛福岡 NT$5,540 來回含稅｜台灣虎航 12/16 出發",
    "title": "高雄飛福岡 NT$5,540 來回含稅｜台灣虎航 12/16 出發"
   },
   {
-   "slug": "deals-2026-11-16-taipei-fukuoka",
-   "url": "/deals/2026-11-16-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$6,384 來回含稅｜台灣虎航 12/07 出發",
-   "title": "台北飛福岡 NT$6,384 來回含稅｜台灣虎航 12/07 出發"
+   "slug": "deals-2026-11-17-taipei-nagoya",
+   "url": "/deals/2026-11-17-taipei-nagoya/",
+   "h1": "台北飛名古屋 NT$8,149 來回含稅｜台灣虎航 12/27 出發",
+   "title": "台北飛名古屋 NT$8,149 來回含稅｜台灣虎航 12/27 出發"
   },
   {
-   "slug": "deals-2026-11-16-taipei-nagoya",
-   "url": "/deals/2026-11-16-taipei-nagoya/",
-   "h1": "台北飛名古屋 NT$9,149 來回含稅｜台灣虎航 12/07 出發",
-   "title": "台北飛名古屋 NT$9,149 來回含稅｜台灣虎航 12/07 出發"
-  },
-  {
-   "slug": "deals-2026-11-16-taipei-sapporo",
-   "url": "/deals/2026-11-16-taipei-sapporo/",
+   "slug": "deals-2026-11-17-taipei-sapporo",
+   "url": "/deals/2026-11-17-taipei-sapporo/",
    "h1": "台北飛札幌 NT$11,522 來回含稅｜酷航 12/02 出發",
    "title": "台北飛札幌 NT$11,522 來回含稅｜酷航 12/02 出發"
   },
   {
-   "slug": "deals-2026-11-16-transfer-fukuoka-kumamoto",
-   "url": "/deals/2026-11-16-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,806",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,806"
+   "slug": "deals-2026-11-17-transfer-fukuoka-kumamoto",
+   "url": "/deals/2026-11-17-transfer-fukuoka-kumamoto/",
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,424",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,424"
   },
   {
-   "slug": "deals-2026-11-16-transfer-fukuoka-nagasaki",
-   "url": "/deals/2026-11-16-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,644",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,644"
+   "slug": "deals-2026-11-17-transfer-fukuoka-nagasaki",
+   "url": "/deals/2026-11-17-transfer-fukuoka-nagasaki/",
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,101",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,101"
   },
   {
-   "slug": "deals-2026-11-16-transfer-tokyo-fukushima",
-   "url": "/deals/2026-11-16-transfer-tokyo-fukushima/",
-   "h1": "飛東京轉乘去福島，比直飛省 NT$4,467",
-   "title": "飛東京轉乘去福島，比直飛省 NT$4,467"
+   "slug": "deals-2026-11-17-transfer-tokyo-fukushima",
+   "url": "/deals/2026-11-17-transfer-tokyo-fukushima/",
+   "h1": "飛東京轉乘去福島，比直飛省 NT$4,463",
+   "title": "飛東京轉乘去福島，比直飛省 NT$4,463"
   },
   {
    "slug": "apple-japan-price",
@@ -447,7 +447,7 @@
    "slug": "iphone-duo",
    "url": "/iphone-duo/",
    "h1": "iPhone Duo 在日本買划算嗎？",
-   "title": "iPhone Duo 日本買划算嗎？四種容量實算，扣掉入境補稅還省 NT$5,868"
+   "title": "iPhone Duo 日本買划算嗎？四種容量實算，扣掉入境補稅還省 NT$5,923"
   },
   {
    "slug": "japan-camera-price",

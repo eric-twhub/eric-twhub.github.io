@@ -20,7 +20,7 @@
 免手續費實際只省 0.5 個百分點。而用現金賣出價的那幾家，成本比信用卡還高。
 
 完整比較：
-https://eric-twhub.github.io/japan-credit-card/
+https://jptripcard.com/japan-credit-card/
 
 ========================================================
 02_cost.png
@@ -40,7 +40,7 @@ https://eric-twhub.github.io/japan-credit-card/
 
 所以別為了免手續費放棄海外加碼。
 
-https://eric-twhub.github.io/japan-credit-card/
+https://jptripcard.com/japan-credit-card/
 
 ========================================================
 03_stack.png
@@ -58,7 +58,7 @@ https://eric-twhub.github.io/japan-credit-card/
 
 省下零點幾個百分點的手續費，放棄好幾個百分點的回饋，大額消費幾乎一定是刷卡贏。
 
-https://eric-twhub.github.io/japan-credit-card/
+https://jptripcard.com/japan-credit-card/
 
 ========================================================
 04_caps.png
@@ -72,7 +72,7 @@ https://eric-twhub.github.io/japan-credit-card/
 
 本站把 15 張旅日卡的上限全部換算成「刷到多少到頂」，附發卡行官方來源，查證於 2026-10-22。
 
-https://eric-twhub.github.io/japan-credit-card/
+https://jptripcard.com/japan-credit-card/
 
 ========================================================
 05_taxfree.png
@@ -82,15 +82,15 @@ https://eric-twhub.github.io/japan-credit-card/
 
 刷的金額多了 10%，回饋基數跟著變大，聽起來是好事？算給你看。
 
-同一件稅前 ¥100,000 的商品，回饋最高的 6 張卡多拿到的是 NT$42～NT$84。
+同一件稅前 ¥100,000 的商品，回饋最高的 6 張卡多拿到的是 NT$42～NT$83。
 
-而你要先墊 NT$2,090 的稅金，等出境經海關確認後才拿得回來。
+而你要先墊 NT$2,089 的稅金，等出境經海關確認後才拿得回來。
 
 為什麼差這麼少？因為加碼多半早就觸頂了，多刷的那 10% 只算得到基本回饋。
 
 還有兩點沒人講：加碼上限是台幣金額不會變，含稅後同樣額度只夠買原本約 91% 的東西；而退稅如果選擇退回原卡，回饋還可能被回沖。
 
-https://eric-twhub.github.io/japan-credit-card/
+https://jptripcard.com/japan-credit-card/
 
 ========================================================
 06_end.png
@@ -114,4 +114,4 @@ https://eric-twhub.github.io/japan-credit-card/
 選台幣是 DCC，匯率通常差 3–5%
 
 15 張卡的完整比較與試算：
-https://eric-twhub.github.io/japan-credit-card/
+https://jptripcard.com/japan-credit-card/
