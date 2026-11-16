@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-16-taipei-sapporo",
- "generated": "2026-11-16 15:54",
+ "generated": "2026-11-16 19:14",
  "kind": "fare",
  "origin": "taipei",
  "city": "sapporo",
@@ -27,7 +27,7 @@
   "12 月出發的票，每天最便宜的平均要 NT$14,325（7 天有紀錄），這張低 20%"
  ],
  "med": 17278,
- "n_rt": 20,
+ "n_rt": 18,
  "others": [
   {
    "o": "TPE",
@@ -68,20 +68,20 @@
   {
    "o": "TPE",
    "d": "SPK",
-   "air": "FD",
-   "airname": "泰國亞洲航空",
+   "air": "TR",
+   "airname": "酷航",
    "cls": "lcc",
-   "price": 11474,
-   "dep": "2026-11-20",
-   "ret": "2026-11-24",
-   "dept": "05:55",
-   "rett": "14:10",
+   "price": 11709,
+   "dep": "2026-12-07",
+   "ret": "2026-12-11",
+   "dept": "12:15",
+   "rett": "11:55",
    "rt": true,
    "tr": 0,
-   "dur": 515,
+   "dur": 505,
    "dur_to": 225,
-   "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TPE2011CTS24111?t=VZ17951541001795171200000225TPECTS17955294001795543200000290CTSTPE_5d95bf53411d8459915dae8bb2114070_28796&search_date=09112026&expected_price_uuid=01a1bfae-3931-8040-a6cb-dc02885c6b25&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0GZHAwq3pOY7UmpyE7YKCg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=11474&marker=775639"
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/TPE0712CTS11121?t=IT17966457001796662800000225TPECTS17969901001797003300000280CTSTPE_3eb60bf278c224d8fa1983e6385d51a9_29486&search_date=14112026&expected_price_uuid=01a1da84-96f1-8040-6360-b062a07950f1&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6fK1ocrVL_oAKIPAzIoHow&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=11709&marker=775639"
   }
  ]
 }
