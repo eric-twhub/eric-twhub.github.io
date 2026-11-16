@@ -372,16 +372,10 @@
    "title": "高雄飛沖繩 NT$3,843 來回含稅｜台灣虎航 12/17 出發"
   },
   {
-   "slug": "deals-2026-11-16-taipei-saga",
-   "url": "/deals/2026-11-16-taipei-saga/",
-   "h1": "台北飛佐賀 NT$4,061 來回含稅｜台灣虎航 11/19 出發",
-   "title": "台北飛佐賀 NT$4,061 來回含稅｜台灣虎航 11/19 出發"
-  },
-  {
    "slug": "deals-2026-11-16-taipei-ishigaki",
    "url": "/deals/2026-11-16-taipei-ishigaki/",
-   "h1": "台北飛石垣島 NT$4,261 來回含稅｜台灣虎航 11/28 出發",
-   "title": "台北飛石垣島 NT$4,261 來回含稅｜台灣虎航 11/28 出發"
+   "h1": "台北飛石垣島 NT$4,204 來回含稅｜台灣虎航 12/12 出發",
+   "title": "台北飛石垣島 NT$4,204 來回含稅｜台灣虎航 12/12 出發"
   },
   {
    "slug": "deals-2026-11-16-taichung-okinawa",
@@ -390,16 +384,16 @@
    "title": "台中飛沖繩 NT$4,343 來回含稅｜台灣虎航 12/21 出發"
   },
   {
+   "slug": "deals-2026-11-16-taipei-saga",
+   "url": "/deals/2026-11-16-taipei-saga/",
+   "h1": "台北飛佐賀 NT$4,500 來回含稅｜台灣虎航 11/19 出發",
+   "title": "台北飛佐賀 NT$4,500 來回含稅｜台灣虎航 11/19 出發"
+  },
+  {
    "slug": "deals-2026-11-16-taipei-miyazaki",
    "url": "/deals/2026-11-16-taipei-miyazaki/",
    "h1": "台北飛宮崎 NT$5,418 來回含稅｜台灣虎航 12/07 出發",
    "title": "台北飛宮崎 NT$5,418 來回含稅｜台灣虎航 12/07 出發"
-  },
-  {
-   "slug": "deals-2026-11-16-kaohsiung-fukuoka",
-   "url": "/deals/2026-11-16-kaohsiung-fukuoka/",
-   "h1": "高雄飛福岡 NT$5,540 來回含稅｜台灣虎航 12/16 出發",
-   "title": "高雄飛福岡 NT$5,540 來回含稅｜台灣虎航 12/16 出發"
   },
   {
    "slug": "deals-2026-11-16-taichung-nagoya",
@@ -414,12 +408,6 @@
    "title": "台北飛福岡 NT$6,240 來回含稅｜台灣虎航 12/07 出發"
   },
   {
-   "slug": "deals-2026-11-16-taipei-nagoya",
-   "url": "/deals/2026-11-16-taipei-nagoya/",
-   "h1": "台北飛名古屋 NT$9,084 來回含稅｜台灣虎航 12/07 出發",
-   "title": "台北飛名古屋 NT$9,084 來回含稅｜台灣虎航 12/07 出發"
-  },
-  {
    "slug": "deals-2026-11-16-taipei-sapporo",
    "url": "/deals/2026-11-16-taipei-sapporo/",
    "h1": "台北飛札幌 NT$11,522 來回含稅｜酷航 12/02 出發",
@@ -428,14 +416,14 @@
   {
    "slug": "deals-2026-11-16-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-16-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,806",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,806"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,262",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,262"
   },
   {
    "slug": "deals-2026-11-16-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-16-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,644",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,644"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,100",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,100"
   },
   {
    "slug": "deals-2026-11-16-transfer-tokyo-fukushima",
@@ -1048,6 +1036,12 @@
    "url": "/tokyo/christmas-market/",
    "h1": "2026 東京聖誕市集懶人包：13 個市集的日期、門票，晚上怎麼逛",
    "title": "東京聖誕市集 2026：新豐洲、芝公園門票怎麼買，東京鐵塔、六本木、上野免費市集日期"
+  },
+  {
+   "slug": "hakodate-christmas-fantasy",
+   "url": "/hakodate/christmas-fantasy/",
+   "h1": "2026 函館聖誕夢幻節：海上聖誕樹每晚 6 點放煙火，一個晚上怎麼排",
+   "title": "函館聖誕夢幻節 2026：12/1～12/25 每晚 6 點點燈放煙火，紅色聖誕樹時間、湯品吧、纜車夜景怎麼排"
   },
   {
    "slug": "japan-fukubukuro",
