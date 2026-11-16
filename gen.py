@@ -1777,6 +1777,7 @@ def topnav(cur=''):
             + link('/tokyo/christmas-market/', '🎄 東京聖誕市集門票與日期')
             + link('/hakodate/christmas-fantasy/', '🎄 函館聖誕夢幻節')
             + link('/japan-shirakawago-lightup/', '🏮 白川鄉點燈怎麼預約')
+            + link('/japan-takayama-shirakawago-bus/', '🚌 高山到白川鄉巴士')
             + link('/japan-ginzan-onsen/', '♨️ 銀山溫泉冬季怎麼預約')
             + link('/japan-ryuhyo-monogatari/', '🧊 流冰物語號怎麼訂')
             + link('/sapporo/snow-festival/', '❄️ 札幌雪祭 2027')
@@ -1961,6 +1962,7 @@ _AD_MAP = [
     ('tokyo/christmas-market', 'esim'),
     ('hakodate/christmas-fantasy', 'esim'),
     ('japan-shirakawago-lightup', 'esim'),
+    ('japan-takayama-shirakawago-bus', 'transport'),
     ('japan-ginzan-onsen', 'esim'),
     ('japan-burton-rental', 'esim'),
     ('japan-ryuhyo-monogatari', 'esim'),
@@ -2992,6 +2994,7 @@ _STK_EXACT = {
 _STK_PREFIX = sorted({
     '/tokyo/christmas-market/': '',
     '/hakodate/christmas-fantasy/': 'st/seatree',
+    '/japan-takayama-shirakawago-bus/': 'st/skgbus',
     '/japan-tokyo-tower/': 'xmas/tower', '/japan-skytree/': 'xmas/skytree', '/japan-chiikawa-park/': 'xmas/gift',
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
@@ -26374,6 +26377,207 @@ if os.path.exists('tokyo-xmas.json'):
       + foot())
     pages.append(('/tokyo/christmas-market/', 0.7))
 
+# ---------- 高山⇄白川鄉巴士 ----------
+# 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
+# 12/1 前後會變的在這裡算：票價（2,800 → 2,900）、9:50 那班 12/1 起才有、班次數。
+# 點燈日（shirakawago.json 的 dates）路線巴士 15:20 前要到的規則引點燈頁同一份資料，不另外寫死。
+if os.path.exists('skg-bus.json'):
+    SB = json.load(open('skg-bus.json', encoding='utf-8'))
+    _sb_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _sb_new = _sb_today >= datetime.date.fromisoformat(SB['dia_from'])
+    _sb_fare = SB['fare_new'] if _sb_new else SB['fare_old']
+    _sb_set = SB['set_new'] if _sb_new else SB['set_old']
+    _sb_kz = SB['fare_kanazawa_new'] if _sb_new else SB['fare_kanazawa_old']
+    _sb_go = SB['to_skg']
+    _sb_from = '' if _sb_new else '12/1 起'
+    _sb_back = SB['to_tky']
+    _sb_n_go, _sb_r_go = len(_sb_go), sum(1 for r in _sb_go if r[2])
+    _sb_n_bk, _sb_r_bk = len(_sb_back), sum(1 for r in _sb_back if r[2])
+    _P = SB['pass']
+
+    def _sb_a(u, t):
+        return f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+
+    def _sb_yen(n):
+        return f'{n:,} 円'
+
+    def _sb_tbl(rows, h1, h2):
+        return ('<div class="tw qk" style="max-width:600px"><table><thead><tr>'
+                f'<th>{h1}</th><th>{h2}</th><th>預約</th><th>備註</th></tr></thead><tbody>'
+                + ''.join(f'<tr><td>{r[0]}</td><td>{r[1]}</td>'
+                          + ('<td class="xpay" style="white-space:nowrap">要預約</td>' if r[2] else '<td style="white-space:nowrap">免預約</td>')
+                          + f'<td>{html.escape("；".join(x for x in ([r[3]] + ([r[4]] if len(r) > 4 and not _sb_new else [])) if x))}</td></tr>'
+                          for r in rows)
+                + '</tbody></table></div>')
+
+    _sb_free_go = '、'.join(r[0] for r in _sb_go if not r[2])
+    _sb_free_bk = '、'.join(r[0] for r in _sb_back if not r[2])
+
+    _SKGL = json.load(open('shirakawago.json', encoding='utf-8')) if os.path.exists('shirakawago.json') else None
+    _sb_lu = [d for d in (_SKGL['dates'] if _SKGL else []) if d >= _sb_today.isoformat()]
+    _sb_lu_txt = '、'.join(f'{int(d[5:7])}/{int(d[8:10])}' for d in _sb_lu)
+
+    if _sb_new:
+        _sb_now = f'12/1 起的時刻與票價：單程 {_sb_yen(_sb_fare)}，高山出發每天 {_sb_n_go} 班，其中 {_sb_r_go} 班要預約。'
+    else:
+        _sb_now = (f'今天搭還是單程 {_sb_yen(SB["fare_old"])}；12/1 起漲成 {_sb_yen(SB["fare_new"])}，'
+                   '高山出發多一班 9:50（要預約）。下面的時刻表已經是 12/1 起的版本。')
+
+    sb_faq = [
+     ('高山到白川鄉的巴士要預約嗎？',
+      f'一部分要。{_sb_from}高山濃飛巴士中心出發每天 {_sb_n_go} 班，其中 {_sb_r_go} 班要預約，'
+      f'其他 {_sb_n_go - _sb_r_go} 班（{_sb_free_go}）不用預約，在站牌照排隊順序上車。'),
+     ('高山到白川鄉巴士多少錢？',
+      f'單程大人 {_sb_yen(_sb_fare)}' + ('' if _sb_new else f'（12/1 起 {_sb_yen(SB["fare_new"])}）')
+      + '，小學生半價。來回就是單程的兩倍，官網和行動車票都沒有來回折扣。'),
+     ('高山到白川鄉巴士什麼時候開放預約？',
+      '乘車日一個月前的同一天 9:30（日本時間）開放，網路預約到首站發車前 30 分鐘為止。'),
+     ('要預約的班次訂不到怎麼辦？',
+      f'改搭不用預約的班次，提早到站牌排隊。濃飛的常見問題寫人多時會加開，可能要坐輔助椅，加開的車也滿了就要等下一班。'
+      f'回程不用預約的有 {_sb_free_bk}，其中 13:15、15:15 是從白川鄉發車的。'),
+     ('行李箱可以帶上巴士嗎？',
+      '可以放車底的行李艙，但官網寫行李艙空間有限，太大件可能會被拒收。到了白川鄉，巴士總站有投幣置物櫃，'
+      '附近也有行李寄放處。'),
+     ('白川鄉點燈那天可以搭路線巴士去嗎？',
+      '白天可以，但 15:30 起集落入口會設閘門，沒有入場票的人進不去，官方說搭路線巴士要搭 15:20 以前到白川郷的車。'
+      '看完點燈沒有路線巴士可以搭回去，晚上要參加巴士公司的點燈團。'),
+    ]
+    sb_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in sb_faq]}, ensure_ascii=False)
+
+    _sb_lu_tip = ''
+    if _sb_lu:
+        _sb_lu_tip = ('<div class="tip"><b>點燈那幾天要注意</b>'
+            f'<p>白川鄉冬季點燈（{_sb_lu_txt}）當天 15:30 起集落入口設閘門，沒有入場票的人進不去，'
+            '官方說搭路線巴士白天去的人要搭 15:20 以前到白川郷的車。點燈結束後沒有路線巴士可以搭回高山，'
+            f'晚上要看點燈得參加點燈團，整理在<a href="{U("/japan-shirakawago-lightup/")}">白川鄉點燈怎麼預約</a>。</p></div>')
+
+    write('japan-takayama-shirakawago-bus/index.html',
+      head(f'高山到白川鄉巴士怎麼訂：哪幾班要預約、單程 {_sb_yen(_sb_fare)}、一日來回怎麼排',
+           f'高山濃飛巴士中心到白川鄉約 50 分鐘，{_sb_from}高山出發每天 {_sb_n_go} 班，{_sb_r_go} 班要預約、'
+           f'{_sb_n_go - _sb_r_go} 班不用預約排隊上車；單程 {_sb_yen(_sb_fare)}'
+           + ('' if _sb_new else f'（12/1 起 {_sb_yen(SB["fare_new"])}）')
+           + '；一個月前 9:30 開放預約，繁中可用 Japan Bus Online；行李、雪靴、點燈日限制一次整理。',
+           'japan-takayama-shirakawago-bus/',
+           '<script type="application/ld+json">' + sb_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('高山到白川鄉巴士', None)])
+      + '<article class="art">'
+      + '<h1>高山到白川鄉巴士怎麼訂：哪幾班要預約、一日來回怎麼排</h1>'
+      + f'<p class="by">更新於 {SB["checked"]}・時刻與規則來自濃飛巴士官網與各官方頁面</p>'
+      + '<p class="ap">從高山去白川鄉合掌村，最常見的方法是搭濃飛巴士，車程大約 50 分鐘。'
+        '麻煩的是這條線<b>有的班次要預約、有的不用</b>，而且同一條線有五家巴士公司在跑，訂位頁看起來很亂。</p>'
+        f'<p class="ap">先講結論：{_sb_from}高山出發每天 {_sb_n_go} 班，<mark>{_sb_r_go} 班要預約、{_sb_n_go - _sb_r_go} 班不用</mark>。'
+        f'單程大人 {_sb_yen(_sb_fare)}。想確定有位子就在一個月前訂，不想訂就搭不用預約的班次、提早去排隊。</p>'
+      + f'<p class="sticky">{html.escape(_sb_now)}</p>'
+      + '<nav class="atoc"><b>這篇有</b><ol>'
+        '<li><a href="#go">高山到白川鄉時刻表</a></li>'
+        '<li><a href="#back">白川鄉回高山時刻表</a></li>'
+        '<li><a href="#book">要預約的班次怎麼訂</a></li>'
+        '<li><a href="#free">不用預約的班次怎麼搭</a></li>'
+        '<li><a href="#plan">一日來回，我會這樣排</a></li>'
+        '<li><a href="#bag">行李、雪靴、換錢</a></li>'
+        '<li><a href="#faq">常見問題</a></li></ol></nav>'
+      + '<h2 id="go">高山到白川鄉時刻表</h2>'
+      + '<p class="ap">從高山濃飛巴士中心出發，到白川郷（荻町）巴士總站。'
+        '往金澤、富山、高岡的車會先停白川鄉，一樣可以搭到白川鄉下車。</p>'
+      + _sb_tbl(_sb_go, '出發', '到達')
+      + '<p class="disc">12/1 起的時刻。週末、國定假日與 12/29～1/3，這幾班不停中途的飯島、鳩谷兩站，對去白川鄉的人沒有影響。</p>'
+      + '<h2 id="back">白川鄉回高山時刻表</h2>'
+      + _sb_tbl(_sb_back, '出發', '到達')
+      + '<p class="disc">要預約的回程車大多是從金澤、富山、高岡開過來的，位子可能在起點就被訂走了，到白川鄉才想上車不一定有空位。</p>'
+      + '<div class="memo"><b class="mt">高山⇄白川鄉巴士</b><dl>'
+        '<dt>車程</dt><dd>約 50 分鐘（中途多停幾站的班次約 1 小時）</dd>'
+        f'<dt>單程</dt><dd>大人 {_sb_yen(_sb_fare)}，小學生半價'
+        + ('' if _sb_new else f'（12/1 起 {_sb_yen(SB["fare_new"])}）') + '</dd>'
+        '<dt>來回</dt><dd>單程的兩倍，沒有來回折扣</dd>'
+        f'<dt>續搭金澤</dt><dd>高山到金澤 {_sb_yen(_sb_kz)}' + ('' if _sb_new else f'（12/1 起 {_sb_yen(SB["fare_kanazawa_new"])}）') + '</dd>'
+        '<dt>上車</dt><dd>高山濃飛巴士中心；白川鄉是白川郷巴士總站</dd></dl>'
+        f'<p class="lk">{_sb_a(SB["src"], "濃飛巴士官方時刻表")}</p></div>'
+      + '<h2 id="book">要預約的班次怎麼訂</h2>'
+      + '<ul class="pick">'
+        '<li><b>什麼時候開放</b>：乘車日一個月前的同一天 9:30（日本時間）開始，網路預約到首站發車前 30 分鐘為止。</li>'
+        f'<li><b>看得懂中文的訂位網站</b>：{_sb_a(SB["src_jbo"], "Japan Bus Online 繁中版")}有這條線，'
+        '訂的時候就要刷卡，收 VISA、Mastercard、JCB、AMEX、Diners。</li>'
+        '<li><b>日文版</b>：同一套系統的日文版叫発車オーライネット，可以刷卡、用 PayPay 或 d 払付款，'
+        '也可以訂了之後到窗口買票。</li>'
+        '<li><b>到窗口買</b>：高山濃飛巴士中心可以刷卡。要預約的班次如果還有空位，窗口賣到發車前 10 分鐘。</li>'
+        '<li><b>要取消</b>：網路訂的在「管理我的預訂」取消，會收手續費，金額依路線不同，訂了之後頁面上才看得到。'
+        '在窗口買的票要回原窗口、在發車前辦。過了發車時間票就作廢，不退錢。</li>'
+        '<li><b>準時到</b>：官方寫有票的人沒在發車前到乘車處，位子可能會讓給別人。</li>'
+        '</ul>'
+      + '<div class="tip"><b>同一條線有五家公司</b>'
+        '<p>表上要預約的班次，有的是濃飛自己開，有的是北陸鐵道、富山地鐵、加越能、海豚交通開的，'
+        '訂位網站上會顯示成不同公司、不同路線名稱。都是同一條路線、同一個站牌，看清楚出發時間就好。</p></div>'
+      + '<h2 id="free">不用預約的班次怎麼搭</h2>'
+      + f'<p class="ap">高山出發的 {_sb_free_go}，和白川鄉出發的 {_sb_free_bk}，都不用預約。</p>'
+      + '<ul class="pick">'
+        '<li><b>照排隊順序上車</b>：濃飛的常見問題寫人多時會臨時加開，可能要坐輔助椅；'
+        '加開的車也滿了，就要等下一班。官方建議提早到站牌排隊。</li>'
+        '<li><b>車票</b>：到高山濃飛巴士中心的窗口買（可以刷卡），或在濃飛的手機車票網站買。'
+        '手機車票只能買當天的，而且只能搭不用預約的班次。</li>'
+        f'<li><b>回程挑從白川鄉發車的</b>：13:15、15:15 這兩班是從白川鄉發車，上車時是空車；'
+        '其他不用預約的回程車是從平瀨溫泉方向開過來的。</li>'
+        '</ul>'
+      + '<h2 id="plan">一日來回，我會這樣排</h2>'
+      + '<ul class="pick">'
+        '<li><b>不想訂位</b>：搭 8:50 去（9:40 到），逛完搭 13:15 或 15:15 回高山。這幾班都不用預約，'
+        '回程兩班又是從白川鄉發車，排得到前面就有位子。</li>'
+        '<li><b>想確定有位子</b>：去程訂 9:35 或 9:50（9:50 是 12/1 起新增的班次），'
+        '回程訂 13:30 或 14:45。每一班還剩幾個位子，要在訂位網站點進那一班才看得到。</li>'
+        f'<li><b>順路去金澤</b>：買高山到白川鄉、白川鄉到金澤兩段，中間下車逛。行李放車底，到白川鄉再寄放。'
+        f'高山直接到金澤是 {_sb_yen(_sb_kz)}，12/1 起另外有一班 9:10 高山直達金澤，不停白川鄉。</li>'
+        '<li><b>冬天去</b>：合掌造民家園 12～2 月 9:00～16:00，12～3 月每週四休園（遇國定假日改前一天）。'
+        '白川郷観光協会也呼籲參觀時間在 8:00～17:00 之間，集落是居民生活的地方。</li>'
+        '</ul>'
+      + '<div class="tip"><b>冬天會誤點</b>'
+        '<p>濃飛官網寫，白川鄉停車場排隊塞車、積雪、高速公路封閉時，就算繞路也可能晚 2 小時以上，'
+        '而且不只到站會晚，發車也會晚。誤點不退費。回高山要接火車或飛機的話，中間多留一點時間。</p></div>'
+      + _sb_lu_tip
+      + '<h3>民家園套票划算嗎</h3>'
+      + f'<p class="ap">濃飛有一種民家園套票，內容是高山到白川鄉的來回車票加民家園門票，大人 {_sb_yen(_sb_set)}'
+        + ('' if _sb_new else f'（12/1 起 {_sb_yen(SB["set_new"])}）')
+        + f'。分開買是 {_sb_yen(_sb_fare)} × 2 加民家園門票 {_sb_yen(SB["minkaen"])}，'
+        f'等於 {_sb_yen(_sb_fare * 2 + SB["minkaen"])}，套票便宜 {_sb_yen(_sb_fare * 2 + SB["minkaen"] - _sb_set)}。'
+        '只在高山濃飛巴士中心和手機車票網站賣，10 天內有效；12～3 月民家園休園的週四不能用。</p>'
+      + '<h3>有買周遊券的話</h3>'
+      + f'<p class="ap">JR 的「{html.escape(_P["name"])}」（{html.escape(_P["days"])}，{html.escape(_P["price"])}）'
+        f'{html.escape(_P["bus"])}只來回白川鄉的話不划算，從名古屋或大阪搭 JR 到高山、再搭巴士經白川鄉去金澤這種走法，'
+        f'才值得拿來比一比。（{_sb_a(_P["src"], "周遊券官網")}）</p>'
+      + '<h2 id="bag">行李、雪靴、換錢</h2>'
+      + '<ul class="pick">'
+        '<li><b>帶上車</b>：濃飛的班次可以免費帶上車的是 10 公斤以內、長 1 公尺以內；行李箱放車底行李艙，'
+        '空間有限，太大件可能會被拒收。其他公司開的班次照各公司規定。</li>'
+        '<li><b>到白川鄉寄放</b>：巴士總站裡有投幣置物櫃，附近也有寄放處。都滿了的話，白川郷観光協会也收，'
+        '8:00～17:00，中小件 500 円起、大件 1,000 円起，只能當天領回。</li>'
+        '<li><b>雪靴</b>：冬天巴士總站租長筒雪靴，23～27 公分各 3 雙，8:30～17:00，當天 1,000 円、兩天 1,500 円。'
+        '不能預約，點燈活動那幾天不出租。</li>'
+        '<li><b>換日幣</b>：巴士總站有外幣自動兌換機，可以用台幣換。</li>'
+        '</ul>'
+      + '<div id="faq"></div>' + faq_visible(sb_faq)
+      + '<details class="more"><summary>這一篇查不到的</summary><ul>'
+      + ''.join(f'<li>{html.escape(x)}</li>' for x in SB['unverified']) + '</ul></details>'
+      + '<details class="more"><summary>資料來源</summary><ul>'
+        f'<li>時刻表、票價、哪班要預約：{_sb_a(SB["src"], "濃飛巴士 白川郷線")}</li>'
+        f'<li>12/1 起改價：{_sb_a(SB["src_fare"], "運賃改定公告")}；12/1 起改點：{_sb_a(SB["src_dia"], "改點公告")}</li>'
+        f'<li>預約開放時間、窗口與取消：{_sb_a(SB["src_jbus"], "濃飛在訂位網站的乘車說明")}、{_sb_a(SB["src_hw"], "濃飛高速巴士說明")}</li>'
+        f'<li>排隊、加開、付款、行李上限：{_sb_a(SB["src_faq"], "濃飛常見問題")}</li>'
+        f'<li>手機車票：{_sb_a(SB["src_mobile"], "濃飛手機車票網站")}；民家園套票：{_sb_a(SB["src_ticket"], "濃飛優惠車票")}</li>'
+        f'<li>Japan Bus Online 付款與取消：{_sb_a(SB["src_jbo_faq"], "常見問題")}</li>'
+        f'<li>行李寄放、雪靴、兌換機：{_sb_a(SB["src_sg_faq"], "白川郷観光協会 常見問題")}</li>'
+        f'<li>民家園門票與休園日：{_sb_a(SB["src_minkaen"], "民家園官網")}</li>'
+        f'<li>周遊券：{_sb_a(_P["src"], "周遊券官網")}、{_sb_a(_P["src_pdf"], "巴士預約說明")}</li></ul></details>'
+      + '<h2>延伸閱讀</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-shirakawago-lightup/")}"><b>🏮 白川鄉點燈怎麼預約</b><s>2027 只有四天</s></a>'
+      + f'<a class="ct" href="{U("/nagoya/")}"><b>✈️ 名古屋機票</b><s>搭 JR 到高山最順</s></a>'
+      + f'<a class="ct" href="{U("/kanazawa/")}"><b>✈️ 金澤・小松機票</b><s>反過來從金澤進白川鄉</s></a>'
+      + f'<a class="ct" href="{U("/toyama/")}"><b>✈️ 富山機票</b><s>富山也有車到白川鄉</s></a></div>'
+      + f'<p class="disc">規定以各官方頁面為準，整理可能有疏漏。查證於 {SB["checked"]}，之後官方若有更改，本頁不一定跟上。</p>'
+      + '</article>'
+      + foot())
+    pages.append(('/japan-takayama-shirakawago-bus/', 0.7))
+
 # ---------- 函館聖誕夢幻節 2026 ----------
 # 資料在 hakodate-xmas.json。主辦官網只有首頁的 2026 開催公告是今年的，子頁還是去年版，
 # 所以湯品吧店家、付款方式、特別煙火日、交通管制都放「這一篇查不到的」，不寫成今年。
@@ -26803,6 +27007,7 @@ if os.path.exists('shirakawago.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/taiwan-holiday-2027/")}"><b>📅 2027 請假攻略</b><s>1 月的連假怎麼請</s></a>'
       + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b><s>1/11 是日本的連假</s></a>'
+      + f'<a class="ct" href="{U("/japan-takayama-shirakawago-bus/")}"><b>🚌 高山到白川鄉巴士</b><s>白天去哪幾班要預約</s></a>'
       + f'<a class="ct" href="{U("/japan-ginzan-onsen/")}"><b>♨️ 銀山溫泉冬季預約</b><s>當天來回要先訂接駁巴士</s></a>'
       + f'<a class="ct" href="{U("/japan-ski-resort/")}"><b>🏔 雪場官網現場價</b><s>同一趟冬天順便滑雪</s></a></div>'
       + faq_visible(skg_faq)

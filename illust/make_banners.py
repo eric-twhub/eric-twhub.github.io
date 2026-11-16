@@ -14,7 +14,7 @@ W, H = 720, 210
 THEME = {}
 for n in 'lights teamlab ginzan nighttrain seatree'.split():
     THEME[n] = 'night'
-for n in 'skier snowman juhyo gassho penguin rotenburo'.split():
+for n in 'skier snowman juhyo gassho penguin rotenburo skgbus'.split():
     THEME[n] = 'snow'
 for n in 'whaleshark icebreaker'.split():
     THEME[n] = 'sea'

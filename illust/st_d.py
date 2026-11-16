@@ -103,4 +103,30 @@ st += (f'<path d="M6,114 q12,-7 24,0 t24,0 t24,0 t24,0 t24,0 t24,0 t24,0 L174,13
 st += f'<path d="M30,126 q10,-5 20,0 M96,130 q10,-5 20,0 M140,124 q8,-4 16,0" fill="none" stroke="{SKY}" stroke-width="1.6"/>'
 FILES['seatree'] = sticker('seatree', '海上的聖誕樹', st, bg=NAVY, dots=False)
 
+# ---- skgbus：雪地裡往合掌村開的巴士（/japan-takayama-shirakawago-bus/，一般巴士，不畫任何公司的塗裝）----
+THATCH = '#b98f55'
+def _gh(x, base, w, h):
+    top, rb = base - h, base - h * .38
+    return (f'<rect x="{x - w*.38:.0f}" y="{rb:.0f}" width="{w*.76:.0f}" height="{base-rb:.0f}" fill="{DBROWN}"/>'
+            f'<path d="M{x - w/2:.0f},{rb+2:.0f} L{x},{top} L{x + w/2:.0f},{rb+2:.0f} Z" fill="{THATCH}"/>'
+            f'<path d="M{x - w*.28:.0f},{top + (rb-top)*.58:.0f} L{x},{top} L{x + w*.28:.0f},{top + (rb-top)*.58:.0f} '
+            f'Q{x},{top + (rb-top)*.48:.0f} {x - w*.28:.0f},{top + (rb-top)*.58:.0f} Z" fill="{WHITE}"/>'
+            f'<rect x="{x - w*.1:.0f}" y="{top + (rb-top)*.68:.0f}" width="{w*.2:.0f}" height="{w*.12:.0f}" rx="1" fill="{GOLD}" stroke-width="1.2"/>')
+bs = ''
+bs += _gh(132, 92, 70, 70) + _gh(40, 84, 40, 44)
+# 雪地
+bs += f'<path d="M6,96 Q60,88 120,94 T174,92 L174,136 Q174,144 166,144 L14,144 Q6,144 6,136 Z" fill="{WHITE}"/>'
+# 巴士車身
+bs += f'<rect x="30" y="74" width="112" height="46" rx="10" fill="{SKY}"/>'
+bs += f'<path d="M30,104 L142,104" stroke="{GREEN}" stroke-width="6"/>'
+bs += ''.join(f'<rect x="{x}" y="82" width="18" height="15" rx="2.5" fill="{WHITE}" stroke-width="1.4"/>' for x in (40, 62, 84, 106))
+bs += f'<rect x="126" y="82" width="12" height="28" rx="2" fill="{WHITE}" stroke-width="1.4"/>'
+bs += f'<path d="M40,74 Q86,64 132,74" fill="{WHITE}" stroke-width="1.6"/>'
+for cx in (52, 118):
+    bs += f'<circle cx="{cx}" cy="121" r="9" fill="{INK}"/><circle cx="{cx}" cy="121" r="3.4" fill="{GRAY}" stroke="none"/>'
+bs += f'<circle cx="141" cy="112" r="3" fill="{GOLD}" stroke-width="1"/>'
+bs += face(73, 112, .7)
+bs += snow([(20, 30), (70, 22), (104, 40), (160, 24), (12, 62), (90, 50)])
+add('skgbus', '手繪雪地裡開往合掌村的巴士', bs, bg='#e4eefa', dots=False)
+
 print(save(FILES, OUT), 'stickers')
