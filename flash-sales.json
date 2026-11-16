@@ -1,7 +1,7 @@
 {
  "_說明": "/deals/ 的「要搶的便宜機票」一區。upcoming 過了 end 自動不顯示；patterns 與 record 只放有官方出處的（旅遊平台官方活動頁、官方部落格、官方新聞稿或 Wayback 存檔）。每兩週回查一次有沒有新公告。",
  "_怎麼回查": "Trip.com 看 mega-sale（旅展）與 tw-payday（月底救星）兩頁，舊檔會被新檔覆蓋；易遊網官網會跳人機驗證，改看 blog.eztravel.com.tw；雄獅看 event.liontravel.com；航空公司看各自新聞稿。",
- "checked": "2026-11-15",
+ "checked": "2026-11-16",
  "upcoming": [
   {
    "who": "捷星日本",
