@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-16-transfer-tokyo-fukushima",
- "generated": "2026-11-16 19:22",
+ "generated": "2026-11-16 22:22",
  "kind": "transfer",
  "city": "fukushima",
  "via": "tokyo",
@@ -9,27 +9,27 @@
  "fare": {
   "o": "TPE",
   "d": "TYO",
-  "air": "IT",
-  "airname": "台灣虎航",
+  "air": "GK",
+  "airname": "捷星日本",
   "cls": "lcc",
-  "price": 7606,
+  "price": 7708,
   "dep": "2026-12-23",
   "ret": "2027-01-07",
-  "dept": "13:30",
+  "dept": "12:50",
   "rett": "16:35",
   "rt": true,
   "tr": 0,
-  "dur": 445,
-  "dur_to": 180,
-  "gate": "Farera",
-  "url": "https://www.aviasales.com/search/TPE2312NRT07011?t=MM17980326001798047000000180TPENRT17993397001799352000000265NRTTPE_102146cda12dd0be45624bca3b5a1a2f_19058&search_date=16112026&expected_price_uuid=01a1e3a3-a8bb-8040-2d5b-1ad10847b52f&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=o4dEsPn2Khgan5mgAnUesg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7606&marker=775639"
+  "dur": 450,
+  "dur_to": 185,
+  "gate": "Tickets",
+  "url": "https://www.aviasales.com/search/TPE2312NRT07011?t=MM17980302001798044900000185TPENRT17993397001799352000000265NRTTPE_5a7229f3267bee0de32db5abfa38024c_19330&search_date=16112026&expected_price_uuid=01a1e4b0-d2da-8040-a3dd-da13ba60df2e&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=rHrpqXsJF5mJ2CY8D7jXUw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7708&marker=775639"
  },
  "fare_rt": true,
  "jpy_text": "約 ¥9,000",
  "twd_one_way": 1882,
  "rate": 0.2092,
  "rate_at": "2026-11-15 08:02",
- "fare_gate": "Farera",
+ "fare_gate": "Tickets",
  "tc_alt": {
   "price": 10020,
   "airname": "德威航空",
@@ -39,6 +39,6 @@
  "route": "東京 → 福島",
  "mode": "東北新幹線",
  "tm": "約 1.5 小時",
- "total": 11370,
- "save": 4569
+ "total": 11472,
+ "save": 4467
 }

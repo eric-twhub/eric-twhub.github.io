@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-16-kaohsiung-fukuoka",
- "generated": "2026-11-16 19:14",
+ "generated": "2026-11-16 22:22",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "fukuoka",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 6084,
+ "med": 6384,
  "n_rt": 3,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 6084,
+   "price": 6384,
    "dep": "2026-12-29",
    "ret": "2027-01-08",
    "dept": "15:25",
