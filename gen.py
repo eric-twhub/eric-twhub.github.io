@@ -1775,6 +1775,7 @@ def topnav(cur=''):
             + link('/kyoto/autumn-leaves/', '🍁 京都賞楓要預約的地方')
             + link('/tokyo/autumn-leaves/', '🍁 東京賞楓要買票的地方')
             + link('/tokyo/christmas-market/', '🎄 東京聖誕市集門票與日期')
+            + link('/hakodate/christmas-fantasy/', '🎄 函館聖誕夢幻節')
             + link('/japan-shirakawago-lightup/', '🏮 白川鄉點燈怎麼預約')
             + link('/japan-ginzan-onsen/', '♨️ 銀山溫泉冬季怎麼預約')
             + link('/japan-ryuhyo-monogatari/', '🧊 流冰物語號怎麼訂')
@@ -1958,6 +1959,7 @@ _AD_MAP = [
     ('japan-tsurunoyu', 'transport'),
     ('tokyo/autumn-leaves', 'esim'),
     ('tokyo/christmas-market', 'esim'),
+    ('hakodate/christmas-fantasy', 'esim'),
     ('japan-shirakawago-lightup', 'esim'),
     ('japan-ginzan-onsen', 'esim'),
     ('japan-burton-rental', 'esim'),
@@ -2989,6 +2991,7 @@ _STK_EXACT = {
 }
 _STK_PREFIX = sorted({
     '/tokyo/christmas-market/': '',
+    '/hakodate/christmas-fantasy/': 'st/seatree',
     '/japan-tokyo-tower/': 'xmas/tower', '/japan-skytree/': 'xmas/skytree', '/japan-chiikawa-park/': 'xmas/gift',
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
@@ -26370,6 +26373,142 @@ if os.path.exists('tokyo-xmas.json'):
       + '</article>'
       + foot())
     pages.append(('/tokyo/christmas-market/', 0.7))
+
+# ---------- 函館聖誕夢幻節 2026 ----------
+# 資料在 hakodate-xmas.json。主辦官網只有首頁的 2026 開催公告是今年的，子頁還是去年版，
+# 所以湯品吧店家、付款方式、特別煙火日、交通管制都放「這一篇查不到的」，不寫成今年。
+# 每天會變的在這裡算：開幕倒數、今天有沒有開（12/1 只從 18:00 點燈）、結束後改成明年再見。
+# 一晚怎麼排的建議接五稜郭塔（18:00 關）與函館山纜車（冬季上山末班 20:30），時間都引各自官網。
+if os.path.exists('hakodate-xmas.json'):
+    HXM = json.load(open('hakodate-xmas.json', encoding='utf-8'))
+    _hx_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _hx_iso = _hx_today.isoformat()
+    _hx_wd = '一二三四五六日'
+    _hx_f, _hx_t = datetime.date.fromisoformat(HXM['from']), datetime.date.fromisoformat(HXM['to'])
+
+    def _hx_md(d):
+        return f'{d.month}/{d.day}（{_hx_wd[d.weekday()]}）'
+
+    def _hx_a(u, t):
+        return f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+
+    if _hx_today < _hx_f:
+        _hx_now = (f'今天是 {_hx_md(_hx_today)}，離開幕還有 {(_hx_f - _hx_today).days} 天。'
+                   f'{_hx_md(_hx_f)} 是第一天，聖誕樹只從 18:00 開始亮。')
+    elif _hx_today <= _hx_t:
+        _hx_now = (f'今天 {_hx_md(_hx_today)} 有開：'
+                   + ('聖誕樹 18:00 第一次點燈。' if _hx_today == _hx_f else '16:30 起點燈，18:00 點燈式放煙火。')
+                   + f'活動到 {_hx_md(_hx_t)} 結束。')
+    else:
+        _hx_now = '今年的函館聖誕夢幻節已經結束了，明年的日期通常秋天公布。'
+
+    _hx_tbl = ('<div class="tw qk" style="max-width:560px"><table><thead><tr><th>時間</th><th>會場上發生的事</th></tr></thead><tbody>'
+        + ''.join(f'<tr><td>{html.escape(t)}</td><td>{html.escape(x)}</td></tr>' for t, x in HXM['times'])
+        + '</tbody></table></div>'
+        '<p class="disc">每天都一樣，天候不好時可能改時間或停辦；煙火看當天的風，現場判斷放不放。</p>')
+
+    _RW, _TW, _SP = HXM['ropeway'], HXM['tower'], HXM['soup']
+
+    hx_faq = [
+     ('函館聖誕夢幻節 2026 是什麼時候？',
+      f'2026 年 12/1（二）到 12/25（五），每天都有。聖誕樹 16:30～17:45、18:00～22:00 點燈，12/1 只從 18:00 開始亮。'),
+     ('函館聖誕夢幻節的煙火幾點？',
+      '活動期間每天 18:00 點燈式的時候放煙火。官方寫會看風等條件，在現場判斷放不放。'),
+     ('函館聖誕夢幻節要門票嗎？',
+      f'不用，會場在金森紅磚倉庫前的海上，走過去就看得到。要花錢的是湯品吧，{_SP["price"]}。'),
+     ('紅色聖誕樹幾點亮？',
+      '每天 18:30、19:30、20:30 三次，每次約 15 分鐘。'),
+     ('函館聖誕夢幻節的聖誕樹還是從加拿大運來的嗎？',
+      '不是了。主辦官網寫：聖誕樹原本用姊妹市加拿大哈利法克斯的冷杉，後來因為運到時葉子乾掉、物流也不穩，'
+      '已經停止使用，改用北海道產的椴松。'),
+     ('看完聖誕樹還來得及搭函館山纜車看夜景嗎？',
+      f'來得及。纜車冬季（10/1～4/19）上山末班 20:30、下山末班 21:00，{_RW["fare"]}。'
+      '看完 18:00 的煙火再過去，時間很寬裕；只是熱門時段排隊可能會久一點。'),
+    ]
+    hx_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in hx_faq]}, ensure_ascii=False)
+
+    write('hakodate/christmas-fantasy/index.html',
+      head('函館聖誕夢幻節 2026：12/1～12/25 每晚 6 點點燈放煙火，紅色聖誕樹時間、湯品吧、纜車夜景怎麼排',
+           '2026 函館聖誕夢幻節（はこだてクリスマスファンタジー）12/1～12/25 在金森紅磚倉庫前海上，免費；'
+           '每天 16:30 點燈、18:00 點燈式與煙火，紅色聖誕樹 18:30、19:30、20:30；湯品吧一杯 700 円；'
+           '看完接函館山纜車（冬季上山末班 20:30）或五稜郭塔（18:00 關）。',
+           'hakodate/christmas-fantasy/',
+           '<script type="application/ld+json">' + hx_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('函館', '/hakodate/'), ('函館聖誕夢幻節', None)])
+      + '<article class="art xm">'
+      + '<h1>2026 函館聖誕夢幻節：海上聖誕樹每晚 6 點放煙火，一個晚上怎麼排</h1>'
+      + f'<p class="by">更新於 {HXM["checked"]}・資料來自主辦官網與各設施官網</p>'
+      + '<p class="ap">十二月的函館，紅磚倉庫前的海上會立起一棵大聖誕樹，每天傍晚 6 點點燈、同時放煙火，'
+        '一直辦到聖誕節。這是函館冬天的代表活動，免費，走到海邊就看得到。</p>'
+        '<p class="ap">先講結論：2026 年是 <mark>12/1～12/25，每天 18:00 點燈式加煙火</mark>，'
+        '紅色聖誕樹一晚亮三次。看完還來得及搭函館山纜車看夜景。</p>'
+      + f'<p class="sticky">{html.escape(_hx_now)}</p>'
+      + '<nav class="atoc"><b>這篇有</b><ol>'
+        '<li><a href="#time">一晚的時間表</a></li>'
+        '<li><a href="#plan">只有一個晚上，我會這樣排</a></li>'
+        '<li><a href="#soup">湯品吧</a></li>'
+        '<li><a href="#go">怎麼去</a></li>'
+        '<li><a href="#faq">常見問題</a></li></ol></nav>'
+      + '<h2 id="time">一晚的時間表</h2>' + _hx_tbl
+      + '<div class="memo"><b class="mt">2026 函館聖誕夢幻節</b><dl>'
+        f'<dt>日期</dt><dd>{_hx_md(_hx_f)}～{_hx_md(_hx_t)}，每天</dd>'
+        '<dt>地點</dt><dd>金森紅磚倉庫前的海上（函館市末廣町）</dd>'
+        '<dt>入場</dt><dd>免費</dd>'
+        '<dt>聖誕樹</dt><dd>北海道產的椴松，不再從加拿大運來</dd></dl>'
+        f'<p class="lk">{_hx_a(HXM["src"], "官方網站")}{_hx_a(HXM["fb"], "官方 Facebook（停辦公告）")}</p></div>'
+      + '<h2 id="plan">只有一個晚上，我會這樣排</h2>'
+      + '<ul class="pick">'
+        f'<li><b>傍晚先去五稜郭塔</b>：12 月函館大約 16:05～16:10 日落，展望台開到 18:00、17:50 停止售票。'
+        f'想從高處看夕陽和市區，要在 5 點前上去。展望台{html.escape(_TW["fare"])}。</li>'
+        '<li><b>17:30 前到紅磚倉庫</b>：先去湯品吧買一杯熱湯（20:00 收攤），找好看海上聖誕樹的位置。</li>'
+        '<li><b>18:00 點燈式</b>：17:45 聖誕樹會先暗下來，18:00 重新點燈、同時放煙火，這是一晚最熱鬧的時候。</li>'
+        '<li><b>18:30 紅色聖誕樹</b>：只亮約 15 分鐘，錯過了還有 19:30、20:30。</li>'
+        f'<li><b>最後上函館山</b>：纜車冬季上山末班 20:30，往返大人 1,800 円。'
+        '看完 18:30 的紅色聖誕樹再過去剛好；纜車官網提醒人多時要排隊買票，別拖到最後一班。</li>'
+        '</ul>'
+      + '<div class="tip"><b>小提醒</b>'
+        '<p>會場在海邊，晚上風大又冷，帽子和手套要帶。</p>'
+        '<p>天氣或海嘯警報會讓活動停辦。去年 12/8 青森最大震度 6 強的地震後，主辦公告接下來約一週每天中午看海嘯注意報決定辦不辦，'
+        '結果公布在官方 Facebook，出門前看一下。</p></div>'
+      + '<h2 id="soup">湯品吧</h2>'
+      + '<section class="spot">' + (f'<div class="ill sp">{open("illust/st/cafe.svg", encoding="utf-8").read()}</div>' if os.path.exists('illust/st/cafe.svg') else '')
+      + '<div><p class="ap">會場主街上有一排賣熱湯的攤位，用北海道的食材煮，'
+        '是冬天站在海邊看聖誕樹最需要的東西。</p>'
+      + f'<div class="memo"><b class="mt">湯品吧</b><dl><dt>日期</dt><dd>12/1～12/25</dd>'
+        f'<dt>時間</dt><dd>{html.escape(_SP["hours"])}</dd><dt>價格</dt><dd>{html.escape(_SP["price"])}</dd>'
+        f'<dt>地點</dt><dd>{html.escape(_SP["where"])}</dd></dl>'
+        f'<p class="lk">{_hx_a(HXM["src"], "官方公告")}</p></div>'
+        '<p class="ap">今年有哪些店、能不能刷卡，官網還沒更新。去年是用 PayPay 或會場的自動售票機買，售票機只收現金，帶點日幣零錢比較保險。</p>'
+        '</div></section>'
+      + '<h2 id="go">怎麼去</h2>'
+      + '<ul class="pick">'
+        '<li><b>市電</b>：搭到「十字街」站，走約 5 分鐘（主辦官網的說法）。</li>'
+        '<li><b>巴士</b>：函館巴士「明治館前」站下車，走約 2 分鐘。</li>'
+        '<li><b>開車</b>：會場附近停車位少，活動期間傍晚還有交通管制，主辦建議搭大眾運輸。</li>'
+        f'<li><b>從函館站到函館山纜車</b>：纜車官網寫搭市電約 25 分鐘、計程車約 10 分鐘。</li>'
+        '</ul>'
+      + f'<p class="ap">{html.escape(HXM["illumi_last"]["text"])}'
+        f'（{_hx_a(HXM["illumi_last"]["src"], "函館冬季燈飾官網")}）</p>'
+      + '<div id="faq"></div>' + faq_visible(hx_faq)
+      + '<details class="more"><summary>這一篇查不到的</summary><ul>'
+      + ''.join(f'<li>{html.escape(x)}</li>' for x in HXM['unverified']) + '</ul></details>'
+      + '<details class="more"><summary>資料來源</summary><ul>'
+        f'<li>開催時間、湯品吧價格：{_hx_a(HXM["src"], "主辦官網首頁（2026 開催公告）")}</li>'
+        f'<li>聖誕樹改用北海道椴松：{_hx_a(HXM["src_tree"], "主辦官網的活動介紹")}</li>'
+        f'<li>交通：{_hx_a(HXM["src_info"], "主辦官網的會場說明")}</li>'
+        f'<li>函館山纜車：{_hx_a(_RW["src"], "營業時間與票價")}、{_hx_a(_RW["src_access"], "交通")}</li>'
+        f'<li>五稜郭塔：{_hx_a(_TW["src"], "票價與營業時間")}</li></ul></details>'
+      + '<h2>延伸閱讀</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/taipei/hakodate/")}"><b>✈️ 台北飛函館機票</b><s>哪天出發比較便宜</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/christmas-market/")}"><b>🎄 東京聖誕市集</b><s>哪些要門票、哪天開</s></a>'
+      + f'<a class="ct" href="{U("/sapporo/snow-festival/")}"><b>⛄ 札幌雪祭 2027</b><s>日期與連假怎麼排</s></a></div>'
+      + f'<p class="disc">規定以各官方頁面為準，整理可能有疏漏。查證於 {HXM["checked"]}，之後官方若有更改，本頁不一定跟上。</p>'
+      + '</article>'
+      + foot())
+    pages.append(('/hakodate/christmas-fantasy/', 0.7))
 
 # ---------- 日本福袋 2027 ----------
 # 資料在 fukubukuro.json，每一列都引該公司官網或官方 PDF（2026-11-16 逐條對過原文）。

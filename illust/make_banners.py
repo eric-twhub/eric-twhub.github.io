@@ -12,7 +12,7 @@ OUT = os.path.join(HERE, 'banner')
 W, H = 720, 210
 
 THEME = {}
-for n in 'lights teamlab ginzan nighttrain'.split():
+for n in 'lights teamlab ginzan nighttrain seatree'.split():
     THEME[n] = 'night'
 for n in 'skier snowman juhyo gassho penguin rotenburo'.split():
     THEME[n] = 'snow'

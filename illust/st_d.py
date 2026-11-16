@@ -2,7 +2,7 @@
 # 門松給 /japan-new-year-hours/（跨年店家營業），福袋給 /japan-fukubukuro/。
 # 共用工具在 kit.py。跑 `python3 illust/st_d.py` 輸出 illust/st/*.svg，
 # 再跑 `python3 illust/make_banners.py` 產生標題下的寬版封面。
-import os, sys
+import os, sys, math
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from kit import *
 
@@ -83,5 +83,24 @@ for x, y, c, a in [(62, 60, GOLD, 30), (78, 52, WHITE, -20), (108, 54, GREEN, 40
 dn += face(90, 108, .9)
 dn += star(34, 40, 7) + sparkle(150, 44) + sparkle(146, 118)
 add('donut', '甜甜圈', dn)
+
+# ---- seatree：海上的聖誕樹＋煙火＋紅磚倉庫（/hakodate/christmas-fantasy/）----
+st = ''
+for cx, cy, r, c in [(40, 36, 16, GOLD), (142, 30, 13, PINK), (122, 58, 9, SKY)]:
+    st += ''.join(f'<path d="M{cx},{cy} l{r*math.cos(a):.1f},{r*math.sin(a):.1f}" stroke="{c}" stroke-width="2"/>'
+                  for a in [i * math.pi / 6 for i in range(12)])
+    st += f'<circle cx="{cx}" cy="{cy}" r="2.4" fill="{c}" stroke="none"/>'
+# 紅磚倉庫（右後方）
+st += f'<path d="M118,104 L118,84 L134,74 L150,84 L150,104 Z" fill="{BRICK}"/>'
+st += f'<path d="M150,104 L150,86 L162,78 L172,86 L172,104 Z" fill="#c45a4a"/>'
+st += ''.join(f'<rect x="{x}" y="90" width="6" height="8" rx="1" fill="{GOLD}" stroke-width="1"/>' for x in (124, 138, 158))
+# 浮台與樹
+st += tree(76, 104, 74, 56)
+st += f'<rect x="46" y="104" width="60" height="8" rx="3" fill="{DBROWN}"/>'
+# 海浪
+st += (f'<path d="M6,114 q12,-7 24,0 t24,0 t24,0 t24,0 t24,0 t24,0 t24,0 L174,136 Q174,144 166,144 '
+       f'L14,144 Q6,144 6,136 Z" fill="#5b86c4"/>')
+st += f'<path d="M30,126 q10,-5 20,0 M96,130 q10,-5 20,0 M140,124 q8,-4 16,0" fill="none" stroke="{SKY}" stroke-width="1.6"/>'
+FILES['seatree'] = sticker('seatree', '海上的聖誕樹', st, bg=NAVY, dots=False)
 
 print(save(FILES, OUT), 'stickers')
