@@ -1817,6 +1817,7 @@ def topnav(cur=''):
             + link('/japan-medicine-limit/', '💊 藥妝能帶多少')
             + link('/tokyo/street-fashion/', '👕 東京潮牌選物店')
             + link('/japan-coupon/', '🏷️ 購物折扣總覽')
+            + link('/japan-fukubukuro/', '🎍 2027 福袋怎麼買')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
             + link('/apple-japan-price/', '🍎 台日 Apple 價差')
             + link('/japan-camera-price/', '📷 雲台相機台日價差')
@@ -1942,6 +1943,7 @@ _AD_MAP = [
     ('japan-store-points', 'esim'),
     ('japan-medicine-limit', 'esim'),
     ('japan-coupon', 'esim'), ('japan-bic-points', 'esim'),
+    ('japan-fukubukuro', 'esim'),
     ('japan-camera-price', 'esim'), ('japan-dyson-price', 'esim'),
     ('japan-panasonic-dryer', 'esim'), ('apple-japan-price', 'esim'),
     ('iphone-', 'esim'), ('japan-tax-free', 'esim'),
@@ -3008,6 +3010,7 @@ _STK_PREFIX = sorted({
     '/japan-medicine-limit/': 'st/medicine', '/threads-japan/': 'st/speech', '/tokyo/street-fashion/': 'st/shirt',
     '/tokyo/worth-flying-for/': 'st/shop', '/japan-worth-buying/': 'st/shop', '/search/': 'st/search', '/about/': 'st/notebook',
     '/japan-credit-card/': 'st/card', '/japan-airline-card/': 'st/card', '/japan-card-': 'st/card', '/iphone-card/': 'st/card',
+    '/japan-fukubukuro/': 'st/fukubukuro',
     '/japan-coupon/': 'st/coupon', '/japan-bogo/': 'st/coupon', '/japan-store-points/': 'st/coupon', '/japan-bic-points/': 'st/coupon',
     '/japan-tax-free-2026/': 'st/receipt', '/japan-esim': 'st/phone', '/japan-sms-roaming/': 'st/phone',
     '/japan-yen-exchange/': 'st/yen', '/japan-payment/': 'st/yen', '/japan-transit-card/': 'st/iccard',
@@ -26367,6 +26370,161 @@ if os.path.exists('tokyo-xmas.json'):
       + '</article>'
       + foot())
     pages.append(('/tokyo/christmas-market/', 0.7))
+
+# ---------- 日本福袋 2027 ----------
+# 資料在 fukubukuro.json，每一列都引該公司官網或官方 PDF（2026-11-16 逐條對過原文）。
+# 讀者是跨年人在日本的台灣觀光客：重點是「到店裡買得到的」和「只能網路抽、觀光客買不到的」分開。
+# 去年的資料（家電量販、Apple）頁面一定標「去年」；官方查不到的放「這一篇查不到的」，不寫成沒辦。
+# 每天會變的在這裡算：下一個時間點（events 過了就跳下一個）、hide_after 之後改成「今年福袋季結束」。
+# 沒有放平台商品：KKday／Klook 沒有福袋商品。
+if os.path.exists('fukubukuro.json'):
+    FKB = json.load(open('fukubukuro.json', encoding='utf-8'))
+    _fk_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _fk_iso = _fk_today.isoformat()
+    _fk_wd = '一二三四五六日'
+
+    def _fk_md(s):
+        d = datetime.date.fromisoformat(s)
+        return f'{d.month}/{d.day}（{_fk_wd[d.weekday()]}）'
+
+    def _fk_st(name):
+        # 段落旁的小插圖：直接內嵌全站共用的手繪貼紙
+        p = os.path.join('illust', name + '.svg')
+        return f'<div class="ill sp">{open(p, encoding="utf-8").read()}</div>' if os.path.exists(p) else ''
+
+    def _fk_src(u, t='官方網站'):
+        return f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+
+    _fk_next = [e for e in FKB['events'] if e[0] >= _fk_iso]
+    if _fk_iso > FKB['hide_after']:
+        _fk_now = '2027 年的福袋季已經結束了，明年的會在 10～11 月陸續公布。'
+    elif _fk_next:
+        _d0 = _fk_next[0][0]
+        _fk_now = (f'今天是 {_fk_md(_fk_iso)}。下一個時間點：{_fk_md(_d0)} '
+                   + '；'.join(t for d, t in _fk_next if d == _d0) + '。')
+        if len(_fk_next) > 1:
+            _d1 = next((d for d, t in _fk_next if d != _d0), None)
+            if _d1:
+                _fk_now += f'再來是 {_fk_md(_d1)} ' + '；'.join(t for d, t in _fk_next if d == _d1) + '。'
+    else:
+        _fk_now = ''
+
+    _W = FKB['walkin']
+    _fk_quick = ('<div class="tw qk"><table><thead><tr><th>店家</th><th>時間</th><th>怎麼買</th></tr></thead><tbody>'
+        + ''.join(f'<tr><td>{html.escape(s["name"])}</td><td>{html.escape(s["when"])}</td>'
+                  f'<td>{html.escape(s["how"])}</td></tr>' for s in _W)
+        + ''.join(f'<tr><td>{html.escape(s["name"])}</td><td>{html.escape(s["when"])}</td>'
+                  f'<td class="xpay">{html.escape(s["how"])}</td></tr>' for s in FKB['online'])
+        + '</tbody></table></div>'
+        '<p class="disc">紅字是觀光客幾乎買不到的（只能網路抽選或預購、宅配到日本地址）。</p>')
+
+    def _fk_walk(s, st):
+        rows = [('價格', html.escape(s['price']))] + [(k, html.escape(v)) for k, v in s['rows']]
+        links = _fk_src(s['src'], '官方公告') + (_fk_src(s['src2'], '官方 PDF') if s.get('src2') else '')
+        return (f'<section class="spot">{_fk_st(st)}<div><h3>{html.escape(s["name"])}：{html.escape(s["how"])}</h3>'
+                + (f'<p class="ap">{html.escape(s["tip"])}</p>' if s.get('tip') else '')
+                + f'<div class="memo"><b class="mt">{html.escape(s["name"])}</b><dl>'
+                + ''.join(f'<dt>{k}</dt><dd>{v}</dd>' for k, v in rows)
+                + f'</dl><p class="lk">{links}</p></div></div></section>')
+
+    _fk_st_map = {'misdo': 'st/donut', 'komeda': 'st/cafe', 'disney': 'xmas/gift'}
+    _fk_walk_html = ''.join(_fk_walk(s, _fk_st_map.get(s['key'], 'st/fukubukuro')) for s in _W)
+
+    def _fk_card(s):
+        links = _fk_src(s['src']) + (_fk_src(s['src2'], '官方公告') if s.get('src2') else '')
+        return (f'<div class="memo"><b class="mt">{html.escape(s["name"])}</b>'
+                f'<p class="ap" style="font-size:.95rem;margin:0">{html.escape(s["text"])}</p>'
+                f'<p class="lk">{links}</p></div>')
+
+    _fk_online = '<div class="memos">' + ''.join(_fk_card(s) for s in FKB['online']) + '</div>'
+    _fk_dept = '<div class="memos">' + ''.join(_fk_card(s) for s in FKB['dept']) + '</div>'
+    _fk_elec = '<div class="memos">' + ''.join(_fk_card(s) for s in FKB['elec_last']) + '</div>'
+
+    fk_faq = [
+     ('2027 日本福袋什麼時候開賣？',
+      '各家不同。到店裡買得到的：Mister Donut 12/28 起各店陸續開賣，Komeda 珈琲店 1/1～1/6，Disney Store 1/1 起。'
+      '百貨大多 1/1 休館，伊勢丹新宿 1/2 初賣，高島屋、阪急、大丸 1/3 才開。'),
+     ('觀光客在日本買得到星巴克福袋嗎？',
+      '幾乎不行。星巴克 2027 福袋只在日本官方網路商店抽選、宅配，店裡不賣；抽選 11/4～11/15 已經截止。'),
+     ('寶可夢中心的福袋可以去店裡買嗎？',
+      '不行。2027 皮卡皮卡福箱只在寶可夢中心線上抽選，10/27～11/2 已截止，官方寫寶可夢中心與寶可夢商店店裡都不賣。'),
+     ('元旦（1/1）去百貨公司買福袋可以嗎？',
+      '大多不行。新宿高島屋、阪急梅田、大丸京都 1/1、1/2 全館休業，1/3 才初賣；伊勢丹新宿 1/1 休、1/2 初賣。'),
+     ('日本的福袋可以免稅嗎？',
+      '這篇整理的每一家官方頁都沒寫福袋能不能免稅，要以結帳時店家說明為準。'),
+     ('Bic Camera、友都八喜的福袋今年什麼時候賣？',
+      '2027 年的還沒公布。去年 Bic Camera 是 1/1 元旦起開賣，友都八喜 1/1 早上 8 點初賣，今年公布後再補上。'),
+    ]
+    fk_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in fk_faq]}, ensure_ascii=False)
+
+    _fk_srcs = ''.join(
+        f'<li>{html.escape(s["name"])}：{_fk_src(s["src"], html.escape(s["src"].split("//")[1].split("/")[0]))}</li>'
+        for s in _W + FKB['online'] + FKB['dept'] + FKB['elec_last'])
+
+    write('japan-fukubukuro/index.html',
+      head('日本福袋 2027 開賣時間：觀光客買得到哪些？星巴克、寶可夢只能網路抽，Mister Donut、Komeda、百貨初賣日',
+           '2027 日本福袋整理：Mister Donut 12/28 起、Komeda 1/1～1/6、Disney Store 1/1 起可以到店裡買；'
+           '星巴克、寶可夢中心只能網路抽選且已截止；百貨 1/1 休館，伊勢丹新宿 1/2、高島屋與阪急 1/3 初賣；'
+           'Bic Camera、友都八喜去年元旦開賣。',
+           'japan-fukubukuro/',
+           '<script type="application/ld+json">' + fk_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('日本福袋 2027', None)])
+      + '<article class="art">'
+      + '<h1>2027 日本福袋怎麼買？觀光客到店裡買得到的，和只能網路抽的</h1>'
+      + f'<p class="by">更新於 {FKB["checked"]}・資料來自各公司官網與官方公告</p>'
+      + '<p class="ap">跨年剛好在日本，很多人會想順便搶福袋。但這幾年日本的福袋越來越多改成「網路抽選、宅配到府」，'
+        '店裡根本不賣，觀光客沒有日本地址也很難參加。</p>'
+        '<p class="ap">我把觀光客比較常逛的店，一家一家回官網查了 2027 年的賣法。先講結論：'
+        '<mark>Mister Donut、Komeda、Disney Store 到店裡就買得到</mark>；'
+        '星巴克和寶可夢中心只能網路抽，而且已經截止了。百貨公司大多 1/1 休館，福袋要等 1/2 或 1/3。</p>'
+      + (f'<p class="sticky">{html.escape(_fk_now)}</p>' if _fk_now else '')
+      + '<nav class="atoc"><b>這篇有</b><ol>'
+        '<li><a href="#all">先看總表</a></li>'
+        '<li><a href="#pick">跨年人在日本，我會這樣排</a></li>'
+        '<li><a href="#walkin">到店裡就買得到的</a></li>'
+        '<li><a href="#dept">百貨公司：1/1 大多休館</a></li>'
+        '<li><a href="#elec">家電量販與 Apple（去年的做法）</a></li>'
+        '<li><a href="#online">只能網路抽或預購的</a></li>'
+        '<li><a href="#faq">常見問題</a></li></ol></nav>'
+      + '<h2 id="all">先看總表</h2>' + _fk_quick
+      + '<h2 id="pick">跨年人在日本，我會這樣排</h2>'
+      + '<ul class="pick">'
+        '<li><b>12/28～12/31 就到日本</b>：Mister Donut 12/28 起陸續開賣，賣完為止，各店開賣日官方 12/11 公布。'
+        '福袋裡的甜甜圈兌換卡全國的店都能用，旅途中隨時吃得到。</li>'
+        '<li><b>元旦當天</b>：百貨大多休館。官方寫 1/1 起賣福袋的有 Komeda、Disney Store（各店元旦營業時間還沒公布）。'
+        '去年 Bic Camera 元旦開賣、友都八喜 1/1 早上 8 點初賣，今年公布後再補。</li>'
+        '<li><b>1/2 想逛百貨</b>：伊勢丹新宿 10:00 初賣，是少數 1/2 就開的；高島屋、阪急、大丸都要等 1/3。</li>'
+        '<li><b>只待一兩天的話</b>：Komeda 福袋裡的咖啡券只能在買的那家店用，不會再回去就別買。</li>'
+        '</ul>'
+      + '<div class="tip"><b>小提醒</b>'
+        '<p>每一家的官方頁都沒寫福袋能不能免稅，結帳時以店家說明為準。</p>'
+        '<p>福袋大多賣完為止，開賣時間也常常各店不同，出門前看一下那家店的公告。</p></div>'
+      + '<h2 id="walkin">到店裡就買得到的</h2>' + _fk_walk_html
+      + '<h2 id="dept">百貨公司：1/1 大多休館</h2>'
+      + '<p class="ap">今年已經公布年末年始營業的百貨，1/1 全部休館。分成兩派：'
+        '伊勢丹新宿 1/2 就初賣；高島屋、阪急梅田、大丸 1/1、1/2 都休，1/3 才開。</p>'
+      + _fk_dept
+      + '<h2 id="elec">家電量販與 Apple（去年的做法）</h2>'
+      + '<p class="ap">這幾家 2027 年的還沒公布，下面是<mark>去年（2026 年）</mark>的做法，今年公布後再補上。</p>'
+      + _fk_elec
+      + '<h2 id="online">只能網路抽或預購的</h2>'
+      + '<p class="ap">下面這幾家今年都只在網路賣，大多要宅配到日本地址，跨年人在日本也很難買到。</p>'
+      + _fk_online
+      + '<div id="faq"></div>' + faq_visible(fk_faq)
+      + '<details class="more"><summary>這一篇查不到的</summary><ul>'
+      + ''.join(f'<li>{html.escape(x)}</li>' for x in FKB['unknown']) + '</ul></details>'
+      + '<details class="more"><summary>資料來源</summary><ul>' + _fk_srcs + '</ul></details>'
+      + '<h2>延伸閱讀</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 日本購物折扣總覽</b><s>各店觀光客優惠券</s></a>'
+      + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b><s>先付稅、出境再退</s></a>'
+      + f'<a class="ct" href="{U("/japan-holiday-calendar/")}"><b>📅 台日中韓連假撞期</b><s>哪幾天人最多、機票最貴</s></a></div>'
+      + f'<p class="disc">規定以各官方頁面為準，整理可能有疏漏。查證於 {FKB["checked"]}，之後官方若有更改，本頁不一定跟上。</p>'
+      + '</article>'
+      + foot())
+    pages.append(('/japan-fukubukuro/', 0.7))
 
 # ---------- 白川鄉點燈 2027 ----------
 # 資料在 shirakawago.json，規則引白川郷観光協会的開催概要，巴士團引各巴士公司頁面。
