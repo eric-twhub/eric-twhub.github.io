@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-17-taipei-sapporo",
- "generated": "2026-11-17 01:19",
+ "generated": "2026-11-17 07:49",
  "kind": "fare",
  "origin": "taipei",
  "city": "sapporo",
@@ -26,7 +26,7 @@
  "reasons": [
   "12 月出發的票，每天最便宜的平均要 NT$13,797（6 天有紀錄），這張低 16%"
  ],
- "med": 17230,
+ "med": 17229,
  "n_rt": 16,
  "others": [
   {
@@ -35,7 +35,7 @@
    "air": "FD",
    "airname": "泰國亞洲航空",
    "cls": "lcc",
-   "price": 10189,
+   "price": 10188,
    "dep": "2026-12-01",
    "ret": "2026-12-05",
    "dept": "05:55",
@@ -45,7 +45,7 @@
    "dur": 520,
    "dur_to": 225,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE0112CTS05121?t=FD17961045001796121600000225TPECTS17964792001796493300000295CTSTPE_cc8f9e92a4fd0673d4fc030f739eb013_25529&search_date=16112026&expected_price_uuid=01a1e4d9-e225-8040-2bcc-1aeeb8eac892&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=QLp9MFvnlW4nMZVj5NC-jg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=10189&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE0112CTS05121?t=FD17961045001796121600000225TPECTS17964792001796493300000295CTSTPE_cc8f9e92a4fd0673d4fc030f739eb013_25529&search_date=16112026&expected_price_uuid=01a1e4d9-e225-8040-2bcc-1aeeb8eac892&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=QLp9MFvnlW4nMZVj5NC-jg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=10188&marker=775639"
   },
   {
    "o": "TPE",
