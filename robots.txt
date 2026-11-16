@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://eric-twhub.github.io/sitemap.xml
-Sitemap: https://eric-twhub.github.io/sitemap-pages.xml
+Sitemap: https://jptripcard.com/sitemap.xml
+Sitemap: https://jptripcard.com/sitemap-pages.xml

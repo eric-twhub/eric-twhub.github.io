@@ -10,7 +10,7 @@
 """
 import glob, json, re, sys, time, urllib.request
 
-HOST = 'eric-twhub.github.io'
+HOST = 'jptripcard.com'
 SITE = f'https://{HOST}'
 UA = 'Mozilla/5.0 (compatible; taiwan-japan-flights-indexnow/1.0)'
 

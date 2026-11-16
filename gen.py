@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""台日機票速報 — 多頁 SEO 網站產生器"""
+"""日本旅遊小卡 — 多頁 SEO 網站產生器"""
 import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics, hashlib, calendar, math, unicodedata
 import glob
 
@@ -7244,15 +7244,15 @@ if DRV:
 # 連結確認的（只有 Trip.com／KKday／Klook）；之後若接了銀行分潤，這句要改。
 _ab_issues = 'https://github.com/eric-twhub/eric-twhub.github.io/issues'
 _ab_ld = json.dumps({'@context': 'https://schema.org', '@type': 'AboutPage',
-                     'name': '關於台日機票速報', 'url': f'{SITE}{U("/about/")}',
+                     'name': '關於日本旅遊小卡', 'url': f'{SITE}{U("/about/")}',
                      'inLanguage': 'zh-Hant'}, ensure_ascii=False)
 write('about/index.html',
-  head('關於台日機票速報：資料從哪裡來、怎麼查證、靠什麼維持',
-       '台日機票速報是個人整理的網站。票價怎麼來、信用卡與店家條件怎麼查、'
+  head('關於日本旅遊小卡：資料從哪裡來、怎麼查證、靠什麼維持',
+       '日本旅遊小卡是個人整理的網站。票價怎麼來、信用卡與店家條件怎麼查、'
        '網站靠什麼維持，以及發現資料有錯時怎麼回報。',
        'about/', '<script type="application/ld+json">' + _ab_ld + '</script>')
   + topnav() + crumbs([('首頁', '/'), ('關於本站', None)])
-  + '<h1>關於台日機票速報</h1>'
+  + '<h1>關於日本旅遊小卡</h1>'
   + '<p class="lede">這個網站整理從台灣去日本會遇到的事：機票價格、刷哪張卡、'
     '退稅與優惠券、連假怎麼請。由一個住在台灣、常飛日本的人個人整理，'
     '不是旅行社，也不是銀行、航空公司或店家的官方網站。</p>'
@@ -16409,7 +16409,7 @@ hot=sorted([x for x in deals if x['rt'] and
   ((x['cls']=='lcc' and x['price']<LCC_CAP) or (x['cls']=='fsc' and x['price']<FSC_CAP))],
   key=lambda x:x['price'])
 allbest=min([x['price'] for x in deals if x['rt']] or [0])
-title=f'台日機票速報｜台灣飛日本便宜機票，{NOW.year}年最低 {money(allbest)} 來回含稅'
+title=f'日本旅遊小卡｜台灣飛日本便宜機票，{NOW.year}年最低 {money(allbest)} 來回含稅'
 desc=(f'台北、台中、高雄、台南飛日本 {len(CITIES)} 個城市的便宜機票整理，含稅價格、航空公司、'
       f'日期一次看。目前最低 {money(allbest)} 來回含稅，每日更新。')
 sections=''
@@ -16428,7 +16428,7 @@ _ALLTC = min((x['price'] for x in deals
               if x.get('gate') == 'Trip.com' and x['rt']), default=None)
 write('index.html', head(title,desc,'')
   + topnav() + crumbs([('首頁',None)])
-  + f'<h1>台日機票速報</h1>'
+  + f'<h1>日本旅遊小卡</h1>'
   + f'<p class="lede">台灣飛日本 <b>{len(CITIES)}</b> 個城市的便宜機票整理，價格含稅含手續費。'
     f'目前最低 <b>{money(allbest)}</b> 來回含稅'
     + (f'；<b>只看 Trip.com 是 {money(_ALLTC)}</b>（跨平台的低價常來自台灣較陌生的訂票網站）'
@@ -16875,7 +16875,7 @@ OWN_BOOKING = {'台灣虎航': _tigerair_booking}
 os.makedirs('posts',exist_ok=True)
 json.dump(deals_out, open('posts/deals.json','w',encoding='utf-8'),
           ensure_ascii=False, indent=1)     # 供 make_cards.py 產生 IG 圖卡
-lines=[f'台日機票速報 {TODAY} — 共 {len(deals_out)} 則\n'+'='*52,
+lines=[f'日本旅遊小卡 {TODAY} — 共 {len(deals_out)} 則\n'+'='*52,
        '⚠️ 發文前務必點「查證連結」確認價格仍在，並截圖存證。',
        '   票價變動快，昨日的好票今天常已失效；對不上就不要發。',
        '⚠️ 主文不要放連結。標籤以上是主文，發完之後回自己一則放連結。',
@@ -27826,7 +27826,7 @@ SEARCH_JS = (SEARCH_JS.replace('__IDX__', U('/search.json') + '?v=' + _sv)
              .replace('__TXT__', U('/search-text.json') + '?v=' + _sv))
 
 write('search/index.html',
-      head('站內搜尋｜台日機票速報', '搜尋本站整理過的機票、門票、信用卡、退稅、上網等頁面。',
+      head('站內搜尋｜日本旅遊小卡', '搜尋本站整理過的機票、門票、信用卡、退稅、上網等頁面。',
            'search/', extra='<meta name="robots" content="noindex">')
       + topnav('search') + crumbs([('首頁', '/'), ('站內搜尋', None)])
       + '<h1>站內搜尋</h1>'

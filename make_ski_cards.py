@@ -143,7 +143,7 @@ def page(inner, cls=''):
 
 
 def foot(i, n, note):
-    return ('<div class="foot"><div><b>eric-twhub.github.io</b>'
+    return ('<div class="foot"><div><b>jptripcard.com</b>'
             f'<span>{E(note)}</span></div>'
             f'<div class="pg">{i} / {n}</div></div>')
 

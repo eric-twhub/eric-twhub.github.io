@@ -129,7 +129,7 @@ def page(inner, cls=''):
 
 
 def foot(i, n, note='條件逐張查證，各附發卡行官方來源'):
-    return ('<div class="foot"><div><b>eric-twhub.github.io</b>'
+    return ('<div class="foot"><div><b>jptripcard.com</b>'
             f'<span>{E(note)}</span></div>'
             f'<div class="pg">{i} / {n}</div></div>')
 

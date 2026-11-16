@@ -149,7 +149,7 @@ def build(slug, name, prices, days):
 </div>
 <div class="note">價格為單人來回含稅的近期最低紀錄，僅供比較各日期高低，
 非即時可訂價；標「—」的日期目前沒有紀錄，不代表沒有航班。</div>
-<div class="site">eric-twhub.github.io</div>
+<div class="site">jptripcard.com</div>
 </body></html>"""
 
 

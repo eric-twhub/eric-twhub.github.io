@@ -147,7 +147,7 @@ def page(inner, cls=''):
 
 
 def foot(i, n):
-    return ('<div class="foot"><div><b>eric-twhub.github.io</b>'
+    return ('<div class="foot"><div><b>jptripcard.com</b>'
             '<span>每家回查官方地址、營業時間與公休</span></div>'
             f'<div class="pg">{i} / {n}</div></div>')
 
