@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-16-transfer-fukuoka-nagasaki",
- "generated": "2026-11-16 11:06",
+ "generated": "2026-11-16 15:54",
  "kind": "transfer",
  "city": "nagasaki",
  "via": "fukuoka",
@@ -12,17 +12,17 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 7749,
-  "dep": "2026-12-08",
-  "ret": "2026-12-12",
-  "dept": "06:45",
+  "price": 5383,
+  "dep": "2026-12-07",
+  "ret": "2026-12-11",
+  "dept": "13:40",
   "rett": "10:55",
   "rt": true,
   "tr": 0,
   "dur": 300,
   "dur_to": 135,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-08&inbound=FUK-TPE&returnDate=2026-12-12&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-07&inbound=FUK-TPE&returnDate=2026-12-11&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "fare_rt": true,
@@ -35,6 +35,6 @@
  "route": "博多 → 長崎",
  "mode": "特急接力海鷗＋西九州新幹線",
  "tm": "約 1 小時 20 分",
- "total": 10241,
- "save": 1435
+ "total": 7875,
+ "save": 3801
 }
