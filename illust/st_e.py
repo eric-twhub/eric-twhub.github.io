@@ -159,4 +159,48 @@ rw += face(95, 80, .62)
 rw += sparkle(128, 46, 3.4)
 add('ropeway', '手繪深藍夜空下掛在纜線上、有臉的紅白色纜車，下面是兩邊夾著海灣、亮著小小燈光的彎彎市街', rw, bg=NAVY, dots=False)
 
+# ---- conan（2026-11-18，青山剛昌ふるさと館頁 /yonago/conan-museum/）：一支大放大鏡照著鄉下小車站前的路，路上有一串小腳印 ----
+# 只畫一般的鄉下車站和放大鏡，不畫任何角色、角色的剪影或眼鏡＋領結、館方或店家的標誌與招牌、文字和數字。
+FIELD = '#cfe7c4'
+LENS = '#cfe9f7'
+cn = ''
+# 雲和遠山
+cn += f'<path d="M20,40 q-2,-10 8,-10 q4,-8 14,-4 q8,-4 12,4 q8,0 6,10 Z" fill="{WHITE}" stroke-width="1.8"/>'
+cn += f'<path d="M6,84 Q30,58 58,70 Q84,52 112,66 Q140,56 174,74 L174,92 L6,92 Z" fill="{GREEN}"/>'
+cn += f'<path d="M6,90 L174,90 L174,136 Q174,144 166,144 L14,144 Q6,144 6,136 Z" fill="{FIELD}"/>'
+# 鐵軌（車站後面橫過去）
+cn += f'<path d="M6,94 L174,94 M6,99 L174,99" stroke="{DBROWN}" stroke-width="1.8"/>'
+cn += ''.join(f'<path d="M{x},92 L{x},101" stroke="{DBROWN}" stroke-width="1.4" opacity=".6"/>' for x in range(12, 174, 10))
+# 停在月台邊的一節小火車（沒有塗裝標誌）
+cn += f'<rect x="98" y="72" width="62" height="22" rx="7" fill="{CREAM}"/>'
+cn += f'<path d="M98,86 L160,86 L160,87 Q160,94 153,94 L105,94 Q98,94 98,87 Z" fill="{GREEN}"/>'
+cn += ''.join(f'<rect x="{x}" y="76" width="9" height="7" rx="2" fill="{SKY}" stroke-width="1.3"/>' for x in (104, 117, 130, 143))
+cn += f'<circle cx="110" cy="96" r="3.4" fill="{INK}"/><circle cx="148" cy="96" r="3.4" fill="{INK}"/>'
+cn += f'<circle cx="155" cy="90" r="2" fill="{GOLD}" stroke-width="1"/>'
+# 木造小車站：瓦屋頂、白牆、門和兩扇窗
+cn += f'<rect x="20" y="66" width="62" height="36" rx="2" fill="{CREAM}"/>'
+cn += f'<path d="M12,68 L28,50 L74,50 L90,68 Z" fill="{BRICK}"/>'
+cn += f'<path d="M20,58 L82,58 M30,50 L26,68 M51,50 L51,68 M72,50 L76,68" stroke-width="1.2" opacity=".45"/>'
+cn += f'<rect x="44" y="78" width="14" height="24" rx="2" fill="{DBROWN}" stroke-width="1.8"/>'
+cn += ''.join(f'<rect x="{x}" y="74" width="11" height="10" rx="2" fill="{SKY}" stroke-width="1.4"/>' for x in (26, 65))
+cn += f'<rect x="34" y="60" width="34" height="6" rx="1.5" fill="{WHITE}" stroke-width="1.4"/>'
+cn += face(51, 92, .5, blush=False)
+# 從車站門口彎出去的路，路上一串小腳印
+cn += f'<path d="M44,102 Q40,114 70,122 Q104,130 112,144 L84,144 Q80,134 56,126 Q32,118 36,102 Z" fill="#eadcc4" stroke-width="1.8"/>'
+_fp = [(42, 108, 10), (50, 114, -20), (60, 118, -40)]
+cn += ''.join(f'<ellipse cx="{x}" cy="{y}" rx="1.8" ry="2.8" fill="{DBROWN}" stroke="none" transform="rotate({a+90} {x} {y})"/>'
+              for x, y, a in _fp)
+# 路邊的小樹
+cn += ''.join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="{DGREEN}" stroke-width="1.6"/>' for x, y, r in [(14, 114, 6), (150, 132, 7), (164, 120, 5)])
+# 大放大鏡：鏡片蓋在路上，裡面的腳印被放大，握把往右下
+cn += f'<path d="M119,127 L156,138" stroke="{DBROWN}" stroke-width="10"/>'
+cn += f'<path d="M119,127 L156,138" stroke="{BROWN}" stroke-width="5"/>'
+cn += f'<circle cx="98" cy="120" r="22" fill="{LENS}" fill-opacity=".6" stroke-width="5"/>'
+cn += f'<circle cx="98" cy="120" r="22" fill="none" stroke="{GOLD}" stroke-width="2"/>'
+cn += ''.join(f'<ellipse cx="{x}" cy="{y}" rx="3.6" ry="5.6" fill="{DBROWN}" stroke="none" transform="rotate({a} {x} {y})"/>'
+              for x, y, a in [(84, 118, 64), (98, 124, 52), (110, 132, 40)])
+cn += f'<path d="M84,108 Q88,101 96,100" fill="none" stroke="{WHITE}" stroke-width="3"/>'
+cn += sparkle(150, 40, 4) + star(98, 22, 5) + sparkle(160, 22, 3)
+add('conan', '手繪一支大放大鏡照著鄉下小車站前彎彎的路，路上有一串小腳印', cn, dots=False)
+
 print(save(FILES, OUT), 'stickers')

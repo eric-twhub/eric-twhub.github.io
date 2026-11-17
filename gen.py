@@ -1796,6 +1796,7 @@ def topnav(cur=''):
             + link('/tokyo/christmas-market/', '🎄 東京聖誕市集門票與日期')
             + link('/hakodate/christmas-fantasy/', '🎄 函館聖誕夢幻節')
             + link('/hakodate/ropeway/', '🚡 函館山纜車營業時間與夜景')
+            + link('/yonago/conan-museum/', '🕵️ 青山剛昌故鄉館要先買票')
             + link('/japan-shirakawago-lightup/', '🏮 白川鄉點燈怎麼預約')
             + link('/japan-takayama-shirakawago-bus/', '🚌 高山到白川鄉巴士')
             + link('/japan-ginzan-onsen/', '♨️ 銀山溫泉冬季怎麼預約')
@@ -1988,6 +1989,7 @@ _AD_MAP = [
     ('tokyo/christmas-market', 'esim'),
     ('hakodate/christmas-fantasy', 'esim'),
     ('hakodate/ropeway', 'esim'),
+    ('yonago/conan-museum', 'esim'),
     ('japan-shirakawago-lightup', 'esim'),
     ('japan-takayama-shirakawago-bus', 'transport'),
     ('japan-ginzan-onsen', 'esim'),
@@ -3026,6 +3028,7 @@ _STK_PREFIX = sorted({
     '/tokyo/christmas-market/': '',
     '/hakodate/christmas-fantasy/': 'st/seatree',
     '/hakodate/ropeway/': 'st/ropeway',
+    '/yonago/conan-museum/': 'st/conan',
     '/japan-takayama-shirakawago-bus/': 'st/skgbus',
     '/japan-tokyo-tower/': 'xmas/tower', '/japan-skytree/': 'xmas/skytree', '/japan-chiikawa-park/': 'xmas/gift',
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
@@ -3558,6 +3561,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要去高千穗峽划船？'
                      f'<a href="{U("/miyazaki/takachiho-gorge/")}">哪天開放預約、一艘多少錢、訂不到怎麼辦、從{name}怎麼去</a>'
                      f'（官網原文整理：乘船日 2 週前早上 9 點開放、12 月起取消費改了）。</p>')
+        if slug == 'yonago' and os.path.exists('gosho-museum.json'):
+            body += (f'<p class="lede">要去柯南小鎮？'
+                     f'<a href="{U("/yonago/conan-museum/")}">青山剛昌故鄉館舊館開到哪天、網路票怎麼買、從米子怎麼去</a>'
+                     f'（官網原文整理：舊館 2027/1/11 結束，現在要先買前一天截止的網路票）。</p>')
         if slug == 'hakodate' and os.path.exists('hakodate-ropeway.json'):
             body += (f'<p class="lede">要上函館山看夜景？'
                      f'<a href="{U("/hakodate/ropeway/")}">纜車現在有沒有開、營業時間與票價、這兩週幾點日落、冬天怎麼上山</a>'
@@ -12273,6 +12280,242 @@ if os.path.exists('hakodate-ropeway.json'):
         '函館市企業局、函館國際觀光會議協會無合作關係。</p>'
       + foot())
     pages.append(('/hakodate/ropeway/', 0.6))
+
+# ---------- 青山剛昌故鄉館（舊館 2027/1/11 結束、網路前售票、交通） ----------
+# 資料在 gosho-museum.json。時間、票價、規定引青山剛昌ふるさと館官網與官方售票頁 e-tix；機場交通引米子鬼太郎空港官網。
+# 舊館結束日、商店營業期間都寫在 JSON，過了日期頁面會自動改說法；售票狀況（avail）是快照，要手動回查。
+if os.path.exists('gosho-museum.json'):
+    GMF = json.load(open('gosho-museum.json', encoding='utf-8'))
+    _gmf_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _gmf_D = datetime.date.fromisoformat
+    _gmf_wd = '一二三四五六日'
+    _gmf_f, _gmf_ad, _gmf_v = GMF['fare'], GMF['advance'], GMF['visit']
+    _gmf_ac, _gmf_sh, _gmf_new = GMF['access'], GMF['shop'], GMF['new']
+    _gmf_h = GMF['hours']
+    _gmf_final = _gmf_D(GMF['final'])
+    _gmf_shop_to = _gmf_D(_gmf_sh['to'])
+    _gmf_open = _gmf_today <= _gmf_final
+    _gmf_left = (_gmf_final - _gmf_today).days
+
+    def _gmf_md(d, wd=True):
+        return f'{d.month}/{d.day}' + (f'（{_gmf_wd[d.weekday()]}）' if wd else '')
+
+    def _gmf_ymd(d, wd=True):
+        return f'{d.year}/{d.month}/{d.day}' + (f'（{_gmf_wd[d.weekday()]}）' if wd else '')
+
+    def _gmf_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    # 舊館現在的狀態
+    if _gmf_open:
+        _gmf_now = (f'<b>舊館開到 {_gmf_ymd(_gmf_final)}</b>，'
+                    + ('今天是最後一天' if _gmf_left == 0 else f'還有 {_gmf_left} 天')
+                    + f'；新館預定 {_gmf_new["when"]}開。')
+    elif _gmf_today <= _gmf_shop_to:
+        _gmf_now = (f'<b>舊館已在 {_gmf_ymd(_gmf_final)} 結束</b>；'
+                    f'{html.escape(_gmf_sh["name"])}開到 {_gmf_md(_gmf_shop_to)}，新館預定 {_gmf_new["when"]}開。')
+    else:
+        _gmf_now = f'<b>舊館已在 {_gmf_ymd(_gmf_final)} 結束</b>，新館預定 {_gmf_new["when"]}開。'
+
+    # 接下來不開或提早關的日子
+    _gmf_sp = [s for s in GMF['special_days'] if _gmf_D(s['date']) >= _gmf_today]
+    _gmf_cl = [_gmf_D(x) for x in GMF['closed'] if _gmf_D(x) >= _gmf_today]
+
+    # 售票狀況快照
+    _gmf_avail_rows = ''
+    for ym, st, txt in GMF['avail']['months']:
+        _y, _m = int(ym[:4]), int(ym[5:])
+        _lab = {'all': '有票', 'notyet': '還沒開賣', 'some': '部分日期賣完', 'out': '全部賣完'}.get(st, st)
+        _gmf_avail_rows += (f'<tr><td><b>{_y}/{_m}</b></td><td>{_lab}</td>'
+                            f'<td class="nm"><small>{html.escape(txt)}</small></td></tr>')
+    _gmf_ach = _gmf_D(GMF['avail']['checked'])
+
+    # 虎航：桃園飛米子、岡山，接下來 60 天的官網最低單程
+    _gmf_fl = ''
+    _a, _z = (_gmf_today + datetime.timedelta(days=1)).isoformat(), (_gmf_today + datetime.timedelta(days=60)).isoformat()
+    for _code, _city, _slug, _why in (('YGJ', '米子', '/yonago/', '到コナン駅約 1 小時'),
+                                       ('OKJ', '岡山', '/okayama/', '一日遊從岡山車站出發')):
+        _b = None
+        for s, p in (TGF.get('TPE-' + _code) or {}).items():
+            if p and _a <= s <= _z and (_b is None or p < _b[0]):
+                _b = (p, s)
+        _nm = f'<b><a href="{U(_slug)}">台北桃園飛{_city}</a></b><br><small>{_why}</small>'
+        if _b:
+            _bd = _gmf_D(_b[1])
+            _gmf_fl += (f'<tr><td class="nm">{_nm}</td>'
+                        f'<td class="nm"><b>{money(_b[0])}</b><br><small>{_bd.month}/{_bd.day} 出發</small></td>'
+                        f'<td class="nm"><a href="{html.escape(tiger_url("TPE", _code, _b[1], ""))}" target="_blank" rel="nofollow noopener">到虎航官網看這天</a></td></tr>')
+        else:
+            _gmf_fl += (f'<tr><td class="nm">{_nm}</td>'
+                        '<td class="nm" colspan="2"><small style="color:var(--dim)">接下來 60 天虎航官網沒有資料</small></td></tr>')
+
+    _gmf_tldr = (
+        f'<li>{_gmf_now}</li>'
+        + (f'<li><b>現在入館要先買網路票</b>：前一天 23:45 截止，賣完就沒有現場票；'
+           f'{html.escape(_gmf_ad["sale"])}。</li>' if _gmf_open else '')
+        + (f'<li><b>大人 {_gmf_f["adult"][0]} 円</b>，出示護照 {_gmf_f["adult"][1]} 円；'
+           f'{_gmf_h["open"]}～{_gmf_h["close"]}，最後入館 {_gmf_h["last"]}。</li>' if _gmf_open else '')
+        + ''.join(f'<li><b>{_gmf_md(_gmf_D(s["date"]))} 提早關</b>：最後入館 {s["last"]}、{s["close"]} 閉館。</li>'
+                  for s in _gmf_sp if _gmf_open)
+        + f'<li><b>從米子</b>搭 JR 到コナン駅（由良駅）約 1 小時，再走 20 分鐘或搭計程車 5 分鐘。</li>')
+
+    gmf_faq = [
+     ('青山剛昌故鄉館什麼時候關？',
+      re.sub(r'<[^>]+>', '', _gmf_now) + f'{_gmf_sh["name"]}在 {_gmf_md(_gmf_D(_gmf_sh["from"]), False)}～{_gmf_md(_gmf_shop_to, False)} 繼續營業。'
+      f'新館在{_gmf_new["where"]}，{_gmf_new["unknown"]}。'),
+     ('青山剛昌故鄉館要預約嗎？',
+      f'要。{_gmf_ad["rule"]}。網路票的截止時間是{_gmf_ad["cutoff"]}，{_gmf_ad["sale"]}。'),
+     ('青山剛昌故鄉館門票多少？',
+      f'大人 {_gmf_f["adult"][0]} 円、國高中生 {_gmf_f["teen"][0]} 円、小學生 {_gmf_f["child"][0]} 円；{_gmf_f["foreign"]}。{_gmf_f["free"]}。'),
+     ('網路票怎麼付款？可以取消嗎？',
+      f'{_gmf_ad["pay"]}。{_gmf_ad["cancel"]}。{_gmf_ad["lang"]}。'),
+     ('青山剛昌故鄉館開到幾點？',
+      f'{_gmf_h["open"]}～{_gmf_h["close"]}，最後入館 {_gmf_h["last"]}。'
+      + ''.join(f'{_gmf_ymd(_gmf_D(s["date"]), False)} 最後入館 {s["last"]}、{s["close"]} 閉館。' for s in GMF['special_days'])
+      + f'{GMF["closed_note"]}。'),
+     ('從米子機場怎麼去柯南小鎮？',
+      f'先到米子駅：{_gmf_ac["airport"][0][0]} {_gmf_ac["airport"][0][1]}，或搭 {_gmf_ac["airport"][2][0]}（{_gmf_ac["airport"][2][1]}）。'
+      f'米子駅搭 JR 山陰本線到コナン駅（由良駅）約 1 小時，{_gmf_ac["walk"]}，{_gmf_ac["taxi"]}。'),
+     ('館內可以拍照嗎？',
+      f'{_gmf_v["photo"]}。{_gmf_v["time"]}。'),
+     ('有一日遊可以直接帶去嗎？',
+      f'有從岡山出發、同一家旅行社的巴士一日遊，KKday 頁面寫明費用包含故鄉館入館；'
+      f'Klook 頁面的費用包含沒有列故鄉館門票，下單前要問清楚。舊館 {_gmf_md(_gmf_final, False)} 結束後行程會不會改去新館，平台頁面沒有寫。'),
+    ]
+    gmf_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in gmf_faq]}, ensure_ascii=False)
+
+    _gmf_d1 = GMF['products']['kkday'][0]
+    _gmf_k1 = GMF['products']['klook'][0]
+    _gmf_d1h = html.escape(kkday(_gmf_d1['url'], 'ticket', 'conan-museum'))
+    _gmf_k1h = html.escape(klook(_gmf_k1['url'], 'ticket'))
+    _gmf_eth = html.escape(GMF['src']['etix'])
+    _gmf_eten = html.escape(GMF['src']['etix_en'])
+
+    _gmf_hours_rows = (
+        f'<tr><td><b>平常</b></td><td>{_gmf_h["open"]}～{_gmf_h["close"]}</td><td>{_gmf_h["last"]}</td></tr>'
+        + ''.join(r for _, r in sorted(
+            [(_gmf_D(s['date']), f'<tr><td><b>{_gmf_md(_gmf_D(s["date"]))}</b></td><td>{_gmf_h["open"]}～{s["close"]}</td><td>{s["last"]}</td></tr>')
+             for s in _gmf_sp]
+            + [(d, f'<tr><td><b>{_gmf_md(d)}</b></td><td colspan="2">休館</td></tr>') for d in _gmf_cl])))
+
+    write('yonago/conan-museum/index.html',
+      head(f'青山剛昌故鄉館：舊館 {_gmf_final.year}/{_gmf_final.month}/{_gmf_final.day} 結束、現在要先買網路票、門票 {_gmf_f["adult"][0]} 円、從米子怎麼去柯南小鎮',
+           '青山剛昌故鄉館（青山剛昌ふるさと館，柯南小鎮）整理：舊館 2027/1/11 結束營業與新館 2027 年春、'
+           '入館要先買網路前售票（前一天截止、賣完沒有當日券）、開館時間與提早閉館日、票價與護照折扣、'
+           '從米子機場與米子駅怎麼去コナン駅、岡山出發的一日遊。',
+           'yonago/conan-museum/',
+           '<script type="application/ld+json">' + gmf_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('米子・鳥取', '/yonago/'), ('青山剛昌故鄉館', None)])
+      + '<h1>青山剛昌故鄉館</h1>'
+      + '<p class="lede">《名偵探柯南》作者青山剛昌的紀念館在鳥取縣北榮町，從コナン駅（JR 由良駅）一路是柯南的銅像與裝飾，台灣常叫它柯南小鎮。'
+        f'下面的時間、票價與規定引故鄉館官網與官方售票頁，查證於 {GMF["checked"]}。</p>'
+      + '<div class="tldr"><ul>' + _gmf_tldr + '</ul></div>'
+      + '<h2>舊館開到哪天</h2>'
+      + f'<p class="lede">{_gmf_now}</p>'
+      + '<ul class="lede">'
+        + _gmf_li('商店', f'{_gmf_sh["name"]}在 {_gmf_md(_gmf_D(_gmf_sh["from"]), False)}～{_gmf_md(_gmf_shop_to, False)} 繼續營業')
+        + _gmf_li('新館位置', _gmf_new['where'])
+        + _gmf_li('還不知道', _gmf_new['unknown'])
+        + (_gmf_li('最後的特別展示', _gmf_v['exhibit']) if _gmf_open else '')
+        + (_gmf_li('特別割引券', _gmf_f['discount_end']) if _gmf_open else '')
+        + '</ul>'
+      + ((
+        '<h2>怎麼買網路票</h2>'
+        + f'<p class="lede">{html.escape(_gmf_ad["rule"])}。</p>'
+        + '<ul class="lede">'
+          + _gmf_li('截止', _gmf_ad['cutoff'])
+          + _gmf_li('開賣', _gmf_ad['sale'])
+          + _gmf_li('票種', _gmf_ad['date_only'])
+          + _gmf_li('護照折扣', _gmf_f['foreign'])
+          + _gmf_li('付款', _gmf_ad['pay'])
+          + _gmf_li('取消', _gmf_ad['cancel'])
+          + _gmf_li('入館', _gmf_ad['qr'])
+          + _gmf_li('團體', _gmf_ad['group'])
+          + '</ul>'
+        + f'<div class="tw"><table><tr><th>入館月份</th><th>售票狀況</th><th>說明</th></tr>{_gmf_avail_rows}</table></div>'
+        + f'<p class="disc">售票狀況是 {_gmf_ach.month}/{_gmf_ach.day} 在官方售票頁看到的，最後幾週會越來越難買，以售票頁為準。</p>'
+        + f'<a class="cta" href="{_gmf_eth}" target="_blank" rel="nofollow noopener">'
+          '<span class="ci">🎫</span><span class="ct"><b>官方網路售票（e-tix）</b>'
+          '<s>日文；選日期後用信用卡付款，手機出示 QR code</s></span><span class="ca">→</span></a>'
+        + f'<a class="cta" href="{_gmf_eten}" target="_blank" rel="nofollow noopener">'
+          '<span class="ci">🌐</span><span class="ct"><b>同一個售票頁的英文版</b>'
+          '<s>看不懂日文可以用這頁</s></span><span class="ca">→</span></a>'
+        + '<h2>開館時間與休館日</h2>'
+        + '<div class="tw"><table><tr><th>日子</th><th>開館</th><th>最後入館</th></tr>' + _gmf_hours_rows + '</table></div>'
+        + f'<p class="disc">{html.escape(GMF["closed_note"])}。</p>'
+        + ''.join(f'<ul class="lede">{_gmf_li(_gmf_md(_gmf_D(s["date"]), False) + " 為什麼提早關", s["why"])}</ul>' for s in _gmf_sp)
+        + '<h2>票價</h2>'
+        + '<div class="tw"><table><tr><th></th><th>一般</th><th>出示護照</th></tr>'
+          f'<tr><td><b>大人</b></td><td>{_gmf_f["adult"][0]} 円</td><td><b>{_gmf_f["adult"][1]} 円</b></td></tr>'
+          f'<tr><td><b>國高中生</b></td><td>{_gmf_f["teen"][0]} 円</td><td>{_gmf_f["teen"][1]} 円</td></tr>'
+          f'<tr><td><b>小學生</b></td><td>{_gmf_f["child"][0]} 円</td><td>{_gmf_f["child"][1]} 円</td></tr>'
+          '</table></div>'
+        + '<ul class="lede">'
+          + _gmf_li('免費', _gmf_f['free'])
+          + _gmf_li('現場付款', _gmf_f['pay'])
+          + _gmf_li('再入館', _gmf_f['reentry'])
+          + '</ul>'
+      ) if _gmf_open else '')
+      + '<h2>怎麼去</h2>'
+      + '<p class="lede">最近的車站是 JR 山陰本線的由良駅，車站別名コナン駅。台灣虎航飛米子，從米子機場先到米子駅再搭 JR。</p>'
+      + '<div class="tw"><table><tr><th>從哪裡</th><th>怎麼走</th><th>時間</th></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{html.escape(a)}</b><br><small>米子鬼太郎空港出發</small></td>'
+                  f'<td class="nm">到米子駅</td><td class="nm"><small>{html.escape(b)}</small></td></tr>'
+                  for a, b in _gmf_ac['airport'])
+        + ''.join(f'<tr><td class="nm"><b>{html.escape(a)}</b></td><td class="nm">{html.escape(b)}</td>'
+                  f'<td class="nm">{html.escape(c)}</td></tr>'
+                  for a, b, c in _gmf_ac['rail'])
+        + '</table></div>'
+      + '<ul class="lede">'
+        + _gmf_li('車站到舊館', _gmf_ac['walk'])
+        + _gmf_li('計程車', _gmf_ac['taxi'])
+        + _gmf_li('巴士', _gmf_ac['bus'])
+        + _gmf_li('開車', _gmf_ac['car'])
+        + _gmf_li('停車', _gmf_v['parking'])
+        + '</ul>'
+      + '<h2>館內與周邊</h2>'
+      + '<ul class="lede">'
+        + _gmf_li('要多久', _gmf_v['time'])
+        + _gmf_li('拍照', _gmf_v['photo'])
+        + _gmf_li('寄放行李', _gmf_v['luggage'])
+        + _gmf_li('吃東西', _gmf_v['food'] + '；' + GMF['beika']['where'] + '的コナンの家 米花商店街有' + GMF['beika']['shops'])
+        + _gmf_li('拍照點', GMF['beika']['note'])
+        + _gmf_li('輪椅', _gmf_v['wheel'])
+        + _gmf_li('小孩', _gmf_v['kids'])
+        + '</ul>'
+      + '<h2>飛米子、岡山</h2>'
+      + '<p class="lede">自己搭車就飛米子；要參加岡山出發的一日遊就飛岡山。下面是接下來 60 天虎航官網的最低單程（含稅、不含託運行李），每天自動更新。</p>'
+      + '<div class="tw"><table><tr><th>航線</th><th>官網最低單程</th><th></th></tr>' + _gmf_fl + '</table></div>'
+      + ((
+        '<h2>Klook、KKday</h2>'
+        + '<p class="lede">門票只能在官方售票頁買，平台上沒有單買的入館票。不想自己轉車的話，有從岡山出發、順便去鳥取砂丘的巴士一日遊。</p>'
+        + '<div class="tw"><table><tr><th>平台</th><th>內容</th><th>注意</th></tr>'
+          + f'<tr><td class="nm"><b>KKday {_gmf_d1["id"]}</b><br><small>{html.escape(_gmf_d1["name"])}</small></td>'
+            f'<td class="nm">{html.escape(_gmf_d1["what"])}</td><td class="nm"><small>{html.escape(_gmf_d1["rule"])}</small></td></tr>'
+          + f'<tr><td class="nm"><b>Klook {_gmf_k1["id"]}</b><br><small>{html.escape(_gmf_k1["name"])}</small></td>'
+            f'<td class="nm">{html.escape(_gmf_k1["what"])}</td><td class="nm"><small>{html.escape(_gmf_k1["rule"])}</small></td></tr>'
+          + '</table></div>'
+        + '<p class="disc">平台的售價、方案、出發日與包含項目隨時會改，以下單頁面為準。</p>'
+        + f'<a class="cta" href="{_gmf_d1h}" target="_blank" rel="{_rel(_gmf_d1h)}">'
+          '<span class="ci">🚌</span><span class="ct"><b>KKday 鳥取砂丘＋故鄉館一日遊</b>'
+          '<s>岡山出發，費用包含故鄉館入館</s></span><span class="ca">→</span></a>'
+        + f'<a class="cta" href="{_gmf_k1h}" target="_blank" rel="{_rel(_gmf_k1h)}">'
+          '<span class="ci">🏜️</span><span class="ct"><b>Klook 鳥取沙丘＋故鄉館一日遊</b>'
+          '<s>岡山出發；先確認含不含故鄉館門票</s></span><span class="ca">→</span></a>'
+        + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格。</p>'
+      ) if _gmf_open else '')
+      + faq_visible(gmf_faq)
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/yonago/")}"><b>✈️ 米子・鳥取機票</b><s>桃園直飛米子</s></a>'
+      + f'<a class="ct" href="{U("/okayama/")}"><b>✈️ 岡山機票</b><s>一日遊從岡山出發</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📱 日本 eSIM 比較</b><s>買票與入館出示 QR code 都要有網路</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 日本刷卡回饋</b><s>網路票要用信用卡</s></a></div>'
+      + '<p class="disc">時間、票價與規定以青山剛昌ふるさと館官網為準，整理可能有疏漏。本頁為公開資訊整理，'
+        '與青山剛昌ふるさと館、北榮町、小學館無合作關係。</p>'
+      + foot())
+    pages.append(('/yonago/conan-museum/', 0.6))
 
 # ---------- 乳頭溫泉鄉 鶴之湯（訂房、日歸入浴、交通） ----------
 # 資料在 tsurunoyu.json。房價、預約方式引鶴之湯官網日文頁；網路方案起價、取消費與空房快照引日本秘湯を守る会；
