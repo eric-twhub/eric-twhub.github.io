@@ -21593,10 +21593,10 @@ if os.path.exists('cards.json'):
       '.lbad .mo{display:block;font-size:.76rem;margin:0 14px 14px;'
       'margin-bottom:auto;padding-bottom:14px}'
       # 卡片專屬的訂票平台提示，接在 figcaption 後面
-      '.lbp{margin:10px 0 0;padding:10px 12px;border:1px solid var(--line);'
+      '.lbpf{margin:10px 0 0;padding:10px 12px;border:1px solid var(--line);'
       'border-radius:8px;background:var(--soft);font-size:.78rem;line-height:1.65}'
-      '.lbp b{display:block;font-size:.86rem}'
-      '.lbp span{display:block;margin-top:6px;font-weight:700}'
+      '.lbpf b{display:block;font-size:.86rem}'
+      '.lbpf span{display:block;margin-top:6px;font-weight:700}'
       '</style>')
 
     # 格線裡只插兩格廣告：第 4 張後面放 eSIM、第 16 張後面放 JR Pass。
@@ -21686,7 +21686,7 @@ if os.path.exists('cards.json'):
             hit = t['cap'] * 1000 // round(t['rate'] * 10)
             names = row.split('：', 1)[1].replace('、松山機場停車', '')
             return (
-                '<div class="lbp"><b>用這張卡訂行程也算 '
+                '<div class="lbpf"><b>用這張卡訂行程也算 '
                 f'{_lb_g(t["rate"])}%</b>'
                 f'「{html.escape(t["label"])}」的名單裡有 {html.escape(names)}，'
                 f'和交通卡儲值、網購共用同一個上限，每期刷 NT${hit:,} 就滿。'
@@ -21712,7 +21712,7 @@ if os.path.exists('cards.json'):
             href = ('https://tw.trip.com/hotels/?' + urllib.parse.urlencode(
                 {**_lb_trip_aff, 'trip_sub1': 'labels_' + slug}))
             return (
-                f'<div class="lbp"><b>用這張卡訂 Trip.com 有 {_lb_g(rate)}%</b>'
+                f'<div class="lbpf"><b>用這張卡訂 Trip.com 有 {_lb_g(rate)}%</b>'
                 f'{visa}要另外登錄，每季登錄一次'
                 + (f'（{when}，名額 {e["quota"]:,} 名）' if when and e.get('quota') else '')
                 + '。'
