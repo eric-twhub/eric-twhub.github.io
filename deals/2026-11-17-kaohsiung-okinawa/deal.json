@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-17-kaohsiung-okinawa",
- "generated": "2026-11-17 10:59",
+ "generated": "2026-11-17 11:05",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "okinawa",
@@ -54,7 +54,7 @@
    "air": "GK",
    "airname": "捷星日本",
    "cls": "lcc",
-   "price": 5988,
+   "price": 5991,
    "dep": "2026-12-20",
    "ret": "2026-12-25",
    "dept": "14:35",
@@ -64,7 +64,7 @@
    "dur": 210,
    "dur_to": 100,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH2012OKA25121?t=IT17977773001797786900000100KHHOKA17981946001798197600000110OKAKHH_d57fc15d3e8ea73c182a4a30cfd4143d_14998&search_date=17112026&expected_price_uuid=01a1e760-9c82-8040-6d0d-061905e1cb8b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=X0wMfBgqZEtf_Es2iNWxTA&expected_price_source=share&expected_price_currency=twd&expected_price=5988&marker=775639"
+   "url": "https://www.aviasales.com/search/KHH2012OKA25121?t=IT17977773001797786900000100KHHOKA17981946001798197600000110OKAKHH_d57fc15d3e8ea73c182a4a30cfd4143d_14998&search_date=17112026&expected_price_uuid=01a1e760-9c82-8040-6d0d-061905e1cb8b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=X0wMfBgqZEtf_Es2iNWxTA&expected_price_source=share&expected_price_currency=twd&expected_price=5991&marker=775639"
   }
  ]
 }
