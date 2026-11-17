@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-17-taipei-ishigaki",
- "generated": "2026-11-17 12:36",
+ "generated": "2026-11-17 12:44",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -75,7 +75,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5789,
+   "price": 4669,
    "dep": "2026-11-27",
    "ret": "2026-12-04",
    "dept": "06:35",
@@ -84,8 +84,9 @@
    "tr": 0,
    "dur": 130,
    "dur_to": 60,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2711ISG04121?t=IT17957613001795768500000060TPEISG17963763001796376900000070ISGTPE_a974ac01532cddf02d13f74a233923da_14474&search_date=10112026&expected_price_uuid=01a1c40d-cebe-8040-a63f-079c13e368ab&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=s1axwgWC2yn-c0MDuhHVhA&expected_price_source=share&expected_price_currency=twd&expected_price=5789&marker=775639"
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-27&inbound=ISG-TPE&returnDate=2026-12-04&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
   }
  ]
 }

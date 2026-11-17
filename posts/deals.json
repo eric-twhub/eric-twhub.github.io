@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$4,128（14 天有紀錄），這張低 39%"
+   "12 月出發的票，每天最便宜的平均要 NT$4,157（14 天有紀錄），這張低 39%"
   ],
   "med": 13195,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-13&inbound=OKA-TPE&returnDate=2026-12-17&type=return&adult=1&language=zh-TW",
@@ -22,50 +22,16 @@
   "cslug": "okinawa",
   "usual": {
    "lo": 2534,
-   "hi": 5553,
+   "hi": 6412,
    "days": 17
   },
   "mbase": {
-   "avg": 4128,
+   "avg": 4157,
    "days": 14,
    "month": 12
   },
   "rank": 1,
   "n": 40
- },
- {
-  "slug": "2026-11-17-taichung-okinawa",
-  "title": "台中飛沖繩 NT$3,851 來回含稅｜台灣虎航 12/21 出發",
-  "o": "台中",
-  "c": "沖繩",
-  "_oiata": "RMQ",
-  "_diata": "OKA",
-  "price": 3851,
-  "air": "台灣虎航",
-  "dep": "2026-12-21",
-  "ret": "2026-12-31",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$9,506（25 天有紀錄），這張低 59%"
-  ],
-  "med": 10374,
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-12-21&inbound=OKA-RMQ&returnDate=2026-12-31&type=return&adult=1&language=zh-TW",
-  "hotelcity": "那霸",
-  "cslug": "okinawa",
-  "usual": {
-   "lo": 4851,
-   "hi": 10966,
-   "days": 39
-  },
-  "mbase": {
-   "avg": 9506,
-   "days": 25,
-   "month": 12
-  },
-  "rank": 1,
-  "n": 103
  },
  {
   "slug": "2026-11-17-kaohsiung-okinawa",
@@ -121,6 +87,40 @@
   "mbase": null,
   "rank": 1,
   "n": 14
+ },
+ {
+  "slug": "2026-11-17-taichung-okinawa",
+  "title": "台中飛沖繩 NT$4,351 來回含稅｜台灣虎航 12/21 出發",
+  "o": "台中",
+  "c": "沖繩",
+  "_oiata": "RMQ",
+  "_diata": "OKA",
+  "price": 4351,
+  "air": "台灣虎航",
+  "dep": "2026-12-21",
+  "ret": "2026-12-31",
+  "stops": "直飛",
+  "cls": "lcc",
+  "reasons": [
+   "廉航低於 NT$6,000",
+   "12 月出發的票，每天最便宜的平均要 NT$9,526（25 天有紀錄），這張低 54%"
+  ],
+  "med": 10374,
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-12-21&inbound=OKA-RMQ&returnDate=2026-12-31&type=return&adult=1&language=zh-TW",
+  "hotelcity": "那霸",
+  "cslug": "okinawa",
+  "usual": {
+   "lo": 4851,
+   "hi": 10966,
+   "days": 39
+  },
+  "mbase": {
+   "avg": 9526,
+   "days": 25,
+   "month": 12
+  },
+  "rank": 1,
+  "n": 103
  },
  {
   "slug": "2026-11-17-taipei-saga",
