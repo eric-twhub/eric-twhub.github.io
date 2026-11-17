@@ -3030,6 +3030,7 @@ _STK_PREFIX = sorted({
     '/japan-medicine-limit/': 'st/medicine', '/threads-japan/': 'st/speech', '/tokyo/street-fashion/': 'st/shirt',
     '/tokyo/worth-flying-for/': 'st/shop', '/japan-worth-buying/': 'st/shop', '/search/': 'st/search', '/about/': 'st/notebook',
     '/japan-credit-card/': 'st/card', '/japan-airline-card/': 'st/card', '/japan-card-': 'st/card', '/iphone-card/': 'st/card',
+    '/japan-shop-card/': 'st/card',
     '/japan-fukubukuro/': 'st/fukubukuro',
     '/japan-coupon/': 'st/coupon', '/japan-bogo/': 'st/coupon', '/japan-store-points/': 'st/coupon', '/japan-bic-points/': 'st/coupon',
     '/japan-tax-free-2026/': 'st/receipt', '/japan-esim': 'st/phone', '/japan-sms-roaming/': 'st/phone',
