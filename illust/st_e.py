@@ -103,4 +103,60 @@ fy += ''.join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="{WHITE}" stroke-width="1
 fy += sparkle(84, 30) + star(108, 22, 5) + sparkle(16, 60, 4)
 add('ferry', '手繪藍綠色海上一艘有臉的白色高速船，後面是有紅瓦屋頂小屋和椰子樹的小島', fy, dots=False)
 
+# ---- ropeway（2026-11-17，函館山纜車頁 /hakodate/ropeway/）：深藍夜空裡掛在纜線上的紅白色纜車，下面是兩邊夾著海灣、亮著小燈的彎彎市街 ----
+# 市街的形狀參考函館山往下看的「兩邊是海、中間變窄」簡化成沙漏形，不描照片構圖；纜車不畫公司標誌。
+NSEA = '#2b3866'
+NFAR = '#232b4f'
+NLAND = '#3d4a7c'
+LITE = [GOLD, '#ffd98a', '#ffb066', WHITE]
+
+
+def _isthmus(y):
+    # 回傳這一列市街的中心與半寬：遠處寬、中間窄、近處再變寬
+    c = 90 + (y - 120) * 0.25
+    hw = 12 + (y - 120) ** 2 * (0.1 if y < 120 else 0.0625)
+    return c, min(hw, 52)
+
+
+rw = ''
+# 星星（不畫月亮：封面的夜晚場景已經有一個月亮）
+rw += star(30, 30, 5) + star(122, 20, 4) + star(62, 66, 3.6) + star(156, 26, 5.4)
+rw += sparkle(150, 76, 4) + sparkle(18, 70, 3) + sparkle(138, 12, 3)
+# 兩邊的海灣與遠處的山影
+rw += f'<path d="M6,96 L174,96 L174,136 Q174,144 166,144 L14,144 Q6,144 6,136 Z" fill="{NSEA}"/>'
+rw += f'<path d="M6,100 Q30,90 62,94 Q100,86 132,92 Q156,88 174,96 L174,102 L6,102 Z" fill="{NFAR}" stroke-width="1.8"/>'
+# 沙漏形的市街
+_ys = list(range(100, 145, 4))
+_l = [(_isthmus(y)[0] - _isthmus(y)[1], y) for y in _ys]
+_r = [(_isthmus(y)[0] + _isthmus(y)[1], y) for y in _ys]
+rw += ('<path d="M' + ' L'.join(f'{x:.1f},{y}' for x, y in _l) + ' L'
+       + ' L'.join(f'{x:.1f},{y}' for x, y in reversed(_r)) + f' Z" fill="{NLAND}" stroke-width="1.8"/>')
+# 市街裡一顆顆暖色的小燈（固定亂數，每次輸出一樣）
+_seed = 11
+_n = 0
+while _n < 78:
+    _seed = (_seed * 1103515245 + 12345) % 2147483648
+    _x = 6 + (_seed % 1680) / 10
+    _seed = (_seed * 1103515245 + 12345) % 2147483648
+    _y = 101 + (_seed % 420) / 10
+    _c, _hw = _isthmus(_y)
+    if abs(_x - _c) > _hw - 2.6 or _x < 9 or _x > 171:
+        continue
+    rw += f'<circle cx="{_x:.1f}" cy="{_y:.1f}" r="{1.0 + (_n % 3) * 0.25:.2f}" fill="{LITE[_n % 4]}" stroke="none"/>'
+    _n += 1
+rw += f'<path d="M14,124 q8,-3 16,0 M146,130 q8,-3 16,0 M20,136 q6,-2 12,0" fill="none" stroke="#5b6ea6" stroke-width="1.4"/>'
+# 兩條纜線（從左上斜斜往右下）
+rw += f'<path d="M4,16 L176,58" stroke="{GRAY}" stroke-width="1.8"/><path d="M4,20 L176,62" stroke="{GRAY}" stroke-width="1.4" opacity=".7"/>'
+# 纜車：吊架＋車廂（紅色車頂與底線、白色車身、亮燈的窗、可愛臉）
+rw += (f'<g transform="rotate(13.7 95 39)"><rect x="83" y="34" width="24" height="7" rx="3" fill="{GRAY}"/>'
+       f'<circle cx="88" cy="36" r="2.6" fill="{WHITE}" stroke-width="1.2"/><circle cx="102" cy="36" r="2.6" fill="{WHITE}" stroke-width="1.2"/></g>')
+rw += f'<path d="M95,42 L95,52 M89,52 L101,52" stroke-width="2.4"/>'
+rw += f'<rect x="72" y="52" width="46" height="42" rx="10" fill="{WHITE}"/>'
+rw += f'<path d="M72,64 L72,62 Q72,52 82,52 L108,52 Q118,52 118,62 L118,64 Z" fill="{RED}"/>'
+rw += f'<path d="M72,86 L118,86 Q118,94 108,94 L82,94 Q72,94 72,86 Z" fill="{RED}"/>'
+rw += ''.join(f'<rect x="{x}" y="67" width="11" height="9" rx="2.4" fill="#ffe7a8" stroke-width="1.4"/>' for x in (77, 89.5, 102))
+rw += face(95, 80, .62)
+rw += sparkle(128, 46, 3.4)
+add('ropeway', '手繪深藍夜空下掛在纜線上、有臉的紅白色纜車，下面是兩邊夾著海灣、亮著小小燈光的彎彎市街', rw, bg=NAVY, dots=False)
+
 print(save(FILES, OUT), 'stickers')

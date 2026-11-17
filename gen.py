@@ -1795,6 +1795,7 @@ def topnav(cur=''):
             + link('/tokyo/autumn-leaves/', '🍁 東京賞楓要買票的地方')
             + link('/tokyo/christmas-market/', '🎄 東京聖誕市集門票與日期')
             + link('/hakodate/christmas-fantasy/', '🎄 函館聖誕夢幻節')
+            + link('/hakodate/ropeway/', '🚡 函館山纜車營業時間與夜景')
             + link('/japan-shirakawago-lightup/', '🏮 白川鄉點燈怎麼預約')
             + link('/japan-takayama-shirakawago-bus/', '🚌 高山到白川鄉巴士')
             + link('/japan-ginzan-onsen/', '♨️ 銀山溫泉冬季怎麼預約')
@@ -1986,6 +1987,7 @@ _AD_MAP = [
     ('tokyo/autumn-leaves', 'esim'),
     ('tokyo/christmas-market', 'esim'),
     ('hakodate/christmas-fantasy', 'esim'),
+    ('hakodate/ropeway', 'esim'),
     ('japan-shirakawago-lightup', 'esim'),
     ('japan-takayama-shirakawago-bus', 'transport'),
     ('japan-ginzan-onsen', 'esim'),
@@ -3023,6 +3025,7 @@ _STK_EXACT = {
 _STK_PREFIX = sorted({
     '/tokyo/christmas-market/': '',
     '/hakodate/christmas-fantasy/': 'st/seatree',
+    '/hakodate/ropeway/': 'st/ropeway',
     '/japan-takayama-shirakawago-bus/': 'st/skgbus',
     '/japan-tokyo-tower/': 'xmas/tower', '/japan-skytree/': 'xmas/skytree', '/japan-chiikawa-park/': 'xmas/gift',
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
@@ -3555,6 +3558,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要去高千穗峽划船？'
                      f'<a href="{U("/miyazaki/takachiho-gorge/")}">哪天開放預約、一艘多少錢、訂不到怎麼辦、從{name}怎麼去</a>'
                      f'（官網原文整理：乘船日 2 週前早上 9 點開放、12 月起取消費改了）。</p>')
+        if slug == 'hakodate' and os.path.exists('hakodate-ropeway.json'):
+            body += (f'<p class="lede">要上函館山看夜景？'
+                     f'<a href="{U("/hakodate/ropeway/")}">纜車現在有沒有開、營業時間與票價、這兩週幾點日落、冬天怎麼上山</a>'
+                     f'（官網原文整理：冬天登山道路封閉只能坐纜車、官方建議夜景出來 1 小時後再上山）。</p>')
         if slug == 'ishigaki' and os.path.exists('ishigaki-ferry.json'):
             body += (f'<p class="lede">要去竹富島、西表島？'
                      f'<a href="{U("/ishigaki/ferry/")}">船票多少錢、兩家船公司差在哪、要不要先買、上原港停航怎麼辦</a>'
@@ -11963,6 +11970,309 @@ if os.path.exists('ishigaki-ferry.json'):
         '東運輸、カリー観光、西表島交通無合作關係。</p>'
       + foot())
     pages.append(('/ishigaki/ferry/', 0.6))
+
+# ---------- 函館山纜車（營業時間、票價、夜景時間、冬天怎麼上山） ----------
+# 資料在 hakodate-ropeway.json。票價、時間、停駛引函館山ロープウェイ官網；交通引函館バス、函館市；套票引函館国際観光コンベンション協会。
+# 日落用和澀谷 SKY 頁同一套 NOAA 公式算函館市區，和國立天文台札幌值四捨五入後一致；纜車官網每天公布的日落和本頁可能差 1 分鐘。
+# 整備停駛日期、年末年始時間、登山巴士 2027 季都還沒公告，公告了補進 JSON（maint_next、newyear）。
+if os.path.exists('hakodate-ropeway.json'):
+    HKR = json.load(open('hakodate-ropeway.json', encoding='utf-8'))
+    _hkr_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _hkr_D = datetime.date.fromisoformat
+    _hkr_wd = '一二三四五六日'
+    _hkr_f, _hkr_cr, _hkr_rd = HKR['fare'], HKR['crowd'], HKR['road']
+    _hkr_sh, _hkr_tz, _hkr_tr = HKR['shuttle'], HKR['tozan'], HKR['tram']
+    _hkr_yk, _hkr_sp, _hkr_sm = HKR['yakeigo'], HKR['special'], HKR['summit']
+    _hkr_pr = HKR['products']
+
+    def _hkr_md(d, wd=True):
+        return f'{d.month}/{d.day}' + (f'（{_hkr_wd[d.weekday()]}）' if wd else '')
+
+    def _hkr_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    def _hkr_sunset(d, lat=41.7687, lon=140.7288, tz=9):
+        """函館市區的日落（太陽上緣碰到地平線，含大氣折射），回傳當地時間的分鐘數。"""
+        n = d.toordinal() - datetime.date(2000, 1, 1).toordinal() + 1
+        t = (2451544.5 + n + 0.5 - tz / 24 - 2451545.0) / 36525
+        L0 = (280.46646 + t * (36000.76983 + t * 0.0003032)) % 360
+        M = math.radians(357.52911 + t * (35999.05029 - 0.0001537 * t))
+        e = 0.016708634 - t * (0.000042037 + 0.0000001267 * t)
+        C = (math.sin(M) * (1.914602 - t * (0.004817 + 0.000014 * t))
+             + math.sin(2 * M) * (0.019993 - 0.000101 * t) + math.sin(3 * M) * 0.000289)
+        om = math.radians(125.04 - 1934.136 * t)
+        lam = math.radians(L0 + C - 0.00569 - 0.00478 * math.sin(om))
+        eps = math.radians(23 + (26 + (21.448 - t * (46.815 + t * (0.00059 - t * 0.001813))) / 60) / 60
+                           + 0.00256 * math.cos(om))
+        dec = math.asin(math.sin(eps) * math.sin(lam))
+        y = math.tan(eps / 2) ** 2
+        L0r = math.radians(L0)
+        eqt = 4 * math.degrees(y * math.sin(2 * L0r) - 2 * e * math.sin(M)
+                               + 4 * e * y * math.sin(M) * math.cos(2 * L0r)
+                               - 0.5 * y * y * math.sin(4 * L0r) - 1.25 * e * e * math.sin(2 * M))
+        ha = math.degrees(math.acos(math.cos(math.radians(90.833))
+                                    / (math.cos(math.radians(lat)) * math.cos(dec))
+                                    - math.tan(math.radians(lat)) * math.tan(dec)))
+        return 720 - 4 * lon - eqt + tz * 60 + 4 * ha
+
+    def _hkr_hm(m):
+        m = int(round(m))
+        return f'{m // 60}:{m % 60:02d}'
+
+    def _hkr_season(d):
+        md = d.strftime('%m-%d')
+        for h in HKR['hours']:
+            if (h['from'] <= md <= h['to']) if h['from'] <= h['to'] else (md >= h['from'] or md <= h['to']):
+                return h
+        return HKR['hours'][-1]
+
+    def _hkr_in(d, a, b):
+        return _hkr_D(a) <= d <= _hkr_D(b)
+
+    # 現在的狀態
+    _hkr_mt = HKR['maint']
+    _hkr_mn = HKR.get('maint_next')
+    if _hkr_mn and _hkr_in(_hkr_today, _hkr_mn['from'], _hkr_mn['to']):
+        _hkr_now = (f'<b>停駛中</b>：年度整備 {_hkr_md(_hkr_D(_hkr_mn["from"]), False)}～{_hkr_md(_hkr_D(_hkr_mn["to"]), False)}，'
+                    + html.escape(_hkr_mn.get('note', '')))
+    elif _hkr_in(_hkr_today, _hkr_mt['from'], _hkr_mt['to']):
+        _hkr_now = (f'<b>停駛中</b>：年度整備 {_hkr_md(_hkr_D(_hkr_mt["from"]), False)}～{_hkr_md(_hkr_D(_hkr_mt["to"]), False)}，'
+                    + html.escape(_hkr_mt['note']))
+    else:
+        _hkr_now = (f'<b>正常營業</b>：{_hkr_D(_hkr_mt["from"]).year} 年度的整備停駛 {_hkr_md(_hkr_D(_hkr_mt["from"]), False)}～'
+                    f'{_hkr_md(_hkr_D(_hkr_mt["to"]), False)} 已經結束；'
+                    + (f'下一次 {_hkr_md(_hkr_D(_hkr_mn["from"]), False)}～{_hkr_md(_hkr_D(_hkr_mn["to"]), False)}。' if _hkr_mn
+                       else '下一次的日期官網還沒公告。'))
+    _hkr_road_on = _hkr_in(_hkr_today, _hkr_rd['from'], _hkr_rd['to'])
+    _hkr_cur = _hkr_season(_hkr_today)
+
+    # 這兩週的日落與夜景
+    _hkr_rows = ''
+    for _k in range(14):
+        _d = _hkr_today + datetime.timedelta(days=_k)
+        _ss = _hkr_sunset(_d)
+        _h = _hkr_season(_d)
+        _lu = int(_h['last_up'][:2]) * 60 + int(_h['last_up'][3:])
+        _go = _ss + 30 + 60
+        _gotxt = _hkr_hm(_go) + ' 以後' if _go <= _lu - 15 else '<small>末班前人都多</small>'
+        _shut = ''
+        for _m in (_hkr_mt, _hkr_mn):
+            if _m and _hkr_in(_d, _m['from'], _m['to']):
+                _shut = '<br><small>整備停駛</small>'
+        _lastn = '' if _h is _hkr_cur else f'<br><small>上山末班改 {_h["last_up"]}</small>'
+        _hkr_rows += (f'<tr><td><b>{_hkr_md(_d)}</b>{"<br><small>今天</small>" if _k == 0 else ""}{_shut}{_lastn}</td>'
+                      f'<td>{_hkr_hm(_ss)} → <b>{_hkr_hm(_ss + 30)}</b></td>'
+                      f'<td>{_gotxt}</td></tr>')
+    _hkr_ss0 = _hkr_sunset(_hkr_today)
+
+    # 接駁巴士
+    _hkr_shon = _hkr_in(_hkr_today, _hkr_sh['from'], _hkr_sh['to'])
+    _hkr_shgo = '、'.join(f'{a}（{b} 到）' for a, b in _hkr_sh['go'])
+    _hkr_shbk = '、'.join(_hkr_sh['back'])
+
+    # 特別套票
+    _hkr_tram1 = 800
+    _hkr_pts_val = sum(v for _, _, v in _hkr_sp['pts'])
+    _hkr_left = 12 - sum(p for _, p, _ in _hkr_sp['pts'])
+    _hkr_full = _hkr_tram1 + _hkr_pts_val + _hkr_left * 250
+    _hkr_rw_only = _hkr_tram1 + _hkr_sp['pts'][0][2]
+
+    # 虎航：桃園飛函館，接下來 60 天的官網最低單程
+    _hkr_fl = ''
+    _b = None
+    _a, _z = (_hkr_today + datetime.timedelta(days=1)).isoformat(), (_hkr_today + datetime.timedelta(days=60)).isoformat()
+    for s, p in (TGF.get('TPE-HKD') or {}).items():
+        if p and _a <= s <= _z and (_b is None or p < _b[0]):
+            _b = (p, s)
+    if _b:
+        _bd = _hkr_D(_b[1])
+        _hkr_fl = (f'<tr><td class="nm"><b><a href="{U("/hakodate/")}">台北桃園飛函館</a></b></td>'
+                   f'<td class="nm"><b>{money(_b[0])}</b><br><small>{_bd.month}/{_bd.day} 出發</small></td>'
+                   f'<td class="nm"><a href="{html.escape(tiger_url("TPE", "HKD", _b[1], ""))}" target="_blank" rel="nofollow noopener">到虎航官網看這天</a></td></tr>')
+    else:
+        _hkr_fl = (f'<tr><td class="nm"><b><a href="{U("/hakodate/")}">台北桃園飛函館</a></b></td>'
+                   '<td class="nm" colspan="2"><small style="color:var(--dim)">接下來 60 天虎航官網沒有資料</small></td></tr>')
+
+    _hkr_tldr = (
+        f'<li>{_hkr_now}</li>'
+        f'<li><b>往返大人 {_hkr_f["adult"][0]:,} 円</b>、單程 {_hkr_f["adult"][1]:,} 円；'
+        f'{_hkr_md(_hkr_D("2026-" + _hkr_cur["from"]), False)}～{_hkr_md(_hkr_D("2026-" + _hkr_cur["to"]), False)} '
+        f'是 {_hkr_cur["first"]} 開到上山末班 {_hkr_cur["last_up"]}、下山末班 {_hkr_cur["last_down"]}。</li>'
+        f'<li><b>今天日落 {_hkr_hm(_hkr_ss0)}，夜景約 {_hkr_hm(_hkr_ss0 + 30)} 出來</b>，前後最擠，'
+        f'官方建議夜景出來 1 小時後（約 {_hkr_hm(_hkr_ss0 + 90)}）再上山。</li>'
+        + (f'<li><b>現在登山道路封閉</b>（到 {_hkr_md(_hkr_D(_hkr_rd["to"]), False)}），計程車和巴士都上不了山，只能坐纜車；'
+           f'函館駅前有接駁巴士直達纜車站，回程末班 {_hkr_sh["back"][-1]}。</li>' if _hkr_road_on else
+           '<li><b>道路開放期間</b>可以坐登山巴士直接上山頂，晚上不能自己開車上去。</li>')
+        + '<li><b>網路預售票不打折也不能插隊</b>，現場買就可以。</li>')
+
+    hkr_faq = [
+     ('函館山纜車現在有開嗎？',
+      re.sub(r'<[^>]+>', '', _hkr_now) + f'{HKR["weather"]}。'),
+     ('函館山纜車營業時間幾點到幾點？',
+      '；'.join(f'{int(h["from"][:2])}/{int(h["from"][3:])}～{int(h["to"][:2])}/{int(h["to"][3:])} 是 {h["first"]} 開，'
+               f'上山末班 {h["last_up"]}、下山末班 {h["last_down"]}' for h in HKR['hours'])
+      + f'。{HKR["hours_note"]}。'),
+     ('函館山纜車票價多少？',
+      f'大人往返 {_hkr_f["adult"][0]:,} 円、單程 {_hkr_f["adult"][1]:,} 円；小學生往返 {_hkr_f["child"][0]:,} 円、單程 {_hkr_f["child"][1]:,} 円。'
+      f'{_hkr_f["kids"]}。{_hkr_f["pay"]}。'),
+     ('函館山夜景幾點去最好？',
+      f'{_hkr_cr["night"]}。{_hkr_cr["peak"]}；{_hkr_cr["wait"]}。{_hkr_cr["advice"]}，{_hkr_cr["tip"]}。本頁表格每天更新接下來兩週的日落時間。'),
+     ('纜車票要先在網路買嗎？',
+      f'不用。{_hkr_f["advance"]}。'),
+     ('冬天可以搭計程車或開車上函館山嗎？',
+      f'不行。{_hkr_rd["rule"]}。{_hkr_rd["night_rule"]}。'),
+     ('從函館駅怎麼去纜車站？',
+      f'搭市電到十字街 {_hkr_tr["fare"]} 円、{_hkr_tr["min"]} 分鐘，{_hkr_tr["walk"]}。'
+      f'{_hkr_md(_hkr_D(_hkr_sh["from"]), False)}～{_hkr_md(_hkr_D(_hkr_sh["to"]), False)} 函館駅前也有接駁巴士直達纜車站，'
+      f'大人 {_hkr_sh["fare"][0]} 円，去程 {_hkr_sh["go"][0][0]}～{_hkr_sh["go"][-1][0]}、回程末班 {_hkr_sh["back"][-1]}。'),
+     ('函館特別套票划算嗎？',
+      f'{_hkr_sp["name"]} {_hkr_sp["price"]:,} 円，{_hkr_sp["has"]}。纜車往返用 7 點、五稜郭塔用 4 點，'
+      f'全部用完約值 {_hkr_full:,} 円；只坐纜車加市電 1 日券是 {_hkr_rw_only:,} 円，那樣就不划算。'),
+     ('山頂有餐廳嗎？',
+      f'{_hkr_sm["genova"]}。{_hkr_sm["legato"]}。'),
+    ]
+    hkr_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in hkr_faq]}, ensure_ascii=False)
+
+    _hkr_d1 = _hkr_pr['kkday'][0]
+    _hkr_k1 = _hkr_pr['klook'][0]
+    _hkr_d1h = html.escape(kkday(_hkr_d1['url'], 'ticket', 'hakodate-ropeway'))
+    _hkr_k1h = html.escape(klook(_hkr_k1['url'], 'ticket'))
+
+    write('hakodate/ropeway/index.html',
+      head(f'函館山纜車：{_hkr_today.year} 停駛維修日期、營業時間、票價 {_hkr_f["adult"][0]:,} 円、夜景幾點去、冬天怎麼上山',
+           '函館山纜車（函館山ロープウェイ）整理：現在有沒有開、年度整備停駛日期、各季營業時間與末班、票價與付款、'
+           '接下來兩週的日落與夜景時間、人最多的時段、冬天登山道路封閉怎麼上山、接駁巴士時刻、函館特別套票划不划算。',
+           'hakodate/ropeway/',
+           '<script type="application/ld+json">' + hkr_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('函館', '/hakodate/'), ('函館山纜車', None)])
+      + '<h1>函館山纜車</h1>'
+      + '<p class="lede">函館山的夜景是坐纜車上去看的。下面的票價、時間與停駛資訊引函館山ロープウェイ官網，'
+        f'交通引函館巴士與函館市，查證於 {HKR["checked"]}；日落與夜景時間每天自動重算。</p>'
+      + '<div class="tldr"><ul>' + _hkr_tldr + '</ul></div>'
+      + '<h2>現在有沒有開</h2>'
+      + f'<p class="lede">{_hkr_now}</p>'
+      + '<ul class="lede">'
+        + _hkr_li('每年都會停', HKR['maint_hist'])
+        + _hkr_li('過年', HKR['newyear'])
+        + _hkr_li('天氣', HKR['weather'])
+        + _hkr_li('道路封閉', _hkr_rd['snow'])
+        + '</ul>'
+      + f'<a class="cta" href="{html.escape(HKR["src"]["status"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🚡</span><span class="ct"><b>纜車官網：今天的運行狀況</b>'
+        '<s>日文，也寫當天的日落與夜景時間</s></span><span class="ca">→</span></a>'
+      + '<h2>營業時間與票價</h2>'
+      + '<div class="tw"><table><tr><th>期間</th><th>首班</th><th>上山末班</th><th>下山末班</th></tr>'
+      + ''.join(f'<tr><td class="nm"><b>{int(h["from"][:2])}/{int(h["from"][3:])}～{int(h["to"][:2])}/{int(h["to"][3:])}</b>'
+                + ('<br><small>現在</small>' if h is _hkr_cur else '') + '</td>'
+                f'<td class="nm">{h["first"]}</td><td class="nm"><b>{h["last_up"]}</b></td><td class="nm">{h["last_down"]}</td></tr>'
+                for h in HKR['hours'])
+      + '</table></div>'
+      + f'<p class="disc">{html.escape(HKR["hours_note"])}。{html.escape(HKR["hours_change"])}。</p>'
+      + '<div class="tw"><table><tr><th></th><th>往返</th><th>單程</th></tr>'
+        f'<tr><td class="nm"><b>大人</b><br><small>國中生以上</small></td><td class="nm"><b>{_hkr_f["adult"][0]:,} 円</b><br><small>約 {money(round(_hkr_f["adult"][0] * JPY))}</small></td>'
+        f'<td class="nm">{_hkr_f["adult"][1]:,} 円</td></tr>'
+        f'<tr><td class="nm"><b>小人</b><br><small>小學生</small></td><td class="nm">{_hkr_f["child"][0]:,} 円</td><td class="nm">{_hkr_f["child"][1]:,} 円</td></tr>'
+        f'<tr><td class="nm"><b>15 人以上團體</b><br><small>大人</small></td><td class="nm">{_hkr_f["group"][0]:,} 円</td><td class="nm">{_hkr_f["group"][1]:,} 円</td></tr>'
+        '</table></div>'
+      + '<ul class="lede">'
+        + _hkr_li('小孩', _hkr_f['kids'])
+        + _hkr_li('付款', _hkr_f['pay'])
+        + _hkr_li('網路預售', _hkr_f['advance'])
+        + _hkr_li('單程用掉', _hkr_f['oneway'])
+        + _hkr_li('上次漲價', _hkr_f['last_change'])
+        + '</ul>'
+      + '<h2>幾點上山看夜景</h2>'
+      + f'<p class="lede">{html.escape(_hkr_cr["night"])}。人潮從日落前約 1 小時開始，一直擠到夜景出來後約 1 小時，{html.escape(_hkr_cr["wait"])}。'
+        f'下面是接下來兩週每天的時間，「人少一點」是官方建議的夜景出來 1 小時後；現在上山末班是 {_hkr_cur["last_up"]}。</p>'
+      + '<div class="tw"><table><tr><th>日期</th><th>日落 → 夜景</th><th>人少一點</th></tr>'
+      + _hkr_rows + '</table></div>'
+      + '<p class="disc">日落是用天文公式推算的函館市區地面時間，和國立天文台的值相差 1 分鐘以內，纜車官網每天公布的時間可能差 1 分鐘；'
+        '「夜景出來」是日落加 30 分鐘，照纜車官網的說法換算。</p>'
+      + '<ul class="lede">'
+        + _hkr_li('人少的地方', _hkr_cr['tip'])
+        + _hkr_li('下山也要排', '下山的隊伍比上山長，趕末班電車或接駁巴士要預留時間')
+        + '</ul>'
+      + '<h2>冬天怎麼上山</h2>'
+      + f'<p class="lede">{html.escape(_hkr_rd["rule"])}。</p>'
+      + '<div class="tw"><table><tr><th>怎麼去</th><th>車資（大人）</th><th>時間</th></tr>'
+        f'<tr><td class="nm"><b>纜車接駁巴士</b><br><small>{_hkr_md(_hkr_D(_hkr_sh["from"]), False)}～{_hkr_md(_hkr_D(_hkr_sh["to"]), False)}</small></td>'
+        f'<td class="nm">{_hkr_sh["fare"][0]} 円<br><small>明治館、十字街上車 {_hkr_sh["fare2"][0]} 円</small></td>'
+        f'<td class="nm"><small>函館駅前 {html.escape(_hkr_shgo)}；回程纜車站 {html.escape(_hkr_shbk)} 發</small></td></tr>'
+        f'<tr><td class="nm"><b>市電＋走路</b></td><td class="nm">{_hkr_tr["fare"]} 円</td>'
+        f'<td class="nm"><small>函館駅前到十字街{_hkr_tr["min"]} 分，{html.escape(_hkr_tr["walk"])}</small></td></tr>'
+        f'<tr><td class="nm"><b>登山巴士</b><br><small>道路開放期間</small></td><td class="nm">{_hkr_tz["fare"][0]} 円</td>'
+        f'<td class="nm"><small>{html.escape(_hkr_tz["note"])}</small></td></tr>'
+        f'<tr><td class="nm"><b>觀光巴士「函館夜景号」</b><br><small>要預約</small></td><td class="nm"><small>{html.escape(_hkr_yk["fare"])}</small></td>'
+        f'<td class="nm"><small>{html.escape(_hkr_yk["time"])}</small></td></tr>'
+        '</table></div>'
+      + '<ul class="lede">'
+        + _hkr_li('接駁巴士', _hkr_sh['note'])
+        + _hkr_li('回程', f'接駁巴士最後一班 {_hkr_sh["back"][-1]} 從纜車站開，纜車下山末班是 {_hkr_cur["last_down"]}；看完夜景晚一點下山，就走到十字街搭市電')
+        + _hkr_li('市電車票', _hkr_tr['pass'])
+        + _hkr_li('計程車', HKR['taxi'])
+        + _hkr_li('夜景號開的日子', _hkr_yk['rule'])
+        + _hkr_li('夜景號預約', _hkr_yk['book'] + '；' + _hkr_yk['unclear'])
+        + _hkr_li('開車', _hkr_rd['night_rule'])
+        + '</ul>'
+      + '<h2>特別套票划算嗎</h2>'
+      + f'<p class="lede">函館國際觀光會議協會出的「{_hkr_sp["name"]}」一本 {_hkr_sp["price"]:,} 円，{html.escape(_hkr_sp["has"])}，'
+        f'有效到 {html.escape(_hkr_sp["valid"].split("～")[-1])}。</p>'
+      + '<div class="tw"><table><tr><th>用在哪</th><th>點數</th><th>單買價格</th></tr>'
+        + f'<tr><td class="nm"><b>市電 1 日乘車券</b></td><td class="nm">乘車券</td><td class="nm">{_hkr_tram1:,} 円</td></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{n}</b></td><td class="nm">{p} 點</td><td class="nm">{v:,} 円</td></tr>' for n, p, v in _hkr_sp['pts'])
+        + f'<tr><td class="nm"><b>剩下 {_hkr_left} 點</b></td><td class="nm">{_hkr_left} 點</td><td class="nm">{_hkr_left * 250:,} 円<br><small>當合作店家的折價券</small></td></tr>'
+        + f'<tr><td class="nm"><b>合計</b></td><td class="nm">12 點</td><td class="nm"><b>{_hkr_full:,} 円</b></td></tr>'
+        '</table></div>'
+      + '<ul class="lede">'
+        + _hkr_li('怎麼算', f'纜車、五稜郭塔、市電 1 日券都會用到才划算（單買 {_hkr_full:,} 円對 {_hkr_sp["price"]:,} 円）；'
+                  f'只坐纜車加市電是 {_hkr_rw_only:,} 円，比套票便宜')
+        + _hkr_li('哪裡買', _hkr_sp['where'])
+        + _hkr_li('折價券', _hkr_sp['voucher'])
+        + _hkr_li('退費', _hkr_sp['refund'])
+        + '</ul>'
+      + '<h2>山頂吃什麼、買什麼</h2>'
+      + '<ul class="lede">'
+        + _hkr_li('餐廳', _hkr_sm['genova'])
+        + _hkr_li('茶廊', _hkr_sm['legato'])
+        + _hkr_li('商店', _hkr_sm['shop'])
+        + '</ul>'
+      + '<h2>從機場到函館市區</h2>'
+      + '<ul class="lede">'
+        + _hkr_li('接駁巴士', HKR['airport']['shuttle'])
+        + _hkr_li('路線巴士', HKR['airport']['hb'])
+        + '</ul>'
+      + '<h2>飛函館</h2>'
+      + '<p class="lede">台灣虎航有桃園直飛函館。下面是接下來 60 天虎航官網的最低單程（含稅、不含託運行李），每天自動更新。</p>'
+      + '<div class="tw"><table><tr><th>航線</th><th>官網最低單程</th><th></th></tr>' + _hkr_fl + '</table></div>'
+      + '<h2>Klook、KKday</h2>'
+      + '<p class="lede">纜車票現場買就好，平台上沒有比較便宜的單買纜車票。會用到的是兩種：一次買齊纜車、市電與五稜郭塔的特別套票，'
+        '或是不想自己排隊、搭巴士帶上山的夜景觀光巴士。</p>'
+      + '<div class="tw"><table><tr><th>平台</th><th>內容</th><th>注意</th></tr>'
+        + f'<tr><td class="nm"><b>KKday {_hkr_d1["id"]}</b><br><small>{html.escape(_hkr_d1["name"])}</small></td>'
+          f'<td class="nm">{html.escape(_hkr_d1["what"])}</td><td class="nm"><small>{html.escape(_hkr_d1["rule"])}</small></td></tr>'
+        + f'<tr><td class="nm"><b>Klook {_hkr_k1["id"]}</b><br><small>{html.escape(_hkr_k1["name"])}</small></td>'
+          f'<td class="nm">{html.escape(_hkr_k1["what"])}</td><td class="nm"><small>{html.escape(_hkr_k1["rule"])}</small></td></tr>'
+        + '</table></div>'
+      + '<p class="disc">平台的售價、方案與包含項目隨時會改，以下單頁面為準。</p>'
+      + f'<a class="cta" href="{_hkr_d1h}" target="_blank" rel="{_rel(_hkr_d1h)}">'
+        '<span class="ci">🎫</span><span class="ct"><b>KKday 函館特級套票</b>'
+        '<s>纜車往返＋市電 1 日券＋五稜郭塔；訂了不能取消</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_hkr_k1h}" target="_blank" rel="{_rel(_hkr_k1h)}">'
+        '<span class="ci">🌃</span><span class="ct"><b>Klook 函館山夜景觀光巴士</b>'
+        '<s>日文導覽，約 2.5 小時；用台幣付款</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格。</p>'
+      + faq_visible(hkr_faq)
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/hakodate/")}"><b>✈️ 函館機票</b><s>桃園直飛</s></a>'
+      + f'<a class="ct" href="{U("/hakodate/christmas-fantasy/")}"><b>🎄 函館聖誕夢幻節</b><s>12 月在海邊的聖誕樹</s></a>'
+      + f'<a class="ct" href="{U("/sapporo/snow-festival/")}"><b>⛄ 札幌雪祭 2027</b><s>日期與連假怎麼排</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 日本刷卡回饋</b><s>纜車、市電刷卡用哪張</s></a></div>'
+      + '<p class="disc">票價、時間與規定以各官網為準，整理可能有疏漏。本頁為公開資訊整理，與函館山ロープウェイ、函館巴士、'
+        '函館市企業局、函館國際觀光會議協會無合作關係。</p>'
+      + foot())
+    pages.append(('/hakodate/ropeway/', 0.6))
 
 # ---------- 乳頭溫泉鄉 鶴之湯（訂房、日歸入浴、交通） ----------
 # 資料在 tsurunoyu.json。房價、預約方式引鶴之湯官網日文頁；網路方案起價、取消費與空房快照引日本秘湯を守る会；
@@ -27633,7 +27943,8 @@ if os.path.exists('hakodate-xmas.json'):
       + '<h2>延伸閱讀</h2><div class="cities">'
       + f'<a class="ct" href="{U("/taipei/hakodate/")}"><b>✈️ 台北飛函館機票</b><s>哪天出發比較便宜</s></a>'
       + f'<a class="ct" href="{U("/tokyo/christmas-market/")}"><b>🎄 東京聖誕市集</b><s>哪些要門票、哪天開</s></a>'
-      + f'<a class="ct" href="{U("/sapporo/snow-festival/")}"><b>⛄ 札幌雪祭 2027</b><s>日期與連假怎麼排</s></a></div>'
+      + f'<a class="ct" href="{U("/sapporo/snow-festival/")}"><b>⛄ 札幌雪祭 2027</b><s>日期與連假怎麼排</s></a>'
+      + (f'<a class="ct" href="{U("/hakodate/ropeway/")}"><b>🚡 函館山纜車</b><s>這兩週幾點日落、冬天怎麼上山</s></a>' if os.path.exists('hakodate-ropeway.json') else '') + '</div>'
       + f'<p class="disc">規定以各官方頁面為準，整理可能有疏漏。查證於 {HXM["checked"]}，之後官方若有更改，本頁不一定跟上。</p>'
       + '</article>'
       + foot())
