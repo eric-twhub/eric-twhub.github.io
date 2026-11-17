@@ -675,6 +675,14 @@ def faq_block(name, fs, codes):
         qa.append((f'台灣有直飛{name}的班機嗎？',
                    f'有。{span_of(fs)} 出發的票價紀錄中，共有 {len(direct)} 筆直飛{name}，'
                    f'執飛的航空公司包括{who}。'))
+    elif (_tg := _tiger_direct(codes)):
+        _wdn = '、'.join('週' + '一二三四五六日'[w] for w in _tg['wds'])
+        qa.append((f'台灣有直飛{name}的班機嗎？',
+                   f'有，台灣虎航從{"、".join(ORI[o] for o in _tg["oris"])}直飛'
+                   + (f'，近兩個月是{_wdn}飛' if _wdn else '')
+                   + f'；官網單程最低 {money(_tg["price"])}（含稅、不含託運行李）。'
+                   f'比價網站的紀錄常查不到這條航線，本站 {span_of(fs)} 出發的 {len(fs)} 筆紀錄都是轉機，'
+                   f'要直接到虎航官網查。'))
     else:
         qa.append((f'台灣有直飛{name}的班機嗎？',
                    f'{span_of(fs)} 出發的 {len(fs)} 筆票價紀錄中沒有直飛{name}的班機，'
@@ -3299,6 +3307,15 @@ def _tiger_direct(codes):
     return {'price': best[0], 'dep': best[1], 'o': best[2], 'd': best[3],
             'oris': sorted(oris), 'wds': sorted(wds)}
 
+def _tiger_sentence(name, g):
+    _wdn = '、'.join('週' + '一二三四五六日'[w] for w in g['wds'])
+    _td = datetime.date.fromisoformat(g['dep'])
+    return (f'台灣虎航有<b>{"、".join(ORI[o] for o in g["oris"])}直飛{name}</b>'
+            + (f'（近兩個月是{_wdn}飛）' if _wdn else '')
+            + f'。官網單程最低 <b>{money(g["price"])}</b>（{"" if _td.year == NOW.year else f"{_td.year} 年 "}{_td.month}/{_td.day} 出發，含稅、不含託運行李），'
+            f'<a href="{html.escape(tiger_url(g["o"], g["d"], g["dep"], ""))}" target="_blank" rel="nofollow noopener">到虎航官網看這天</a>。'
+            f'比價網站常常查不到這條航線，要直接查虎航官網。')
+
 # ---------- 城市頁 ----------
 for slug,name,codes,reg,hotelcity in CITIES:
     fs=by_city.get(slug,[])
@@ -3310,7 +3327,14 @@ for slug,name,codes,reg,hotelcity in CITIES:
     # GSC 上這類城市的查詢也都帶「直飛」二字，使用者問的就是這件事。
     _altc = [a for a in alt_calc(slug) if a[3] and anchor and a[3] < anchor['price']]
     _altb = min(_altc, key=lambda a: a[3]) if _altc else None
-    if anchor and not _altb:
+    # 資料庫裡沒有直飛紀錄（零筆，或只有轉機票）時，看虎航官網有沒有直飛
+    _tgd = None if any(x['tr'] == 0 for x in fs) else _tiger_direct(codes)
+    if _tgd:
+        title=f'{name}機票｜台灣虎航直飛，官網單程最低 {money(_tgd["price"])}（{NOW.year}年更新）'
+        desc=(f'台灣虎航有{"、".join(ORI[o] for o in _tgd["oris"])}直飛{name}，'
+              f'官網單程最低 {money(_tgd["price"])} 含稅（不含託運行李）。'
+              f'本頁整理虎航官網票價與鄰近機場轉乘方案，每日更新。')
+    elif anchor and not _altb:
         pt=('來回' if anchor['rt'] else '單程')
         title=f'{name}機票｜台灣飛{name}最低 {money(anchor["price"])} {pt}含稅（{NOW.year}年更新）'
         desc=(f'台北、台中、高雄飛{name}的便宜機票整理，目前最低 {money(anchor["price"])} {pt}含稅，'
@@ -3322,11 +3346,6 @@ for slug,name,codes,reg,hotelcity in CITIES:
         desc=(f'台灣飛{name}目前最低 {money(anchor["price"])}（{_pt}含稅），'
               f'但改飛{_via}再搭{_altb[5]}（{_altb[6]}）總計約 {money(_altb[3])}，'
               f'省下 {money(anchor["price"]-_altb[3])}。本頁同時提供直飛票價與轉乘方案試算，每日更新。')
-    elif (_tgd := _tiger_direct(codes)):
-        title=f'{name}機票｜台灣虎航直飛，官網單程最低 {money(_tgd["price"])}（{NOW.year}年更新）'
-        desc=(f'台灣虎航有{"、".join(ORI[o] for o in _tgd["oris"])}直飛{name}，'
-              f'官網單程最低 {money(_tgd["price"])} 含稅（不含託運行李）。'
-              f'本頁整理虎航官網票價與鄰近機場轉乘方案，每日更新。')
     else:
         title=f'{name}機票｜台灣沒有直飛？鄰近機場轉乘方案與費用試算'
         a=ALT.get(slug) or []
@@ -3346,6 +3365,8 @@ for slug,name,codes,reg,hotelcity in CITIES:
     _tc_best = best(_tc, anchor['rt']) if (_tc and anchor) else None
 
     intro=f'<p class="lede">'
+    if _tgd:
+        intro += _tiger_sentence(name, _tgd)
     if anchor:
         lccs=[a for a in airs if a in LCC.values()]
         intro+=f'台灣飛{name}目前最低 <b>{money(anchor["price"])}</b>（{pt}含稅，{anchor["airname"]}，{anchor["dep"]} 出發）。'
@@ -3364,15 +3385,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
         if lccs: intro+=f'飛{name}的廉價航空有 {"、".join(lccs[:4])}。'
         if len(oris)>1:
             intro+=f'{"、".join(ORI[o] for o in oris)} 都有航班。'
-    elif (_tgd := _tiger_direct(codes)):
-        _wdn = '、'.join('週' + '一二三四五六日'[w] for w in _tgd['wds'])
-        _td = datetime.date.fromisoformat(_tgd['dep'])
-        intro+=(f'台灣虎航有<b>{"、".join(ORI[o] for o in _tgd["oris"])}直飛{name}</b>'
-                + (f'（近兩個月是{_wdn}飛）' if _wdn else '')
-                + f'。官網單程最低 <b>{money(_tgd["price"])}</b>（{"" if _td.year == NOW.year else f"{_td.year} 年 "}{_td.month}/{_td.day} 出發，含稅、不含託運行李），'
-                f'<a href="{html.escape(tiger_url(_tgd["o"], _tgd["d"], _tgd["dep"], ""))}" target="_blank" rel="nofollow noopener">到虎航官網看這天</a>。'
-                f'比價網站常常查不到這條航線，要直接查虎航官網。')
-    else:
+    elif not _tgd:
         intro+=f'點下方可以查台灣飛{name}今天的即時價格與班次。'
     intro+='</p>'
 
@@ -3487,7 +3500,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
     _alts = alt_calc(slug)
     _cheaper = any(a[3] and own_min and a[3] < own_min for a in _alts)
     if len(fs) < ROUTE_MIN or _cheaper:
-        body += alt_block(slug,name,hotelcity,own_min,tiger=(not fs and _tiger_direct(codes)))
+        body += alt_block(slug,name,hotelcity,own_min,tiger=_tgd)
     # 有專屬班表頁的航線，從城市頁導過去。城市頁答不了「幾點飛、哪幾天有」
     if slug in AIRLINE_SCHED:
         _as = AIRLINE_SCHED[slug]
