@@ -2551,7 +2551,7 @@ def alt_calc(slug):
         out.append((aslug,b,twd,(b['price']+twd*2) if twd else None,route,mode,tm,fare))
     return out
 
-def alt_block(slug,name,hotelcity,own_min=None):
+def alt_block(slug,name,hotelcity,own_min=None,tiger=None):
     alts=alt_calc(slug)
     if not alts: return ''
     rows=''
@@ -2583,6 +2583,9 @@ def alt_block(slug,name,hotelcity,own_min=None):
             f'（{money(bestalt[1]["price"])} {"來回" if bestalt[1]["rt"] else "單程"}）'
             f'再搭{bestalt[5]}（{bestalt[6]}），'
             f'總計約 <b>{money(bestalt[3])}</b>。</p>')
+    elif tiger:
+        hd=(f'<h2>虎航日期對不上？從鄰近機場轉乘</h2>'
+            f'<p class="lede">直飛{name}只有台灣虎航，班次不多。日期排不進去時，可以飛到下列機場再轉乘日本國內交通。</p>')
     else:
         hd=(f'<h2>飛不到{name}？從鄰近機場轉乘</h2>'
             f'<p class="lede">台灣目前沒有直飛{name}的便宜票，可以飛到下列機場再轉乘日本國內交通。</p>')
@@ -3271,6 +3274,31 @@ if os.path.exists('tigerair-nagoya.json'):
         'url': '/tigerair-nagoya/', 'label': '台灣虎航飛名古屋的完整班表',
         'blurb': '桃園與台中的航班號、起飛時間與每週營運日，夏季與冬季兩版都列'}
 
+# 票價資料庫偶爾整條航線都沒收到（OTA 沒有上架），城市頁就會判成「沒有直飛」。
+# 2026-11-17 新潟就是這樣：資料庫零筆，但虎航每週一、五有桃園直飛（新潟機場官方時刻表可對）。
+# 所以資料庫沒有票的城市，再看一次虎航官網的每日票價，有就是有直飛。
+def _tiger_direct(codes):
+    """虎航官網上台灣直飛這些機場的最低單程，與近 8 週的營運星期。沒有回 None。"""
+    _tm = (NOW.date() + datetime.timedelta(days=1)).isoformat()
+    _wk = (NOW.date() + datetime.timedelta(days=57)).isoformat()
+    best, oris, wds = None, set(), set()
+    for k, v in TGF.items():
+        o, d = k.split('-')
+        if d not in codes or o not in ORI:
+            continue
+        for dep, pr in v.items():
+            if dep < _tm or not pr:
+                continue
+            oris.add(o)
+            if dep <= _wk:
+                wds.add(datetime.date.fromisoformat(dep).weekday())
+            if best is None or pr < best[0]:
+                best = (pr, dep, o, d)
+    if not best:
+        return None
+    return {'price': best[0], 'dep': best[1], 'o': best[2], 'd': best[3],
+            'oris': sorted(oris), 'wds': sorted(wds)}
+
 # ---------- 城市頁 ----------
 for slug,name,codes,reg,hotelcity in CITIES:
     fs=by_city.get(slug,[])
@@ -3294,6 +3322,11 @@ for slug,name,codes,reg,hotelcity in CITIES:
         desc=(f'台灣飛{name}目前最低 {money(anchor["price"])}（{_pt}含稅），'
               f'但改飛{_via}再搭{_altb[5]}（{_altb[6]}）總計約 {money(_altb[3])}，'
               f'省下 {money(anchor["price"]-_altb[3])}。本頁同時提供直飛票價與轉乘方案試算，每日更新。')
+    elif (_tgd := _tiger_direct(codes)):
+        title=f'{name}機票｜台灣虎航直飛，官網單程最低 {money(_tgd["price"])}（{NOW.year}年更新）'
+        desc=(f'台灣虎航有{"、".join(ORI[o] for o in _tgd["oris"])}直飛{name}，'
+              f'官網單程最低 {money(_tgd["price"])} 含稅（不含託運行李）。'
+              f'本頁整理虎航官網票價與鄰近機場轉乘方案，每日更新。')
     else:
         title=f'{name}機票｜台灣沒有直飛？鄰近機場轉乘方案與費用試算'
         a=ALT.get(slug) or []
@@ -3331,6 +3364,14 @@ for slug,name,codes,reg,hotelcity in CITIES:
         if lccs: intro+=f'飛{name}的廉價航空有 {"、".join(lccs[:4])}。'
         if len(oris)>1:
             intro+=f'{"、".join(ORI[o] for o in oris)} 都有航班。'
+    elif (_tgd := _tiger_direct(codes)):
+        _wdn = '、'.join('週' + '一二三四五六日'[w] for w in _tgd['wds'])
+        _td = datetime.date.fromisoformat(_tgd['dep'])
+        intro+=(f'台灣虎航有<b>{"、".join(ORI[o] for o in _tgd["oris"])}直飛{name}</b>'
+                + (f'（近兩個月是{_wdn}飛）' if _wdn else '')
+                + f'。官網單程最低 <b>{money(_tgd["price"])}</b>（{"" if _td.year == NOW.year else f"{_td.year} 年 "}{_td.month}/{_td.day} 出發，含稅、不含託運行李），'
+                f'<a href="{html.escape(tiger_url(_tgd["o"], _tgd["d"], _tgd["dep"], ""))}" target="_blank" rel="nofollow noopener">到虎航官網看這天</a>。'
+                f'比價網站常常查不到這條航線，要直接查虎航官網。')
     else:
         intro+=f'點下方可以查台灣飛{name}今天的即時價格與班次。'
     intro+='</p>'
@@ -3446,7 +3487,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
     _alts = alt_calc(slug)
     _cheaper = any(a[3] and own_min and a[3] < own_min for a in _alts)
     if len(fs) < ROUTE_MIN or _cheaper:
-        body += alt_block(slug,name,hotelcity,own_min)
+        body += alt_block(slug,name,hotelcity,own_min,tiger=(not fs and _tiger_direct(codes)))
     # 有專屬班表頁的航線，從城市頁導過去。城市頁答不了「幾點飛、哪幾天有」
     if slug in AIRLINE_SCHED:
         _as = AIRLINE_SCHED[slug]
