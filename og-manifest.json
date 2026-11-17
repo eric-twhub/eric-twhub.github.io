@@ -362,14 +362,20 @@
   {
    "slug": "deals-2026-11-17-taipei-okinawa",
    "url": "/deals/2026-11-17-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,534 來回含稅｜台灣虎航 12/13 出發",
-   "title": "台北飛沖繩 NT$2,534 來回含稅｜台灣虎航 12/13 出發"
+   "h1": "台北飛沖繩 NT$2,534 來回含稅｜台灣虎航 12/21 出發",
+   "title": "台北飛沖繩 NT$2,534 來回含稅｜台灣虎航 12/21 出發"
   },
   {
    "slug": "deals-2026-11-17-taichung-okinawa",
    "url": "/deals/2026-11-17-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$3,851 來回含稅｜台灣虎航 12/28 出發",
-   "title": "台中飛沖繩 NT$3,851 來回含稅｜台灣虎航 12/28 出發"
+   "h1": "台中飛沖繩 NT$3,851 來回含稅｜台灣虎航 12/21 出發",
+   "title": "台中飛沖繩 NT$3,851 來回含稅｜台灣虎航 12/21 出發"
+  },
+  {
+   "slug": "deals-2026-11-17-taipei-fukuoka",
+   "url": "/deals/2026-11-17-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$4,178 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$4,178 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-17-taipei-ishigaki",
@@ -388,18 +394,6 @@
    "url": "/deals/2026-11-17-taipei-saga/",
    "h1": "台北飛佐賀 NT$5,509 來回含稅｜台灣虎航 12/03 出發",
    "title": "台北飛佐賀 NT$5,509 來回含稅｜台灣虎航 12/03 出發"
-  },
-  {
-   "slug": "deals-2026-11-17-taipei-oita",
-   "url": "/deals/2026-11-17-taipei-oita/",
-   "h1": "台北飛大分・別府 NT$5,651 來回含稅｜台灣虎航 12/26 出發",
-   "title": "台北飛大分・別府 NT$5,651 來回含稅｜台灣虎航 12/26 出發"
-  },
-  {
-   "slug": "deals-2026-11-17-taipei-fukuoka",
-   "url": "/deals/2026-11-17-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$5,853 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$5,853 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-17-taipei-nagoya",
@@ -422,14 +416,14 @@
   {
    "slug": "deals-2026-11-17-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-17-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,653",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,653"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$4,328",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$4,328"
   },
   {
    "slug": "deals-2026-11-17-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-17-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,331",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,331"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$5,006",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$5,006"
   },
   {
    "slug": "deals-2026-11-17-transfer-tokyo-fukushima",
@@ -970,6 +964,12 @@
    "url": "/japan-coupon/kiddy-land/",
    "h1": "在KIDDY LAND 刷哪張卡最划算？",
    "title": "KIDDY LAND 刷哪張卡最划算？15 張卡回饋與實付價試算"
+  },
+  {
+   "slug": "japan-shop-card",
+   "url": "/japan-shop-card/",
+   "h1": "日本 22 家店，各自刷哪張卡？",
+   "title": "日本 22 家店各自刷哪張卡？三個金額的前三名一次看"
   },
   {
    "slug": "tokyo-hostel",
