@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-17-kaohsiung-fukuoka",
- "generated": "2026-11-17 01:19",
+ "generated": "2026-11-17 09:08",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "fukuoka",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5540,
+  "price": 5553,
   "dep": "2026-12-16",
   "ret": "2026-12-23",
   "dept": "14:25",
@@ -27,8 +27,8 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 6649,
- "n_rt": 4,
+ "med": 6666,
+ "n_rt": 5,
  "others": [
   {
    "o": "KHH",
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 6084,
+   "price": 6399,
    "dep": "2026-12-29",
    "ret": "2027-01-08",
    "dept": "15:25",
@@ -55,7 +55,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7215,
+   "price": 6666,
    "dep": "2026-12-30",
    "ret": "2027-01-05",
    "dept": "14:25",
@@ -74,17 +74,18 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8691,
-   "dep": "2026-11-20",
-   "ret": "2026-11-27",
+   "price": 6966,
+   "dep": "2026-12-29",
+   "ret": "2027-01-05",
    "dept": "15:25",
    "rett": "19:55",
    "rt": true,
    "tr": 0,
    "dur": 330,
    "dur_to": 150,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH2011FUK27111?t=IT17951883001795200900000150KHHFUK17958093001795816500000180FUKKHH_58dfb1639b68695f7ff511a4b2c076a1_21979&search_date=11112026&expected_price_uuid=01a1c933-208d-8040-67d4-89c06b5e3259&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=R5gbm417ch-1zAcIhv23SA&expected_price_source=share&expected_price_currency=twd&expected_price=8691&marker=775639"
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-29&inbound=FUK-KHH&returnDate=2027-01-05&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
   }
  ]
 }
