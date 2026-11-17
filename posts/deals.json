@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$3,970（14 天有紀錄），這張低 46%"
+   "12 月出發的票，每天最便宜的平均要 NT$4,003（14 天有紀錄），這張低 47%"
   ],
   "med": 12518,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-13&inbound=OKA-TPE&returnDate=2026-12-17&type=return&adult=1&language=zh-TW",
@@ -26,7 +26,7 @@
    "days": 17
   },
   "mbase": {
-   "avg": 3970,
+   "avg": 4003,
    "days": 14,
    "month": 12
   },
@@ -55,7 +55,7 @@
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 4351,
+   "lo": 4392,
    "hi": 10723,
    "days": 36
   },
@@ -94,22 +94,22 @@
  },
  {
   "slug": "2026-11-17-taipei-ishigaki",
-  "title": "台北飛石垣島 NT$4,509 來回含稅｜台灣虎航 11/28 出發",
+  "title": "台北飛石垣島 NT$4,509 來回含稅｜台灣虎航 12/05 出發",
   "o": "台北",
   "c": "石垣島",
   "_oiata": "TPE",
   "_diata": "ISG",
   "price": 4509,
   "air": "台灣虎航",
-  "dep": "2026-11-28",
-  "ret": "2026-12-04",
+  "dep": "2026-12-05",
+  "ret": "2026-12-09",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000"
   ],
   "med": 16958,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-28&inbound=ISG-TPE&returnDate=2026-12-04&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-05&inbound=ISG-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
   "hotelcity": "石垣島",
   "cslug": "ishigaki",
   "usual": null,
@@ -119,12 +119,12 @@
  },
  {
   "slug": "2026-11-17-taipei-saga",
-  "title": "台北飛佐賀 NT$5,209 來回含稅｜台灣虎航 12/03 出發",
+  "title": "台北飛佐賀 NT$5,509 來回含稅｜台灣虎航 12/03 出發",
   "o": "台北",
   "c": "佐賀",
   "_oiata": "TPE",
   "_diata": "HSG",
-  "price": 5209,
+  "price": 5509,
   "air": "台灣虎航",
   "dep": "2026-12-03",
   "ret": "2026-12-10",
@@ -194,20 +194,19 @@
  },
  {
   "slug": "2026-11-17-taipei-fukuoka",
-  "title": "台北飛福岡 NT$5,795 來回含稅｜台灣虎航 12/15 出發",
+  "title": "台北飛福岡 NT$6,195 來回含稅｜台灣虎航 12/15 出發",
   "o": "台北",
   "c": "福岡",
   "_oiata": "TPE",
   "_diata": "FUK",
-  "price": 5795,
+  "price": 6195,
   "air": "台灣虎航",
   "dep": "2026-12-15",
   "ret": "2026-12-19",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$8,567（9 天有紀錄），這張低 32%"
+   "12 月出發的票，每天最便宜的平均要 NT$8,745（9 天有紀錄），這張低 29%"
   ],
   "med": 16432,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-15&inbound=FUK-TPE&returnDate=2026-12-19&type=return&adult=1&language=zh-TW",
@@ -219,7 +218,7 @@
    "days": 9
   },
   "mbase": {
-   "avg": 8567,
+   "avg": 8745,
    "days": 9,
    "month": 12
   },
