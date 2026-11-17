@@ -21592,18 +21592,24 @@ if os.path.exists('cards.json'):
       'color:var(--dim);line-height:1.55;margin-top:4px}'
       '.lbad .mo{display:block;font-size:.76rem;margin:0 14px 14px;'
       'margin-bottom:auto;padding-bottom:14px}'
+      # 卡片專屬的訂票平台提示，接在 figcaption 後面
+      '.lbp{margin:10px 0 0;padding:10px 12px;border:1px solid var(--line);'
+      'border-radius:8px;background:var(--soft);font-size:.78rem;line-height:1.65}'
+      '.lbp b{display:block;font-size:.86rem}'
+      '.lbp span{display:block;margin-top:6px;font-weight:700}'
       '</style>')
 
-    # 格線裡每四張標籤插一格廣告。四組商品輪著放，六格不會重複同一支。
-    _LB_ADKINDS = ['esim', 'transport', 'activity2', 'transfer']
+    # 格線裡只插兩格廣告：第 4 張後面放 eSIM、第 16 張後面放 JR Pass。
+    # 2026-11-17 改：原本每四張插一格共六格，30 天 2,844 位訪客只點了 14 次，
+    # 讀者是來找自己那張卡的，通用商品夾太多只是擋路。
+    _LB_ADAT = {4: 'esim', 16: 'transport'}
 
-    def _lb_adcell(i):
-        kind = _LB_ADKINDS[i % len(_LB_ADKINDS)]
+    def _lb_adcell(kind):
         g = (_ADS.get('groups') or {}).get(kind) or {}
         items = g.get('items') or []
         if not items:
             return ''
-        it = items[(i // len(_LB_ADKINDS)) % len(items)]
+        it = items[0]
         kk = g.get('brand') == 'KKday'
         href = (kkday(it['url'], 'adbox_grid_prod') if kk
                 else klook(it['url'], 'adbox_grid_prod'))
@@ -21655,6 +21661,70 @@ if os.path.exists('cards.json'):
         return (f' id="lb-{r["slug"]}" data-toc="{html.escape(r["n"])}"'
                 ' data-tocg="卡片"')
 
+    # 卡片本身就把訂票平台算進加碼的，在那張卡第一張標籤底下放平台連結。
+    # 讀者在這頁找的是「自己那張卡」，所以這是唯一和他當下在想的事對得上的版位。
+    # 數字、名單、期限全部從 cards.json 讀，活動過期或資料拿掉就自動消失。
+    _lb_today = datetime.date.fromisoformat(TODAY)
+    _lb_cardmap = {c['slug']: c for c in CD['cards']}
+
+    def _lb_ended(cond):
+        m = re.search(r'至 ?(\d{4})/(\d{1,2})/(\d{1,2})', cond or '')
+        return bool(m) and datetime.date(*map(int, m.groups())) < _lb_today
+
+    def _lb_a(href, text):
+        return (f'<a href="{html.escape(href)}" target="_blank" '
+                f'rel="nofollow noopener sponsored">{html.escape(text)}</a>')
+
+    def _lb_plat(slug):
+        c = _lb_cardmap.get(slug) or {}
+        # 1) 精選通路名單裡有 Klook／KKday 的加碼層（永豐幣倍卡）
+        for t in c.get('tiers', []):
+            row = next((x for x in t.get('store_scope') or []
+                        if x.startswith('旅遊通路：') and 'Klook' in x), None)
+            if not row or _lb_ended(t.get('cond')) or not t.get('cap'):
+                continue
+            hit = t['cap'] * 1000 // round(t['rate'] * 10)
+            names = row.split('：', 1)[1].replace('、松山機場停車', '')
+            return (
+                '<div class="lbp"><b>用這張卡訂行程也算 '
+                f'{_lb_g(t["rate"])}%</b>'
+                f'「{html.escape(t["label"])}」的名單裡有 {html.escape(names)}，'
+                f'和交通卡儲值、網購共用同一個上限，每期刷 NT${hit:,} 就滿。'
+                '要先達成上面「要做」那一行的條件才算。'
+                '<span>'
+                + _lb_a(klook('https://www.klook.com/zh-TW/search/?query=%E6%97%A5%E6%9C%AC',
+                              'adbox_grid'), 'Klook 日本行程')
+                + '・'
+                + _lb_a(kkday((_ADS.get('groups') or {}).get('activity2', {}).get('search')
+                              or 'https://www.kkday.com/zh-tw/', 'labels', slug),
+                        'KKday 日本行程')
+                + '</span></div>')
+        # 2) 另外登錄的 Trip.com 加碼（中信 LINE Pay 卡）
+        for e in c.get('reg_events') or []:
+            m = re.search(r'Trip\.com (\d+(?:\.\d+)?)%', e.get('what', ''))
+            if not m or _lb_ended(e.get('until')):
+                continue
+            rate = float(m.group(1))
+            pts = re.match(r'(\d+) 點', e.get('cap_txt', ''))
+            visa = '限 Visa 卡，' if 'Visa' in e['what'] else ''
+            when = (f'每月 {e["day"]} 日 {e["time"]} 開放'
+                    if e.get('cycle') == 'monthly' and e.get('day') else '')
+            href = ('https://tw.trip.com/hotels/?' + urllib.parse.urlencode(
+                {**_lb_trip_aff, 'trip_sub1': 'labels_' + slug}))
+            return (
+                f'<div class="lbp"><b>用這張卡訂 Trip.com 有 {_lb_g(rate)}%</b>'
+                f'{visa}要另外登錄，每季登錄一次'
+                + (f'（{when}，名額 {e["quota"]:,} 名）' if when and e.get('quota') else '')
+                + '。'
+                + (f'每季上限 {pts.group(1)} 點，刷 NT${int(pts.group(1)) * 100 // int(rate):,} 就滿。'
+                   if pts else '')
+                + '<span>' + _lb_a(href, 'Trip.com 訂房') + '</span></div>')
+        return ''
+
+    _lb_trip_aff = {k: v for k, v in
+                    urllib.parse.parse_qsl(urllib.parse.urlsplit(P['hotel']['template']).query)
+                    if k in ('Allianceid', 'SID', 'trip_sub3')}
+
     _lb_cells = [
         f'<figure{_lb_anchor(i, r)}><a class="slip">'
         f'<img data-lb="{i}" alt="{html.escape(r["n"])}'
@@ -21676,13 +21746,15 @@ if os.path.exists('cards.json'):
           f'{html.escape(r["n"])}</a>詳細介紹，條款以'
           f'<a href="{html.escape(r["src"])}" target="_blank" '
           f'rel="nofollow noopener">{html.escape(r["src_name"])}</a>'
-          f'公告為準。</u></figcaption></figure>'
+          f'公告為準。</u></figcaption>'
+        + (_lb_plat(r['slug']) if _lb_first[r['slug']] == i else '')
+        + '</figure>'
         for i, r in enumerate(_LBR)]
     _lb_out = []
     for i, cell in enumerate(_lb_cells):
         _lb_out.append(cell)
-        if (i + 1) % 4 == 0 and i + 1 < len(_lb_cells):
-            _lb_out.append(_lb_adcell(i // 4))
+        if i + 1 in _LB_ADAT and i + 1 < len(_lb_cells):
+            _lb_out.append(_lb_adcell(_LB_ADAT[i + 1]))
     _lb_grid = '<div class="lbk">' + ''.join(_lb_out) + '</div>'
 
     _lb_js = ('<script>window.LABELS=' + json.dumps(_LBR, ensure_ascii=False)
