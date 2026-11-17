@@ -21295,6 +21295,7 @@ if os.path.exists('cards.json'):
               + ''.join(
                   f'<br><small>{html.escape(x["label"])}：{x["open"]} 開放'
                   + (f'，{x["full"]} 額滿' if x.get('full') else '')
+                  + (f'（{html.escape(x["note"])}）' if x.get('note') else '')
                   + '</small>' for x in e.get('dates', []))
               + '</li>' for e in c.get('reg_events', []))
           + '</ul></div>'
