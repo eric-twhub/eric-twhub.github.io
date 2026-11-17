@@ -681,7 +681,7 @@ def faq_block(name, fs, codes):
                    f'有，台灣虎航從{"、".join(ORI[o] for o in _tg["oris"])}直飛'
                    + (f'，近兩個月是{_wdn}飛' if _wdn else '')
                    + f'；官網單程最低 {money(_tg["price"])}（含稅、不含託運行李）。'
-                   f'比價網站的紀錄常查不到這條航線，本站 {span_of(fs)} 出發的 {len(fs)} 筆紀錄都是轉機，'
+                   f'比價網站的紀錄常查不到這條航線，本站 {span_of(fs)} 出發的 {len(fs)} 筆紀錄' + ('是轉機，' if len(fs) == 1 else '都是轉機，') +
                    f'要直接到虎航官網查。'))
     else:
         qa.append((f'台灣有直飛{name}的班機嗎？',
@@ -1803,6 +1803,7 @@ def topnav(cur=''):
             + link('/japan-asahiyama-zoo/', '🐧 旭山動物園企鵝散步時間')
             + link('/nagoya/nabana-no-sato/', '🌸 名花之里燈海門票')
             + link('/japan-zao-juhyo/', '🌲 藏王樹冰點燈與雪怪車')
+            + link('/miyazaki/takachiho-gorge/', '🚣 高千穗峽划船怎麼預約')
             + link('/japan-tsurunoyu/', '♨️ 鶴之湯訂房與交通')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1978,6 +1979,7 @@ _AD_MAP = [
     ('japan-asahiyama-zoo', 'esim'),
     ('nagoya/nabana-no-sato', 'activity2'),
     ('japan-zao-juhyo', 'esim'),
+    ('miyazaki/takachiho-gorge', 'car'),
     ('japan-tsurunoyu', 'transport'),
     ('tokyo/autumn-leaves', 'esim'),
     ('tokyo/christmas-market', 'esim'),
@@ -3033,7 +3035,7 @@ _STK_PREFIX = sorted({
     '/japan-asahiyama-zoo/': 'st/penguin', '/japan-shirakawago-lightup/': 'st/gassho',
     '/japan-ginzan-onsen/': 'st/ginzan', '/japan-tsurunoyu/': 'st/rotenburo',
     '/japan-ryuhyo-monogatari/': 'st/icebreaker', '/sapporo/snow-festival/': 'st/snowman',
-    '/japan-zao-juhyo/': 'st/juhyo', '/nagoya/nabana-no-sato/': 'st/lights', '/tokyo/teamlab/': 'st/teamlab',
+    '/japan-zao-juhyo/': 'st/juhyo', '/miyazaki/takachiho-gorge/': 'st/gorge', '/nagoya/nabana-no-sato/': 'st/lights', '/tokyo/teamlab/': 'st/teamlab',
     '/japan-autumn-leaves/': 'st/maple', '/kyoto/autumn-leaves/': 'st/maple', '/tokyo/autumn-leaves/': 'st/maple',
     '/tokyo/ginkgo/': 'st/ginkgo', '/japan-seasonal-event/': 'st/seasonal',
     '/tokyo/budget-hotel/': 'st/bunk', '/tokyo/hostel/': 'st/bunk',
@@ -3547,6 +3549,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要去看藏王樹冰？'
                      f'<a href="{U("/japan-zao-juhyo/")}">纜車票價、夜間點燈哪幾天、宮城側雪怪車怎麼訂、從仙台怎麼去</a>'
                      f'（官網原文整理：夜間雪上車 7 天前開賣、山形站回程末班比點燈結束早）。</p>')
+        if slug in ('miyazaki', 'kumamoto') and os.path.exists('takachiho.json'):
+            body += (f'<p class="lede">要去高千穗峽划船？'
+                     f'<a href="{U("/miyazaki/takachiho-gorge/")}">哪天開放預約、一艘多少錢、訂不到怎麼辦、從{name}怎麼去</a>'
+                     f'（官網原文整理：乘船日 2 週前早上 9 點開放、12 月起取消費改了）。</p>')
         if slug == 'akita' and os.path.exists('tsurunoyu.json'):
             body += (f'<p class="lede">要去乳頭溫泉鄉的鶴之湯？'
                      f'<a href="{U("/japan-tsurunoyu/")}">電話與網路怎麼訂、各房型價格、不住宿泡湯、從田澤湖站怎麼去</a>'
@@ -11335,6 +11341,322 @@ if os.path.exists('zao.json'):
       + '<p class="disc">票價、時間與規定以各官網為準，整理可能有疏漏。本頁為公開資訊整理，與藏王纜車、すみかわ無合作關係。</p>'
       + foot())
     pages.append(('/japan-zao-juhyo/', 0.6))
+
+# ---------- 高千穗峽划船（預約、票價、交通） ----------
+# 資料在 takachiho.json。規則與票價引高千穗町觀光協會與預約網站 eipro.jp/takachiho1；每日票價是觀光協會料金日曆的快照。
+# 哪天開搶用日本日期當場算（乘船日 14 天前 9:00），票價、完全預約制日、點檢停業日逐日查。
+# 取消規定 12/1 起改了，預約網站只有首頁公告是新的，FAQ 等頁還是舊規，不要拿那幾頁覆寫。
+if os.path.exists('takachiho.json'):
+    TKB = json.load(open('takachiho.json', encoding='utf-8'))
+    _tkb_jst = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9)))
+    _tkb_today = _tkb_jst.date()
+    _tkb_D = datetime.date.fromisoformat
+    _tkb_wd = '一二三四五六日'
+    _tkb_b, _tkb_r, _tkb_a = TKB['boat'], TKB['reserve'], TKB['access']
+    _tkb_cal = TKB['calendar']
+    _tkb_open = _tkb_r['open_days']
+    _tkb_jph = ({x['d'] for x in HOL['days'] if x.get('jp')} if os.path.exists('holidays.json') else set())
+    _tkb_inspect = set(_tkb_b['inspect'])
+
+    def _tkb_md(d, wd=True):
+        return f'{d.month}/{d.day}' + (f'（{_tkb_wd[d.weekday()]}）' if wd else '')
+
+    def _tkb_full(d):
+        """完全預約制日：True／False；官方還沒公布那個月就回 None"""
+        r = TKB['full_days'].get(d.strftime('%Y-%m'))
+        if r is None:
+            return None
+        if r == 'all':
+            return True
+        s = d.isoformat()
+        return (s in r.get('extra', []) or (r.get('weekend_hol') and (d.weekday() >= 5 or s in _tkb_jph)))
+
+    def _tkb_price(d):
+        return _tkb_cal.get(d.isoformat())
+
+    def _tkb_y(p):
+        return f'{p:,} 円<br><small style="color:var(--dim)">約 {money(round(p * JPY))}</small>'
+
+    # 接下來 7 個開放日：今天開的是哪一天（手機上表格變成卡片，太多列要滑很久）
+    _tkb_past9 = _tkb_jst.hour >= 9
+    _tkb_rows = ''
+    for _k in range(7):
+        _o = _tkb_today + datetime.timedelta(days=_k)
+        _bd = _o + datetime.timedelta(days=_tkb_open)
+        _p = _tkb_price(_bd)
+        _f = _tkb_full(_bd)
+        if _bd.isoformat() in _tkb_inspect:
+            _pc = '<small>點檢停業，不開放</small>'
+        elif _p:
+            _pc = _tkb_y(_p)
+        else:
+            _pc = '<small style="color:var(--dim)">官方還沒公布</small>'
+        _fc = ('沒有現場票' if _f else '網路剩下的才賣現場票' if _f is False
+               else '<span style="color:var(--dim)">還沒公布</span>')
+        _oc = ('今天' + ('（已開放）' if _tkb_past9 else '') if _k == 0 else '明天' if _k == 1 else _tkb_md(_o))
+        _tkb_rows += (f'<tr><td class="nm"><b>{_oc}</b></td>'
+                      f'<td class="nm"><b>{_tkb_md(_bd)}</b></td><td class="nm">{_pc}</td>'
+                      f'<td class="nm"><small>{_fc}</small></td></tr>')
+    _tkb_first = _tkb_today + datetime.timedelta(days=_tkb_open)
+
+    # 每月的 4,100 円日子（只列今天以後、已公布的月份）
+    def _tkb_ranges(days):
+        out, a, prev = [], None, None
+        for d in days:
+            if prev and (d - prev).days == 1:
+                prev = d
+                continue
+            if a:
+                out.append(f'{a.day}' if a == prev else f'{a.day}～{prev.day}')
+            a = prev = d
+        if a:
+            out.append(f'{a.day}' if a == prev else f'{a.day}～{prev.day}')
+        return '、'.join(out)
+
+    _tkb_months = {}
+    for _s, _p in _tkb_cal.items():
+        _d = _tkb_D(_s)
+        if _d >= _tkb_today:
+            _tkb_months.setdefault((_d.year, _d.month), []).append((_d, _p))
+    _tkb_mrows = ''
+    for (_y, _m), _v in sorted(_tkb_months.items()):
+        _lo = [d for d, p in _v if p == _tkb_b['price'][0]]
+        _tkb_mrows += (f'<tr><td class="nm"><b>{"" if _y == _tkb_today.year else f"{_y} 年 "}{_m} 月</b></td>'
+                       f'<td class="nm">{(_tkb_ranges(_lo) + " 日") if _lo else "沒有"}</td>'
+                       f'<td class="nm">{len(_lo)} 天／{len(_v)} 天</td></tr>')
+    _tkb_cal_last = _tkb_D(max(_tkb_cal))
+
+    # 取消費
+    _tkb_newc = _tkb_D(TKB['cancel_new_from'])
+    _tkb_cancel_txt = '、'.join(f'{d} 天前 9:00 起 {p}%' for d, p in TKB['cancel_new'])
+
+    # 虎航：飛宮崎、熊本、福岡，接下來 60 天的官網最低單程
+    def _tkb_fare(routes):
+        a = _tkb_today + datetime.timedelta(days=1)
+        z = _tkb_today + datetime.timedelta(days=60)
+        best = None
+        for r in routes:
+            for s, p in (TGF.get(r) or {}).items():
+                if p and a.isoformat() <= s <= z.isoformat() and (best is None or p < best[0]):
+                    best = (p, s, r)
+        return best
+    _tkb_fl = [('宮崎', '台北桃園飛宮崎', ['TPE-KMI'], '/miyazaki/'),
+               ('熊本', '高雄、台南飛熊本', ['KHH-KMJ', 'TNN-KMJ'], '/kumamoto/'),
+               ('福岡', '台北、高雄飛福岡', ['TPE-FUK', 'KHH-FUK'], '/fukuoka/')]
+    _tkb_frows = ''
+    for _n, _lbl, _rs, _u in _tkb_fl:
+        _b = _tkb_fare(_rs)
+        if _b:
+            _o, _d2 = _b[2].split('-')
+            _bd = _tkb_D(_b[1])
+            _tkb_frows += (f'<tr><td class="nm"><b><a href="{U(_u)}">{_lbl}</a></b></td>'
+                           f'<td class="nm"><b>{money(_b[0])}</b><br><small>{_tkb_md(_bd)} 出發，{ORI[_o]}</small></td>'
+                           f'<td class="nm"><a href="{html.escape(tiger_url(_o, _d2, _b[1], ""))}" target="_blank" rel="nofollow noopener">到虎航官網看這天</a></td></tr>')
+        else:
+            _tkb_frows += (f'<tr><td class="nm"><b><a href="{U(_u)}">{_lbl}</a></b></td>'
+                           f'<td class="nm" colspan="2"><small style="color:var(--dim)">接下來 60 天虎航官網沒有資料</small></td></tr>')
+
+    _ak, _af, _am = _tkb_a['kumamoto'], _tkb_a['fukuoka'], _tkb_a['miyazaki']
+    _tkb_kgr = TKB['kagura']
+    _tkb_pr = TKB['products']
+
+    def _tkb_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    _tkb_tldr = (
+        f'<li><b>只能網路訂，乘船日 {_tkb_open} 天前的早上 9 點（台灣 8 點）開放</b>，'
+        f'官方說開放後數千人同時連線、立刻賣完。今天開放的是 {_tkb_md(_tkb_first)}。</li>'
+        f'<li><b>價格是一艘不是一個人</b>：30 分鐘 {_tkb_b["price"][0]:,} 或 {_tkb_b["price"][1]:,} 円，'
+        f'依日期不同；一艘最多 {_tkb_b["cap"]} 人。</li>'
+        + (f'<li><b>{_tkb_newc.month}/{_tkb_newc.day} 以後的乘船日取消費改了</b>：{_tkb_cancel_txt}。'
+           '原本 2 天前都免費。</li>' if _tkb_today < _tkb_newc + datetime.timedelta(days=60) else '')
+        + '<li><b>訂不到也看得到瀑布</b>：峽谷步道的觀瀑台就看得到真名井瀑布，不用划船。</li>'
+        f'<li><b>大眾運輸當天來回可以</b>：熊本只有一班巴士來回、福岡有高速巴士、宮崎要搭 JR 到延岡轉巴士。</li>')
+
+    tkb_faq = [
+     ('高千穗峽划船怎麼預約？',
+      f'只能在官方預約網站線上訂，不接受電話。乘船日 {_tkb_open} 天前的早上 9 點（日本時間，台灣 8 點）開放，'
+      f'到 {_tkb_r["close_days"]} 天前的早上 9 點截止。{_tkb_r["hold"]}。{_tkb_r["pay"]}。{_tkb_r["member"]}。'),
+     ('划船多少錢？',
+      f'一艘 30 分鐘 {_tkb_b["price"][0]:,} 或 {_tkb_b["price"][1]:,} 円（含稅），價格依日期不同，'
+      f'官方日曆上大致週二到週四是 {_tkb_b["price"][0]:,}、其他日子與假日是 {_tkb_b["price"][1]:,}。'
+      f'{_tkb_b["over"]}。'),
+     ('一艘船可以坐幾個人？小孩可以划嗎？',
+      f'一艘最多 {_tkb_b["cap"]} 人，{_tkb_b["kids_cap"]}，總重約 {_tkb_b["kg"]} 公斤以內。{_tkb_b["kids"]}。'),
+     ('網路訂不到，可以現場買嗎？',
+      f'看日子。{TKB["full_note"]}。{TKB["walkin_info"]}。'),
+     ('取消要收費嗎？',
+      f'{TKB["cancel_old"]}。{_tkb_newc.month}/{_tkb_newc.day} 以後的乘船日：{_tkb_cancel_txt}。'
+      f'{TKB["cancel_rain"]}；{_tkb_b["stop_refund"]}。'),
+     ('下雨會停嗎？',
+      f'{_tkb_b["rain"]}。{_tkb_b["stop"]}。{_tkb_b["stop_notice"]}。'),
+     ('Klook、KKday 的一日遊有含划船嗎？',
+      f'很多團可以選含船的方案，但{_tkb_pr["note"]}；買不到時多半退船費每人 2,000 円。'
+      '含船方案多半是 2～3 人一艘，一個人參加會和其他團員同船。'),
+     ('從熊本、福岡、宮崎怎麼去？',
+      f'熊本：{_ak["name"]} {_ak["go"][0][1]} 從熊本站前出發、{_ak["arr"]} 到高千穗，回程 {_ak["back_dep"]} 發，一天只有這一個來回。'
+      f'福岡：{_af["name"]}，博多 {_af["go"][1][1]} 發、{_af["arr"][0]} 到，票價 {_af["fare"][0]:,}～{_af["fare"][1]:,} 円。'
+      f'宮崎：宮崎機場搭 JR 特急到延岡，再轉巴士約 1 小時 20～30 分。'
+      f'到了高千穗巴士中心，離峽谷還有約 2 公里。'),
+     ('晚上的高千穗神樂要預約嗎？',
+      f'可以不預約。每晚 {_tkb_kgr["time"]}，{_tkb_kgr["fare"]:,} 円，{_tkb_kgr["kids"]}。{_tkb_kgr["web"]}；{_tkb_kgr["door"]}。'
+      f'{_tkb_kgr["off"]}。'),
+    ]
+    tkb_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in tkb_faq]}, ensure_ascii=False)
+
+    def _tkb_prow(brand, p, link):
+        return (f'<tr><td class="nm"><b>{brand} {p["id"]}</b><br><small>{p["from"]}出發</small></td>'
+                f'<td class="nm">{html.escape(p["route"])}</td>'
+                f'<td class="nm"><b>{html.escape(p["boat"])}</b><br><small>{html.escape(p["fail"])}</small></td></tr>')
+
+    _tkb_k1, _tkb_k2 = _tkb_pr['klook'][0], _tkb_pr['klook'][2]
+    _tkb_d1 = _tkb_pr['kkday'][0]
+    _tkb_k1h = html.escape(klook(_tkb_k1['url'], 'ticket'))
+    _tkb_k2h = html.escape(klook(_tkb_k2['url'], 'ticket'))
+    _tkb_d1h = html.escape(kkday(_tkb_d1['url'], 'ticket', 'takachiho'))
+
+    write('miyazaki/takachiho-gorge/index.html',
+      head(f'高千穗峽划船怎麼預約：{"2 週" if _tkb_open == 14 else f"{_tkb_open} 天"}前台灣 8 點開搶、一艘 {_tkb_b["price"][0]:,}～{_tkb_b["price"][1]:,} 円、訂不到怎麼辦',
+           '高千穗峽小船（貸しボート）預約整理：哪天開放、今天開的是哪一天、每天的價格、12 月起的新取消費、'
+           '現場票規則、一艘幾人與小孩規定，從熊本、福岡、宮崎怎麼去，以及 Klook、KKday 一日遊有沒有含船。',
+           'miyazaki/takachiho-gorge/',
+           '<script type="application/ld+json">' + tkb_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('宮崎', '/miyazaki/'), ('高千穗峽划船', None)])
+      + '<h1>高千穗峽划船怎麼預約</h1>'
+      + '<p class="lede">高千穗峽在宮崎縣北邊，划小船到真名井瀑布底下是這裡最有名的玩法，也是最難訂的。'
+        f'下面的規則與價格引高千穗町觀光協會和官方預約網站，查證於 {TKB["checked"]}；開放日期每天自動重算，'
+        f'台幣以中間匯率 {JPY} 換算。</p>'
+      + '<div class="tldr"><ul>' + _tkb_tldr + '</ul></div>'
+      + '<h2>今天開放的是哪一天</h2>'
+      + f'<p class="lede">開放時間是乘船日 {_tkb_open} 天前的早上 9 點（日本時間），也就是台灣早上 8 點。'
+        f'{_tkb_md(_tkb_today + datetime.timedelta(days=_tkb_r["close_days"]))}～{_tkb_md(_tkb_first - datetime.timedelta(days=1))} '
+        '這幾天已經開放過，熱門日子多半賣完了。</p>'
+      + '<div class="tw"><table><tr><th>開放日<br><small>台灣 8:00</small></th><th>可以訂的乘船日</th><th>一艘 30 分鐘</th><th>現場票</th></tr>'
+      + _tkb_rows + '</table></div>'
+      + f'<p class="disc">價格與完全預約制日照觀光協會的料金日曆（{TKB["calendar_at"]} 的版本），官方一次只公布大約三個月。'
+        f'{html.escape(_tkb_b["inspect_rule"])}。</p>'
+      + '<h2>每艘多少錢</h2>'
+      + f'<p class="lede">一艘 30 分鐘，只有兩種價格：{_tkb_b["price"][0]:,} 円和 {_tkb_b["price"][1]:,} 円（含稅），'
+        f'一艘最多 {_tkb_b["cap"]} 人，三個人分大約每人 {_tkb_b["price"][0] // 3:,}～{_tkb_b["price"][1] // 3:,} 円。'
+        f'下面是比較便宜的 {_tkb_b["price"][0]:,} 円的日子，其他天都是 {_tkb_b["price"][1]:,} 円。</p>'
+      + '<div class="tw"><table><tr><th>月份</th><th>' + f'{_tkb_b["price"][0]:,} 円的日子' + '</th><th>天數</th></tr>'
+      + _tkb_mrows + '</table></div>'
+      + f'<p class="disc">{(_tkb_cal_last + datetime.timedelta(days=1)).month} 月以後的價格官方還沒公布。{html.escape(_tkb_b["over"])}。</p>'
+      + '<h2>預約要準備什麼</h2>'
+      + '<ul class="lede">'
+        + _tkb_li('預約網站', _tkb_r['site'])
+        + _tkb_li('付款', _tkb_r['pay'])
+        + _tkb_li('15 分鐘', _tkb_r['hold'])
+        + _tkb_li('一筆一艘', _tkb_r['one'])
+        + _tkb_li('會員', _tkb_r['member'])
+        + _tkb_li('訂到了沒', _tkb_r['done'])
+        + _tkb_li('改日期', _tkb_r['change'])
+        + '</ul>'
+      + '<p class="disc">海外手機號碼、海外地址能不能填，官方沒有寫；表單要填代表人的 email、電話、住址、生日。</p>'
+      + '<h2>訂不到怎麼辦</h2>'
+      + '<ul class="lede">'
+        + _tkb_li('現場票', TKB['full_note'] + '。' + TKB['walkin_info'])
+        + _tkb_li('巴士自由行加購', TKB['bus_plan']['name'] + '：' + TKB['bus_plan']['rule'])
+        + _tkb_li('跟團', _tkb_pr['note'] + '，買不到多半退船費每人 2,000 円')
+        + _tkb_li('不划船', TKB['walk'])
+        + '</ul>'
+      + '<h2>取消、下雨與停航</h2>'
+      + '<div class="tw"><table><tr><th>乘船日</th><th>取消費</th></tr>'
+        f'<tr><td class="nm"><b>{_tkb_newc.month}/{_tkb_newc.day} 以前</b></td><td class="nm">2 天前早上 9 點以前免費，之後 100%</td></tr>'
+        f'<tr><td class="nm"><b>{_tkb_newc.month}/{_tkb_newc.day} 以後</b></td><td class="nm">'
+        + '<br>'.join(f'{d} 天前 9:00 起 {p}%' for d, p in TKB['cancel_new']) + '</td></tr></table></div>'
+      + '<p class="disc">新規定只寫在預約網站首頁的公告，同網站的常見問題頁還是舊的寫法，以首頁公告為準。</p>'
+      + '<ul class="lede">'
+        + _tkb_li('下雨', _tkb_b['rain'] + '；' + TKB['cancel_rain'])
+        + _tkb_li('停航', _tkb_b['stop'])
+        + _tkb_li('怎麼知道', _tkb_b['stop_notice'])
+        + _tkb_li('退費', _tkb_b['stop_refund'])
+        + '</ul>'
+      + '<h2>船上的規定</h2>'
+      + '<ul class="lede">'
+        + _tkb_li('人數', f'一艘最多 {_tkb_b["cap"]} 人，{_tkb_b["kids_cap"]}，總重約 {_tkb_b["kg"]} 公斤以內')
+        + _tkb_li('誰能划', _tkb_b['kids'])
+        + _tkb_li('時間', f'{_tkb_b["hours"]}，最後受理 {_tkb_b["last"]}；{_tkb_b["last_note"]}')
+        + _tkb_li('報到', _tkb_b['where'])
+        + _tkb_li('不能做的事', _tkb_b['no'])
+        + _tkb_li('救生衣', _tkb_b['vest'])
+        + '</ul>'
+      + '<h2>從熊本、福岡、宮崎怎麼去</h2>'
+      + '<div class="tw"><table><tr><th>出發地</th><th>去程</th><th>回程</th><th>車資（大人單程）</th></tr>'
+        f'<tr><td class="nm"><b>熊本</b><br><small>{html.escape(_ak["name"])}</small></td>'
+        f'<td class="nm">' + '<br>'.join(f'{a} {t}' for a, t in _ak['go']) + f'<br>→ 高千穗 {_ak["arr"]}</td>'
+        f'<td class="nm">高千穗 {_ak["back_dep"]}<br>→ ' + '<br>'.join(f'{a} {t}' for a, t in _ak['back']) + '</td>'
+        f'<td class="nm">' + '<br>'.join(f'{a} {p:,} 円' for a, p in _ak['fare']) + '</td></tr>'
+        f'<tr><td class="nm"><b>福岡</b><br><small>{html.escape(_af["name"])}</small></td>'
+        f'<td class="nm">' + '<br>'.join(f'{a} {t1}／{t2}' for a, t1, t2 in _af['go']) + f'<br>→ 高千穗 {_af["arr"][0]}／{_af["arr"][1]}</td>'
+        f'<td class="nm">高千穗 {_af["back_dep"][0]}／{_af["back_dep"][1]}<br>→ 博多 {_af["back_arr"][0]}／{_af["back_arr"][1]}</td>'
+        f'<td class="nm">{_af["fare"][0]:,}～{_af["fare"][1]:,} 円<br><small>依日期</small></td></tr>'
+        f'<tr><td class="nm"><b>宮崎</b><br><small>{html.escape(_am["name"])}</small></td>'
+        f'<td class="nm">' + ' → '.join(f'{a} {t}' for a, t in _am['easy']) + '</td>'
+        f'<td class="nm">' + ' → '.join(f'{a} {t}' for a, t in _am['back']) + '</td>'
+        f'<td class="nm">JR {_am["jr"]["free"]:,} 円（網路票 {_am["jr"]["net"]:,}）<br>＋巴士約 {_am["bus"]:,} 円</td></tr>'
+        '</table></div>'
+      + '<ul class="lede">'
+        + _tkb_li('熊本', f'{_ak["note"]}；{_ak["book"]}（{_ak["rev"]} 的時刻）')
+        + _tkb_li('福岡', f'{_af["note"]}；{_af["book"]}')
+        + _tkb_li('宮崎', f'{_am["jr_note"]}；最早可以 ' + ' → '.join(f'{a} {t}' for a, t in _am['early'])
+                  + f'；{_am["bus_note"]}；{_am["note"]}')
+        + _tkb_li('最後 2 公里', _tkb_a['last_mile'])
+        + _tkb_li('開車', TKB['parking_note'])
+        + _tkb_li('乘合計程車', f'到 {_tkb_D(TKB["taxi"]["until"]).month}/{_tkb_D(TKB["taxi"]["until"]).day}：{TKB["taxi"]["rule"]}')
+        + '</ul>'
+      + '<div class="tw"><table><tr><th>停車場</th><th>一次</th><th>到划船受理處</th></tr>'
+        + ''.join(f'<tr><td class="nm"><b>{n}</b></td><td class="nm">{p:,} 円</td><td class="nm">{w}</td></tr>'
+                  for n, p, w in TKB['parking'])
+        + '</table></div>'
+      + '<h2>飛哪裡比較近</h2>'
+      + '<p class="lede">台灣虎航有飛宮崎、熊本和福岡。熊本的巴士只有一班、時間固定，宮崎的 JR 加巴士班次比較多。'
+        '下面是接下來 60 天虎航官網的最低單程（含稅、不含託運行李），每天自動更新。</p>'
+      + '<div class="tw"><table><tr><th>航線</th><th>官網最低單程</th><th></th></tr>' + _tkb_frows + '</table></div>'
+      + '<h2>晚上：高千穗神樂</h2>'
+      + f'<p class="lede">住高千穗的話，晚上可以去高千穗神社看神樂，每晚 {_tkb_kgr["time"]}，'
+        f'大人 {_tkb_kgr["fare"]:,} 円，{_tkb_kgr["kids"]}。</p>'
+      + '<ul class="lede">'
+        + _tkb_li('網路預約', _tkb_kgr['web'])
+        + _tkb_li('現場', _tkb_kgr['door'])
+        + _tkb_li('休演', _tkb_kgr['off'])
+        + _tkb_li('取消費', _tkb_kgr['cancel'])
+        + _tkb_li('座位', _tkb_kgr['seat'] + '；' + _tkb_kgr['park'])
+        + '</ul>'
+      + '<h2>Klook、KKday 一日遊</h2>'
+      + f'<p class="lede">熊本、福岡出發的一日遊大多可以選含船方案，不用自己搶。但{html.escape(_tkb_pr["note"])}，'
+        '下單前看清楚買不到時怎麼處理。</p>'
+      + '<div class="tw"><table><tr><th>平台</th><th>行程</th><th>划船</th></tr>'
+        + ''.join(_tkb_prow('Klook', p, '') for p in _tkb_pr['klook'])
+        + ''.join(_tkb_prow('KKday', p, '') for p in _tkb_pr['kkday'])
+        + '</table></div>'
+      + '<p class="disc">平台的售價、方案與包含項目隨時會改，以下單頁面為準。</p>'
+      + f'<a class="cta" href="{_tkb_k1h}" target="_blank" rel="{_rel(_tkb_k1h)}">'
+        '<span class="ci">🚣</span><span class="ct"><b>Klook 福岡出發 阿蘇＋高千穗峽一日遊</b>'
+        '<s>可選含遊船方案；用台幣付款</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_tkb_k2h}" target="_blank" rel="{_rel(_tkb_k2h)}">'
+        '<span class="ci">🚌</span><span class="ct"><b>Klook 熊本出發 南阿蘇鐵道＋高千穗峽</b>'
+        '<s>要選含船方案；用台幣付款</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_tkb_d1h}" target="_blank" rel="{_rel(_tkb_d1h)}">'
+        '<span class="ci">♨️</span><span class="ct"><b>KKday 熊本出發 高千穗峽＋黑川溫泉</b>'
+        '<s>可選含船方案；4 天前免費取消</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{html.escape(TKB["src"]["reserve"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>官方預約網站：高千穗峽貸しボート</b>'
+        '<s>日文介面，自己搶的話從這裡訂，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '官方預約網站本站沒有分潤。</p>'
+      + faq_visible(tkb_faq)
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/miyazaki/")}"><b>✈️ 宮崎機票</b><s>桃園直飛</s></a>'
+      + f'<a class="ct" href="{U("/kumamoto/")}"><b>✈️ 熊本機票</b><s>高雄、台南直飛</s></a>'
+      + f'<a class="ct" href="{U("/japan-rentacar-noc/")}"><b>🚗 日本租車 NOC</b><s>開車去高千穗之前</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 日本刷卡回饋</b><s>現場刷卡用哪張</s></a></div>'
+      + '<p class="disc">票價、時間與規定以各官網為準，整理可能有疏漏。本頁為公開資訊整理，與高千穗町觀光協會、'
+        '九州產交、西鐵、宮崎交通、JR 九州無合作關係。</p>'
+      + foot())
+    pages.append(('/miyazaki/takachiho-gorge/', 0.6))
 
 # ---------- 乳頭溫泉鄉 鶴之湯（訂房、日歸入浴、交通） ----------
 # 資料在 tsurunoyu.json。房價、預約方式引鶴之湯官網日文頁；網路方案起價、取消費與空房快照引日本秘湯を守る会；
