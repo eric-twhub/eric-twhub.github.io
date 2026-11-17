@@ -14,19 +14,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$4,194（14 天有紀錄），這張低 40%"
+   "12 月出發的票，每天最便宜的平均要 NT$4,067（14 天有紀錄），這張低 38%"
   ],
   "med": 13195,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-13&inbound=OKA-TPE&returnDate=2026-12-17&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 2934,
+   "lo": 2534,
    "hi": 6412,
    "days": 16
   },
   "mbase": {
-   "avg": 4194,
+   "avg": 4067,
    "days": 14,
    "month": 12
   },
@@ -124,22 +124,22 @@
  },
  {
   "slug": "2026-11-17-taipei-saga",
-  "title": "台北飛佐賀 NT$4,469 來回含稅｜台灣虎航 11/19 出發",
+  "title": "台北飛佐賀 NT$4,969 來回含稅｜台灣虎航 12/03 出發",
   "o": "台北",
   "c": "佐賀",
   "_oiata": "TPE",
   "_diata": "HSG",
-  "price": 4469,
+  "price": 4969,
   "air": "台灣虎航",
-  "dep": "2026-11-19",
-  "ret": "2026-11-26",
+  "dep": "2026-12-03",
+  "ret": "2026-12-10",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000"
   ],
   "med": 14933,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-11-19&inbound=HSG-TPE&returnDate=2026-11-26&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-HSG&departureDate=2026-12-03&inbound=HSG-TPE&returnDate=2026-12-10&type=return&adult=1&language=zh-TW",
   "hotelcity": "佐賀",
   "cslug": "saga",
   "usual": null,
@@ -149,12 +149,12 @@
  },
  {
   "slug": "2026-11-17-taipei-miyazaki",
-  "title": "台北飛宮崎 NT$5,427 來回含稅｜台灣虎航 12/07 出發",
+  "title": "台北飛宮崎 NT$5,127 來回含稅｜台灣虎航 12/07 出發",
   "o": "台北",
   "c": "宮崎",
   "_oiata": "TPE",
   "_diata": "KMI",
-  "price": 5427,
+  "price": 5127,
   "air": "台灣虎航",
   "dep": "2026-12-07",
   "ret": "2026-12-14",
@@ -173,45 +173,21 @@
   "n": 6
  },
  {
-  "slug": "2026-11-17-kaohsiung-fukuoka",
-  "title": "高雄飛福岡 NT$5,553 來回含稅｜台灣虎航 12/16 出發",
-  "o": "高雄",
-  "c": "福岡",
-  "_oiata": "KHH",
-  "_diata": "FUK",
-  "price": 5553,
-  "air": "台灣虎航",
-  "dep": "2026-12-16",
-  "ret": "2026-12-23",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000"
-  ],
-  "med": 7234,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-16&inbound=FUK-KHH&returnDate=2026-12-23&type=return&adult=1&language=zh-TW",
-  "hotelcity": "福岡",
-  "cslug": "fukuoka",
-  "usual": null,
-  "mbase": null,
-  "rank": 1,
-  "n": 5
- },
- {
   "slug": "2026-11-17-taipei-fukuoka",
-  "title": "台北飛福岡 NT$6,253 來回含稅｜台灣虎航 12/15 出發",
+  "title": "台北飛福岡 NT$5,795 來回含稅｜台灣虎航 12/15 出發",
   "o": "台北",
   "c": "福岡",
   "_oiata": "TPE",
   "_diata": "FUK",
-  "price": 6253,
+  "price": 5795,
   "air": "台灣虎航",
   "dep": "2026-12-15",
   "ret": "2026-12-19",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "12 月出發的票，每天最便宜的平均要 NT$8,444（8 天有紀錄），這張低 26%"
+   "廉航低於 NT$6,000",
+   "12 月出發的票，每天最便宜的平均要 NT$8,387（8 天有紀錄），這張低 31%"
   ],
   "med": 16432,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-15&inbound=FUK-TPE&returnDate=2026-12-19&type=return&adult=1&language=zh-TW",
@@ -223,7 +199,7 @@
    "days": 8
   },
   "mbase": {
-   "avg": 8444,
+   "avg": 8387,
    "days": 8,
    "month": 12
   },
@@ -232,31 +208,31 @@
  },
  {
   "slug": "2026-11-17-taipei-nagoya",
-  "title": "台北飛名古屋 NT$8,166 來回含稅｜台灣虎航 12/27 出發",
+  "title": "台北飛名古屋 NT$7,599 來回含稅｜台灣虎航 12/27 出發",
   "o": "台北",
   "c": "名古屋",
   "_oiata": "TPE",
   "_diata": "NGO",
-  "price": 8166,
+  "price": 7599,
   "air": "台灣虎航",
   "dep": "2026-12-27",
   "ret": "2026-12-31",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "12 月出發的票，每天最便宜的平均要 NT$10,921（5 天有紀錄），這張低 25%"
+   "12 月出發的票，每天最便宜的平均要 NT$10,695（5 天有紀錄），這張低 29%"
   ],
   "med": 16212,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-NGO&departureDate=2026-12-27&inbound=NGO-TPE&returnDate=2026-12-31&type=return&adult=1&language=zh-TW",
   "hotelcity": "名古屋",
   "cslug": "nagoya",
   "usual": {
-   "lo": 9166,
+   "lo": 8599,
    "hi": 11301,
    "days": 6
   },
   "mbase": {
-   "avg": 10921,
+   "avg": 10695,
    "days": 5,
    "month": 12
   },
@@ -298,51 +274,51 @@
  },
  {
   "slug": "2026-11-17-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,953",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$2,711",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 7773,
+  "price": 8015,
   "air": "飛福岡再轉乘",
-  "fl_price": 5553,
+  "fl_price": 5795,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1110,
   "tr_mode": "九州新幹線",
-  "dep": "2026-12-16",
+  "dep": "2026-12-15",
   "ret": "",
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$2,953"
+   "比直飛省 NT$2,711"
   ],
   "med": 10726,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-16&inbound=FUK-KHH&returnDate=2026-12-23&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-15&inbound=FUK-TPE&returnDate=2026-12-19&type=return&adult=1&language=zh-TW",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
  },
  {
   "slug": "2026-11-17-transfer-fukuoka-nagasaki",
-  "title": "飛福岡轉乘去長崎，比直飛省 NT$3,631",
+  "title": "飛福岡轉乘去長崎，比直飛省 NT$3,389",
   "o": "台灣",
   "c": "長崎",
   "via": "福岡",
-  "price": 8045,
+  "price": 8287,
   "air": "飛福岡再轉乘",
-  "fl_price": 5553,
+  "fl_price": 5795,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1246,
   "tr_mode": "特急接力海鷗＋西九州新幹線",
-  "dep": "2026-12-16",
+  "dep": "2026-12-15",
   "ret": "",
   "stops": "特急接力海鷗＋西九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$3,631"
+   "比直飛省 NT$3,389"
   ],
   "med": 11676,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-16&inbound=FUK-KHH&returnDate=2026-12-23&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-15&inbound=FUK-TPE&returnDate=2026-12-19&type=return&adult=1&language=zh-TW",
   "hotelcity": "長崎",
   "cslug": "nagasaki"
  },
