@@ -252,6 +252,12 @@
    "title": "函館山纜車：2026 停駛維修日期、營業時間、票價 1,800 円、夜景幾點去、冬天怎麼上山"
   },
   {
+   "slug": "yonago-conan-museum",
+   "url": "/yonago/conan-museum/",
+   "h1": "青山剛昌故鄉館",
+   "title": "青山剛昌故鄉館：舊館 2027/1/11 結束、現在要先買網路票、門票 700 円、從米子怎麼去柯南小鎮"
+  },
+  {
    "slug": "japan-tsurunoyu",
    "url": "/japan-tsurunoyu/",
    "h1": "鶴之湯怎麼訂、怎麼去",
@@ -380,8 +386,8 @@
   {
    "slug": "deals-2026-11-18-taipei-okinawa",
    "url": "/deals/2026-11-18-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,534 來回含稅｜台灣虎航 12/20 出發",
-   "title": "台北飛沖繩 NT$2,534 來回含稅｜台灣虎航 12/20 出發"
+   "h1": "台北飛沖繩 NT$2,134 來回含稅｜台灣虎航 12/13 出發",
+   "title": "台北飛沖繩 NT$2,134 來回含稅｜台灣虎航 12/13 出發"
   },
   {
    "slug": "deals-2026-11-18-taichung-okinawa",
@@ -396,22 +402,28 @@
    "title": "台北飛石垣島 NT$4,051 來回含稅｜台灣虎航 12/09 出發"
   },
   {
+   "slug": "deals-2026-11-18-taipei-fukuoka",
+   "url": "/deals/2026-11-18-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$4,478 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$4,478 來回含稅｜台灣虎航 12/01 出發"
+  },
+  {
    "slug": "deals-2026-11-18-taipei-miyazaki",
    "url": "/deals/2026-11-18-taipei-miyazaki/",
    "h1": "台北飛宮崎 NT$4,527 來回含稅｜台灣虎航 12/28 出發",
    "title": "台北飛宮崎 NT$4,527 來回含稅｜台灣虎航 12/28 出發"
   },
   {
-   "slug": "deals-2026-11-18-taipei-fukuoka",
-   "url": "/deals/2026-11-18-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$4,636 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$4,636 來回含稅｜台灣虎航 12/01 出發"
-  },
-  {
    "slug": "deals-2026-11-18-taipei-saga",
    "url": "/deals/2026-11-18-taipei-saga/",
-   "h1": "台北飛佐賀 NT$5,209 來回含稅｜台灣虎航 12/03 出發",
-   "title": "台北飛佐賀 NT$5,209 來回含稅｜台灣虎航 12/03 出發"
+   "h1": "台北飛佐賀 NT$5,509 來回含稅｜台灣虎航 12/03 出發",
+   "title": "台北飛佐賀 NT$5,509 來回含稅｜台灣虎航 12/03 出發"
+  },
+  {
+   "slug": "deals-2026-11-18-kaohsiung-fukuoka",
+   "url": "/deals/2026-11-18-kaohsiung-fukuoka/",
+   "h1": "高雄飛福岡 NT$5,553 來回含稅｜台灣虎航 12/16 出發",
+   "title": "高雄飛福岡 NT$5,553 來回含稅｜台灣虎航 12/16 出發"
   },
   {
    "slug": "deals-2026-11-18-taipei-oita",
@@ -422,14 +434,14 @@
   {
    "slug": "deals-2026-11-18-taipei-nagoya",
    "url": "/deals/2026-11-18-taipei-nagoya/",
-   "h1": "台北飛名古屋 NT$7,599 來回含稅｜台灣虎航 12/27 出發",
-   "title": "台北飛名古屋 NT$7,599 來回含稅｜台灣虎航 12/27 出發"
+   "h1": "台北飛名古屋 NT$8,099 來回含稅｜台灣虎航 12/27 出發",
+   "title": "台北飛名古屋 NT$8,099 來回含稅｜台灣虎航 12/27 出發"
   },
   {
    "slug": "deals-2026-11-18-taipei-tokyo",
    "url": "/deals/2026-11-18-taipei-tokyo/",
-   "h1": "台北飛東京 NT$9,189 來回含稅｜酷航 12/30 出發",
-   "title": "台北飛東京 NT$9,189 來回含稅｜酷航 12/30 出發"
+   "h1": "台北飛東京 NT$9,195 來回含稅｜酷航 12/30 出發",
+   "title": "台北飛東京 NT$9,195 來回含稅｜酷航 12/30 出發"
   },
   {
    "slug": "deals-2026-11-18-taipei-sapporo",
@@ -440,14 +452,14 @@
   {
    "slug": "deals-2026-11-18-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-18-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,862",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,862"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$4,020",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$4,020"
   },
   {
    "slug": "deals-2026-11-18-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-18-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,538",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,538"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,696",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,696"
   },
   {
    "slug": "deals-2026-11-18-transfer-tokyo-fukushima",
