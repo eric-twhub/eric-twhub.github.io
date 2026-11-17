@@ -2475,7 +2475,7 @@ def fare_card(x,hot=False):
     _bto = gate_info(x['gate'])[0] if _own else P['flight']['brand']
     _rel = 'nofollow noopener' if _own else 'nofollow noopener sponsored'
     btn=(f'<a class="btn" href="{html.escape(flight_url(x))}" target="_blank" '
-         f'rel="{_rel}">✈️ 到 {_bto} 查這天目前票價</a>')
+         f'rel="{_rel}">✈️ 到 {_bto} 查現價</a>')
     gname,tier=gate_info(x.get('gate',''))
     gcls={'A':'ga','B':'gb','C':'gc'}[tier]
     gtxt={'A':'台灣可訂','B':'國際平台','C':'台灣較陌生'}[tier]
