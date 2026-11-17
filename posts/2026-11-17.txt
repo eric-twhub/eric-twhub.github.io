@@ -6,10 +6,10 @@
    帶網址的貼文觸及會不會被壓還沒有數字，但把連結挪開沒有損失。
 ====================================================
 
-✈️【台北 → 沖繩】NT$2,534 來回含稅
+✈️【台北 → 沖繩】NT$2,134 來回含稅
 
 　🛫 台灣虎航｜直飛
-　📅 2026-12-20 – 2026-12-24
+　📅 2026-12-13 – 2026-12-17
 　💡 廉航低於 NT$6,000
 
 #日本機票 #沖繩機票 #台北出發 #便宜機票 #日本自由行
@@ -18,7 +18,7 @@
 　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
 　　 https://jptripcard.com/deals/2026-11-17-taipei-okinawa/
 　🔍 查證用，發文前自己開，不要貼出去：
-　　 https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-20&inbound=OKA-TPE&returnDate=2026-12-24&type=return&adult=1&language=zh-TW
+　　 https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-13&inbound=OKA-TPE&returnDate=2026-12-17&type=return&adult=1&language=zh-TW
 ----------------------------------------------------
 ✈️【台中 → 沖繩】NT$3,851 來回含稅
 
@@ -48,21 +48,7 @@
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-09&inbound=ISG-TPE&returnDate=2026-12-25&type=return&adult=1&language=zh-TW
 ----------------------------------------------------
-✈️【台北 → 宮崎】NT$4,527 來回含稅
-
-　🛫 台灣虎航｜直飛
-　📅 2026-12-28 – 2027-01-01
-　💡 廉航低於 NT$6,000
-
-#日本機票 #宮崎機票 #台北出發 #便宜機票 #日本自由行
-#機票特價 #廉航 #省錢旅遊 #小資旅行 #日本旅遊
-
-　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
-　　 https://jptripcard.com/deals/2026-11-17-taipei-miyazaki/
-　🔍 查證用，發文前自己開，不要貼出去：
-　　 https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-28&inbound=KMI-TPE&returnDate=2027-01-01&type=return&adult=1&language=zh-TW
-----------------------------------------------------
-✈️【台北 → 福岡】NT$4,936 來回含稅
+✈️【台北 → 福岡】NT$4,478 來回含稅
 
 　🛫 台灣虎航｜直飛
 　📅 2026-12-01 – 2026-12-22
@@ -75,6 +61,20 @@
 　　 https://jptripcard.com/deals/2026-11-17-taipei-fukuoka/
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW
+----------------------------------------------------
+✈️【台北 → 宮崎】NT$4,727 來回含稅
+
+　🛫 台灣虎航｜直飛
+　📅 2026-12-28 – 2027-01-01
+　💡 廉航低於 NT$6,000
+
+#日本機票 #宮崎機票 #台北出發 #便宜機票 #日本自由行
+#機票特價 #廉航 #省錢旅遊 #小資旅行 #日本旅遊
+
+　💬 連結回覆（主文發完，回自己一則，只貼這一行）：
+　　 https://jptripcard.com/deals/2026-11-17-taipei-miyazaki/
+　🔍 查證用，發文前自己開，不要貼出去：
+　　 https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-28&inbound=KMI-TPE&returnDate=2027-01-01&type=return&adult=1&language=zh-TW
 ----------------------------------------------------
 ✈️【台北 → 佐賀】NT$5,509 來回含稅
 
@@ -118,7 +118,7 @@
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 https://booking.tigerairtw.com/?outbound=TPE-NGO&departureDate=2026-12-27&inbound=NGO-TPE&returnDate=2026-12-31&type=return&adult=1&language=zh-TW
 ----------------------------------------------------
-✈️【台北 → 東京】NT$9,181 來回含稅
+✈️【台北 → 東京】NT$9,179 來回含稅
 
 　🛫 酷航｜直飛
 　📅 2026-12-30 – 2027-01-08
@@ -146,12 +146,12 @@
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 https://tw.trip.com/flights/showfarefirst?dcity=tpe&acity=spk&ddate=2026-12-02&rdate=2026-12-06&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD&Allianceid=10585044&SID=331341333&trip_sub3=D19828713&trip_sub1=spk
 ----------------------------------------------------
-✈️【台灣 → 熊本】NT$7,156 總計
+✈️【台灣 → 熊本】NT$6,698 總計
 
 　🛫 飛福岡再轉乘｜九州新幹線
 　📅 2026-12-01
-　💡 比直飛省 NT$3,570
-　🧮 組成：機票飛福岡 NT$4,936（來回含稅） ＋ 九州新幹線 NT$1,110×2
+　💡 比直飛省 NT$4,028
+　🧮 組成：機票飛福岡 NT$4,478（來回含稅） ＋ 九州新幹線 NT$1,110×2
 
 #日本機票 #熊本機票 #台灣出發 #便宜機票 #日本自由行
 #機票特價 #轉乘方案 #省錢旅遊 #小資旅行 #日本旅遊
@@ -161,12 +161,12 @@
 　🔍 查證用，發文前自己開，不要貼出去：
 　　 （轉乘方案，請分段查證）
 ----------------------------------------------------
-✈️【台灣 → 長崎】NT$7,428 總計
+✈️【台灣 → 長崎】NT$6,970 總計
 
 　🛫 飛福岡再轉乘｜特急接力海鷗＋西九州新幹線
 　📅 2026-12-01
-　💡 比直飛省 NT$4,248
-　🧮 組成：機票飛福岡 NT$4,936（來回含稅） ＋ 特急接力海鷗＋西九州新幹線 NT$1,246×2
+　💡 比直飛省 NT$4,706
+　🧮 組成：機票飛福岡 NT$4,478（來回含稅） ＋ 特急接力海鷗＋西九州新幹線 NT$1,246×2
 
 #日本機票 #長崎機票 #台灣出發 #便宜機票 #日本自由行
 #機票特價 #轉乘方案 #省錢旅遊 #小資旅行 #日本旅遊
