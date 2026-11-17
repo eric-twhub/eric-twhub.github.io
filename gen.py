@@ -7,6 +7,9 @@ CFG=json.load(open('partners.json',encoding='utf-8'))
 W=CFG.get('widgets',{})
 MARKER=CFG['marker']; P=CFG['partners']
 SITE=CFG['site']['url'].rstrip('/'); SITENAME=CFG['site']['name']
+# 社群帳號（2026-11-17 開），頁尾與關於頁共用。私訊是不需要 GitHub 帳號的聯絡管道。
+SOCIAL = [('Threads', 'https://www.threads.com/@jptripcard'), ('Instagram', 'https://www.instagram.com/jptripcard/')]
+SOCIAL_LINKS = '　·　'.join(f'<a href="{u}" target="_blank" rel="me noopener">{n}</a>' for n, u in SOCIAL)
 BASE=CFG['site'].get('base','').rstrip('/')
 def U(p): return BASE+p
 
@@ -2259,7 +2262,8 @@ def foot():
 <!--f-->票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
 <!--/f--><!--a-->實際訂購由合作平台完成：{_partner_line()}。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
-<!--/a-->最後更新 <!--lm-->{NOWS}<!--/lm-->　·　<a href="{U("/about/")}">關於本站</a>　·　<a href="{U("/")}">回首頁</a>
+<!--/a-->追蹤與聯絡 @jptripcard：{SOCIAL_LINKS}（私訊即可）<br>
+最後更新 <!--lm-->{NOWS}<!--/lm-->　·　<a href="{U("/about/")}">關於本站</a>　·　<a href="{U("/")}">回首頁</a>
 </p></div>{SF_JS}{NAV_JS}{TBL_JS}{LB_JS}</body></html>'''
 
 def _reg_window(c):
@@ -7239,10 +7243,10 @@ if DRV:
 
 # ---------- 關於本站 ----------
 # 讀者要知道的是：誰在整理、資料從哪裡來、怎麼查、靠什麼維持、錯了怎麼回報。
-# 經營者不具名（使用者 2026-11-09 決定），回報管道用 GitHub Issues。
+# 經營者不具名（使用者 2026-11-09 決定）。回報管道 2026-11-17 改成 Threads／IG 私訊，
+# 使用者不要再提 GitHub Issues。
 # 「沒有任何一張信用卡的申辦分潤」是 2026-11-09 逐頁 grep 卡片頁的 sponsored
 # 連結確認的（只有 Trip.com／KKday／Klook）；之後若接了銀行分潤，這句要改。
-_ab_issues = 'https://github.com/eric-twhub/eric-twhub.github.io/issues'
 _ab_ld = json.dumps({'@context': 'https://schema.org', '@type': 'AboutPage',
                      'name': '關於日本旅遊小卡', 'url': f'{SITE}{U("/about/")}',
                      'inLanguage': 'zh-Hant'}, ensure_ascii=False)
@@ -7279,8 +7283,7 @@ write('about/index.html',
   + '<p>本站沒有安裝流量分析工具。部分頁面嵌入了合作平台的商品區塊，'
     '那些區塊由合作平台的伺服器載入；點進合作平台之後，對方會記錄這次點擊來計算分潤。</p>'
   + '<h2>發現資料有錯</h2>'
-  + f'<p>歡迎到 <a href="{_ab_issues}" target="_blank" rel="noopener">GitHub Issues</a> '
-    '開一則回報，寫下哪一頁、哪一句，以及你看到的出處。開回報需要 GitHub 帳號。</p>'
+  + f'<p>歡迎在 {SOCIAL_LINKS} 私訊 @jptripcard，寫下哪一頁、哪一句，以及你看到的出處。</p>'
   + '<p class="disc">本站內容為公開資訊整理，不是理財建議，也不代為訂票或申辦信用卡。</p>'
   + foot())
 pages.append(('/about/', 0.3))
