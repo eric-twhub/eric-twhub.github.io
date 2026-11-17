@@ -5228,7 +5228,7 @@ if os.path.exists('transit.json'):
             f'<b>{html.escape(c["name"])}</b></a></td>'
             f'<td><b>{_trrate(c):g}%</b></td>'
             f'<td class="nm">{html.escape(_trcap(c))}</td>'
-            f'<td class="nm">{html.escape(c.get("reg_short", ""))}</td></tr>'
+            f'<td class="nm">{html.escape(c.get("reg_short_transit") or c.get("reg_short", ""))}</td></tr>'
             for c in sorted(_trok, key=lambda x: -_trrate(x)))
 
         _trcards = (
