@@ -1827,6 +1827,7 @@ def topnav(cur=''):
             + link('/japan-medicine-limit/', '💊 藥妝能帶多少')
             + link('/tokyo/street-fashion/', '👕 東京潮牌選物店')
             + link('/japan-coupon/', '🏷️ 購物折扣總覽')
+            + link('/japan-shop-card/', '💳 各店刷哪張卡')
             + link('/japan-fukubukuro/', '🎍 2027 福袋怎麼買')
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制')
             + link('/apple-japan-price/', '🍎 台日 Apple 價差')
@@ -1953,6 +1954,7 @@ _AD_MAP = [
     ('japan-store-points', 'esim'),
     ('japan-medicine-limit', 'esim'),
     ('japan-coupon', 'esim'), ('japan-bic-points', 'esim'),
+    ('japan-shop-card', 'esim'),
     ('japan-fukubukuro', 'esim'),
     ('japan-camera-price', 'esim'), ('japan-dyson-price', 'esim'),
     ('japan-panasonic-dryer', 'esim'), ('apple-japan-price', 'esim'),
@@ -23957,6 +23959,8 @@ if os.path.exists('cards.json'):
                   f'<u>{html.escape(str(st["rate"]))}</u></a></div>')
                  if st.get('src') else '')
               + '<h2>相關頁面</h2><div class="cities">'
+              + f'<a class="ct" href="{U("/japan-shop-card/")}"><b>💳 各店刷哪張卡</b>'
+                f'<s>{len(CP["stores"])} 家店的前三名一次看</s></a>'
               + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 實付價計算機</b>'
                 f'<s>折價券×免稅×刷卡回饋一起算</s></a>'
               + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
@@ -23979,6 +23983,139 @@ if os.path.exists('cards.json'):
               + foot())
             pages.append((f'/japan-coupon/{st["slug"]}/', 0.7))
         print(f'   店家頁 {len(CP["stores"])} 頁')
+
+        # ── 全部店家的總表：/japan-shop-card/ ──────────────
+        # 店家頁一次只講一家，讀者要比「我這幾家該帶哪張」就得開 22 個分頁。
+        # 這一頁把 22 家擺在一起，三個金額各列前三名。
+        _sc_rows, _sc_pick, _sc_flip = '', {}, []
+        for st in CP['stores']:
+            tds = ''
+            firsts = []
+            for y in _RANK_Y:
+                b, ranked = _rank_at(st, y)
+                top = ranked[:3]
+                firsts.append(top[0]['c']['slug'])
+                li = ''
+                for k, r in enumerate(top):
+                    _sc_pick[r['c']['slug']] = r
+                    li += (f'{"①②③"[k]} {html.escape(r["c"]["name"])}'
+                           f'{SMALL}{money(round(r["v"]))}　·　{r["rate"]:g}%'
+                           + ('　加碼已滿' if r['capped'] else '') + '</small><br>')
+                tds += f'<td>{li.rstrip("<br>")}</td>'
+            if len(set(firsts)) > 1:
+                _sc_flip.append(st['name'])
+            _sc_rows += (f'<tr><td><a href="{U("/japan-coupon/" + st["slug"] + "/")}">'
+                         f'<b>{html.escape(st["name"])}</b></a>{SMALL}'
+                         f'{html.escape(st["cat"])}</small></td>{tds}</tr>')
+
+        _sc_cond = ''.join(
+            f'<tr><td><a href="{U("/japan-credit-card/" + r["c"]["slug"] + "/")}">'
+            f'<b>{html.escape(r["c"]["name"])}</b></a></td>'
+            f'<td>{html.escape(r["c"].get("reg_short") or "官方沒寫")}</td>'
+            f'<td><b>{r["rate"]:g}%</b></td>'
+            f'<td>{r["c"]["base"]:g}%</td></tr>'
+            for r in sorted(_sc_pick.values(), key=lambda x: -x['rate']))
+
+        _sc_imgs = ''.join(
+            f'<a href="{U("/japan-coupon/rank-cards/rank-" + st["slug"] + ".png")}" '
+            f'target="_blank"><img src="{U("/japan-coupon/rank-cards/rank-" + st["slug"] + ".png")}" '
+            f'alt="在{html.escape(st["name"])}刷哪張卡" width="1080" height="1350" '
+            f'loading="lazy"><b>{html.escape(st["name"])}</b></a>'
+            for st in CP['stores']
+            if os.path.exists(os.path.join(_RKC, f'rank-{st["slug"]}.png')))
+
+        _sc_faq = [
+         ('在日本購物，哪張卡最常拿第一？',
+          f'{len(CP["stores"])} 家店裡大多數的第一名都是同一張，但不是全部，'
+          f'而且同一家店換個金額也可能換人。原因是加碼都有上限：'
+          f'費率高的那張常常先刷滿，金額拉大之後反而輸給費率低、上限高的。'
+          f'逐家逐金額的答案就在上面那張表。'),
+         ('為什麼金額不一樣，推薦的卡就不一樣？',
+          '因為加碼有上限。以中信 uniopen 聯名卡為例，11% 的加碼在台幣帳單約 '
+          'NT$6,250 就到頂，超過的部分只剩基本回饋；聯邦吉鶴卡費率低一點但上限高，'
+          '刷得多的時候總回饋反而超過。所以要先知道自己大概刷多少。'),
+         ('表上的百分比我一定拿得到嗎？',
+          '不一定。那是把該做的事都做完的數字，例如先登錄、先設定自動扣繳、'
+          '當天在 App 切到指定方案。沒做的話會掉到基本回饋，'
+          '下面「這些卡要做什麼」那張表列了每一張的條件與沒做滿的費率。'),
+         ('這些金額是日圓還是台幣？',
+          '是日圓標價，也就是你在店裡看到的價格。2026/11/1 起日本免稅改成'
+          '出境後才退稅，所以刷在卡上的是含稅價。'
+          f'換算台幣帳單用匯率 {_MIDC}，並加計 {_fx["typical"]}% 國外交易手續費，'
+          '回饋是以台幣帳單計算的。'),
+         ('折價券和免稅有算進去嗎？',
+          '沒有。這一頁只比「同一筆刷卡金額下，哪張卡回饋最多」，'
+          '所以券和退稅不影響名次。要把券、免稅、刷卡回饋三件事疊起來算實付價，'
+          '點店名進各店的頁面，上面有輸入金額就試算的計算機。'),
+        ]
+        _sc_ld = json.dumps({
+            '@context': 'https://schema.org', '@type': 'FAQPage',
+            'mainEntity': [{'@type': 'Question', 'name': q,
+                            'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                           for q, a in _sc_faq]}, ensure_ascii=False)
+
+        write('japan-shop-card/index.html',
+          head(f'日本 {len(CP["stores"])} 家店各自刷哪張卡？三個金額的前三名一次看',
+               f'松本清、Bic Camera、唐吉訶德等 {len(CP["stores"])} 家日本常去的店，'
+               f'分別用刷 ¥10,000、¥30,000、¥50,000 試算 {len(CD["cards"])} 張旅日信用卡，'
+               f'各列前三名與實拿台幣，並附每張卡的登錄條件與沒做滿的費率。',
+               'japan-shop-card/',
+               '<script type="application/ld+json">' + _sc_ld + '</script>')
+          + topnav()
+          + crumbs([('首頁', '/'), ('日本購物折扣', '/japan-coupon/'),
+                    ('各店刷哪張卡', None)])
+          + f'<h1>日本 {len(CP["stores"])} 家店，各自刷哪張卡？</h1>'
+          + '<p class="lede">同一張卡不是每家店都最強，同一家店也不是每個金額都推薦同一張。'
+            '下面以日圓標價試算三個常見金額，各取前三名。</p>'
+          + f'<div class="today"><div class="tday">{len(CP["stores"])} 家店'
+            f'　·　{len(CD["cards"])} 張卡　·　卡片條件查證於 {_CDCHK}</div>'
+            f'<div class="tans">{len(_sc_flip)} 家店的第一名會隨金額換人</div>'
+            + (f'<div class="tsub">分別是{html.escape("、".join(_sc_flip))}。'
+               f'原因是加碼有上限，費率高的那張先刷滿之後就被追過去。</div>'
+               if _sc_flip else
+               '<div class="tsub">這一輪三個金額的第一名都一樣，'
+               '但二三名仍會換，刷得多的時候差距才看得出來。</div>')
+            + f'<div class="tbuf">金額是刷在卡上的日圓金額，11/1 起是含稅價。'
+              f'券與退稅是另外兩件事，點店名進去才會一起算。</div></div>'
+          + '<h2>逐家店的前三名</h2>'
+          + '<p class="lede">點店名可以看那家店的券、免稅門檻，以及輸入金額就試算的計算機。</p>'
+          + '<div class="tw"><table><thead><tr><th>店家</th>'
+          + ''.join(f'<th>刷 ¥{y:,}</th>' for y in _RANK_Y)
+          + '</tr></thead><tbody>' + _sc_rows + '</tbody></table></div>'
+          + '<h2>這些卡要做什麼，沒做滿剩多少</h2>'
+          + '<p class="lede">上面的百分比是把條件都做完才有的。沒做的話掉到基本回饋，'
+            '那個差距通常比選錯卡還大。</p>'
+          + '<div class="tw"><table><thead><tr><th>卡片</th><th>要做的事</th>'
+            '<th>做滿</th><th>沒做滿</th></tr></thead><tbody>'
+          + _sc_cond + '</tbody></table></div>'
+          + (('<h2>整理成圖片</h2>'
+              '<p class="lede">每家店一張，存下來或轉發都可以，不用註明出處。'
+              '點圖放大。</p>'
+              '<style>'
+              '.sck{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}'
+              '.sck a{display:block;border:1px solid var(--line);border-radius:10px;'
+              'overflow:hidden;background:var(--card);text-decoration:none}'
+              '.sck img{display:block;width:100%;height:auto;aspect-ratio:1080/1350}'
+              '.sck b{display:block;padding:8px 10px;font-size:.84rem}'
+              '@media(max-width:720px){.sck{grid-template-columns:repeat(2,1fr)}}'
+              '</style>'
+              f'<div class="sck">{_sc_imgs}</div>') if _sc_imgs else '')
+          + '<div class="cities">'
+          + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 折價券怎麼疊</b>'
+            f'<s>券、免稅、回饋的順序</s></a>'
+          + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張卡比較</b>'
+            f'<s>上限、登錄與適用範圍</s></a>'
+          + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
+            f'<s>輸入日幣金額看每張卡實拿</s></a></div>'
+          + faq_visible(_sc_faq)
+          + f'<p class="disc">本頁為公開資訊整理，非理財建議。以既有卡友計算，'
+            f'新戶限定加碼與這一期名額已滿的加碼都不算；綁指定店家或指定消費類別的加碼，'
+            f'只在成立的那幾家算。換算匯率 {_MIDC}，加計 {_fx["typical"]}% 國外交易手續費。'
+            f'卡片條件查證於 {_CDCHK}，折扣幅度查證於 {CP["checked"]}，'
+            f'發卡行隨時會調整，刷卡前請以發卡行公告為準。</p>'
+          + foot())
+        pages.append(('/japan-shop-card/', 0.8))
+        print(f'   各店刷哪張卡總表：{len(CP["stores"])} 家')
 
         print(f'   日本購物折扣頁：{len(CP["stores"])} 家店')
 
