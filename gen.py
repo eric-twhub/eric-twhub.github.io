@@ -21459,7 +21459,8 @@ if os.path.exists('cards.json'):
                     raise SystemExit(f'card-labels.json：{L["slug"]} 沒有等級 {key}')
                 src = opt.get('tiers', [])
                 base = c['base'] if opt.get('base') is None else opt['base']
-                top = round(base + sum(t['rate'] for t in src), 2)
+                # 購物和交通卡儲值是兩條路，不能把兩邊的加碼加在一起
+                top = max(_lb_mode(base, src, 'shop'), _lb_mode(base, src, 'transit'))
             else:
                 skip = set(L.get('skip', []))
                 src = [t for t in c['tiers'] if t['label'] not in skip]
@@ -21475,6 +21476,7 @@ if os.path.exists('cards.json'):
                     s = s.replace('{{hit}}', f'{hit:,} 元')
                 if rate is not None:
                     s = s.replace('{{sum}}', _lb_g(round(_base + rate, 2)))
+                    s = s.replace('{{rate}}', _lb_g(rate))
                 return re.sub(r'\{\{lv:(\w+)\}\}',
                               lambda m: _lb_g(_lb_lvbase(_c, m.group(1))), s)
 
@@ -21511,8 +21513,18 @@ if os.path.exists('cards.json'):
                         parts.append(spec['extra'])
                     detail = '・'.join(parts)
                 rows.append([title, detail])
-            for t, d in L.get('rows', []):
-                rows.append([tok(t), tok(d)])
+            for r in L.get('rows', []):
+                # 寫成物件的那一行對到 cards.json 的某一層（例：CUBE 的交通卡儲值），
+                # 數字一樣現算，但不編號、不算進上面那幾層
+                if isinstance(r, dict):
+                    t = next((x for x in src if x['label'] == r['label']), None)
+                    if t is None:
+                        raise SystemExit(
+                            f'card-labels.json：{L["slug"]} 對不到加碼層「{r["label"]}」')
+                    hit = t['cap'] * 1000 // round(t['rate'] * 10) if t['cap'] else 0
+                    rows.append([tok(r['t'], hit, t['rate']), tok(r['d'], hit, t['rate'])])
+                else:
+                    rows.append([tok(r[0]), tok(r[1])])
 
             rec = {'n': c['name'], 'top': f'{_lb_g(top)}%',
                    # 「底 2.5%」看不出是什麼的底，那一行右邊還有空間，寫完整
