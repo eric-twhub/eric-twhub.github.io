@@ -1804,6 +1804,7 @@ def topnav(cur=''):
             + link('/nagoya/nabana-no-sato/', '🌸 名花之里燈海門票')
             + link('/japan-zao-juhyo/', '🌲 藏王樹冰點燈與雪怪車')
             + link('/miyazaki/takachiho-gorge/', '🚣 高千穗峽划船怎麼預約')
+            + link('/ishigaki/ferry/', '⛴️ 石垣島離島船票怎麼買')
             + link('/japan-tsurunoyu/', '♨️ 鶴之湯訂房與交通')
             + link('/japan-seasonal-event/', '🎃 萬聖節與聖誕節')
             + link('/taiwan-holiday-2026/', '📅 2026 請假攻略')
@@ -1980,6 +1981,7 @@ _AD_MAP = [
     ('nagoya/nabana-no-sato', 'activity2'),
     ('japan-zao-juhyo', 'esim'),
     ('miyazaki/takachiho-gorge', 'car'),
+    ('ishigaki/ferry', 'car'),
     ('japan-tsurunoyu', 'transport'),
     ('tokyo/autumn-leaves', 'esim'),
     ('tokyo/christmas-market', 'esim'),
@@ -3035,7 +3037,7 @@ _STK_PREFIX = sorted({
     '/japan-asahiyama-zoo/': 'st/penguin', '/japan-shirakawago-lightup/': 'st/gassho',
     '/japan-ginzan-onsen/': 'st/ginzan', '/japan-tsurunoyu/': 'st/rotenburo',
     '/japan-ryuhyo-monogatari/': 'st/icebreaker', '/sapporo/snow-festival/': 'st/snowman',
-    '/japan-zao-juhyo/': 'st/juhyo', '/miyazaki/takachiho-gorge/': 'st/gorge', '/nagoya/nabana-no-sato/': 'st/lights', '/tokyo/teamlab/': 'st/teamlab',
+    '/japan-zao-juhyo/': 'st/juhyo', '/miyazaki/takachiho-gorge/': 'st/gorge', '/ishigaki/ferry/': 'st/ferry', '/nagoya/nabana-no-sato/': 'st/lights', '/tokyo/teamlab/': 'st/teamlab',
     '/japan-autumn-leaves/': 'st/maple', '/kyoto/autumn-leaves/': 'st/maple', '/tokyo/autumn-leaves/': 'st/maple',
     '/tokyo/ginkgo/': 'st/ginkgo', '/japan-seasonal-event/': 'st/seasonal',
     '/tokyo/budget-hotel/': 'st/bunk', '/tokyo/hostel/': 'st/bunk',
@@ -3553,6 +3555,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要去高千穗峽划船？'
                      f'<a href="{U("/miyazaki/takachiho-gorge/")}">哪天開放預約、一艘多少錢、訂不到怎麼辦、從{name}怎麼去</a>'
                      f'（官網原文整理：乘船日 2 週前早上 9 點開放、12 月起取消費改了）。</p>')
+        if slug == 'ishigaki' and os.path.exists('ishigaki-ferry.json'):
+            body += (f'<p class="lede">要去竹富島、西表島？'
+                     f'<a href="{U("/ishigaki/ferry/")}">船票多少錢、兩家船公司差在哪、要不要先買、上原港停航怎麼辦</a>'
+                     f'（官網原文整理：兩家的票不能互搭、冬天上原港常停航）。</p>')
         if slug == 'akita' and os.path.exists('tsurunoyu.json'):
             body += (f'<p class="lede">要去乳頭溫泉鄉的鶴之湯？'
                      f'<a href="{U("/japan-tsurunoyu/")}">電話與網路怎麼訂、各房型價格、不住宿泡湯、從田澤湖站怎麼去</a>'
@@ -11657,6 +11663,306 @@ if os.path.exists('takachiho.json'):
         '九州產交、西鐵、宮崎交通、JR 九州無合作關係。</p>'
       + foot())
     pages.append(('/miyazaki/takachiho-gorge/', 0.6))
+
+# ---------- 石垣島離島船票（竹富島、西表島等） ----------
+# 資料在 ishigaki-ferry.json。票價、時刻、規則引八重山観光フェリー與安栄観光官網；機場巴士引東運輸、カリー観光、機場官網。
+# 時刻表有效期間過了就不顯示舊時刻（八重山觀光到 2027/2/28、安榮到 2027/3/31），換新版要整段重查。
+if os.path.exists('ishigaki-ferry.json'):
+    ISF = json.load(open('ishigaki-ferry.json', encoding='utf-8'))
+    _isf_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _isf_D = datetime.date.fromisoformat
+    _isf_ops = ISF['ops']
+    _isf_R = {r['id']: r for r in ISF['routes']}
+    _isf_tk, _isf_oh, _isf_ue = _isf_R['taketomi'], _isf_R['ohara'], _isf_R['uehara']
+    _isf_web, _isf_wx, _isf_ap, _isf_is = ISF['web'], ISF['weather'], ISF['airport'], ISF['islands']
+    _isf_pass = ISF['pass']['anei']
+    _isf_pr = ISF['products']
+
+    def _isf_md(s):
+        d = _isf_D(s)
+        return f'{d.year}/{d.month}/{d.day}'
+
+    def _isf_valid(op):
+        o = _isf_ops[op]
+        return _isf_D(o['tt_from']) <= _isf_today <= _isf_D(o['tt_to'])
+
+    def _isf_y(n):
+        return f'{n:,}'
+
+    def _isf_li(label, text):
+        return f'<li><b>{label}</b>：{html.escape(text)}</li>'
+
+    def _isf_t(t):
+        return t.lstrip('0') if t[0] == '0' else t
+
+    # 票價表
+    _isf_frows = ''
+    for r in ISF['routes']:
+        f = r['fare']
+        who = '、'.join(_isf_ops[o]['short'] for o in ('ykf', 'anei') if o in r['tt'])
+        wv = sorted({v[0] for v in r['web'].values()})
+        wtxt = '～'.join(_isf_y(x) for x in (wv[0], wv[-1])) if len(wv) > 1 else _isf_y(wv[0])
+        _isf_frows += (f'<tr><td class="nm"><b>{r["zh"]}</b><br><small>{r["min"]} 分，{who}</small></td>'
+                       f'<td class="nm"><b>{_isf_y(f[0])}</b>／{_isf_y(f[1])} 円<br><small>約 {money(round(f[0] * JPY))}／{money(round(f[1] * JPY))}</small></td>'
+                       f'<td class="nm">{wtxt} 円</td>'
+                       f'<td class="nm">{_isf_y(f[2])}／{_isf_y(f[3])} 円</td></tr>')
+
+    # 時刻表
+    def _isf_times(r, op):
+        t = r['tt'].get(op)
+        if not t:
+            return '<small style="color:var(--dim)">沒有這條航線</small>'
+        if not _isf_valid(op):
+            return '<small style="color:var(--dim)">新時刻表還沒公布，看官網</small>'
+        return (f'<small><b>石垣發</b>（{len(t["go"])} 班）' + ' '.join(_isf_t(x) for x in t['go'])
+                + f'<br><b>回程</b>（{len(t["back"])} 班）' + ' '.join(_isf_t(x) for x in t['back']) + '</small>')
+    _isf_trows = ''.join(
+        f'<tr><td class="nm"><b>{r["zh"]}</b><br><small>{r["min"]} 分</small></td>'
+        f'<td class="nm">{_isf_times(r, "ykf")}</td><td class="nm">{_isf_times(r, "anei")}</td></tr>'
+        for r in ISF['routes'])
+    _isf_tnotes = ''.join(_isf_li(r['zh'], r['note']) for r in ISF['routes'] if r.get('note'))
+
+    # 上原停航接駁巴士
+    _isf_kb = _isf_wx['ykf_bus']
+    _isf_ab = _isf_wx['anei_bus']
+    _isf_bus_ykf = '<br>'.join(f'石垣 {_isf_t(a)} 開船，大原 {_isf_t(b)} 轉巴士' for a, b in _isf_kb['go'])
+    _isf_bus_ykf_b = '、'.join(_isf_t(x) for x in _isf_kb['back'])
+    _isf_bus_anei = '<br>'.join(f'石垣 {_isf_t(a)} 開船，大原 {_isf_t(b)} 轉巴士' for a, b in _isf_ab['go'])
+    _isf_bus_anei_b = '、'.join(f'{_isf_t(a)}（{_isf_t(b)} 到大原）' for a, b in _isf_ab['back'])
+
+    # 虎航：飛石垣，接下來 60 天的官網最低單程
+    def _isf_fare(routes):
+        a = (_isf_today + datetime.timedelta(days=1)).isoformat()
+        z = (_isf_today + datetime.timedelta(days=60)).isoformat()
+        best = None
+        for rt in routes:
+            for s, p in (TGF.get(rt) or {}).items():
+                if p and a <= s <= z and (best is None or p < best[0]):
+                    best = (p, s, rt)
+        return best
+    _isf_flrows = ''
+    for _lbl, _rs in (('台北桃園飛石垣', ['TPE-ISG']), ('高雄飛石垣', ['KHH-ISG'])):
+        _b = _isf_fare(_rs)
+        if _b:
+            _o, _d2 = _b[2].split('-')
+            _bd = _isf_D(_b[1])
+            _isf_flrows += (f'<tr><td class="nm"><b><a href="{U("/ishigaki/")}">{_lbl}</a></b></td>'
+                            f'<td class="nm"><b>{money(_b[0])}</b><br><small>{_bd.month}/{_bd.day} 出發</small></td>'
+                            f'<td class="nm"><a href="{html.escape(tiger_url(_o, _d2, _b[1], ""))}" target="_blank" rel="nofollow noopener">到虎航官網看這天</a></td></tr>')
+        else:
+            _isf_flrows += (f'<tr><td class="nm"><b><a href="{U("/ishigaki/")}">{_lbl}</a></b></td>'
+                            f'<td class="nm" colspan="2"><small style="color:var(--dim)">接下來 60 天虎航官網沒有資料</small></td></tr>')
+
+    _isf_tldr = (
+        f'<li><b>竹富島單程 {_isf_y(_isf_tk["fare"][0])} 円、往返 {_isf_y(_isf_tk["fare"][1])} 円</b>，'
+        f'西表島大原港單程 {_isf_y(_isf_oh["fare"][0])}、往返 {_isf_y(_isf_oh["fare"][1])} 円（已含燃油調整金）。'
+        '網路上很多文章寫的還是舊票價（竹富島 880 或 790 円）。</li>'
+        '<li><b>兩家船公司同航線同價，但票不能互搭</b>：八重山觀光買的往返票，回程也只能坐八重山觀光。</li>'
+        '<li><b>不用預約也買得到</b>：全部自由座，當天在碼頭櫃台買就可以；網路先買便宜一點、不用排櫃台。</li>'
+        '<li><b>冬天去西表島，訂大原港比較穩</b>：北邊的上原港吹北風常常停航，停航時改坐到大原港再轉接駁巴士。</li>'
+        f'<li><b>機場到碼頭</b>：巴士 {_isf_ap["karry"]["fare"]} 円、約 30 分，計程車約 3,500 円。</li>')
+
+    isf_faq = [
+     ('石垣島到竹富島船票多少錢？',
+      f'大人單程 {_isf_y(_isf_tk["fare"][0])} 円、往返 {_isf_y(_isf_tk["fare"][1])} 円，小學生單程 {_isf_y(_isf_tk["fare"][2])} 円，'
+      f'已含燃油調整金（2026/4/1 起第 4 段階）。網路先買單程約 {_isf_y(_isf_tk["web"]["ykf"][0])} 円。船程 {_isf_tk["min"]} 分鐘。'),
+     ('竹富島、西表島的船票要先預約嗎？',
+      f'不用。兩家的船都是自由座，當天在石垣港離島碼頭的櫃台買就可以，滿了才會買不到。'
+      f'網路先買比較便宜，也不用排櫃台：{_isf_web["ykf"]["price"]}；安榮{_isf_web["anei"]["price"]}，{_isf_web["anei"]["deadline"]}截止。'),
+     ('八重山觀光和安榮的船票可以互搭嗎？',
+      f'不行。{ISF["no_common"]}。兩家同航線票價一樣，選班次比較多、時間比較順的那家。'),
+     ('西表島要坐到大原港還是上原港？',
+      f'看要去哪一區，但冬天上原港常停航。{_isf_wx["uehara"]}。{_isf_wx["uehara_ticket"]}。'
+      f'由布島、仲間川遊船都在大原這一側。'),
+     ('船會因為天氣停航嗎？怎麼知道？',
+      f'{_isf_wx["rule"]}。{_isf_wx["decide"]}。波照間航線走外海，安榮說有時會連續好幾天全部停航。{_isf_wx["refund"]}。'),
+     ('有一張票坐到好幾個島的周遊券嗎？',
+      f'安榮有「{_isf_pass["name"]}」，3 天大人 {_isf_y(_isf_pass["adult"][0])} 円起（不含波照間），{_isf_pass["rule"]}。'
+      f'八重山觀光的「{ISF["pass"]["ykf"]["name"]}」{ISF["pass"]["ykf"]["status"]}。'),
+     ('石垣機場怎麼到離島碼頭？',
+      f'{_isf_ap["karry"]["name"]}約 30 分、{_isf_ap["karry"]["fare"]} 円；{_isf_ap["azuma"]["name"]}也是 {_isf_ap["azuma"]["fare"]} 円。'
+      f'計程車{_isf_ap["taxi"]}。兩種巴士都不能用交通 IC 卡。'),
+     ('竹富島要付入島費嗎？',
+      f'{_isf_is["taketomi"]["fee"]}。{_isf_is["taketomi"]["tax"]}。'),
+     ('Klook、KKday 的套票有含船票嗎？',
+      '竹富島水牛車套票含八重山觀光的來回船票，回程不用預約；西表島＋由布島一日遊含來回高速船、島上巴士與水牛車。'
+      '套票的船是指定的那家，回程也只能坐同一家。'),
+    ]
+    isf_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in isf_faq]}, ensure_ascii=False)
+
+    _isf_k1, _isf_k2 = _isf_pr['klook'][0], _isf_pr['klook'][1]
+    _isf_d1 = _isf_pr['kkday'][0]
+    _isf_k1h = html.escape(klook(_isf_k1['url'], 'ticket'))
+    _isf_k2h = html.escape(klook(_isf_k2['url'], 'ticket'))
+    _isf_d1h = html.escape(kkday(_isf_d1['url'], 'ticket', 'ishigaki-ferry'))
+
+    def _isf_prow(brand, p):
+        return (f'<tr><td class="nm"><b>{brand} {p["id"]}</b><br><small>{html.escape(p["name"])}</small></td>'
+                f'<td class="nm">{html.escape(p["what"])}</td>'
+                f'<td class="nm"><b>{html.escape(p["ferry"])}</b>'
+                + (f'<br><small>{html.escape(p["cancel"])}</small>' if p.get('cancel') else '') + '</td></tr>')
+
+    _isf_pa = _isf_pass
+    _isf_passrows = ''.join(
+        f'<tr><td class="nm"><b>{d} 天</b></td><td class="nm">{_isf_y(a)}／{_isf_y(c)} 円</td>'
+        f'<td class="nm">{_isf_y(ah)}／{_isf_y(ch)} 円</td></tr>'
+        for d, a, c, ah, ch in zip(_isf_pa['days'], _isf_pa['adult'], _isf_pa['child'], _isf_pa['adult_h'], _isf_pa['child_h']))
+    _isf_ka, _isf_az = _isf_ap['karry'], _isf_ap['azuma']
+    _isf_ti, _isf_ir = _isf_is['taketomi'], _isf_is['iriomote']
+
+    write('ishigaki/ferry/index.html',
+      head(f'石垣島船票怎麼買：竹富島單程 {_isf_y(_isf_tk["fare"][0])} 円、兩家船公司差在哪、要不要先買、停航怎麼辦',
+           '石垣島到竹富島、西表島、小濱島、黑島、鳩間島、波照間島的船票整理：2026 年最新票價、八重山觀光和安榮差在哪、'
+           '網路票與現場票、時刻表、周遊券、上原港冬天停航怎麼辦、機場到離島碼頭，以及 Klook、KKday 套票有沒有含船。',
+           'ishigaki/ferry/',
+           '<script type="application/ld+json">' + isf_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('石垣島', '/ishigaki/'), ('離島船票', None)])
+      + '<h1>石垣島船票怎麼買</h1>'
+      + '<p class="lede">從石垣島到竹富島、西表島這些離島，都是在石垣港離島碼頭（ユーグレナ石垣港離島ターミナル）搭高速船。'
+        f'下面的票價、時刻與規則引八重山観光フェリー和安栄観光兩家船公司的官網，查證於 {ISF["checked"]}；'
+        f'台幣以中間匯率 {JPY} 換算。</p>'
+      + '<div class="tldr"><ul>' + _isf_tldr + '</ul></div>'
+      + '<h2>船票多少錢</h2>'
+      + f'<p class="lede">兩家船公司同一條航線的櫃台價一樣。{html.escape(ISF["surcharge"])}。</p>'
+      + '<div class="tw"><table><tr><th>島（船程）</th><th>大人 單程／往返</th><th>網路單程</th><th>小孩 單程／往返</th></tr>'
+      + _isf_frows + '</table></div>'
+      + f'<p class="disc">{html.escape(ISF["ages"])}。網路單程是兩家官網預約的價格，八重山觀光是往返價的一半，安榮約便宜 5%。'
+        '西表島大原港和上原港是同一個島的兩個港口，上原比較遠也比較貴。</p>'
+      + '<h2>兩家船公司怎麼選</h2>'
+      + '<div class="tw"><table><tr><th></th><th>八重山觀光</th><th>安榮</th></tr>'
+        f'<tr><td class="nm"><b>竹富島班次</b></td><td class="nm">一天 {len(_isf_tk["tt"]["ykf"]["go"])} 班</td><td class="nm">一天 {len(_isf_tk["tt"]["anei"]["go"])} 班</td></tr>'
+        f'<tr><td class="nm"><b>西表島大原</b></td><td class="nm">一天 {len(_isf_oh["tt"]["ykf"]["go"])} 班</td><td class="nm">一天 {len(_isf_oh["tt"]["anei"]["go"])} 班</td></tr>'
+        '<tr><td class="nm"><b>波照間島</b></td><td class="nm">沒有</td><td class="nm">一天 2 班</td></tr>'
+        f'<tr><td class="nm"><b>網路票</b></td><td class="nm">{html.escape(_isf_web["ykf"]["price"].split("；")[0])}</td><td class="nm">{html.escape(_isf_web["anei"]["price"])}</td></tr>'
+        f'<tr><td class="nm"><b>上原停航時</b></td><td class="nm">接駁巴士配 4 班船；網路票不會自動取消</td><td class="nm">接駁巴士配 2 班船；網路票自動取消退款</td></tr>'
+        f'<tr><td class="nm"><b>往返票</b></td><td class="nm">有效期間官網沒寫，看票面</td><td class="nm">回程 14 天內有效</td></tr>'
+        f'<tr><td class="nm"><b>周遊券</b></td><td class="nm">暫停販售</td><td class="nm">3～5 天券</td></tr>'
+        f'<tr><td class="nm"><b>腳踏車</b></td><td class="nm">不載（拆開裝袋可以）</td><td class="nm">付費可載（不含電動）</td></tr>'
+        '</table></div>'
+      + '<ul class="lede">'
+        + _isf_li('票不能互搭', ISF['no_common'])
+        + _isf_li('怎麼選', '同航線同價，看哪家的時間接得上你的行程；去波照間只能選安榮')
+        + _isf_li('第三家', ISF['dream'])
+        + '</ul>'
+      + '<h2>網路先買還是現場買</h2>'
+      + '<ul class="lede">'
+        + _isf_li('現場買', f'{ISF["seats"]}；{ISF["counter"]["anei_buy"]}；八重山觀光建議{ISF["counter"]["ykf_buy"]}。安榮櫃台 {ISF["counter"]["anei_hours"]}')
+        + _isf_li('八重山觀光網路票', f'{_isf_web["ykf"]["price"]}；{_isf_web["ykf"]["pay"]}；{_isf_web["ykf"]["use"]}')
+        + _isf_li('網路賣完了', _isf_web['ykf']['soldout'])
+        + _isf_li('八重山觀光取消', _isf_web['ykf']['cancel'])
+        + _isf_li('安榮網路票', f'{_isf_web["anei"]["price"]}；{_isf_web["anei"]["deadline"]}；{_isf_web["anei"]["pay"]}；{_isf_web["anei"]["use"]}')
+        + _isf_li('波照間', '安榮說石垣 8:00 那班常常很滿，建議前一天 18:00 以前在網路預約')
+        + _isf_li('寄行李', ISF['counter']['anei_bag'])
+        + _isf_li('行李限制', ISF['bags']['rule'])
+        + '</ul>'
+      + '<h2>幾點有船</h2>'
+      + f'<p class="lede">八重山觀光的時刻表適用到 {_isf_md(_isf_ops["ykf"]["tt_to"])}，安榮適用到 {_isf_md(_isf_ops["anei"]["tt_to"])}。'
+        '回程是各島開回石垣的時間。</p>'
+      + '<div class="tw"><table><tr><th>航線</th><th>八重山觀光</th><th>安榮</th></tr>' + _isf_trows + '</table></div>'
+      + '<ul class="lede">' + _isf_tnotes + _isf_li('轉船', '安榮建議在石垣港或各島轉船至少留 30 分') + '</ul>'
+      + '<p class="disc">官方都寫期間內可能因狀況改時刻，天候與潮汐也會讓時間稍微變動；出發當天以官網的運航狀況為準。</p>'
+      + '<h2>周遊券划算嗎</h2>'
+      + f'<p class="lede">現在只有安榮的「{_isf_pa["name"]}」在賣，連續幾天不限次數搭安榮的高速船。'
+        f'八重山觀光的「{ISF["pass"]["ykf"]["name"]}」{ISF["pass"]["ykf"]["status"]}。</p>'
+      + '<div class="tw"><table><tr><th>天數</th><th>大人／小孩</th><th>含波照間<br><small>大人／小孩</small></th></tr>' + _isf_passrows + '</table></div>'
+      + '<ul class="lede">'
+        + _isf_li('規則', _isf_pa['rule'])
+        + _isf_li('怎麼算', f'三天跑竹富、西表大原、小濱各一趟往返，單買是 {_isf_y(_isf_tk["fare"][1] + _isf_oh["fare"][1] + _isf_R["kohama"]["fare"][1])} 円；'
+                  '周遊券每段還要另付燃油調整金，官網沒寫一段多少，買之前在櫃台問總價再比')
+        + '</ul>'
+      + f'<p class="disc">周遊券的價格引安榮官網的公告（公告日 {_isf_md(_isf_pa["posted"])}），之後票價調整過，'
+        '公告還掛在官網首頁，但價格是否仍適用請在櫃台確認。</p>'
+      + '<h2>停航怎麼看</h2>'
+      + '<ul class="lede">'
+        + _isf_li('停航標準', _isf_wx['rule'])
+        + _isf_li('幾點決定', _isf_wx['decide'])
+        + _isf_li('上原港', _isf_wx['uehara'])
+        + _isf_li('要買哪張票', _isf_wx['uehara_ticket'])
+        + _isf_li('退費', _isf_wx['refund'])
+        + '</ul>'
+      + '<div class="tw"><table><tr><th>上原停航時</th><th>八重山觀光</th><th>安榮</th></tr>'
+        f'<tr><td class="nm"><b>去上原</b></td><td class="nm"><small>{_isf_bus_ykf}</small></td><td class="nm"><small>{_isf_bus_anei}</small></td></tr>'
+        f'<tr><td class="nm"><b>上原回來</b></td><td class="nm"><small>巴士上原 {_isf_bus_ykf_b} 發</small></td><td class="nm"><small>巴士上原 {_isf_bus_anei_b} 發</small></td></tr>'
+        f'<tr><td class="nm"><b>注意</b></td><td class="nm"><small>{html.escape(_isf_kb["note"])}</small></td><td class="nm"><small>{html.escape(_isf_ab["note"])}</small></td></tr>'
+        f'<tr><td class="nm"><b>網路票</b></td><td class="nm"><small>{html.escape(_isf_web["ykf"]["uehara"])}</small></td><td class="nm"><small>{html.escape(_isf_web["anei"]["uehara"])}</small></td></tr>'
+        '</table></div>'
+      + f'<a class="cta" href="{html.escape(ISF["src"]["ykf_status"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">⛴️</span><span class="ct"><b>八重山觀光：今天與明天的運航狀況</b>'
+        '<s>日文，每班標 〇 或 ×</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{html.escape(ISF["src"]["anei_status"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">⛴️</span><span class="ct"><b>安榮：今天與明天的運航狀況</b>'
+        '<s>日文，可以訂停航通知信</s></span><span class="ca">→</span></a>'
+      + '<h2>從機場到離島碼頭</h2>'
+      + '<div class="tw"><table><tr><th>怎麼去</th><th>車資</th><th>時間與班次</th></tr>'
+        f'<tr><td class="nm"><b>{html.escape(_isf_ka["name"])}</b></td><td class="nm">{_isf_ka["fare"]} 円</td>'
+        f'<td class="nm"><small>{_isf_ka["min"]} 分；機場發 {html.escape(_isf_ka["from_apt"])}；碼頭發 {html.escape(_isf_ka["from_port"])}</small></td></tr>'
+        f'<tr><td class="nm"><b>{html.escape(_isf_az["name"])}</b></td><td class="nm">{_isf_az["fare"]} 円<br><small>往返 {_isf_y(_isf_az["rt"])} 円</small></td>'
+        f'<td class="nm"><small>{_isf_az["min"]} 分；{html.escape(_isf_az["note"])}</small></td></tr>'
+        f'<tr><td class="nm"><b>計程車</b></td><td class="nm">約 3,500 円</td><td class="nm"><small>約 25 分（機場官網的參考值）</small></td></tr>'
+        '</table></div>'
+      + '<ul class="lede">'
+        + _isf_li('付款', f'カリー観光{_isf_ka["pay"]}；東運輸{_isf_az["pay"]}；兩家都不能用交通 IC 卡')
+        + _isf_li('搭車處', _isf_ap['stop'])
+        + _isf_li('碼頭裡', _isf_ap['terminal'])
+        + '</ul>'
+      + '<h2>到了竹富島、西表島</h2>'
+      + '<p class="lede"><b>竹富島</b></p><ul class="lede">'
+        + _isf_li('走路', _isf_ti['walk'])
+        + _isf_li('腳踏車', _isf_ti['bike'])
+        + _isf_li('巴士', _isf_ti['bus'])
+        + _isf_li('水牛車', _isf_ti['buffalo'])
+        + _isf_li('入島料', _isf_ti['fee'])
+        + _isf_li('訪問税', _isf_ti['tax'])
+        + '</ul>'
+      + '<p class="lede"><b>西表島</b></p><ul class="lede">'
+        + _isf_li('路線巴士', _isf_ir['bus'] + '；' + _isf_ir['bus_fare'])
+        + _isf_li('大原港 → 上原', '、'.join(f'{_isf_t(a)}→{_isf_t(b)}' for a, b in _isf_ir['bus_go']))
+        + _isf_li('上原 → 大原港', '、'.join(f'{_isf_t(a)}→{_isf_t(b)}' for a, b in _isf_ir['bus_back']))
+        + _isf_li('由布島', _isf_ir['yubu'])
+        + _isf_li('仲間川遊船', _isf_ir['cruise'])
+        + _isf_li('置物櫃', _isf_ir['locker'])
+        + '</ul>'
+      + f'<p class="disc">{html.escape(ISF["bags"]["wet"])}。</p>'
+      + '<h2>飛石垣島</h2>'
+      + '<p class="lede">台灣虎航有從桃園和高雄直飛石垣島。下面是接下來 60 天虎航官網的最低單程（含稅、不含託運行李），每天自動更新。</p>'
+      + '<div class="tw"><table><tr><th>航線</th><th>官網最低單程</th><th></th></tr>' + _isf_flrows + '</table></div>'
+      + '<h2>Klook、KKday 套票</h2>'
+      + '<p class="lede">只去竹富島的話，自己買船票就很簡單；套票的好處是水牛車、島上巴士都排好了。'
+        '西表島＋由布島自己去要接船班和一天 4 班的巴士，跟一日遊比較省事。</p>'
+      + '<div class="tw"><table><tr><th>平台</th><th>內容</th><th>船票</th></tr>'
+        + ''.join(_isf_prow('Klook', p) for p in _isf_pr['klook'])
+        + ''.join(_isf_prow('KKday', p) for p in _isf_pr['kkday'])
+        + '</table></div>'
+      + '<p class="disc">平台的售價、方案與包含項目隨時會改，以下單頁面為準。</p>'
+      + f'<a class="cta" href="{_isf_k1h}" target="_blank" rel="{_rel(_isf_k1h)}">'
+        '<span class="ci">🐃</span><span class="ct"><b>Klook 竹富島水牛車＋來回船票</b>'
+        '<s>去程選船班、回程自由搭；用台幣付款</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_isf_k2h}" target="_blank" rel="{_rel(_isf_k2h)}">'
+        '<span class="ci">🌿</span><span class="ct"><b>Klook 西表島＋由布島一日遊</b>'
+        '<s>含來回高速船、紅樹林遊船與水牛車</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{_isf_d1h}" target="_blank" rel="{_rel(_isf_d1h)}">'
+        '<span class="ci">🛶</span><span class="ct"><b>KKday 西表島＋由布島一日遊</b>'
+        '<s>含來回船票與午餐；6 天前免費取消</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{html.escape(_isf_web["ykf"]["site"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>八重山觀光：網路買船票</b>'
+        '<s>單程也有往返折扣，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + f'<a class="cta" href="{html.escape(_isf_web["anei"]["site"])}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎫</span><span class="ct"><b>安榮：網路預約船票</b>'
+        '<s>約便宜 5%，前一天 18:00 截止，本站沒有分潤</s></span><span class="ca">→</span></a>'
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；'
+        '兩家船公司的官網本站沒有分潤。</p>'
+      + faq_visible(isf_faq)
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/ishigaki/")}"><b>✈️ 石垣島機票</b><s>桃園、高雄直飛</s></a>'
+      + f'<a class="ct" href="{U("/okinawa/churaumi/")}"><b>🐋 美麗海水族館</b><s>門票要不要先買</s></a>'
+      + f'<a class="ct" href="{U("/japan-rentacar-noc/")}"><b>🚗 日本租車 NOC</b><s>石垣島本島開車之前</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 日本刷卡回饋</b><s>船票、巴士刷卡用哪張</s></a></div>'
+      + '<p class="disc">票價、時間與規定以各官網為準，整理可能有疏漏。本頁為公開資訊整理，與八重山観光フェリー、安栄観光、'
+        '東運輸、カリー観光、西表島交通無合作關係。</p>'
+      + foot())
+    pages.append(('/ishigaki/ferry/', 0.6))
 
 # ---------- 乳頭溫泉鄉 鶴之湯（訂房、日歸入浴、交通） ----------
 # 資料在 tsurunoyu.json。房價、預約方式引鶴之湯官網日文頁；網路方案起價、取消費與空房快照引日本秘湯を守る会；

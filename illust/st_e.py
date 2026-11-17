@@ -61,4 +61,46 @@ gz += face(110, 123, .8)
 gz += sparkle(92, 22) + sparkle(110, 40, 4) + star(76, 28, 6)
 add('gorge', '手繪柱狀節理的峽谷、瀑布和綠色水面上的小船', gz, dots=False)
 
+# ---- ferry（2026-11-17，石垣島離島船票頁 /ishigaki/ferry/）：藍綠色海上的白色高速船，後面一座紅瓦屋頂＋椰子樹的小島 ----
+TQ = '#4fc6c0'
+TQ2 = '#a8e6df'
+SAND = '#f6e3b4'
+fy = ''
+# 太陽和一朵小雲
+fy += f'<circle cx="36" cy="34" r="12" fill="{GOLD}" stroke-width="1.8"/>'
+fy += f'<path d="M58,50 q-2,-10 8,-10 q4,-8 14,-4 q8,-4 12,4 q8,0 6,10 Z" fill="{WHITE}" stroke-width="1.8"/>'
+# 小島：沙灘、紅瓦屋頂的小屋、椰子樹
+fy += f'<path d="M98,98 Q106,80 134,78 Q162,76 174,98 Z" fill="{SAND}"/>'
+fy += f'<rect x="116" y="70" width="26" height="14" rx="2" fill="{CREAM}"/>'
+fy += f'<rect x="125" y="75" width="8" height="9" rx="1.5" fill="{DBROWN}" stroke-width="1.4"/>'
+fy += f'<path d="M110,72 L119,58 L139,58 L148,72 Z" fill="{BRICK}"/>'
+fy += f'<path d="M114,66 L144,66 M122,58 L120,72 M129,58 L129,72 M136,58 L138,72" stroke-width="1.2" opacity=".5"/>'
+fy += f'<path d="M158,84 Q156,66 152,48" fill="none" stroke="{BROWN}" stroke-width="5"/>'
+fy += f'<path d="M158,84 Q156,66 152,48" fill="none" stroke-width="1.2" opacity=".5" stroke-dasharray="2 4"/>'
+fy += ''.join(f'<path d="M152,48 Q{x1},{y1} {x2},{y2} Q{x1},{y1+8} 152,48 Z" fill="{GREEN}" stroke-width="1.6"/>'
+              for x1, y1, x2, y2 in [(140, 38, 128, 50), (146, 30, 136, 26), (160, 30, 170, 32), (166, 40, 174, 54)])
+fy += f'<circle cx="150" cy="52" r="2.6" fill="{DBROWN}" stroke-width="1"/><circle cx="155" cy="52" r="2.6" fill="{DBROWN}" stroke-width="1"/>'
+# 藍綠色的海
+fy += (f'<path d="M6,96 q12,-6 24,0 t24,0 t24,0 t24,0 t24,0 t24,0 t24,0 L174,136 Q174,144 166,144 '
+       f'L14,144 Q6,144 6,136 Z" fill="{TQ}"/>')
+fy += f'<path d="M6,100 q12,-5 24,0 t24,0 t24,0 t24,0 t24,0 t24,0 t24,0" fill="none" stroke="{TQ2}" stroke-width="2"/>'
+fy += f'<path d="M128,128 q8,-4 16,0 M150,136 q8,-4 16,0 M60,136 q6,-3 12,0" fill="none" stroke="{WHITE}" stroke-width="1.6"/>'
+# 船尾的白浪
+fy += ''.join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="{WHITE}" stroke-width="1.4"/>'
+              for x, y, r in [(12, 114, 5), (20, 120, 6), (10, 124, 4)])
+fy += f'<path d="M26,124 q-8,4 -18,2 M30,128 q-10,5 -22,4" fill="none" stroke="{WHITE}" stroke-width="2"/>'
+# 白色高速船：船身、藍線、船艙、窗戶、雷達
+fy += f'<path d="M16,100 L124,96 Q118,116 100,120 L28,120 Q18,120 16,110 Z" fill="{WHITE}"/>'
+fy += f'<path d="M18,112 L114,110" stroke="#3a8fd0" stroke-width="3.4"/>'
+fy += f'<path d="M30,100 L30,82 Q30,74 38,74 L84,74 Q96,74 104,88 L108,98 Z" fill="{WHITE}"/>'
+fy += ''.join(f'<rect x="{x}" y="80" width="9" height="8" rx="2" fill="{SKY}" stroke-width="1.4"/>' for x in (37, 50, 63))
+fy += f'<path d="M86,78 Q96,79 100,88 L86,88 Z" fill="{SKY}" stroke-width="1.4"/>'
+fy += f'<path d="M58,74 L58,64 M52,64 L64,64" stroke-width="2.2"/><circle cx="58" cy="62" r="2.4" fill="{RED}" stroke-width="1.2"/>'
+fy += face(90, 101, .7)
+# 船頭的水花
+fy += ''.join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="{WHITE}" stroke-width="1.4"/>'
+              for x, y, r in [(126, 104, 4), (130, 112, 5), (122, 118, 4)])
+fy += sparkle(84, 30) + star(108, 22, 5) + sparkle(16, 60, 4)
+add('ferry', '手繪藍綠色海上一艘有臉的白色高速船，後面是有紅瓦屋頂小屋和椰子樹的小島', fy, dots=False)
+
 print(save(FILES, OUT), 'stickers')

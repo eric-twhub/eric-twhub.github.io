@@ -16,7 +16,7 @@ for n in 'lights teamlab ginzan nighttrain seatree'.split():
     THEME[n] = 'night'
 for n in 'skier snowman juhyo gassho penguin rotenburo skgbus'.split():
     THEME[n] = 'snow'
-for n in 'whaleshark icebreaker'.split():
+for n in 'whaleshark icebreaker ferry'.split():
     THEME[n] = 'sea'
 for n in 'plane plane-fuji seat rooftop harukas castle hakone fujicoaster ferris windmill tower skytree gorge'.split():
     THEME[n] = 'sky'
