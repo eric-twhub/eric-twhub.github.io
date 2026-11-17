@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-17-taipei-ishigaki",
- "generated": "2026-11-17 12:44",
+ "generated": "2026-11-17 16:07",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4269,
+  "price": 4509,
   "dep": "2026-11-28",
   "ret": "2026-12-04",
   "dept": "06:35",
@@ -25,31 +25,11 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "廉航低於 NT$6,000",
-  "這條航線平常最低落在 NT$4,509–NT$7,487，這張是近期 14 筆紀錄中第 1 低"
+  "廉航低於 NT$6,000"
  ],
  "med": 16958,
- "n_rt": 14,
+ "n_rt": 12,
  "others": [
-  {
-   "o": "TPE",
-   "d": "ISG",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 4509,
-   "dep": "2026-12-05",
-   "ret": "2026-12-09",
-   "dept": "06:35",
-   "rett": "09:25",
-   "rt": true,
-   "tr": 0,
-   "dur": 130,
-   "dur_to": 60,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-05&inbound=ISG-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
   {
    "o": "TPE",
    "d": "ISG",
@@ -75,9 +55,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4669,
-   "dep": "2026-11-27",
-   "ret": "2026-12-04",
+   "price": 4709,
+   "dep": "2026-12-05",
+   "ret": "2026-12-09",
    "dept": "06:35",
    "rett": "09:25",
    "rt": true,
@@ -85,8 +65,26 @@
    "dur": 130,
    "dur_to": 60,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-27&inbound=ISG-TPE&returnDate=2026-12-04&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-05&inbound=ISG-TPE&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "ISG",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 7487,
+   "dep": "2026-12-20",
+   "ret": "2026-12-25",
+   "dept": "06:35",
+   "rett": "09:25",
+   "rt": true,
+   "tr": 1,
+   "dur": 380,
+   "dur_to": 145,
+   "gate": "Trip.com",
+   "url": "https://www.aviasales.com/search/TPE2012ISG25121?t=IT17977485001797770700000310TPEOKAISG17981907001798191300000070ISGTPE_15eb8fff2289604ef876249664d9a888_18850&search_date=11112026&expected_price_uuid=01a1cadc-1eb6-8040-a95c-bd213c460dad&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=K2BRIMVTdVauqp8z7O2vXw&expected_price_source=share&expected_price_currency=twd&expected_price=7487&marker=775639"
   }
  ]
 }
