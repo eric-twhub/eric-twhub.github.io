@@ -1838,7 +1838,7 @@ def topnav(cur=''):
             + link('/japan-tax-free-2026/', '🧾 11/1 免稅新制'))
 
     shop = (link('/japan-worth-buying/', '💰 買什麼划算')
-            + link('/japan-store-points/', '🎴 店家集點能用嗎')
+            + link('/japan-store-points/', '🎴 不退稅改拿點數')
             + link('/japan-medicine-limit/', '💊 藥妝能帶多少')
             + link('/tokyo/street-fashion/', '👕 東京潮牌選物店')
             + link('/japan-coupon/', '🏷️ 購物折扣總覽')
@@ -5129,49 +5129,130 @@ if os.path.exists('shoppoints.json'):
     _G, _M, _N = SP['gate'], SP['money'], SP['newrule']
     _n_pick = sum(1 for s in SP['stores'] if s['taxfree'] == '明文二選一')
     _n_blank = sum(1 for s in SP['stores'] if s['taxfree'] == '官網未查到')
+    _n_st = len(SP['stores'])
 
-    sp_title = '日本店家的集點能補上退稅的麻煩嗎？13 家查下來多半不能'
-    sp_desc = (f'11/1 退稅改成先付後退之後，店家自己的會員與集點能不能補？'
-               f'查了 13 家的官方規約：{_n_pick} 家明文寫免稅與店家優惠二選一，'
-               f'{_n_blank} 家官網完全沒寫。另附一條會讓整趟免稅泡湯的入境細節。')
+    # 2026-11-18 使用者：「如果不退稅的另一種選擇」＋ OPEN POINT 綁 Ponta 在 LAWSON 集點。
+    # 這頁從「免稅時能不能集點」改成「不退稅、改拿點數划不划算」。
+    # 不寫匯率數字（fx.json 的原則）：Ponta 的價值用「4 點換 NT$1」與損益兩平的 0.25 表達。
+    _PT = SP.get('ponta')
+    _CMP = SP.get('compare')
+
+    def _cmp_block():
+        if not _CMP:
+            return ''
+        # 表格四欄在手機會變成九張長卡片，改成兩組一行一項的清單（.xl）
+        def grp(k):
+            return ''.join(
+                f'<li><div class="xh"><span class="xn">{html.escape(r[1])}</span>'
+                f'<span class="xbadge{" on" if k == "退稅" else ""}">{html.escape(r[2])}</span></div>'
+                + (f'<div class="xw">{html.escape(r[3])}</div>' if r[3] else '') + '</li>'
+                for r in _CMP['rows'] if r[0] == k)
+        return (f'<h2>{html.escape(_CMP["title"])}</h2>'
+                f'<p class="lede">{html.escape(_CMP["intro"])}</p>'
+                '<h3>辦退稅：拿回現金，退到信用卡或帳戶</h3><ul class="xl">' + grp('退稅') + '</ul>'
+                '<h3>不辦退稅，拿點數</h3><ul class="xl">' + grp('不退稅') + '</ul>'
+                '<div class="tldr"><ul>' + ''.join(f'<li><b>{html.escape(a)}</b>{html.escape(b)}</li>'
+                                                   for a, b in _CMP['when']) + '</ul></div>'
+                f'<p class="disc">{html.escape(_CMP["note"])}'
+                f'各店的退稅手續費見<a href="{U("/japan-tax-free-2026/")}#store-fees">免稅新制那一頁</a>。</p>')
+
+    def _pt_block():
+        if not _PT:
+            return ''
+        lk = lambda u, t: (f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">'
+                           f'{html.escape(t)}</a>')
+        rules = ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(n)}</span></div>'
+            f'<div class="xt">{html.escape(b)}</div>'
+            + (f'<p class="xo">原文：「{html.escape(q)}」</p>' if q else '') + '</li>'
+            for n, b, q in _PT['rules'])
+        shops = ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span>'
+            f'<span class="xbadge">{html.escape(x["pct"])}</span></div>'
+            f'<div class="xt">{html.escape(x["rate"])}'
+            + (f'。{html.escape(x["note"])}' if x.get('note') else '') + '</div>'
+            + (f'<p class="xo">免稅時：{html.escape(x["taxfree"])}'
+               if x.get('taxfree') else '<p class="xo">免稅時：Ponta 的說明沒有提到')
+            + '　' + lk(x['src'], '官方') + '</p></li>'
+            for x in _PT['shops'])
+        return ('<h2>台灣帶過去就能用：OPEN POINT 綁 Ponta</h2>'
+                '<p class="lede">日本店家的會員多半卡在日本門號、郵遞區號或居住地。'
+                '台灣 7-ELEVEN 的 OPEN POINT App 有一個「旅遊集點護照」，綁定之後 App 裡就有一張日本 Ponta 會員條碼，'
+                '在 LAWSON 等 Ponta 合作店出示就能集點，回台灣再換成 OPEN POINT。'
+                '這是查到唯一一條台灣這邊官方開的路。</p>'
+                '<ol class="lede">' + ''.join(f'<li>{html.escape(h)}</li>' for h in _PT['how']) + '</ol>'
+                '<h3>換算與規則</h3><ul class="xl">' + rules + '</ul>'
+                f'<div class="tldr"><ul><li><b>{html.escape(_PT["breakeven"])}。</b>'
+                f'{html.escape(_PT["op_value"])}。</li></ul></div>'
+                '<h3>哪裡集得到、拿回多少</h3>'
+                '<p class="lede">百分比是 Ponta 點數占消費金額的比例，1 點當 1 円算；'
+                '換成 OPEN POINT 的話是每 4 點 NT$1。</p>'
+                '<ul class="xl">' + shops + '</ul>'
+                f'<p class="disc">{html.escape(_PT["lawson_fee"])}。查不到的：'
+                + '；'.join(html.escape(u) for u in _PT['unverified']) + '。'
+                f'規則出自{lk(_PT["src"]["passport"], "OPEN POINT 旅遊集點護照官方頁")}、'
+                f'{lk(_PT["src"]["partners"], "Ponta 官方中文合作店頁")}、'
+                f'{lk(_PT["src"]["lawson_kiyaku"], "LAWSON 的 Ponta 特約")}，查證於 {_PT["checked"]}。</p>')
+
+    sp_title = f'不辦退稅，改拿店家點數划算嗎？OPEN POINT 綁 Ponta 與 {_n_st} 家會員集點'
+    sp_desc = ('11/1 退稅改成先付後退還要扣手續費，那不退稅、改拿點數呢？'
+               '算了退稅實拿與各店點數，整理台灣 OPEN POINT 綁 Ponta 在 LAWSON、Bic Camera 集點的規則，'
+               f'以及 {_n_st} 家店的會員能不能辦、免稅時給不給點。')
 
     sp_faq = [
+     ('不辦退稅、改拿店家點數，划算嗎？',
+      '多數時候不划算。稅前 ¥10,000 的東西，退稅扣完店家公告的手續費還有約 ¥770～¥1,000，'
+      '藥妝店會員點數大約 100 點，LAWSON 的 Ponta 只有 50 到 100 點。'
+      '比得上的只有 Bic Camera、友都八喜 10% 點數的商品，但點數只能在那一家用、兩年沒用就失效，'
+      '免稅那條路還能疊折價券。點數真正派上用場的是未滿稅前 5,000 円、本來就不能退稅的小額消費。'),
+     ('台灣的 OPEN POINT 在日本怎麼集點？',
+      '在 OPEN POINT App 的「會員條碼」裡打開「旅遊集點護照」綁 Ponta，App 會產生一張 Ponta 會員條碼。'
+      '在 LAWSON、Bic Camera、Kojima、Sofmap 等 Ponta 合作店結帳前出示，就能集 Ponta；'
+      '回台灣再以 4 點 Ponta 換 1 點 OPEN POINT，OPEN POINT 1 點折抵 1 元。'
+      '日圓匯率低於 0.25 時換回台灣比較划算，高於 0.25 時在日本當 1 點 1 円用掉比較划算。'),
+     ('用 OPEN POINT 綁的 Ponta，辦免稅時還有點數嗎？',
+      'OPEN POINT 的官方頁寫退稅的那部分金額不累積 Ponta。Bic Camera、Kojima、Sofmap 的 Ponta 說明也都寫免稅結帳不給點、'
+      '不能用點。LAWSON 自己的頁面沒寫這件事，但 LAWSON 只有約 70 家店能辦免稅，而且退稅要扣 16.5% 手續費。'
+      '另外 App 裡領的合作商店優惠券，用了就不能同時集 Ponta。'),
      ('免稅的時候還能集點嗎？',
-      f'多數情況不行，或者查不到。13 家裡 {_n_pick} 家官方明文寫免稅與店家優惠二選一，'
+      f'多數情況不行，或者查不到。{_n_st} 家裡 {_n_pick} 家官方明文寫免稅與店家優惠二選一，'
       f'1 家寫成「部分店舖與商品（免稅等）可能拿不到優惠」的保留式例示，'
       f'{_n_blank} 家的規約與官方問答完全沒有提到免稅。'
       '沒寫不等於不給，但也不等於給，所以本站不替店家下結論。'),
-     ('那哪一家寫得最清楚？',
-      '大國藥妝。它的官方問答有兩條直接對應，而且用的是絕對否定：免稅購物不累積樂天點數，'
-      '以及免稅與會員折扣價不能同時適用。沒有「依店舖而定」的保留。'),
+     ('那哪幾家寫得最清楚？',
+      '大國藥妝與無印良品。兩家的官方問答都用絕對否定：大國藥妝寫免稅購物不累積樂天點數、免稅與會員折扣價不能同時適用；'
+      '無印寫免稅時點數與會員優待都不能用，而且日本的會員服務本來就是給日本居住者的。'
+      'Bic Camera 則寫在點數規約第 5 条：免稅購買不給點，也不能用點。'),
      ('唐吉訶德的旅客券和 majica 可以一起用嗎？',
-      '不行。那張券以免稅結帳為前提，所以券和免稅是綁在一起的，但券的注意事項明文寫'
-      '不可與其他折扣、服務以及 majica 卡併用。所以實際上是「免稅加旅客券」'
-      '或「免稅加 majica」二選一。不過那句日文沒有區分「不能用 majica 付款」和'
-      '「不能同時拿 majica 點數」，官網也沒有進一步解釋。'),
+      '舊版的券寫明不可與 majica 卡併用，但 11 月換版之後，券頁只剩圖片，現行版本有沒有這句查不到。'
+      '可以確定的是旅客券本身以免稅結帳為前提（含稅 11,000 円以上 5% OFF、33,000 円以上 7% OFF）。'
+      '免稅時 majica 點數給不給，規約沒寫。'),
      ('有沒有哪一家根本沒有集點？',
-      '有三家。COSMOS 官方問答寫明集點卡已於 2003 年 5 月廢止，理由是把相當於點數折扣的'
+      '有。COSMOS 官方問答寫明集點卡已於 2003 年 5 月廢止，理由是把相當於點數折扣的'
       '部分直接反映到售價。寶可夢中心的實體店官方明文不發點數。'
       'UNIQLO 與 GU 日本則是沒有點數制度，會員利益是幾張滿 5,000 折 500 的券。'),
      ('用台灣的手機和信箱辦得起來嗎？',
       '要看哪一家，而且卡住的地方不一樣。UNIQLO 與 GU 的規約直接寫會員限日本國內有住所者，'
-      '註冊必填還包含日本郵遞區號。鶴羽的規約把住址與電話列為必填。'
-      '札幌藥妝的數位卡要能收日本簡訊。ABC-MART 看起來最友善（走 email 不走簡訊），'
-      '但規約限定 59 個信箱網域，台灣常見的 yahoo.com.tw、hinet.net、pchome.com.tw 都不在上面。'),
+      '無印的官方問答寫會員服務是給日本居住者的，三麗鷗把住在日本國外列為停用會員的事由。'
+      '鶴羽的規約把住址與電話列為必填，札幌藥妝的數位卡要能收日本簡訊。'
+      'Loft 11/9 起的新規約只要性別、生日、email 與密碼，住址選填。'
+      'ABC-MART 走 email 不走簡訊，但規約限定 59 個信箱網域，台灣常見的 yahoo.com.tw、hinet.net、pchome.com.tw 都不在上面。'
+      '最不用煩惱的是 OPEN POINT 綁 Ponta，在台灣的 App 裡就能完成。'),
      ('11/1 新制之後，免稅結帳會不會變成有點數？',
       '官方和店家都還沒說。稅務上結帳當下確實是以含稅價成立的課稅銷售，'
       '但同一份官方文件仍然把店內那道程序稱為免稅販售手續，購入記錄照樣要送，'
       '所以「算不算店家規章裡的免稅購買」是店家自己的定義問題。'
-      'Bic Camera 的條文到查證日原文未改，五家量販店也都沒有發過相關公告。'
-      '本站不替任何一方猜答案，11 月上路後會回查。'),
+      'Bic Camera 的條文到 11/18 查證時原文未改，查得到的店家也都沒有發過相關公告。'),
      ('儲值到 majica 或 WAON 划算嗎？',
       '要先知道錢帶不走。兩家的規約都寫明餘額原則上不能換現金也不能退款，'
       'majica 還有兩年未用自動失效且不退的條款，WAON 的退款要扣手續費而且只限三種特殊情形。'
       '點數也只能在日本國內用。所以要儲就只儲這一趟花得完的金額。'),
      ('出示護照就有折扣的店多嗎？',
-      '比想像中少。13 家裡只有唐吉訶德與 AEON 有明確的訪日旅客限定券，'
-      '而唐吉訶德那張本身就要搭配免稅才成立。寶可夢中心的生日贈品可以用護照當生日證明，'
-      '但那是贈品不是折扣。其餘各家查不到任何以護照為條件的折扣。'),
+      '比想像中少，而且多半要搭配免稅。唐吉訶德的旅客券以免稅結帳為前提；'
+      '札幌藥妝 11/1 起給辦免稅的人當場折 1%，再疊 5% 或 7% 的免稅券；'
+      'AEON 的訪日 5% 券延到 11/30，能不能和免稅一起用官網沒寫。'
+      '寶可夢中心的生日贈品可以用護照當生日證明，但那是贈品不是折扣。'
+      '沒有查到哪一家是「不辦免稅才有」的旅客折扣。'),
     ]
     sp_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in sp_faq)
@@ -5183,11 +5264,12 @@ if os.path.exists('shoppoints.json'):
       head(sp_title, sp_desc, 'japan-store-points/',
            '<script type="application/ld+json">' + sp_ld + '</script>')
       + topnav() + crumbs([('首頁', '/'), ('店家集點', None)])
-      + '<h1>日本店家的集點，能補上退稅的麻煩嗎</h1>'
+      + '<h1>不辦退稅，改拿店家點數划算嗎</h1>'
       + f'<p class="lede">{html.escape(SP["lede"])}</p>'
       + f'<div class="today"><div class="tday">條件查證於 {SP["checked"]}</div>'
         f'<div class="tans">{html.escape(SP["headline"]["ans"])}</div>'
         f'<div class="tsub">{html.escape(SP["headline"]["sub"])}</div></div>'
+      + _cmp_block() + _pt_block()
       + f'<h2>{html.escape(_G["title"])}</h2>'
       + f'<p class="lede">{html.escape(_G["body"])}</p>'
       + f'<blockquote class="q"><p>{html.escape(_G["quote"])}</p>'
@@ -5200,7 +5282,7 @@ if os.path.exists('shoppoints.json'):
       + f'<p class="lede">{html.escape(SP["levels"]["intro"])}</p>'
       + '<div class="tw"><table><thead><tr><th>強度</th><th>哪幾家</th>'
         '<th>官方怎麼寫</th></tr></thead><tbody>' + _splv + '</tbody></table></div>'
-      + '<h2>13 家的對照</h2>'
+      + f'<h2>{_n_st} 家店的會員與點數</h2>'
       + '<p class="lede">「官網未查到」是查過規約、說明頁與官方問答之後仍然沒有找到，'
         '不是「不給點」。這兩件事在對照表上必須分得開。</p>'
       + '<div class="tw"><table><thead><tr><th>店家</th><th>外國旅客辦不辦得了</th>'
@@ -5228,6 +5310,8 @@ if os.path.exists('shoppoints.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-tax-free-2026/")}"><b>🧾 11/1 免稅新制</b>'
         f'<s>先付後退怎麼走，手續費誰出</s></a>'
+      + f'<a class="ct" href="{U("/japan-bic-points/")}"><b>📷 Bic Camera 點數</b>'
+        f'<s>免稅和點數只能選一條</s></a>'
       + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 購物折扣總覽</b>'
         f'<s>21 家店的折價券</s></a>'
       + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
