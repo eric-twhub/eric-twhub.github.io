@@ -56,7 +56,7 @@ def main():
 
     html_str = f"""<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
 <style>{CSS}</style></head><body><div class="glow"></div>
-<div class="brand">台日機票速報</div>
+<div class="brand">日本旅遊小卡</div>
 <div class="mid">
 <div class="kicker">日本免稅制度改制</div>
 <div class="h">11/1 起<br>免稅要先付全額</div>

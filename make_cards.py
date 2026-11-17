@@ -86,7 +86,7 @@ def card_html(d, site):
     return f"""<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
 <style>{CSS}</style></head><body>
 <div class="glow"></div>
-<div class="brand">台日機票速報</div>
+<div class="brand">日本旅遊小卡</div>
 <div class="mid">
 <div class="route">{html.escape(d['o'])}<i>→</i>{html.escape(d['c'])}</div>
 {f'<div class="via">經 {html.escape(d["via"])} 轉乘</div>' if d.get('via') else ''}

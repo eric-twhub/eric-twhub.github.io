@@ -111,7 +111,7 @@ END = """
 def head_html(css):
     return (f'<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'
             f'<style>{BASE}{css}</style></head><body><div class="glow"></div>'
-            f'<div class="brand">台日機票速報</div>')
+            f'<div class="brand">日本旅遊小卡</div>')
 
 
 

@@ -134,7 +134,7 @@ def build(slug, name, prices, days):
 
     return f"""<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
 <style>{CSS}</style></head><body><div class="glow"></div>
-<div class="brand">台日機票速報</div>
+<div class="brand">日本旅遊小卡</div>
 <div class="route">台灣<i>→</i>{name}</div>
 <div class="sub">{span} 每日最低來回含稅　·　最貴是最便宜的 {ratio:.1f} 倍</div>
 <div class="wk">{''.join(f'<span>{w}</span>' for w in WD)}</div>
