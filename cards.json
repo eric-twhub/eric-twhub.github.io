@@ -473,6 +473,8 @@
    ],
    "total": 11.0,
    "reg_short": "行動支付登錄一次／交通卡每月搶",
+   "reg_short_shop": "行動支付加碼登錄一次，要用 Apple Pay／Google Pay",
+   "reg_short_transit": "交通卡每月 15 日 10:00 搶登錄",
    "reg_level": "race",
    "reg_links": [
     {
@@ -598,7 +600,9 @@
     "選擇 LINE POINTS 回饋者，所有消費回饋皆須綁定 LINE Pay 後才生效"
    ],
    "total": 6.0,
-   "reg_short": "交通卡 18 日／亞洲精選 19 日／日韓泰 20 日",
+   "reg_short": "交通卡 18 日／日韓泰 20 日，每月搶登錄",
+   "reg_short_shop": "日韓泰每月 20 日 16:00 搶登錄",
+   "reg_short_transit": "交通卡每月 18 日 16:00 搶登錄",
    "reg_level": "race",
    "reg_events": [
     {

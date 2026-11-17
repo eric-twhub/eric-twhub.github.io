@@ -23585,7 +23585,7 @@ if os.path.exists('cards.json'):
             """這家店可用的卡，去掉新戶限定與不適用這家店的加碼之後的費率"""
             return [{'n': c['name'], 's': c['slug'], 'base': c['base'],
                      'tiers': _shop_tiers(c, st),
-                     'reg': c.get('reg_short', '')}
+                     'reg': c.get('reg_short_shop') or c.get('reg_short', '')}
                     for c in CD['cards']]
 
         # ── 刷多少，哪張卡拿最多 ──────────────────────────
@@ -23679,7 +23679,7 @@ if os.path.exists('cards.json'):
                 li += (f'<li><b>{html.escape(c["name"])}</b>　'
                        f'做滿條件 {r["rate"]:g}%，只剩基本回饋 {c["base"]:g}%。'
                        f'<br><small style="color:var(--dim)">要做的事：'
-                       f'{html.escape(c.get("reg_short") or "官方沒寫")}'
+                       f'{html.escape(c.get("reg_short_shop") or c.get("reg_short") or "官方沒寫")}'
                        f'　·　活動期間 {html.escape(c["period"])}'
                        f'　·　<a href="{U("/japan-credit-card/" + c["slug"] + "/")}">'
                        f'逐層條件</a></small></li>')

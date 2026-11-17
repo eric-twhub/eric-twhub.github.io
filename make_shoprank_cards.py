@@ -158,7 +158,7 @@ def store_card(CD, st, mid, fee, catmap, i, n, rate_note):
     cond = ''
     for r in sorted(picked.values(), key=lambda x: -x['rate']):
         c = r['c']
-        cond += (f'<div><b>{E(c["name"])}</b>　{E(c.get("reg_short") or "官方沒寫")}'
+        cond += (f'<div><b>{E(c["name"])}</b>　{E(c.get("reg_short_shop") or c.get("reg_short") or "官方沒寫")}'
                  f'　<em>{r["rate"]:g}%</em>，沒做滿只剩 {c["base"]:g}%</div>')
 
     inner = ('<div class="kick">旅日購物</div>'
@@ -183,7 +183,7 @@ def build(CD, CP, mid, fee, catmap, rate_note):
 def fingerprint(CD):
     """gen.py 的過期檢查只會餵 cards.json，店家清單自己讀。"""
     CP = json.load(open('coupons.json', encoding='utf-8'))
-    pay = [[c.get(k) for k in ('name', 'slug', 'base', 'reg_short')]
+    pay = [[c.get(k) for k in ('name', 'slug', 'base', 'reg_short', 'reg_short_shop')]
            + [[t['label'], t['rate'], t['cap'], t['scope'], t.get('sold_out'),
                t.get('store_scope'), t.get('cat_scope'), t.get('no_base')]
               for t in c['tiers']]
