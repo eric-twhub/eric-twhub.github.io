@@ -21002,6 +21002,10 @@ if os.path.exists('cards.json'):
             return '期間內一次'
         if '當季' in v or e['cycle'] == 'quarterly':
             return '每季一次'
+        # 每週開放≠每週要重登：中信 LINE Pay 國外實體是每週二放名額、登一次整季有效
+        # （2026-11-17 使用者的 App 截圖「登錄期間 11/17～12/31」與官網條款都這樣寫）
+        if '期間內登錄一次' in v:
+            return '期間內一次'
         if e['cycle'] == 'weekly':
             return '每週要重登'
         if '每月都要' in v or e['cycle'] == 'monthly':

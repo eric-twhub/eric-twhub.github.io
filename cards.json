@@ -955,7 +955,7 @@
      "until": "",
      "quota": 3000,
      "quota_unit": "每週",
-     "valid": "當週",
+     "valid": "活動期間內登錄一次即可，到 2026/12/31 都有效；每週二是放出新的名額，已經登錄成功的人不用每週重登",
      "url": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html",
      "cap_txt": "450 點／歸戶"
     },

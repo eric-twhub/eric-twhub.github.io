@@ -42,6 +42,23 @@ def events(d):
     return out
 
 
+def cyc_zh(e):
+    """多久要登錄一次，和 gen.py 的 _rg_cycle_zh 同一套判斷。
+    看的是資格（valid）而不是開放週期：每週二放名額不等於每週要重登。"""
+    v = e.get('valid') or ''
+    if e['cycle'] == 'once':
+        return '期間內一次'
+    if '當季' in v or e['cycle'] == 'quarterly':
+        return '每季一次'
+    if '期間內登錄一次' in v:
+        return '期間內一次'
+    if e['cycle'] == 'weekly':
+        return '每週要重登'
+    if '每月都要' in v or e['cycle'] == 'monthly':
+        return '每月要重登'
+    return '官網未寫'
+
+
 def when(e):
     t = e.get('time', '')
     if e['cycle'] == 'monthly':
@@ -65,7 +82,10 @@ def build(d):
     out = []
 
     # ── 1 封面 ──
-    recur = [(c, e) for c, e in ev if e['cycle'] in ('monthly', 'weekly')]
+    # 第 3 張放要定期重登的（每月、每週、每季），第 4 張放整個活動期間登一次就好的。
+    # 分組看資格不看開放週期：中信 LINE Pay 國外實體每週二放名額，但登一次整季有效。
+    RECUR = ('每月要重登', '每週要重登', '每季一次')
+    recur = [(c, e) for c, e in ev if cyc_zh(e) in RECUR]
     days = sorted({e['day'] for c, e in ev if e['cycle'] == 'monthly'})
     cover = ('<div class="kick">旅日信用卡</div>'
              f'<h1>加碼要先登錄<br><em>而且各家不同天</em></h1>'
@@ -73,7 +93,7 @@ def build(d):
              f'不能回溯到登錄前的消費。</div>'
              '<div class="stat">'
              f'<div><b>{len(ev)}</b><span>個加碼活動<br>要登錄</span></div>'
-             f'<div><b>{len(recur)}</b><span>個每月或<br>每週要重登</span></div>'
+             f'<div><b>{len(recur)}</b><span>個要定期<br>重新登錄</span></div>'
              f'<div><b>{len(days)}</b><span>個不同的<br>開放日期</span></div>'
              f'<div><b>{len(set(c["slug"] for c, e in ev))}</b>'
              f'<span>張卡<br>逐張查證</span></div></div>'
@@ -129,16 +149,16 @@ def build(d):
             x[1].get('day', 99), x[1].get('time', ''))), 1):
         q = (f'{e["quota"]:,} 名' if e.get('quota') else e.get('quota_unit', ''))
         rows += (f'<div class="row"><div class="no">{i:02}</div>'
-                 f'<div class="nm">{E(c["name"])}<s>{E(e["what"])}　·　{E(q)}</s></div>'
+                 f'<div class="nm">{E(c["name"])}<s>{E(e["what"])}　·　{E(cyc_zh(e))}　·　{E(q)}</s></div>'
                  f'<div class="v">{E(when(e))}</div></div>')
-    inner = ('<div class="kick">錯過就要等下個月</div>'
-             '<h1>每月或每週<br><em>要重新登錄的</em></h1>'
+    inner = ('<div class="kick">錯過就要等下一期</div>'
+             '<h1>每月或每季<br><em>要重新登錄的</em></h1>'
              '<div class="sub">這幾個登錄一次不夠，時間到了要再登一次。</div>'
              f'<div class="list">{rows}</div>' + K.foot(3, n, note))
     out.append(('reg-03.png', K.page(inner)))
 
     # ── 4 登錄一次就好的，與限量提醒 ──
-    once = [(c, e) for c, e in ev if e['cycle'] in ('once', 'quarterly', 'unknown')]
+    once = [(c, e) for c, e in ev if (c, e) not in recur]
     rows = ''
     for c, e in once:
         tail = ''
@@ -149,9 +169,10 @@ def build(d):
                  f'<span class="tag">{E(when(e))}</span></b>'
                  f'<s>{E(e["what"])}。{E(e.get("valid", ""))}'
                  + (f'<br>{E(tail)}' if tail else '') + '</s></div>')
-    inner = ('<div class="kick">這幾個不用每月搶</div>'
-             '<h1>登錄一次就好的<br><em>與每季一次的</em></h1>'
-             '<div class="sub">期間內登錄一次就有資格，但每季一次的那個名額最少。</div>'
+    inner = ('<div class="kick">這幾個不用一直搶</div>'
+             '<h1>登錄一次就好的<br><em>整個活動期間有效</em></h1>'
+             '<div class="sub">活動期間內登錄成功一次就有資格。有些會分批放名額，'
+             '那是給還沒登到的人，登過的不用再登。</div>'
              f'<div class="list">{rows}</div>' + K.foot(4, n, note))
     out.append(('reg-04.png', K.page(inner)))
 
@@ -212,8 +233,8 @@ if __name__ == '__main__':
     import os
     LB = [('reg-01.png', '加碼要先登錄', '而且各家不同天'),
           ('reg-02.png', '這個月要登錄的日子', '月曆一眼看完'),
-          ('reg-03.png', '每月或每週要重登的', '錯過等下個月'),
-          ('reg-04.png', '登錄一次就好的', '與每季一次的'),
+          ('reg-03.png', '每月或每季要重登的', '錯過等下一期'),
+          ('reg-04.png', '登錄一次就好的', '整個活動期間有效'),
           ('reg-05.png', '同一張卡三檔三種規則', '開放日差一天，規則全不同')]
     json.dump([{'file': f, 'title': t, 'sub': s} for f, t, s in LB],
               open(os.path.join(OUT, 'index.json'), 'w', encoding='utf-8'),
