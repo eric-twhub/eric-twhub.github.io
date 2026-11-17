@@ -23790,8 +23790,8 @@ if os.path.exists('cards.json'):
         '<th>有效回饋率</th></tr></thead><tbody>';
   rows.forEach(function(r,i){
    h+='<tr><td'+(i===0?' class="nm"':'')+'>'+(i===0?'<b>':'')+r.n+(i===0?'</b>':'')+
-      '<s style="display:block;color:var(--dim);font-size:.78rem">'+(r.reg||'')+
-      (r.cap?'　加碼已達上限':'')+'</s></td>'+
+      '<span style="display:block;color:var(--dim);font-size:.78rem">'+(r.reg||'')+
+      (r.cap?'　加碼已達上限':'')+'</span></td>'+
       '<td>NT$'+jfmt(r.v)+'</td>'+
       '<td class="'+(i===0?'win':'')+'"><b>NT$'+jfmt(r.net)+'</b></td>'+
       '<td>'+(r.bill?(r.v/r.bill*100).toFixed(1):'0')+'%</td></tr>';
