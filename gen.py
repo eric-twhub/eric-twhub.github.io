@@ -2262,7 +2262,7 @@ def foot():
 <!--f-->票價資料來源為 Aviasales 資料庫，價格為單人含稅及手續費，僅供參考，隨時可能變動。<br>
 <!--/f--><!--a-->實際訂購由合作平台完成：{_partner_line()}。<br>
 本站連結為聯盟行銷連結，透過連結完成訂購時本站可獲得分潤，不影響你的價格。<br>
-<!--/a-->追蹤與聯絡 @jptripcard：{SOCIAL_LINKS}（私訊即可）<br>
+<!--/a-->追蹤與私訊：{SOCIAL_LINKS}<br>
 最後更新 <!--lm-->{NOWS}<!--/lm-->　·　<a href="{U("/about/")}">關於本站</a>　·　<a href="{U("/")}">回首頁</a>
 </p></div>{SF_JS}{NAV_JS}{TBL_JS}{LB_JS}</body></html>'''
 
