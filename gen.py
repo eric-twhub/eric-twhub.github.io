@@ -1108,6 +1108,9 @@ body{margin:0;background:var(--bg);color:var(--fg);
 font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif}
 .wrap{max-width:1080px;margin:0 auto;padding:0 16px 72px}
 a{color:var(--acc)}
+/* 全站的 <s> 都是拿來當副標小字，沒有一處是要劃掉；瀏覽器預設是刪除線，
+   漏掉 text-decoration:none 就會被讀成「這條件取消了」（2026-11-17 店家頁試算表踩過） */
+s{text-decoration:none}
 .crumb{font-size:.8rem;color:var(--dim);padding:16px 0 0}
 .crumb a{color:var(--dim);text-decoration:none}.crumb a:hover{color:var(--acc)}
 h1{font-size:1.95rem;margin:14px 0 8px;letter-spacing:-.025em;line-height:1.3}
