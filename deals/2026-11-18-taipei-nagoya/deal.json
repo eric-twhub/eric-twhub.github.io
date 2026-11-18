@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-18-taipei-nagoya",
- "generated": "2026-11-18 20:10",
+ "generated": "2026-11-18 20:27",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -25,30 +25,11 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$10,473（5 天有紀錄），這張低 28%"
+  "12 月出發的票，每天最便宜的平均要 NT$10,573（5 天有紀錄），這張低 28%"
  ],
  "med": 16212,
  "n_rt": 12,
  "others": [
-  {
-   "o": "TPE",
-   "d": "NGO",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 8586,
-   "dep": "2026-12-07",
-   "ret": "2026-12-11",
-   "dept": "08:45",
-   "rett": "22:50",
-   "rt": true,
-   "tr": 0,
-   "dur": 380,
-   "dur_to": 160,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-NGO&departureDate=2026-12-07&inbound=NGO-TPE&returnDate=2026-12-11&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
   {
    "o": "TPE",
    "d": "NGO",
@@ -66,6 +47,25 @@
    "dur_to": 150,
    "gate": "Kiwi.com",
    "url": "https://www.aviasales.com/search/TPE2712NGO05011?t=MM17983401001798352700000150TPENGO17991894001799199000000220NGOTPE_18c69cab2aec0f3c395fb0026e403fee_22367&search_date=17112026&expected_price_uuid=01a1ebb9-59cd-8040-6432-f918e2a5ddcc&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=34cueo8YWJmbFj_7nZr_Ag&expected_price_source=share&expected_price_currency=twd&expected_price=8979&marker=775639"
+  },
+  {
+   "o": "TPE",
+   "d": "NGO",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 9086,
+   "dep": "2026-12-07",
+   "ret": "2026-12-11",
+   "dept": "08:45",
+   "rett": "22:50",
+   "rt": true,
+   "tr": 0,
+   "dur": 380,
+   "dur_to": 160,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-NGO&departureDate=2026-12-07&inbound=NGO-TPE&returnDate=2026-12-11&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
   },
   {
    "o": "TPE",
