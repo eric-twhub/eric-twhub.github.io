@@ -386,8 +386,8 @@
   {
    "slug": "deals-2026-11-18-taipei-okinawa",
    "url": "/deals/2026-11-18-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/20 出發",
-   "title": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/20 出發"
+   "h1": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/13 出發",
+   "title": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/13 出發"
   },
   {
    "slug": "deals-2026-11-18-taipei-ishigaki",
@@ -396,22 +396,22 @@
    "title": "台北飛石垣島 NT$3,405 來回含稅｜台灣虎航 12/09 出發"
   },
   {
-   "slug": "deals-2026-11-18-taichung-okinawa",
-   "url": "/deals/2026-11-18-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$3,931 來回含稅｜台灣虎航 11/30 出發",
-   "title": "台中飛沖繩 NT$3,931 來回含稅｜台灣虎航 11/30 出發"
-  },
-  {
    "slug": "deals-2026-11-18-taipei-fukuoka",
    "url": "/deals/2026-11-18-taipei-fukuoka/",
    "h1": "台北飛福岡 NT$4,144 來回含稅｜台灣虎航 12/01 出發",
    "title": "台北飛福岡 NT$4,144 來回含稅｜台灣虎航 12/01 出發"
   },
   {
+   "slug": "deals-2026-11-18-taichung-okinawa",
+   "url": "/deals/2026-11-18-taichung-okinawa/",
+   "h1": "台中飛沖繩 NT$4,344 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台中飛沖繩 NT$4,344 來回含稅｜台灣虎航 12/14 出發"
+  },
+  {
    "slug": "deals-2026-11-18-taipei-miyazaki",
    "url": "/deals/2026-11-18-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$4,519 來回含稅｜台灣虎航 12/28 出發",
-   "title": "台北飛宮崎 NT$4,519 來回含稅｜台灣虎航 12/28 出發"
+   "h1": "台北飛宮崎 NT$4,501 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台北飛宮崎 NT$4,501 來回含稅｜台灣虎航 12/14 出發"
   },
   {
    "slug": "deals-2026-11-18-kaohsiung-fukuoka",
@@ -458,8 +458,8 @@
   {
    "slug": "deals-2026-11-18-transfer-tokyo-fukushima",
    "url": "/deals/2026-11-18-transfer-tokyo-fukushima/",
-   "h1": "飛東京轉乘去福島，比直飛省 NT$4,243",
-   "title": "飛東京轉乘去福島，比直飛省 NT$4,243"
+   "h1": "飛東京轉乘去福島，比直飛省 NT$4,647",
+   "title": "飛東京轉乘去福島，比直飛省 NT$4,647"
   },
   {
    "slug": "apple-japan-price",
@@ -1120,6 +1120,12 @@
    "url": "/kansai/observation-decks/",
    "h1": "關西觀景台懶人包：20 個展望台的開放時間、要不要錢",
    "title": "關西觀景台懶人包：大阪、京都、神戶、奈良 20 個展望台開放時間與門票"
+  },
+  {
+   "slug": "kyushu-observation-decks",
+   "url": "/kyushu/observation-decks/",
+   "h1": "九州觀景台懶人包：23 個展望台的開放時間、要不要錢",
+   "title": "九州觀景台懶人包：福岡、北九州、長崎、熊本、別府、鹿兒島 23 個展望台開放時間與門票"
   },
   {
    "slug": "japan-takayama-shirakawago-bus",
