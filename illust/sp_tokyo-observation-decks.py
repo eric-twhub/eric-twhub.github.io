@@ -222,4 +222,109 @@ card('haneda', '手繪機場頂樓的展望台，看飛機在跑道上起飛',
      + back(60, 120, RED, 1.0) + back(90, 122, GOLD, .9)
      + sparkle(214, 20, 4))
 
+
+# ---- 2026-11-18 補：不用門票的觀景點 ----
+def win_room(inner, people):
+    # 室內展望大廳：窗框＋地板＋背影
+    return (inner + ''.join(f'<path d="M{x},3 L{x},128" stroke-width="3"/>' for x in (80, 160))
+            + f'<path d="M3,128 L237,128 L237,155 Q237,177 215,177 L25,177 Q3,177 3,155 Z" fill="#e9dcc8"/>'
+            + f'<path d="M3,128 L237,128" stroke-width="2.4"/>' + people)
+
+
+# 船堀 Tower Hall：高塔上的展望室，遠方晴空塔
+card('funabori', '手繪高塔上的室內展望室，窗外遠遠看得到晴空塔和東京鐵塔',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{SKYB}"/>'
+     + win_room(bldg(14, 112, 16, 30) + bldg(36, 112, 12, 22) + skytree(60, 112, 40, 8) + tower(196, 112, 70, sw=14)
+                + bldg(110, 112, 20, 34, '#d9d2e9') + bldg(140, 112, 14, 20) + f'<path d="M3,112 L237,112" stroke-width="1.6"/>',
+                back(104, 120, PINK, 1.0) + back(140, 122, GOLD, .95))
+     + sparkle(214, 20, 4))
+
+# 練馬區役所 20 樓：窗外遠方富士山
+card('nerima', '手繪區公所高樓層的展望大廳，窗外遠方是富士山和新宿高樓',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="#f7d9b8"/>'
+     + win_room(f'<path d="M20,112 L70,56 L90,72 L120,112 Z" fill="#c9b8d6" stroke-width="1.6"/>'
+                f'<path d="M60,66 L70,56 L80,66 Q70,72 60,66 Z" fill="{WHITE}" stroke-width="1.2"/>'
+                + bldg(150, 112, 14, 44, '#d9d2e9') + bldg(168, 112, 18, 56) + bldg(190, 112, 12, 36)
+                + f'<path d="M3,112 L237,112" stroke-width="1.6"/>',
+                back(100, 120, SKY, 1.0) + back(136, 122, RED, .95)))
+
+# 東京 Gate Bridge：恐龍形的橋、步道上的人
+card('gatebridge', '手繪海上一座有兩個大三角骨架的長橋，橋邊步道上有人在走',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{SKYB}"/>'
+     + cloud(40, 34, .8) + cloud(190, 30, .7)
+     + f'<path d="M3,120 L237,120 L237,155 Q237,177 215,177 L25,177 Q3,177 3,155 Z" fill="#9fd0ea"/>'
+     + f'<path d="M3,100 L237,100" stroke-width="3"/>'
+     + ''.join(f'<path d="M{a},100 L{a+30},60 L{a+60},60 L{a+90},100" fill="none" stroke="{GRAY}" stroke-width="6"/>'
+               f'<path d="M{a},100 L{a+30},60 L{a+60},60 L{a+90},100" fill="none" stroke-width="1.4"/>' for a in (20, 130))
+     + ''.join(f'<path d="M{x},100 L{x},150" stroke-width="2.4"/>' for x in (60, 120, 180))
+     + kid(110, 80, PINK, .7) + kid(130, 80, GOLD, .7))
+
+# SHIBU NIWA：澀谷站前大樓 17 樓屋頂，看十字路口
+card('shibuniwa', '手繪大樓屋頂的露天庭園，往下看得到斑馬線交叉的十字路口',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{NIGHT}"/>'
+     + ''.join(f'<circle cx="{x}" cy="{y}" r="1.8" fill="{c}" stroke="none"/>' for x, y, c in [(30, 24, WHITE), (200, 20, GOLD), (220, 50, WHITE)])
+     + bldg(20, 110, 24, 60, '#4b5584') + bldg(190, 110, 30, 70, '#4b5584')
+     + f'<path d="M3,110 L237,110 L237,130 L3,130 Z" fill="#3f4a78" stroke="none"/>'
+     + ''.join(f'<rect x="{x}" y="114" width="6" height="12" fill="{WHITE}" stroke="none" opacity=".8"/>' for x in range(60, 180, 12))
+     + f'<path d="M3,134 L237,134 L237,155 Q237,177 215,177 L25,177 Q3,177 3,155 Z" fill="{TURF}"/>'
+     + f'<path d="M3,134 L237,134" stroke-width="2.4"/>' + ''.join(f'<path d="M{x},134 L{x},122" stroke-width="1.4"/>' for x in range(14, 236, 14))
+     + f'<path d="M3,122 L237,122" stroke-width="1.6"/>'
+     + back(96, 126, PINK, 1.0) + back(132, 128, GOLD, .95) + star(120, 30, 5), bg=NIGHT)
+
+# GINZA SIX 屋頂庭園：大片草地與樹，冬天有溜冰場
+card('ginzasix', '手繪大樓屋頂的大片庭園，有草地、樹和一塊小小的溜冰場',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{SKYB}"/>'
+     + cloud(40, 36, .8) + bldg(170, 100, 20, 50) + bldg(196, 100, 26, 66, '#d9d2e9') + bldg(16, 100, 22, 40)
+     + f'<path d="M3,100 L237,100 L237,155 Q237,177 215,177 L25,177 Q3,177 3,155 Z" fill="{TURF}"/>'
+     + f'<path d="M3,100 L237,100" stroke-width="2.4"/>'
+     + f'<ellipse cx="150" cy="140" rx="46" ry="16" fill="#e6f4fb" stroke-width="1.6"/>'
+     + ''.join(f'<circle cx="{x}" cy="{y}" r="9" fill="{GREEN}" stroke-width="1.4"/><path d="M{x},{y+9} L{x},{y+16}" stroke-width="1.6"/>' for x, y in ((30, 112), (60, 118), (90, 110)))
+     + kid(140, 120, PINK, .8) + kid(166, 124, SKY, .8) + sparkle(214, 24, 4))
+
+# 豐洲市場屋頂綠化廣場：草坪、遠方的海與橋
+card('toyosu', '手繪市場屋頂的草坪廣場，遠方是海、橋和高樓',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{SKYB}"/>'
+     + cloud(180, 34, .8)
+     + bldg(20, 96, 14, 36) + bldg(40, 96, 18, 50, '#d9d2e9') + bldg(64, 96, 12, 28) + tower(200, 96, 40, sw=10)
+     + f'<path d="M3,96 L237,96 L237,110 L3,110 Z" fill="#9fd0ea" stroke-width="1.2"/>'
+     + f'<path d="M90,96 Q130,70 170,96" fill="none" stroke-width="2"/>'
+     + f'<path d="M3,110 L237,110 L237,155 Q237,177 215,177 L25,177 Q3,177 3,155 Z" fill="{TURF}"/>'
+     + f'<path d="M3,110 L237,110" stroke-width="2.4"/>'
+     + back(110, 126, RED, 1.0) + back(140, 128, GOLD, .95))
+
+# 彩虹大橋步道：橋上的步道，看海和台場
+card('rainbow', '手繪吊橋旁的步道，從橋上看出去是海和遠方的高樓',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{SKYB}"/>'
+     + f'<path d="M3,120 L237,120 L237,155 Q237,177 215,177 L25,177 Q3,177 3,155 Z" fill="#9fd0ea"/>'
+     + ''.join(f'<rect x="{x}" y="30" width="14" height="110" rx="2" fill="{WHITE}" stroke-width="1.8"/>' for x in (50, 176))
+     + f'<path d="M3,46 Q57,40 57,36 Q120,110 183,36 Q183,40 237,46" fill="none" stroke-width="2"/>'
+     + ''.join(f'<path d="M{x},{78 - abs(120 - x) * .35:.0f} L{x},100" stroke-width="1" opacity=".6"/>' for x in range(70, 176, 12))
+     + f'<path d="M3,100 L237,100 L237,108 L3,108 Z" fill="{GRAY}" stroke-width="1.6"/>'
+     + kid(110, 78, PINK, .7) + kid(130, 78, GREEN, .7) + cloud(200, 20, .6))
+
+# Sky Carrot（三軒茶屋）：26 樓窗邊夜景、東京鐵塔
+card('carrot', '手繪高樓層的展望大廳，窗外是城市夜景和遠方的東京鐵塔',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{NIGHT}"/>'
+     + win_room(''.join(f'<circle cx="{x}" cy="{y}" r="1.6" fill="{GOLD}" stroke="none"/>' for x in range(10, 230, 9) for y in (100, 110) if (x + y) % 3)
+                + tower(120, 112, 60, sw=12) + f'<path d="M3,112 L237,112" stroke-width="1.6"/>',
+                back(80, 120, PINK, 1.0) + back(170, 122, GOLD, .95)), bg=NIGHT)
+
+# 目黑天空庭園：繞圈的屋頂花園，有松樹
+card('meguro', '手繪繞成圓圈往上的屋頂花園，有松樹和步道，遠方是富士山',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{SKYB}"/>'
+     + f'<path d="M150,70 L180,40 L210,70 Z" fill="#c9b8d6" stroke-width="1.6"/><path d="M172,48 L180,40 L188,48 Q180,52 172,48 Z" fill="{WHITE}" stroke-width="1.2"/>'
+     + f'<ellipse cx="110" cy="120" rx="100" ry="40" fill="{TURF}" stroke-width="1.8"/>'
+     + f'<ellipse cx="110" cy="120" rx="60" ry="22" fill="#e9dcc8" stroke-width="1.6"/>'
+     + ''.join(f'<path d="M{x},{y} l-10,12 l20,0 Z" fill="{DGREEN}" stroke-width="1.4"/><path d="M{x},{y+12} L{x},{y+20}" stroke-width="1.6"/>' for x, y in ((40, 96), (180, 100), (70, 140), (150, 142)))
+     + kid(110, 106, PINK, .8))
+
+# 北とぴあ 17 樓：窗外有新幹線經過
+card('hokutopia', '手繪展望大廳，窗外是公園的樹和一列白色新幹線經過',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{SKYB}"/>'
+     + win_room(''.join(f'<circle cx="{x}" cy="86" r="10" fill="{GREEN}" stroke-width="1.4"/>' for x in (20, 40, 200, 220))
+                + f'<path d="M3,104 L237,104" stroke-width="1.4"/>'
+                + f'<path d="M30,108 L190,108 Q214,108 222,100 L222,96 L30,96 Z" fill="{WHITE}" stroke-width="1.6"/><path d="M30,102 L214,102" stroke="{SKY}" stroke-width="2.4"/>'
+                + skytree(140, 92, 40, 6) + f'<path d="M3,112 L237,112" stroke-width="1.6"/>',
+                back(100, 120, GOLD, 1.0) + back(136, 122, SKY, .95)))
+
 print(save(F, OUT), 'files')

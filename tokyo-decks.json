@@ -7,7 +7,10 @@
   "東京 City View 的 Sky Deck：官網目前沒有公開資訊（原網址 404、選單連結被註解掉），恢復後再加",
   "2026-12-15：文京 Civic Center 25 樓有沒有重開（區公所預定 12 月上旬）；重開後拿掉 reopen",
   "汐留 Caretta 官網恢復後查 46 樓免費展望區",
-  "2027-03 底：東京都廳 4 月以後的休室日（開室月曆 PDF 排到 2028/3，目前只抄到 2027/3）"
+  "2027-03 底：東京都廳 4 月以後的休室日（開室月曆 PDF 排到 2028/3，目前只抄到 2027/3）",
+  "SHIBU NIWA 每月初補當月時間（known_until 往後延）",
+  "船堀 Tower Hall 2 月保養休館日公告後補 closed_dates",
+  "彩虹大橋步道跨年時間公告後補"
  ],
  "_分潤": "Klook 15762 六本木（KKday 18946 在 1% 清單，Klook 放前面）；Klook 14533 陽光 60 展望台；KKday 166262 是陽光水族館＋展望台套票（不在 1% 清單）；台場球體展望室兩個平台都沒有商品，官網也不賣網路票。",
  "checked": "2026-11-18",
@@ -193,7 +196,8 @@
    "map": "東京都庁 展望室",
    "src": "https://www.zaimu.metro.tokyo.lg.jp/tochousha/goannai/tenbou",
    "desc": "免費觀景台裡最有名的一個。官網說西邊是看富士山的方向，12 月到 2 月空氣比較清楚，看得到的日子比較多；東北邊看得到晴空塔。晚上大樓東側牆面有光雕投影，天候不佳以外每天上映，在樓下的都民廣場看。",
-   "near": "都廳前站直通"
+   "near": "都廳前站直通",
+   "price_cell": "免費"
   },
   {
    "key": "asakusa",
@@ -210,7 +214,8 @@
    "map": "浅草文化観光センター",
    "src": "https://www.city.taito.lg.jp/bunka_kanko/kankoinfo/info/oyakudachi/kankocenter/a-tic-gaiyo.html",
    "desc": "官網說從 8 樓看得到淺草的街景和晴空塔。樓不高，但就在淺草站旁邊，逛完淺草順路上去很方便。",
-   "near": "淺草站 2 號出口走 1 分"
+   "near": "淺草站 2 號出口走 1 分",
+   "price_cell": "免費"
   },
   {
    "key": "kitte",
@@ -227,7 +232,8 @@
    "map": "KITTEガーデン",
    "src": "https://marunouchi.jp-kitte.jp/guide/facilities.jsp",
    "desc": "官網說可以一覽東京車站丸之內站舍，紅磚的車站就在正前方。",
-   "near": "東京站走 1 分"
+   "near": "東京站走 1 分",
+   "price_cell": "免費"
   },
   {
    "key": "bunkyo",
@@ -246,7 +252,291 @@
    "map": "文京シビックセンター 展望ラウンジ",
    "src": "https://www.city.bunkyo.lg.jp/shisetsu/civiccenter/tenbo.html",
    "desc": "文京區公所的大樓，官網說東邊看得到晴空塔，西邊是新宿高樓和富士山。目前在整修，重開前不能上去。",
-   "near": "後樂園站走 1 分"
+   "near": "後樂園站走 1 分",
+   "price_cell": "免費"
+  },
+  {
+   "key": "funabori",
+   "short": "船堀 Tower Hall",
+   "name": "船堀 Tower Hall 展望室",
+   "area": "江戶川區船堀",
+   "ill": "funabori",
+   "floor": "高 115 公尺的塔上，展望室在 103 公尺",
+   "hours": "9:00～21:30",
+   "hours_short": "9:00～21:30",
+   "closed_md": [
+    [
+     "12-28",
+     "01-04"
+    ]
+   ],
+   "unknown_months": [
+    2
+   ],
+   "closed": "12/28～1/4 休；2 月、8 月有幾天保養休館（日期另外公告）；暴風等天氣會停",
+   "cond": "免費（官網寫展望塔免費，團體要預約）",
+   "price_cell": "免費",
+   "station": "都營新宿線船堀站北口走約 1 分",
+   "near": "船堀站北口走 1 分",
+   "map": "タワーホール船堀",
+   "src": "https://www.towerhall.jp/faq/",
+   "desc": "官網寫往西看得到晴空塔、西南是東京鐵塔和富士山、南邊是海螢火、東南邊是迪士尼樂園。"
+  },
+  {
+   "key": "nerima",
+   "short": "練馬區役所 20F",
+   "name": "練馬區役所 20 樓展望大廳",
+   "area": "練馬",
+   "ill": "nerima",
+   "floor": "本廳舍 20 樓（地上 80 公尺）",
+   "hours": "9:00～21:30",
+   "hours_short": "9:00～21:30",
+   "closed_md": [
+    [
+     "12-29",
+     "01-03"
+    ]
+   ],
+   "closed_nth": [
+    [
+     6,
+     4,
+     false
+    ]
+   ],
+   "closed": "每月第 4 個週日、12/29～1/3 休（區公所閉廳日）",
+   "cond": "免費（官網寫入場無料）",
+   "price_cell": "免費",
+   "station": "西武池袋線練馬站西口走 5 分、都營大江戶線練馬站走 7 分",
+   "near": "練馬站西口走 5 分",
+   "map": "練馬区役所 展望ロビー",
+   "src": "https://www.city.nerima.tokyo.jp/shisetsu/ku/ku/tenbo.html",
+   "desc": "官網寫從 80 公尺高看富士山和新宿高樓群，空氣清楚時看得到橫濱 Landmark Tower 和筑波山；每年 1 月和 11 月 21 日前後的傍晚有機會看到鑽石富士。"
+  },
+  {
+   "key": "gatebridge",
+   "short": "東京 Gate Bridge",
+   "name": "東京 Gate Bridge 步道",
+   "area": "江東區若洲",
+   "ill": "gatebridge",
+   "floor": "橋上步道（戶外）",
+   "hours": "6:00～19:00，最後入場 18:30；16:30 以後不能下到海之森那一側",
+   "hours_short": "6:00～19:00",
+   "closed_nth": [
+    [
+     1,
+     3,
+     true
+    ]
+   ],
+   "closed_nth_month": [
+    [
+     12,
+     1,
+     1,
+     true
+    ]
+   ],
+   "closed": "每月第 3 個週二、12 月第 1 個週二休（遇假日隔天休）；強風、大雨、積雪或結冰時可能限制通行",
+   "cond": "免費（官網寫是一般道路，不收通行費）",
+   "price_cell": "免費",
+   "station": "新木場站搭都巴士「木 11」到終點「若洲キャンプ場前」",
+   "near": "新木場站搭都巴士木 11 到終點",
+   "map": "東京ゲートブリッジ 若洲 昇降施設",
+   "src": "https://www.kouwan.metro.tokyo.lg.jp/kanko/road/gatebridge",
+   "desc": "跨海的長橋，步道只在靠市區那一側，官網提醒橋上沒有廁所。"
+  },
+  {
+   "key": "shibuniwa",
+   "short": "SHIBU NIWA",
+   "name": "東急 Plaza 澀谷 17 樓 SHIBU NIWA",
+   "area": "澀谷",
+   "ill": "shibuniwa",
+   "floor": "17 樓屋頂",
+   "hours": "11:00～20:00（11 月的時間，官網每月公告）",
+   "hours_short": "11:00～20:00",
+   "known_until": "2026-11-30",
+   "closed_md": [
+    [
+     "01-01",
+     "01-01"
+    ]
+   ],
+   "closed": "1/1 全館休，另有不定休；天氣不好會關，官網不公告開關，看現場告示",
+   "cond": "官網寫一般人可以使用，沒寫收費或免費",
+   "price_cell": "官網沒寫",
+   "station": "JR 澀谷站西口連絡通路「澀谷 Fukuras 步行甲板」直通；東急、京王、地鐵澀谷站走約 3 分",
+   "near": "JR 澀谷站西口直通",
+   "map": "東急プラザ渋谷 SHIBU NIWA",
+   "src": "https://tokyu-plaza.com/shibuya/facility/detail/17",
+   "desc": "官網寫可以往下看澀谷十字路口的人潮和夜景。"
+  },
+  {
+   "key": "ginzasix",
+   "short": "GINZA SIX 屋頂",
+   "name": "GINZA SIX 屋頂庭園",
+   "area": "銀座",
+   "ill": "ginzasix",
+   "floor": "屋頂（RF），約 4,000 平方公尺",
+   "hours": "7:00～23:00",
+   "hours_short": "7:00～23:00",
+   "ye_caveat": true,
+   "closed": "天氣不好、包場或活動時可能關閉或限制區域",
+   "cond": "官網沒寫收費或免費；冬天屋頂的溜冰場（2026/11/14～2027/2/14）另外收費，大人 2,000 円",
+   "price_cell": "官網沒寫",
+   "station": "銀座站 A3 出口走 2 分、東銀座站 A1 出口走 3 分",
+   "near": "銀座站 A3 出口走 2 分",
+   "map": "GINZA SIX ガーデン",
+   "src": "https://ginza6.tokyo/hours/",
+   "desc": "官網寫是銀座最大、開放給地區的屋頂庭園，開到 23:00。"
+  },
+  {
+   "key": "toyosu",
+   "short": "豐洲市場屋頂",
+   "name": "豐洲市場 屋頂綠化廣場",
+   "area": "豐洲",
+   "ill": "toyosu",
+   "floor": "市場屋頂（從豐洲 Gururi 公園走上去）",
+   "hours": "5:00～23:00，市場休市日也開",
+   "hours_short": "5:00～23:00",
+   "closed": "官網寫休市日也照常開放",
+   "cond": "東京都中央卸売市場官網沒寫收費或免費",
+   "price_cell": "官網沒寫",
+   "station": "百合海鷗號市場前站（官網沒寫走幾分）",
+   "near": "市場前站（官網沒寫分鐘）",
+   "map": "豊洲市場 屋上緑化広場",
+   "src": "https://www.shijou.metro.tokyo.lg.jp/info/0/kenngaku/kenngaku1",
+   "desc": "市場大樓屋頂的草坪廣場。官網沒寫看得到什麼。"
+  },
+  {
+   "key": "haneda",
+   "short": "羽田機場展望台",
+   "name": "羽田機場 展望台",
+   "area": "羽田",
+   "ill": "haneda",
+   "floor": "第 1 航廈 6 樓與屋頂、第 2 航廈 5 樓、第 3 航廈",
+   "hours": "第 1、2 航廈 6:30～22:00；第 3 航廈 24 小時；第 2 航廈室內的 FLIGHT DECK TOKYO 5:00～23:00",
+   "hours_short": "T1・T2 6:30～22:00；T3 24 小時",
+   "closed": "天氣或保安原因可能關閉",
+   "cond": "官網沒寫收費或免費",
+   "price_cell": "官網沒寫",
+   "station": "京急、東京單軌電車各航廈站（官網沒寫走幾分）",
+   "near": "各航廈站（官網沒寫分鐘）",
+   "map": "羽田空港 展望デッキ",
+   "src": "https://tokyo-haneda.com/service/facilities/observation_deck.html",
+   "desc": "官網寫第 1 航廈是 360 度全景，第 2 航廈天氣好看得到迪士尼、幕張和房總半島，第 3 航廈看得到東京鐵塔和晴空塔。"
+  },
+  {
+   "key": "rainbow",
+   "short": "彩虹大橋步道",
+   "name": "彩虹大橋 步道（Rainbow Promenade）",
+   "area": "芝浦～台場",
+   "ill": "rainbow",
+   "floor": "橋上步道，全長約 1.7 公里（走 20～30 分）",
+   "season_md": [
+    [
+     "04-01",
+     "10-31",
+     "9:00～21:00"
+    ],
+    [
+     "11-01",
+     "03-31",
+     "10:00～18:00"
+    ]
+   ],
+   "hours": "4/1～10/31 9:00～21:00、11/1～3/31 10:00～18:00，最後入場是關門前 30 分鐘",
+   "closed_nth": [
+    [
+     0,
+     3,
+     true
+    ]
+   ],
+   "ye_caveat": true,
+   "closed": "每月第 3 個週一休（遇假日隔天休）；維修或天氣不好可能不能進",
+   "cond": "東京都港灣局官網沒寫收費或免費",
+   "price_cell": "官網沒寫",
+   "station": "芝浦側、台場側各有出入口（官網沒寫車站）",
+   "near": "芝浦側、台場側出入口（官網沒寫車站）",
+   "map": "レインボーブリッジ 遊歩道 芝浦口",
+   "src": "https://www.kouwan.metro.tokyo.lg.jp/kanko/road/rainbowbridge",
+   "desc": "走在彩虹大橋旁的步道上，從芝浦走到台場。"
+  },
+  {
+   "key": "carrot",
+   "short": "Sky Carrot",
+   "name": "三軒茶屋 Sky Carrot 展望大廳",
+   "area": "三軒茶屋",
+   "ill": "carrot",
+   "floor": "Carrot Tower 26 樓（地上 124 公尺）",
+   "hours": "9:30～22:00",
+   "hours_short": "9:30～22:00",
+   "closed_md": [
+    [
+     "12-29",
+     "01-01"
+    ]
+   ],
+   "closed_nth": [
+    [
+     2,
+     2,
+     false
+    ]
+   ],
+   "closed": "每月第 2 個週三、12/29～1/1 休",
+   "cond": "世田谷區官網沒寫收費或免費（東急電鐵的介紹寫免費）",
+   "price_cell": "官網沒寫",
+   "station": "田園都市線三軒茶屋站走 3 分，2 樓搭專用電梯",
+   "near": "三軒茶屋站走 3 分",
+   "map": "キャロットタワー スカイキャロット展望ロビー",
+   "src": "https://www.city.setagaya.lg.jp/02072/8528.html",
+   "desc": "官網寫季節對的話看得到富士山，東邊看都心夜景和東京鐵塔。"
+  },
+  {
+   "key": "meguro",
+   "short": "目黑天空庭園",
+   "name": "目黑天空庭園",
+   "area": "池尻大橋",
+   "ill": "meguro",
+   "hours": "7:00～21:00",
+   "hours_short": "7:00～21:00",
+   "closed": "沒有休園日，天氣不好可能關",
+   "cond": "目黑區官網沒寫收費或免費",
+   "price_cell": "官網沒寫",
+   "station": "東急田園都市線池尻大橋站走約 3 分",
+   "near": "池尻大橋站走 3 分",
+   "map": "目黒天空庭園",
+   "src": "https://www.city.meguro.tokyo.jp/douro/shisetsu/sports/tenku.html",
+   "desc": "官網寫可以從展望甲板隔著松樹看富士山。"
+  },
+  {
+   "key": "hokutopia",
+   "short": "北とぴあ 17F",
+   "name": "北とぴあ 17 樓展望大廳",
+   "area": "王子",
+   "ill": "hokutopia",
+   "floor": "17 樓",
+   "hours": "8:30～22:00（全館開館時間，官網沒寫展望大廳另外的時間）",
+   "hours_short": "8:30～22:00",
+   "closed_md": [
+    [
+     "12-29",
+     "01-03"
+    ]
+   ],
+   "closed_dates": [
+    "2026-12-28"
+   ],
+   "closed": "12/28 臨時休館、12/29～1/3 休",
+   "cond": "官網沒寫收費或免費",
+   "price_cell": "官網沒寫",
+   "station": "地鐵南北線王子站 5 號出口直通、JR 王子站北口走 2 分",
+   "near": "王子站 5 號出口直通",
+   "map": "北とぴあ 展望ロビー",
+   "src": "https://www.hokutopia.jp/hall-guide/other/viewing_lobby",
+   "desc": "官網寫三面有窗，看得到飛鳥山公園、晴空塔、埼玉新都心，王子站那一側的窗戶看得到新幹線。"
   }
  ],
  "unverified": [
@@ -258,9 +548,17 @@
   "澀谷 Hikarie 11 樓：官方常見問題寫明沒有展望台，11 樓是劇場與餐廳的大廳",
   "晴空塔商店街 30、31 樓：是餐廳樓層，官網沒寫不消費能不能進去看",
   "新宿野村大樓 50 樓：找不到大樓官網，只有第三方資料，不列",
-  "東京都廳 2027/3/7（東京馬拉松那天）：開室月曆寫 9:30 開，官網內文寫約 11:00 才開，以官網當天公告為準"
+  "東京都廳 2027/3/7（東京馬拉松那天）：開室月曆寫 9:30 開，官網內文寫約 11:00 才開，以官網當天公告為準",
+  "澀谷 PARCO 10 樓屋頂：官網只有活動空間的介紹，沒寫開放時間與要不要錢",
+  "東急 Plaza 銀座（已改名 GinzaNovo）屋頂：官方樓層圖標示改裝中，沒有寫完工日期",
+  "丸大樓 5 樓露台：官網找不到開放資訊；新丸大樓 7 樓露台官網只有餐廳的營業時間",
+  "東京中城日比谷 6 樓 Park View Garden：官網只寫 8:00 起可以上去，沒寫幾點關、要不要錢",
+  "竹芝 Skip Terrace：官網只寫在 2～6 樓，沒寫開放時間",
+  "豐島區役所 10 樓「豐島之森」：官網沒寫開放時間",
+  "SHIBU NIWA 12 月以後的時間：官網每月公告，還沒出",
+  "彩虹大橋步道 2026～27 年跨年的時間：官網還沒公告（去年是 12/31 10:00 開到 1/1 18:00）"
  ],
- "free_intro": "下面這幾個都是官網寫明入場免費的。東京都廳最有名，官網說入室要排 20～30 分鐘；淺草和東京車站那兩個是露天的，可以順路去。網路上常看到的惠比壽花園廣場、澀谷 Hikarie、晴空塔商店街高樓層，官網都沒有寫有免費展望區，所以這裡不列。",
+ "free_intro": "下面這些不用買門票。前面 7 個官網寫明免費；後面幾個官網只寫開放時間，沒寫收費或免費，我在每一處照實寫出來。東京都廳最有名，官網說入室要排 20～30 分鐘。網路上常看到的惠比壽花園廣場、澀谷 Hikarie、晴空塔商店街高樓層，官網都沒有寫有免費展望區，所以這裡不列。",
  "pick_free": "新宿的東京都廳展望室免費開到 22:00，冬天白天有機會看到富士山；在淺草就上淺草文化觀光中心 8 樓，看得到淺草的街景和晴空塔；在東京車站就上 KITTE 屋頂，正對紅磚車站。",
  "near_existing": {
   "skytree": "押上站、東京晴空塔站直通",
