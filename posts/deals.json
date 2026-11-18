@@ -1,32 +1,32 @@
 [
  {
   "slug": "2026-11-18-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/13 出發",
+  "title": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/20 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
   "price": 2531,
   "air": "台灣虎航",
-  "dep": "2026-12-13",
-  "ret": "2026-12-17",
+  "dep": "2026-12-20",
+  "ret": "2026-12-24",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$3,873（13 天有紀錄），這張低 35%"
+   "12 月出發的票，每天最便宜的平均要 NT$3,812（13 天有紀錄），這張低 34%"
   ],
   "med": 12507,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-13&inbound=OKA-TPE&returnDate=2026-12-17&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-20&inbound=OKA-TPE&returnDate=2026-12-24&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 2531,
+   "lo": 2588,
    "hi": 6412,
    "days": 16
   },
   "mbase": {
-   "avg": 3873,
+   "avg": 3812,
    "days": 13,
    "month": 12
   },
@@ -60,32 +60,32 @@
  },
  {
   "slug": "2026-11-18-taichung-okinawa",
-  "title": "台中飛沖繩 NT$3,844 來回含稅｜台灣虎航 12/28 出發",
+  "title": "台中飛沖繩 NT$4,344 來回含稅｜台灣虎航 12/14 出發",
   "o": "台中",
   "c": "沖繩",
   "_oiata": "RMQ",
   "_diata": "OKA",
-  "price": 3844,
+  "price": 4344,
   "air": "台灣虎航",
-  "dep": "2026-12-28",
-  "ret": "2026-12-31",
+  "dep": "2026-12-14",
+  "ret": "2026-12-17",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$9,117（22 天有紀錄），這張低 58%"
+   "12 月出發的票，每天最便宜的平均要 NT$9,168（22 天有紀錄），這張低 53%"
   ],
   "med": 10360,
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-12-28&inbound=OKA-RMQ&returnDate=2026-12-31&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-12-14&inbound=OKA-RMQ&returnDate=2026-12-17&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 4388,
+   "lo": 4844,
    "hi": 10892,
    "days": 34
   },
   "mbase": {
-   "avg": 9117,
+   "avg": 9168,
    "days": 22,
    "month": 12
   },
@@ -107,7 +107,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$8,451（8 天有紀錄），這張低 47%"
+   "12 月出發的票，每天最便宜的平均要 NT$8,422（8 天有紀錄），這張低 47%"
   ],
   "med": 16432,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
@@ -119,7 +119,7 @@
    "days": 8
   },
   "mbase": {
-   "avg": 8451,
+   "avg": 8422,
    "days": 8,
    "month": 12
   },
@@ -153,32 +153,32 @@
  },
  {
   "slug": "2026-11-18-kaohsiung-fukuoka",
-  "title": "高雄飛福岡 NT$5,085 來回含稅｜台灣虎航 12/16 出發",
+  "title": "高雄飛福岡 NT$4,928 來回含稅｜台灣虎航 12/18 出發",
   "o": "高雄",
   "c": "福岡",
   "_oiata": "KHH",
   "_diata": "FUK",
-  "price": 5085,
+  "price": 4928,
   "air": "台灣虎航",
-  "dep": "2026-12-16",
+  "dep": "2026-12-18",
   "ret": "2026-12-23",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$7,597（6 天有紀錄），這張低 33%"
+   "12 月出發的票，每天最便宜的平均要 NT$7,468（6 天有紀錄），這張低 34%"
   ],
-  "med": 6086,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-16&inbound=FUK-KHH&returnDate=2026-12-23&type=return&adult=1&language=zh-TW",
+  "med": 6386,
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-18&inbound=FUK-KHH&returnDate=2026-12-23&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 5385,
-   "hi": 7917,
+   "lo": 4928,
+   "hi": 7517,
    "days": 6
   },
   "mbase": {
-   "avg": 7597,
+   "avg": 7468,
    "days": 6,
    "month": 12
   },
@@ -224,7 +224,7 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "12 月出發的票，每天最便宜的平均要 NT$10,573（5 天有紀錄），這張低 28%"
+   "12 月出發的票，每天最便宜的平均要 NT$10,360（5 天有紀錄），這張低 27%"
   ],
   "med": 16212,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-NGO&departureDate=2026-12-27&inbound=NGO-TPE&returnDate=2026-12-31&type=return&adult=1&language=zh-TW",
@@ -232,7 +232,7 @@
   "cslug": "nagoya",
   "usual": null,
   "mbase": {
-   "avg": 10573,
+   "avg": 10360,
    "days": 5,
    "month": 12
   },
