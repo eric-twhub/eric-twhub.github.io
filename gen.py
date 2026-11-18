@@ -2,6 +2,12 @@
 """日本旅遊小卡 — 多頁 SEO 網站產生器"""
 import json, datetime, html, collections, os, urllib.parse, shutil, re, statistics, hashlib, calendar, math, unicodedata
 import glob
+# 折價券店家數（購物折扣總覽）。頁面上提到「幾家」都從這裡算，不要寫死：
+# 2026-11-18 補百貨時發現「21 家」「14 家」早就和資料對不上。
+_CPJ_STORES = (json.load(open('coupons.json', encoding='utf-8'))['stores']
+               if os.path.exists('coupons.json') else [])
+_N_CP = sum(1 for _s in _CPJ_STORES if _s.get('kind') != 'card')   # 有折價券的店
+_N_CPA = len(_CPJ_STORES)                                             # 含只比刷卡的店
 
 CFG=json.load(open('partners.json',encoding='utf-8'))
 W=CFG.get('widgets',{})
@@ -5349,7 +5355,7 @@ if os.path.exists('shoppoints.json'):
       + f'<a class="ct" href="{U("/japan-bic-points/")}"><b>📷 Bic Camera 點數</b>'
         f'<s>免稅和點數只能選一條</s></a>'
       + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 購物折扣總覽</b>'
-        f'<s>21 家店的折價券</s></a>'
+        f'<s>{_N_CP} 家店的折價券</s></a>'
       + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡</b>'
         f'<s>回饋比店家點數大一個量級</s></a></div>'
       + '<h2>常見問題</h2>' + sp_html
@@ -14777,7 +14783,7 @@ if SH:
       + f'<div class="cities"><a class="ct" href="{U("/japan-tax-free-2026/")}">'
         f'<b>🧾 11/1 免稅新制</b><s>先墊多少、怎麼退、九十天的期限</s></a>'
         f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 購物折扣券</b>'
-        f'<s>14 家店，有標能不能疊加免稅</s></a></div>'
+        f'<s>{_N_CP} 家店，有標能不能疊加免稅</s></a></div>'
       + '<h2>這份清單裡的品牌</h2>'
       + '<p class="lede">同一串另一則回覆列了八個日本服飾品牌：'
         f'{_sh_brands}。那是品牌不是分店，沒有地址就沒有東西可以回查，'
@@ -23683,7 +23689,7 @@ if os.path.exists('cards.json'):
               + f'<a class="ct" href="{U("/japan-credit-card/"+c["slug"]+"/")}">'
                 f'<b>{html.escape(c["name"])} 回饋怎麼算</b><s>加碼層級與上限</s></a>'
               + f'<a class="ct" href="{U("/japan-credit-card/"+c["slug"]+"/shopping/")}">'
-                f'<b>在日本哪些店刷最划算</b><s>21 家店實付價</s></a>'
+                f'<b>在日本哪些店刷最划算</b><s>{_N_CPA} 家店實付價</s></a>'
               + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日機票特價</b>'
                 f'<s>每天更新，附刷卡建議</s></a>'
               + f'<a class="ct" href="{U("/japan-airline-card/")}"><b>🧾 這筆算國內還是國外</b>'
@@ -24612,11 +24618,14 @@ if os.path.exists('cards.json'):
              f'發券頁，沒找到的就不列，不用第三方整理補上去。</p>') if _pend else '')
 
         # 分享圖卡。和本頁同一份 coupons.json，由 make_coupon_cards.py 產生。
+        def _ncat(*cats):
+            return sum(1 for s in CP['stores'] if s['cat'] in cats and s.get('kind') != 'card')
+
         _CP_CARD = [
-         ('01', '同一筆錢，哪家實付最低', '14 家與關鍵數字'),
+         ('01', '同一筆錢，哪家實付最低', f'{_N_CP} 家與關鍵數字'),
          ('02', '免稅、券、刷卡要照順序疊', '含稅 ¥10,000 的實算'),
-         ('03', '14 家常見店家 ①', '依券的最高折扣'),
-         ('04', '14 家常見店家 ②',
+         ('03', f'{_N_CP} 家常見店家 ①', '依券的最高折扣'),
+         ('04', f'{_N_CP} 家常見店家 ②',
           '含已過期的' if any((s.get('expires') or '9') < TODAY for s in CP['stores'])
           else '依券的最高折扣（續）'),
          ('05', '有滿額級距的幾家', '什麼時候值得湊'),
@@ -24624,12 +24633,12 @@ if os.path.exists('cards.json'):
          ('07', '券長什麼樣', '有些不能先截圖'),
          ('08', '11/1 免稅新制', '改成出境後才退'),
          ('09', '沒有官方發券頁的', '哪些數字站得住'),
-         ('10', '百貨與電器量販的實付價', '藥妝以外的 8 家'),
-         ('11', '大丸・松坂屋的 5% 券', '百貨那張最容易白跑'),
+         ('10', '電器、綜合與運動的實付價', f'{_ncat("電器", "綜合", "運動")} 家同一筆錢'),
+         ('11', '百貨的 5% 券', f'{_ncat("百貨")} 家能不能疊免稅'),
          ('12', '這四家要先知道', '各自的排除條款'),
          ('13', '快到門檻時再拿一件', '差一圓，差幾百圓'),
-         ('14', '藥妝 6 家的發券頁', '掃碼直接開'),
-         ('15', '電器量販 4 家的發券頁', '掃碼直接開'),
+         ('14', f'藥妝 {_ncat("藥妝")} 家的發券頁', '掃碼直接開'),
+         ('15', f'電器量販 {_ncat("電器")} 家的發券頁', '掃碼直接開'),
          ('16', '百貨・綜合・運動的發券頁', '掃碼直接開'),
         ]
         _cp_cards = (

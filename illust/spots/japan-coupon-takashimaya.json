@@ -1,0 +1,41 @@
+{
+ "page": "/japan-coupon/takashimaya/",
+ "dir": "japan-coupon-takashimaya",
+ "_說明": "插圖依高島屋官方繁中旅遊優待頁（takashimaya.co.jp/store/special/shopperscard/index_tw.html）的說明畫成可愛版，百貨外觀不描任何分店、招牌與旗子留白、不畫精品品牌；繪圖程式 illust/sp_japan-coupon-dept.py；2026-11-18 查",
+ "blocks": [
+  {
+   "before": "適合誰",
+   "h2": "店裡大概長這樣",
+   "intro": "高島屋給旅客的是一張 SHOPPER'S CARD，在館內憑護照領。",
+   "gallery": [
+    [
+     "building",
+     "大阪、京都、日本橋、橫濱、新宿等高島屋都能用；JR 名古屋高島屋和旁邊的購物中心不能用"
+    ],
+    [
+     "counter",
+     "到免稅櫃台等地點出示護照，核對本人之後領一張 SHOPPER'S CARD"
+    ],
+    [
+     "luxury",
+     "鐘錶、珠寶與精品品牌不折，部分櫃位也不能用"
+    ]
+   ]
+  },
+  {
+   "end_of": "要注意的地方",
+   "remind": [
+    [
+     "r-total",
+     "看總額，湊到 3,000 円",
+     "購物總額稅前滿 3,000 円就能用，不是看單件。"
+    ],
+    [
+     "r-ask",
+     "能不能同時免稅，先問",
+     "官網沒寫這張卡能不能和免稅一起用，結帳前在櫃台問清楚。"
+    ]
+   ]
+  }
+ ]
+}

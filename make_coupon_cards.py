@@ -85,6 +85,8 @@ h1 em{font-style:normal;color:#c2410c}
 .row{display:flex;gap:12px;align-items:baseline;padding:14px 0;
  border-bottom:1px solid #e5e3de}
 .row:last-child{border-bottom:0}
+/* 列數多（店家一覽 9 列以上）時收窄列距 */
+.tight .row{padding:8px 0}
 .num{flex:0 0 42px;font-size:22px;font-weight:700;color:#c2410c;
  font-variant-numeric:tabular-nums}
 .nm{flex:1 1 auto;font-size:30px;font-weight:700;line-height:1.28;letter-spacing:-.01em}
@@ -259,14 +261,15 @@ def build(d, today):
                 '結帳前看發券頁。</div>'
                 '<div class="legend">「發券頁未標」表示那一頁沒有寫有效期限，'
                 '不是永久有效，隨時可能換掉。</div>'
-                f'<div class="list">{rows}</div>' + foot(idx, n, fnote))
+                f'<div class="list{" tight" if len(items) > 8 else ""}">{rows}</div>' + foot(idx, n, fnote))
 
     half = (len(ordered) + 1) // 2
     out.append(('cp-03.png', page(store_card(3, '①', ordered[:half], 1))))
     out.append(('cp-04.png', page(store_card(4, '②', ordered[half:], half + 1))))
 
     # ── 5 滿額級距 ──
-    tiered = [s for s in sts if s.get('steps') and len(s['steps']) >= 1]
+    # 百貨的單一門檻（稅前 ¥1,000、¥3,000）只是用券下限，不是值得湊的級距
+    tiered = [s for s in sts if s.get('steps') and len(s['steps']) >= 1 and s.get('cat') != '百貨']
     tiered.sort(key=lambda s: -len(s['steps']))
     rows = ''
     for s in tiered:
@@ -353,7 +356,8 @@ def build(d, today):
 
     # ── 10 百貨與電器量販 ──
     # 藥妝那篇已經單獨發過，這組是給百貨與免稅店那篇用的。
-    shop = [s for s in sts if s.get('cat') != '藥妝']
+    # 百貨 2026-11-18 起有 5 家，另外放第 11 張；這張只留電器、綜合與運動
+    shop = [s for s in sts if s.get('cat') not in ('藥妝', '百貨')]
     shop.sort(key=lambda s: (dead(s), -s['max']))
     def _min(s):
         # tax_min 各家寫法不一，欄位窄，只留金額。唐吉訶德那筆講的是用券門檻，
@@ -375,7 +379,7 @@ def build(d, today):
                  f'<div class="rate">{yen(pay)}</div>'
                  f'<div class="exp">{yen(DEMO - pay)}</div></div>')
     incl_t = '、'.join(s['name'].split()[0] for s in shop if s.get('steps_disp'))
-    inner = ('<div class="kick">藥妝以外的那幾家</div>'
+    inner = ('<div class="kick">電器、綜合與運動</div>'
              f'<h1>同一筆 {yen(DEMO)}，<em>實付多少</em></h1>'
              '<div class="sub">免稅每家都是 10%，差的全在券。</div>'
              '<div class="legend">券的級距多數看未稅金額，含稅標價要先除以 1.1'
@@ -384,27 +388,17 @@ def build(d, today):
              f'<div class="list">{rows}</div>' + foot(10, n, fnote))
     out.append(('cp-10.png', page(inner)))
 
-    # ── 11 大丸那張券 ──
-    dm = next((s for s in sts if s['name'].startswith('大丸')), None)
-    if dm:
-        def _w(kw):
-            # 用關鍵字找，不用索引：coupons.json 的 watch 順序以後可能會變
-            return next((x for x in dm['watch'] if kw in x), '')
-
-        blocks = [('不是電子券，要到櫃台換',
-                   f'{dm["how"]}。{dm["form_note"]}'),
-                  ('大丸東京店只限化妝品', _w('化妝品賣場')),
-                  ('單筆含稅滿 ¥3,000 才能用', _w('¥3,000')),
-                  ('這些賣場不適用', _w('鐘錶賣場')),
-                  ('免稅還要再扣一筆手續費', _w('手續費')),
-                  ('限外國籍', _w('入境未滿'))]
-        rows = ''.join(f'<div class="blk"><b><i>!</i>{E(t)}</b><s>{E(b)}</s></div>'
-                       for t, b in blocks if b)
-        inner = ('<div class="kick">百貨那張最容易白跑</div>'
-                 f'<h1>{E(dm["name"].split()[0])} 的 '
-                 f'<em>{dm["max"]}% 券</em></h1>'
-                 f'<div class="sub">{E(dm["combo"])}。'
-                 '百貨那張看起來只有 5%，但真正會讓人白跑的是下面這幾條。</div>'
+    # ── 11 百貨的 5% 券 ──
+    # 2026-11-18 從「大丸那一張」改成五家並排：讀者要比的是哪家能疊免稅、門檻多少。
+    dept = [s for s in sts if s.get('cat') == '百貨']
+    if dept:
+        rows = ''.join(
+            f'<div class="blk"><b>{E(s["name"].split()[0])}</b>'
+            f'<s>{E(s["tiers"])}。{E(s["combo"])}。</s></div>' for s in dept)
+        inner = ('<div class="kick">百貨公司・出示護照打 95 折</div>'
+                 f'<h1>百貨的 <em>5% 券</em> {len(dept)} 家</h1>'
+                 '<div class="sub">多半不能和店家自己的點數或其他折扣一起用；'
+                 '精品、鐘錶、食品與特價品幾乎都不折。</div>'
                  f'<div class="list">{rows}</div>' + foot(11, n, fnote))
         out.append(('cp-11.png', page(inner)))
 
