@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-18-taipei-nagoya",
- "generated": "2026-11-18 07:02",
+ "generated": "2026-11-18 08:00",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -55,7 +55,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 8976,
+   "price": 8979,
    "dep": "2026-12-27",
    "ret": "2027-01-05",
    "dept": "02:55",
@@ -65,7 +65,7 @@
    "dur": 370,
    "dur_to": 150,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TPE2712NGO05011?t=MM17983401001798352700000150TPENGO17991894001799199000000220NGOTPE_18c69cab2aec0f3c395fb0026e403fee_22367&search_date=17112026&expected_price_uuid=01a1ebb9-59cd-8040-6432-f918e2a5ddcc&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=34cueo8YWJmbFj_7nZr_Ag&expected_price_source=share&expected_price_currency=twd&expected_price=8976&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2712NGO05011?t=MM17983401001798352700000150TPENGO17991894001799199000000220NGOTPE_18c69cab2aec0f3c395fb0026e403fee_22367&search_date=17112026&expected_price_uuid=01a1ebb9-59cd-8040-6432-f918e2a5ddcc&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=34cueo8YWJmbFj_7nZr_Ag&expected_price_source=share&expected_price_currency=twd&expected_price=8979&marker=775639"
   },
   {
    "o": "TPE",
