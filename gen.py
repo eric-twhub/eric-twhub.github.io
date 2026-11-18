@@ -5194,10 +5194,40 @@ if os.path.exists('shoppoints.json'):
                 f'{lk(_PT["src"]["partners"], "Ponta 官方中文合作店頁")}、'
                 f'{lk(_PT["src"]["lawson_kiyaku"], "LAWSON 的 Ponta 特約")}，查證於 {_PT["checked"]}。</p>')
 
+    # 2026-11-18 使用者：「百貨的旅客券也逐家查一次補上」。只列官網查得到發券頁的；
+    # 「能不能和免稅一起用」三態：yes＝官方明文、label＝只有券面標題、none＝官網沒寫。
+    _DP = SP.get('dept')
+
+    def _dept_block():
+        if not _DP:
+            return ''
+        lk = lambda u, t: (f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">'
+                           f'{html.escape(t)}</a>')
+        def one(x):
+            q = ''
+            if x.get('quote'):
+                q = f'原文：「{html.escape(x["quote"])}」'
+                if x.get('quote_zh'):
+                    q += f'（{html.escape(x["quote_zh"])}）'
+                q += '。'
+            return (f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span>'
+                    f'<span class="xbadge{" on" if x["taxfree"] == "yes" else ""}">'
+                    f'{html.escape(x["tf_text"])}</span></div>'
+                    f'<div class="xt">哪幾家：{html.escape(x["where"])}。</div>'
+                    f'<div class="xt">怎麼拿：{html.escape(x["how"])}。{html.escape(x["min"])}。</div>'
+                    f'<p class="xo">不折的：{html.escape(x["excl"])}。'
+                    + (f'{html.escape(x["note"])}。' if x.get('note') else '')
+                    + q + '　' + lk(x['src'], '官方') + '</p></li>')
+        return (f'<h2>{html.escape(_DP["title"])}</h2>'
+                f'<p class="lede">{html.escape(_DP["intro"])}</p>'
+                '<ul class="xl">' + ''.join(one(x) for x in _DP['stores']) + '</ul>'
+                f'<div class="tldr"><ul><li>{html.escape(_DP["after"])}</li></ul></div>'
+                f'<p class="disc">{html.escape(_DP["unverified"])}。查證於 {SP["checked"]}。</p>')
+
     sp_title = f'不辦退稅，改拿店家點數划算嗎？OPEN POINT 綁 Ponta 與 {_n_st} 家會員集點'
     sp_desc = ('11/1 退稅改成先付後退還要扣手續費，那不退稅、改拿點數呢？'
                '算了退稅實拿與各店點數，整理台灣 OPEN POINT 綁 Ponta 在 LAWSON、Bic Camera 集點的規則，'
-               f'以及 {_n_st} 家店的會員能不能辦、免稅時給不給點。')
+               f'{_n_st} 家店的會員能不能辦、免稅時給不給點，以及五家百貨的旅客 5% 券。')
 
     sp_faq = [
      ('不辦退稅、改拿店家點數，划算嗎？',
@@ -5247,8 +5277,14 @@ if os.path.exists('shoppoints.json'):
       '要先知道錢帶不走。兩家的規約都寫明餘額原則上不能換現金也不能退款，'
       'majica 還有兩年未用自動失效且不退的條款，WAON 的退款要扣手續費而且只限三種特殊情形。'
       '點數也只能在日本國內用。所以要儲就只儲這一趟花得完的金額。'),
+     ('百貨公司的旅客 5% 券可以和退稅一起用嗎？',
+      '三越伊勢丹的 REWARDS 與阪急阪神的客用券，官方都寫明可以同時免稅；'
+      '西武・SOGO 的券面標題寫「95 折＋免稅」，細則要你問免稅櫃台；'
+      '高島屋與大丸松坂屋的官網沒寫能不能同時免稅。'
+      '這幾張券多半不能和店家自己的點數或其他折扣一起用，精品、鐘錶、食品與特價品也幾乎都不折。'
+      '大丸東京店的券 2024/3/1 起只剩化妝品賣場能用，其他分店沒有這條。'),
      ('出示護照就有折扣的店多嗎？',
-      '比想像中少，而且多半要搭配免稅。唐吉訶德的旅客券以免稅結帳為前提；'
+      '百貨公司幾乎都有，藥妝與量販店比想像中少，而且多半要搭配免稅。唐吉訶德的旅客券以免稅結帳為前提；'
       '札幌藥妝 11/1 起給辦免稅的人當場折 1%，再疊 5% 或 7% 的免稅券；'
       'AEON 的訪日 5% 券延到 11/30，能不能和免稅一起用官網沒寫。'
       '寶可夢中心的生日贈品可以用護照當生日證明，但那是贈品不是折扣。'
@@ -5269,7 +5305,7 @@ if os.path.exists('shoppoints.json'):
       + f'<div class="today"><div class="tday">條件查證於 {SP["checked"]}</div>'
         f'<div class="tans">{html.escape(SP["headline"]["ans"])}</div>'
         f'<div class="tsub">{html.escape(SP["headline"]["sub"])}</div></div>'
-      + _cmp_block() + _pt_block()
+      + _cmp_block() + _pt_block() + _dept_block()
       + f'<h2>{html.escape(_G["title"])}</h2>'
       + f'<p class="lede">{html.escape(_G["body"])}</p>'
       + f'<blockquote class="q"><p>{html.escape(_G["quote"])}</p>'
