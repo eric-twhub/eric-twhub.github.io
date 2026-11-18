@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-taipei-ishigaki",
- "generated": "2026-11-19 06:42",
+ "generated": "2026-11-19 07:39",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -74,7 +74,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 10387,
+   "price": 10382,
    "dep": "2026-12-28",
    "ret": "2027-01-02",
    "dept": "18:20",
@@ -84,7 +84,7 @@
    "dur": 1445,
    "dur_to": 140,
    "gate": "Tickets",
-   "url": "https://www.aviasales.com/search/TPE2812ISG02011?t=IT17984820001798568100001375TPEOKAISG17988819001798882500000070ISGTPE_41ef477829b2b2d7cec93580d1ffc2a7_25959&search_date=18112026&expected_price_uuid=01a1f0b6-a907-8040-a0d0-4cadb98cdb28&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=qschJLgj6FecmC3hXq62Qg&expected_price_source=share&expected_price_currency=twd&expected_price=10387&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2812ISG02011?t=IT17984820001798568100001375TPEOKAISG17988819001798882500000070ISGTPE_41ef477829b2b2d7cec93580d1ffc2a7_25959&search_date=18112026&expected_price_uuid=01a1f0b6-a907-8040-a0d0-4cadb98cdb28&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=qschJLgj6FecmC3hXq62Qg&expected_price_source=share&expected_price_currency=twd&expected_price=10382&marker=775639"
   }
  ]
 }

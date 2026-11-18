@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-taipei-oita",
- "generated": "2026-11-19 06:42",
+ "generated": "2026-11-19 07:39",
  "kind": "fare",
  "origin": "taipei",
  "city": "oita",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 17956,
+ "med": 17950,
  "n_rt": 4,
  "others": [
   {
@@ -55,7 +55,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 28688,
+   "price": 28676,
    "dep": "2026-12-26",
    "ret": "2026-12-30",
    "dept": "13:30",
@@ -65,7 +65,7 @@
    "dur": 1440,
    "dur_to": 280,
    "gate": "Ubfly",
-   "url": "https://www.aviasales.com/search/TSA2612OIT30121?t=NH17982918001798318800000390TSAHNDOIT17986608001798720200001050OITHNDTSA_c6e3a4587a37d057b8f0196d3e844bc3_71694&search_date=18112026&expected_price_uuid=01a1ef61-809d-8031-226a-2209c1d00815&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=pYqLU-EdmVSeaGncanNcFA&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=28688&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA2612OIT30121?t=NH17982918001798318800000390TSAHNDOIT17986608001798720200001050OITHNDTSA_c6e3a4587a37d057b8f0196d3e844bc3_71694&search_date=18112026&expected_price_uuid=01a1ef61-809d-8031-226a-2209c1d00815&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=pYqLU-EdmVSeaGncanNcFA&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=28676&marker=775639"
   },
   {
    "o": "TPE",
@@ -73,7 +73,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 28884,
+   "price": 28872,
    "dep": "2026-11-21",
    "ret": "2026-11-28",
    "dept": "16:50",
@@ -83,7 +83,7 @@
    "dur": 1350,
    "dur_to": 275,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TSA2111OIT28111?t=NH17952798001795334700000855TSAHNDOIT17958549001795881000000495OITHNDTSA_4026b13d6a774e686404b53925b710ab_72150&search_date=18112026&expected_price_uuid=01a1ef0c-cdd5-8030-2c71-ce4468fd5d11&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=qH0EBLaxBOr_HenZIJzr_w&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=28884&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA2111OIT28111?t=NH17952798001795334700000855TSAHNDOIT17958549001795881000000495OITHNDTSA_4026b13d6a774e686404b53925b710ab_72150&search_date=18112026&expected_price_uuid=01a1ef0c-cdd5-8030-2c71-ce4468fd5d11&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=qH0EBLaxBOr_HenZIJzr_w&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=28872&marker=775639"
   }
  ]
 }
