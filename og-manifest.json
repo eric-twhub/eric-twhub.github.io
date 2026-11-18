@@ -386,14 +386,20 @@
   {
    "slug": "deals-2026-11-18-taipei-okinawa",
    "url": "/deals/2026-11-18-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/20 出發",
-   "title": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/20 出發"
+   "h1": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/21 出發",
+   "title": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/21 出發"
   },
   {
    "slug": "deals-2026-11-18-taipei-ishigaki",
    "url": "/deals/2026-11-18-taipei-ishigaki/",
    "h1": "台北飛石垣島 NT$3,405 來回含稅｜台灣虎航 12/09 出發",
    "title": "台北飛石垣島 NT$3,405 來回含稅｜台灣虎航 12/09 出發"
+  },
+  {
+   "slug": "deals-2026-11-18-taipei-fukuoka",
+   "url": "/deals/2026-11-18-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$3,844 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$3,844 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-18-taichung-okinawa",
@@ -408,16 +414,10 @@
    "title": "台北飛宮崎 NT$4,519 來回含稅｜台灣虎航 12/28 出發"
   },
   {
-   "slug": "deals-2026-11-18-taipei-fukuoka",
-   "url": "/deals/2026-11-18-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$4,928 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$4,928 來回含稅｜台灣虎航 12/01 出發"
-  },
-  {
    "slug": "deals-2026-11-18-taipei-saga",
    "url": "/deals/2026-11-18-taipei-saga/",
-   "h1": "台北飛佐賀 NT$5,501 來回含稅｜台灣虎航 12/03 出發",
-   "title": "台北飛佐賀 NT$5,501 來回含稅｜台灣虎航 12/03 出發"
+   "h1": "台北飛佐賀 NT$5,201 來回含稅｜台灣虎航 12/03 出發",
+   "title": "台北飛佐賀 NT$5,201 來回含稅｜台灣虎航 12/03 出發"
   },
   {
    "slug": "deals-2026-11-18-taipei-oita",
@@ -428,8 +428,8 @@
   {
    "slug": "deals-2026-11-18-kaohsiung-fukuoka",
    "url": "/deals/2026-11-18-kaohsiung-fukuoka/",
-   "h1": "高雄飛福岡 NT$6,086 來回含稅｜台灣虎航 12/29 出發",
-   "title": "高雄飛福岡 NT$6,086 來回含稅｜台灣虎航 12/29 出發"
+   "h1": "高雄飛福岡 NT$6,086 來回含稅｜台灣虎航 12/16 出發",
+   "title": "高雄飛福岡 NT$6,086 來回含稅｜台灣虎航 12/16 出發"
   },
   {
    "slug": "deals-2026-11-18-taipei-nagoya",
@@ -452,14 +452,14 @@
   {
    "slug": "deals-2026-11-18-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-18-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,570",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,570"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$4,654",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$4,654"
   },
   {
    "slug": "deals-2026-11-18-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-18-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,246",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,246"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$5,330",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$5,330"
   },
   {
    "slug": "deals-2026-11-18-transfer-tokyo-fukushima",
