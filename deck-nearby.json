@@ -1085,5 +1085,321 @@
     "src": "https://www.city.hiratsuka.kanagawa.jp/kanko/page-c_02820.html"
    }
   ]
+ },
+ "名古屋": {
+  "miraitower": [
+   {
+    "name": "Oasis 21",
+    "ja": "オアシス21",
+    "how": "走 3 分（屋頂的水之宇宙船整修到 2027/4/30）",
+    "src": "https://www.nagoya-info.jp/course/detail/1/"
+   },
+   {
+    "name": "Hisaya-odori Park 水邊廣場",
+    "ja": "ヒサヤオオドオリパーク ミズベヒロバ",
+    "how": "就在塔腳下",
+    "src": "https://www.nagoya-info.jp/feature/detail/132/"
+   },
+   {
+    "name": "Sunshine Sakae 摩天輪 Sky-Boat",
+    "ja": "サンシャインサカエ Sky-Boat",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/9/"
+   }
+  ],
+  "midland": [
+   {
+    "name": "JR Central Towers",
+    "ja": "JRセントラルタワーズ",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/224/"
+   },
+   {
+    "name": "KITTE 名古屋",
+    "ja": "KITTE名古屋",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/224/"
+   },
+   {
+    "name": "則武之森",
+    "ja": "ノリタケの森",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/224/"
+   }
+  ],
+  "higashiyama": [
+   {
+    "name": "東山動植物園",
+    "ja": "東山動植物園",
+    "how": "塔就在園內，從北園門走約 10 分、正門走約 15 分",
+    "src": "https://higashiyamaskytower.jp/access"
+   },
+   {
+    "name": "星が丘 Terrace",
+    "ja": "星が丘テラス",
+    "how": "走 13 分到塔",
+    "src": "https://www.nagoya-info.jp/course/detail/5/"
+   },
+   {
+    "name": "平和公園",
+    "ja": "平和公園",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/132/"
+   }
+  ],
+  "portbuilding": [
+   {
+    "name": "名古屋海洋博物館",
+    "ja": "名古屋海洋博物館",
+    "how": "同一棟大樓的 3、4 樓",
+    "src": "https://nagoyaaqua.jp/garden-pier/port-building/"
+   },
+   {
+    "name": "南極觀測船富士號",
+    "ja": "南極観測船ふじ",
+    "how": "同在花園碼頭",
+    "src": "https://nagoyaaqua.jp/garden-pier/"
+   },
+   {
+    "name": "名古屋港水族館",
+    "ja": "名古屋港水族館",
+    "how": "同在花園碼頭",
+    "src": "https://nagoyaaqua.jp/garden-pier/"
+   }
+  ],
+  "skyboat": [
+   {
+    "name": "Oasis 21",
+    "ja": "オアシス21",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/24/"
+   },
+   {
+    "name": "中部電力 MIRAI TOWER",
+    "ja": "中部電力 MIRAI TOWER",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/24/"
+   },
+   {
+    "name": "Nadya Park",
+    "ja": "ナディアパーク",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/24/"
+   }
+  ],
+  "oasis21": [
+   {
+    "name": "中部電力 MIRAI TOWER",
+    "ja": "中部電力 MIRAI TOWER",
+    "how": "走 3 分",
+    "src": "https://www.nagoya-info.jp/course/detail/1/"
+   },
+   {
+    "name": "愛知藝術文化中心",
+    "ja": "愛知芸術文化センター",
+    "how": "緊鄰 Oasis 21，走地下連絡通道或 2 樓連絡橋過去",
+    "src": "https://www.nagoya-info.jp/spot/detail/164/"
+   },
+   {
+    "name": "Sunshine Sakae 摩天輪 Sky-Boat",
+    "ja": "サンシャインサカエ Sky-Boat",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/23/"
+   }
+  ],
+  "jrskystreet": [
+   {
+    "name": "Midland Square Sky Promenade",
+    "ja": "ミッドランドスクエア スカイプロムナード",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/131/"
+   },
+   {
+    "name": "KITTE 名古屋",
+    "ja": "KITTE名古屋",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/131/"
+   },
+   {
+    "name": "則武之森",
+    "ja": "ノリタケの森",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/spot/detail/131/"
+   }
+  ],
+  "dnbskygarden": [
+   {
+    "name": "JR Central Towers",
+    "ja": "JRセントラルタワーズ",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/event/detail/387/"
+   },
+   {
+    "name": "KITTE 名古屋",
+    "ja": "KITTE名古屋",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/event/detail/387/"
+   },
+   {
+    "name": "四間道街景",
+    "ja": "四間道の町並み",
+    "how": "",
+    "src": "https://www.nagoya-info.jp/event/detail/387/"
+   }
+  ],
+  "centrair": [
+   {
+    "name": "Flight of Dreams",
+    "ja": "フライト・オブ・ドリームズ",
+    "how": "同在中部國際機場，中部國際空港站走 5 分、免費入場",
+    "src": "https://www.centrair.jp/flight-of-dreams/"
+   }
+  ],
+  "inuyama": [
+   {
+    "name": "犬山城下町",
+    "ja": "犬山城下町",
+    "how": "從犬山城走 5 分",
+    "src": "https://inuyama.gr.jp/modelcourse/detail/1/"
+   },
+   {
+    "name": "針綱神社",
+    "ja": "針綱神社",
+    "how": "走 4 分到犬山城",
+    "src": "https://inuyama.gr.jp/modelcourse/detail/5/"
+   },
+   {
+    "name": "犬山城遊覽船",
+    "ja": "犬山城遊覧船",
+    "how": "從犬山城走 5 分到乘船處；定期船只開 3 月中旬到 11 月中旬，桃太郎紅葉船只到 11 月下旬，冬天沒有定期船",
+    "src": "https://inuyama.gr.jp/modelcourse/detail/5/"
+   }
+  ],
+  "kinkazan": [
+   {
+    "name": "岐阜公園",
+    "ja": "岐阜公園",
+    "how": "纜車山麓站就在公園裡（公園免費）",
+    "src": "https://www.kankou-gifu.jp/spot/detail_916.html"
+   },
+   {
+    "name": "岐阜市歷史博物館",
+    "ja": "岐阜市歴史博物館",
+    "how": "同在岐阜公園裡，官網沒寫走幾分",
+    "src": "https://www.kankou-gifu.jp/spot/detail_916.html"
+   },
+   {
+    "name": "岐阜金華山松鼠村",
+    "ja": "ぎふ金華山リス村",
+    "how": "纜車山頂站前面（纜車停駛期間一起休）",
+    "src": "https://www.kinkazan.co.jp/"
+   }
+  ],
+  "twinarch": [
+   {
+    "name": "138タワーパーク 燈飾",
+    "ja": "138タワーパーク イルミネーション",
+    "how": "塔所在的公園，11/21～12/30、1/2～1/3 每天 17:00～21:00（看燈免費）",
+    "src": "https://www.kisosansenkoen.jp/~tower138/m138event_christmas.html"
+   }
+  ],
+  "komakiyama": [
+   {
+    "name": "れきしるこまき（小牧山城史跡情報館）",
+    "ja": "れきしるこまき",
+    "how": "小牧山南麓，和山頂歷史館同一張票",
+    "src": "https://komakiyama.com/rekishikan/"
+   },
+   {
+    "name": "小牧市創垂館",
+    "ja": "小牧市創垂館",
+    "how": "在小牧山的散步路線上（官網沒寫走幾分）",
+    "src": "https://komakiyama.com/route/"
+   }
+  ],
+  "kiyosu": [
+   {
+    "name": "清洲古城跡公園",
+    "ja": "清洲古城跡公園",
+    "how": "隔著五条川在清洲城對岸",
+    "src": "https://www.aichinow.pref.aichi.jp/spots/detail/28/"
+   },
+   {
+    "name": "清洲公園",
+    "ja": "清洲公園",
+    "how": "從清洲古城跡公園過高架就到，園內有信長與濃姬銅像",
+    "src": "https://www.aichinow.pref.aichi.jp/spots/detail/28/"
+   }
+  ],
+  "okazaki": [
+   {
+    "name": "三河武士のやかた家康館",
+    "ja": "三河武士のやかた家康館",
+    "how": "同在岡崎城公園裡；2027/1/12～3/19 空調工程休館",
+    "src": "https://okazaki-kanko.jp/okazaki-park"
+   },
+   {
+    "name": "龍城神社",
+    "ja": "龍城神社",
+    "how": "同在岡崎城公園裡，官網沒寫走幾分",
+    "src": "https://okazaki-kanko.jp/okazaki-park"
+   }
+  ],
+  "kariya": [
+   {
+    "name": "岩ケ池公園",
+    "ja": "岩ケ池公園",
+    "how": "同在刈谷ハイウェイオアシス裡；每月 15 日休（遇週末假日改隔天平日）",
+    "src": "https://kariya-oasis.com/"
+   },
+   {
+    "name": "天然溫泉かきつばた",
+    "ja": "天然温泉かきつばた",
+    "how": "同在刈谷ハイウェイオアシス裡；平日 1,050 円、週末假日 1,150 円，每月 15 日休",
+    "src": "https://kariya-oasis.com/"
+   }
+  ],
+  "umiterasu": [
+   {
+    "name": "霞港公園",
+    "ja": "霞港公園",
+    "how": "ポートビル正前方的草坪廣場",
+    "src": "https://www.yokkaichi-port.or.jp/parkguide.html"
+   },
+   {
+    "name": "シドニー港公園",
+    "ja": "シドニー港公園",
+    "how": "和霞港公園之間有天橋「シスパブリッジ」相連",
+    "src": "https://www.yokkaichi-port.or.jp/parkguide.html"
+   }
+  ],
+  "gozaisho": [
+   {
+    "name": "朝陽台廣場・展望露台 FURURU",
+    "ja": "朝陽台広場・展望テラスFURURU",
+    "how": "纜車山上公園站走約 1 分",
+    "src": "https://www.gozaisho.co.jp/news/fururu/"
+   },
+   {
+    "name": "富士見岩展望台",
+    "ja": "富士見岩展望台",
+    "how": "從見晴台再往東走約 3 分（見晴台在朝陽台廣場往東約 1 分）",
+    "src": "https://www.gozaisho.co.jp/highlight/summit/"
+   },
+   {
+    "name": "望湖台",
+    "ja": "望湖台",
+    "how": "御在所岳頂上往西約 2 分（頂上要搭觀光吊椅或走路）",
+    "src": "https://www.gozaisho.co.jp/highlight/summit/"
+   }
+  ],
+  "toyohashi": [
+   {
+    "name": "豐橋公園",
+    "ja": "豊橋公園",
+    "how": "市役所旁邊",
+    "src": "https://www.city.toyohashi.lg.jp/9100.htm"
+   }
+  ]
  }
 }
