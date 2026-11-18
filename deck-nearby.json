@@ -1,0 +1,192 @@
+{
+ "東京": {},
+ "關西": {
+  "gmhiei": [
+   {
+    "name": "比叡山延暦寺（東塔、西塔）",
+    "ja": "比叡山延暦寺",
+    "how": "園方官網寫走登山步道約 30～40 分（未鋪裝山路，下雨建議搭巴士）",
+    "src": "https://gmhiei.jp/faq/"
+   },
+   {
+    "name": "つつじヶ丘",
+    "ja": "つつじヶ丘",
+    "how": "叡山ロープウェイ比叡山頂站下車走約 15 分（同頁內文另寫約 20 分）",
+    "src": "https://www.hieizan.gr.jp/hieizan/tsutsujigaoka"
+   }
+  ],
+  "viewland": [
+   {
+    "name": "智恩寺（文殊堂）",
+    "ja": "智恩寺",
+    "how": "山門離 View Land 山麓站走約 5 分",
+    "src": "http://www.viewland.jp/model-course"
+   },
+   {
+    "name": "天橋立觀光船乘船處",
+    "ja": "天橋立観光船",
+    "how": "離山麓站走約 5 分；開到對岸府中一側約 12 分",
+    "src": "http://www.viewland.jp/model-course"
+   },
+   {
+    "name": "天橋立（松樹砂洲）",
+    "ja": "天橋立",
+    "how": "全長 3.6 公里，單程走約 50 分、騎腳踏車約 20 分；從迴旋橋進去",
+    "src": "http://www.viewland.jp/model-course"
+   },
+   {
+    "name": "傘松公園",
+    "ja": "傘松公園",
+    "how": "官網說是對岸的展望處（休業日請改去那邊）",
+    "src": "https://www.viewland.jp/%e3%80%90%e9%87%8d%e8%a6%81%e3%80%912026%e5%b9%b412%e6%9c%8815%e6%97%a5%e7%81%ab%ef%bd%9e12%e6%9c%8817%e6%97%a5%e6%9c%a8%e3%81%be%e3%81%a7%e5%b7%a5%e4%ba%8b%e3%81%ab%e4%bc%b4%e3%81%86%e6%96%bd-2/"
+   }
+  ],
+  "kasamatsu": [
+   {
+    "name": "元伊勢 籠神社",
+    "ja": "元伊勢籠神社",
+    "how": "一の宮棧橋走約 1 分",
+    "src": "https://www.tankai.jp/trip/model1/"
+   },
+   {
+    "name": "眞名井神社（籠神社奧宮）",
+    "ja": "眞名井神社",
+    "how": "官網模範路線：籠神社走 10 分到眞名井神社，再走 11 分到纜車府中站",
+    "src": "https://www.tankai.jp/trip/model1/"
+   },
+   {
+    "name": "成相寺",
+    "ja": "成相寺",
+    "how": "傘松站搭登山巴士約 7 分；走路約 30～40 分（上坡約 2 公里）",
+    "src": "https://www.tankai.jp/trip/faq"
+   }
+  ],
+  "goro": [
+   {
+    "name": "共樂公園",
+    "ja": "共楽公園",
+    "how": "從園內松の広場（離頂上廣場 500 公尺）走登山步道下山可到",
+    "src": "https://goro-sky.jp/"
+   }
+  ],
+  "monkeypark": [
+   {
+    "name": "渡月橋",
+    "ja": "渡月橋",
+    "how": "入口在渡月橋南側、沿河往上游約 20 公尺",
+    "src": "http://www.monkeypark.jp/"
+   },
+   {
+    "name": "檪谷宗像神社",
+    "ja": "櫟谷宗像神社",
+    "how": "園的入口就在神社境內",
+    "src": "http://www.monkeypark.jp/"
+   }
+  ],
+  "kameyama": [
+   {
+    "name": "渡月橋",
+    "ja": "渡月橋",
+    "how": "",
+    "src": "https://www.pref.kyoto.jp/koen-annai/ara.html"
+   },
+   {
+    "name": "天龍寺",
+    "ja": "天龍寺",
+    "how": "",
+    "src": "https://www.pref.kyoto.jp/koen-annai/ara.html"
+   }
+  ],
+  "daikichi": [
+   {
+    "name": "宇治上神社",
+    "ja": "宇治上神社",
+    "how": "直線距離 0.2 公里",
+    "src": "https://www.kyoto-kankou.or.jp/event/1335"
+   },
+   {
+    "name": "宇治市源氏物語博物館",
+    "ja": "宇治市源氏物語ミュージアム",
+    "how": "直線距離 0.2 公里；登山口在博物館南側入口沿さわらびの道往南一點",
+    "src": "https://www.kyoto-kankou.or.jp/event/1335"
+   },
+   {
+    "name": "宇治神社",
+    "ja": "宇治神社",
+    "how": "直線距離 0.3 公里",
+    "src": "https://www.kyoto-kankou.or.jp/event/1335"
+   },
+   {
+    "name": "興聖寺",
+    "ja": "興聖寺",
+    "how": "宇治市散步路線 A：大吉山展望台→興聖寺（沒寫分鐘）",
+    "src": "https://www.city.uji.kyoto.jp/uploaded/attachment/45442.pdf"
+   }
+  ],
+  "tennozan": [
+   {
+    "name": "寶積寺",
+    "ja": "宝積寺",
+    "how": "寶積寺到旗立松展望台約 15 分",
+    "src": "https://www.town.oyamazaki.kyoto.jp/annai/kikakuzaisei/kannkou/kanko/machinokankosupotto/tenkawakemenotennozan/965.html"
+   },
+   {
+    "name": "十七烈士之墓",
+    "ja": "十七烈士の墓",
+    "how": "旗立松展望台往上約 5 分",
+    "src": "https://www.town.oyamazaki.kyoto.jp/annai/kikakuzaisei/kannkou/kanko/machinokankosupotto/tenkawakemenotennozan/965.html"
+   },
+   {
+    "name": "酒解神社",
+    "ja": "酒解神社",
+    "how": "十七烈士之墓再約 5 分",
+    "src": "https://www.town.oyamazaki.kyoto.jp/annai/kikakuzaisei/kannkou/kanko/machinokankosupotto/tenkawakemenotennozan/965.html"
+   },
+   {
+    "name": "天王山山頂（山崎城跡）",
+    "ja": "天王山 山崎城跡",
+    "how": "酒解神社再約 15 分",
+    "src": "https://www.town.oyamazaki.kyoto.jp/annai/kikakuzaisei/kannkou/kanko/machinokankosupotto/tenkawakemenotennozan/965.html"
+   }
+  ],
+  "kannabi": [
+   {
+    "name": "WOOD DESIGN PARK 京都－彩－",
+    "ja": "WOOD DESIGN PARK京都－彩－",
+    "how": "直線距離 1.5 公里",
+    "src": "https://www.kyoto-kankou.or.jp/info_search/406"
+   },
+   {
+    "name": "酬恩庵一休寺",
+    "ja": "酬恩庵一休寺",
+    "how": "直線距離 1.7 公里",
+    "src": "https://www.kyoto-kankou.or.jp/info_search/406"
+   }
+  ],
+  "shogunzuka": [
+   {
+    "name": "青蓮院門跡",
+    "ja": "青蓮院門跡",
+    "how": "從青蓮院走東山步道約 30 分（山路）；計程車約 10 分",
+    "src": "https://www.shogunzuka.com/"
+   }
+  ],
+  "kyotostation": [
+   {
+    "name": "京都塔",
+    "ja": "ニデック京都タワー",
+    "how": "官網寫 4 樓烏丸小路廣場是看京都塔的好位置之一",
+    "src": "https://www.kyoto-station-building.co.jp/service/square/"
+   },
+   {
+    "name": "美術館「えき」KYOTO",
+    "ja": "美術館「えき」KYOTO",
+    "how": "在京都車站大樓裡，JR 京都伊勢丹 7 樓旁",
+    "src": "https://www.kyoto-kankou.or.jp/info_search/4152"
+   }
+  ]
+ },
+ "九州": {},
+ "北海道": {},
+ "首都圈": {}
+}
