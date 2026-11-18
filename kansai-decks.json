@@ -1,0 +1,265 @@
+{
+  "_說明": "關西觀景台懶人包 /kansai/observation-decks/ 的資料。阿倍野 HARUKAS 300 的時間與票價直接讀 harukas.json，大阪周遊卡能不能免費進讀 osakapass.json，不另外抄。逐日的時間（定休日、季節時刻、特別營業日、停駛期間）在 gen.py 依各筆的欄位算，官網沒公布的日子寫「官網還沒公布」。時間、票價、交通都引各營運方官網原文；車站與步行分鐘只寫官網明文寫的，沒寫就註明。",
+  "_回查": [
+    "六甲枝垂れ：11/30 以後的冬季營業時間官網還沒公布（2026-11-18），公布後補 hours_table",
+    "通天閣：特別營業日（special）每月看一次營業案內頁",
+    "京都塔：2027/1/14 電氣檢修，官網只寫飯店停業，展望室開不開要回查",
+    "梅田空中庭園：元旦初日出場次公布後補",
+    "布引香草園：2027 年 3 月以後的營業時間表（官網目前公布到 2027 年 3 月）",
+    "若草山：開山期間照規則算（3 月第 3 個週六到 12 月第 2 個週日），官網若公布實際日期要對照",
+    "神戶市役所 24 樓：官網在做 24 樓用途的市場調查，可能改用途；設備點檢日另外公告",
+    "京都車站大樓：大空廣場 11/27 起封閉到 2031 年冬季前後；空中徑路、東廣場有沒有一起受影響要回查",
+    "HEP FIVE 摩天輪、天保山大摩天輪：官網連不上（2026-11-18），恢復後查時間與票價",
+    "六甲山天覽台：官網兩頁時間不一致，藝術祭 11/29 結束後是否免費官網沒寫明"
+  ],
+  "_分潤": "KKday 全部不在 1% 清單（2026-11-18 對過 kkday-1pct.json），Klook、KKday 照原順序放",
+  "checked": "2026-11-18",
+  "paid": [
+    {
+      "key": "umeda", "name": "梅田藍天大廈 空中庭園展望台", "short": "梅田空中庭園", "area": "梅田", "city": "大阪", "ill": "umeda",
+      "near": "JR 大阪站走 7 分",
+      "station": "JR 大阪站（3 樓連絡橋口）走 7 分；阪急大阪梅田站（茶屋町口）、地鐵梅田站（御堂筋線北改札）走 9 分",
+      "hours": "9:30～22:30", "last": "22:00", "ye_caveat": true,
+      "special": {"2027-04-18": "9:30～18:00（設施點檢）"},
+      "price_adult": 2000, "price_detail": "大人 2,000 円、4 歲到小學生 500 円，未滿 4 歲免費；網路價官網頁面沒寫",
+      "book": "官網有網路票，也可以現場買",
+      "desc": "兩棟大樓頂上用一圈露天迴廊連起來，可以走一圈看大阪夜景。開到 22:30，是大阪市區關得晚的一個。",
+      "floor": "39、40 樓與最上面的屋頂樓層",
+      "pass": "umeda",
+      "src": "https://www.skybldg.co.jp/observatory/information/", "map": "梅田スカイビル 空中庭園展望台",
+      "klook": {"url": "https://www.klook.com/zh-TW/activity/35861-umeda-sky-building-kuchu-teien-observatory-ticket/"},
+      "kkday": {"url": "https://www.kkday.com/zh-tw/product/22352"}
+    },
+    {
+      "key": "harukas", "name": "阿倍野 HARUKAS 300 展望台", "short": "HARUKAS 300", "area": "天王寺", "city": "大阪", "ill": "../osaka-abeno-harukas/corridor",
+      "near": "天王寺站、大阪阿部野橋站走得到（官網沒寫分鐘）",
+      "pass": "harukas"
+    },
+    {
+      "key": "tsutenkaku", "name": "通天閣", "short": "通天閣", "area": "新世界", "city": "大阪", "ill": "tsutenkaku",
+      "near": "惠美須町站 3 號出口走 3 分",
+      "station": "地鐵堺筋線惠美須町站 3 號出口走 3 分；御堂筋線動物園前站 1 號出口、JR 新今宮站通天閣口走 6 分",
+      "hours": "9:00～21:45", "last": "21:15",
+      "special": {"2026-12-25": "9:30～21:45", "2026-12-31": "9:00～19:00", "2027-01-01": "10:00～20:00", "2027-02-01": "9:30～21:45"},
+      "price_adult": 1500, "price_peak": {"from": "12-30", "to": "01-03", "adult": 1800},
+      "price_detail": "一般展望台大人（15 歲以上）1,500 円、5～14 歲 800 円；12/30～1/3 是 1,800 円／900 円。溜滑梯 TOWER SLIDER 大人 1,100 円另計",
+      "book": "買票時要指定入場時段，現場窗口也一樣",
+      "desc": "新世界的地標，4、5 樓是一般展望台，再往上還有特別屋外展望台。另外有溜滑梯 TOWER SLIDER，官網寫從 3 樓（地上 22 公尺）繞著塔滑到地下 1 樓，約 10 秒。",
+      "floor": "4 樓光之展望台、5 樓黃金展望台，加上特別屋外展望台",
+      "pass": "tsutenkaku",
+      "src": "https://www.tsutenkaku.co.jp/annai/", "map": "通天閣",
+      "klook": {"url": "https://www.klook.com/zh-TW/activity/76766-osaka-tsutenkaku-admission-ticket/"},
+      "kkday": {"url": "https://www.kkday.com/zh-tw/product/174504"}
+    },
+    {
+      "key": "castle", "name": "大阪城天守閣", "short": "大阪城天守閣", "area": "大阪城公園", "city": "大阪", "ill": "castle",
+      "near": "谷町四丁目站 1-B、9 號出口（官網沒寫走幾分）",
+      "station": "地鐵谷町四丁目站 1-B、9 號出口，天滿橋站 3 號出口，森之宮站 1、3-B 號出口，JR 大阪城公園站；官網只寫出口，沒寫要走幾分",
+      "hours": "9:00～18:00", "last": "17:30", "closed_md": [["12-28", "01-01"]],
+      "price_adult": 1200, "price_detail": "大人 1,200 円；大學生、高中生 600 円，國中以下免費（都要出示證件）",
+      "book": "個人不用預約，官網也有預約網站可以先買票",
+      "desc": "天守閣 8 樓是展望台，官網寫從地上 50 公尺看大阪城和整個大阪市區。5 樓到 8 樓要走樓梯。",
+      "floor": "8 樓展望台（地上 50 公尺）",
+      "pass": "castle",
+      "src": "https://www.osakacastle.net/guide/", "map": "大阪城天守閣",
+      "klook": {"url": "https://www.klook.com/zh-TW/activity/30110-osaka-castle-ticket/"},
+      "kkday": {"url": "https://www.kkday.com/zh-tw/product/155057"}
+    },
+    {
+      "key": "cosmo", "name": "咲洲宇宙塔展望台（大阪府咲洲廳舍）", "short": "咲洲宇宙塔", "area": "南港", "city": "大阪", "ill": "cosmo",
+      "near": "Trade Center 前站走 3 分",
+      "station": "南港 Port Town 線 Trade Center 前站走 3 分、中埠頭站走 5 分、Cosmo Square 站走 7 分（官網沒寫出口）",
+      "hours": "11:00～22:00", "last": "21:30", "closed_rule": "mon", "ye_caveat": true,
+      "price_adult": 1200, "price_detail": "大人 1,200 円、國中小學生 600 円、70 歲以上 1,000 円",
+      "book": "現場買就可以",
+      "desc": "大阪灣邊的高樓，官網寫是地上 252 公尺、360 度沒有遮擋的展望台，搭透明電梯從 1 樓上到 52 樓。",
+      "floor": "地上 252 公尺",
+      "src": "https://sakishima-observatory.com/information/", "map": "さきしまコスモタワー展望台",
+      "klook": {"url": "https://www.klook.com/zh-TW/activity/154277-osaka-sakishima-cosmo-tower-observatory-advance-ticket/"},
+      "kkday": {"url": "https://www.kkday.com/zh-tw/product/153786"}
+    },
+    {
+      "key": "kyototower", "name": "京都塔展望室", "short": "京都塔", "area": "京都站前", "city": "京都", "ill": "kyototower",
+      "near": "JR 京都站中央口走 2 分",
+      "station": "JR 京都站中央口走 2 分，地下街 Porta 直通",
+      "hours": "10:00～21:00", "last": "20:30",
+      "special": {"2027-01-14": "10:00～21:00（這天大樓電氣檢修，官網只寫飯店停業，展望室沒寫）"},
+      "price_adult": 1000, "price_detail": "大人 1,000 円、高中生 800 円、國中小學生 700 円、3 歲以上幼兒 300 円",
+      "book": "個人不用預約",
+      "desc": "就在京都車站正對面，官網寫是京都市區最高的展望室。全年無休，元旦另有清晨的抽籤場次（要另外報名、另外付費）。",
+      "floor": "地上 100 公尺展望室",
+      "src": "https://www.kyoto-tower.jp/fee/", "map": "京都タワー",
+      "klook": {"url": "https://www.klook.com/zh-TW/activity/1464-kyoto-tower-admission-ticket-kyoto/"},
+      "kkday": {"url": "https://www.kkday.com/zh-tw/product/21147"}
+    },
+    {
+      "key": "shogunzuka", "name": "將軍塚青龍殿 大舞台", "short": "將軍塚青龍殿", "area": "東山", "city": "京都", "ill": "shogunzuka",
+      "near": "蹴上站搭計程車 5 分（官網沒寫步行路線）",
+      "station": "地鐵東西線蹴上站搭計程車 5 分、京都站搭計程車 20 分；從青蓮院走東山步道上山約 30 分（山路）",
+      "hours": "9:00～17:00", "last": "16:30",
+      "price_adult": 600, "price_detail": "大人 600 円、高中生與國中生 400 円、小學生 200 円（家長陪同的小學生免費）",
+      "book": "現場參拜，不用預約；夜間點燈期間官網要人詢問",
+      "desc": "山上寺院的木造大平台，官網寫面積是清水寺舞台的 4.6 倍，從西邊展望台可以看京都市區，遠到大阪的大樓。",
+      "floor": "山上的大舞台（戶外）",
+      "src": "https://www.shogunzuka.com/access.html", "map": "将軍塚青龍殿"
+    },
+    {
+      "key": "porttower", "name": "神戶港塔", "short": "神戶港塔", "area": "美利堅公園", "city": "神戶", "ill": "porttower",
+      "near": "Minato 元町站 2 號出口走 5 分",
+      "station": "地鐵海岸線 Minato 元町站 2 號出口走 5 分；JR、阪神元町站西口走 15 分",
+      "hours": "9:00～23:00", "last": "22:30", "ye_caveat": true,
+      "price_adult": 1000, "price_detail": "展望樓層大人 1,000 円，加屋頂甲板 1,200 円；小孩 400 円／500 円。網路和窗口同價",
+      "book": "一定要買指定日期時段的票，時段賣完當天就沒票",
+      "desc": "紅色沙漏形的港塔，2024 年整修後多了露天的屋頂甲板，可以看港口和神戶市區。",
+      "floor": "展望樓層＋屋頂甲板",
+      "src": "https://www.kobe-port-tower.com/", "map": "神戸ポートタワー",
+      "klook": {"url": "https://www.klook.com/zh-TW/activity/30730-kobe-port-tower-ticket/"},
+      "kkday": {"url": "https://www.kkday.com/zh-tw/product/183751"}
+    },
+    {
+      "key": "rokko", "name": "六甲枝垂れ（六甲山頂展望台）", "short": "六甲枝垂れ", "area": "六甲山", "city": "神戶", "ill": "rokko",
+      "near": "六甲山上巴士「六甲 Garden Terrace」站下車",
+      "station": "六甲纜車到山頂站約 10 分，再搭山上巴士約 13 分到「六甲 Garden Terrace」下車",
+      "hours_table": [["2026-03-20", "2026-11-29", "10:00～21:00"]],
+      "last": "關門前 30 分鐘",
+      "price_adult": 1000, "price_detail": "大人（國中以上）1,000 円、4 歲到小學生 500 円；六甲纜車另計，單程 800 円、來回 1,550 円",
+      "book": "現場買",
+      "desc": "六甲 Garden Terrace 裡的展望台。上山要搭纜車再轉山上巴士，11/30 以後冬天的營業時間官網還沒公布。",
+            "src": "https://www.rokkosan.com/gt/shidare/", "map": "六甲枝垂れ"
+    },
+    {
+      "key": "nunobiki", "name": "神戶布引香草園／纜車", "short": "布引香草園", "area": "新神戶", "city": "神戶", "ill": "nunobiki",
+      "near": "新神戶站走約 5 分到纜車站",
+      "station": "新神戶站走約 5 分到纜車山麓站（官網沒寫出口）",
+      "rope_table": [
+        ["2026-11-07", "2026-12-10", "wk", "9:30～17:15（上山末班 16:45）", "9:30～21:00（上山末班 20:15）"],
+        ["2026-12-11", "2026-12-28", "all", "9:30～21:00（上山末班 20:15）"],
+        ["2026-12-29", "2027-03-12", "all", "9:30～17:15（上山末班 16:45）"]
+      ],
+      "stop": [["2027-01-23", "2027-02-19"]],
+      "price_xmas": {"from": "2026-11-07", "to": "2026-12-28", "adult": 3300},
+      "price_adult": 2500,
+      "price_detail": "纜車來回加香草園大人 2,500 円、國中小學生 1,250 円；聖誕季（2026/11/7～12/28）大人 3,300 円、小孩 1,650 円",
+      "book": "現場買",
+      "desc": "從新神戶搭纜車上山，山頂是香草園和展望區，可以看神戶市區和港口。聖誕季週五到週日、12/11 起每天開到晚上。",
+      "floor": "山頂站展望區",
+      "src": "https://www.kobeherb.com/infomation/hours_fare/", "map": "神戸布引ハーブ園 ロープウェイ山麓駅"
+    },
+    {
+      "key": "umie", "name": "umie 馬賽克大摩天輪", "short": "馬賽克大摩天輪", "area": "神戶港", "city": "神戶", "ill": "umie",
+      "near": "JR 神戶站中央口走約 5 分（umie 商場）",
+      "station": "JR 神戶站中央口走約 5 分、地鐵 Harborland 站走約 5 分（官網寫的是到 umie 商場）",
+      "hours": "10:00～22:00",
+      "price_adult": 800, "price_detail": "一般車廂 800 円，3 歲以上要買票；最後搭乘時間官網沒寫",
+      "book": "現場買",
+      "desc": "神戶港邊的摩天輪，官網寫可以看神戶街景、六甲山和神戶大橋。",
+      "floor": "摩天輪",
+      "src": "https://umie.jp/features/mosaickanransya", "map": "umie モザイク大観覧車"
+    },
+    {
+      "key": "wakakusa", "name": "若草山", "short": "若草山", "area": "奈良公園", "city": "奈良", "ill": "wakakusa",
+      "near": "近鐵奈良站走約 30 分",
+      "station": "近鐵奈良站走約 30 分到山腳；從山腳門口爬到山頂約 30～40 分",
+      "hours": "9:00～17:00", "season": "3 月第 3 個週六到 12 月第 2 個週日",
+      "price_adult": 150, "price_detail": "入山費大人（國中以上）150 円、3 歲以上小孩 80 円",
+      "book": "現場付",
+      "desc": "奈良公園東邊一整片草坡的小山，官網寫山頂可以看整個奈良盆地。冬天封山，1 月第 4 個週六是燒山。",
+      "floor": "山頂（戶外步行）",
+      "src": "https://www.pref.nara.lg.jp/site/park/2585.html", "map": "若草山"
+    }
+  ],
+  "free": [
+    {
+      "key": "osakastation", "name": "大阪站 時空廣場與天空農園", "short": "大阪站 時空廣場", "area": "梅田", "city": "大阪", "ill": "osakastation",
+      "near": "JR 大阪站直通",
+      "station": "JR 大阪站直通；天空農園在北門大樓 14 樓，要從 11 樓走樓梯上去",
+      "hours": "時空廣場（5 樓）8:00～23:30；天空農園（14 樓）7:00～18:00",
+      "hours_short": "5F 8:00～23:30；14F 7:00～18:00",
+      "cond": "官網沒寫收費，也沒寫免費；是車站大樓的開放廣場",
+      "desc": "5 樓的時空廣場在月台正上方，官網寫可以看列車進出和整個車站大屋頂。14 樓還有天空農園。",
+      "src": "https://osakastationcity.com/green/toki/", "map": "大阪ステーションシティ 時空の広場"
+    },
+    {
+      "key": "nambaparks", "name": "難波公園 PARKS GARDEN", "short": "難波公園屋頂花園", "area": "難波", "city": "大阪", "ill": "nambaparks",
+      "near": "南海難波站直通",
+      "station": "南海難波站中央口、南口直通；地鐵御堂筋線難波站走 3 分",
+      "hours": "10:00～24:00", "hours_short": "10:00～24:00",
+      "cond": "免費（官網寫入場無料，休館日跟著難波公園）",
+      "desc": "難波公園商場一層層往上的屋頂花園，官網寫入場免費，開到半夜 12 點。",
+      "src": "https://nambaparks.com/garden", "map": "なんばパークス パークスガーデン"
+    },
+    {
+      "key": "kyotostation", "name": "京都車站大樓 大階梯與空中徑路", "short": "京都車站大樓", "area": "京都站", "city": "京都", "ill": "kyotostation",
+      "near": "JR 京都站就在大樓裡",
+      "station": "JR 京都站中央口所在的車站大樓",
+      "close_from": "2026-11-27",
+      "hours": "大階梯 6:00～23:00；10 樓空中徑路 10:00～22:00；7 樓東廣場 10:00～23:00",
+      "cond": "官網沒寫收費，也沒寫免費；是車站大樓的公共空間",
+      "desc": "171 階的大階梯往上爬到頂。最高處的大空廣場（59.8 公尺）從 2026/11/27 起封閉到 2031 年冬季前後；10 樓的空中徑路可以看京都北邊街景，4 樓烏丸小路廣場是官網說看京都塔的好位置。",
+      "src": "https://www.kyoto-station-building.co.jp/service/square/", "map": "京都駅ビル 大階段"
+    },
+    {
+      "key": "kobecity", "name": "神戶市役所 1 號館 24 樓展望大廳", "short": "神戶市役所 24F", "area": "三宮", "city": "神戶", "ill": "kobecity",
+      "near": "三宮・花時計前站走約 3 分",
+      "station": "地鐵海岸線三宮・花時計前站往南走約 3 分；JR 三之宮站、阪急與阪神神戶三宮站往南走約 6 分",
+      "hours": "平日 9:00～22:00，週末假日 10:00～22:00",
+      "closed_md": [["12-29", "01-03"]], "closed_dates": ["2026-12-20"],
+      "cond": "市政府對市民開放的樓層，官網沒寫「免費」兩個字",
+      "closed": "12/29～1/3 與設備點檢日休；2026/12/20 全館停電不開放",
+      "desc": "神戶市政府大樓 24 樓開放給一般人的展望大廳，晚上開到 22:00。",
+      "src": "https://www.city.kobe.lg.jp/a28956/shise/about/building/index.html", "map": "神戸市役所 1号館"
+    },
+    {
+      "key": "sakai", "name": "堺市役所 21 樓展望大廳", "short": "堺市役所 21F", "area": "堺", "city": "大阪", "ill": "sakai",
+      "near": "南海堺東站約 260 公尺（官網沒寫分鐘）",
+      "station": "南海高野線堺東站約 260 公尺",
+      "hours": "9:00～21:00", "hours_short": "9:00～21:00",
+      "cond": "免費（官網寫費用無料）",
+      "closed": "沒有休館日，市役所全館停電日除外",
+      "desc": "地上 80 公尺、360 度的展望大廳，官網寫看得到仁德天皇陵古墳，遠到六甲山、HARUKAS 和生駒山、金剛山。",
+      "src": "https://www.city.sakai.lg.jp/kanko/rekishi/sei/kohun_otozureru/spot.html", "map": "堺市役所 21階展望ロビー"
+    },
+    {
+      "key": "maya", "name": "摩耶山 掬星台", "short": "摩耶山 掬星台", "area": "摩耶山", "city": "神戶", "ill": "maya",
+      "near": "三宮搭市巴士 18 號約 10 分，再轉纜車",
+      "station": "三宮搭神戶市巴士 18 號約 10 分到「摩耶ケーブル下」，摩耶纜車約 5 分＋空中纜車約 5 分到星の駅",
+      "cond": "官網沒寫掬星台要不要錢；上山的纜車要買票，來回大人 1,560 円",
+      "cable": {"weekday": "10:00～17:30（往山頂最後一班 17:20）", "weekend": "10:00～19:50（往山頂最後一班 19:40）",
+                "special": {"2026-12-29": "10:00～19:50（年末夜間加開）", "2026-12-30": "10:00～19:50（年末夜間加開）",
+                            "2027-01-01": "6:00～17:30（元旦看日出）", "2027-01-02": "10:00～19:50（年初夜間加開）", "2027-01-03": "10:00～19:50（年初夜間加開）"},
+                "stop": [["2027-01-12", "2027-03-19"]], "known_until": "2027-03-19"},
+      "hours": "跟著纜車：週一、三、四到 17:30，週五到週日與假日到 19:50（冬季時刻，到 3/19）",
+      "closed": "週二纜車公休（週二是假日就隔天休）；2027/1/12～3/19 纜車全線停駛檢修",
+      "desc": "標高約 700 公尺的山頂廣場，官網寫可以從神戶看到遠方的紀伊半島。看夜景要注意纜車末班，官網提醒錯過末班只能叫計程車或走山路下山，晚上很危險。",
+      "src": "https://koberope.jp/maya/price", "map": "摩耶山 掬星台"
+    },
+    {
+      "key": "venus", "name": "維納斯橋（Venus Bridge）", "short": "維納斯橋", "area": "諏訪山", "city": "神戶", "ill": "venus",
+      "near": "縣廳前站走約 30 分",
+      "station": "地鐵西神山手線縣廳前站走約 30 分；或三宮搭市巴士 7 號到「諏訪山公園下」再走約 20 分",
+      "hours": "全天可以去", "hours_short": "全天",
+      "cond": "免費（神戶觀光局寫入場無料）",
+      "desc": "諏訪山上的步道橋，神戶觀光局列為看夜景的地方，全天都能去。",
+      "src": "https://www.feel-kobe.jp/facilities/0000000091/", "map": "ビーナスブリッジ"
+    },
+    {
+      "key": "tenrandai", "name": "六甲山 天覽台", "short": "六甲山 天覽台", "area": "六甲山", "city": "神戶", "ill": "tenrandai",
+      "near": "六甲纜車山上站下車就到",
+      "station": "六甲纜車山上站下車就到（纜車單程 800 円、來回 1,550 円）",
+      "paid_until": "2026-11-29",
+      "hours": "官網兩頁寫法不同（展望台頁 10:00～20:45，營運總表 7:10～21:00）",
+      "cond": "藝術祭期間（到 11/29）大人 500 円、小孩 200 円；之後要不要錢官網沒寫明",
+      "desc": "六甲纜車山頂站旁的展望台，標高 737 公尺，官網寫可以看大阪平原到和歌山方向。",
+      "src": "https://www.rokkosan.com/tenrandai/", "map": "六甲山 天覧台"
+    }
+  ],
+  "free_intro": "下面這些不用買門票（或官網沒寫要收費），只是有的要搭纜車上山。官網沒寫「免費」兩個字的，我在每一處都照實寫出來。",
+  "unverified": [
+    "HEP FIVE 摩天輪（梅田）、天保山大摩天輪：官網目前連不上，時間和票價查不到。天保山大摩天輪是大阪周遊卡可以免費搭的設施之一。",
+    "Grand Front Osaka 屋頂庭園：官網只寫有超過 10,000 平方公尺的屋頂庭園，沒寫開放時間和要不要錢。",
+    "阿倍野 HARUKAS 16 樓庭園：官網樓層頁只有圖片，時間與是否免費讀不到。",
+    "梅田雙子塔北館 15 樓 Sky Lobby、OSAKA WHEEL（萬博紀念公園）、臨空門塔大樓展望台、神戶機場展望台：官網查不到時間或連不上。",
+    "大阪市役所、大阪府廳：官網沒有對外開放的展望樓層。",
+    "若草山的開山日是照官網規則算的（3 月第 3 個週六到 12 月第 2 個週日），官網沒有寫出今年的確切日期。"
+  ]
+}
