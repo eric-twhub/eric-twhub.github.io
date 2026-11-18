@@ -1802,6 +1802,7 @@ def topnav(cur=''):
             + link('/tokyo/christmas-market/', '🎄 東京聖誕市集門票與日期')
             + link('/tokyo/observation-decks/', '🌃 東京觀景台開放時間與門票')
             + link('/kansai/observation-decks/', '🌆 關西觀景台開放時間與門票')
+            + link('/kyushu/observation-decks/', '🗼 九州觀景台開放時間與門票')
             + link('/hakodate/christmas-fantasy/', '🎄 函館聖誕夢幻節')
             + link('/hakodate/ropeway/', '🚡 函館山纜車營業時間與夜景')
             + link('/yonago/conan-museum/', '🕵️ 青山剛昌故鄉館要先買票')
@@ -1997,6 +1998,7 @@ _AD_MAP = [
     ('tokyo/christmas-market', 'esim'),
     ('tokyo/observation-decks', 'activity2'),
     ('kansai/observation-decks', 'activity2'),
+    ('kyushu/observation-decks', 'activity2'),
     ('hakodate/christmas-fantasy', 'esim'),
     ('hakodate/ropeway', 'esim'),
     ('yonago/conan-museum', 'esim'),
@@ -3038,6 +3040,7 @@ _STK_PREFIX = sorted({
     '/tokyo/christmas-market/': '',
     '/tokyo/observation-decks/': '',
     '/kansai/observation-decks/': '',
+    '/kyushu/observation-decks/': '',
     '/hakodate/christmas-fantasy/': 'st/seatree',
     '/hakodate/ropeway/': 'st/ropeway',
     '/yonago/conan-museum/': 'st/conan',
@@ -3597,6 +3600,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要去名花之里看燈海？'
                      f'<a href="{U("/nagoya/nabana-no-sato/")}">門票怎麼買、聖誕節要日期指定券、從名古屋怎麼去</a>'
                      f'（官網原文整理：超商預購比現場便宜、直達巴士末班比閉園早、一日遊不一定含門票）。</p>')
+        if slug in ('fukuoka', 'kitakyushu', 'nagasaki', 'saga', 'kumamoto', 'oita', 'kagoshima') and os.path.exists('kyushu-decks.json'):
+            body += (f'<p class="lede">想找地方看夜景？'
+                     f'<a href="{U("/kyushu/observation-decks/")}">九州觀景台懶人包</a>'
+                     f'（福岡塔、皿倉山、稻佐山、熊本城、別府 Global Tower 等的開放時間與票價，可以選日期看，還有縣廳、市役所不用門票的展望樓層）。</p>')
         if slug in ('osaka', 'kobe') and os.path.exists('kansai-decks.json'):
             body += (f'<p class="lede">想找地方看夜景？'
                      f'<a href="{U("/kansai/observation-decks/")}">關西觀景台懶人包</a>'
@@ -28465,7 +28472,8 @@ if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in global
       + f'<a class="ct" href="{U("/japan-shibuya-sky/")}"><b>🌇 SHIBUYA SKY 門票</b><s>日落幾點、買哪個時段</s></a>'
       + f'<a class="ct" href="{U("/japan-tokyo-tower/")}"><b>🗼 東京鐵塔門票</b><s>今天點什麼燈</s></a>'
       + f'<a class="ct" href="{U("/tokyo/subway-ticket/")}"><b>🚇 東京地鐵三日券</b><s>六本木、押上、澀谷都在線上</s></a>'
-      + (f'<a class="ct" href="{U("/kansai/observation-decks/")}"><b>🌆 關西觀景台懶人包</b><s>梅田、通天閣、京都塔、神戶港塔</s></a>' if os.path.exists('kansai-decks.json') else '') + '</div>'
+      + (f'<a class="ct" href="{U("/kansai/observation-decks/")}"><b>🌆 關西觀景台懶人包</b><s>梅田、通天閣、京都塔、神戶港塔</s></a>' if os.path.exists('kansai-decks.json') else '')
+      + (f'<a class="ct" href="{U("/kyushu/observation-decks/")}"><b>🗼 九州觀景台懶人包</b><s>福岡塔、皿倉山、稻佐山、熊本城</s></a>' if os.path.exists('kyushu-decks.json') else '') + '</div>'
       + f'<p class="disc">時間與票價以各觀景台官網為準，整理可能有疏漏。查證於 {TD["checked"]}，之後官方若有更改，本頁不一定跟上。'
         '本頁為公開資訊整理，與文中觀景台無合作關係。</p>'
       + '</article>' + _td_js
@@ -28845,12 +28853,295 @@ if os.path.exists('kansai-decks.json') and os.path.exists('harukas.json') and os
       + '<h2>延伸閱讀</h2><div class="cities">'
       + f'<a class="ct" href="{U("/osaka/amazing-pass/")}"><b>🏯 大阪周遊卡</b><s>哪些景點免費、HARUKAS 打 9 折</s></a>'
       + f'<a class="ct" href="{U("/osaka/abeno-harukas/")}"><b>🌇 阿倍野 HARUKAS 門票</b><s>要不要先買、周遊卡怎麼用</s></a>'
-      + f'<a class="ct" href="{U("/tokyo/observation-decks/")}"><b>🌃 東京觀景台懶人包</b><s>晴空塔、東京鐵塔、SHIBUYA SKY</s></a></div>'
+      + f'<a class="ct" href="{U("/tokyo/observation-decks/")}"><b>🌃 東京觀景台懶人包</b><s>晴空塔、東京鐵塔、SHIBUYA SKY</s></a>'
+      + (f'<a class="ct" href="{U("/kyushu/observation-decks/")}"><b>🗼 九州觀景台懶人包</b><s>福岡塔、皿倉山、稻佐山、熊本城</s></a>' if os.path.exists('kyushu-decks.json') else '') + '</div>'
       + f'<p class="disc">時間與票價以各觀景台官網為準，整理可能有疏漏。查證於 {KD["checked"]}，之後官方若有更改，本頁不一定跟上。'
         '本頁為公開資訊整理，與文中觀景台無合作關係。</p>'
       + '</article>' + _kd_js
       + foot())
     pages.append(('/kansai/observation-decks/', 0.7))
+
+# ---------- 九州觀景台懶人包 ----------
+# 資料在 kyushu-decks.json。和關西頁一樣有日期選擇（日本時間今天起 90 天），但規則全部寫在資料欄位，這裡不寫個別景點的特例：
+# hours／hours_we／hours_month／suffix_wd／suffix_we／special／md_special／closed_md／closed_dates／closed_wd／weekday_only／
+# stop／ye_caveat／ye_md／ye_text／wd_note／notes（欄位說明在 json 的 _說明）。
+# 官網沒寫的照實寫「官網沒寫」，不推測；年末年始沒資料的標「以官網為準」。
+# 插圖在 illust/sp/kyushu-observation-decks/（sp_kyushu-observation-decks.py 畫的）。
+if os.path.exists('kyushu-decks.json'):
+    KY = json.load(open('kyushu-decks.json', encoding='utf-8'))
+    _ky_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _ky_iso = _ky_today.isoformat()
+    _ky_wd = '一二三四五六日'
+    _ky_jph = {x['d'] for x in HOL['days'] if x.get('jp')} if 'HOL' in globals() else set()
+    _ky_days = [_ky_today + datetime.timedelta(days=i) for i in range(90)]
+    _KYP = {p['key']: p for p in KY['paid']}
+    _KYF = {p['key']: p for p in KY['free']}
+    _KY_ALL = [(e, False) for e in KY['paid']] + [(e, True) for e in KY['free']]
+    _KY_YE = '（年末年始以官網為準）'
+
+    def _ky_md(d):
+        return f'{d.month}/{d.day}（{_ky_wd[d.weekday()]}）'
+
+    def _ky_off(d):
+        return d.weekday() >= 5 or d.isoformat() in _ky_jph
+
+    def _ky_in_md(d, a, b):
+        md = d.strftime('%m-%d')
+        return (a <= md <= b) if a <= b else (md >= a or md <= b)
+
+    def _ky_ill(path, cls='ill sp'):
+        p = os.path.join('illust', path + '.svg')
+        return f'<div class="{cls}">{open(p, encoding="utf-8").read()}</div>' if os.path.exists(p) else ''
+
+    def _ky_hours(e, d):
+        iso = d.isoformat()
+        for a, b, t in e.get('stop', []):
+            if a <= iso <= b:
+                return t
+        if any(_ky_in_md(d, a, b) for a, b in e.get('closed_md', [])) or iso in e.get('closed_dates', []):
+            return '休館'
+        if iso in e.get('special', {}):
+            return e['special'][iso]
+        md = d.strftime('%m-%d')
+        if md in e.get('md_special', {}):
+            return e['md_special'][md]
+        ye = bool(e.get('ye_md')) and _ky_in_md(d, *e['ye_md'])
+        if ye and e.get('ye_text'):
+            return e['ye_text']
+        if e.get('weekday_only') and _ky_off(d):
+            return '休館'
+        if d.weekday() in e.get('closed_wd', []) and iso not in _ky_jph:
+            return e.get('closed_wd_text', '休館')
+        h = next((t for ms, t in e.get('hours_month', []) if d.month in ms), None)
+        if h is None:
+            h = e['hours_we'] if (e.get('hours_we') and _ky_off(d)) else (e.get('hours_short') or e['hours'])
+        h += e.get('suffix_we', '') if _ky_off(d) else e.get('suffix_wd', '')
+        h += e.get('wd_note', {}).get(str(d.weekday()), '')
+        if ye or (e.get('ye_caveat') and (d.month, d.day) in ((12, 31), (1, 1))):
+            h = (h[:-1] + '；' + _KY_YE[1:]) if h.endswith('）') else h + _KY_YE
+        return h
+
+    def _ky_price(e, fr):
+        return e['price_cell'] if fr else f'{e["price_adult"]:,} 円'
+
+    def _ky_cells(d):
+        return [(_ky_hours(e, d), _ky_price(e, fr)) for e, fr in _KY_ALL]
+
+    _KY_SHUT = ('休館', '纜車公休', '纜車檢修停駛')
+
+    def _ky_note(d):
+        s = ''
+        if '_sky_sunset' in globals():
+            m = int(round(_sky_sunset(d, 33.5902, 130.4017)))
+            s += f'福岡日落約 {m // 60}:{m % 60:02d}。'
+        shut = [e['short'] for (e, fr), (h, p) in zip(_KY_ALL, _ky_cells(d)) if h in _KY_SHUT]
+        if shut:
+            _j = '、'.join(shut)
+            s += _j + (' ' if _j[-1].isascii() else '') + '這天沒開。'
+        iso = d.isoformat()
+        for e, fr in _KY_ALL:
+            if iso in e.get('notes', {}):
+                s += e['notes'][iso] + '。'
+        return s or '這天各處都照平常時間。'
+
+    _ky_data = {d.isoformat(): [_ky_md(d), _ky_note(d), [list(c) for c in _ky_cells(d)]] for d in _ky_days}
+    _ky_c0 = _ky_cells(_ky_today)
+    _ky_rows = [(e['short'], e['city'], e['key'], e['near'], h, p) for (e, fr), (h, p) in zip(_KY_ALL, _ky_c0)]
+
+    _ky_jma = 'https://www.jma.go.jp/bosai/forecast/#area_type=offices&area_code=400000'
+    _ky_table = (
+        '<div class="tdpk" id="tdpk" hidden><b>你哪天去？</b><div class="tdch" id="tdch"></div>'
+        '<label class="tdmore">更後面的日期<input type="date" id="tddt"></label>'
+        f'<p class="disc">還沒決定哪天的話，可以先看<a href="{_ky_jma}" target="_blank" rel="nofollow noopener">日本氣象廳的福岡天氣預報</a>'
+        f'（日文，有一週預報；長崎、熊本、大分、佐賀、鹿兒島在同一個網站切換地區），再回來選日期。可以選到 {_ky_md(_ky_days[-1])}，'
+        '官網沒寫的照實寫「官網沒寫」。</p></div>'
+        '<div class="tw qk" id="tdtb"><table><thead><tr><th>觀景台</th><th>最近車站</th><th id="tdth">今天開放</th><th>大人</th></tr></thead><tbody>'
+        + ''.join(f'<tr><td><a href="#{k}">{html.escape(n)}</a><small>（{c}）</small></td><td>{html.escape(a)}</td>'
+                  f'<td>{html.escape(h)}</td>' + ('<td class="xpay">' if p.endswith('円') else '<td>') + f'{html.escape(p)}</td></tr>'
+                  for n, c, k, a, h, p in _ky_rows)
+        + '</tbody></table></div>'
+        + f'<p class="disc">表上是<span id="tdwhen">今天（日本時間 {_ky_md(_ky_today)}）</span>的時間。票價是大人一張：'
+          '皿倉山是纜車＋斜坡車來回通票，雲仙是纜車來回；稻佐山展望台免費，上山的纜車另外付；「官網沒寫」是官網沒寫收費也沒寫免費。</p>')
+
+    _ky_js = ('<script>(function(){var D=' + json.dumps(_ky_data, ensure_ascii=False, separators=(',', ':'))
+      + ';var pk=document.getElementById("tdpk");if(!pk)return;'
+      'var t=new Date(Date.now()+324e5).toISOString().slice(0,10);'
+      'var ks=Object.keys(D).sort().filter(function(k){return k>=t});if(!ks.length)return;'
+      'var ch=document.getElementById("tdch"),inp=document.getElementById("tddt"),th=document.getElementById("tdth"),'
+      'wh=document.getElementById("tdwhen"),nt=document.getElementById("tdnote"),'
+      'rs=document.querySelectorAll("#tdtb tbody tr"),bs=[];'
+      'function lab(k){return k===t?"今天":D[k][0]}'
+      'function show(k){var v=D[k];if(!v)return;'
+      'for(var i=0;i<rs.length&&i<v[2].length;i++){var c=rs[i].cells;c[2].textContent=v[2][i][0];c[3].textContent=v[2][i][1];'
+      'c[3].className=/円$/.test(v[2][i][1])?"xpay":"";'
+      'if(c[2].hasAttribute("data-l"))c[2].setAttribute("data-l",lab(k)+"開放");}'
+      'th.textContent=lab(k)+"開放";'
+      'wh.textContent=k===t?"今天（日本時間 "+v[0]+"）":v[0];'
+      'if(nt)nt.textContent=(k===t?"今天 "+v[0]+"（日本時間）":v[0])+"："+v[1];'
+      'bs.forEach(function(b){b.className=b.getAttribute("data-k")===k?"on":""});inp.value=k;}'
+      'ks.slice(0,14).forEach(function(k){var b=document.createElement("button");b.type="button";'
+      'b.setAttribute("data-k",k);b.textContent=k===t?"今天":D[k][0].replace("（"," ").replace("）","");'
+      'b.onclick=function(){show(k)};ch.appendChild(b);bs.push(b);});'
+      'inp.min=ks[0];inp.max=ks[ks.length-1];inp.onchange=function(){if(D[inp.value])show(inp.value)};'
+      'pk.hidden=false;show(ks[0]);})();</script>')
+
+    _ky_css = ('<style>'
+      '.tdpk{border:2px dashed var(--edge);border-radius:14px;padding:12px 14px;margin:10px 0 14px;background:var(--paper)}'
+      '.tdpk>b{color:var(--ink);font-size:1.02rem}'
+      '.tdch{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}'
+      '.tdch button{font:inherit;font-size:.88rem;padding:5px 10px;border:1.5px solid var(--edge);border-radius:999px;'
+      'background:var(--card);color:var(--ink);cursor:pointer}'
+      '.tdch button.on{background:#c2410c;border-color:#c2410c;color:#fff;font-weight:700}'
+      '.tdmore{display:flex;align-items:center;gap:8px;font-size:.9rem;flex-wrap:wrap}'
+      '.tdmore input{font:inherit;font-size:16px;padding:5px 8px;border:1.5px solid var(--edge);border-radius:8px;background:var(--card)}'
+      '.tdpk .disc{margin:8px 0 0}'
+      '#tdtb td:last-child{white-space:nowrap}'
+      '#tdtb small{color:var(--dim);font-size:.8em}'
+      '</style>')
+
+    _ky_note0 = f'今天 {_ky_md(_ky_today)}（日本時間）：' + _ky_note(_ky_today)
+
+    def _ky_lk(src, q):
+        _m = 'https://www.google.com/maps/search/?api=1&query=' + urllib.parse.quote(q)
+        return (f'<p class="lk"><a href="{html.escape(_m)}" target="_blank" rel="nofollow noopener">看地圖</a>'
+                f'<a href="{html.escape(src)}" target="_blank" rel="nofollow noopener">官方資料</a></p>')
+
+    def _ky_memo(title, rows, src, q):
+        return (f'<div class="memo"><b class="mt">{html.escape(title)}</b><dl>'
+                + ''.join(f'<dt>{k}</dt><dd>{v}</dd>' for k, v in rows if v)
+                + '</dl>' + _ky_lk(src, q) + '</div>')
+
+    def _ky_cta(url, title, sub):
+        h = html.escape(url)
+        return (f'<a class="cta" href="{h}" target="_blank" rel="{_rel(h)}">'
+                f'<span class="ci">🎫</span><span class="ct"><b>{title}</b><s>{sub}</s></span><span class="ca">→</span></a>')
+
+    def _ky_sec(e, inner):
+        loc = html.escape(e['city']) + ('・' + html.escape(e['area']) if e.get('area') else '')
+        return (f'<section class="spot" id="{e["key"]}">{_ky_ill("sp/kyushu-observation-decks/" + e["ill"])}<div>'
+                f'<h3>{html.escape(e["name"])}（{loc}）</h3>{inner}</div></section>')
+
+    def _ky_plat(e):
+        nm = e['short']
+        sp = ' ' if nm[-1].isascii() else ''
+        out = ''
+        if e.get('klook'):
+            out += _ky_cta(klook(e['klook']['url'], 'ticket'), f'Klook：{nm}{sp}門票',
+                           e['klook'].get('note') or '台幣付款，票種與價格以 Klook 頁面為準')
+        if e.get('kkday'):
+            out += _ky_cta(kkday(e['kkday']['url'], 'ticket', 'kyushu-decks'), f'KKday：{nm}{sp}門票',
+                           (e['kkday']['note'] + '；' if e['kkday'].get('note') else '') + '台幣付款，票種與價格以 KKday 頁面為準')
+        return out
+
+    def _ky_paid_sec(e):
+        tm = e['hours'] + (f'，最後入場 {e["last"]}' if e.get('last') else '')
+        sp = '；'.join(f'{int(x[5:7])}/{int(x[8:])} {v}' for x, v in sorted(e.get('special', {}).items()) if x >= _ky_iso)
+        if e.get('md_special'):
+            sp = '；'.join([sp] * bool(sp) + [f'{int(m[:2])}/{int(m[3:])} {v}' for m, v in e['md_special'].items()])
+        rows = [('樓層', html.escape(e.get('floor', ''))),
+                ('時間', html.escape(tm)),
+                ('特別營業', html.escape(e.get('sat_text') or sp)),
+                ('休館', html.escape(e.get('closed', ''))),
+                ('票價', html.escape(e['price_detail'])),
+                ('預約', html.escape(e['book'])),
+                ('交通', html.escape(e['station']))]
+        plat = _ky_plat(e) or '<p class="disc">Klook、KKday 沒有賣這裡的單買門票，到現場買就好。</p>'
+        return _ky_sec(e, f'<p class="ap">{html.escape(e["desc"])}</p>' + _ky_memo(e['short'], rows, e['src'], e['map']) + plat)
+
+    def _ky_free_sec(e):
+        sp = '；'.join(f'{int(x[5:7])}/{int(x[8:])} {v}' for x, v in sorted(e.get('special', {}).items()) if x >= _ky_iso)
+        rows = [('時間', html.escape(e['hours'])),
+                ('特別公告', html.escape(sp)),
+                ('休館', html.escape(e.get('closed', ''))),
+                ('入場', html.escape(e['cond'])),
+                ('交通', html.escape(e['station']))]
+        return _ky_sec(e, f'<p class="ap">{html.escape(e["desc"])}</p>' + _ky_memo(e['short'], rows, e['src'], e['map']))
+
+    _KY_CITY = ['福岡', '北九州', '佐世保', '長崎', '雲仙', '佐賀', '熊本', '阿蘇', '別府', '大分', '鹿兒島']
+    _ky_paid_html = ''.join(_ky_paid_sec(e) for c in _KY_CITY for e in KY['paid'] if e['city'] == c)
+    _ky_free_html = ''.join(_ky_free_sec(e) for c in _KY_CITY for e in KY['free'] if e['city'] == c)
+
+    _ky_ff = [e for e in KY['free'] if e['price_cell'] == '免費']
+    ky_faq = [
+     ('福岡有免費的觀景台嗎？',
+      f'官網寫明免費的有 ACROS 福岡階梯花園（{_KYF["acros"]["hours"].split("；")[0]}，12/31～1/2 與下雨天不開）'
+      f'和福岡縣廳 11 樓的福岡 Yokamon 廣場（只開平日 8:30～17:15）。'
+      f'JR 博多 City 屋頂開 10:00～22:00，官網沒寫收費也沒寫免費。'),
+     ('長崎看夜景要錢嗎？',
+      f'稻佐山山頂展望台本身免費，屋頂露台 24 小時開放，但上山的長崎纜車來回 1,900 円；'
+      f'長崎市役所 19 樓展望樓層免費，開到 21:30（12/29～1/3 不開）。'
+      '稻佐山纜車 2026/11/24、11/25 全天停駛，斜坡車照開。'),
+     ('皿倉山哪天不能去？',
+      '纜車每週二休（遇假日照開），展望台跟著休；2027/2/15～2/26 纜車檢修，展望台也休。'
+      '12/31 開到 17:00，元旦 4:30 開始營業。'),
+     ('熊本城現在能上天守閣嗎？',
+      '官網 9/18 公告熊本城照常營業，開放 9:00～17:00（最後入園 16:00、登天守 16:30），12/29 休園。'
+      '旁邊的熊本城博物館 わくわく座 臨時休館。'),
+     ('九州哪個觀景台開最晚？',
+      '稻佐山屋頂露台 24 小時開放（室內到 22:00）；福岡塔、熊本市役所 14 樓、SAGA360 開到 22:00；'
+      '皿倉山冬天（11～3 月）到 20:00。'),
+     ('福岡塔要先買票嗎？',
+      '不用預約，現場買就可以，大人 1,000 円。官網的網路預售票買了 7 天內有效，當天還是要到 1 樓櫃台。官網寫年末年始也照平常時間開。'),
+    ]
+    ky_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in ky_faq]}, ensure_ascii=False)
+
+    _ky_src = ''.join(f'<li>{html.escape(e["short"])}：<a href="{html.escape(e["src"])}" target="_blank" rel="nofollow noopener">'
+                      f'{html.escape(e["src"].split("//")[1].split("/")[0])}</a></li>' for e, fr in _KY_ALL)
+
+    _ky_n_all, _ky_n_free, _ky_n_paid = len(_KY_ALL), len(KY['free']), len(KY['paid'])
+    write('kyushu/observation-decks/index.html',
+      head(f'九州觀景台懶人包：福岡、北九州、長崎、熊本、別府、鹿兒島 {_ky_n_all} 個展望台開放時間與門票',
+           f'九州 {_ky_n_all} 個觀景台整理：福岡塔、皿倉山、小倉城、熊本城、別府 Global Tower、雲仙纜車的開放時間、大人票價、要不要預約、'
+           f'最近車站，以及稻佐山、ACROS 福岡、長崎市役所、SAGA360、熊本市役所等不用門票的展望點；可以選日期看當天開放時間。',
+           'kyushu/observation-decks/',
+           '<script type="application/ld+json">' + ky_ld + '</script>' + _ky_css)
+      + topnav() + crumbs([('首頁', '/'), ('福岡', '/fukuoka/'), ('九州觀景台', None)])
+      + '<article class="art">'
+      + f'<h1>九州觀景台懶人包：{_ky_n_all} 個展望台的開放時間、要不要錢</h1>'
+      + f'<p class="by">更新於 {KY["checked"]}・資料來自各觀景台官網與縣市政府網站</p>'
+      + _ky_ill('sp/kyushu-observation-decks/hero', 'ill hero')
+      + f'<p class="ap">福岡、北九州、長崎、佐賀、熊本、大分、鹿兒島能上去看景的地方，我整理成一篇：要買票的 {_ky_n_paid} 個、'
+        f'不用門票（或官網沒寫要收費）的 {_ky_n_free} 個。開放時間、大人票價、要不要預約和離哪個車站多近，都是回去翻官網和縣市政府網站查的。</p>'
+      + '<p class="ap">先講結論：九州的<mark>縣廳、市役所展望樓層</mark>很多開到晚上，長崎市役所 19 樓、熊本市役所 14 樓、佐賀縣廳 SAGA360 都看得到夜景；'
+        '皿倉山纜車週二休；稻佐山的長崎纜車 11/24、11/25 停駛。</p>'
+      + f'<p class="sticky" id="tdnote">{html.escape(_ky_note0)}</p>'
+      + '<nav class="atoc"><b>這篇有</b><ol>'
+        '<li><a href="#all">先看總表（可以選日期）</a></li>'
+        '<li><a href="#pick">我會這樣挑</a></li>'
+        '<li><a href="#paid">要買票的觀景台</a></li>'
+        '<li><a href="#free">不用門票的觀景點</a></li>'
+        '<li><a href="#faq">常見問題</a></li></ol></nav>'
+      + '<h2 id="all">先看總表</h2>' + _ky_table
+      + '<h2 id="pick">我會這樣挑</h2>'
+      + '<ul class="pick">'
+        '<li><b>在福岡</b>：白天去 ACROS 階梯花園（週末才能上最頂的展望台）；晚上福岡塔開到 22:00，年末年始也照常。</li>'
+        '<li><b>在北九州</b>：皿倉山要避開週二；小倉城 11 月底配合聖誕市集延長到晚上。</li>'
+        '<li><b>在長崎</b>：稻佐山展望台免費、屋頂 24 小時，纜車要另外買；不想搭纜車，市役所 19 樓開到 21:30 也看得到港口。</li>'
+        '<li><b>在熊本</b>：熊本城天守閣 17:00 關、16:30 前要登上去；晚上換熊本市役所 14 樓看熊本城。</li>'
+        '<li><b>週末要注意</b>：福岡縣廳 11 樓、大分縣廳 14 樓只開平日。</li>'
+        '</ul>'
+      + '<h2 id="paid">要買票的觀景台</h2>'
+      + '<p class="ap">下面的時間與票價都引各官網。Klook、KKday 的連結是用台幣付款的另一個選擇，'
+        '票種、價格與取消規定以平台頁面為準，下單前看清楚含哪些設施。</p>'
+      + _ky_paid_html
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；平台的售價本站沒有查證。</p>'
+      + '<h2 id="free">不用門票的觀景點</h2>'
+      + f'<p class="ap">{html.escape(KY["free_intro"])}</p>'
+      + _ky_free_html
+      + '<div id="faq"></div>' + faq_visible(ky_faq)
+      + '<details class="more"><summary>這一篇查不到的</summary><ul>'
+      + ''.join(f'<li>{html.escape(x)}</li>' for x in KY['unverified']) + '</ul></details>'
+      + '<details class="more"><summary>資料來源</summary><ul>' + _ky_src + '</ul></details>'
+      + '<h2>延伸閱讀</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/kansai/observation-decks/")}"><b>🌆 關西觀景台懶人包</b><s>梅田、通天閣、京都塔、神戶港塔</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/observation-decks/")}"><b>🌃 東京觀景台懶人包</b><s>晴空塔、東京鐵塔、SHIBUYA SKY</s></a></div>'
+      + f'<p class="disc">時間與票價以各觀景台官網為準，整理可能有疏漏。查證於 {KY["checked"]}，之後官方若有更改，本頁不一定跟上。'
+        '本頁為公開資訊整理，與文中觀景台無合作關係。</p>'
+      + '</article>' + _ky_js
+      + foot())
+    pages.append(('/kyushu/observation-decks/', 0.7))
 
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
