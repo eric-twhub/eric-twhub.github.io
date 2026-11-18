@@ -386,8 +386,8 @@
   {
    "slug": "deals-2026-11-18-taipei-okinawa",
    "url": "/deals/2026-11-18-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/20 出發",
-   "title": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/20 出發"
+   "h1": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/21 出發",
+   "title": "台北飛沖繩 NT$2,531 來回含稅｜台灣虎航 12/21 出發"
   },
   {
    "slug": "deals-2026-11-18-taipei-ishigaki",
@@ -396,28 +396,28 @@
    "title": "台北飛石垣島 NT$3,405 來回含稅｜台灣虎航 12/09 出發"
   },
   {
-   "slug": "deals-2026-11-18-taipei-fukuoka",
-   "url": "/deals/2026-11-18-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$3,844 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$3,844 來回含稅｜台灣虎航 12/01 出發"
-  },
-  {
    "slug": "deals-2026-11-18-taichung-okinawa",
    "url": "/deals/2026-11-18-taichung-okinawa/",
    "h1": "台中飛沖繩 NT$3,844 來回含稅｜台灣虎航 12/28 出發",
    "title": "台中飛沖繩 NT$3,844 來回含稅｜台灣虎航 12/28 出發"
   },
   {
-   "slug": "deals-2026-11-18-taipei-miyazaki",
-   "url": "/deals/2026-11-18-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$4,501 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台北飛宮崎 NT$4,501 來回含稅｜台灣虎航 12/14 出發"
+   "slug": "deals-2026-11-18-taipei-fukuoka",
+   "url": "/deals/2026-11-18-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$4,144 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$4,144 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-18-kaohsiung-fukuoka",
    "url": "/deals/2026-11-18-kaohsiung-fukuoka/",
-   "h1": "高雄飛福岡 NT$4,628 來回含稅｜台灣虎航 12/16 出發",
-   "title": "高雄飛福岡 NT$4,628 來回含稅｜台灣虎航 12/16 出發"
+   "h1": "高雄飛福岡 NT$4,628 來回含稅｜台灣虎航 12/15 出發",
+   "title": "高雄飛福岡 NT$4,628 來回含稅｜台灣虎航 12/15 出發"
+  },
+  {
+   "slug": "deals-2026-11-18-taipei-miyazaki",
+   "url": "/deals/2026-11-18-taipei-miyazaki/",
+   "h1": "台北飛宮崎 NT$4,719 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台北飛宮崎 NT$4,719 來回含稅｜台灣虎航 12/14 出發"
   },
   {
    "slug": "deals-2026-11-18-taipei-nagoya",
@@ -440,20 +440,20 @@
   {
    "slug": "deals-2026-11-18-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-18-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$970",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$970"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$670",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$670"
   },
   {
    "slug": "deals-2026-11-18-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-18-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$5,330",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$5,330"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$5,030",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$5,030"
   },
   {
    "slug": "deals-2026-11-18-transfer-tokyo-fukushima",
    "url": "/deals/2026-11-18-transfer-tokyo-fukushima/",
-   "h1": "飛東京轉乘去福島，比直飛省 NT$4,650",
-   "title": "飛東京轉乘去福島，比直飛省 NT$4,650"
+   "h1": "飛東京轉乘去福島，比直飛省 NT$4,653",
+   "title": "飛東京轉乘去福島，比直飛省 NT$4,653"
   },
   {
    "slug": "apple-japan-price",
@@ -1164,22 +1164,34 @@
    "title": "京都觀景台：13 個展望台開放時間、票價、哪天休（可以選日期）"
   },
   {
+   "slug": "yokohama-observation-decks",
+   "url": "/yokohama/observation-decks/",
+   "h1": "橫濱觀景台：4 個展望台的開放時間、要不要錢",
+   "title": "橫濱觀景台：4 個展望台開放時間、票價、哪天休（可以選日期）"
+  },
+  {
    "slug": "hokkaido-observation-decks",
    "url": "/hokkaido/observation-decks/",
    "h1": "北海道觀景台懶人包：23 個展望台的開放時間、要不要錢",
    "title": "北海道觀景台懶人包：札幌、函館、小樽、洞爺湖、網走 23 個展望台開放時間與門票（可以選日期）"
   },
   {
+   "slug": "kanto-observation-decks",
+   "url": "/kanto/observation-decks/",
+   "h1": "首都圈觀景台懶人包：37 個展望台的開放時間、要不要錢",
+   "title": "首都圈觀景台懶人包：東京、橫濱、江之島、千葉、銚子 37 個展望台開放時間與門票（可以選日期）"
+  },
+  {
    "slug": "japan-free-observation-decks",
    "url": "/japan-free-observation-decks/",
-   "h1": "日本免費觀景台：18 處官網寫明免費",
-   "title": "日本免費觀景台：東京、關西、九州、北海道 18 處官網寫明免費的展望台（可以選日期）"
+   "h1": "日本免費觀景台：21 處官網寫明免費",
+   "title": "日本免費觀景台：東京、首都圈、關西、九州、北海道 21 處官網寫明免費的展望台（可以選日期）"
   },
   {
    "slug": "japan-night-observation-decks",
    "url": "/japan-night-observation-decks/",
-   "h1": "晚上開到 21 點以後的觀景台：47 處",
-   "title": "晚上開到 21 點以後的觀景台：東京、關西、九州、北海道 47 處看夜景（可以選日期）"
+   "h1": "晚上開到 21 點以後的觀景台：53 處",
+   "title": "晚上開到 21 點以後的觀景台：東京、首都圈、關西、九州、北海道 53 處看夜景（可以選日期）"
   },
   {
    "slug": "japan-takayama-shirakawago-bus",
