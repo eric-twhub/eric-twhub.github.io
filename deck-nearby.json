@@ -188,5 +188,244 @@
  },
  "九州": {},
  "北海道": {},
- "首都圈": {}
+ "首都圈": {
+  "marinetower": [
+   {
+    "name": "山下公園",
+    "ja": "山下公園",
+    "how": "",
+    "src": "https://marinetower.yokohama/mystory/202403191081/"
+   },
+   {
+    "name": "冰川丸",
+    "ja": "氷川丸",
+    "how": "",
+    "src": "https://marinetower.yokohama/mystory/202403191081/"
+   },
+   {
+    "name": "橫濱中華街",
+    "ja": "横浜中華街",
+    "how": "",
+    "src": "https://marinetower.yokohama/mystory/202403191081/"
+   }
+  ],
+  "seacandle": [
+   {
+    "name": "江島神社",
+    "ja": "江島神社",
+    "how": "從車站走來的路上，搭エスカー的地方在朱色鳥居左邊",
+    "src": "https://enoshima-seacandle.com/access/"
+   },
+   {
+    "name": "江の島弁財天仲見世通",
+    "ja": "江の島弁財天仲見世通り",
+    "how": "從車站走來的路上",
+    "src": "https://enoshima-seacandle.com/access/"
+   },
+   {
+    "name": "江の島岩屋",
+    "ja": "江の島岩屋",
+    "how": "",
+    "src": "https://enoshima-seacandle.com/tickets/"
+   }
+  ],
+  "chibaporttower": [
+   {
+    "name": "千葉港公園",
+    "ja": "千葉ポートパーク",
+    "how": "塔就在公園裡",
+    "src": "https://www.chiba-porttower.com/"
+   },
+   {
+    "name": "千葉港觀光船",
+    "ja": "千葉港観光船",
+    "how": "從ケーズハーバー出發",
+    "src": "https://www.chiba-porttower.com/guide.php"
+   }
+  ],
+  "nokogiri": [
+   {
+    "name": "日本寺",
+    "ja": "日本寺",
+    "how": "鋸山南坡，境內繞一圈約 1 小時 30 分（拝観料另計）",
+    "src": "https://www.mt-nokogiri.co.jp/pc/p020000.php"
+   },
+   {
+    "name": "石切場遺跡",
+    "ja": "石切り場跡",
+    "how": "山頂站走單程約 30 分",
+    "src": "https://www.mt-nokogiri.co.jp/pc/p020000.php"
+   },
+   {
+    "name": "戀人聖地紀念碑",
+    "ja": "恋人の聖地モニュメント",
+    "how": "在東京灣渡輪的停車場裡",
+    "src": "https://www.mt-nokogiri.co.jp/pc/p020000.php"
+   }
+  ],
+  "hodosan": [
+   {
+    "name": "寶登山臘梅園",
+    "ja": "長瀞宝登山 臘梅園",
+    "how": "",
+    "src": "https://hodosan-ropeway.co.jp/tourism/"
+   },
+   {
+    "name": "寶登山梅百花園",
+    "ja": "長瀞宝登山 梅百花園",
+    "how": "山頂站前",
+    "src": "https://hodosan-ropeway.co.jp/tourism/"
+   }
+  ],
+  "oyamacable": [
+   {
+    "name": "大山寺",
+    "ja": "大山寺",
+    "how": "纜車中間站大山寺站；從大山ケーブル站或阿夫利神社站約 2 分",
+    "src": "https://www.ooyama-cable.co.jp/timetable/"
+   },
+   {
+    "name": "大山阿夫利神社下社",
+    "ja": "大山阿夫利神社下社",
+    "how": "",
+    "src": "https://www.ooyama-cable.co.jp/kouyoulightup2026.html"
+   },
+   {
+    "name": "こま參道",
+    "ja": "こま参道",
+    "how": "巴士終點到纜車站的參道，走約 15 分",
+    "src": "https://www.ooyama-cable.co.jp/access/"
+   }
+  ],
+  "choshiporttower": [
+   {
+    "name": "ウオッセ21",
+    "ja": "ウオッセ21",
+    "how": "相鄰",
+    "src": "https://www.choshikanko.com/kankoDB/choshi_porttower/"
+   }
+  ],
+  "chikyunooka": [
+   {
+    "name": "滿願寺",
+    "ja": "満願寺",
+    "how": "",
+    "src": "https://www.choshikanko.com/kankoDB/chikyuhamarukumieru_tenbokan/"
+   },
+   {
+    "name": "渡海神社",
+    "ja": "渡海神社",
+    "how": "",
+    "src": "https://www.choshikanko.com/kankoDB/chikyuhamarukumieru_tenbokan/"
+   }
+  ],
+  "inubosaki": [
+   {
+    "name": "犬吠埼燈塔資料展示館",
+    "ja": "犬吠埼灯台資料展示館",
+    "how": "燈塔旁邊（免費入場）",
+    "src": "https://www.choshikanko.com/kankoDB/%e7%8a%ac%e5%90%a0%e5%9f%bc%e7%81%af%e5%8f%b0/"
+   },
+   {
+    "name": "君ヶ浜しおさい公園",
+    "ja": "君ヶ浜しおさい公園",
+    "how": "",
+    "src": "https://www.choshikanko.com/kankoDB/%e7%8a%ac%e5%90%a0%e5%9f%bc%e7%81%af%e5%8f%b0/"
+   }
+  ],
+  "osanbashi": [
+   {
+    "name": "山下公園通",
+    "ja": "山下公園通り",
+    "how": "約 600 公尺，走約 7 分",
+    "src": "https://osanbashi.jp/about/tourist_spot"
+   },
+   {
+    "name": "紅磚倉庫",
+    "ja": "赤レンガ倉庫",
+    "how": "約 800 公尺，走約 10 分",
+    "src": "https://osanbashi.jp/about/tourist_spot"
+   },
+   {
+    "name": "橫濱中華街",
+    "ja": "横浜中華街",
+    "how": "約 1.0 公里，走約 12 分",
+    "src": "https://osanbashi.jp/about/tourist_spot"
+   },
+   {
+    "name": "元町購物街",
+    "ja": "元町ショッピングストリート",
+    "how": "約 1.6 公里，走約 16 分",
+    "src": "https://osanbashi.jp/about/tourist_spot"
+   }
+  ],
+  "kawasakicityhall": [
+   {
+    "name": "市役所廣場",
+    "ja": "市役所広場",
+    "how": "",
+    "src": "https://www.city.kawasaki.jp/170/page/0000153797.html"
+   },
+   {
+    "name": "舊本廳舍歷史展示",
+    "ja": "旧本庁舎歴史展示",
+    "how": "同一棟本廳舍的復原棟 1 樓",
+    "src": "https://www.city.kawasaki.jp/170/page/0000153797.html"
+   }
+  ],
+  "marien": [
+   {
+    "name": "東扇島東公園",
+    "ja": "東扇島東公園",
+    "how": "",
+    "src": "https://www.kawasakiport.or.jp/outdoor/surrounding.html"
+   },
+   {
+    "name": "東扇島中公園",
+    "ja": "東扇島中公園",
+    "how": "",
+    "src": "https://www.kawasakiport.or.jp/outdoor/surrounding.html"
+   },
+   {
+    "name": "東扇島西公園",
+    "ja": "東扇島西公園",
+    "how": "",
+    "src": "https://www.kawasakiport.or.jp/outdoor/surrounding.html"
+   }
+  ],
+  "minatonomieruoka": [
+   {
+    "name": "橫濱市英國館",
+    "ja": "横浜市イギリス館",
+    "how": "園內",
+    "src": "https://www.city.yokohama.lg.jp/kenko-iryo-fukushi/fukushi-kaigo/fuku-machi/barrierfree/shisetsu/shisetsu/06082.html"
+   },
+   {
+    "name": "山手 111 番館",
+    "ja": "山手111番館",
+    "how": "園內",
+    "src": "https://www.city.yokohama.lg.jp/kenko-iryo-fukushi/fukushi-kaigo/fuku-machi/barrierfree/shisetsu/shisetsu/06082.html"
+   },
+   {
+    "name": "大佛次郎紀念館",
+    "ja": "大佛次郎記念館",
+    "how": "園內",
+    "src": "https://www.city.yokohama.lg.jp/kenko-iryo-fukushi/fukushi-kaigo/fuku-machi/barrierfree/shisetsu/shisetsu/06082.html"
+   },
+   {
+    "name": "神奈川近代文學館",
+    "ja": "神奈川近代文学館",
+    "how": "園內",
+    "src": "https://www.city.yokohama.lg.jp/kenko-iryo-fukushi/fukushi-kaigo/fuku-machi/barrierfree/shisetsu/shisetsu/06082.html"
+   }
+  ],
+  "shonandaira": [
+   {
+    "name": "鎖頭紀念碑「ainowa」",
+    "ja": "鍵かけモニュメント「ainowa」",
+    "how": "在休息所展望台上",
+    "src": "https://www.city.hiratsuka.kanagawa.jp/kanko/page-c_02820.html"
+   }
+  ]
+ }
 }

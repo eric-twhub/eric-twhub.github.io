@@ -1805,6 +1805,7 @@ def topnav(cur=''):
             + link('/tokyo/autumn-leaves/', '🍁 東京賞楓要買票的地方')
             + link('/tokyo/christmas-market/', '🎄 東京聖誕市集門票與日期')
             + link('/tokyo/observation-decks/', '🌃 東京觀景台開放時間與門票')
+            + link('/kanto/observation-decks/', '🗼 首都圈觀景台（橫濱、千葉、江之島）')
             + link('/kansai/observation-decks/', '🌆 關西觀景台開放時間與門票')
             + link('/kyoto/observation-decks/', '⛩️ 京都觀景台開放時間與門票')
             + link('/kyushu/observation-decks/', '🗼 九州觀景台開放時間與門票')
@@ -2015,6 +2016,8 @@ _AD_MAP = [
     ('nagasaki/observation-decks', 'activity2'),
     ('kitakyushu/observation-decks', 'activity2'),
     ('kyoto/observation-decks', 'activity2'),
+    ('kanto/observation-decks', 'activity2'),
+    ('yokohama/observation-decks', 'activity2'),
     ('japan-free-observation-decks', 'activity2'),
     ('japan-night-observation-decks', 'activity2'),
     ('hakodate/christmas-fantasy', 'esim'),
@@ -3063,6 +3066,8 @@ _STK_PREFIX = sorted({
     '/hokkaido/observation-decks/': '',
     '/sapporo/observation-decks/': '',
     '/kyoto/observation-decks/': '',
+    '/kanto/observation-decks/': '',
+    '/yokohama/observation-decks/': '',
     '/kobe/observation-decks/': '',
     '/fukuoka/observation-decks/': '',
     '/nagasaki/observation-decks/': '',
@@ -28539,6 +28544,7 @@ if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in global
       + f'<a class="ct" href="{U("/japan-shibuya-sky/")}"><b>🌇 SHIBUYA SKY 門票</b><s>日落幾點、買哪個時段</s></a>'
       + f'<a class="ct" href="{U("/japan-tokyo-tower/")}"><b>🗼 東京鐵塔門票</b><s>今天點什麼燈</s></a>'
       + f'<a class="ct" href="{U("/tokyo/subway-ticket/")}"><b>🚇 東京地鐵三日券</b><s>六本木、押上、澀谷都在線上</s></a>'
+      + (f'<a class="ct" href="{U("/kanto/observation-decks/")}"><b>🗼 首都圈觀景台懶人包</b><s>橫濱海洋塔、江之島、千葉港塔、鋸山</s></a>' if os.path.exists('kanto-decks.json') else '')
       + (f'<a class="ct" href="{U("/kansai/observation-decks/")}"><b>🌆 關西觀景台懶人包</b><s>梅田、通天閣、京都塔、神戶港塔</s></a>' if os.path.exists('kansai-decks.json') else '')
       + (f'<a class="ct" href="{U("/kyushu/observation-decks/")}"><b>🗼 九州觀景台懶人包</b><s>福岡塔、皿倉山、稻佐山、熊本城</s></a>' if os.path.exists('kyushu-decks.json') else '') + '</div>'
       + f'<p class="disc">時間與票價以各觀景台官網為準，整理可能有疏漏。查證於 {TD["checked"]}，之後官方若有更改，本頁不一定跟上。'
@@ -29010,7 +29016,9 @@ if os.path.exists('kyushu-decks.json'):
         if fr:
             return e['price_cell']
         iso = d.isoformat() if d else _ky_iso
-        p = next((x for a, b, x in e.get('price_dates', []) if a <= iso <= b), e['price_adult'])
+        p = next((x for a, b, x in e.get('price_dates', []) if a <= iso <= b), None)
+        if p is None:
+            p = e['price_we'] if (e.get('price_we') and _ky_off(d or _ky_today)) else e['price_adult']
         return f'{p:,} 円'
 
     def _ky_cells(d):
@@ -29299,6 +29307,22 @@ if os.path.exists('kyoto-decks.json') and 'KY' in globals():
                         name=_e['short'], near=_e['near'], cell=(lambda d, e=_e: (_ky_hours(e, d), _ky_price(e, True))),
                         sec=(lambda e=_e: _ky_free_sec(e)), free=True, cond=_e.get('cond', '')))
 
+# ---------- 首都圈觀景台（登記） ----------
+# 東京都內 21 處在 tokyo-decks.json（東京頁）；這裡是神奈川、千葉、埼玉，資料在 kanto-decks.json，規則欄位同九州。
+# 頁面 /kanto/observation-decks/（首都圈懶人包，東京都內只列總表、連回東京頁）與 /yokohama/observation-decks/ 在下面寫。
+if os.path.exists('kanto-decks.json') and 'KY' in globals():
+    KN = json.load(open('kanto-decks.json', encoding='utf-8'))
+    for _e in KN['paid'] + KN['free']:
+        _e['_ill_dir'], _e['_tag'], _e['_region'] = 'kanto-observation-decks', 'kanto-decks', '首都圈'
+    for _e in KN['paid']:
+        OBS.append(dict(region='首都圈', page='/kanto/observation-decks/', city=_e['city'], area=_e.get('area', ''), key=_e['key'],
+                        name=_e['short'], near=_e['near'], cell=(lambda d, e=_e: (_ky_hours(e, d), _ky_price(e, False, d))),
+                        sec=(lambda e=_e: _ky_paid_sec(e)), free=False, cond=''))
+    for _e in KN['free']:
+        OBS.append(dict(region='首都圈', page='/kanto/observation-decks/', city=_e['city'], area=_e.get('area', ''), key=_e['key'],
+                        name=_e['short'], near=_e['near'], cell=(lambda d, e=_e: (_ky_hours(e, d), _ky_price(e, True))),
+                        sec=(lambda e=_e: _ky_free_sec(e)), free=True, cond=_e.get('cond', '')))
+
 # ---------- 觀景台：城市頁與用途頁 ----------
 # 東京、關西、九州三個區塊把每一處登記進 OBS（時間、票價用各區塊自己的逐日函式算），這裡只負責挑景點、排版。
 # 城市頁：大阪、神戶、福岡、長崎、北九州，詳細段落直接用區域頁同一個函式產生，資料只有一份。
@@ -29311,11 +29335,13 @@ if OBS:
     _OB_SHUT = {'休館', '冬季封山', '纜車停駛檢修', '纜車公休', '纜車檢修停駛', '全館休', '兩間都休', '休'}
     _OB_SUN = {'東京': (35.6812, 139.7671), '大阪': (34.6937, 135.5023), '神戶': (34.6901, 135.1955),
                '福岡': (33.5902, 130.4017), '長崎': (32.7503, 129.8777), '北九州': (33.8834, 130.8752),
-               '札幌': (43.0621, 141.3544), '函館': (41.7687, 140.7288), '京都': (35.0116, 135.7681)}
+               '札幌': (43.0621, 141.3544), '函館': (41.7687, 140.7288), '京都': (35.0116, 135.7681),
+               '橫濱': (35.4437, 139.6380)}
     _OB_JMA = {'東京': ('130000', '東京'), '大阪': ('270000', '大阪'), '神戶': ('280000', '兵庫'),
                '福岡': ('400000', '福岡'), '北九州': ('400000', '福岡'), '長崎': ('420000', '長崎'),
-               '札幌': ('016000', '札幌'), '函館': ('017000', '函館'), '京都': ('260000', '京都')}
-    _OB_REGION_SUN = {'東京': '東京', '關西': '大阪', '九州': '福岡', '北海道': '札幌'}
+               '札幌': ('016000', '札幌'), '函館': ('017000', '函館'), '京都': ('260000', '京都'),
+               '橫濱': ('140000', '神奈川')}
+    _OB_REGION_SUN = {'東京': '東京', '首都圈': '橫濱', '關西': '大阪', '九州': '福岡', '北海道': '札幌'}
 
     def _ob_md(d):
         return f'{d.month}/{d.day}（{_ob_wd[d.weekday()]}）'
@@ -29600,6 +29626,23 @@ if OBS:
           related=[('/kyoto/autumn-leaves/', '🍁 京都賞楓要預約的地方', '東福寺、圓光寺、嵐山小火車'),
                    ('/osaka/observation-decks/', '🌆 大阪觀景台', '梅田空中庭園、HARUKAS 300、通天閣'),
                    ('/japan-free-observation-decks/', '🆓 日本免費觀景台', '東京、關西、九州、北海道')]))
+    if 'KN' in globals() and all(('首都圈', k) in _OB for k in ('marinetower', 'cosmoclock', 'osanbashi', 'minatonomieruoka')):
+        _yok = _ob_pick('首都圈', ['marinetower', 'cosmoclock', 'osanbashi', 'minatonomieruoka'])
+        _OBS_CITY.append(dict(
+          slug='yokohama', city='橫濱', hero='kanto', recs=_yok, region_page='/kanto/observation-decks/', region_name='首都圈',
+          crumbs=[('首頁', '/'), ('東京', '/kanto/'), ('橫濱觀景台', None)],
+          lede=(f'橫濱港邊能上去看景的 {len(_yok)} 個地方：橫濱海洋塔、Cosmo Clock 21 大摩天輪要買票，大棧橋屋頂廣場官網寫免費、24 小時開放，'
+                '港見丘公園官網沒寫收不收。橫濱地標塔 69 樓的 Sky Garden 大樓修繕暫停營業，官網寫預定 2028 年以後才重開。'),
+          picks=['<b>晚上去</b>：橫濱海洋塔開到 22:00（最後入場 21:30），18:00 以後是夜間票；大棧橋屋頂 24 小時開放、免費。',
+                 '<b>不想花錢</b>：大棧橋屋頂廣場官網寫免費，看得到港未來的高樓群、大摩天輪和海灣大橋。',
+                 '<b>週四要注意</b>：Cosmo Clock 21 11、12 月每週四休園（12/24、12/31 照開）；週末開得比平日晚。',
+                 '<b>海洋塔票價</b>：白天票平日 1,000 円、週六日與假日 1,200 円，夜間票再多 200 円；官網買便宜 100 円。'],
+          faq=[('橫濱有免費的觀景台嗎？', '大棧橋屋頂廣場官網寫免費、24 小時開放；港見丘公園展望台官網沒寫收不收費，公園 24 小時開放。'),
+               ('橫濱地標塔 Sky Garden 還能上去嗎？', '官網公告大樓大規模修繕，暫停營業，預定 2028 年以後才重新開放，日期未定。'),
+               ('橫濱海洋塔晚上幾點關？', '10:00～22:00，最後入場 21:30；18:00 以後是夜間票（平日 1,200 円、週六日與假日 1,400 円）。'),
+               ('Cosmo Clock 21 摩天輪要多少錢？', '大人小孩同價 1,000 円，轉一圈約 15 分；園區票券只收現金。')],
+          related=[('/tokyo/observation-decks/', '🌃 東京觀景台懶人包', '晴空塔、東京鐵塔、SHIBUYA SKY'),
+                   ('/japan-night-observation-decks/', '🌃 晚上開到 21 點以後的觀景台', '看夜景用')]))
     for c in _OBS_CITY:
         recs = c['recs']
         for r in recs:
@@ -29680,6 +29723,62 @@ if OBS:
           f'更新於 {HK["checked"]}・資料來自各觀景台官網與市町政府網站',
           srcs=[(r['name'], next(e['src'] for e in HK['paid'] + HK['free'] if e['key'] == r['key'])) for r in _hk_recs], prio=0.7)
 
+    # ---- 首都圈懶人包：東京都內只列總表（連回東京頁），神奈川、千葉、埼玉寫詳細段落 ----
+    _kn_recs = [r for r in OBS if r['region'] == '首都圈']
+    if _kn_recs:
+        _KN_CITY = ['橫濱', '川崎', '藤澤', '平塚', '伊勢原', '橫須賀', '千葉', '富津', '銚子', '長瀞']
+        _kn_sort = lambda rs: sorted(rs, key=lambda r: _KN_CITY.index(r['city']) if r['city'] in _KN_CITY else 99)
+        _kn_paid = _kn_sort([r for r in _kn_recs if not r['free']])
+        _kn_free = _kn_sort([r for r in _kn_recs if r['free']])
+        _tk = [r for r in OBS if r['region'] == '東京']
+        for r in _tk:
+            r['href'] = U(r['page']) + '#' + r['key']
+        for r in _kn_paid + _kn_free:
+            r['href'] = '#' + r['key']
+        _kn_all = _tk + _kn_paid + _kn_free
+        _kn_ff = [r for r in _kn_free if _ob_cell(r, _ob_today)[1] == '免費']
+        _iso0 = _ob_today.isoformat()
+        _kn_stop = [t for until, t in (('2026-12-26', '寶登山纜車 12/7～12/26 定期檢查停駛'),
+                                       ('2027-02-05', '鋸山纜車 2027/1/12～2/5 定期檢查停駛'),
+                                       ('2026-12-07', '橫濱海洋塔 12/7 保養休館')) if _iso0 <= until]
+        _ob_write('/kanto/observation-decks/',
+          f'首都圈觀景台懶人包：東京、橫濱、江之島、千葉、銚子 {len(_kn_all)} 個展望台開放時間與門票（可以選日期）',
+          f'首都圈 {len(_kn_all)} 個觀景台：東京都內 {len(_tk)} 處，加上橫濱海洋塔、Cosmo Clock 21、大棧橋屋頂、江之島 Sea Candle、川崎市役所 25 樓、'
+          '千葉港塔、鋸山纜車、銚子港塔、犬吠埼燈塔、寶登山纜車等的開放時間、大人票價與最近車站；可以選 90 天內的日期看當天時間與停駛日。',
+          [('首頁', '/'), ('東京', '/kanto/'), ('首都圈觀景台', None)],
+          f'首都圈觀景台懶人包：{len(_kn_all)} 個展望台的開放時間、要不要錢',
+          _ob_hero('kanto'),
+          f'<p class="ap">東京都內加上神奈川、千葉、埼玉，能上去看景的地方一次放在同一張總表：東京都內 {len(_tk)} 處、'
+          f'東京以外要買票的 {len(_kn_paid)} 處、不用門票（或官網沒寫要收費）的 {len(_kn_free)} 處。開放時間、大人票價、要不要預約和離哪個車站多近，都是回去翻官網和市府網站查的。</p>'
+          + f'<p class="ap">東京都內每一處的詳細介紹在<a href="{U("/tokyo/observation-decks/")}">東京觀景台懶人包</a>，這篇總表點名稱會連過去；只在橫濱的話，看<a href="{U("/yokohama/observation-decks/")}">橫濱觀景台</a>那篇比較短。</p>'
+          + ('<p class="ap">先講結論：' + '；'.join(_kn_stop) + '。橫濱地標塔 69 樓 Sky Garden 大樓修繕暫停營業，官網寫預定 2028 年以後才重開。</p>' if _kn_stop
+             else '<p class="ap">橫濱地標塔 69 樓 Sky Garden 大樓修繕暫停營業，官網寫預定 2028 年以後才重開。</p>'),
+          _kn_all, ['東京', '橫濱'], [_OB_JMA['東京'], _OB_JMA['橫濱']],
+          ['<b>橫濱看夜景</b>：橫濱海洋塔開到 22:00；大棧橋屋頂廣場 24 小時開放、官網寫免費；川崎 Marien 展望室開到 21:00、免費，官網寫是日本夜景遺產。',
+           '<b>想看富士山</b>：官網寫看得到富士山的有江之島 Sea Candle、千葉港塔、鋸山、湘南平、大棧橋屋頂；銚子港塔是冬天空氣清澈時。',
+           '<b>不想花錢</b>：官網寫明免費的有' + '、'.join(r['name'] for r in _kn_ff) + f'；東京都內的看<a href="{U("/japan-free-observation-decks/")}">免費觀景台</a>那篇。',
+           '<b>江之島晚上</b>：12/1～2/28 燈飾期間 17:00 以後進 Sea Candle 所在的苑，要另付夜間入苑費大人 500 円。',
+           '<b>燈塔</b>：犬吠埼燈塔、觀音埼燈塔可以登塔，參觀寄付金國中以上 300 円；觀音埼 12:00～13:00 午休不開放。'],
+          f'<h2 id="tokyo">東京都內</h2><p class="ap">東京都內 {len(_tk)} 處（' + '、'.join(r['name'] for r in _tk[:8])
+          + f'等）的時間、交通、門票怎麼買，都寫在<a href="{U("/tokyo/observation-decks/")}">東京觀景台懶人包</a>，總表點名稱會直接跳到那一處。</p>'
+          + '<h2 id="paid">要買票的觀景台（東京以外）</h2>'
+          + ''.join(r['sec']() for r in _kn_paid)
+          + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；平台的售價本站沒有查證。</p>'
+          + '<h2 id="free">不用門票的觀景點（東京以外）</h2>'
+          + f'<p class="ap">{html.escape(KN["free_intro"])}</p>'
+          + ''.join(r['sec']() for r in _kn_free),
+          [('首都圈有免費的觀景台嗎？', '東京以外官網寫明免費的有：' + '、'.join(r['name'] for r in _kn_ff) + '。東京都內有東京都廳、淺草文化觀光中心等，看免費觀景台那篇。'),
+           ('橫濱地標塔 Sky Garden 還能上去嗎？', '官網公告大樓大規模修繕，暫停營業，預定 2028 年以後才重新開放，日期未定。'),
+           ('冬天哪些纜車會停駛？', '寶登山纜車 2026/12/7～12/26、鋸山纜車 2027/1/12～2/5 定期檢查停駛；其他時間天候差也會停。'),
+           ('江之島 Sea Candle 晚上要另外付錢嗎？', '12/1～2/28 燈飾期間，17:00 以後進江の島サムエル・コッキング苑要另付夜間入苑費（大人 500 円），Sea Candle 本身大人 800 円；週六日、假日與 12/19～12/30 開到 21:00。')],
+          KN['unverified'],
+          [('/tokyo/observation-decks/', '🌃 東京觀景台懶人包', '晴空塔、東京鐵塔、SHIBUYA SKY'),
+           ('/yokohama/observation-decks/', '⚓ 橫濱觀景台', '海洋塔、大摩天輪、大棧橋'),
+           ('/japan-hakone-freepass/', '♨️ 箱根周遊券', '纜車、海盜船、登山電車'),
+           ('/japan-night-observation-decks/', '🌃 晚上開到 21 點以後的觀景台', '看夜景用')],
+          f'更新於 {KN["checked"]}・資料來自各觀景台官網與市府網站',
+          srcs=[(r['name'], next(e['src'] for e in KN['paid'] + KN['free'] if e['key'] == r['key'])) for r in _kn_paid + _kn_free], prio=0.7)
+
     # ---- 用途頁：不用門票 ----
     def _ob_card(r):
         h = _ob_h(r)
@@ -29690,7 +29789,7 @@ if OBS:
     _ob_free = [r for r in OBS if _ob_cell(r, _ob_today)[1].startswith('免費')]
     _ob_unk = [r for r in OBS if r['free'] and r not in _ob_free and _ob_cell(r, _ob_today)[1] == '官網沒寫'
                and not _ob_h(r).startswith('官網沒寫')]
-    _ob_regions = [x for x in ('東京', '關西', '九州', '北海道') if any(r['region'] == x for r in OBS)]
+    _ob_regions = [x for x in ('東京', '首都圈', '關西', '九州', '北海道') if any(r['region'] == x for r in OBS)]
     if _ob_free:
         recs = _ob_free + _ob_unk
         for r in recs:
@@ -29721,8 +29820,9 @@ if OBS:
            for x in _ob_regions if _n_by[x]] + [
            ('為什麼有些寫「官網沒寫」？', '縣廳、市役所、車站和商場的展望樓層，官網常常只寫開放時間，沒寫收費也沒寫免費。本頁不替官網下結論，照實寫出來。')],
           [], [('/japan-night-observation-decks/', '🌃 晚上開到 21 點以後的觀景台', '看夜景用'),
-               ('/tokyo/observation-decks/', '🌃 東京觀景台懶人包', '晴空塔、東京鐵塔、SHIBUYA SKY'),
-               ('/kansai/observation-decks/', '🌆 關西觀景台懶人包', '大阪、京都、神戶、奈良'),
+               ('/tokyo/observation-decks/', '🌃 東京觀景台懶人包', '晴空塔、東京鐵塔、SHIBUYA SKY')]
+              + ([('/kanto/observation-decks/', '🗼 首都圈觀景台懶人包', '橫濱、江之島、千葉、銚子')] if '首都圈' in _ob_regions else [])
+              + [('/kansai/observation-decks/', '🌆 關西觀景台懶人包', '大阪、京都、神戶、奈良'),
                ('/kyushu/observation-decks/', '🗼 九州觀景台懶人包', '福岡塔、稻佐山、熊本城')]
               + ([('/hokkaido/observation-decks/', '❄️ 北海道觀景台懶人包', '札幌電視塔、藻岩山、函館山')] if '北海道' in _ob_regions else []),
           f'更新於 {_ob_today.isoformat()}・資料來自各觀景台官網與縣市政府網站', show_region=True)
@@ -29755,8 +29855,9 @@ if OBS:
            ('晚上看夜景有免費的嗎？', '官網寫明免費、又開到 21:00 以後的有：' + '、'.join(r['name'] for r in _ob_night if r in _ob_free) + '。'),
            ('最後入場是幾點？', '各處不同，通常是關門前 30 分鐘左右；點表上的名稱會連到懶人包，裡面有每一處官網寫的最後入場時間。')],
           [], [('/japan-free-observation-decks/', '🆓 日本免費觀景台', '官網寫明免費的展望台'),
-               ('/tokyo/observation-decks/', '🌃 東京觀景台懶人包', '晴空塔、東京鐵塔、SHIBUYA SKY'),
-               ('/kansai/observation-decks/', '🌆 關西觀景台懶人包', '大阪、京都、神戶、奈良'),
+               ('/tokyo/observation-decks/', '🌃 東京觀景台懶人包', '晴空塔、東京鐵塔、SHIBUYA SKY')]
+              + ([('/kanto/observation-decks/', '🗼 首都圈觀景台懶人包', '橫濱、江之島、千葉、銚子')] if '首都圈' in _ob_regions else [])
+              + [('/kansai/observation-decks/', '🌆 關西觀景台懶人包', '大阪、京都、神戶、奈良'),
                ('/kyushu/observation-decks/', '🗼 九州觀景台懶人包', '福岡塔、稻佐山、熊本城')]
               + ([('/hokkaido/observation-decks/', '❄️ 北海道觀景台懶人包', '札幌電視塔、藻岩山、函館山')] if '北海道' in _ob_regions else []),
           f'更新於 {_ob_today.isoformat()}・資料來自各觀景台官網', show_region=True)
