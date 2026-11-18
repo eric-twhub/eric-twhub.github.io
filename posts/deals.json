@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$3,908（14 天有紀錄），這張低 35%"
+   "12 月出發的票，每天最便宜的平均要 NT$3,839（14 天有紀錄），這張低 34%"
   ],
   "med": 12507,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-20&inbound=OKA-TPE&returnDate=2026-12-24&type=return&adult=1&language=zh-TW",
@@ -22,11 +22,11 @@
   "cslug": "okinawa",
   "usual": {
    "lo": 2531,
-   "hi": 6636,
+   "hi": 6412,
    "days": 17
   },
   "mbase": {
-   "avg": 3908,
+   "avg": 3839,
    "days": 14,
    "month": 12
   },
@@ -73,19 +73,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$8,210（9 天有紀錄），這張低 53%"
+   "12 月出發的票，每天最便宜的平均要 NT$8,199（9 天有紀錄），這張低 53%"
   ],
   "med": 16432,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 5542,
+   "lo": 5842,
    "hi": 9495,
    "days": 9
   },
   "mbase": {
-   "avg": 8210,
+   "avg": 8199,
    "days": 9,
    "month": 12
   },
@@ -109,14 +109,14 @@
    "廉航低於 NT$6,000",
    "11 月出發的票，每天最便宜的平均要 NT$8,215（13 天有紀錄），這張低 52%"
   ],
-  "med": 10370,
+  "med": 10365,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-30&inbound=OKA-RMQ&returnDate=2026-12-03&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 4844,
-   "hi": 10903,
-   "days": 36
+   "hi": 10900,
+   "days": 35
   },
   "mbase": {
    "avg": 8215,
@@ -124,7 +124,7 @@
    "month": 11
   },
   "rank": 1,
-  "n": 103
+  "n": 102
  },
  {
   "slug": "2026-11-18-taipei-miyazaki",
@@ -153,12 +153,12 @@
  },
  {
   "slug": "2026-11-18-kaohsiung-fukuoka",
-  "title": "高雄飛福岡 NT$4,628 來回含稅｜台灣虎航 12/15 出發",
+  "title": "高雄飛福岡 NT$5,085 來回含稅｜台灣虎航 12/15 出發",
   "o": "高雄",
   "c": "福岡",
   "_oiata": "KHH",
   "_diata": "FUK",
-  "price": 4628,
+  "price": 5085,
   "air": "台灣虎航",
   "dep": "2026-12-15",
   "ret": "2026-12-23",
@@ -166,19 +166,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$7,412（6 天有紀錄），這張低 38%"
+   "12 月出發的票，每天最便宜的平均要 NT$7,708（6 天有紀錄），這張低 34%"
   ],
   "med": 6369,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-15&inbound=FUK-KHH&returnDate=2026-12-23&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 4628,
-   "hi": 7517,
+   "lo": 5085,
+   "hi": 7917,
    "days": 6
   },
   "mbase": {
-   "avg": 7412,
+   "avg": 7708,
    "days": 6,
    "month": 12
   },
@@ -187,12 +187,12 @@
  },
  {
   "slug": "2026-11-18-taipei-oita",
-  "title": "台北飛大分・別府 NT$5,644 來回含稅｜台灣虎航 12/26 出發",
+  "title": "台北飛大分・別府 NT$5,862 來回含稅｜台灣虎航 12/26 出發",
   "o": "台北",
   "c": "大分・別府",
   "_oiata": "TPE",
   "_diata": "OIT",
-  "price": 5644,
+  "price": 5862,
   "air": "台灣虎航",
   "dep": "2026-12-26",
   "ret": "2026-12-30",
@@ -253,9 +253,9 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "12 月出發的票，每天最便宜的平均要 NT$10,571（11 天有紀錄），這張低 13%"
+   "12 月出發的票，每天最便宜的平均要 NT$10,570（11 天有紀錄），這張低 13%"
   ],
-  "med": 14291,
+  "med": 14290,
   "url": "https://www.aviasales.com/search/TPE3012NRT08011?t=MM17986134001798628100000185TPENRT17994261001799438400000265NRTTPE_b0c57854822418413b4f6c28d4df67bb_23050&search_date=17112026&expected_price_uuid=01a1e86c-1df5-8031-21cd-164c76248426&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=-DYiskgh-crv6vdoIjGyfg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9191&marker=775639",
   "hotelcity": "東京",
   "cslug": "tokyo",
@@ -265,7 +265,7 @@
    "days": 16
   },
   "mbase": {
-   "avg": 10571,
+   "avg": 10570,
    "days": 11,
    "month": 12
   },
