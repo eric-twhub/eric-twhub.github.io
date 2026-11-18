@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-taipei-osaka",
- "generated": "2026-11-19 01:57",
+ "generated": "2026-11-19 06:42",
  "kind": "fare",
  "origin": "taipei",
  "city": "osaka",
@@ -11,7 +11,7 @@
   "air": "MM",
   "airname": "樂桃航空",
   "cls": "lcc",
-  "price": 6333,
+  "price": 6335,
   "dep": "2026-12-22",
   "ret": "2027-01-14",
   "dept": "18:50",
@@ -21,13 +21,13 @@
   "dur": 360,
   "dur_to": 150,
   "gate": "Trip.com",
-  "url": "https://www.aviasales.com/search/TPE2212KIX14011?t=MM17979654001797978000000150TPEKIX17999109001799919900000210KIXTPE_51b15f1d2307a5bfe2d681f7880e9fad_15833&search_date=18112026&expected_price_uuid=01a1ef91-9f63-8040-a14a-568cf7cddc89&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=gXirYugaF1LkNLKdChfePA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6333&marker=775639"
+  "url": "https://www.aviasales.com/search/TPE2212KIX14011?t=MM17979654001797978000000150TPEKIX17999109001799919900000210KIXTPE_51b15f1d2307a5bfe2d681f7880e9fad_15833&search_date=18112026&expected_price_uuid=01a1ef91-9f63-8040-a14a-568cf7cddc89&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=gXirYugaF1LkNLKdChfePA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6335&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,615（7 天有紀錄），這張低 26%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,664（8 天有紀錄），這張低 27%"
  ],
- "med": 17330,
- "n_rt": 38,
+ "med": 16870,
+ "n_rt": 44,
  "others": [
   {
    "o": "TPE",

@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-taipei-ishigaki",
- "generated": "2026-11-19 01:57",
+ "generated": "2026-11-19 06:42",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -28,7 +28,7 @@
   "廉航低於 NT$6,000"
  ],
  "med": 16958,
- "n_rt": 10,
+ "n_rt": 12,
  "others": [
   {
    "o": "TPE",
@@ -74,17 +74,17 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 10593,
-   "dep": "2026-11-30",
-   "ret": "2026-12-04",
-   "dept": "06:35",
+   "price": 10387,
+   "dep": "2026-12-28",
+   "ret": "2027-01-02",
+   "dept": "18:20",
    "rett": "09:25",
    "rt": true,
    "tr": 1,
-   "dur": 435,
-   "dur_to": 145,
-   "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TPE3011ISG04121?t=IT17960205001796046000000365TPEOKAISG17963763001796376900000070ISGTPE_c2355847f87e0a7f0d1f4728630fd963_26592&search_date=12112026&expected_price_uuid=01a1cf96-497d-8040-a501-bfb28e451772&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=sNJNAlYzZpxVK3t-tujlwA&expected_price_source=share&expected_price_currency=twd&expected_price=10593&marker=775639"
+   "dur": 1445,
+   "dur_to": 140,
+   "gate": "Tickets",
+   "url": "https://www.aviasales.com/search/TPE2812ISG02011?t=IT17984820001798568100001375TPEOKAISG17988819001798882500000070ISGTPE_41ef477829b2b2d7cec93580d1ffc2a7_25959&search_date=18112026&expected_price_uuid=01a1f0b6-a907-8040-a0d0-4cadb98cdb28&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=qschJLgj6FecmC3hXq62Qg&expected_price_source=share&expected_price_currency=twd&expected_price=10387&marker=775639"
   }
  ]
 }
