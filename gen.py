@@ -1803,6 +1803,8 @@ def topnav(cur=''):
             + link('/tokyo/observation-decks/', '🌃 東京觀景台開放時間與門票')
             + link('/kansai/observation-decks/', '🌆 關西觀景台開放時間與門票')
             + link('/kyushu/observation-decks/', '🗼 九州觀景台開放時間與門票')
+            + link('/japan-free-observation-decks/', '🆓 日本免費觀景台')
+            + link('/japan-night-observation-decks/', '🌃 晚上開到 21 點以後的觀景台')
             + link('/hakodate/christmas-fantasy/', '🎄 函館聖誕夢幻節')
             + link('/hakodate/ropeway/', '🚡 函館山纜車營業時間與夜景')
             + link('/yonago/conan-museum/', '🕵️ 青山剛昌故鄉館要先買票')
@@ -1999,6 +2001,13 @@ _AD_MAP = [
     ('tokyo/observation-decks', 'activity2'),
     ('kansai/observation-decks', 'activity2'),
     ('kyushu/observation-decks', 'activity2'),
+    ('osaka/observation-decks', 'activity2'),
+    ('kobe/observation-decks', 'activity2'),
+    ('fukuoka/observation-decks', 'activity2'),
+    ('nagasaki/observation-decks', 'activity2'),
+    ('kitakyushu/observation-decks', 'activity2'),
+    ('japan-free-observation-decks', 'activity2'),
+    ('japan-night-observation-decks', 'activity2'),
     ('hakodate/christmas-fantasy', 'esim'),
     ('hakodate/ropeway', 'esim'),
     ('yonago/conan-museum', 'esim'),
@@ -3041,6 +3050,13 @@ _STK_PREFIX = sorted({
     '/tokyo/observation-decks/': '',
     '/kansai/observation-decks/': '',
     '/kyushu/observation-decks/': '',
+    '/osaka/observation-decks/': '',
+    '/kobe/observation-decks/': '',
+    '/fukuoka/observation-decks/': '',
+    '/nagasaki/observation-decks/': '',
+    '/kitakyushu/observation-decks/': '',
+    '/japan-free-observation-decks/': '',
+    '/japan-night-observation-decks/': '',
     '/hakodate/christmas-fantasy/': 'st/seatree',
     '/hakodate/ropeway/': 'st/ropeway',
     '/yonago/conan-museum/': 'st/conan',
@@ -3600,14 +3616,20 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要去名花之里看燈海？'
                      f'<a href="{U("/nagoya/nabana-no-sato/")}">門票怎麼買、聖誕節要日期指定券、從名古屋怎麼去</a>'
                      f'（官網原文整理：超商預購比現場便宜、直達巴士末班比閉園早、一日遊不一定含門票）。</p>')
-        if slug in ('fukuoka', 'kitakyushu', 'nagasaki', 'saga', 'kumamoto', 'oita', 'kagoshima') and os.path.exists('kyushu-decks.json'):
+        if slug in ('fukuoka', 'kitakyushu', 'nagasaki') and os.path.exists('kyushu-decks.json'):
+            body += (f'<p class="lede">想找地方看夜景？'
+                     f'<a href="{U(f"/{slug}/observation-decks/")}">{name}觀景台整理</a>'
+                     f'（開放時間、票價、哪天休，可以選日期看，也有不用門票的展望樓層）；'
+                     f'想比較整個九州，看<a href="{U("/kyushu/observation-decks/")}">九州觀景台懶人包</a>。</p>')
+        if slug in ('saga', 'kumamoto', 'oita', 'kagoshima') and os.path.exists('kyushu-decks.json'):
             body += (f'<p class="lede">想找地方看夜景？'
                      f'<a href="{U("/kyushu/observation-decks/")}">九州觀景台懶人包</a>'
                      f'（福岡塔、皿倉山、稻佐山、熊本城、別府 Global Tower 等的開放時間與票價，可以選日期看，還有縣廳、市役所不用門票的展望樓層）。</p>')
         if slug in ('osaka', 'kobe') and os.path.exists('kansai-decks.json'):
             body += (f'<p class="lede">想找地方看夜景？'
-                     f'<a href="{U("/kansai/observation-decks/")}">關西觀景台懶人包</a>'
-                     f'（梅田空中庭園、HARUKAS、通天閣、神戶港塔、六甲山等的開放時間與票價，可以選日期看，還有不用門票的展望點）。</p>')
+                     f'<a href="{U(f"/{slug}/observation-decks/")}">{name}觀景台整理</a>'
+                     f'（開放時間、票價、哪天休，可以選日期看，也有不用門票的展望點）；'
+                     f'想比較整個關西，看<a href="{U("/kansai/observation-decks/")}">關西觀景台懶人包</a>。</p>')
         if slug == 'osaka' and os.path.exists('harukas.json'):
             body += (f'<p class="lede">要上阿倍野 HARUKAS 展望台？'
                      f'<a href="{U("/osaka/abeno-harukas/")}">門票要不要先買、周遊卡怎麼用、Klook／KKday 要不要換票</a>'
@@ -28017,6 +28039,9 @@ if os.path.exists('tokyo-xmas.json'):
       + foot())
     pages.append(('/tokyo/christmas-market/', 0.7))
 
+# 觀景台登記表：東京、關西、九州三個區塊各自把每一處登記進來，城市頁與用途頁（在九州區塊後面）從這裡挑。
+OBS = []
+
 # ---------- 東京觀景台懶人包 ----------
 # 資料在 tokyo-decks.json。晴空塔、東京鐵塔、SHIBUYA SKY 不另外抄一份：時間與票價直接讀
 # skytree.json、tokyo-tower.json、shibuya-sky.json（STR、TTW、SKY），那三頁回查時這頁跟著對。
@@ -28274,7 +28299,8 @@ if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in global
       '.tdmore{display:flex;align-items:center;gap:8px;font-size:.9rem;flex-wrap:wrap}'
       '.tdmore input{font:inherit;font-size:16px;padding:5px 8px;border:1.5px solid var(--edge);border-radius:8px;background:var(--card)}'
       '.tdpk .disc{margin:8px 0 0}'
-      '#tdtb td:last-child{white-space:nowrap}'
+      '#tdtb td:last-child{white-space:nowrap}#tdtb td:nth-child(2){white-space:normal}'
+      '@media(max-width:600px){#tdtb thead{display:none}#tdtb table,#tdtb tbody,#tdtb tr,#tdtb td{display:block;width:auto}#tdtb tr{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:8px 12px;background:var(--card)}#tdtb td{border:0;padding:2px 0;white-space:normal}#tdtb td:first-child{font-weight:700;font-size:1.02rem}#tdtb td:nth-child(2)::before{content:"最近車站：";color:var(--dim);font-size:.8rem}#tdtb td:nth-child(3)::before{content:"開放：";color:var(--dim);font-size:.8rem}#tdtb td:nth-child(4)::before{content:"大人：";color:var(--dim);font-size:.8rem;font-weight:400}}'
       '</style>')
 
     # 今天的便利貼（JS 會依選的日期換掉）
@@ -28479,6 +28505,11 @@ if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in global
       + '</article>' + _td_js
       + foot())
     pages.append(('/tokyo/observation-decks/', 0.7))
+    _td_nfree = len(TD['free'])
+    for _i, (_n, _k, _a, _h, _p) in enumerate(_rows):
+        _f = TD['free'][_i - (len(_rows) - _td_nfree)] if _i >= len(_rows) - _td_nfree else {}
+        OBS.append(dict(region='東京', page='/tokyo/observation-decks/', city='東京', area=_f.get('area', ''), key=_k, name=_n, near=_a,
+                        cell=(lambda d, i=_i: _td_cells(d)[i]), sec=None, free=bool(_f), cond=_f.get('cond', '')))
 
 # ---------- 關西觀景台懶人包 ----------
 # 資料在 kansai-decks.json。阿倍野 HARUKAS 300 的時間與票價直接讀 harukas.json（HRK），
@@ -28702,8 +28733,9 @@ if os.path.exists('kansai-decks.json') and os.path.exists('harukas.json') and os
       '.tdmore{display:flex;align-items:center;gap:8px;font-size:.9rem;flex-wrap:wrap}'
       '.tdmore input{font:inherit;font-size:16px;padding:5px 8px;border:1.5px solid var(--edge);border-radius:8px;background:var(--card)}'
       '.tdpk .disc{margin:8px 0 0}'
-      '#tdtb td:last-child{white-space:nowrap}'
+      '#tdtb td:last-child{white-space:nowrap}#tdtb td:nth-child(2){white-space:normal}'
       '#tdtb small{color:var(--dim);font-size:.8em}'
+      '@media(max-width:600px){#tdtb thead{display:none}#tdtb table,#tdtb tbody,#tdtb tr,#tdtb td{display:block;width:auto}#tdtb tr{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:8px 12px;background:var(--card)}#tdtb td{border:0;padding:2px 0;white-space:normal}#tdtb td:first-child{font-weight:700;font-size:1.02rem}#tdtb td:nth-child(2)::before{content:"最近車站：";color:var(--dim);font-size:.8rem}#tdtb td:nth-child(3)::before{content:"開放：";color:var(--dim);font-size:.8rem}#tdtb td:nth-child(4)::before{content:"大人：";color:var(--dim);font-size:.8rem;font-weight:400}}'
       '</style>')
 
     _kd_note0 = f'今天 {_kd_md(_kd_today)}（日本時間）：' + _kd_note(_kd_today)
@@ -28860,6 +28892,10 @@ if os.path.exists('kansai-decks.json') and os.path.exists('harukas.json') and os
       + '</article>' + _kd_js
       + foot())
     pages.append(('/kansai/observation-decks/', 0.7))
+    for _e, _fr in _KD_ALL:
+        OBS.append(dict(region='關西', page='/kansai/observation-decks/', city=_e['city'], area=_e.get('area', ''), key=_e['key'],
+                        name=_e['short'], near=_e['near'], cell=(lambda d, e=_e, fr=_fr: (_kd_hours(e, d), _kd_price(e, d, fr))),
+                        sec=(lambda e=_e, fr=_fr: _kd_free_sec(e) if fr else _kd_paid_sec(e)), free=_fr, cond=_e.get('cond', '')))
 
 # ---------- 九州觀景台懶人包 ----------
 # 資料在 kyushu-decks.json。和關西頁一樣有日期選擇（日本時間今天起 90 天），但規則全部寫在資料欄位，這裡不寫個別景點的特例：
@@ -28995,8 +29031,9 @@ if os.path.exists('kyushu-decks.json'):
       '.tdmore{display:flex;align-items:center;gap:8px;font-size:.9rem;flex-wrap:wrap}'
       '.tdmore input{font:inherit;font-size:16px;padding:5px 8px;border:1.5px solid var(--edge);border-radius:8px;background:var(--card)}'
       '.tdpk .disc{margin:8px 0 0}'
-      '#tdtb td:last-child{white-space:nowrap}'
+      '#tdtb td:last-child{white-space:nowrap}#tdtb td:nth-child(2){white-space:normal}'
       '#tdtb small{color:var(--dim);font-size:.8em}'
+      '@media(max-width:600px){#tdtb thead{display:none}#tdtb table,#tdtb tbody,#tdtb tr,#tdtb td{display:block;width:auto}#tdtb tr{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:8px 12px;background:var(--card)}#tdtb td{border:0;padding:2px 0;white-space:normal}#tdtb td:first-child{font-weight:700;font-size:1.02rem}#tdtb td:nth-child(2)::before{content:"最近車站：";color:var(--dim);font-size:.8rem}#tdtb td:nth-child(3)::before{content:"開放：";color:var(--dim);font-size:.8rem}#tdtb td:nth-child(4)::before{content:"大人：";color:var(--dim);font-size:.8rem;font-weight:400}}'
       '</style>')
 
     _ky_note0 = f'今天 {_ky_md(_ky_today)}（日本時間）：' + _ky_note(_ky_today)
@@ -29142,6 +29179,352 @@ if os.path.exists('kyushu-decks.json'):
       + '</article>' + _ky_js
       + foot())
     pages.append(('/kyushu/observation-decks/', 0.7))
+    for _e, _fr in _KY_ALL:
+        OBS.append(dict(region='九州', page='/kyushu/observation-decks/', city=_e['city'], area=_e.get('area', ''), key=_e['key'],
+                        name=_e['short'], near=_e['near'], cell=(lambda d, e=_e, fr=_fr: (_ky_hours(e, d), _ky_price(e, fr))),
+                        sec=(lambda e=_e, fr=_fr: _ky_free_sec(e) if fr else _ky_paid_sec(e)), free=_fr, cond=_e.get('cond', '')))
+
+# ---------- 觀景台：城市頁與用途頁 ----------
+# 東京、關西、九州三個區塊把每一處登記進 OBS（時間、票價用各區塊自己的逐日函式算），這裡只負責挑景點、排版。
+# 城市頁：大阪、神戶、福岡、長崎、北九州，詳細段落直接用區域頁同一個函式產生，資料只有一份。
+# 用途頁：不用門票的觀景台、晚上開到 21:00 以後的觀景台，跨區挑出來，詳細內容連回各區域頁。
+# 要新增城市頁就在 _OBS_CITY 加一筆（篩選條件、介紹、我會這樣挑、FAQ）；介紹與 FAQ 裡的數字盡量從資料算，不寫死。
+if OBS:
+    _ob_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _ob_days = [_ob_today + datetime.timedelta(days=i) for i in range(90)]
+    _ob_wd = '一二三四五六日'
+    _OB_SHUT = {'休館', '冬季封山', '纜車停駛檢修', '纜車公休', '纜車檢修停駛', '全館休', '兩間都休', '休'}
+    _OB_SUN = {'東京': (35.6812, 139.7671), '大阪': (34.6937, 135.5023), '神戶': (34.6901, 135.1955),
+               '福岡': (33.5902, 130.4017), '長崎': (32.7503, 129.8777), '北九州': (33.8834, 130.8752)}
+    _OB_JMA = {'東京': ('130000', '東京'), '大阪': ('270000', '大阪'), '神戶': ('280000', '兵庫'),
+               '福岡': ('400000', '福岡'), '北九州': ('400000', '福岡'), '長崎': ('420000', '長崎')}
+    _OB_REGION_SUN = {'東京': '東京', '關西': '大阪', '九州': '福岡'}
+
+    def _ob_md(d):
+        return f'{d.month}/{d.day}（{_ob_wd[d.weekday()]}）'
+
+    _ob_cache = {}
+
+    def _ob_cell(r, d):
+        k = (id(r), d)
+        if k not in _ob_cache:
+            _ob_cache[k] = r['cell'](d)
+        return _ob_cache[k]
+
+    def _ob_close(h):
+        # 時間字串裡最晚的關門時間（分鐘）；24 小時、全天算 24:00；看不出來回傳 None
+        if '24 小時' in h or '全天' in h:
+            return 24 * 60 + 1
+        ts = [int(a) * 60 + int(b) for a, b in re.findall(r'(?:～|到 ?)(\d{1,2}):(\d{2})', h)]
+        return max(ts) if ts else None
+
+    def _ob_sun(city, d):
+        if '_sky_sunset' not in globals() or city not in _OB_SUN:
+            return ''
+        m = int(round(_sky_sunset(d, *_OB_SUN[city])))
+        return f'{city}日落約 {m // 60}:{m % 60:02d}。'
+
+    def _ob_note(recs, d, suns, extra=None):
+        s = ''.join(_ob_sun(c, d) for c in suns)
+        shut = [r['name'] for r in recs if _ob_cell(r, d)[0] in _OB_SHUT]
+        if shut:
+            _j = '、'.join(shut)
+            s += _j + (' ' if _j[-1].isascii() else '') + '這天沒開。'
+        if extra:
+            s += extra(d)
+        return s or '這天各處都照平常時間。'
+
+    def _ob_table(recs, suns, jma, show_region=False):
+        data = {d.isoformat(): [_ob_md(d), _ob_note(recs, d, suns), [list(_ob_cell(r, d)) for r in recs]] for d in _ob_days}
+        loc = (lambda r: r['region'] + ('・' + r['city'] if r['city'] != r['region'] else '')) if show_region else (lambda r: r.get('area') or r['city'])
+        rows = ''.join(
+            f'<tr><td><a href="{html.escape(r["href"])}">{html.escape(r["name"])}</a><small>（{html.escape(loc(r))}）</small></td>'
+            f'<td>{html.escape(r["near"])}</td><td>{html.escape(_ob_cell(r, _ob_today)[0])}</td>'
+            + ('<td class="xpay">' if _ob_cell(r, _ob_today)[1].endswith('円') else '<td>')
+            + f'{html.escape(_ob_cell(r, _ob_today)[1])}</td></tr>' for r in recs)
+        jl = '、'.join(f'<a href="https://www.jma.go.jp/bosai/forecast/#area_type=offices&area_code={c}" target="_blank" rel="nofollow noopener">{n}</a>'
+                       for c, n in jma)
+        tbl = ('<div class="tdpk" id="tdpk" hidden><b>你哪天去？</b><div class="tdch" id="tdch"></div>'
+               '<label class="tdmore">更後面的日期<input type="date" id="tddt"></label>'
+               f'<p class="disc">還沒決定哪天的話，可以先看日本氣象廳的天氣預報（日文，有一週預報）：{jl}，再回來選日期。'
+               f'可以選到 {_ob_md(_ob_days[-1])}，官網還沒公布或沒寫的照實寫。</p></div>'
+               '<div class="tw qk" id="tdtb"><table><thead><tr><th>觀景台</th><th>最近車站</th><th id="tdth">今天開放</th><th>大人</th></tr></thead><tbody>'
+               + rows + '</tbody></table></div>'
+               + f'<p class="disc">表上是<span id="tdwhen">今天（日本時間 {_ob_md(_ob_today)}）</span>的時間。票價是大人一張'
+               + ('，「官網沒寫」是官網沒寫收費也沒寫免費' if any(_ob_cell(r, _ob_today)[1] == '官網沒寫' for r in recs) else '')
+               + ('；稻佐山展望台免費，上山的纜車另外付' if any(r['key'] == 'inasa' for r in recs) else '')
+               + ('；皿倉山是纜車＋斜坡車來回通票' if any(r['key'] == 'sarakura' for r in recs) else '') + '。</p>')
+        js = ('<script>(function(){var D=' + json.dumps(data, ensure_ascii=False, separators=(',', ':'))
+              + ';var pk=document.getElementById("tdpk");if(!pk)return;'
+              'var t=new Date(Date.now()+324e5).toISOString().slice(0,10);'
+              'var ks=Object.keys(D).sort().filter(function(k){return k>=t});if(!ks.length)return;'
+              'var ch=document.getElementById("tdch"),inp=document.getElementById("tddt"),th=document.getElementById("tdth"),'
+              'wh=document.getElementById("tdwhen"),nt=document.getElementById("tdnote"),'
+              'rs=document.querySelectorAll("#tdtb tbody tr"),bs=[];'
+              'function lab(k){return k===t?"今天":D[k][0]}'
+              'function show(k){var v=D[k];if(!v)return;'
+              'for(var i=0;i<rs.length&&i<v[2].length;i++){var c=rs[i].cells;c[2].textContent=v[2][i][0];c[3].textContent=v[2][i][1];'
+              'c[3].className=/円$/.test(v[2][i][1])?"xpay":"";'
+              'if(c[2].hasAttribute("data-l"))c[2].setAttribute("data-l",lab(k)+"開放");}'
+              'th.textContent=lab(k)+"開放";'
+              'wh.textContent=k===t?"今天（日本時間 "+v[0]+"）":v[0];'
+              'if(nt)nt.textContent=(k===t?"今天 "+v[0]+"（日本時間）":v[0])+"："+v[1];'
+              'bs.forEach(function(b){b.className=b.getAttribute("data-k")===k?"on":""});inp.value=k;}'
+              'ks.slice(0,14).forEach(function(k){var b=document.createElement("button");b.type="button";'
+              'b.setAttribute("data-k",k);b.textContent=k===t?"今天":D[k][0].replace("（"," ").replace("）","");'
+              'b.onclick=function(){show(k)};ch.appendChild(b);bs.push(b);});'
+              'inp.min=ks[0];inp.max=ks[ks.length-1];inp.onchange=function(){if(D[inp.value])show(inp.value)};'
+              'pk.hidden=false;show(ks[0]);})();</script>')
+        note0 = f'今天 {_ob_md(_ob_today)}（日本時間）：' + data[_ob_today.isoformat()][1]
+        return tbl, js, note0
+
+    _ob_css = ('<style>'
+      '.tdpk{border:2px dashed var(--edge);border-radius:14px;padding:12px 14px;margin:10px 0 14px;background:var(--paper)}'
+      '.tdpk>b{color:var(--ink);font-size:1.02rem}'
+      '.tdch{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}'
+      '.tdch button{font:inherit;font-size:.88rem;padding:5px 10px;border:1.5px solid var(--edge);border-radius:999px;'
+      'background:var(--card);color:var(--ink);cursor:pointer}'
+      '.tdch button.on{background:#c2410c;border-color:#c2410c;color:#fff;font-weight:700}'
+      '.tdmore{display:flex;align-items:center;gap:8px;font-size:.9rem;flex-wrap:wrap}'
+      '.tdmore input{font:inherit;font-size:16px;padding:5px 8px;border:1.5px solid var(--edge);border-radius:8px;background:var(--card)}'
+      '.tdpk .disc{margin:8px 0 0}'
+      '#tdtb td:last-child{white-space:nowrap}#tdtb td:nth-child(2){white-space:normal}'
+      '#tdtb small{color:var(--dim);font-size:.8em}'
+      '@media(max-width:600px){#tdtb thead{display:none}#tdtb table,#tdtb tbody,#tdtb tr,#tdtb td{display:block;width:auto}#tdtb tr{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:8px 12px;background:var(--card)}#tdtb td{border:0;padding:2px 0;white-space:normal}#tdtb td:first-child{font-weight:700;font-size:1.02rem}#tdtb td:nth-child(2)::before{content:"最近車站：";color:var(--dim);font-size:.8rem}#tdtb td:nth-child(3)::before{content:"開放：";color:var(--dim);font-size:.8rem}#tdtb td:nth-child(4)::before{content:"大人：";color:var(--dim);font-size:.8rem;font-weight:400}}'
+      '.obl{margin:6px 0 14px;padding-left:1.2em}.obl li{margin:4px 0}'
+      '</style>')
+
+    def _ob_hero(region):
+        p = os.path.join('illust', 'sp', region + '-observation-decks', 'hero.svg')
+        return f'<div class="ill hero">{open(p, encoding="utf-8").read()}</div>' if os.path.exists(p) else ''
+
+    def _ob_write(path, title, desc, crumbs_, h1, hero, intro, recs, suns, jma, picks, body, faq, unver, related, by, show_region=False):
+        tbl, js, note0 = _ob_table(recs, suns, jma, show_region)
+        ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]},
+            ensure_ascii=False)
+        write(path.strip('/') + '/index.html',
+          head(title, desc, path.strip('/') + '/', '<script type="application/ld+json">' + ld + '</script>' + _ob_css)
+          + topnav() + crumbs(crumbs_)
+          + '<article class="art">'
+          + f'<h1>{html.escape(h1)}</h1>'
+          + f'<p class="by">{by}</p>'
+          + hero + intro
+          + f'<p class="sticky" id="tdnote">{html.escape(note0)}</p>'
+          + '<h2 id="all">先看總表（可以選日期）</h2>' + tbl
+          + '<h2 id="pick">我會這樣挑</h2><ul class="pick">' + ''.join(f'<li>{p}</li>' for p in picks) + '</ul>'
+          + body
+          + '<div id="faq"></div>' + faq_visible(faq)
+          + (('<details class="more"><summary>這一篇查不到的</summary><ul>'
+              + ''.join(f'<li>{html.escape(x)}</li>' for x in unver) + '</ul></details>') if unver else '')
+          + '<h2>延伸閱讀</h2><div class="cities">'
+          + ''.join(f'<a class="ct" href="{U(u)}"><b>{t}</b><s>{s}</s></a>' for u, t, s in related) + '</div>'
+          + '<p class="disc">時間與票價以各觀景台官網為準，整理可能有疏漏，之後官方若有更改，本頁不一定跟上。'
+            '本頁為公開資訊整理，與文中觀景台無合作關係。</p>'
+          + '</article>' + js + foot())
+        pages.append((path, 0.6))
+
+    _OB = {(r['region'], r['key']): r for r in OBS}
+
+    def _ob_pick(region, keys):
+        return [_OB[(region, k)] for k in keys if (region, k) in _OB]
+
+    def _ob_h(r, d=None):
+        return _ob_cell(r, d or _ob_today)[0]
+
+    def _ob_cl(m):
+        return '24 小時開放' if m > 24 * 60 else f'開到 {m // 60}:{m % 60:02d}'
+
+    _ob_late_c = {}
+
+    def _ob_late(r):
+        # 未來 90 天裡最常見的關門時間；開到 21:00 以後的天數不到一半（例如只有活動延長那幾天）回傳 None
+        if id(r) not in _ob_late_c:
+            ms = [m for m in (_ob_close(_ob_h(r, d)) for d in _ob_days) if m]
+            late = [m for m in ms if m >= 21 * 60]
+            _ob_late_c[id(r)] = collections.Counter(late).most_common(1)[0][0] if len(late) * 2 >= len(_ob_days) else None
+        return _ob_late_c[id(r)]
+
+    # ---- 城市頁 ----
+    _OBS_CITY = []
+    if all(('關西', k) in _OB for k in ('umeda', 'tsutenkaku', 'castle', 'cosmo', 'nambaparks', 'sakai')):
+        _osa = _ob_pick('關西', ['umeda', 'harukas', 'tsutenkaku', 'castle', 'cosmo', 'osakastation', 'nambaparks', 'sakai'])
+        _pl = [(_KDP[k]['short'], _kd_pass(k)) for k in ('umeda', 'tsutenkaku', 'castle', 'harukas') if _kd_pass(k)]
+        _OBS_CITY.append(dict(
+          slug='osaka', city='大阪', hero='kansai', recs=_osa, region_page='/kansai/observation-decks/', region_name='關西',
+          lede=(f'大阪市區加上堺市，能上去看景的 {len(_osa)} 個地方：梅田空中庭園、HARUKAS 300、通天閣、大阪城天守閣、咲洲宇宙塔要買票，'
+                '難波公園屋頂花園、堺市役所 21 樓官網寫免費，大阪站時空廣場官網沒寫收不收。'),
+          picks=[f'<b>晚上去</b>：梅田空中庭園開到 22:30（最後入場 22:00），HARUKAS 300、咲洲宇宙塔到 22:00，通天閣到 21:45；免費的難波公園屋頂花園開到 24:00。',
+                 '<b>不想花錢</b>：難波公園屋頂花園（10:00～24:00）、堺市役所 21 樓（9:00～21:00），兩處官網都寫免費。',
+                 ('<b>有大阪周遊卡</b>：' + '；'.join(f'{n}：{html.escape(t)}' for n, t in _pl)
+                  + f'（<a href="{U("/osaka/amazing-pass/")}">周遊卡能用的景點</a>）') if _pl else '',
+                 '<b>週一要注意</b>：咲洲宇宙塔週一休（週一是假日就隔天休）。',
+                 '<b>年末年始</b>：大阪城天守閣 12/28～1/1 休館；通天閣 12/30～1/3 大人漲到 1,800 円。'],
+          faq=[('大阪哪個觀景台開最晚？', '免費的難波公園屋頂花園開到 24:00；付費的梅田空中庭園開到 22:30（最後入場 22:00），HARUKAS 300 和咲洲宇宙塔到 22:00，通天閣到 21:45。'),
+               ('大阪有免費的觀景台嗎？', '難波公園屋頂花園（10:00～24:00，官網寫入場無料）和堺市役所 21 樓展望大廳（9:00～21:00，官網寫費用無料）。大阪站 5 樓時空廣場官網沒寫收費也沒寫免費。'),
+               ('大阪周遊卡可以免費上哪些觀景台？', ('；'.join(f'{n}：{t}' for n, t in _pl) + '。以周遊卡官網為準。') if _pl else '以周遊卡官網為準。'),
+               ('通天閣要預約嗎？', '要指定入場時段，現場窗口買票也一樣要選時段。12/30～1/3 大人 1,800 円，平常 1,500 円。'),
+               ('大阪城天守閣年末年始有開嗎？', '官網寫 12/28～1/1 休館，1/2 起開放；平常 9:00～18:00（最後入場 17:30）。')],
+          related=[('/osaka/amazing-pass/', '🏯 大阪周遊卡', '哪些景點免費、HARUKAS 打 9 折'),
+                   ('/osaka/abeno-harukas/', '🌇 阿倍野 HARUKAS 門票', '要不要先買、周遊卡怎麼用'),
+                   ('/kobe/observation-decks/', '⚓ 神戶觀景台', '神戶港塔、六甲山、市役所 24 樓')]))
+    if all(('關西', k) in _OB for k in ('porttower', 'kobecity', 'venus', 'maya', 'nunobiki')):
+        _kob = _ob_pick('關西', ['porttower', 'umie', 'kobecity', 'venus', 'maya', 'rokko', 'tenrandai', 'nunobiki'])
+        _OBS_CITY.append(dict(
+          slug='kobe', city='神戶', hero='kansai', recs=_kob, region_page='/kansai/observation-decks/', region_name='關西',
+          lede=(f'神戶看港口和夜景的 {len(_kob)} 個地方：市區有神戶港塔、馬賽克大摩天輪、市役所 24 樓、維納斯橋，'
+                '山上有摩耶山掬星台、六甲枝垂れ、六甲山天覽台和布引香草園。摩耶山纜車和布引香草園纜車冬天都有停駛檢修的期間，選日期前先看下面的總表。'),
+          picks=['<b>晚上去</b>：神戶港塔開到 23:00（最後入場 22:30），一定要先買指定時段的票；馬賽克大摩天輪、市役所 24 樓到 22:00。',
+                 '<b>不想花錢</b>：維納斯橋全天可以去（神戶觀光局寫入場無料）；市役所 24 樓開到 22:00，官網沒寫「免費」兩個字。',
+                 '<b>上山看夜景</b>：摩耶山纜車週二休，2027/1/12～3/19 全線停駛；布引香草園纜車 2027/1/23～2/19 停駛；六甲枝垂れ 11/30 以後的冬季時間官網還沒公布。',
+                 '<b>年末年始</b>：市役所 24 樓 12/29～1/3 不開。'],
+          faq=[('神戶看夜景哪裡免費？', '維納斯橋全天可以去（神戶觀光局寫入場無料）；神戶市役所 24 樓開到 22:00（12/29～1/3 休），官網沒寫「免費」兩個字。'),
+               ('神戶港塔要預約嗎？', '要。一定要買指定日期時段的票，時段賣完當天就沒票；網路和窗口同價，展望樓層大人 1,000 円。'),
+               ('冬天哪些山上的地方去不了？', '摩耶山纜車 2027/1/12～3/19 全線停駛、平常週二公休；布引香草園纜車 2027/1/23～2/19 停駛，停駛也休園。'),
+               ('神戶哪個觀景台開最晚？', '神戶港塔開到 23:00（最後入場 22:30）；馬賽克大摩天輪和市役所 24 樓到 22:00；維納斯橋全天。')],
+          related=[('/osaka/observation-decks/', '🌆 大阪觀景台', '梅田、HARUKAS、通天閣、大阪城'),
+                   ('/japan-night-observation-decks/', '🌃 晚上開到 21 點以後的觀景台', '東京、關西、九州')]))
+    if all(('九州', k) in _OB for k in ('fukuokatower', 'acros', 'yokamon', 'hakatacity')):
+        _fuk = _ob_pick('九州', ['fukuokatower', 'hakatacity', 'acros', 'yokamon'])
+        _OBS_CITY.append(dict(
+          slug='fukuoka', hero='kyushu', city='福岡', recs=_fuk, region_page='/kyushu/observation-decks/', region_name='九州',
+          lede=('福岡市區能上去看景的 4 個地方：要買票的福岡塔，官網寫免費的 ACROS 福岡階梯花園和福岡縣廳 11 樓，'
+                '還有官網沒寫收不收的 JR 博多 City 屋頂。'),
+          picks=['<b>晚上去</b>：福岡塔、JR 博多 City 屋頂都開到 22:00；福岡塔官網寫年末年始也照平常時間。',
+                 '<b>白天不想花錢</b>：ACROS 階梯花園（冬天 9:00～17:00，最頂的屋頂展望台只有週末假日 10:00～16:00）；福岡縣廳 11 樓只開平日 8:30～17:15。',
+                 '<b>下雨天</b>：ACROS 階梯花園下雨或地面濕滑時不能進。'],
+          faq=[('福岡有免費的觀景台嗎？', 'ACROS 福岡階梯花園和福岡縣廳 11 樓的福岡 Yokamon 廣場官網都寫入場無料；前者 12/31～1/2 與下雨天不開，後者只開平日。JR 博多 City 屋頂開 10:00～22:00，官網沒寫收費也沒寫免費。'),
+               ('福岡塔要先買票嗎？', '不用預約，現場買就可以，大人 1,000 円。官網的網路預售票買了 7 天內有效，當天還是要到 1 樓櫃台。'),
+               ('福岡晚上哪裡看夜景？', '福岡塔（最後入館 21:30）和 JR 博多 City 屋頂都開到 22:00。')],
+          related=[('/kitakyushu/observation-decks/', '🏯 北九州觀景台', '皿倉山、小倉城、門司港'),
+                   ('/nagasaki/observation-decks/', '🌃 長崎觀景台', '稻佐山、市役所 19 樓')]))
+    if all(('九州', k) in _OB for k in ('inasa', 'nagasakicity', 'nagasakipref', 'nabekanmuri')):
+        _ngs = _ob_pick('九州', ['inasa', 'nagasakicity', 'nagasakipref', 'nabekanmuri'])
+        _OBS_CITY.append(dict(
+          slug='nagasaki', hero='kyushu', city='長崎', recs=_ngs, region_page='/kyushu/observation-decks/', region_name='九州',
+          lede=('長崎市區看夜景的 4 個地方：稻佐山山頂展望台本身免費，上山的纜車另外買；長崎市役所 19 樓免費開到 21:30；'
+                '長崎縣廳 8 樓開到 20:50；鍋冠山就在哥拉巴園後面。'),
+          picks=['<b>夜景首選</b>：稻佐山屋頂露台 24 小時開放，長崎纜車來回 1,900 円，斜坡車來回 1,000 円。2026/11/24、11/25 纜車停駛（斜坡車照開）。',
+                 '<b>不想搭纜車</b>：長崎市役所 19 樓（地上 80 公尺，開到 21:30，12/29～1/3 不開），電車「市役所」站下車即到。',
+                 '<b>逛完哥拉巴園</b>：鍋冠山從第 2 門走約 10 分，官網沒寫開放時間，晚上有步道照明。'],
+          faq=[('長崎看夜景要錢嗎？', '稻佐山山頂展望台本身免費，屋頂露台 24 小時開放，但上山的長崎纜車來回 1,900 円；長崎市役所 19 樓展望樓層免費，開到 21:30（12/29～1/3 不開）。'),
+               ('稻佐山纜車哪天停駛？', '2026/11/24、11/25 全天停駛（斜坡車照開）；每年 6 月中旬檢修停駛，強風也會停。'),
+               ('長崎縣廳展望室幾點開？', '展望室平日 7:00～20:50、週六日與假日 9:00～20:50，展望露台每天 9:00～20:50；官網沒寫收費也沒寫免費。')],
+          related=[('/fukuoka/observation-decks/', '🗼 福岡觀景台', '福岡塔、ACROS、博多 City 屋頂'),
+                   ('/nagasaki/huis-ten-bosch/', '🌷 豪斯登堡門票', '哪天去比較便宜')]))
+    if all(('九州', k) in _OB for k in ('sarakura', 'kokura', 'mojiko')):
+        _kkj = _ob_pick('九州', ['sarakura', 'kokura', 'mojiko'])
+        _OBS_CITY.append(dict(
+          slug='kitakyushu', hero='kyushu', city='北九州', recs=_kkj, region_page='/kyushu/observation-decks/', region_name='九州',
+          lede=('北九州的 3 個觀景台：八幡的皿倉山搭纜車再轉斜坡車上山，小倉城天守閣 5 樓看城下町和關門海峽，門司港懷舊展望室在門司港懷舊地區。三個都要買票。'),
+          picks=['<b>皿倉山避開週二</b>：纜車每週二休（遇假日照開），2027/2/15～2/26 檢修停駛，展望台也跟著休。',
+                 '<b>小倉城晚上</b>：11/20～11/29 配合聖誕市集延長，週五、週日到 21:00，週六到 22:00（週六晚上去之前先看官網公告）。',
+                 '<b>門司港</b>：每天開到 22:00；2026/4/1 起大人 600 円（北九州市民 400 円）。'],
+          faq=[('皿倉山哪天不能去？', '纜車每週二休（遇假日照開），展望台跟著休；2027/2/15～2/26 纜車檢修，展望台也休。12/31 開到 17:00，元旦 4:30 開始營業。'),
+               ('皿倉山怎麼上去？', 'JR 八幡站有免費接駁巴士到山麓站（約 10 分），再搭纜車轉斜坡車到山頂；來回通票大人 1,230 円。車子開不上山頂。'),
+               ('小倉城幾點關？', '11～3 月 9:00～19:00、4～10 月 9:00～20:00，最後入場是關門前 30 分；活動與夜間延長日另外公告。')],
+          related=[('/fukuoka/observation-decks/', '🗼 福岡觀景台', '福岡塔、ACROS、博多 City 屋頂'),
+                   ('/nagasaki/observation-decks/', '🌃 長崎觀景台', '稻佐山、市役所 19 樓')]))
+
+    for c in _OBS_CITY:
+        recs = c['recs']
+        for r in recs:
+            r['href'] = '#' + r['key']
+        npaid = sum(1 for r in recs if not r['free'])
+        _ob_write(f'/{c["slug"]}/observation-decks/',
+          f'{c["city"]}觀景台：{len(recs)} 個展望台開放時間、票價、哪天休（可以選日期）',
+          f'{c["city"]}的觀景台與展望點整理：' + '、'.join(r['name'] for r in recs) + '的開放時間、大人票價、最近車站與休館日，可以選 90 天內的日期看當天時間。',
+          [('首頁', '/'), (c['city'], f'/{c["slug"]}/'), (f'{c["city"]}觀景台', None)],
+          f'{c["city"]}觀景台：{len(recs)} 個展望台的開放時間、要不要錢',
+          _ob_hero(c['hero']),
+          f'<p class="ap">{html.escape(c["lede"])}</p>'
+          f'<p class="ap">想比較整個{c["region_name"]}，看<a href="{U(c["region_page"])}">{c["region_name"]}觀景台懶人包</a>。</p>',
+          recs, [c['city']], [_OB_JMA[c['city']]], [p for p in c['picks'] if p],
+          (f'<h2 id="paid">要買票的觀景台</h2>' + ''.join(r['sec']() for r in recs if not r['free'])
+           + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；平台的售價本站沒有查證。</p>'
+           if npaid else '')
+          + ('<h2 id="free">不用門票的觀景點</h2>' + ''.join(r['sec']() for r in recs if r['free'])
+             if npaid < len(recs) else ''),
+          c['faq'], [], c['related'] + [(c['region_page'], f'🗺️ {c["region_name"]}觀景台懶人包', '整個區域一起比較')],
+          f'更新於 {NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date().isoformat()}・資料來自各觀景台官網')
+
+    # ---- 用途頁：不用門票 ----
+    def _ob_card(r):
+        h = _ob_h(r)
+        return (f'<li><a href="{U(r["page"])}#{r["key"]}"><b>{html.escape(r["name"])}</b></a>'
+                f'（{html.escape(r["city"])}）：今天 {html.escape(h)}；{html.escape(r["near"])}'
+                + (f'。{html.escape(r["cond"])}' if r.get('cond') else '') + '</li>')
+
+    _ob_free = [r for r in OBS if _ob_cell(r, _ob_today)[1].startswith('免費')]
+    _ob_unk = [r for r in OBS if r['free'] and r not in _ob_free and _ob_cell(r, _ob_today)[1] == '官網沒寫'
+               and not _ob_h(r).startswith('官網沒寫')]
+    _ob_regions = [x for x in ('東京', '關西', '九州') if any(r['region'] == x for r in OBS)]
+    if _ob_free:
+        recs = _ob_free + _ob_unk
+        for r in recs:
+            r['href'] = U(r['page']) + '#' + r['key']
+        _n_by = {x: sum(1 for r in _ob_free if r['region'] == x) for x in _ob_regions}
+        _ob_write('/japan-free-observation-decks/',
+          f'日本免費觀景台：東京、大阪、神戶、福岡、長崎 {len(_ob_free)} 處官網寫明免費的展望台（可以選日期）',
+          f'官網寫明免費的觀景台 {len(_ob_free)} 處（東京都廳、淺草文化觀光中心、難波公園、堺市役所、ACROS 福岡、長崎市役所等），'
+          f'另外 {len(_ob_unk)} 處有開放時間但官網沒寫收不收；可以選日期看當天開放時間。',
+          [('首頁', '/'), ('免費觀景台', None)],
+          f'日本免費觀景台：{len(_ob_free)} 處官網寫明免費',
+          _ob_hero('tokyo'),
+          f'<p class="ap">東京、關西、九州的觀景台裡，官網或市府、觀光局頁面寫明「無料」的有 {len(_ob_free)} 處（'
+          + '、'.join(f'{x} {n} 處' for x, n in _n_by.items() if n)
+          + f'）。另外 {len(_ob_unk)} 處（縣廳、市役所、車站大樓、商場屋頂、橋上步道等）官網有寫開放時間或寫可以自由參觀，但沒寫收費也沒寫免費，表上照實寫「官網沒寫」。</p>'
+          '<p class="ap">每一處的詳細時間、交通和注意事項，點名稱會連到該區域的懶人包。</p>',
+          recs, [_OB_REGION_SUN[x] for x in _ob_regions], [_OB_JMA[_OB_REGION_SUN[x]] for x in _ob_regions],
+          ['<b>晚上也想去</b>：' + '、'.join(f'{r["name"]}（{_ob_cl(_ob_late(r))}）' for r in sorted(_ob_free, key=lambda r: -(_ob_late(r) or 0)) if (_ob_late(r) or 0) >= 21 * 60) + '（括號是未來 90 天裡大部分日子的關門時間）。',
+           '<b>想看富士山</b>：東京的練馬區役所 20 樓、船堀 Tower Hall 都是官網寫明免費。',
+           '<b>週末</b>：福岡縣廳 11 樓只開平日；ACROS 福岡最頂的屋頂展望台反而只有週末假日開。',
+           '<b>纜車上山的</b>：稻佐山展望台免費，但長崎纜車要另外買（來回 1,900 円）。'],
+          ''.join(f'<h2>{x}</h2><ul class="obl">' + ''.join(_ob_card(r) for r in _ob_free if r['region'] == x) + '</ul>'
+                  for x in _ob_regions if _n_by[x])
+          + '<h2>有開放時間、官網沒寫收不收</h2><ul class="obl">' + ''.join(_ob_card(r) for r in _ob_unk) + '</ul>',
+          [('東京有哪些免費觀景台？', '官網寫明免費的有：' + '、'.join(r['name'] for r in _ob_free if r['region'] == '東京') + '。'),
+           ('大阪、神戶有免費觀景台嗎？', '官網寫明免費的有：' + '、'.join(r['name'] for r in _ob_free if r['region'] == '關西') + '。有開放時間但官網沒寫收不收的有：' + '、'.join(r['name'] for r in _ob_unk if r['region'] == '關西') + '。'),
+           ('九州有免費觀景台嗎？', '官網或觀光網站寫明免費的有：' + '、'.join(r['name'] for r in _ob_free if r['region'] == '九州') + '。有開放時間但官網沒寫收不收的有：' + '、'.join(r['name'] for r in _ob_unk if r['region'] == '九州') + '。'),
+           ('為什麼有些寫「官網沒寫」？', '縣廳、市役所、車站和商場的展望樓層，官網常常只寫開放時間，沒寫收費也沒寫免費。本頁不替官網下結論，照實寫出來。')],
+          [], [('/japan-night-observation-decks/', '🌃 晚上開到 21 點以後的觀景台', '看夜景用'),
+               ('/tokyo/observation-decks/', '🌃 東京觀景台懶人包', '晴空塔、東京鐵塔、SHIBUYA SKY'),
+               ('/kansai/observation-decks/', '🌆 關西觀景台懶人包', '大阪、京都、神戶、奈良'),
+               ('/kyushu/observation-decks/', '🗼 九州觀景台懶人包', '福岡塔、稻佐山、熊本城')],
+          f'更新於 {_ob_today.isoformat()}・資料來自各觀景台官網與縣市政府網站', show_region=True)
+
+    # ---- 用途頁：晚上開到 21:00 以後 ----
+    _ob_night = [r for r in OBS if (_ob_late(r) or 0) >= 21 * 60]
+    _ob_night.sort(key=lambda r: (_ob_regions.index(r['region']), -_ob_late(r)))
+    if _ob_night:
+        for r in _ob_night:
+            r['href'] = U(r['page']) + '#' + r['key']
+        _ob_write('/japan-night-observation-decks/',
+          f'晚上開到 21 點以後的觀景台：東京、大阪、神戶、福岡、長崎 {len(_ob_night)} 處看夜景（可以選日期）',
+          f'看夜景用：晚上開到 21:00 以後的觀景台 {len(_ob_night)} 處，東京鐵塔、SHIBUYA SKY、梅田空中庭園、神戶港塔、福岡塔、稻佐山等，'
+          '附當地日落時間，可以選日期看當天開到幾點。',
+          [('首頁', '/'), ('夜景觀景台', None)],
+          f'晚上開到 21 點以後的觀景台：{len(_ob_night)} 處',
+          _ob_hero('kansai'),
+          '<p class="ap">想看夜景，最怕到了才發現已經關門或最後入場過了。這頁從東京、關西、九州的觀景台裡，挑出未來 90 天裡大部分日子開到 21:00 以後的地方，'
+          '總表上的便利貼會附東京、大阪、福岡當天的日落時間。</p>'
+          '<p class="ap">表上寫的是關門時間，最後入場通常更早 30 分鐘左右，各處的最後入場時間點名稱看懶人包裡的說明。</p>',
+          _ob_night, [_OB_REGION_SUN[x] for x in _ob_regions], [_OB_JMA[_OB_REGION_SUN[x]] for x in _ob_regions],
+          ['<b>最晚的</b>：' + '、'.join(f'{r["name"]}（{_ob_cl(_ob_late(r))}）' for r in sorted(_ob_night, key=lambda r: -_ob_late(r))[:6]) + '。',
+           '<b>不想花錢</b>：' + '、'.join(r['name'] for r in _ob_night if r in _ob_free) + ' 官網寫明免費。',
+           '<b>先查日落</b>：今天' + '、'.join(_ob_sun(_OB_REGION_SUN[x], _ob_today).rstrip('。').replace('日落約', '約') for x in _ob_regions) + ' 日落；日期選好，便利貼會寫當天的日落時間。'],
+          ''.join(f'<h2>{x}</h2><ul class="obl">' + ''.join(
+              f'<li><a href="{U(r["page"])}#{r["key"]}"><b>{html.escape(r["name"])}</b></a>（{html.escape(r["city"])}）：'
+              f'通常{_ob_cl(_ob_late(r))}，今天 {html.escape(_ob_h(r))}，{html.escape(_ob_cell(r, _ob_today)[1])}；{html.escape(r["near"])}</li>'
+              for r in _ob_night if r['region'] == x) + '</ul>' for x in _ob_regions),
+          [('哪個觀景台開最晚？', '、'.join(f'{r["name"]}（{_ob_cl(_ob_late(r))}）' for r in sorted(_ob_night, key=lambda r: -_ob_late(r))[:5]) + '（未來 90 天裡大部分日子的時間，各處最後入場更早）。'),
+           ('晚上看夜景有免費的嗎？', '官網寫明免費、又開到 21:00 以後的有：' + '、'.join(r['name'] for r in _ob_night if r in _ob_free) + '。'),
+           ('最後入場是幾點？', '各處不同，通常是關門前 30 分鐘左右；點表上的名稱會連到懶人包，裡面有每一處官網寫的最後入場時間。')],
+          [], [('/japan-free-observation-decks/', '🆓 日本免費觀景台', '官網寫明免費的展望台'),
+               ('/tokyo/observation-decks/', '🌃 東京觀景台懶人包', '晴空塔、東京鐵塔、SHIBUYA SKY'),
+               ('/kansai/observation-decks/', '🌆 關西觀景台懶人包', '大阪、京都、神戶、奈良'),
+               ('/kyushu/observation-decks/', '🗼 九州觀景台懶人包', '福岡塔、稻佐山、熊本城')],
+          f'更新於 {_ob_today.isoformat()}・資料來自各觀景台官網', show_region=True)
 
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
