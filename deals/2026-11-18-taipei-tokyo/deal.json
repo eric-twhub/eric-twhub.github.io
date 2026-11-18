@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-18-taipei-tokyo",
- "generated": "2026-11-18 16:46",
+ "generated": "2026-11-18 20:00",
  "kind": "fare",
  "origin": "taipei",
  "city": "tokyo",
@@ -26,7 +26,7 @@
  "reasons": [
   "12 月出發的票，每天最便宜的平均要 NT$10,531（11 天有紀錄），這張低 13%"
  ],
- "med": 14288,
+ "med": 14287,
  "n_rt": 68,
  "others": [
   {
@@ -35,7 +35,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7512,
+   "price": 7511,
    "dep": "2026-12-23",
    "ret": "2027-01-07",
    "dept": "13:30",
@@ -45,7 +45,7 @@
    "dur": 440,
    "dur_to": 180,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2312NRT07011?t=MM17980326001798047000000180TPENRT17993595001799371500000260NRTTPE_52e169520c8cf445c4484e679aacd87c_18742&search_date=18112026&expected_price_uuid=01a1ed91-bae5-8031-62c1-321c08c7382d&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=YZAac8DMT29EAfkKaYdCMw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7512&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2312NRT07011?t=MM17980326001798047000000180TPENRT17993595001799371500000260NRTTPE_52e169520c8cf445c4484e679aacd87c_18742&search_date=18112026&expected_price_uuid=01a1ed91-bae5-8031-62c1-321c08c7382d&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=YZAac8DMT29EAfkKaYdCMw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7511&marker=775639"
   },
   {
    "o": "TPE",

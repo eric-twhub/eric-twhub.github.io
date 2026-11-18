@@ -398,32 +398,26 @@
   {
    "slug": "deals-2026-11-18-taipei-fukuoka",
    "url": "/deals/2026-11-18-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$4,171 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$4,171 來回含稅｜台灣虎航 12/01 出發"
+   "h1": "台北飛福岡 NT$3,844 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$3,844 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-18-taichung-okinawa",
    "url": "/deals/2026-11-18-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$4,344 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台中飛沖繩 NT$4,344 來回含稅｜台灣虎航 12/14 出發"
+   "h1": "台中飛沖繩 NT$3,844 來回含稅｜台灣虎航 12/28 出發",
+   "title": "台中飛沖繩 NT$3,844 來回含稅｜台灣虎航 12/28 出發"
   },
   {
    "slug": "deals-2026-11-18-taipei-miyazaki",
    "url": "/deals/2026-11-18-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$4,519 來回含稅｜台灣虎航 12/28 出發",
-   "title": "台北飛宮崎 NT$4,519 來回含稅｜台灣虎航 12/28 出發"
+   "h1": "台北飛宮崎 NT$4,501 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台北飛宮崎 NT$4,501 來回含稅｜台灣虎航 12/14 出發"
   },
   {
    "slug": "deals-2026-11-18-kaohsiung-fukuoka",
    "url": "/deals/2026-11-18-kaohsiung-fukuoka/",
-   "h1": "高雄飛福岡 NT$5,085 來回含稅｜台灣虎航 12/15 出發",
-   "title": "高雄飛福岡 NT$5,085 來回含稅｜台灣虎航 12/15 出發"
-  },
-  {
-   "slug": "deals-2026-11-18-taipei-oita",
-   "url": "/deals/2026-11-18-taipei-oita/",
-   "h1": "台北飛大分・別府 NT$5,862 來回含稅｜台灣虎航 12/26 出發",
-   "title": "台北飛大分・別府 NT$5,862 來回含稅｜台灣虎航 12/26 出發"
+   "h1": "高雄飛福岡 NT$4,628 來回含稅｜台灣虎航 12/16 出發",
+   "title": "高雄飛福岡 NT$4,628 來回含稅｜台灣虎航 12/16 出發"
   },
   {
    "slug": "deals-2026-11-18-taipei-nagoya",
@@ -446,20 +440,20 @@
   {
    "slug": "deals-2026-11-18-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-18-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$4,327",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$4,327"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$970",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$970"
   },
   {
    "slug": "deals-2026-11-18-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-18-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$5,003",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$5,003"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$5,330",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$5,330"
   },
   {
    "slug": "deals-2026-11-18-transfer-tokyo-fukushima",
    "url": "/deals/2026-11-18-transfer-tokyo-fukushima/",
-   "h1": "飛東京轉乘去福島，比直飛省 NT$4,649",
-   "title": "飛東京轉乘去福島，比直飛省 NT$4,649"
+   "h1": "飛東京轉乘去福島，比直飛省 NT$4,650",
+   "title": "飛東京轉乘去福島，比直飛省 NT$4,650"
   },
   {
    "slug": "apple-japan-price",
@@ -1162,6 +1156,12 @@
    "url": "/sapporo/observation-decks/",
    "h1": "札幌觀景台：8 個展望台的開放時間、要不要錢",
    "title": "札幌觀景台：8 個展望台開放時間、票價、哪天休（可以選日期）"
+  },
+  {
+   "slug": "kyoto-observation-decks",
+   "url": "/kyoto/observation-decks/",
+   "h1": "京都觀景台：13 個展望台的開放時間、要不要錢",
+   "title": "京都觀景台：13 個展望台開放時間、票價、哪天休（可以選日期）"
   },
   {
    "slug": "hokkaido-observation-decks",
