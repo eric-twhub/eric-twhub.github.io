@@ -17,7 +17,8 @@
     "takeya": "民報引述多慶屋台灣粉專寫手續費 0 日圓；LIVE JAPAN 發券頁 11/12 更新也寫 0 日圓。多慶屋官網到 11/13 連免稅說明頁都沒有（外國客頁、服務指南、FAQ、公告列表都沒有免稅字樣）。",
     "edion": "HK01 寫每筆定額 210 日圓，沒附出處。LIVE JAPAN 發券頁 11/6 更新只寫退稅要另付手續費，沒寫金額。",
     "yamada": "Ocean 的業者頁有「1.55% 系統利用料」字樣，看起來是舊制時期寫的，不是山田公告的費率。",
-    "3coins": "Threads 上有旅客說被收 5.7%，找不到原文。"
+    "3coins": "Threads 上有旅客說被收 5.7%，找不到原文。",
+    "odakyu": "小田急百貨的日文服務頁（2026-09-22 更新）寫免稅手續費是免稅對象金額的 1.5%，但同一段寫當場退現金，是 11/1 新制前的說明，不算新制公告。"
   },
   "checked": "2026-11-05",
   "reported": {
@@ -57,6 +58,10 @@
      "note": "退款由 Global Blue 處理，扣掉手續費後退還，沒寫費率。",
      "quote": "返金の際は、手数料を差し引いた金額をお返しします。",
      "src": "https://www.sogo-seibu.jp/global/tax-refund", "src_name": "西武・SOGO 官方免稅說明"},
+    {"name": "京王百貨", "slug": "keio", "status": "no_rate", "rate": "沒寫", "base": "",
+     "note": "官方退稅指南寫退款由 Global Blue 處理、會扣退稅手續費，詳細看 Global Blue 的條款，沒寫費率。用京王 Passport 卡等會員卡買的商品不能免稅。",
+     "quote": "退稅時將被扣除退稅手續費。詳情請瀏覽 Global Blue 官網",
+     "src": "https://www.keionet.com/info/shinjuku/foreign/zh-tw/", "src_name": "京王百貨新宿店官方繁中頁的退稅指南"},
     {"name": "UNIQLO", "slug": "uniqlo", "status": "fee", "rate": "約 10%", "base": "退稅金額",
      "per10k": "約 ¥900",
      "note": "退稅業者 J&J 退款時扣。日文頁沒寫從哪個金額算，英文頁寫從退款金額扣。要在購買日起 180 天內到 J-TaxRefund 申請。",
@@ -114,6 +119,7 @@
     {"name": "鶴羽藥妝", "slug": "tsuruha", "status": "none", "old": true, "old_src": "https://www.tsuruha.co.jp/tw/", "old_checked": "2026-11-13"},
     {"name": "COSMOS 藥品", "slug": "cosmos", "status": "none"},
     {"name": "高島屋", "slug": "takashimaya", "status": "none"},
+    {"name": "小田急百貨", "slug": "odakyu", "status": "none"},
     {"name": "EDION", "slug": "edion", "status": "none"},
     {"name": "多慶屋", "slug": "takeya", "status": "none"},
     {"name": "AEON", "slug": null, "status": "none"},

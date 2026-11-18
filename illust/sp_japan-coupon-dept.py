@@ -1,4 +1,4 @@
-# 購物折扣總覽 2026-11-18 新增的四家百貨（三越伊勢丹、阪急阪神、西武・SOGO、高島屋）的插圖與提醒卡。
+# 購物折扣總覽 2026-11-18 新增的百貨（三越伊勢丹、阪急阪神、西武・SOGO、高島屋、小田急、京王）的插圖與提醒卡。
 # 畫法沿用大丸那支（sp_japan-coupon-daimaru.py）的小工具：百貨外觀不描任何一家分店，
 # 招牌、旗子留白，不畫商標與精品品牌。說明文字在 illust/spots/japan-coupon-<slug>.json。
 import os, sys, math
@@ -140,6 +140,38 @@ def card_svg(pfx):
     return counter_svg(pfx, creditcard(118, 74, .8, LAV))
 
 
+def barphone(x, y, s=1.0):
+    # 手機畫面上是一條示意條碼（粗細不一的直線，不是真的條碼）
+    t = (f'<rect x="{x}" y="{y}" width="{40*s}" height="{70*s}" rx="{7*s}" fill="{NAVY}"/>'
+         f'<rect x="{x+4*s}" y="{y+8*s}" width="{32*s}" height="{54*s}" rx="2" fill="{WHITE}" stroke-width="1.4"/>'
+         f'<rect x="{x+8*s}" y="{y+14*s}" width="{24*s}" height="{10*s}" rx="2" fill="{NAVY}" stroke="none"/>')
+    bx = x + 8 * s
+    for i, w in enumerate((2, 1, 1, 3, 1, 2, 1, 1, 2, 1, 3, 1)):
+        t += f'<rect x="{bx + i*2*s:.1f}" y="{y+30*s:.1f}" width="{w*0.8*s:.1f}" height="{18*s:.1f}" fill="{INK}" stroke="none"/>'
+    return t
+
+
+def barcode_svg(pfx):
+    return build(pfx + 'barcode', '手繪結帳櫃台，旅客把手機上的條碼券給店員看，旁邊是一張券卡',
+        floor(152)
+        + f'<rect x="20" y="104" width="200" height="48" rx="6" fill="#d9c8ad"/>'
+        + register(150, 66, .9)
+        + person(196, 52, NAVY, 1.2)
+        + person(56, 66, PINK, 1.5)
+        + barphone(80, 58, .8) + paperticket(110, 112, .7)
+        + sparkle(30, 30) + star(120, 30, 6))
+
+
+def food_svg(pfx):
+    # 食品賣場不折：便當、蛋糕、零食，旁邊一個禁止圈
+    return build(pfx + 'food', '手繪食品賣場：便當、蛋糕和零食，旁邊一個禁止圈',
+        floor(152)
+        + f'<rect x="18" y="96" width="204" height="56" rx="6" fill="{WHITE}"/>'
+        + f'<rect x="18" y="90" width="204" height="10" rx="3" fill="{STONE}"/>'
+        + bento(30, 104, 1.0) + cake(96, 118, 1.1) + snack(150, 46, GOLD, .9)
+        + nope(196, 34, 18) + sparkle(30, 30))
+
+
 # ---- 提醒小圖 ----
 def rem_svg(name, label, inner):
     return svg(name, 120, 120, label, inner, bg=YEL)
@@ -217,6 +249,12 @@ PAGES = {
         building_svg(p, (RED, GOLD), (TEAL, PINK)), card_svg(p),
         luxury_svg(p, '手繪精品櫃：手錶、戒指和包包，旁邊一個禁止圈'),
         r_total(p), r_ask(p)]),
+    'japan-coupon-odakyu': ('od-', lambda p: [
+        building_svg(p, (SKY, RED), (PINK, TEAL)), barcode_svg(p), food_svg(p),
+        r_points(p), r_total(p)]),
+    'japan-coupon-keio': ('ke-', lambda p: [
+        building_svg(p, (GOLD, NAVY), (ORANGE, LAV)), counter_svg(p, paperticket(118, 72, .8)), food_svg(p),
+        r_points(p), r_sameday(p)]),
 }
 
 n = 0

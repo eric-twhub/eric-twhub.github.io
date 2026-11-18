@@ -87,6 +87,8 @@ h1 em{font-style:normal;color:#c2410c}
 .row:last-child{border-bottom:0}
 /* 列數多（店家一覽 9 列以上）時收窄列距 */
 .tight .row{padding:8px 0}
+/* 10 列以上（店家一覽 20 家各分一半）再收一次 */
+.tighter .row{padding:5px 0}
 .num{flex:0 0 42px;font-size:22px;font-weight:700;color:#c2410c;
  font-variant-numeric:tabular-nums}
 .nm{flex:1 1 auto;font-size:30px;font-weight:700;line-height:1.28;letter-spacing:-.01em}
@@ -261,7 +263,7 @@ def build(d, today):
                 '結帳前看發券頁。</div>'
                 '<div class="legend">「發券頁未標」表示那一頁沒有寫有效期限，'
                 '不是永久有效，隨時可能換掉。</div>'
-                f'<div class="list{" tight" if len(items) > 8 else ""}">{rows}</div>' + foot(idx, n, fnote))
+                f'<div class="list{" tight" if len(items) > 8 else ""}{" tighter" if len(items) > 9 else ""}">{rows}</div>' + foot(idx, n, fnote))
 
     half = (len(ordered) + 1) // 2
     out.append(('cp-03.png', page(store_card(3, '①', ordered[:half], 1))))
@@ -356,7 +358,7 @@ def build(d, today):
 
     # ── 10 百貨與電器量販 ──
     # 藥妝那篇已經單獨發過，這組是給百貨與免稅店那篇用的。
-    # 百貨 2026-11-18 起有 5 家，另外放第 11 張；這張只留電器、綜合與運動
+    # 百貨另外放第 11 張；這張只留電器、綜合與運動
     shop = [s for s in sts if s.get('cat') not in ('藥妝', '百貨')]
     shop.sort(key=lambda s: (dead(s), -s['max']))
     def _min(s):
@@ -389,12 +391,14 @@ def build(d, today):
     out.append(('cp-10.png', page(inner)))
 
     # ── 11 百貨的 5% 券 ──
-    # 2026-11-18 從「大丸那一張」改成五家並排：讀者要比的是哪家能疊免稅、門檻多少。
+    # 2026-11-18 從「大丸那一張」改成百貨並排：讀者要比的是哪家能疊免稅、門檻多少。
+    # 7 家起兩句全文放不下，改用 coupons.json 的 brief（怎麼拿｜門檻｜免稅）一行。
     dept = [s for s in sts if s.get('cat') == '百貨']
     if dept:
         rows = ''.join(
             f'<div class="blk"><b>{E(s["name"].split()[0])}</b>'
-            f'<s>{E(s["tiers"])}。{E(s["combo"])}。</s></div>' for s in dept)
+            + (f'<s>{"｜".join(E(x) for x in s["brief"])}</s></div>' if s.get('brief')
+               else f'<s>{E(s["tiers"])}。{E(s["combo"])}。</s></div>') for s in dept)
         inner = ('<div class="kick">百貨公司・出示護照打 95 折</div>'
                  f'<h1>百貨的 <em>5% 券</em> {len(dept)} 家</h1>'
                  '<div class="sub">多半不能和店家自己的點數或其他折扣一起用；'
