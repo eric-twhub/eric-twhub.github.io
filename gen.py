@@ -28039,7 +28039,15 @@ if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in global
         return (f'<a class="cta" href="{h}" target="_blank" rel="{_rel(h)}">'
                 f'<span class="ci">{icon}</span><span class="ct"><b>{title}</b><s>{sub}</s></span><span class="ca">→</span></a>')
 
-    # ---- 晴空塔：每日營業時間與天望甲板大人價（官方訂票日曆快照） ----
+    # ---- 每一天的開放時間、票價與便利貼：從今天（日本時間）往後算 _td_N 天 ----
+    # 讀者常是先看天氣再挑日子，所以不只給今天：總表上方有日期選擇，資料在這裡一天一天算好嵌進頁面。
+    # 官網還沒公布的日子一律寫「官網還沒公布」，不推測（晴空塔日曆、六本木 hours_until、陽光 60 最旺季日曆、
+    # 球體展望室臨時休館日、都廳 known_until 各自到哪天為止，都看各自的欄位）。
+    _td_N = 90
+    _td_days = [_td_today + datetime.timedelta(days=i) for i in range(_td_N)]
+    _TBD = '官網還沒公布'
+
+    # 晴空塔：每日營業時間與天望甲板大人價（官方訂票日曆快照）
     _st_h = STR['hours'].get(_td_iso)
     _st_p = STR['price'].get(_td_iso)
     _st_next = [STR['price'][k] for k in sorted(STR['price']) if _td_iso <= k <= (_td_today + datetime.timedelta(days=30)).isoformat()]
@@ -28050,9 +28058,12 @@ if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in global
         _st_price_s = f'天望甲板大人 {STR["from"]["deck"]:,} 円起，日期不同價格不同'
     _st_today_h = '、'.join(_st_h) if _st_h else None
 
-    # ---- 陽光 60：今天的時間與票價等級 ----
+    # 陽光 60：時間表與票價等級
     _ss = _TDP['sunshine']
-    _ss_h = next((h for a, b, h in _ss['hours_table'] if a <= _td_iso <= b), None)
+
+    def _ss_hours(d):
+        iso = d.isoformat()
+        return next((h for a, b, h in _ss['hours_table'] if a <= iso <= b), None)
 
     def _ss_tier(d):
         iso = d.isoformat()
@@ -28065,81 +28076,155 @@ if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in global
         return ('平日', 700)
     _ss_t = _ss_tier(_td_today)
 
-    # ---- 台場球體展望室：今天有沒有開 ----
+    # 台場球體展望室：True 開、False 休、None 照常開但臨時休館日官網還沒公布
     _hc = _TDP['hachitama']
 
     def _hc_open(d):
         iso = d.isoformat()
         if iso in _hc['closed_dates']:
             return False
-        if d.weekday() == 0:
-            return iso in _td_jph
-        if (d - datetime.timedelta(days=1)).isoformat() in _td_jph and d.weekday() == 1:
+        if d.weekday() == 0 and iso not in _td_jph:
             return False
-        return True
+        if d.weekday() == 1 and (d - datetime.timedelta(days=1)).isoformat() in _td_jph:
+            return False
+        return True if iso <= _hc['closed_known_until'] else None
     _hc_o = _hc_open(_td_today)
 
-    # ---- 東京 City View：時間只公布到 hours_until ----
+    # 東京 City View：時間只公布到 hours_until
     _rp = _TDP['roppongi']
     _rp_known = _td_iso <= _rp['hours_until']
 
-    # 免費觀景台今天的時間
-    def _free_today(f):
-        if f.get('reopen') and _td_iso < f['reopen_check']:
-            return '整修關閉中'
-        if f['key'] == 'tocho':
-            if _td_iso in f['special']:
-                return f['special'][_td_iso]
-            if _td_iso > f['known_until']:
-                return '以官網為準'
-            if _td_iso in f['both_closed']:
-                return '兩間都休'
-            s_cl, n_cl = _td_iso in f['south_closed'], _td_iso in f['north_closed']
-            if s_cl:
-                return '南休；北 9:30～22:00'
-            return '南 9:30～22:00；' + ('北休' if n_cl else '北 9:30～17:30')
-        if f['key'] == 'kitte':
-            if _td_today.month == 1 and _td_today.day == 1:
-                return '全館休'
-            return '11:00～22:00' if (_td_today.weekday() >= 5 or _td_iso in _td_jph) else '11:00～23:00'
-        return f['hours_short']
-    for f in TD['free']:
-        f['hours_short'] = _free_today(f)
-
-    # 總表的每一列：(名稱, 錨點, 地區, 今天的時間, 大人票價, 要不要預約)
-    _sky_last = SKY['hours'].split('最後入場')[-1].strip(' ，,') if '最後入場' in SKY['hours'] else ''
+    # SHIBUYA SKY：元旦休館（shibuya-sky.json 的 closed），其他臨時休館官網另外公告
     _sky_open = SKY['hours'].split('，')[0].replace('–', '～')
-    _rows = [
-        ('東京晴空塔', 'skytree', '押上', (_st_today_h or '以官網為準'),
-         (f'{_st_p:,} 円' if _st_p else f'{STR["from"]["deck"]:,} 円起'), '可以現場買，網路便宜'),
-        ('東京鐵塔', 'tower', '芝公園', TTW['hours'], f'{TTW["price"]["main"][0]:,} 円', '不用'),
-        ('SHIBUYA SKY', 'shibuya', '澀谷', _sky_open, f'{SKY["price"]["web_day"]:,} 円起', '建議先買，常賣完'),
-        ('六本木之丘 東京 City View', 'roppongi', '六本木',
-         (_rp['hours'] if _rp_known else '以官網為準'), f'{_rp["price_min"]:,} 円起', '網路指定時段，有空位可現場買'),
-        ('陽光 60 展望台', 'sunshine', '池袋', (_ss_h or '以官網為準'),
-         (f'{_ss_t[1]:,} 円' if _ss_t else f'{_ss["price_min"]:,} 円起'), '週末假日要先買'),
-        ('富士電視台 球體展望室', 'hachitama', '台場',
-         (_hc['hours'] if _hc_o else ('今天休' if _hc_o is False else '以官網為準')), f'{_hc["price_min"]:,} 円', '不能預約'),
-    ] + [(f['short'], f['key'], f['area'], f['hours_short'], '免費', '不用') for f in TD['free']]
 
-    _td_table = ('<div class="tw qk"><table><thead><tr><th>觀景台</th><th>今天開放</th><th>大人</th></tr></thead><tbody>'
-        + ''.join(f'<tr><td><a href="#{k}">{html.escape(n)}</a><br><small>{html.escape(a)}</small></td>'
+    def _sky_on(d):
+        return '元旦休館' if (d.month, d.day) == (1, 1) and '元旦休館' in SKY['closed'] else _sky_open
+
+    # 免費觀景台某一天的時間
+    def _free_on(f, d):
+        iso = d.isoformat()
+        if f.get('reopen'):
+            if _td_iso >= f['reopen_check']:
+                return '以官網為準'
+            # reopen 寫的是 2026 年 12 月上旬重開、日期未公告：12/1 以後哪天開都不知道，不能寫「整修關閉中」
+            return '整修關閉中' if iso < '2026-12-01' else '預定 12 月上旬重開，日期未公告'
+        if f['key'] == 'tocho':
+            if iso in f['special']:
+                return f['special'][iso]
+            if iso > f['known_until']:
+                return _TBD
+            if iso in f['both_closed']:
+                return '兩間都休'
+            if iso in f['south_closed']:
+                return '南休；北 9:30～22:00'
+            return '南 9:30～22:00；' + ('北休' if iso in f['north_closed'] else '北 9:30～17:30')
+        if f['key'] == 'kitte':
+            if (d.month, d.day) == (1, 1):
+                return '全館休'
+            return '11:00～22:00' if (d.weekday() >= 5 or iso in _td_jph) else '11:00～23:00'
+        return f['hours_short']
+
+    def _td_ye(d):
+        # 東京鐵塔、SHIBUYA SKY 沒有年末年始的逐日資料，12/31、1/1 不照平常時間斷言
+        return '（年末年始以官網為準）' if (d.month, d.day) in ((12, 31), (1, 1)) else ''
+
+    def _td_cells(d):
+        """總表某一天的 (時間, 大人票價)，順序和 _rows 一樣。"""
+        iso = d.isoformat()
+        sth, stp, tier, hco = STR['hours'].get(iso), STR['price'].get(iso), _ss_tier(d), _hc_open(d)
+        return ([('、'.join(sth) if sth else _TBD, f'{stp:,} 円' if stp else f'{STR["from"]["deck"]:,} 円起'),
+                 (TTW['hours'] + _td_ye(d), f'{TTW["price"]["main"][0]:,} 円'),
+                 (_sky_on(d) + ('' if (d.month, d.day) == (1, 1) else _td_ye(d)), f'{SKY["price"]["web_day"]:,} 円起'),
+                 (_rp['hours'] if iso <= _rp['hours_until'] else _TBD, f'{_rp["price_min"]:,} 円起'),
+                 (_ss_hours(d) or _TBD, f'{tier[1]:,} 円' if tier else f'{_ss["price_min"]:,} 円起'),
+                 ('休館' if hco is False else (_hc['hours'] if hco else _hc['hours'] + '（臨時休館日未公布）'),
+                  f'{_hc["price_min"]:,} 円')]
+                + [(_free_on(f, d), '免費') for f in TD['free']])
+
+    def _td_note(d):
+        """便利貼的內容（不含日期開頭）。"""
+        iso = d.isoformat()
+        s = ''
+        if '_sky_sunset' in globals():
+            m = int(round(_sky_sunset(d)))
+            s += f'東京日落約 {m // 60}:{m % 60:02d}。'
+        stp, tier, hco = STR['price'].get(iso), _ss_tier(d), _hc_open(d)
+        if (d.month, d.day) == (1, 1) and '元旦休館' in SKY['closed']:
+            s += 'SHIBUYA SKY 元旦休館。'
+        if hco is False:
+            s += '台場球體展望室休館。'
+        if _free_on(_TDF['tocho'], d) == '兩間都休':
+            s += '都廳展望室兩間都休。'
+        s += (f'晴空塔天望甲板大人 {stp:,} 円。' if stp else '晴空塔這天的票價官網還沒公布。')
+        s += (f'陽光 60 是{tier[0]}價 {tier[1]:,} 円。' if tier else '')
+        return s
+
+    for f in TD['free']:
+        f['hours_short'] = _free_on(f, _td_today)
+
+    # 嵌進頁面的逐日資料：{日期: [「11/20（五）」, 便利貼, [[時間, 票價], …]]}
+    _td_data = {d.isoformat(): [_td_md(d), _td_note(d), [list(c) for c in _td_cells(d)]] for d in _td_days}
+
+    # 總表的每一列：(名稱, 錨點, 最近車站, 今天的時間, 大人票價)
+    _td_c0 = _td_cells(_td_today)
+    _rows = [(n, k, a, h, p) for (n, k, a), (h, p) in zip(
+        [('東京晴空塔', 'skytree', TD['near_existing']['skytree']),
+         ('東京鐵塔', 'tower', TD['near_existing']['tower']),
+         ('SHIBUYA SKY', 'shibuya', TD['near_existing']['shibuya']),
+         ('六本木之丘 東京 City View', 'roppongi', _rp['near']),
+         ('陽光 60 展望台', 'sunshine', _ss['near']),
+         ('富士電視台 球體展望室', 'hachitama', _hc['near'])]
+        + [(f['short'], f['key'], f['near']) for f in TD['free']], _td_c0)]
+
+    _td_jma = 'https://www.jma.go.jp/bosai/forecast/#area_type=offices&area_code=130000'
+    _td_table = (
+        '<div class="tdpk" id="tdpk" hidden><b>你哪天去？</b><div class="tdch" id="tdch"></div>'
+        f'<label class="tdmore">更後面的日期<input type="date" id="tddt"></label>'
+        f'<p class="disc">還沒決定哪天的話，可以先看<a href="{_td_jma}" target="_blank" rel="nofollow noopener">日本氣象廳的東京天氣預報</a>'
+        f'（日文，有一週預報），再回來選日期。可以選到 {_td_md(_td_days[-1])}，官網還沒公布的日子會照實寫「{_TBD}」。</p></div>'
+        '<div class="tw qk" id="tdtb"><table><thead><tr><th>觀景台</th><th>最近車站</th><th id="tdth">今天開放</th><th>大人</th></tr></thead><tbody>'
+        + ''.join(f'<tr><td><a href="#{k}">{html.escape(n)}</a></td><td>{html.escape(a)}</td>'
                   f'<td>{html.escape(h)}</td>' + ('<td>' if p == '免費' else '<td class="xpay">') + f'{html.escape(p)}</td></tr>'
-                  for n, k, a, h, p, _b in _rows)
+                  for n, k, a, h, p in _rows)
         + '</tbody></table></div>'
-        + f'<p class="disc">「今天」是日本時間 {_td_md(_td_today)}。付費的票價是大人一張，晴空塔是天望甲板（350 m）、東京鐵塔是 Main Deck、'
+        + f'<p class="disc">表上是<span id="tdwhen">今天（日本時間 {_td_md(_td_today)}）</span>的時間。付費的票價是大人一張，晴空塔是天望甲板（350 m）、東京鐵塔是 Main Deck、'
           'SHIBUYA SKY 是 15:00 前入場的網路價；六本木是網路價。</p>')
 
-    # 今天的便利貼
-    _ss_now = (f'{_td_md(_td_today)}（日本時間）')
-    _sunset = ''
-    if '_sky_sunset' in globals():
-        _m = int(round(_sky_sunset(_td_today)))
-        _sunset = f'{_m // 60}:{_m % 60:02d}'
-    _note = (f'今天 {_ss_now}：東京日落約 {_sunset}。' if _sunset else f'今天 {_ss_now}：')
-    _note += ('台場球體展望室今天休館。' if _hc_o is False else '')
-    _note += (f'晴空塔今天天望甲板大人 {_st_p:,} 円。' if _st_p else '')
-    _note += (f'陽光 60 今天是{_ss_t[0]}價 {_ss_t[1]:,} 円。' if _ss_t else '')
+    _td_js = ('<script>(function(){var D=' + json.dumps(_td_data, ensure_ascii=False, separators=(',', ':'))
+      + ';var pk=document.getElementById("tdpk");if(!pk)return;'
+      'var t=new Date(Date.now()+324e5).toISOString().slice(0,10);'
+      'var ks=Object.keys(D).sort().filter(function(k){return k>=t});if(!ks.length)return;'
+      'var ch=document.getElementById("tdch"),inp=document.getElementById("tddt"),th=document.getElementById("tdth"),'
+      'wh=document.getElementById("tdwhen"),nt=document.getElementById("tdnote"),'
+      'rs=document.querySelectorAll("#tdtb tbody tr"),bs=[];'
+      'function lab(k){return k===t?"今天":D[k][0]}'
+      'function show(k){var v=D[k];if(!v)return;'
+      'for(var i=0;i<rs.length&&i<v[2].length;i++){var c=rs[i].cells;c[2].textContent=v[2][i][0];c[3].textContent=v[2][i][1];'
+      'if(c[2].hasAttribute("data-l"))c[2].setAttribute("data-l",lab(k)+"開放");}'
+      'th.textContent=lab(k)+"開放";'
+      'wh.textContent=k===t?"今天（日本時間 "+v[0]+"）":v[0];'
+      'if(nt)nt.textContent=(k===t?"今天 "+v[0]+"（日本時間）":v[0])+"："+v[1];'
+      'bs.forEach(function(b){b.className=b.getAttribute("data-k")===k?"on":""});inp.value=k;}'
+      'ks.slice(0,14).forEach(function(k){var b=document.createElement("button");b.type="button";'
+      'b.setAttribute("data-k",k);b.textContent=k===t?"今天":D[k][0].replace("（"," ").replace("）","");'
+      'b.onclick=function(){show(k)};ch.appendChild(b);bs.push(b);});'
+      'inp.min=ks[0];inp.max=ks[ks.length-1];inp.onchange=function(){if(D[inp.value])show(inp.value)};'
+      'pk.hidden=false;show(ks[0]);})();</script>')
+
+    _td_css = ('<style>'
+      '.tdpk{border:2px dashed var(--edge);border-radius:14px;padding:12px 14px;margin:10px 0 14px;background:var(--paper)}'
+      '.tdpk>b{color:var(--ink);font-size:1.02rem}'
+      '.tdch{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}'
+      '.tdch button{font:inherit;font-size:.88rem;padding:5px 10px;border:1.5px solid var(--edge);border-radius:999px;'
+      'background:var(--card);color:var(--ink);cursor:pointer}'
+      '.tdch button.on{background:#c2410c;border-color:#c2410c;color:#fff;font-weight:700}'
+      '.tdmore{display:flex;align-items:center;gap:8px;font-size:.9rem;flex-wrap:wrap}'
+      '.tdmore input{font:inherit;font-size:16px;padding:5px 8px;border:1.5px solid var(--edge);border-radius:8px;background:var(--card)}'
+      '.tdpk .disc{margin:8px 0 0}'
+      '</style>')
+
+    # 今天的便利貼（JS 會依選的日期換掉）
+    _note = f'今天 {_td_md(_td_today)}（日本時間）：' + _td_note(_td_today)
 
     # ---- 每一家的段落 ----
     def _sec(anchor, ill, title, inner):
@@ -28285,7 +28370,7 @@ if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in global
            f'要不要先買票，以及 {_n_free} 個免費展望台（{"、".join(f["short"] for f in TD["free"][:4])}等）的時間與交通；'
            '每天自動更新今天的開放時間與晴空塔票價。',
            'tokyo/observation-decks/',
-           '<script type="application/ld+json">' + td_ld + '</script>')
+           '<script type="application/ld+json">' + td_ld + '</script>' + _td_css)
       + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('東京觀景台', None)])
       + '<article class="art">'
       + f'<h1>東京觀景台懶人包：{_n_all} 個展望台的開放時間、要不要錢</h1>'
@@ -28295,9 +28380,9 @@ if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in global
         f'要買票的 6 個、不用錢的 {_n_free} 個，開放時間、大人票價和要不要先預約，都是回去翻官網查的。</p>'
       + '<p class="ap">先講結論：<mark>預算有限就去免費的</mark>，東京都廳和淺草那幾個不用花錢就能看；'
         '想看夕陽的話，SHIBUYA SKY 要提早買票，晴空塔網路買比現場便宜。</p>'
-      + f'<p class="sticky">{html.escape(_note)}</p>'
+      + f'<p class="sticky" id="tdnote">{html.escape(_note)}</p>'
       + '<nav class="atoc"><b>這篇有</b><ol>'
-        '<li><a href="#all">先看總表</a></li>'
+        '<li><a href="#all">先看總表（可以選日期）</a></li>'
         '<li><a href="#pick">我會這樣挑</a></li>'
         '<li><a href="#paid">要買票的觀景台</a></li>'
         '<li><a href="#free">免費的觀景台</a></li>'
@@ -28331,7 +28416,7 @@ if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in global
       + f'<a class="ct" href="{U("/tokyo/subway-ticket/")}"><b>🚇 東京地鐵三日券</b><s>六本木、押上、澀谷都在線上</s></a></div>'
       + f'<p class="disc">時間與票價以各觀景台官網為準，整理可能有疏漏。查證於 {TD["checked"]}，之後官方若有更改，本頁不一定跟上。'
         '本頁為公開資訊整理，與文中觀景台無合作關係。</p>'
-      + '</article>'
+      + '</article>' + _td_js
       + foot())
     pages.append(('/tokyo/observation-decks/', 0.7))
 

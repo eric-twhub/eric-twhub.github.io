@@ -36,7 +36,8 @@
    "kkday": {
     "id": 18946,
     "url": "https://www.kkday.com/zh-tw/product/18946-tokyo-city-view-ticket-roppongi-hills-observatory"
-   }
+   },
+   "near": "六本木站 1C 出口走 3 分"
   },
   {
    "key": "sunshine",
@@ -116,7 +117,8 @@
     "id": 166262,
     "url": "https://www.kkday.com/zh-tw/product/166262-sunshine-aquarium-60-observation-deck-park-ikebukuro-tokyo",
     "label": "陽光水族館＋展望台"
-   }
+   },
+   "near": "東池袋站走 3 分到陽光城"
   },
   {
    "key": "hachitama",
@@ -140,7 +142,8 @@
    "src": "https://www.fujitv.com/ja/visit_fujitv/",
    "desc": "台場那顆大球，官網說看的是臨海一帶的全景。18:00 就關、週一休，比較適合白天排進台場行程。",
    "klook": null,
-   "kkday": null
+   "kkday": null,
+   "near": "台場站南口走 3 分"
   }
  ],
  "free": [
@@ -189,7 +192,8 @@
    "station": "大江戶線都廳前站直通；JR 新宿站西口走路約 10 分鐘",
    "map": "東京都庁 展望室",
    "src": "https://www.zaimu.metro.tokyo.lg.jp/tochousha/goannai/tenbou",
-   "desc": "免費觀景台裡最有名的一個。官網說西邊是看富士山的方向，12 月到 2 月空氣比較清楚，看得到的日子比較多；東北邊看得到晴空塔。晚上大樓東側牆面有光雕投影，天候不佳以外每天上映，在樓下的都民廣場看。"
+   "desc": "免費觀景台裡最有名的一個。官網說西邊是看富士山的方向，12 月到 2 月空氣比較清楚，看得到的日子比較多；東北邊看得到晴空塔。晚上大樓東側牆面有光雕投影，天候不佳以外每天上映，在樓下的都民廣場看。",
+   "near": "都廳前站直通"
   },
   {
    "key": "asakusa",
@@ -205,7 +209,8 @@
    "station": "銀座線淺草站 2 號出口約 1 分鐘；都營淺草線淺草站 A4 出口約 2 分鐘",
    "map": "浅草文化観光センター",
    "src": "https://www.city.taito.lg.jp/bunka_kanko/kankoinfo/info/oyakudachi/kankocenter/a-tic-gaiyo.html",
-   "desc": "官網說從 8 樓看得到淺草的街景和晴空塔。樓不高，但就在淺草站旁邊，逛完淺草順路上去很方便。"
+   "desc": "官網說從 8 樓看得到淺草的街景和晴空塔。樓不高，但就在淺草站旁邊，逛完淺草順路上去很方便。",
+   "near": "淺草站 2 號出口走 1 分"
   },
   {
    "key": "kitte",
@@ -221,7 +226,8 @@
    "station": "JR 東京站走路約 1 分鐘；丸之內線東京站地下道直通",
    "map": "KITTEガーデン",
    "src": "https://marunouchi.jp-kitte.jp/guide/facilities.jsp",
-   "desc": "官網說可以一覽東京車站丸之內站舍，紅磚的車站就在正前方。"
+   "desc": "官網說可以一覽東京車站丸之內站舍，紅磚的車站就在正前方。",
+   "near": "東京站走 1 分"
   },
   {
    "key": "bunkyo",
@@ -239,7 +245,8 @@
    "station": "丸之內線、南北線後樂園站約 1 分鐘；三田線、大江戶線春日站約 1 分鐘",
    "map": "文京シビックセンター 展望ラウンジ",
    "src": "https://www.city.bunkyo.lg.jp/shisetsu/civiccenter/tenbo.html",
-   "desc": "文京區公所的大樓，官網說東邊看得到晴空塔，西邊是新宿高樓和富士山。目前在整修，重開前不能上去。"
+   "desc": "文京區公所的大樓，官網說東邊看得到晴空塔，西邊是新宿高樓和富士山。目前在整修，重開前不能上去。",
+   "near": "後樂園站走 1 分"
   }
  ],
  "unverified": [
@@ -254,5 +261,10 @@
   "東京都廳 2027/3/7（東京馬拉松那天）：開室月曆寫 9:30 開，官網內文寫約 11:00 才開，以官網當天公告為準"
  ],
  "free_intro": "下面這幾個都是官網寫明入場免費的。東京都廳最有名，官網說入室要排 20～30 分鐘；淺草和東京車站那兩個是露天的，可以順路去。網路上常看到的惠比壽花園廣場、澀谷 Hikarie、晴空塔商店街高樓層，官網都沒有寫有免費展望區，所以這裡不列。",
- "pick_free": "新宿的東京都廳展望室免費開到 22:00，冬天白天有機會看到富士山；在淺草就上淺草文化觀光中心 8 樓，看得到淺草的街景和晴空塔；在東京車站就上 KITTE 屋頂，正對紅磚車站。"
+ "pick_free": "新宿的東京都廳展望室免費開到 22:00，冬天白天有機會看到富士山；在淺草就上淺草文化觀光中心 8 樓，看得到淺草的街景和晴空塔；在東京車站就上 KITTE 屋頂，正對紅磚車站。",
+ "near_existing": {
+  "skytree": "押上站、東京晴空塔站直通",
+  "tower": "赤羽橋站走 5 分",
+  "shibuya": "澀谷站直通"
+ }
 }
