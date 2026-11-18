@@ -1800,6 +1800,7 @@ def topnav(cur=''):
             + link('/kyoto/autumn-leaves/', '🍁 京都賞楓要預約的地方')
             + link('/tokyo/autumn-leaves/', '🍁 東京賞楓要買票的地方')
             + link('/tokyo/christmas-market/', '🎄 東京聖誕市集門票與日期')
+            + link('/tokyo/observation-decks/', '🌃 東京觀景台開放時間與門票')
             + link('/hakodate/christmas-fantasy/', '🎄 函館聖誕夢幻節')
             + link('/hakodate/ropeway/', '🚡 函館山纜車營業時間與夜景')
             + link('/yonago/conan-museum/', '🕵️ 青山剛昌故鄉館要先買票')
@@ -1993,6 +1994,7 @@ _AD_MAP = [
     ('japan-tsurunoyu', 'transport'),
     ('tokyo/autumn-leaves', 'esim'),
     ('tokyo/christmas-market', 'esim'),
+    ('tokyo/observation-decks', 'activity2'),
     ('hakodate/christmas-fantasy', 'esim'),
     ('hakodate/ropeway', 'esim'),
     ('yonago/conan-museum', 'esim'),
@@ -3032,6 +3034,7 @@ _STK_EXACT = {
 }
 _STK_PREFIX = sorted({
     '/tokyo/christmas-market/': '',
+    '/tokyo/observation-decks/': '',
     '/hakodate/christmas-fantasy/': 'st/seatree',
     '/hakodate/ropeway/': 'st/ropeway',
     '/yonago/conan-museum/': 'st/conan',
@@ -3546,6 +3549,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'（{HS_NIGHTS} 晚 {money(HS_MIN)} 起，附各家的弱點與櫃檯開門時間）；'
                      f'不想睡床位的話，另有'
                      f'<a href="{U("/tokyo/budget-hotel/")}">共用衛浴的私人房</a>。</p>')
+        if slug == 'tokyo' and os.path.exists('tokyo-decks.json'):
+            body += (f'<p class="lede">想找地方看夜景？'
+                     f'<a href="{U("/tokyo/observation-decks/")}">東京觀景台懶人包</a>'
+                     f'（晴空塔、東京鐵塔、SHIBUYA SKY 等付費展望台的開放時間與票價，還有東京都廳等免費的）。</p>')
         if slug == 'tokyo' and os.path.exists('tokyo-picks.json'):
             body += (f'<p class="lede">吃的呢？'
                      f'<a href="{U("/tokyo/worth-flying-for/")}">東京值得為它再飛一次的 45 家店</a>'
@@ -9099,6 +9106,9 @@ if os.path.exists('shibuya-sky.json'):
       + '<h2>營業時間與入口</h2>'
       + f'<p class="lede">{SKY["hours"]}；{html.escape(SKY["counter"])}。{html.escape(SKY["closed"])}'
         f'{html.escape(SKY["where"])}</p>'
+      + (f'<p class="lede">想比較其他觀景台？<a href="{U("/tokyo/observation-decks/")}">東京觀景台懶人包</a>'
+         '把晴空塔、東京鐵塔、SHIBUYA SKY、六本木、池袋陽光 60 和免費的東京都廳等放在一起比開放時間與票價。</p>'
+         if os.path.exists('tokyo-decks.json') else '')
       + '<h2>常見問題</h2>' + sky_html
       + '<p class="disc">票價、開賣規則與入場方式以 SHIBUYA SKY 官網為準，整理可能有疏漏。</p>'
       + foot())
@@ -9416,6 +9426,9 @@ if os.path.exists('skytree.json'):
       + '<h2>交通</h2>'
       + f'<p class="lede">地址：{html.escape(STR["address"])}。{html.escape(STR["train"][0])}。</p>'
       + '<ul class="lede">' + ''.join(f'<li>{html.escape(x)}</li>' for x in STR['train'][1:]) + '</ul>'
+      + (f'<p class="lede">想比較其他觀景台？<a href="{U("/tokyo/observation-decks/")}">東京觀景台懶人包</a>'
+         '把晴空塔、東京鐵塔、SHIBUYA SKY、六本木、池袋陽光 60 和免費的東京都廳等放在一起比開放時間與票價。</p>'
+         if os.path.exists('tokyo-decks.json') else '')
       + faq_visible(tk_faq)
       + '<p class="disc">票價、營業時間與規定以東京晴空塔官網為準，整理可能有疏漏。</p>'
       + foot())
@@ -13170,6 +13183,9 @@ if os.path.exists('tokyo-tower.json'):
       + '<h2>交通</h2>'
       + f'<p class="lede">地址：{html.escape(TTW["address"])}。</p>'
       + '<ul class="lede">' + _ttw_acc + '</ul>'
+      + (f'<p class="lede">想比較其他觀景台？<a href="{U("/tokyo/observation-decks/")}">東京觀景台懶人包</a>'
+         '把晴空塔、東京鐵塔、SHIBUYA SKY、六本木、池袋陽光 60 和免費的東京都廳等放在一起比開放時間與票價。</p>'
+         if os.path.exists('tokyo-decks.json') else '')
       + faq_visible(ttw_faq)
       + '<p class="disc">票價、營業時間與點燈以東京鐵塔官網為準，整理可能有疏漏。</p>'
       + foot())
@@ -27983,6 +27999,341 @@ if os.path.exists('tokyo-xmas.json'):
       + '</article>'
       + foot())
     pages.append(('/tokyo/christmas-market/', 0.7))
+
+# ---------- 東京觀景台懶人包 ----------
+# 資料在 tokyo-decks.json。晴空塔、東京鐵塔、SHIBUYA SKY 不另外抄一份：時間與票價直接讀
+# skytree.json、tokyo-tower.json、shibuya-sky.json（STR、TTW、SKY），那三頁回查時這頁跟著對。
+# 每天會變的在這裡算：今天（日本時間）各家幾點開、晴空塔今天的票價、陽光 60 今天算哪一級票價、
+# 台場球體展望室今天有沒有開（週一休、官網公布的休館日）。官網還沒公布的日子一律寫「以官網為準」，不推測。
+# 版面用創作者樣板（同聖誕市集頁）；插圖在 illust/sp/tokyo-observation-decks/（sp_tokyo-observation-decks.py 畫的），
+# 晴空塔、東京鐵塔、SHIBUYA SKY 借用各自頁面的插圖。
+if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in globals() and 'SKY' in globals():
+    TD = json.load(open('tokyo-decks.json', encoding='utf-8'))
+    _td_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _td_iso = _td_today.isoformat()
+    _td_wd = '一二三四五六日'
+    _td_D = datetime.date.fromisoformat
+    _TDP = {p['key']: p for p in TD['paid']}
+    _TDF = {p['key']: p for p in TD['free']}
+    _td_jph = {x['d'] for x in HOL['days'] if x.get('jp')} if 'HOL' in globals() else set()
+
+    def _td_ill(path, cls='ill sp'):
+        p = os.path.join('illust', path + '.svg')
+        return f'<div class="{cls}">{open(p, encoding="utf-8").read()}</div>' if os.path.exists(p) else ''
+
+    def _td_md(d):
+        return f'{d.month}/{d.day}（{_td_wd[d.weekday()]}）'
+
+    def _td_lk(src, q):
+        _m = 'https://www.google.com/maps/search/?api=1&query=' + urllib.parse.quote(q)
+        return (f'<p class="lk"><a href="{html.escape(_m)}" target="_blank" rel="nofollow noopener">看地圖</a>'
+                f'<a href="{html.escape(src)}" target="_blank" rel="nofollow noopener">官方網站</a></p>')
+
+    def _td_memo(title, rows, src, q):
+        return (f'<div class="memo"><b class="mt">{title}</b><dl>'
+                + ''.join(f'<dt>{k}</dt><dd>{v}</dd>' for k, v in rows if v)
+                + '</dl>' + _td_lk(src, q) + '</div>')
+
+    def _td_cta(url, icon, title, sub):
+        h = html.escape(url)
+        return (f'<a class="cta" href="{h}" target="_blank" rel="{_rel(h)}">'
+                f'<span class="ci">{icon}</span><span class="ct"><b>{title}</b><s>{sub}</s></span><span class="ca">→</span></a>')
+
+    # ---- 晴空塔：每日營業時間與天望甲板大人價（官方訂票日曆快照） ----
+    _st_h = STR['hours'].get(_td_iso)
+    _st_p = STR['price'].get(_td_iso)
+    _st_next = [STR['price'][k] for k in sorted(STR['price']) if _td_iso <= k <= (_td_today + datetime.timedelta(days=30)).isoformat()]
+    if _st_next:
+        _st_rng = f'{min(_st_next):,}～{max(_st_next):,} 円' if min(_st_next) != max(_st_next) else f'{_st_next[0]:,} 円'
+        _st_price_s = f'天望甲板大人 {_st_rng}（接下來 30 天，日期不同價格不同）'
+    else:
+        _st_price_s = f'天望甲板大人 {STR["from"]["deck"]:,} 円起，日期不同價格不同'
+    _st_today_h = '、'.join(_st_h) if _st_h else None
+
+    # ---- 陽光 60：今天的時間與票價等級 ----
+    _ss = _TDP['sunshine']
+    _ss_h = next((h for a, b, h in _ss['hours_table'] if a <= _td_iso <= b), None)
+
+    def _ss_tier(d):
+        iso = d.isoformat()
+        if iso > _ss['peak_until']:
+            return None
+        if iso in _ss['peak']:
+            return ('最旺季', 1200)
+        if d.weekday() >= 5 or iso in _td_jph:
+            return ('週末假日', 900)
+        return ('平日', 700)
+    _ss_t = _ss_tier(_td_today)
+
+    # ---- 台場球體展望室：今天有沒有開 ----
+    _hc = _TDP['hachitama']
+
+    def _hc_open(d):
+        iso = d.isoformat()
+        if iso in _hc['closed_dates']:
+            return False
+        if d.weekday() == 0:
+            return iso in _td_jph
+        if (d - datetime.timedelta(days=1)).isoformat() in _td_jph and d.weekday() == 1:
+            return False
+        return True
+    _hc_o = _hc_open(_td_today)
+
+    # ---- 東京 City View：時間只公布到 hours_until ----
+    _rp = _TDP['roppongi']
+    _rp_known = _td_iso <= _rp['hours_until']
+
+    # 免費觀景台今天的時間
+    def _free_today(f):
+        if f.get('reopen') and _td_iso < f['reopen_check']:
+            return '整修關閉中'
+        if f['key'] == 'tocho':
+            if _td_iso in f['special']:
+                return f['special'][_td_iso]
+            if _td_iso > f['known_until']:
+                return '以官網為準'
+            if _td_iso in f['both_closed']:
+                return '兩間都休'
+            s_cl, n_cl = _td_iso in f['south_closed'], _td_iso in f['north_closed']
+            if s_cl:
+                return '南休；北 9:30～22:00'
+            return '南 9:30～22:00；' + ('北休' if n_cl else '北 9:30～17:30')
+        if f['key'] == 'kitte':
+            if _td_today.month == 1 and _td_today.day == 1:
+                return '全館休'
+            return '11:00～22:00' if (_td_today.weekday() >= 5 or _td_iso in _td_jph) else '11:00～23:00'
+        return f['hours_short']
+    for f in TD['free']:
+        f['hours_short'] = _free_today(f)
+
+    # 總表的每一列：(名稱, 錨點, 地區, 今天的時間, 大人票價, 要不要預約)
+    _sky_last = SKY['hours'].split('最後入場')[-1].strip(' ，,') if '最後入場' in SKY['hours'] else ''
+    _sky_open = SKY['hours'].split('，')[0].replace('–', '～')
+    _rows = [
+        ('東京晴空塔', 'skytree', '押上', (_st_today_h or '以官網為準'),
+         (f'{_st_p:,} 円' if _st_p else f'{STR["from"]["deck"]:,} 円起'), '可以現場買，網路便宜'),
+        ('東京鐵塔', 'tower', '芝公園', TTW['hours'], f'{TTW["price"]["main"][0]:,} 円', '不用'),
+        ('SHIBUYA SKY', 'shibuya', '澀谷', _sky_open, f'{SKY["price"]["web_day"]:,} 円起', '建議先買，常賣完'),
+        ('六本木之丘 東京 City View', 'roppongi', '六本木',
+         (_rp['hours'] if _rp_known else '以官網為準'), f'{_rp["price_min"]:,} 円起', '網路指定時段，有空位可現場買'),
+        ('陽光 60 展望台', 'sunshine', '池袋', (_ss_h or '以官網為準'),
+         (f'{_ss_t[1]:,} 円' if _ss_t else f'{_ss["price_min"]:,} 円起'), '週末假日要先買'),
+        ('富士電視台 球體展望室', 'hachitama', '台場',
+         (_hc['hours'] if _hc_o else ('今天休' if _hc_o is False else '以官網為準')), f'{_hc["price_min"]:,} 円', '不能預約'),
+    ] + [(f['short'], f['key'], f['area'], f['hours_short'], '免費', '不用') for f in TD['free']]
+
+    _td_table = ('<div class="tw qk"><table><thead><tr><th>觀景台</th><th>今天開放</th><th>大人</th></tr></thead><tbody>'
+        + ''.join(f'<tr><td><a href="#{k}">{html.escape(n)}</a><br><small>{html.escape(a)}</small></td>'
+                  f'<td>{html.escape(h)}</td>' + ('<td>' if p == '免費' else '<td class="xpay">') + f'{html.escape(p)}</td></tr>'
+                  for n, k, a, h, p, _b in _rows)
+        + '</tbody></table></div>'
+        + f'<p class="disc">「今天」是日本時間 {_td_md(_td_today)}。付費的票價是大人一張，晴空塔是天望甲板（350 m）、東京鐵塔是 Main Deck、'
+          'SHIBUYA SKY 是 15:00 前入場的網路價；六本木是網路價。</p>')
+
+    # 今天的便利貼
+    _ss_now = (f'{_td_md(_td_today)}（日本時間）')
+    _sunset = ''
+    if '_sky_sunset' in globals():
+        _m = int(round(_sky_sunset(_td_today)))
+        _sunset = f'{_m // 60}:{_m % 60:02d}'
+    _note = (f'今天 {_ss_now}：東京日落約 {_sunset}。' if _sunset else f'今天 {_ss_now}：')
+    _note += ('台場球體展望室今天休館。' if _hc_o is False else '')
+    _note += (f'晴空塔今天天望甲板大人 {_st_p:,} 円。' if _st_p else '')
+    _note += (f'陽光 60 今天是{_ss_t[0]}價 {_ss_t[1]:,} 円。' if _ss_t else '')
+
+    # ---- 每一家的段落 ----
+    def _sec(anchor, ill, title, inner):
+        return f'<section class="spot" id="{anchor}">{_td_ill(ill)}<div><h3>{title}</h3>{inner}</div></section>'
+
+    _sky_kl = klook(SKY['klook']['url'], 'ticket'); _sky_kk = kkday(SKY['kkday']['url'], 'ticket', 'tokyo-decks')
+    _str_kl = klook(STR['klook']['url'], 'ticket'); _str_kk = kkday(STR['kkday']['url'], 'ticket', 'tokyo-decks')
+    _ttw_kl = klook(TTW['klook']['url'], 'ticket'); _ttw_kk = kkday(TTW['kkday']['url'], 'ticket', 'tokyo-decks')
+
+    def _plat(name, kl, kk, kk_label=None):
+        out = ''
+        if kl:
+            out += _td_cta(kl, '🎫', f'Klook：{name}{" " if name[-1].isascii() else ""}門票', '台幣付款，票種與價格以 Klook 頁面為準')
+        if kk:
+            out += _td_cta(kk, '🎫', f'KKday：{kk_label or name + (" " if name[-1].isascii() else "") + "門票"}', '台幣付款，票種與價格以 KKday 頁面為準')
+        return out
+
+    _sec_skytree = _sec('skytree', 'sp/japan-skytree/deck', '東京晴空塔（押上）',
+        '<p class="ap">東京最高的觀景台，兩層：350 公尺的天望甲板，加價再上 450 公尺的天望回廊。'
+        '票價每天不一樣，週末和連假比較貴，<mark>網路先買比現場便宜</mark>。</p>'
+        + _td_memo('晴空塔', [
+            ('今天', html.escape(_st_today_h) if _st_today_h else '以官網為準'),
+            ('最後入場', '關門前 1 小時'),
+            ('票價', html.escape(_st_price_s)),
+            ('現場買', f'每張多 {STR["counter_fee"]} 円窗口發券費'),
+            ('交通', '押上站、東京晴空塔站直通')], STR['_來源']['ticket'], '東京スカイツリー')
+        + f'<p class="ap">每天的票價、哪天比較便宜、天望回廊要不要加買，<a href="{U("/japan-skytree/")}">晴空塔門票怎麼買</a>那篇有逐日的表。</p>'
+        + _plat('東京晴空塔', _str_kl, _str_kk))
+
+    _sec_tower = _sec('tower', 'sp/japan-tokyo-tower/maindeck', '東京鐵塔（芝公園）',
+        '<p class="ap">150 公尺的 Main Deck 不用預約，網路和現場同價；要上 250 公尺的 Top Deck 才需要預約時段。'
+        '鐵塔開到 23:00，是這幾個裡關最晚的。</p>'
+        + _td_memo('東京鐵塔', [
+            ('時間', html.escape(TTW['hours'])),
+            ('最後入場', f'Main Deck {TTW["main_last"]}'),
+            ('票價', f'Main Deck 大人 {TTW["price"]["main"][0]:,} 円；Top Deck Tour 網路 {TTW["price"]["top_web"][0]:,} 円'),
+            ('交通', '赤羽橋站約 5 分鐘、神谷町站約 7 分鐘')], TTW['_來源']['fee'], '東京タワー')
+        + f'<p class="ap">今天點什麼燈、Top Deck 怎麼預約，看<a href="{U("/japan-tokyo-tower/")}">東京鐵塔門票怎麼買</a>。</p>'
+        + _plat('東京鐵塔', _ttw_kl, _ttw_kk))
+
+    _sec_shibuya = _sec('shibuya', 'sp/japan-shibuya-sky/edge', 'SHIBUYA SKY（澀谷）',
+        '<p class="ap">澀谷站上方的露天屋頂展望台。日落前後的時段最搶手，常常提早賣完，'
+        f'<mark>想看夕陽的話建議先買</mark>。{html.escape(SKY["sale"].split("，")[0])}。</p>'
+        + _td_memo('SHIBUYA SKY', [
+            ('時間', html.escape(SKY['hours'].replace('–', '～'))),
+            ('票價', f'網路 {SKY["price"]["split"]} 前入場 {SKY["price"]["web_day"]:,} 円、之後 {SKY["price"]["web_eve"]:,} 円；現場貴 300 円'),
+            ('休館', html.escape(SKY['closed'].split('，')[0])),
+            ('入口', '澀谷 Scramble Square 14 樓，和澀谷站直通')], SKY['_來源']['ticket'], 'SHIBUYA SKY')
+        + f'<p class="ap">每天日落幾點、該買哪個時段，看<a href="{U("/japan-shibuya-sky/")}">SHIBUYA SKY 門票怎麼買</a>。</p>'
+        + _plat('SHIBUYA SKY', _sky_kl, _sky_kk))
+
+    _rp_kl = klook(_rp['klook']['url'], 'ticket'); _rp_kk = kkday(_rp['kkday']['url'], 'ticket', 'tokyo-decks')
+    _sec_rp = _sec('roppongi', 'sp/tokyo-observation-decks/roppongi', '六本木之丘 東京 City View（六本木）',
+        f'<p class="ap">{html.escape(_rp["desc"])}</p>'
+        + _td_memo('東京 City View', [
+            ('樓層', html.escape(_rp['floor'])),
+            ('時間', (f'{_rp["hours"]}，最後入場 {_rp["last"]}' if _rp_known else '以官網為準')),
+            ('休館', html.escape(_rp['closed'])),
+            ('票價', html.escape(_rp['price_detail'])),
+            ('預約', html.escape(_rp['book'])),
+            ('交通', html.escape(_rp['station']))], _rp['src'], _rp['map'])
+        + _plat('東京 City View', _rp_kl, _rp_kk, '六本木之丘展望台門票'))
+
+    _ss_kl = klook(_ss['klook']['url'], 'ticket'); _ss_kk = kkday(_ss['kkday']['url'], 'ticket', 'tokyo-decks')
+    _ss_hours_rows = '；'.join(
+        (f'{_td_D(a).month}/{_td_D(a).day}' + (f'～{_td_D(b).month}/{_td_D(b).day}' if a != b else '') + f' {h}')
+        for a, b, h in _ss['hours_table'] if b >= _td_iso)
+    _ss_peak = [_td_D(x) for x in _ss['peak'] if x >= _td_iso]
+    _sec_ss = _sec('sunshine', 'sp/tokyo-observation-decks/sunshine', '陽光 60 展望台（池袋）',
+        f'<p class="ap">{html.escape(_ss["desc"])}</p>'
+        + _td_memo('陽光 60 展望台', [
+            ('樓層', html.escape(_ss['floor'])),
+            ('時間', html.escape(_ss_hours_rows) + f'；{_ss["last_rule"]}'),
+            ('票價', html.escape(_ss['price_detail'])),
+            ('最旺季', ('、'.join(f'{d.month}/{d.day}' for d in _ss_peak) + f'（官網日曆公布到 {_td_D(_ss["peak_until"]).month}/{_td_D(_ss["peak_until"]).day}）') if _ss_peak else '官網日曆還沒公布'),
+            ('預約', html.escape(_ss['book'])),
+            ('交通', html.escape(_ss['station']))], _ss['src'], _ss['map'])
+        + _plat('陽光 60 展望台', _ss_kl, _ss_kk, _ss['kkday'].get('label')))
+
+    _hc_cl = [_td_D(x) for x in _hc['closed_dates'] if x >= _td_iso]
+    _sec_hc = _sec('hachitama', 'sp/tokyo-observation-decks/hachitama', '富士電視台 球體展望室（台場）',
+        f'<p class="ap">{html.escape(_hc["desc"])}</p>'
+        + _td_memo('球體展望室', [
+            ('樓層', html.escape(_hc['floor'])),
+            ('時間', f'{_hc["hours"]}，最後入場 {_hc["last"]}'),
+            ('休館', html.escape(_hc['closed'])
+             + (('；另外 ' + '、'.join(_td_md(d) for d in _hc_cl) + ' 休') if _hc_cl else '')
+             + f'；{_td_D(_hc["closed_known_until"]).month % 12 + 1} 月以後的休館日官網還沒公布'),
+            ('票價', html.escape(_hc['price_detail'])),
+            ('預約', html.escape(_hc['book'])),
+            ('交通', html.escape(_hc['station']))], _hc['src'], _hc['map'])
+        + '<p class="disc">Klook、KKday 沒有賣這裡的票，到現場買就好。</p>')
+
+    _free_secs = ''.join(
+        _sec(f['key'], 'sp/tokyo-observation-decks/' + f['ill'], f'{html.escape(f["name"])}（{html.escape(f["area"])}）',
+             f'<p class="ap">{html.escape(f["desc"])}</p>'
+             + _td_memo(f['short'], [
+                 ('樓層', html.escape(f.get('floor', ''))),
+                 ('時間', html.escape(f['hours'])),
+                 ('休館', html.escape(f.get('closed', ''))),
+                 ('現況', html.escape(f['reopen']) if f.get('reopen') and _td_iso < f['reopen_check'] else ''),
+                 ('入場', html.escape(f.get('cond', '免費'))),
+                 ('交通', html.escape(f['station']))], f['src'], f['map']))
+        for f in TD['free'])
+
+    td_faq = [
+     ('東京哪個觀景台最便宜？',
+      f'付費的裡面最便宜的是池袋的陽光 60 展望台，大人平日 700 円（週末假日 900 円、最旺的日子 1,200 円）。'
+      f'完全免費的有{"、".join(f["short"] for f in TD["free"][:3])}，不用門票。'),
+     ('東京有免費的觀景台嗎？',
+      '有。' + '；'.join(f'{f["short"]}{f["hours"]}' + ('（' + f['reopen'] + '）' if f.get('reopen') and _td_iso < f['reopen_check'] else '')
+                        for f in TD['free']) + '。時間以各官網為準。'),
+     ('東京晴空塔、東京鐵塔、SHIBUYA SKY 哪個要先買票？',
+      f'SHIBUYA SKY 日落前後的時段常賣完，建議先買（{SKY["sale"].split("，")[0]}）。晴空塔可以現場買，但現場每張多 {STR["counter_fee"]} 円，'
+      '網路先買比較便宜。東京鐵塔 Main Deck 網路和現場同價，不用預約。'),
+     ('晚上看夜景哪裡開最晚？',
+      f'東京鐵塔開到 23:00（Main Deck 最後入場 {TTW["main_last"]}）；SHIBUYA SKY {SKY["hours"].replace("–", "～")}；'
+      f'晴空塔與六本木之丘開到 22:00。台場球體展望室 18:00 就關。'),
+     ('陽光 60 展望台要預約嗎？',
+      _ss['book'] + '。'),
+     ('六本木之丘展望台網路票比較便宜嗎？',
+      f'是。{_rp["price_detail"]}。{_rp["book"]}。'),
+     ('富士電視台球體展望室幾點開？',
+      f'{_hc["hours"]}，最後入場 {_hc["last"]}，{_hc["closed"]}。{_hc["price_detail"]}。{_hc["book"]}。'),
+    ]
+    td_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in td_faq]}, ensure_ascii=False)
+
+    _td_src = ''.join(f'<li>{html.escape(n)}：<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">'
+                      f'{html.escape(u.split("//")[1].split("/")[0])}</a></li>'
+                      for n, u in ([('東京晴空塔', STR['_來源']['ticket']), ('東京鐵塔', TTW['_來源']['fee']),
+                                    ('SHIBUYA SKY', SKY['_來源']['ticket']), ('東京 City View', _rp['src']),
+                                    ('陽光 60 展望台（票價）', _ss['src']), ('陽光 60 展望台（全年時間）', _ss['src_hours']),
+                                    ('球體展望室', _hc['src'])]
+                                   + [(f['short'], f['src']) for f in TD['free']]))
+
+    _n_all = len(_rows)
+    _n_free = len(TD['free'])
+    write('tokyo/observation-decks/index.html',
+      head(f'東京觀景台懶人包：{_n_all} 個展望台開放時間、門票，晴空塔、東京鐵塔、SHIBUYA SKY 和免費展望台',
+           f'東京 {_n_all} 個觀景台整理：晴空塔、東京鐵塔、SHIBUYA SKY、六本木之丘、陽光 60、台場球體展望室的開放時間與大人票價、'
+           f'要不要先買票，以及 {_n_free} 個免費展望台（{"、".join(f["short"] for f in TD["free"][:4])}等）的時間與交通；'
+           '每天自動更新今天的開放時間與晴空塔票價。',
+           'tokyo/observation-decks/',
+           '<script type="application/ld+json">' + td_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('東京觀景台', None)])
+      + '<article class="art">'
+      + f'<h1>東京觀景台懶人包：{_n_all} 個展望台的開放時間、要不要錢</h1>'
+      + f'<p class="by">更新於 {TD["checked"]}・資料來自各觀景台官網</p>'
+      + _td_ill('sp/tokyo-observation-decks/hero', 'ill hero')
+      + '<p class="ap">到東京總會想找個高的地方看夜景。我把東京市區的觀景台整理成一篇：'
+        f'要買票的 6 個、不用錢的 {_n_free} 個，開放時間、大人票價和要不要先預約，都是回去翻官網查的。</p>'
+      + '<p class="ap">先講結論：<mark>預算有限就去免費的</mark>，東京都廳和淺草那幾個不用花錢就能看；'
+        '想看夕陽的話，SHIBUYA SKY 要提早買票，晴空塔網路買比現場便宜。</p>'
+      + f'<p class="sticky">{html.escape(_note)}</p>'
+      + '<nav class="atoc"><b>這篇有</b><ol>'
+        '<li><a href="#all">先看總表</a></li>'
+        '<li><a href="#pick">我會這樣挑</a></li>'
+        '<li><a href="#paid">要買票的觀景台</a></li>'
+        '<li><a href="#free">免費的觀景台</a></li>'
+        '<li><a href="#faq">常見問題</a></li></ol></nav>'
+      + '<h2 id="all">先看總表</h2>' + _td_table
+      + '<h2 id="pick">我會這樣挑</h2>'
+      + '<ul class="pick">'
+        '<li><b>只能挑一個付費的</b>：想看夕陽和露天的就選 SHIBUYA SKY；想要最高、看得最遠就選晴空塔；'
+        '想在室內慢慢看、平日晚上去，就選六本木之丘（開到 22:00，有空位可以當天直接買）。</li>'
+        f'<li><b>不想花錢</b>：{html.escape(TD["pick_free"])}</li>'
+        '<li><b>晚上很晚才有空</b>：東京鐵塔開到 23:00、SHIBUYA SKY 開到 22:30，是最晚的兩個。</li>'
+        '<li><b>預算有限但想上付費的</b>：池袋陽光 60 平日 700 円，平日不用預約。</li>'
+        '<li><b>週末去</b>：SHIBUYA SKY、陽光 60、六本木都建議先在網路買好時段。</li>'
+        '</ul>'
+      + '<h2 id="paid">要買票的觀景台</h2>'
+      + '<p class="ap">下面的時間與票價都引各官網。Klook、KKday 的連結是用台幣付款的另一個選擇，'
+        '票種、價格與取消規定以平台頁面為準，下單前看清楚是哪一層、含不含其他設施。</p>'
+      + _sec_skytree + _sec_tower + _sec_shibuya + _sec_rp + _sec_ss + _sec_hc
+      + '<p class="disc">Klook 與 KKday 連結會前往合作訂票平台，本站可能獲得分潤，不影響你的價格；平台的售價本站沒有查證。</p>'
+      + '<h2 id="free">免費的觀景台</h2>'
+      + f'<p class="ap">{html.escape(TD["free_intro"])}</p>'
+      + _free_secs
+      + '<div id="faq"></div>' + faq_visible(td_faq)
+      + '<details class="more"><summary>這一篇查不到的</summary><ul>'
+      + ''.join(f'<li>{html.escape(x)}</li>' for x in TD['unverified']) + '</ul></details>'
+      + '<details class="more"><summary>資料來源</summary><ul>' + _td_src + '</ul></details>'
+      + '<h2>延伸閱讀</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-skytree/")}"><b>🗼 晴空塔門票怎麼買</b><s>每天的票價、哪天便宜</s></a>'
+      + f'<a class="ct" href="{U("/japan-shibuya-sky/")}"><b>🌇 SHIBUYA SKY 門票</b><s>日落幾點、買哪個時段</s></a>'
+      + f'<a class="ct" href="{U("/japan-tokyo-tower/")}"><b>🗼 東京鐵塔門票</b><s>今天點什麼燈</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/subway-ticket/")}"><b>🚇 東京地鐵三日券</b><s>六本木、押上、澀谷都在線上</s></a></div>'
+      + f'<p class="disc">時間與票價以各觀景台官網為準，整理可能有疏漏。查證於 {TD["checked"]}，之後官方若有更改，本頁不一定跟上。'
+        '本頁為公開資訊整理，與文中觀景台無合作關係。</p>'
+      + '</article>'
+      + foot())
+    pages.append(('/tokyo/observation-decks/', 0.7))
 
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
