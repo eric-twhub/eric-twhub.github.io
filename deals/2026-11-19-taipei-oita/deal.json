@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-taipei-oita",
- "generated": "2026-11-19 13:51",
+ "generated": "2026-11-19 14:22",
  "kind": "fare",
  "origin": "taipei",
  "city": "oita",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 17961,
+ "med": 17731,
  "n_rt": 4,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7246,
+   "price": 6786,
    "dep": "2026-11-21",
    "ret": "2026-11-28",
    "dept": "12:00",

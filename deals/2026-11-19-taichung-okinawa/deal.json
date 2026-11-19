@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-taichung-okinawa",
- "generated": "2026-11-19 13:51",
+ "generated": "2026-11-19 14:22",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -28,7 +28,7 @@
   "廉航低於 NT$6,000",
   "12 月出發的票，每天最便宜的平均要 NT$9,458（24 天有紀錄），這張低 59%"
  ],
- "med": 10356,
+ "med": 10349,
  "n_rt": 97,
  "others": [
   {
