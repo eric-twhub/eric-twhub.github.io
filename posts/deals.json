@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$4,011（14 天有紀錄），這張低 35%"
+   "12 月出發的票，每天最便宜的平均要 NT$4,016（14 天有紀錄），這張低 35%"
   ],
   "med": 12524,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-17&inbound=OKA-TPE&returnDate=2026-12-24&type=return&adult=1&language=zh-TW",
@@ -26,7 +26,7 @@
    "days": 16
   },
   "mbase": {
-   "avg": 4011,
+   "avg": 4016,
    "days": 14,
    "month": 12
   },
@@ -78,19 +78,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$5,275（5 天有紀錄），這張低 35%"
+   "12 月出發的票，每天最便宜的平均要 NT$5,227（5 天有紀錄），這張低 35%"
   ],
   "med": 16958,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-09&inbound=ISG-TPE&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
   "hotelcity": "石垣島",
   "cslug": "ishigaki",
   "usual": {
-   "lo": 3854,
+   "lo": 3613,
    "hi": 4613,
    "days": 7
   },
   "mbase": {
-   "avg": 5275,
+   "avg": 5227,
    "days": 5,
    "month": 12
   },
@@ -133,12 +133,12 @@
  },
  {
   "slug": "2026-11-20-kaohsiung-ishigaki",
-  "title": "高雄飛石垣島 NT$4,472 來回含稅｜台灣虎航 11/29 出發",
+  "title": "高雄飛石垣島 NT$4,713 來回含稅｜台灣虎航 11/29 出發",
   "o": "高雄",
   "c": "石垣島",
   "_oiata": "KHH",
   "_diata": "ISG",
-  "price": 4472,
+  "price": 4713,
   "air": "台灣虎航",
   "dep": "2026-11-29",
   "ret": "2026-12-06",
@@ -147,7 +147,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 4472,
+  "med": 4713,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-ISG&departureDate=2026-11-29&inbound=ISG-KHH&returnDate=2026-12-06&type=return&adult=1&language=zh-TW",
   "hotelcity": "石垣島",
   "cslug": "ishigaki",
@@ -172,7 +172,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 11998,
+  "med": 11834,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-28&inbound=KMI-TPE&returnDate=2027-01-01&type=return&adult=1&language=zh-TW",
   "hotelcity": "宮崎",
   "cslug": "miyazaki",
@@ -196,7 +196,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$8,521（9 天有紀錄），這張低 37%"
+   "12 月出發的票，每天最便宜的平均要 NT$8,369（9 天有紀錄），這張低 36%"
   ],
   "med": 16432,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
@@ -208,7 +208,7 @@
    "days": 9
   },
   "mbase": {
-   "avg": 8521,
+   "avg": 8369,
    "days": 9,
    "month": 12
   },
@@ -230,19 +230,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$7,667（7 天有紀錄），這張低 30%"
+   "12 月出發的票，每天最便宜的平均要 NT$7,781（7 天有紀錄），這張低 31%"
   ],
-  "med": 6973,
+  "med": 7373,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-29&inbound=FUK-KHH&returnDate=2027-01-08&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 5800,
+   "lo": 6200,
    "hi": 7373,
    "days": 7
   },
   "mbase": {
-   "avg": 7667,
+   "avg": 7781,
    "days": 7,
    "month": 12
   },
@@ -251,12 +251,12 @@
  },
  {
   "slug": "2026-11-20-taipei-saga",
-  "title": "台北飛佐賀 NT$5,513 來回含稅｜台灣虎航 12/03 出發",
+  "title": "台北飛佐賀 NT$5,731 來回含稅｜台灣虎航 12/03 出發",
   "o": "台北",
   "c": "佐賀",
   "_oiata": "TPE",
   "_diata": "HSG",
-  "price": 5513,
+  "price": 5731,
   "air": "台灣虎航",
   "dep": "2026-12-03",
   "ret": "2026-12-10",
@@ -305,7 +305,7 @@
    "month": 12
   },
   "rank": 1,
-  "n": 72
+  "n": 76
  },
  {
   "slug": "2026-11-20-taipei-nagoya",
@@ -321,19 +321,19 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "12 月出發的票，每天最便宜的平均要 NT$10,571（5 天有紀錄），這張低 28%"
+   "12 月出發的票，每天最便宜的平均要 NT$10,471（5 天有紀錄），這張低 27%"
   ],
   "med": 16888,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-NGO&departureDate=2026-12-27&inbound=NGO-TPE&returnDate=2026-12-31&type=return&adult=1&language=zh-TW",
   "hotelcity": "名古屋",
   "cslug": "nagoya",
   "usual": {
-   "lo": 8105,
+   "lo": 7605,
    "hi": 11851,
    "days": 6
   },
   "mbase": {
-   "avg": 10571,
+   "avg": 10471,
    "days": 5,
    "month": 12
   },
