@@ -7,7 +7,11 @@
   "Premium Outlets 佐野、ふかや花園兩館的 Black Friday 頁沒有寫最大折扣，若之後補上再加",
   "博多運河城參加店家官網註明「参加店舗は予告なく変更になる場合がございます」，上線前再開一次頁面確認 Gap、Dr.Martens、RAGEBLUE 還在",
   "AEON MALL 各館活動與 WAON POINT 10 倍日期依地區不同，北海道、東北的 AEON MALL 不在 10 倍名單內",
-  "2026-11-30 後整區下架（最晚的 AEON MALL 到 11/30）"
+  "2026-11-30 後整區下架（最晚的 AEON MALL 到 11/30）",
+  "松本清 BLACK FRIDAY 券 11/24 上 App 後看券面說明，有變更就改 chains.matsukiyo",
+  "EDION 網路商店 11/21 恢復後看官網有沒有實體店 Black Friday；Cosmos 藥品官網恢復後重查；山田電機官網連得上時重查傳單",
+  "AEON 11/24 之後的下一期傳單特價（chains.aeon 只寫到 11/23 的例子）",
+  "Bic 其他分店傳單是否同一檔；chains 結束日最晚 11/30"
  ],
  "items": [
   {
@@ -219,5 +223,148 @@
   "PARCO（澀谷、心齋橋、名古屋、福岡、札幌）、LUMINE、丸井（含博多、難波）、atré、SHIBUYA109、東急 Plaza、澀谷 Hikarie、KITTE 丸之內、東京晴空街道、東京中城、台場 AQUA CiTY、DECKS、Grand Front Osaka、LUCUA、阪急百貨店、難波 Parks、難波 CITY、札幌 Factory、Stellar Place、Le Trois、天神 Core、Solaria Plaza、JR 博多城：官網首頁查不到館方層級的 Black Friday 檔期。部分網站是程式產生內容，首頁查不到不等於沒有",
   "池袋 Sunshine City、天神地下街、阿倍野 Q's MALL、mozo wondercity：只有個別店家（Zoff、東京シャツ、ACE、ABC-MART、ONLY 等）自己的 Black Friday，不是館方活動",
   "沖繩 Outlet Mall Ashibinaa、iias 沖繩豐崎、PARCO CITY、JR Gate Tower、Hakata Riverain、THE OUTLETS 北九州、THE OUTLETS 廣島：官網連不上或網域查不到，無法確認"
+ ],
+ "chains": [
+  {
+   "key": "donki",
+   "name": "ドン・キホーテ、MEGAドン・キホーテ",
+   "scope": "全國約 680 間，道頓堀、澀谷本店、新宿歌舞伎町、銀座本館、淺草、中洲、札幌狸小路本店都在名單上；店內的專門店不算",
+   "start": "2026-11-13",
+   "end": "2026-11-29",
+   "what": "「驚ブラックフライデー」：店內指定商品特價，約 180 間 11/13 起有第一波傳單特賣、約 70 間 11/20 起有第二波；自有品牌「情熱価格」每週換特價品到 11/30（451 間）",
+   "points": "majica App 的寶箱點數回饋要在 11/2～11/12 先報名開箱，現在已經來不及；只剩店內特價",
+   "taxfree": "活動頁沒寫。觀光客 5%／7% 折價券寫明不能和其他折扣、majica 卡併用，店內特價品能不能再用券，官網沒寫",
+   "src": "https://www.majica-net.com/campaign/2026_blackfriday/",
+   "src_name": "majica 驚ブラックフライデー活動頁",
+   "note": "觀光客折價券 11/19 還是平常的版本（含稅 11,000 円以上 5%、33,000 円以上 7%），沒有 Black Friday 加碼。majica 系統故障，寶箱結果延後反映"
+  },
+  {
+   "key": "matsukiyo",
+   "name": "マツキヨココカラ",
+   "scope": "店內商品，沒有列出排除的店",
+   "start": "2026-11-24",
+   "end": "2026-11-30",
+   "what": "用官方 App 的 BLACK FRIDAY 券，店內商品含稅標價折 10%；花王商品點數 20 倍（佳麗寶、SOFINA、珂潤除外）。專櫃化妝品、食品、酒、嬰兒用品、調劑不能用券",
+   "points": "券 11/24 才會發到マツキヨココカラ App，App 用電子信箱就能註冊；外國人能不能註冊，官網沒寫",
+   "taxfree": "官網沒寫",
+   "src": "https://cp.lp.matsukiyococokara-online.com/hs/campaign/mcc-promo/Kao_matsucoco/black-friday-2026",
+   "src_name": "マツキヨココカラ BLACK FRIDAY 預告頁",
+   "note": "這頁是預告，內容可能不通知就變更或取消，券發出後以券面說明為準"
+  },
+  {
+   "key": "sundrug",
+   "name": "サンドラッグ",
+   "scope": "786 間，37 都府縣；北海道、沖繩沒有。店舖名單裡找不到新宿、澀谷、池袋、上野、淺草、心齋橋、道頓堀、難波、梅田的店名",
+   "start": "2026-11-02",
+   "end": "2026-11-29",
+   "what": "指定商品特價，分三波：11/2～11/8、11/17～11/22、11/23～11/29；11/17～21、11/23～28 另有每日換的特價品。沒寫折扣幅度，品項看各店傳單",
+   "points": "沒寫要會員或 App",
+   "taxfree": "官網沒寫",
+   "src": "https://sundrug-online.com/blogs/campaign/black-friday261103",
+   "src_name": "サンドラッグ 店頭おトク情報",
+   "note": "各店的品項與特賣期間不同"
+  },
+  {
+   "key": "biccamera",
+   "name": "Bic Camera（ビックカメラ）",
+   "scope": "池袋本店、難波店的店舖傳單都有這檔，其他分店看各店頁面的傳單",
+   "start": "2026-11-13",
+   "end": "2026-11-30",
+   "what": "傳單分三塊：指定商品特價、點數加碼、多件合購折扣",
+   "points": "點數加碼對免稅結帳無效：Bic 點數規約寫免稅購物不給點數也不能用點數",
+   "taxfree": "點數加碼不能和免稅一起拿；特價品能不能再免稅，官網沒寫",
+   "src": "https://www.biccamera.com/bc/i/shop/shoplist/shop007.jsp",
+   "src_name": "Bic Camera 池袋本店店舖頁（傳單）",
+   "note": "網站上 Bic Camera.com 的 Black Friday 頁「最大 15% 點數」只限網路商店"
+  },
+  {
+   "key": "nojima",
+   "name": "Nojima（ノジマ）",
+   "scope": "實體店，網路商店不算；店集中在首都圈、靜岡、山梨、長野、新潟、愛知",
+   "start": "2026-11-14",
+   "end": "2026-11-30",
+   "what": "指定商品送 Nojima 點數（最多 3 萬日圓份）、舊機換新折扣、多件合購折扣、限定特價",
+   "points": "限 Nojima Mobile 會員（要裝 App 註冊）；外國人能不能註冊、要不要日本電話，官網沒寫。點數 2027/2/28 到期",
+   "taxfree": "官網沒寫",
+   "src": "https://www.nojima.co.jp/campaign/black-friday/",
+   "src_name": "ノジマ Black Friday 活動頁",
+   "note": "會員限定那句是只管特價品還是四項都管，原文讀不出來，結帳前問店員"
+  },
+  {
+   "key": "hands",
+   "name": "HANDS（ハンズ）",
+   "scope": "各店與網路商店同步，部分店舖沒有這些商品",
+   "start": "2026-11-13",
+   "end": "2026-11-29",
+   "what": "限定特價組：23yearsold 底妝三件組 3,180 日圓、The Saem 唇彩附唇筆迷你各 1,430 日圓；Verdun 菜刀全品折 30%；OxiClean 全品點數 20 倍，其他指定品牌點數 10 倍",
+   "points": "點數是ハンズクラブ點數；外國人能不能辦，官網沒寫",
+   "taxfree": "官網沒寫",
+   "src": "https://prtimes.jp/main/html/rd/p/000000762.000070824.html",
+   "src_name": "ハンズ 新聞稿（PR TIMES）",
+   "note": "多數是點數加碼，不辦會員的話實際好處在特價組與菜刀"
+  },
+  {
+   "key": "loft",
+   "name": "Loft（ロフト）",
+   "scope": "全國 Loft，高岡店除外；各店品項不同",
+   "start": "2026-11-19",
+   "end": "2026-11-30",
+   "what": "11/19～11/23：保暖居家服、加濕器、毛毯、手套圍巾、手帳月曆、行李箱等季節商品結帳折 5%，不用會員。11/24～11/30：Loft App 會員券 5% OFF，期間內可重複用，稅前滿 1,000 日圓",
+   "points": "第二段要註冊 Loft 會員並設定常去的店，當天註冊也能用；外國人能不能註冊，官網沒寫",
+   "taxfree": "官網沒寫，只寫和其他點數、折扣能不能併用要問店員",
+   "src": "https://www.loft.co.jp/news/detail.php?news_id=722657",
+   "src_name": "Loft 官網新聞 LOFT BLACK FRIDAY",
+   "note": "已打折商品、Apple 原廠配件、型錄禮品不能用券"
+  },
+  {
+   "key": "abcmart",
+   "name": "ABC-MART",
+   "scope": "全國 ABC-MART 與網路商店；各店開始日不同",
+   "start": "2026-11-19",
+   "end": "2026-11-30",
+   "what": "Nike、adidas、New Balance、Vans 等球鞋，以及女鞋、童鞋、運動服飾，最多半價；各店品項不同，部分商品除外",
+   "points": "沒寫要會員",
+   "taxfree": "官網沒寫",
+   "src": "https://prtimes.jp/main/html/rd/p/000000995.000074055.html",
+   "src_name": "ABC-MART 新聞稿（PR TIMES）",
+   "note": "同一天去不同分店，可能有的還沒開始"
+  },
+  {
+   "key": "aeon",
+   "name": "AEON 超市與百貨賣場（イオン、イオンスタイル）",
+   "scope": "本州與四國的直營賣場；北海道、東北、九州、沖繩不在這次範圍，館內專門店不算",
+   "start": "2026-11-20",
+   "end": "2026-11-30",
+   "what": "「超！ブラックフライデーFes」：11/20～11/23 傳單特價，例如自有品牌羽絨被單人加長半價含稅 10,890 日圓、Zipper Carry S 號行李箱半價含稅 7,590 日圓；11/24 之後的特價看下一期傳單",
+   "points": "點數加碼要用日本 AEON 卡或 AEON Pay 付款，觀光客拿不到；11/24～11/26 便當飯糰 8% 折扣要 AEON App 會員",
+   "taxfree": "官網沒寫；訪日旅客 5% 折價券（到 11/30）能不能疊特價也沒寫",
+   "src": "https://chirashi.otoku.aeonsquare.net/pc/chirashi/blackfriday/",
+   "src_name": "イオン 超！ブラックフライデーFes 特設頁",
+   "note": "AEON Mall 商場本身的檔期在上面商場那段"
+  },
+  {
+   "key": "nitori",
+   "name": "NITORI（ニトリ）",
+   "scope": "全國店舖與網路商店",
+   "start": "2026-10-30",
+   "end": "2026-11-24",
+   "what": "約 600 項家具與大型家電期間限定價",
+   "points": "沒寫要會員",
+   "taxfree": "官網沒寫",
+   "src": "https://prtimes.jp/main/html/rd/p/000001758.000073913.html",
+   "src_name": "ニトリ 新聞稿（PR TIMES）",
+   "note": "幾乎都是家具與大型家電，帶不上飛機"
+  }
+ ],
+ "chains_unverified": [
+  "鶴羽（ツルハグループ）10/1～11/30、Welcia（ウエルシアグループ）10/5～12/6：都是指定廠牌商品滿 2,500／5,000 日圓送 250／1,000 點的點數活動，要先報名會員，點數 2027 年 1 月才發，外國人能不能辦會員官網沒寫，所以不列",
+  "杉藥局（スギ薬局）、大國藥妝（ダイコクドラッグ）：官網查不到 2026 年的 Black Friday",
+  "Cosmos 藥品（コスモス薬品）：官網 11/19 維護中，沒辦法查",
+  "友都八喜（ヨドバシカメラ）、上新電機（Joshin）：官網查不到 2026 年的 Black Friday",
+  "山田電機（ヤマダデンキ）：官網連不上，新聞稿查不到；有傳單 11/14～11/20 的說法，沒辦法用官網確認",
+  "EDION（エディオン）：官網查不到實體店活動，網路商店停站中，預定 11/21 恢復",
+  "UNIQLO、GU：同一時間辦的是「感謝祭」（UNIQLO 11/20～11/26），不叫 Black Friday",
+  "無印良品：官網查不到 2026 年的 Black Friday，網路商店停站中",
+  "3COINS：營運公司沒有公布 Black Friday；AEON Mall 館內的 300 日圓折價券是商場自己的活動"
  ]
 }

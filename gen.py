@@ -24971,6 +24971,9 @@ if os.path.exists('cards.json'):
             _bf_live = [] if _bf_stale else sorted(
                 (x for x in _BF['items'] if datetime.date.fromisoformat(x['end']) >= _bf_t),
                 key=lambda x: (x['end'], x['name']))
+            _bf_chain = [] if _bf_stale else sorted(
+                (x for x in _BF.get('chains', []) if datetime.date.fromisoformat(x['end']) >= _bf_t),
+                key=lambda x: (x['end'], x['name']))
             if _bf_stale:
                 print('   ⚠ blackfriday.json 超過重查期限，Black Friday 區塊不列')
 
@@ -24980,7 +24983,7 @@ if os.path.exists('cards.json'):
 
             def _bf_li(x):
                 started = datetime.date.fromisoformat(x['start']) <= _bf_t
-                rows = [('內容', x.get('what')), ('會員點數', x.get('points')), ('要注意', x.get('note'))]
+                rows = [('內容', x.get('what')), ('會員點數', x.get('points')), ('能不能和免稅一起用', x.get('taxfree')), ('要注意', x.get('note'))]
                 return (f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span>'
                         f'<span class="xbadge{" on" if started else ""}">{"進行中" if started else _bf_md(x["start"]) + " 開始"}</span></div>'
                         f'<div class="xw">{_bf_md(x["start"])}～{_bf_md(x["end"])}・{html.escape(x["scope"])}</div>'
@@ -24991,14 +24994,17 @@ if os.path.exists('cards.json'):
                            if x.get('facilities') else '')
                         + f'<p class="xo">出處：<a href="{html.escape(x["src"])}" rel="nofollow noopener" target="_blank">'
                         f'{html.escape(x.get("src_name") or "官方活動頁")} →</a></p></li>')
-            if _bf_live:
+            def _bf_unv(title, lst):
+                return ((f'<details class="faq"><summary>{title}</summary><div><ul>'
+                         + ''.join(f'<li>{html.escape(u)}</li>' for u in lst) + '</ul></div></details>') if lst else '')
+            if _bf_live or _bf_chain:
                 _bf_block = ('<h2 id="black-friday">這幾週的 Black Friday 檔期</h2>'
-                             '<p class="lede">日本的大型商場與 Outlet 每年 11 月下旬辦 Black Friday。下面只列官網公布、'
-                             f'還沒結束的檔期，期間過了會自動拿掉。參加的店家與折扣各店不同，官網沒寫的折扣幅度這裡不寫。</p>'
-                             '<ul class="xl">' + ''.join(_bf_li(x) for x in _bf_live) + '</ul>'
-                             + ('<details class="faq"><summary>查過、沒列進來的商場</summary><div><ul>'
-                                + ''.join(f'<li>{html.escape(u)}</li>' for u in _BF.get('unverified', [])) + '</ul></div></details>'
-                                if _BF.get('unverified') else '')
+                             '<p class="lede">日本的大型商場、Outlet 與連鎖店每年 11 月下旬辦 Black Friday。下面只列官網公布、'
+                             f'還沒結束的實體店檔期，期間過了會自動拿掉。參加的店家與折扣各店不同，官網沒寫的折扣幅度這裡不寫。</p>'
+                             + (('<h3>商場與 Outlet</h3><ul class="xl">' + ''.join(_bf_li(x) for x in _bf_live) + '</ul>'
+                                 + _bf_unv('查過、沒列進來的商場', _BF.get('unverified'))) if _bf_live else '')
+                             + (('<h3 id="black-friday-chains">連鎖店</h3><ul class="xl">' + ''.join(_bf_li(x) for x in _bf_chain) + '</ul>'
+                                 + _bf_unv('查過、沒列進來的連鎖店', _BF.get('chains_unverified'))) if _bf_chain else '')
                              + f'<p class="disc">查證於 {html.escape(_BF["checked"])}。Black Friday 的折扣和上面的觀光客折價券、'
                              '免稅能不能一起用，各店規定不同，結帳前問店員。</p>')
 
