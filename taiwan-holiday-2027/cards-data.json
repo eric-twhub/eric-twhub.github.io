@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-19 20:54",
+ "generated": "2026-11-19 23:53",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -1458,8 +1458,8 @@
      }
     ],
     "fare": {
-     "n": 63,
-     "median": 8662,
+     "n": 68,
+     "median": 8716,
      "low": 4135,
      "enough": true
     },
@@ -1901,9 +1901,9 @@
      }
     ],
     "fare": {
-     "n": 50,
-     "median": 9127,
-     "low": 5010,
+     "n": 53,
+     "median": 9224,
+     "low": 4777,
      "enough": true
     },
     "areas": [
@@ -2305,9 +2305,9 @@
      }
     ],
     "fare": {
-     "n": 12,
-     "median": 8814,
-     "low": 5175,
+     "n": 16,
+     "median": 8302,
+     "low": 5238,
      "enough": true
     },
     "areas": [
@@ -2743,8 +2743,8 @@
     ],
     "fest": [],
     "fare": {
-     "n": 8,
-     "median": 8980,
+     "n": 12,
+     "median": 8978,
      "low": 5816,
      "enough": true
     },
@@ -3170,9 +3170,9 @@
      }
     ],
     "fare": {
-     "n": 8,
-     "median": 8474,
-     "low": 6065,
+     "n": 9,
+     "median": 9158,
+     "low": 5930,
      "enough": true
     },
     "areas": [
@@ -3604,7 +3604,12 @@
      }
     ],
     "fest": [],
-    "fare": null,
+    "fare": {
+     "n": 1,
+     "median": 8730,
+     "low": 8730,
+     "enough": false
+    },
     "areas": [
      {
       "area": "hokkaido",
@@ -4472,8 +4477,8 @@
     ],
     "fare": {
      "n": 7,
-     "median": 11017,
-     "low": 7480,
+     "median": 11011,
+     "low": 7496,
      "enough": false
     },
     "areas": [
@@ -4957,7 +4962,7 @@
     "fare": {
      "n": 3,
      "median": 11816,
-     "low": 7994,
+     "low": 7990,
      "enough": false
     },
     "areas": [
@@ -5835,8 +5840,8 @@
      }
     ],
     "fare": {
-     "n": 3,
-     "median": 8735,
+     "n": 4,
+     "median": 8748,
      "low": 7487,
      "enough": false
     },
@@ -6811,7 +6816,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-11-19 12:52"
+   "generated": "2026-11-19 15:52"
   },
   "last": "2027-12-31",
   "partial": [
