@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-taipei-oita",
- "generated": "2026-11-19 10:59",
+ "generated": "2026-11-19 12:06",
  "kind": "fare",
  "origin": "taipei",
  "city": "oita",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 18507,
+ "med": 18111,
  "n_rt": 4,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 8339,
+   "price": 7546,
    "dep": "2026-11-21",
    "ret": "2026-11-28",
    "dept": "12:00",
@@ -45,8 +45,9 @@
    "tr": 0,
    "dur": 280,
    "dur_to": 120,
-   "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TPE2111OIT28111?t=IT17952624001795273200000120TPEOIT17958834001795889400000160OITTPE_fd77cfd19e7b636448c1f862ee762872_20838&search_date=18112026&expected_price_uuid=01a1ef0c-cdd5-8030-2c71-ce4468fd5d11&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=gxah5_K1hpjpRLESnDMPnw&expected_price_source=share&expected_price_currency=twd&expected_price=8339&marker=775639"
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OIT&departureDate=2026-11-21&inbound=OIT-TPE&returnDate=2026-11-28&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
   },
   {
    "o": "TPE",
