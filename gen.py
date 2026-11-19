@@ -18319,7 +18319,8 @@ if _FS:
                     + '<div class="xt"><b>' + html.escape(x['price']) + '</b></div>'
                     + '<div class="xt">' + html.escape(x['what']) + '</div>'
                     + '<p class="xo">' + '．'.join(html.escape(n) for n in x['notes'])
-                    + _fsrc(x['src'], x['src_name']) + '</p></li>')
+                    + _fsrc(x['src'], x['src_name'])
+                    + ('、' + _fsrc(x['src2'], x['src2_name']) if x.get('src2') else '') + '</p></li>')
         flash_html += f'<h3>接下來要開搶的（查於 {_chk_md}）</h3><ul class="xl">{_li}</ul>'
     else:
         flash_html += (f'<p>{_chk_md} 查各平台與航空公司官網，還沒有已公告、尚未開搶的場次。'
