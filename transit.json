@@ -344,7 +344,9 @@
   "Suica 停售期間的原因。常見的晶片短缺說法在官方的網頁版公告上查不到。",
   "Welcome Suica 能不能登錄 JRE POINT。官方只寫無記名 Suica 不能登錄，沒有點名 Welcome Suica。",
   "外國旅客能不能註冊 JRE ID 與 JRE POINT。JRE ID 利用規約裡沒有居住地或國籍的條文，JRE POINT 會員規約本站讀不到，該站全站拒絕連線。",
-  "無記名或旅客持有的 ICOCA 能不能完成利用登錄。官網只區分卡種，沒有提記名與否。"
+  "無記名或旅客持有的 ICOCA 能不能完成利用登錄。官網只區分卡種，沒有提記名與否。",
+    "上海商銀交通真速 Pay 的 5% 能不能和各卡基本回饋疊加，以及 Apple 錢包儲值算面對面還是非面對面交易。",
+    "Mastercard 的 Suica 加值回饋每張卡能用幾次、除了兆豐還有哪些發卡行適用，要登入 Mastercard 平台才看得到。"
  ],
  "points": {
   "title": "拿交通卡結帳，有沒有額外點數",
@@ -407,5 +409,21 @@
    ],
    "note": "要注意這六家裡，只有 Bic Camera 在 ICOCA 的加盟店名單上，其餘五家在 JRE POINT 與 ICOCA 兩份名單上都找不到。所以「拿交通卡結帳有額外點數」這件事，適用範圍比想像中窄。"
   }
- }
+ },
+  "extra_promos": [
+    {
+      "name": "上海商銀「交通真速 Pay」",
+      "end": "2026-12-31",
+      "what": "用 Apple Pay 綁上海商銀 VISA 或 Mastercard 個人信用卡儲值 Suica、ICOCA、PASMO，加碼 5%，每戶每月上限 NT$200，帳單約 NT$4,000 就到頂，回饋是刷卡金。活動期間內上官網登錄一次；JCB 卡不適用。各卡的基本回饋算不算這一筆，官網沒寫",
+      "src": "https://www.scsb.com.tw/content/card/hotPage/4604",
+      "src_name": "上海商銀活動頁"
+    },
+    {
+      "name": "Mastercard 海外消費回饋：Suica 加值",
+      "end": "2026-12-31",
+      "what": "用 Apple Pay 為 Suica 加值，單筆滿 8,000 日圓回饋 200 日圓，要先在 Mastercard 海外消費回饋網站登錄卡片並啟用優惠。只寫 Suica，沒寫 PASMO、ICOCA；每張卡能用幾次，公開頁沒寫",
+      "src": "https://www.megabank.com.tw/personal/credit-card/event/overview/megamtr",
+      "src_name": "兆豐銀行活動頁"
+    }
+  ]
 }

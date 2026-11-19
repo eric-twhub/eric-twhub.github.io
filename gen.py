@@ -194,6 +194,15 @@ try:                                   # 一律以台北時間為準（CI 執行
 except Exception:
     NOW=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8)))
 NOWS=NOW.strftime('%Y-%m-%d %H:%M'); TODAY=NOW.strftime('%Y-%m-%d')
+
+# cards.json 的加碼層可以帶 end（YYYY-MM-DD，台北日期，含當天）。
+# 過了 end 的層在載入時就拿掉，全站各處（比較表、計算機、交通卡頁）看到的是同一份，
+# 不用每個版位各自判斷到期。沒有 end 的層照舊，靠人工回查。
+def load_cards():
+    d = json.load(open('cards.json', encoding='utf-8'))
+    for c in d.get('cards', []):
+        c['tiers'] = [t for t in c.get('tiers', []) if not t.get('end') or t['end'] >= TODAY]
+    return d
 # 東京值得再飛一次那頁的家數。好幾頁的「順便看看」要標它，寫死過一次
 # 就對不上了：那個標籤卡在 45，資料早就是 46。
 _TP_N = (len(json.load(open('tokyo-picks.json', encoding='utf-8'))['stores'])
@@ -1893,7 +1902,7 @@ def topnav(cur=''):
         shop += '<hr><b>各店折扣</b>' + ''.join(
             link(f'/japan-coupon/{st["slug"]}/', st['name']) for st in _cp[:6])
 
-    _cd = json.load(open('cards.json', encoding='utf-8'))['cards'] \
+    _cd = load_cards()['cards'] \
         if os.path.exists('cards.json') else []
     card = (link('/japan-credit-card/', f'💳 {len(_cd) or ""} 張卡比較'.replace('  ', ' '))
             + link('/japan-card-calculator/', '🧮 回饋計算機')
@@ -5558,18 +5567,24 @@ if os.path.exists('transit.json'):
     # 不另外維護一份。只列有官方依據的，查不到的另外交代。
     _trcards = ''
     if os.path.exists('cards.json'):
-        _TRC = json.load(open('cards.json', encoding='utf-8'))
-        _trok = [c for c in _TRC['cards']
-                 if any(t['scope'] in ('transit', 'any') for t in c['tiers'])]
+        _TRC = load_cards()
+        # 和旅日信用卡頁同一組過濾：名額已滿（sold_out）與新戶層不算，
+        # 否則同一張卡在兩頁會是兩個費率（見 cards.json 的 _note）。
+        def _trts(c):
+            return [t for t in c['tiers'] if t['scope'] in ('transit', 'any')
+                    and not t.get('sold_out')
+                    and not re.search(r'新戶|核卡', t['label'] + t.get('cond', ''))]
+
+        _trok = [c for c in _TRC['cards'] if _trts(c)]
         _trun = [c for c in _TRC['cards'] if c.get('transit_unknown')]
 
         def _trrate(c):
-            ts = [t for t in c['tiers'] if t['scope'] in ('transit', 'any')]
+            ts = _trts(c)
             base = 0 if any(t.get('no_base') for t in ts) else c['base']
             return round(base + sum(t['rate'] for t in ts), 2)
 
         def _trcap(c):
-            ts = [t for t in c['tiers'] if t['scope'] in ('transit', 'any')]
+            ts = _trts(c)
             if any(t.get('cap_unknown') for t in ts):
                 return '官網未查到上限'
             caps = [t for t in ts if t['cap']]
@@ -5618,12 +5633,117 @@ if os.path.exists('transit.json'):
               '官方活動頁明文把交通卡儲值列為適用的，是加碼那一層；'
               '基本回饋涵不涵蓋這一筆，各行的一般消費定義沒有單獨說明，'
               '本站的依據是那幾份排除清單裡沒有這一項。'
-              '聯邦吉鶴卡是唯一把話講明白的，而它寫的是不給。</p>'
+              '聯邦吉鶴卡把話講明白了，寫的是不給。</p>'
             + f'<p class="disc">費率與條件查證於 {_TRC["checked"]}，'
               f'逐金額的試算與完整條款在'
               f'<a href="{U("/japan-credit-card/")}">旅日信用卡</a>那一頁，'
               f'把消費類型切到「交通卡儲值」就會依金額重排。'
               f'各行活動隨時調整，刷卡前請以發卡行官網為準。</p>')
+
+    # ── 怎麼儲值最划算 ──
+    # 比的是「每儲 ¥10,000 實際付多少台幣」。現金要算台銀現鈔賣出的匯差，
+    # 刷卡要算國外交易手續費再扣回饋。匯率用 apple.json 每日中價，現鈔匯差的比例
+    # 用 cards.json mpay.bot 那組牌告快照（和換匯頁、購物折扣頁同一份），不寫死數字。
+    _trbest = ''
+    _trbest_faq = None
+    if os.path.exists('cards.json'):
+        _tra = (json.load(open('apple.json', encoding='utf-8')).get('rate', {})
+                if os.path.exists('apple.json') else {})
+        _trmid = _tra.get('jpy_twd_mid') or _tra.get('jpy_twd') or 0.205
+        _trrd = _tpe_time(_tra.get('quoted_at', ''))
+        _trbot = (_TRC.get('mpay') or {}).get('bot') or {}
+        _trfee = (_TRC.get('fx_fee') or {}).get('typical', 1.5)
+        _trY = 10000
+        _TRS = '<br><small style="color:var(--dim)">'
+        _trraw = _trY * _trmid
+        _trcash_pct = ((_trbot['cash_sell'] / ((_trbot['spot_buy'] + _trbot['spot_sell']) / 2) - 1) * 100
+                       if _trbot else None)
+        _trbill = _trraw * (1 + _trfee / 100)
+
+        def _trnet(c):
+            ts = _trts(c)
+            v = 0 if any(t.get('no_base') for t in ts) else c['base'] / 100 * _trbill
+            for t in ts:
+                x = t['rate'] / 100 * _trbill
+                if t['cap'] and not t.get('cap_unknown') and x > t['cap']:
+                    x = t['cap']
+                v += x
+            return _trbill - v
+
+        def _trroom(c):
+            caps = [t for t in _trts(c) if t['cap'] and not t.get('cap_unknown')]
+            if any(t.get('cap_unknown') for t in _trts(c)):
+                return '官網沒寫上限'
+            mins = [t['min_ntd'] for t in _trts(c) if t.get('min_ntd')]
+            pre = f'單筆要滿 {money(max(mins))}；' if mins else ''
+            if not caps:
+                return pre + '沒有上限'
+            ntd = min(t['cap'] / (t['rate'] / 100) for t in caps)
+            yen = ntd / (_trmid * (1 + _trfee / 100))
+            share = '，和購物共用同一個上限' if any(t['scope'] == 'any' for t in caps) else ''
+            return pre + f'約儲 ¥{round(yen, -3):,.0f}，帳單 {money(round(ntd))} 為止' + share
+
+        _trrows2 = sorted(((_trnet(c), c) for c in _trok), key=lambda x: x[0])
+        if _trrows2:
+            _trcash = _trraw * (1 + _trcash_pct / 100) if _trcash_pct is not None else None
+
+            def _trvs(v):
+                if _trcash is None:
+                    return ''
+                d = v - _trcash
+                # 差距在 0.5% 以內算差不多，匯率估算本身就有這個誤差
+                tol = _trcash * 0.005
+                return (f'<td class="win">省 {money(round(-d))}</td>' if d < -tol else
+                        f'<td class="lose">多 {money(round(d))}</td>' if d > tol else '<td>差不多</td>')
+
+            _bv, _bc = _trrows2[0]
+            _trx = [x for x in TR.get('extra_promos', []) if x['end'] >= TODAY]
+            _trbest = (
+                f'<h2 id="{_hid("怎麼儲值最划算")}">怎麼儲值最划算</h2>'
+                '<p class="lede">實體卡在車站與便利商店只能投現金，要拿信用卡回饋，'
+                '只能用 iPhone 的 Apple 錢包版（Suica、PASMO、ICOCA，含 Welcome Suica Mobile）綁卡儲值。'
+                f'下面把每儲 ¥{_trY:,} 實際要付的台幣算出來：刷卡加上 {_trfee:g}% 國外交易手續費再扣回饋，'
+                '換現鈔則加上臺灣銀行現鈔賣出的匯差。</p>'
+                '<div class="tw"><table><thead><tr><th>怎麼儲</th>'
+                f'<th>每儲 ¥{_trY:,} 約付</th><th>和換現鈔比</th><th>加碼用到哪裡</th></tr></thead><tbody>'
+                + ''.join(
+                    f'<tr><td><b>Apple 錢包刷<a href="{U("/japan-credit-card/" + c["slug"] + "/")}">'
+                    f'{html.escape(c["name"])}</a></b>{_TRS}{html.escape(c.get("reg_short_transit") or c.get("reg_short", ""))}</small></td>'
+                    f'<td><b>{money(round(v))}</b></td>' + _trvs(v)
+                    + f'<td class="nm">{html.escape(_trroom(c))}</td></tr>'
+                    for v, c in _trrows2)
+                + (f'<tr><td><b>換日圓現鈔，投現金儲值</b>{_TRS}臺灣銀行現鈔賣出</small></td>'
+                   f'<td><b>{money(round(_trcash))}</b></td><td>基準</td><td class="nm">沒有上限</td></tr>'
+                   if _trcash is not None else '')
+                + f'<tr><td><b>Apple 錢包刷其他信用卡</b>{_TRS}沒有交通卡加碼的卡</small></td>'
+                  f'<td><b>{money(round(_trbill))}</b> 再扣回饋</td>' + _trvs(_trbill)
+                + '<td class="nm">回饋算不算交通卡儲值，看各行的一般消費定義</td></tr>'
+                + '</tbody></table></div>'
+                + '<div class="tldr"><ul>'
+                f'<li><b>有交通卡加碼的卡，用到上限前最划算。</b>{html.escape(_bc["name"])}每儲 ¥{_trY:,} '
+                f'約付 {money(round(_bv))}'
+                + (f'，比換現鈔少 {money(round(_trcash - _bv))}' if _trcash and _trcash > _bv else '')
+                + '。加碼有上限，用完之後掉回一般回饋，所以表上最後一欄要一起看。</li>'
+                '<li><b>沒有加碼的卡，刷卡和換現鈔差不多。</b>國外交易手續費和現鈔匯差都在 1.5% 上下，'
+                '差別在回饋算不算這一筆。</li>'
+                '<li><b>Apple 錢包裡的餘額退不出來。</b>JR 西日本寫明 Apple 錢包裡的 ICOCA 不能退款，'
+                'Welcome Suica Mobile 也不退餘額，分幾次少量儲比一次儲滿安全。</li>'
+                '<li><b>Android 手機目前不行。</b>海外買的機型沒有おサイフケータイ，只能投現金。</li>'
+                '</ul></div>'
+                + ((f'<h3>還有這幾個交通卡儲值活動</h3>'
+                    '<p class="lede">下面的活動沒有算進上面那張表，條件和上限各自不同。</p><div class="tldr"><ul>'
+                    + ''.join(f'<li><b>{html.escape(x["name"])}</b>：{html.escape(x["what"])}。活動到 {int(x["end"][5:7])}/{int(x["end"][8:])}，'
+                              f'出處：<a href="{html.escape(x["src"])}" rel="nofollow noopener" target="_blank">{html.escape(x["src_name"])}</a></li>'
+                              for x in _trx)
+                    + '</ul></div>') if _trx else '')
+                + f'<p class="disc">匯率用 {html.escape(_trrd or "最近一次")} 的日圓中價 {_trmid:.4f}；'
+                f'現鈔匯差用臺灣銀行 {html.escape(_trbot.get("date", ""))} 牌告的現鈔賣出與即期中價比例。'
+                '刷卡的匯率以卡組織匯率約等於中價估算，實際入帳依發卡行。回饋算法與上限見下面「搭哪張信用卡儲值」。</p>')
+            _trbest_faq = ('交通卡怎麼儲值最划算？',
+                '實體卡只能投現金，要拿信用卡回饋只能用 iPhone 的 Apple 錢包版綁卡儲值。'
+                f'依本頁試算，每儲 ¥{_trY:,} 用{_bc["name"]}約付 {money(round(_bv))}'
+                + (f'，換現鈔投現金約付 {money(round(_trcash))}' if _trcash else '')
+                + '。交通卡加碼都有上限，用完之後掉回一般回饋；沒有加碼的卡，刷卡和換現鈔差不多。')
 
     tr_faq = [
      ('第一次去日本，Suica、PASMO、ICOCA 要買哪一張？',
@@ -5680,6 +5800,8 @@ if os.path.exists('transit.json'):
       '短期旅客實務上辦不到，因為要通過入會審查又要有日本本人名義的帳戶，'
       '不過官方並沒有明文寫旅客不可申辦，這是從條件推出來的。'),
     ]
+    if _trbest_faq:
+        tr_faq.insert(1, _trbest_faq)
     tr_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in tr_faq)
     tr_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
@@ -5699,6 +5821,7 @@ if os.path.exists('transit.json'):
       + f'<div class="today"><div class="tday">查證於 {TR["checked"]}</div>'
         f'<div class="tans">{html.escape(_H["a"])}</div>'
         f'<div class="tsub">{html.escape(_H["q"])}</div></div>'
+      + _trbest
       + f'<h2 id="{_hid(TR["kinds"]["title"])}">{html.escape(TR["kinds"]["title"])}</h2>'
       + f'<p class="lede">{html.escape(TR["kinds"]["intro"])}</p>'
       + '<div class="tw"><table><thead><tr><th>卡</th><th>發行者</th>'
@@ -22023,7 +22146,7 @@ if _GT:
 
 # ---------- 旅日信用卡 ----------
 if os.path.exists('cards.json'):
-    CD = json.load(open('cards.json', encoding='utf-8'))
+    CD = load_cards()
 
     # ── 卡片本身就把訂票平台算進加碼的，在那張卡旁邊放平台連結 ──
     # 讀信用卡頁的人在想的是「這張卡怎麼刷」，只有這種版位和他當下想的事對得上。

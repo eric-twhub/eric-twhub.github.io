@@ -304,8 +304,8 @@
   },
   "japan-transit-card": {
    "checked": "2026-10-17",
-   "title": "落地要買的那張票",
-   "sub": "機場到市區的特急車票，以及可以先在台灣訂好的交通卡",
+   "title": "落地與市區的交通票",
+   "sub": "機場到市區的特急車票、大阪地鐵公車一日券，以及可以先在台灣訂好的交通卡",
    "brand": "KKday",
    "search": "https://www.kkday.com/zh-tw/product/productlist?keyword=%E6%A9%9F%E5%A0%B4%E5%BF%AB%E7%B7%9A",
    "items": [
@@ -326,12 +326,12 @@
      "url": "https://www.kkday.com/zh-tw/product/18940"
     },
     {
-     "id": "19691",
-     "name": "南海電鐵機場快線 Rapi:t 電子車票",
-     "note": "關西機場到難波，南海這條，和上面那支是兩種走法",
+     "id": "12156",
+     "name": "大阪周遊卡 1 日券／2 日券",
+     "note": "Osaka Metro 與市營巴士無限搭，加 40 多處景點免費入場",
      "star": "4.8",
-     "booked": "200K+",
-     "url": "https://www.kkday.com/zh-tw/product/19691"
+     "booked": "100K+",
+     "url": "https://www.kkday.com/zh-tw/product/12156"
     },
     {
      "id": "575327",
