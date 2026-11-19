@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-20-taipei-saga",
- "generated": "2026-11-20 06:45",
+ "generated": "2026-11-20 07:52",
  "kind": "fare",
  "origin": "taipei",
  "city": "saga",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5731,
+  "price": 5513,
   "dep": "2026-12-03",
   "ret": "2026-12-10",
   "dept": "08:10",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 14882,
+ "med": 14888,
  "n_rt": 4,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "TR",
    "airname": "酷航",
    "cls": "lcc",
-   "price": 12045,
+   "price": 12050,
    "dep": "2026-12-16",
    "ret": "2026-12-22",
    "dept": "14:25",
@@ -46,7 +46,7 @@
    "dur": 1210,
    "dur_to": 305,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TPE1612HSG22121?t=TR17974311001797498900001070TPENRTHNDHSG17979408001797945600000140HSGTPE_5632ef523f021e8000cb7608d8b53306_29939&search_date=19112026&expected_price_uuid=01a1f4a3-9dc3-8040-2aa0-6b75a43b850c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_Yxm3l6AivLxdibhxXFGsw&expected_price_source=share&expected_price_currency=twd&expected_price=12045&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE1612HSG22121?t=TR17974311001797498900001070TPENRTHNDHSG17979408001797945600000140HSGTPE_5632ef523f021e8000cb7608d8b53306_29939&search_date=19112026&expected_price_uuid=01a1f4a3-9dc3-8040-2aa0-6b75a43b850c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_Yxm3l6AivLxdibhxXFGsw&expected_price_source=share&expected_price_currency=twd&expected_price=12050&marker=775639"
   },
   {
    "o": "TPE",
@@ -54,7 +54,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 17720,
+   "price": 17727,
    "dep": "2026-12-16",
    "ret": "2026-12-22",
    "dept": "16:50",
@@ -64,7 +64,7 @@
    "dur": 1335,
    "dur_to": 290,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TSA1612HSG22121?t=NH17974398001797498900000925TSAHNDHSG17979336001797954600000410HSGHNDTSA_5e465ce1666962d113b5d3dc570dab6f_44046&search_date=19112026&expected_price_uuid=01a1f4a3-9dc3-8040-2aa0-6b75a43b850c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=aAuCebeEq0nKUOUbJ0SFoQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17720&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA1612HSG22121?t=NH17974398001797498900000925TSAHNDHSG17979336001797954600000410HSGHNDTSA_5e465ce1666962d113b5d3dc570dab6f_44046&search_date=19112026&expected_price_uuid=01a1f4a3-9dc3-8040-2aa0-6b75a43b850c&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=aAuCebeEq0nKUOUbJ0SFoQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17727&marker=775639"
   },
   {
    "o": "TPE",
@@ -72,7 +72,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 22736,
+   "price": 22745,
    "dep": "2026-12-03",
    "ret": "2026-12-10",
    "dept": "13:30",
@@ -82,7 +82,7 @@
    "dur": 820,
    "dur_to": 300,
    "gate": "Kiwi.com",
-   "url": "https://www.aviasales.com/search/TSA0312HSG10121?t=NH17963046001796333400000420TSAHNDHSG17968854001796905800000400HSGHNDTSA_6fd74c3722f04b45bfc41af955539a18_56364&search_date=19112026&expected_price_uuid=01a1f467-a654-8040-2fce-c3b2862a4da7&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=5bBu8JDLaPBAbtmwLlWHaQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=22736&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA0312HSG10121?t=NH17963046001796333400000420TSAHNDHSG17968854001796905800000400HSGHNDTSA_6fd74c3722f04b45bfc41af955539a18_56364&search_date=19112026&expected_price_uuid=01a1f467-a654-8040-2fce-c3b2862a4da7&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=5bBu8JDLaPBAbtmwLlWHaQ&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=22745&marker=775639"
   }
  ]
 }

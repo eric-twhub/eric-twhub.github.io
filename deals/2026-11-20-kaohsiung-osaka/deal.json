@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-20-kaohsiung-osaka",
- "generated": "2026-11-20 06:45",
+ "generated": "2026-11-20 07:52",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "osaka",
@@ -11,7 +11,7 @@
   "air": "MM",
   "airname": "樂桃航空",
   "cls": "lcc",
-  "price": 7417,
+  "price": 7420,
   "dep": "2026-12-16",
   "ret": "2027-01-14",
   "dept": "14:20",
@@ -21,12 +21,12 @@
   "dur": 375,
   "dur_to": 165,
   "gate": "Trip.com",
-  "url": "https://www.aviasales.com/search/KHH1612KIX14011?t=IT17974308001797444300000165KHHKIX17999262001799935200000210KIXKHH_714e4c00c8d99136f0cf61fd183f6483_18470&search_date=19112026&expected_price_uuid=01a1f5bd-da68-8040-24a0-fa71f06fa3ee&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Vs4DVZj-s0QmIWOkx35L_Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7417&marker=775639"
+  "url": "https://www.aviasales.com/search/KHH1612KIX14011?t=IT17974308001797444300000165KHHKIX17999262001799935200000210KIXKHH_714e4c00c8d99136f0cf61fd183f6483_18470&search_date=19112026&expected_price_uuid=01a1f5bd-da68-8040-24a0-fa71f06fa3ee&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Vs4DVZj-s0QmIWOkx35L_Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7420&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,249（7 天有紀錄），這張低 10%"
+  "這條航線平常最低落在 NT$7,884–NT$8,748，這張是近期 25 筆紀錄中第 1 低"
  ],
- "med": 9328,
+ "med": 9332,
  "n_rt": 25,
  "others": [
   {
@@ -35,7 +35,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 7880,
+   "price": 7884,
    "dep": "2026-12-21",
    "ret": "2026-12-25",
    "dept": "14:20",
@@ -45,7 +45,7 @@
    "dur": 390,
    "dur_to": 165,
    "gate": "Trip.com",
-   "url": "https://www.aviasales.com/search/KHH2112KIX25121?t=MM17978628001797876300000165KHHKIX17981835001798193400000225KIXKHH_7e8e5d054bdbb57d42b81a4add4a2c68_19536&search_date=19112026&expected_price_uuid=01a1f43d-b25d-8040-6245-8d4dfbf9640f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ePck9B-iZVrApCdmjENCzg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7880&marker=775639"
+   "url": "https://www.aviasales.com/search/KHH2112KIX25121?t=MM17978628001797876300000165KHHKIX17981835001798193400000225KIXKHH_7e8e5d054bdbb57d42b81a4add4a2c68_19536&search_date=19112026&expected_price_uuid=01a1f43d-b25d-8040-6245-8d4dfbf9640f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ePck9B-iZVrApCdmjENCzg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7883&marker=775639"
   },
   {
    "o": "KHH",
@@ -53,7 +53,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 8011,
+   "price": 8014,
    "dep": "2026-12-22",
    "ret": "2026-12-25",
    "dept": "14:20",
@@ -63,7 +63,7 @@
    "dur": 390,
    "dur_to": 165,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH2212KIX25121?t=MM17979492001797962700000165KHHKIX17981835001798193400000225KIXKHH_6c9462c7cb49eaedf04923bd486c002c_19912&search_date=19112026&expected_price_uuid=01a1f474-028a-8040-609a-3ea79f4d4b7b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=kqIcNBgDaOzLqyCD3oZlcQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8011&marker=775639"
+   "url": "https://www.aviasales.com/search/KHH2212KIX25121?t=MM17979492001797962700000165KHHKIX17981835001798193400000225KIXKHH_6c9462c7cb49eaedf04923bd486c002c_19912&search_date=19112026&expected_price_uuid=01a1f474-028a-8040-609a-3ea79f4d4b7b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=kqIcNBgDaOzLqyCD3oZlcQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8014&marker=775639"
   },
   {
    "o": "KHH",

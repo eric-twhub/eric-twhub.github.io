@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-20 06:45",
+ "generated": "2026-11-20 07:52",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -1459,8 +1459,8 @@
     ],
     "fare": {
      "n": 73,
-     "median": 8480,
-     "low": 4275,
+     "median": 8583,
+     "low": 4276,
      "enough": true
     },
     "areas": [
@@ -1901,9 +1901,9 @@
      }
     ],
     "fare": {
-     "n": 59,
-     "median": 9240,
-     "low": 4785,
+     "n": 61,
+     "median": 9250,
+     "low": 4787,
      "enough": true
     },
     "areas": [
@@ -2307,7 +2307,7 @@
     "fare": {
      "n": 21,
      "median": 9548,
-     "low": 5214,
+     "low": 5216,
      "enough": true
     },
     "areas": [
@@ -2743,9 +2743,9 @@
     ],
     "fest": [],
     "fare": {
-     "n": 14,
-     "median": 8432,
-     "low": 5478,
+     "n": 15,
+     "median": 8649,
+     "low": 5480,
      "enough": true
     },
     "areas": [
@@ -3170,9 +3170,9 @@
      }
     ],
     "fare": {
-     "n": 15,
-     "median": 9174,
-     "low": 5841,
+     "n": 17,
+     "median": 9178,
+     "low": 5843,
      "enough": true
     },
     "areas": [
@@ -3606,8 +3606,8 @@
     "fest": [],
     "fare": {
      "n": 3,
-     "median": 7953,
-     "low": 5808,
+     "median": 7791,
+     "low": 5810,
      "enough": false
     },
     "areas": [
@@ -4028,8 +4028,8 @@
     "fest": [],
     "fare": {
      "n": 1,
-     "median": 9144,
-     "low": 9144,
+     "median": 9147,
+     "low": 9147,
      "enough": false
     },
     "areas": [
@@ -4482,8 +4482,8 @@
     ],
     "fare": {
      "n": 8,
-     "median": 11062,
-     "low": 7485,
+     "median": 11046,
+     "low": 7488,
      "enough": true
     },
     "areas": [
@@ -4967,7 +4967,7 @@
     "fare": {
      "n": 3,
      "median": 11816,
-     "low": 8333,
+     "low": 8336,
      "enough": false
     },
     "areas": [
@@ -5846,7 +5846,7 @@
     ],
     "fare": {
      "n": 3,
-     "median": 8756,
+     "median": 8760,
      "low": 7487,
      "enough": false
     },
@@ -6821,7 +6821,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-11-19 22:43"
+   "generated": "2026-11-19 23:51"
   },
   "last": "2027-12-31",
   "partial": [
