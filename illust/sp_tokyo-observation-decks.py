@@ -327,4 +327,15 @@ card('hokutopia', '手繪展望大廳，窗外是公園的樹和一列白色新�
                 + skytree(140, 92, 40, 6) + f'<path d="M3,112 L237,112" stroke-width="1.6"/>',
                 back(100, 120, GOLD, 1.0) + back(136, 122, SKY, .95)))
 
+# 惠比壽花園廣場塔 38 樓 SKY LOUNGE（2026-11-19 補）：餐廳樓層的展望大廳，窗外東京鐵塔與彩虹大橋夜景
+card('ebisu', '手繪高樓餐廳樓層的展望大廳，窗外是夜景裡的東京鐵塔和遠方的吊橋',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{NIGHT}"/>'
+     + win_room(''.join(f'<circle cx="{x}" cy="{y}" r="1.6" fill="{GOLD}" stroke="none"/>' for x in range(10, 230, 9) for y in (102, 110) if (x * y) % 4)
+                + tower(70, 112, 56, sw=12)
+                + ''.join(f'<rect x="{x}" y="84" width="5" height="26" fill="{WHITE}" stroke-width="1"/>' for x in (170, 206))
+                + f'<path d="M150,92 Q172,86 172,84 Q190,104 208,84 Q208,86 230,92" fill="none" stroke="{WHITE}" stroke-width="1.4"/>'
+                + f'<path d="M3,112 L237,112" stroke-width="1.6"/>',
+                back(110, 120, GOLD, 1.0) + back(146, 122, PINK, .95))
+     + star(30, 22, 4), bg=NIGHT)
+
 print(save(F, OUT), 'files')

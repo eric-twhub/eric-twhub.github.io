@@ -1,0 +1,194 @@
+{
+ "_說明": "/tokyo/observation-decks/ 底下三頁（看得到東京鐵塔／富士山／晴空塔的觀景台）。每一筆都要有營運單位官網的原句（ja）與網址；官網沒寫的不收，頁面上另外列「官網沒寫」。key 對應 tokyo-decks.json 與東京頁的 OBS 登記表。ja-zh.json 有每句原文的中譯。",
+ "_回查": [
+  "六本木看富士山的原句在 2026 聖誕活動頁（52 樓咖啡站），活動結束頁面可能下架，2027 年 1 月回查換來源",
+  "文京 Civic Center 預定 2026 年 12 月上旬重開，重開後東京頁會自動改時間，這裡的 note 要拿掉",
+  "東京鐵塔、晴空塔、SHIBUYA SKY、球體展望室官網都沒寫看得到另外兩座塔或富士山（晴空塔官網有寫富士山），半年回查一次",
+  "汐留 Caretta 官網 11/19 維護中，恢復後查 46 樓 SKY VIEW 看不看得到東京鐵塔"
+ ],
+ "checked": "2026-11-19",
+ "pages": {
+  "tower": {
+   "slug": "tokyo-tower-view",
+   "name": "東京鐵塔",
+   "emoji": "🗼",
+   "ill": "sp/tokyo-observation-decks/ebisu",
+   "self": "tower",
+   "items": [
+    {
+     "key": "roppongi",
+     "dir": "",
+     "zh": "六本木之丘 52 樓的室內展望台，官網把東京鐵塔列為一眼看得到的東京地標，晴空塔、彩虹大橋也在裡面。",
+     "ja": "東京タワー、東京スカイツリー、レインボーブリッジといった東京のランドマークが一望できます",
+     "src": "https://tcv.roppongihills.com/jp/enjoy/friends/index.html"
+    },
+    {
+     "key": "ebisu",
+     "dir": "",
+     "zh": "38 樓的免費展望大廳，看得到東京鐵塔和彩虹大橋，開到 23:30。",
+     "ja": "展望ラウンジ「SKY LOUNGE」では、東京タワーや、レインボーブリッジを一望できます。",
+     "src": "https://gardenplace.jp/special_topic/detail/topofyebisu"
+    },
+    {
+     "key": "sunshine",
+     "dir": "",
+     "zh": "從池袋 251 公尺高看出去，夜景裡點名了東京鐵塔和東京都廳。",
+     "ja": "夜になると日本夜景遺産にも認定された光り輝く大都会の夜景をお楽しみいただける他、東京タワーや東京都庁などの観光名所、車が行き交う首都高速道路など、キラキラときらめく夜景は圧巻！",
+     "src": "https://sunshinecity.jp/observatory/"
+    },
+    {
+     "key": "funabori",
+     "dir": "西南",
+     "zh": "往西南看是東京鐵塔，同一個方向還有富士山。",
+     "ja": "西：スカイツリー 南西：東京タワー、富士山",
+     "src": "https://www.towerhall.jp/faq/"
+    },
+    {
+     "key": "carrot",
+     "dir": "東側",
+     "zh": "東側的展望區看得到都心夜景和東京鐵塔。",
+     "ja": "西側の展望エリアからは東京西部を一望でき、季節によっては富士山もご覧いただけます。また東側の展望エリアからは都心の夜景や東京タワーもご覧いただけます。",
+     "src": "https://www.city.setagaya.lg.jp/02072/8528.html"
+    },
+    {
+     "key": "haneda",
+     "dir": "第 3 航廈 5 樓",
+     "zh": "第 3 航廈 5 樓的展望台看得到東京鐵塔和晴空塔，飛機就在眼前起降。",
+     "ja": "見晴らしのよいデッキからは、東京タワーや東京スカイツリーが見えます。",
+     "src": "https://tokyo-haneda.com/enjoy/recommended_place/index.html"
+    }
+   ]
+  },
+  "fuji": {
+   "slug": "fuji-view",
+   "name": "富士山",
+   "emoji": "🗻",
+   "ill": "sp/tokyo-observation-decks/nerima",
+   "self": "",
+   "note": "富士山離東京市區大約 100 公里，空氣要夠清楚才看得到。氣溫低、能見度好的 12～2 月，從東京都廳看得到富士山的日子比較多。",
+   "items": [
+    {
+     "key": "skytree",
+     "dir": "",
+     "zh": "350 公尺的天望甲板，天氣晴朗的日子看得到富士山。",
+     "ja": "東京の街並みを見渡す大パノラマ。晴れた日には富士山まで望め、カフェのドリンク片手に絶景を楽しめます。",
+     "src": "https://www.tokyo-skytree.jp/"
+    },
+    {
+     "key": "roppongi",
+     "dir": "澀谷、新宿方向",
+     "zh": "展望台裡新開的咖啡站朝澀谷、新宿方向，天氣好的日子看得到富士山。",
+     "ja": "渋谷・新宿方面を望む開放的な空間で、天気の良い日には富士山を望むこともできます。",
+     "src": "https://tcv.roppongihills.com/jp/exhibitions/xmas2026/index.html"
+    },
+    {
+     "key": "tocho",
+     "dir": "西側",
+     "zh": "往西是富士山的方向；12～2 月氣溫低、能見度好，看得到的日子比較多。",
+     "ja": "西方面 富士山が見える方角です。気温が低くて見通しがきく12月～2月は、富士山を望むことができる日が多いです。",
+     "src": "https://www.zaimu.metro.tokyo.lg.jp/tochousha/goannai/tenbou"
+    },
+    {
+     "key": "bunkyo",
+     "dir": "",
+     "zh": "105 公尺高，看得到晴空塔、新宿高樓群、富士山和筑波山。",
+     "ja": "地上約105メートルの高さから、文京区内の東京大学、小石川植物園をはじめ、東京スカイツリーや新宿副都心の高層ビル群、富士山、筑波山などを見渡すことができます。",
+     "src": "https://www.city.bunkyo.lg.jp/shisetsu/civiccenter/tenbo.html"
+    },
+    {
+     "key": "funabori",
+     "dir": "西南",
+     "zh": "往西南看是富士山，同一個方向還有東京鐵塔。",
+     "ja": "西：スカイツリー 南西：東京タワー、富士山",
+     "src": "https://www.towerhall.jp/faq/"
+    },
+    {
+     "key": "nerima",
+     "dir": "西南側",
+     "zh": "80 公尺高看富士山和新宿高樓群；官網放了鑽石富士的照片（夕陽落在富士山頂）。",
+     "ja": "区役所本庁舎20階展望ロビーは、地上80メートルの高さから富士山や新宿副都心などの眺望が楽しめる区内最高のビューポイントです。",
+     "src": "https://www.city.nerima.tokyo.jp/shisetsu/ku/ku/tenbo.html"
+    },
+    {
+     "key": "carrot",
+     "dir": "西側",
+     "zh": "西側的展望區看東京西部，季節對的話看得到富士山。",
+     "ja": "西側の展望エリアからは東京西部を一望でき、季節によっては富士山もご覧いただけます。また東側の展望エリアからは都心の夜景や東京タワーもご覧いただけます。",
+     "src": "https://www.city.setagaya.lg.jp/02072/8528.html"
+    },
+    {
+     "key": "meguro",
+     "dir": "",
+     "zh": "屋頂庭園的展望甲板，隔著赤松看富士山。",
+     "ja": "展望台デッキからアカマツ越しに富士山を望むことができるエリア",
+     "src": "https://www.city.meguro.tokyo.jp/douro/shisetsu/sports/tenku.html"
+    }
+   ]
+  },
+  "skytree": {
+   "slug": "skytree-view",
+   "name": "晴空塔",
+   "emoji": "🌃",
+   "ill": "sp/tokyo-observation-decks/funabori",
+   "self": "skytree",
+   "items": [
+    {
+     "key": "roppongi",
+     "dir": "",
+     "zh": "六本木之丘 52 樓的室內展望台，官網把晴空塔、東京鐵塔、彩虹大橋列為一眼看得到的地標。",
+     "ja": "東京タワー、東京スカイツリー、レインボーブリッジといった東京のランドマークが一望できます",
+     "src": "https://tcv.roppongihills.com/jp/enjoy/friends/index.html"
+    },
+    {
+     "key": "tocho",
+     "dir": "東北",
+     "zh": "往東北是晴空塔的方向。",
+     "ja": "北東方面 東京スカイツリーが見える方角です。",
+     "src": "https://www.zaimu.metro.tokyo.lg.jp/tochousha/goannai/tenbou"
+    },
+    {
+     "key": "asakusa",
+     "dir": "東側",
+     "zh": "淺草雷門對面的 8 樓露台，晴空塔和淺草街景一起看。",
+     "ja": "8階の展望テラスからは東京スカイツリーや浅草のまちを一望することができます。",
+     "src": "https://www.city.taito.lg.jp/bunka_kanko/kankoinfo/info/oyakudachi/kankocenter/index.html"
+    },
+    {
+     "key": "bunkyo",
+     "dir": "",
+     "zh": "105 公尺高，看得到晴空塔、新宿高樓群、富士山和筑波山。",
+     "ja": "地上約105メートルの高さから、文京区内の東京大学、小石川植物園をはじめ、東京スカイツリーや新宿副都心の高層ビル群、富士山、筑波山などを見渡すことができます。",
+     "src": "https://www.city.bunkyo.lg.jp/shisetsu/civiccenter/tenbo.html"
+    },
+    {
+     "key": "funabori",
+     "dir": "西",
+     "zh": "往西看是晴空塔；西南還看得到東京鐵塔和富士山。",
+     "ja": "西：スカイツリー 南西：東京タワー、富士山",
+     "src": "https://www.towerhall.jp/faq/"
+    },
+    {
+     "key": "nerima",
+     "dir": "東側",
+     "zh": "東側的窗戶是池袋、晴空塔方向。",
+     "ja": "池袋・スカイツリー方面（東側）",
+     "src": "https://www.city.nerima.tokyo.jp/shisetsu/ku/ku/tenbo.html"
+    },
+    {
+     "key": "hokutopia",
+     "dir": "",
+     "zh": "三面有窗，從腳下的飛鳥山公園一路看到晴空塔，王子站那側還看得到新幹線。",
+     "ja": "眼下の飛鳥山公園から東京スカイツリー、さいたま新都心、秩父連山、赤城山、筑波の峰などが見え、王子駅側の窓からは新幹線が見える、北区自慢の展望スポットです。",
+     "src": "https://www.hokutopia.jp/hall-guide/other/viewing_lobby"
+    },
+    {
+     "key": "haneda",
+     "dir": "第 3 航廈 5 樓",
+     "zh": "第 3 航廈 5 樓的展望台看得到晴空塔和東京鐵塔。",
+     "ja": "見晴らしのよいデッキからは、東京タワーや東京スカイツリーが見えます。",
+     "src": "https://tokyo-haneda.com/enjoy/recommended_place/index.html"
+    }
+   ]
+  }
+ }
+}

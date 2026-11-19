@@ -1812,6 +1812,8 @@ def topnav(cur=''):
             + (link('/sendai/observation-decks/', '🌲 仙台觀景台（松島、山寺、藏王）') if os.path.exists('sendai-decks.json') else '')
             + (link('/hiroshima/observation-decks/', '⛩️ 廣島觀景台（宮島、尾道、岩國）') if os.path.exists('hiroshima-decks.json') else '')
             + (link('/okinawa/observation-decks/', '🌊 沖繩觀景台開放時間與門票') if os.path.exists('okinawa-decks.json') else '')
+            + (link('/kanazawa/observation-decks/', '🏯 金澤觀景台（富山、福井、白川鄉）') if os.path.exists('kanazawa-decks.json') else '')
+            + (link('/shizuoka/observation-decks/', '🗻 靜岡觀景台（看富士山、伊豆、濱松）') if os.path.exists('shizuoka-decks.json') else '')
             + link('/kyushu/observation-decks/', '🗼 九州觀景台開放時間與門票')
             + link('/hokkaido/observation-decks/', '❄️ 北海道觀景台開放時間與門票')
             + link('/japan-free-observation-decks/', '🆓 日本免費觀景台')
@@ -2010,6 +2012,8 @@ _AD_MAP = [
     ('tokyo/autumn-leaves', 'esim'),
     ('tokyo/christmas-market', 'esim'),
     ('tokyo/observation-decks', 'activity2'),
+    ('tokyo/observation-decks/tokyo-tower-view', 'activity2'), ('tokyo/observation-decks/fuji-view', 'activity2'),
+    ('tokyo/observation-decks/skytree-view', 'activity2'),
     ('kansai/observation-decks', 'activity2'),
     ('kyushu/observation-decks', 'activity2'),
     ('osaka/observation-decks', 'activity2'),
@@ -2026,6 +2030,8 @@ _AD_MAP = [
     ('sendai/observation-decks', 'activity2'),
     ('hiroshima/observation-decks', 'activity2'),
     ('okinawa/observation-decks', 'activity2'),
+    ('kanazawa/observation-decks', 'activity2'),
+    ('shizuoka/observation-decks', 'activity2'),
     ('japan-free-observation-decks', 'activity2'),
     ('japan-night-observation-decks', 'activity2'),
     ('hakodate/christmas-fantasy', 'esim'),
@@ -3080,6 +3086,8 @@ _STK_PREFIX = sorted({
     '/sendai/observation-decks/': '',
     '/hiroshima/observation-decks/': '',
     '/okinawa/observation-decks/': '',
+    '/kanazawa/observation-decks/': '',
+    '/shizuoka/observation-decks/': '',
     '/kobe/observation-decks/': '',
     '/fukuoka/observation-decks/': '',
     '/nagasaki/observation-decks/': '',
@@ -28531,6 +28539,9 @@ if os.path.exists('tokyo-decks.json') and 'STR' in globals() and 'TTW' in global
         f'要買票的 6 個、不用門票的 {_n_free} 個（有幾個官網沒寫要不要錢，我照實寫），開放時間、大人票價、要不要先預約和離哪個車站多近，都是回去翻官網查的。</p>'
       + '<p class="ap">先講結論：<mark>預算有限就去免費的</mark>，東京都廳和淺草那幾個不用花錢就能看；'
         '想看夕陽的話，SHIBUYA SKY 要提早買票，晴空塔網路買比現場便宜。</p>'
+      + (f'<p class="ap">只想找看得到某個地標的：<a href="{U("/tokyo/observation-decks/tokyo-tower-view/")}">看得到東京鐵塔</a>、'
+         f'<a href="{U("/tokyo/observation-decks/fuji-view/")}">看得到富士山</a>、<a href="{U("/tokyo/observation-decks/skytree-view/")}">看得到晴空塔</a>'
+         '的觀景台各整理成一篇，每一處附官網原文。</p>' if os.path.exists('tokyo-views.json') else '')
       + f'<p class="sticky" id="tdnote">{html.escape(_note)}</p>'
       + '<nav class="atoc"><b>這篇有</b><ol>'
         '<li><a href="#all">先看總表（可以選日期）</a></li>'
@@ -29355,7 +29366,7 @@ if os.path.exists('kanto-decks.json') and 'KY' in globals():
 # ---------- 名古屋、仙台、廣島、沖繩觀景台（登記） ----------
 # 這幾個城市沒有區域頁，只有城市頁 /<slug>/observation-decks/（市區＋電車一日遊可到的近郊），資料在 <slug>-decks.json，規則欄位同九州。
 # 頁面在下面城市頁那段寫，免費頁、夜景頁也會自動帶進來。附近景點在 deck-nearby.json 的同名地區。
-_OB_CITYONLY = [('nagoya', '名古屋'), ('sendai', '仙台'), ('hiroshima', '廣島'), ('okinawa', '沖繩')]
+_OB_CITYONLY = [('nagoya', '名古屋'), ('sendai', '仙台'), ('hiroshima', '廣島'), ('okinawa', '沖繩'), ('kanazawa', '金澤'), ('shizuoka', '靜岡')]
 _OBC = {}
 for _slug, _rg in _OB_CITYONLY:
     if not (os.path.exists(f'{_slug}-decks.json') and 'KY' in globals()):
@@ -29388,13 +29399,13 @@ if OBS:
                '福岡': (33.5902, 130.4017), '長崎': (32.7503, 129.8777), '北九州': (33.8834, 130.8752),
                '札幌': (43.0621, 141.3544), '函館': (41.7687, 140.7288), '京都': (35.0116, 135.7681),
                '橫濱': (35.4437, 139.6380), '名古屋': (35.1709, 136.8815),
-               '仙台': (38.2601, 140.8822), '廣島': (34.3966, 132.4753), '那霸': (26.2124, 127.6809)}
+               '仙台': (38.2601, 140.8822), '廣島': (34.3966, 132.4753), '那霸': (26.2124, 127.6809), '金澤': (36.5781, 136.6480), '靜岡': (34.9716, 138.3890)}
     _OB_JMA = {'東京': ('130000', '東京'), '大阪': ('270000', '大阪'), '神戶': ('280000', '兵庫'),
                '福岡': ('400000', '福岡'), '北九州': ('400000', '福岡'), '長崎': ('420000', '長崎'),
                '札幌': ('016000', '札幌'), '函館': ('017000', '函館'), '京都': ('260000', '京都'),
                '橫濱': ('140000', '神奈川'), '名古屋': ('230000', '愛知'),
-               '仙台': ('040000', '宮城'), '廣島': ('340000', '廣島'), '那霸': ('471000', '沖繩本島')}
-    _OB_REGION_SUN = {'東京': '東京', '首都圈': '橫濱', '仙台': '仙台', '名古屋': '名古屋', '關西': '大阪', '廣島': '廣島',
+               '仙台': ('040000', '宮城'), '廣島': ('340000', '廣島'), '那霸': ('471000', '沖繩本島'), '金澤': ('170000', '石川'), '靜岡': ('220000', '靜岡')}
+    _OB_REGION_SUN = {'東京': '東京', '首都圈': '橫濱', '仙台': '仙台', '名古屋': '名古屋', '金澤': '金澤', '靜岡': '靜岡', '關西': '大阪', '廣島': '廣島',
                       '九州': '福岡', '沖繩': '那霸', '北海道': '札幌'}
 
     def _ob_md(d):
@@ -29991,6 +30002,114 @@ if OBS:
           f'更新於 {KN["checked"]}・資料來自各觀景台官網與市府網站',
           srcs=[(r['name'], next(e['src'] for e in KN['paid'] + KN['free'] if e['key'] == r['key'])) for r in _kn_paid + _kn_free], prio=0.7)
 
+    # ---- 東京：看得到東京鐵塔／富士山／晴空塔的觀景台（三頁，資料在 tokyo-views.json） ----
+    # 每一處都要有營運單位官網的原句（ja 欄位，ja-zh.json 有中譯）；官網沒寫的不收，頁面另列「官網沒寫看不看得到」，不斷言看不到。
+    # 今天的時間與票價、可以選日期的總表，都照東京頁登記在 OBS 的那幾筆算。
+    if os.path.exists('tokyo-views.json') and 'TD' in globals() and any(r['region'] == '東京' for r in OBS):
+        TV = json.load(open('tokyo-views.json', encoding='utf-8'))
+        _tv_by = {r['key']: r for r in OBS if r['region'] == '東京'}
+        _tv_ill = {'skytree': 'sp/japan-skytree/deck', 'tower': 'sp/japan-tokyo-tower/maindeck', 'shibuya': 'sp/japan-shibuya-sky/edge',
+                   'roppongi': 'sp/tokyo-observation-decks/roppongi', 'sunshine': 'sp/tokyo-observation-decks/sunshine',
+                   'hachitama': 'sp/tokyo-observation-decks/hachitama'}
+        _tv_ill.update({f['key']: 'sp/tokyo-observation-decks/' + f['ill'] for f in TD['free']})
+        _tv_area = {'skytree': '押上', 'tower': '芝公園', 'shibuya': '澀谷', 'roppongi': '六本木', 'sunshine': '池袋', 'hachitama': '台場'}
+        _tv_area.update({f['key']: f['area'] for f in TD['free']})
+        _tv_short = {'skytree': '晴空塔', 'tower': '東京鐵塔', 'shibuya': 'SHIBUYA SKY', 'roppongi': '東京 City View',
+                     'sunshine': '陽光 60 展望台', 'hachitama': '球體展望室'}
+        _tv_short.update({f['key']: f['short'] for f in TD['free']})
+        _tv_reopen = {f['key']: f for f in TD['free'] if f.get('reopen') and _td_iso < f['reopen_check']}
+        _tv_pg = TV['pages']
+
+        def _tv_sp(n):
+            # 英數字結尾的名稱後面接中文要空一格
+            return n + (' ' if n and n[-1].isascii() else '')
+
+        def _tv_price(r):
+            return _ob_cell(r, _ob_today)[1]
+
+        def _tv_sec(it, r):
+            h, p = _ob_cell(r, _ob_today)
+            ro = _tv_reopen.get(it['key'])
+            return (f'<section class="spot" id="{it["key"]}">' + _td_ill(_tv_ill.get(it['key'], '')) + '<div>'
+                    f'<h3>{html.escape(r["name"])}（{html.escape(_tv_area.get(it["key"], ""))}）</h3>'
+                    f'<p class="ap">{html.escape(it["zh"])}</p>'
+                    f'<blockquote class="tvq" lang="ja">{html.escape(it["ja"])}</blockquote>'
+                    + _td_memo(html.escape(_tv_short.get(it['key'], r['name'])), [
+                        ('方向', html.escape(it['dir'])),
+                        ('今天', html.escape(h)),
+                        ('現況', html.escape(ro['reopen']) if ro else ''),
+                        ('大人', html.escape(p)),
+                        ('交通', html.escape(r['near']))], it['src'], r['name'])
+                    + f'<p class="ap">時間、休館日、門票怎麼買：<a href="{U("/tokyo/observation-decks/")}#{it["key"]}">東京觀景台懶人包的{html.escape(_tv_sp(r["name"]))}段落</a>。</p>'
+                    + '</div></section>')
+
+        for _vk, _pg in _tv_pg.items():
+            _its = [it for it in _pg['items'] if it['key'] in _tv_by]
+            _free_its = [it for it in _its if _tv_price(_tv_by[it['key']]) != '官網沒寫' and _tv_by[it['key']]['free']]
+            _unk_its = [it for it in _its if _tv_by[it['key']]['free'] and it not in _free_its]
+            _paid_its = [it for it in _its if not _tv_by[it['key']]['free']]
+            _its = _free_its + _unk_its + _paid_its
+            recs = [dict(_tv_by[it['key']], href='#' + it['key'], area=_tv_area.get(it['key'], '')) for it in _its]
+            _nm = _pg['name']
+            _n, _nf = len(_its), len(_free_its)
+            _nmf = lambda xs: '、'.join(_tv_by[it['key']]['name'] for it in xs)
+            _late = [(it, _ob_late(_tv_by[it['key']])) for it in _its]
+            _late = sorted([(it, m) for it, m in _late if (m or 0) >= 21 * 60], key=lambda x: -x[1]) if _vk != 'fuji' else []
+            _no = [r for k, r in _tv_by.items() if k != _pg['self'] and k not in {it['key'] for it in _its}]
+            _dirs = '；'.join(f'{_tv_by[it["key"]]["name"]}：{it["dir"]}' for it in _its if it['dir'])
+            _picks = []
+            if _free_its:
+                _picks.append(f'<b>不想花錢</b>：{html.escape(_nmf(_free_its))}，都不用門票'
+                              + ('；' + html.escape(_tv_sp(_nmf(_unk_its))) + '官網沒寫收不收' if _unk_its else '') + '。')
+            if _late:
+                _picks.append('<b>晚上去</b>：' + '、'.join(f'{html.escape(_tv_by[it["key"]]["name"])}（{_ob_cl(m)}）' for it, m in _late)
+                              + '（括號是未來 90 天裡大部分日子的關門時間）。')
+            if _dirs:
+                _picks.append(f'<b>上去先找方向</b>：{html.escape(_dirs)}。')
+            if _vk == 'fuji':
+                _picks.append('<b>挑日子</b>：冬天早上、雨後隔天的晴天最有機會；總表上方可以選日期，看那天各處幾點開。')
+            if _tv_reopen and any(it['key'] in _tv_reopen for it in _its):
+                _picks.append('<b>注意</b>：' + '；'.join(f'{_tv_by[k]["name"]}：{html.escape(f["reopen"])}' for k, f in _tv_reopen.items() if any(it['key'] == k for it in _its)) + '。')
+            _faq = [(f'東京哪裡看得到{_nm}？',
+                     f'官網寫明看得到{_nm}的有 {_n} 處：' + '、'.join(_tv_by[it['key']]['name'] + (f'（{it["dir"]}）' if it['dir'] else '') for it in _its) + '。'),
+                    (f'有免費看得到{_nm}的觀景台嗎？',
+                     (f'有，{_tv_sp(_nmf(_free_its))}不用門票。' if _free_its else '這幾處都要買票。')
+                     + (f'{_tv_sp(_nmf(_unk_its))}有開放時間，但官網沒寫收費或免費。' if _unk_its else ''))]
+            if _late:
+                _faq.append((f'晚上看{_nm}夜景，哪裡開最晚？',
+                             '、'.join(f'{_tv_sp(_tv_by[it["key"]]["name"])}{_ob_cl(m)}' for it, m in _late) + '（未來 90 天裡大部分日子的關門時間，實際以官網為準）。'))
+            if _vk == 'fuji':
+                _faq.append(('什麼時候比較容易看到富士山？', _pg['note']))
+            _faq.append((f'為什麼有些觀景台沒列？',
+                         f'這篇只收官網有寫看得到{_nm}的地方。' + _tv_sp('、'.join(r['name'] for r in _no)) + f'的官網沒寫看不看得到{_nm}，不代表看不到，只是本頁不替官網下結論。'))
+            _others = [(f'/tokyo/observation-decks/{p2["slug"]}/', f'{p2["emoji"]} 東京看得到{p2["name"]}的觀景台', f'{len(p2["items"])} 處，附官網原文')
+                       for k2, p2 in _tv_pg.items() if k2 != _vk]
+            _ob_write(f'/tokyo/observation-decks/{_pg["slug"]}/',
+              f'東京看得到{_nm}的觀景台：{_n} 處（{_nf} 處免費），方向、開放時間與官網原文',
+              f'東京哪裡看得到{_nm}？官網寫明看得到的 {_n} 處觀景台（' + '、'.join(_tv_by[it['key']]['name'] for it in _its[:5])
+              + f'等），{_nf} 處不用門票；每一處附官網原文、往哪個方向看、開放時間與交通，可以選 90 天內的日期看當天時間。',
+              [('首頁', '/'), ('東京', '/tokyo/'), ('東京觀景台', '/tokyo/observation-decks/'), (f'看得到{_nm}', None)],
+              f'東京哪裡看得到{_nm}？{_n} 個觀景台，{_nf} 個免費',
+              _td_ill(_pg['ill'], 'ill hero').replace('ob-', 'obh-'),  # 同一張圖在段落裡還會出現一次，SVG 的 id 要換掉
+              f'<p class="ap">東京的觀景台很多，但不是每一個都看得到{_nm}。我把東京觀景台懶人包裡的每一處官網都翻過一遍，'
+              f'只留下官網自己寫了看得到{_nm}的 {_n} 處，每一處附上那一句官網原文。'
+              + (f'其中 <mark>{_nf} 處不用門票</mark>。' if _nf else '') + '</p>'
+              + (f'<p class="ap">{html.escape(_pg["note"])}</p>' if _pg.get('note') else ''),
+              recs, ['東京'], [_OB_JMA['東京']], _picks,
+              f'<h2 id="list">{_n} 處看得到{_nm}的觀景台</h2>'
+              + ('<h3 class="tvh">不用門票</h3>' if _free_its else '') + ''.join(_tv_sec(it, _tv_by[it['key']]) for it in _free_its)
+              + ('<h3 class="tvh">官網沒寫收不收</h3>' if _unk_its else '') + ''.join(_tv_sec(it, _tv_by[it['key']]) for it in _unk_its)
+              + ('<h3 class="tvh">要買票</h3>' if _paid_its else '') + ''.join(_tv_sec(it, _tv_by[it['key']]) for it in _paid_its)
+              + f'<h2 id="unknown">官網沒寫看不看得到的</h2>'
+              + f'<p class="ap">下面這幾處在東京觀景台懶人包裡，但官網沒寫看不看得到{_nm}，所以不列進上面。不代表看不到，有去過的話以現場為準。</p>'
+              + '<ul class="obl">' + ''.join(f'<li><a href="{U("/tokyo/observation-decks/")}#{r["key"]}">{html.escape(r["name"])}</a></li>' for r in _no) + '</ul>'
+              + '<style>.tvq{margin:8px 0 10px;padding:8px 12px;border-left:3px solid var(--edge);background:var(--paper);font-size:.9rem;color:var(--dim)}'
+                '.tvh{margin:22px 0 0;font-size:1.05rem}</style>',
+              _faq, [], _others + [('/tokyo/observation-decks/', '🌃 東京觀景台懶人包', '所有觀景台的時間與門票'),
+                                   ('/japan-free-observation-decks/', '🆓 日本免費觀景台', '東京以外的也在')],
+              f'更新於 {TV["checked"]}・每一處都附官網原文',
+              srcs=[(_tv_by[it['key']]['name'], it['src']) for it in _its], prio=0.6)
+
     # ---- 用途頁：不用門票 ----
     def _ob_card(r):
         h = _ob_h(r)
@@ -30001,7 +30120,7 @@ if OBS:
     _ob_free = [r for r in OBS if _ob_cell(r, _ob_today)[1].startswith('免費')]
     _ob_unk = [r for r in OBS if r['free'] and r not in _ob_free and _ob_cell(r, _ob_today)[1] == '官網沒寫'
                and not _ob_h(r).startswith('官網沒寫')]
-    _ob_regions = [x for x in ('東京', '首都圈', '仙台', '名古屋', '關西', '廣島', '九州', '沖繩', '北海道') if any(r['region'] == x for r in OBS)]
+    _ob_regions = [x for x in ('東京', '首都圈', '仙台', '靜岡', '名古屋', '金澤', '關西', '廣島', '九州', '沖繩', '北海道') if any(r['region'] == x for r in OBS)]
     if _ob_free:
         recs = _ob_free + _ob_unk
         for r in recs:
