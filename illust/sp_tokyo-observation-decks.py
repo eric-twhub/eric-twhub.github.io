@@ -338,4 +338,62 @@ card('ebisu', '手繪高樓餐廳樓層的展望大廳，窗外是夜景裡的�
                 back(110, 120, GOLD, 1.0) + back(146, 122, PINK, .95))
      + star(30, 22, 4), bg=NIGHT)
 
+
+# ---- 2026-11-19 補：丸大樓 35 樓與「要消費才能上去」的幾處 ----
+# 丸大樓 35 樓：白天的大窗，遠方東京鐵塔與富士山
+card('marubiru', '手繪高樓層的大片玻璃窗，白天看得到高樓群、遠方的東京鐵塔和富士山',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{SKYB}"/>'
+     + win_room(f'<path d="M150,112 L190,68 L230,112 Z" fill="#c9b8d6" stroke-width="1.6"/>'
+                f'<path d="M180,79 L190,68 L200,79 Q190,84 180,79 Z" fill="{WHITE}" stroke-width="1.2"/>'
+                + bldg(14, 112, 16, 40) + bldg(34, 112, 14, 28, '#d9d2e9') + bldg(52, 112, 18, 48)
+                + tower(110, 112, 60, sw=12) + bldg(126, 112, 14, 30)
+                + f'<path d="M3,112 L237,112" stroke-width="1.6"/>',
+                back(96, 120, SKY, 1.0) + back(132, 122, RED, .95))
+     + cloud(40, 26, .6))
+
+# 麻布台之丘：咖啡桌就在窗邊，東京鐵塔近到佔滿半個窗
+card('azabudai', '手繪高樓咖啡吧的窗邊座位，桌上有咖啡杯，窗外的東京鐵塔非常近',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{SKYB}"/>'
+     + win_room(tower(150, 116, 10, sw=40) + bldg(16, 112, 18, 34) + bldg(40, 112, 14, 22, '#d9d2e9')
+                + f'<path d="M3,112 L237,112" stroke-width="1.6"/>',
+                f'<rect x="40" y="136" width="100" height="10" rx="3" fill="{BROWN}" stroke-width="1.6"/>'
+                f'<path d="M60,146 L60,170 M120,146 L120,170" stroke-width="2"/>'
+                f'<path d="M78,124 L78,136 L96,136 L96,124 Z" fill="{WHITE}" stroke-width="1.6"/>'
+                f'<path d="M96,127 q6,0 6,4 q0,4 -6,4" fill="none" stroke-width="1.4"/>'
+                f'<path d="M83,118 q2,-4 0,-7 M90,118 q2,-4 0,-7" fill="none" stroke-width="1.2" opacity=".6"/>'
+                + back(170, 124, PINK, 1.0)))
+
+# 飯店高樓酒吧：吧檯、酒杯，窗外夜景裡的東京鐵塔
+card('skybar', '手繪飯店高樓酒吧的吧檯，桌上有酒杯，窗外是夜景裡亮燈的東京鐵塔',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{NIGHT}"/>'
+     + win_room(''.join(f'<circle cx="{x}" cy="{y}" r="1.6" fill="{GOLD}" stroke="none"/>' for x in range(10, 230, 9) for y in (102, 110) if (x + 2 * y) % 3)
+                + tower(120, 112, 20, sw=30)
+                + f'<path d="M3,112 L237,112" stroke-width="1.6"/>',
+                f'<rect x="3" y="132" width="234" height="12" fill="{BROWN}" stroke-width="1.6"/>'
+                f'<path d="M60,120 L74,120 L67,128 Z M67,128 L67,132" fill="{PINK}" stroke-width="1.4"/>'
+                f'<path d="M160,118 L172,118 L172,132 L160,132 Z" fill="{GOLD}" stroke-width="1.4"/>'
+                + back(40, 118, GOLD, .9) + back(200, 118, SKY, .9)), bg=NIGHT)
+
+# 高樓餐廳的露台：欄杆、植物，遠方東京鐵塔與海
+card('terrace', '手繪高樓餐廳的戶外露台，有欄杆和盆栽，遠方是海和東京鐵塔',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="#f7d9b8"/>'
+     + f'<circle cx="190" cy="40" r="16" fill="{GOLD}"/>'
+     + f'<path d="M3,100 L237,100 L237,112 L3,112 Z" fill="#9fd0ea" stroke-width="1.2"/>'
+     + bldg(20, 100, 16, 34) + bldg(40, 100, 12, 22, '#d9d2e9') + tower(80, 100, 40, sw=12) + bldg(140, 100, 18, 40) + bldg(162, 100, 14, 26)
+     + f'<path d="M3,124 L237,124 L237,155 Q237,177 215,177 L25,177 Q3,177 3,155 Z" fill="#e9dcc8"/>'
+     + ''.join(f'<path d="M{x},124 L{x},108" stroke-width="1.4"/>' for x in range(14, 236, 12))
+     + f'<path d="M3,108 L237,108" stroke-width="2"/><path d="M3,124 L237,124" stroke-width="2.2"/>'
+     + f'<path d="M200,124 L214,124 L211,142 L203,142 Z" fill="{BROWN}" stroke-width="1.4"/><circle cx="207" cy="114" r="10" fill="{GREEN}" stroke-width="1.4"/>'
+     + back(100, 130, RED, 1.0) + back(134, 132, GOLD, .95))
+
+# 區公所員工餐廳：托盤、餐點，窗外東京鐵塔
+card('kuyakusho', '手繪區公所高樓層的員工餐廳，桌上有托盤和餐點，窗外看得到東京鐵塔',
+     f'<rect x="3" y="3" width="234" height="174" rx="22" fill="{SKYB}"/>'
+     + win_room(bldg(14, 112, 16, 30) + tower(170, 112, 30, sw=22) + bldg(40, 112, 20, 40, '#d9d2e9') + bldg(66, 112, 14, 24)
+                + f'<path d="M3,112 L237,112" stroke-width="1.6"/>',
+                f'<rect x="30" y="136" width="120" height="10" rx="3" fill="{WHITE}" stroke-width="1.6"/>'
+                f'<rect x="50" y="126" width="60" height="10" rx="2" fill="{GOLD}" stroke-width="1.4"/>'
+                f'<ellipse cx="66" cy="126" rx="9" ry="4" fill="{WHITE}" stroke-width="1.2"/><ellipse cx="94" cy="126" rx="9" ry="4" fill="{RED}" stroke-width="1.2"/>'
+                + back(190, 124, GREEN, 1.0)))
+
 print(save(F, OUT), 'files')

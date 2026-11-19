@@ -56,6 +56,62 @@
      "zh": "第 3 航廈 5 樓的展望台看得到東京鐵塔和晴空塔，飛機就在眼前起降。",
      "ja": "見晴らしのよいデッキからは、東京タワーや東京スカイツリーが見えます。",
      "src": "https://tokyo-haneda.com/enjoy/recommended_place/index.html"
+    },
+    {
+     "key": "tocho",
+     "dir": "",
+     "zh": "從 45 樓看得到晴空塔和東京鐵塔，晴天還有富士山；原句出自東京都的兒童版官方網站。",
+     "ja": "都庁舎の45階には展望室があって、だれでも入ることができるよ。地上202ｍの高さから東京スカイツリー、東京タワーなど東京のまちを一望できるんだ。晴れた日には富士山も見ることができるぞ。",
+     "src": "https://tokyo-kodomo-hp.metro.tokyo.lg.jp/field-trip/tokyo-metropolitan-government/others/"
+    },
+    {
+     "key": "marubiru",
+     "dir": "霞關、虎之門方向",
+     "zh": "東京車站直結的丸大樓 35 樓，免費的展望空間朝霞關、虎之門方向，看得到東京鐵塔。",
+     "ja": "大きな窓ガラスが印象的な無料の展望スペース。霞ヶ関や虎ノ門方面の高層ビル群を35階から見渡せます。国会議事堂や皇居外苑、東京タワーやレインボーブリッジといった東京の名所が望め、夜には美しい夜景を楽しめます。また空気が澄んでいる日には、富士山を拝むこともできます。",
+     "src": "https://www.marunouchi.com/building/marubiru/floorguide/?floor=35"
+    },
+    {
+     "key": "toyosu",
+     "dir": "",
+     "zh": "市場屋頂的草坪廣場，看得到彩虹大橋和東京鐵塔；原句出自東京都中央卸売市場 2019 年的活動公告。",
+     "ja": "レインボーブリッジや東京タワー、建設中の東京２０２０大会選手村などが一望できる芝生の屋上緑化広場で",
+     "src": "https://www.shijou.metro.tokyo.lg.jp/press/2019/0902.html"
+    },
+    {
+     "key": "azabudai",
+     "dir": "",
+     "zh": "麻布台之丘森 JP Tower 的 33、34 樓，34 樓咖啡吧和 33 樓餐廳一般人也能用，東京鐵塔就在旁邊。",
+     "ja": "東京タワーが見える絶景と、 巨匠の感性と創造力で 特別な時間を演出",
+     "src": "https://www.hillshouse.jp/"
+    },
+    {
+     "key": "stellar",
+     "dir": "",
+     "zh": "芝公園旁飯店最上層的酒吧，鐵塔近在眼前；坐吧檯不收座位費。",
+     "ja": "東京タワーを間近に臨む東京の特等席。手が届きそうなほどの距離にそびえるその姿に、心奪われながら美酒を味わう",
+     "src": "https://www.princehotels.co.jp/parktower/restaurant/contents/stellargarden/bar/"
+    },
+    {
+     "key": "edition",
+     "dir": "",
+     "zh": "飯店 31 樓的大廳酒吧，東京灣和東京鐵塔都很近。",
+     "ja": "「Lobby Bar」は、東京湾と東京タワーを至近に望む開放的な空間を",
+     "src": "https://www.editionhotels.com/ja-JP/tokyo-toranomon/restaurants-and-bars/lobby-bar/"
+    },
+    {
+     "key": "fairmont",
+     "dir": "",
+     "zh": "浜松町海邊飯店 35 樓全日餐廳的露台，看得到東京鐵塔。",
+     "ja": "東京タワーを望むテラスでは、心地よい風を感じながらお寛ぎいただけます。",
+     "src": "https://www.fairmont.com/ja/hotels/tokyo/fairmont-tokyo/dining/kilnandtonic.restaurant.html"
+    },
+    {
+     "key": "minatoku",
+     "dir": "",
+     "zh": "港區役所 11 樓的員工餐廳，只開平日白天，一般人也能來吃。",
+     "ja": "東京タワーの見える職員食堂！一般のお客様もご利用いただけます。",
+     "src": "https://www.city.minato.tokyo.jp/gomigenryou/tabekiri/0062minatokuyakushoshokuinnshokudourestaurantpo-to.html"
     }
    ]
   },
@@ -122,6 +178,13 @@
      "zh": "屋頂庭園的展望甲板，隔著赤松看富士山。",
      "ja": "展望台デッキからアカマツ越しに富士山を望むことができるエリア",
      "src": "https://www.city.meguro.tokyo.jp/douro/shisetsu/sports/tenku.html"
+    },
+    {
+     "key": "marubiru",
+     "dir": "",
+     "zh": "丸大樓 35 樓的免費展望空間，空氣清澈的日子看得到富士山。",
+     "ja": "大きな窓ガラスが印象的な無料の展望スペース。霞ヶ関や虎ノ門方面の高層ビル群を35階から見渡せます。国会議事堂や皇居外苑、東京タワーやレインボーブリッジといった東京の名所が望め、夜には美しい夜景を楽しめます。また空気が澄んでいる日には、富士山を拝むこともできます。",
+     "src": "https://www.marunouchi.com/building/marubiru/floorguide/?floor=35"
     }
    ]
   },

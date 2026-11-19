@@ -922,6 +922,53 @@
    "src": "https://kanko.city.izu.shizuoka.jp/sightseeing/darumayamaresthouse/",
    "map": "だるま山高原レストハウス",
    "ill": "terrace"
+  },
+  {
+   "key": "fujicity",
+   "name": "富士市役所屋頂 Fujisan Terrace Mierula（ふじさんてらすMierula）",
+   "short": "富士市役所屋頂",
+   "area": "吉原",
+   "city": "富士",
+   "ill": "office",
+   "near": "吉原中央站走 10 分",
+   "station": "吉原中央站走 10 分；或搭巴士在「富士市役所前」下車",
+   "hours": "平日 4～9 月 8:30～17:15、10～3 月 8:30～16:00；每月第 1 個週日（1 月除外）9:00～16:00",
+   "hours_month": [
+    [
+     [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ],
+     "8:30～17:15"
+    ],
+    [
+     [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+     ],
+     "8:30～16:00"
+    ]
+   ],
+   "weekday_only": true,
+   "special": {
+    "2026-12-06": "9:00～16:00",
+    "2027-02-07": "9:00～16:00"
+   },
+   "ye_caveat": true,
+   "price_cell": "官網沒寫",
+   "cond": "一般開放，收費官網沒寫",
+   "closed": "週六日與假日不開，但每月第 1 個週日（1 月除外）開放；12/6、2/7 是照規則推算",
+   "desc": "富士市役所的屋頂，看富士山的熱門地點，也能 360 度看全景。",
+   "src": "https://www.city.fuji.shizuoka.jp/1005330000/p006947.html",
+   "map": "富士市役所"
   }
  ],
  "unverified": [
@@ -939,6 +986,31 @@
   "修善寺溫泉街：官方觀光網站沒有標示展望台或展望處，修善寺站出發可到的展望點以達磨山高原休息站收錄",
   "戸田 出逢い岬：只查到沼津市預約制乘合計程車「ふじみgo！」有這個停靠站，展望內容與交通方式在官方景點頁沒查到，沒收",
   "伊豆スカイライン、玄岳等：只能開車，沒收",
-  "熱海港周邊、熱海梅園附近：沒找到官方標示為展望台的免費設施；熱海港旁的展望處以 Atami 纜車收錄"
+  "熱海港周邊、熱海梅園附近：沒找到官方標示為展望台的免費設施；熱海港旁的展望處以 Atami 纜車收錄",
+  "富士山 Dragon Tower（田子の浦みなと公園）、梶原山公園展望台：開放時間官網沒寫",
+  "戀人岬展望甲板（伊豆）：9:00～17:00 全年無休，收費與交通這次沒查，先不放",
+  "Hotel Okura 濱松 ACT City 31 樓 和樂、山茶花：要用餐的餐廳（11:30～15:00、17:30～21:00），沒收"
+ ],
+ "cafe": [
+  {
+   "key": "nihondairahotel",
+   "name": "日本平飯店 Terrace Lounge 與 Upper Lounge",
+   "short": "日本平飯店",
+   "area": "日本平",
+   "city": "靜岡",
+   "ill": "terrace",
+   "floor": "1 樓 Terrace Lounge、6 樓 Upper Lounge",
+   "hours": "1 樓 Terrace Lounge 10:00～19:00；6 樓 Upper Lounge 11:30～17:00、酒吧 17:00～24:00",
+   "hours_short": "10:00～19:00（6 樓到 24:00）",
+   "ye_caveat": true,
+   "closed": "官網沒寫休日",
+   "cond": "不用住宿。6 樓 Upper Lounge 咖啡 950 円；1 樓 Terrace Lounge 不接受預約",
+   "price_cell": "要消費（咖啡 950 円）",
+   "near": "靜岡站北口搭巴士約 35 分",
+   "station": "JR 靜岡站北口 11 號乘車處搭靜鐵巴士約 35 分",
+   "desc": "日本平山頂附近的飯店，大片庭園、藍天，一路看得到富士山、駿河灣到伊豆半島。",
+   "src": "https://www.ndhl.jp/restaurant/terrace-lounge/",
+   "map": "日本平ホテル"
+  }
  ]
 }
