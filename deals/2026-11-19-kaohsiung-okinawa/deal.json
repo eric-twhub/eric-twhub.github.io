@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-kaohsiung-okinawa",
- "generated": "2026-11-19 16:58",
+ "generated": "2026-11-19 18:41",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 2595,
+  "price": 2995,
   "dep": "2026-12-29",
   "ret": "2027-01-01",
   "dept": "17:30",
@@ -26,11 +26,30 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$7,266（5 天有紀錄），這張低 64%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,005（5 天有紀錄），這張低 57%"
  ],
- "med": 6119,
- "n_rt": 5,
+ "med": 5839,
+ "n_rt": 6,
  "others": [
+  {
+   "o": "KHH",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 3854,
+   "dep": "2026-12-17",
+   "ret": "2026-12-25",
+   "dept": "17:30",
+   "rett": "10:30",
+   "rt": true,
+   "tr": 0,
+   "dur": 195,
+   "dur_to": 85,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-17&inbound=OKA-KHH&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
   {
    "o": "KHH",
    "d": "OKA",
@@ -67,24 +86,6 @@
    "dur_to": 100,
    "gate": "Farera",
    "url": "https://www.aviasales.com/search/KHH2012OKA25121?t=IT17977773001797786900000100KHHOKA17981946001798197600000110OKAKHH_d57fc15d3e8ea73c182a4a30cfd4143d_15292&search_date=18112026&expected_price_uuid=01a1ee75-d074-8040-64c3-6f80b089c066&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=X0wMfBgqZEtf_Es2iNWxTA&expected_price_source=share&expected_price_currency=twd&expected_price=6119&marker=775639"
-  },
-  {
-   "o": "KHH",
-   "d": "OKA",
-   "air": "GK",
-   "airname": "捷星日本",
-   "cls": "lcc",
-   "price": 7114,
-   "dep": "2026-12-13",
-   "ret": "2026-12-16",
-   "dept": "14:35",
-   "rett": "14:00",
-   "rt": true,
-   "tr": 0,
-   "dur": 215,
-   "dur_to": 100,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH1312OKA16121?t=IT17971725001797182100000100KHHOKA17974296001797432900000115OKAKHH_f13b745a1ef5d19735c4ba35e99aeb8a_17842&search_date=17112026&expected_price_uuid=01a1e87f-5643-8030-634a-431c03b8ab10&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=zaKuoXtqpn9prI4Etff-iQ&expected_price_source=share&expected_price_currency=twd&expected_price=7114&marker=775639"
   }
  ]
 }
