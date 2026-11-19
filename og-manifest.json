@@ -390,16 +390,16 @@
    "title": "台北飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/17 出發"
   },
   {
-   "slug": "deals-2026-11-20-kaohsiung-okinawa",
-   "url": "/deals/2026-11-20-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/29 出發",
-   "title": "高雄飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/29 出發"
-  },
-  {
    "slug": "deals-2026-11-20-taipei-ishigaki",
    "url": "/deals/2026-11-20-taipei-ishigaki/",
    "h1": "台北飛石垣島 NT$3,413 來回含稅｜台灣虎航 12/09 出發",
    "title": "台北飛石垣島 NT$3,413 來回含稅｜台灣虎航 12/09 出發"
+  },
+  {
+   "slug": "deals-2026-11-20-kaohsiung-okinawa",
+   "url": "/deals/2026-11-20-kaohsiung-okinawa/",
+   "h1": "高雄飛沖繩 NT$3,454 來回含稅｜台灣虎航 12/29 出發",
+   "title": "高雄飛沖繩 NT$3,454 來回含稅｜台灣虎航 12/29 出發"
   },
   {
    "slug": "deals-2026-11-20-taichung-okinawa",
@@ -410,20 +410,20 @@
   {
    "slug": "deals-2026-11-20-kaohsiung-ishigaki",
    "url": "/deals/2026-11-20-kaohsiung-ishigaki/",
-   "h1": "高雄飛石垣島 NT$4,713 來回含稅｜台灣虎航 11/29 出發",
-   "title": "高雄飛石垣島 NT$4,713 來回含稅｜台灣虎航 11/29 出發"
+   "h1": "高雄飛石垣島 NT$4,472 來回含稅｜台灣虎航 11/29 出發",
+   "title": "高雄飛石垣島 NT$4,472 來回含稅｜台灣虎航 11/29 出發"
   },
   {
    "slug": "deals-2026-11-20-taipei-miyazaki",
    "url": "/deals/2026-11-20-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$5,059 來回含稅｜台灣虎航 12/28 出發",
-   "title": "台北飛宮崎 NT$5,059 來回含稅｜台灣虎航 12/28 出發"
+   "h1": "台北飛宮崎 NT$4,859 來回含稅｜台灣虎航 12/28 出發",
+   "title": "台北飛宮崎 NT$4,859 來回含稅｜台灣虎航 12/28 出發"
   },
   {
    "slug": "deals-2026-11-20-taipei-fukuoka",
    "url": "/deals/2026-11-20-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$5,341 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$5,341 來回含稅｜台灣虎航 12/01 出發"
+   "h1": "台北飛福岡 NT$5,282 來回含稅｜台灣虎航 12/27 出發",
+   "title": "台北飛福岡 NT$5,282 來回含稅｜台灣虎航 12/27 出發"
   },
   {
    "slug": "deals-2026-11-20-kaohsiung-fukuoka",
@@ -434,14 +434,20 @@
   {
    "slug": "deals-2026-11-20-taipei-saga",
    "url": "/deals/2026-11-20-taipei-saga/",
-   "h1": "台北飛佐賀 NT$5,731 來回含稅｜台灣虎航 12/03 出發",
-   "title": "台北飛佐賀 NT$5,731 來回含稅｜台灣虎航 12/03 出發"
+   "h1": "台北飛佐賀 NT$5,513 來回含稅｜台灣虎航 12/03 出發",
+   "title": "台北飛佐賀 NT$5,513 來回含稅｜台灣虎航 12/03 出發"
   },
   {
    "slug": "deals-2026-11-20-taipei-osaka",
    "url": "/deals/2026-11-20-taipei-osaka/",
-   "h1": "台北飛大阪 NT$6,333 來回含稅｜樂桃航空 12/22 出發",
-   "title": "台北飛大阪 NT$6,333 來回含稅｜樂桃航空 12/22 出發"
+   "h1": "台北飛大阪 NT$6,352 來回含稅｜樂桃航空 12/22 出發",
+   "title": "台北飛大阪 NT$6,352 來回含稅｜樂桃航空 12/22 出發"
+  },
+  {
+   "slug": "deals-2026-11-20-kaohsiung-osaka",
+   "url": "/deals/2026-11-20-kaohsiung-osaka/",
+   "h1": "高雄飛大阪 NT$6,352 來回含稅｜樂桃航空 12/16 出發",
+   "title": "高雄飛大阪 NT$6,352 來回含稅｜樂桃航空 12/16 出發"
   },
   {
    "slug": "deals-2026-11-20-taipei-nagoya",
@@ -458,8 +464,8 @@
   {
    "slug": "deals-2026-11-20-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-20-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,678",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,678"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,747",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,747"
   },
   {
    "slug": "deals-2026-11-20-transfer-tokyo-fukushima",

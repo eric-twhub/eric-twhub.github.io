@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-20-taipei-tokyo",
- "generated": "2026-11-20 00:30",
+ "generated": "2026-11-20 01:36",
  "kind": "fare",
  "origin": "taipei",
  "city": "tokyo",
@@ -24,9 +24,9 @@
   "url": "https://www.aviasales.com/search/TPE3012NRT08011?t=MM17986134001798628100000185TPENRT17994261001799438400000265NRTTPE_b0c57854822418413b4f6c28d4df67bb_23050&search_date=17112026&expected_price_uuid=01a1e86c-1df5-8031-21cd-164c76248426&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=-DYiskgh-crv6vdoIjGyfg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9191&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$10,578（14 天有紀錄），這張低 13%"
+  "12 月出發的票，每天最便宜的平均要 NT$10,564（14 天有紀錄），這張低 13%"
  ],
- "med": 15243,
+ "med": 15173,
  "n_rt": 80,
  "others": [
   {
@@ -50,20 +50,20 @@
   {
    "o": "TPE",
    "d": "TYO",
-   "air": "TR",
-   "airname": "酷航",
+   "air": "MM",
+   "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 8690,
+   "price": 8467,
    "dep": "2026-12-17",
    "ret": "2026-12-22",
-   "dept": "14:25",
+   "dept": "15:20",
    "rett": "22:25",
    "rt": true,
-   "tr": 0,
-   "dur": 430,
-   "dur_to": 185,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE1712NRT22121?t=GK17975175001797532200000185TPENRT17979783001797989400000245NRTTPE_039281265422aa4f50f7dbbdc9525153_21654&search_date=19112026&expected_price_uuid=01a1f474-a23f-8030-2fd3-cfb346045a84&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=EUa8Ebpgb6jDgbLxIMaMIg&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8690&marker=775639"
+   "tr": 1,
+   "dur": 610,
+   "dur_to": 230,
+   "gate": "Vayama",
+   "url": "https://www.aviasales.com/search/TPE1712NRT22121?t=GK17975208001797546300000365TPEOKANRT17979783001797989400000245NRTTPE_78c9f2df4357f8bc5089e43810267d6c_21087&search_date=19112026&expected_price_uuid=01a1f4ba-01ec-8031-63a7-277a8e8c641e&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_PX_DugXVDC_TMqgq6rw8A&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8467&marker=775639"
   },
   {
    "o": "TPE",
