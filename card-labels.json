@@ -181,7 +181,7 @@
       ],
       "act": "免登錄；4% 要自動扣繳＋電子帳單＋前月資產月均 10 萬",
       "warn": "仍收 1.5% 國外手續費，不因日圓結算而免收",
-      "pay": "4% 精選通路網購也算；2% 要用 Apple／Google Pay"
+      "pay": "4% 日本實體、交通卡儲值、網購都算；2% 要用 Apple／Google Pay"
     },
     {
       "slug": "fubon-j",
@@ -274,6 +274,7 @@
     },
     {
       "endPrefix": "到 秋日遊 ",
+      "until": "2026-11-30",
       "slug": "cathay-cube",
       "key": "autumn",
       "variant": "l3",
@@ -307,6 +308,7 @@
     },
     {
       "endPrefix": "到 秋日遊 ",
+      "until": "2026-11-30",
       "slug": "cathay-cube",
       "key": "autumn",
       "variant": "l2",
@@ -340,6 +342,7 @@
     },
     {
       "endPrefix": "到 秋日遊 ",
+      "until": "2026-11-30",
       "slug": "cathay-cube",
       "key": "autumn",
       "variant": "l1",

@@ -1151,6 +1151,7 @@
   "card": "國泰世華 CUBE 卡",
   "card_slug": "cathay-cube",
   "plan": "秋日遊",
+  "end": "2026-11-30",
   "period": "2026/10/1 – 2026/11/30",
   "base": 3.5,
   "scope": "日本實體消費",

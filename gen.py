@@ -198,9 +198,15 @@ NOWS=NOW.strftime('%Y-%m-%d %H:%M'); TODAY=NOW.strftime('%Y-%m-%d')
 # cards.json 的加碼層可以帶 end（YYYY-MM-DD，台北日期，含當天）。
 # 過了 end 的層在載入時就拿掉，全站各處（比較表、計算機、交通卡頁）看到的是同一份，
 # 不用每個版位各自判斷到期。沒有 end 的層照舊，靠人工回查。
+# 卡片也可以帶 _from：[{"date": "YYYY-MM-DD", "set": {欄位: 值}}]，到那天起用 set 覆蓋。
+# 用在方案到期日已知、下一期內容也已公告的情況（例如 CUBE 秋日遊 11/30 結束、12/1 回到趣旅行），
+# 不用等人在換檔當天手動改。
 def load_cards():
     d = json.load(open('cards.json', encoding='utf-8'))
     for c in d.get('cards', []):
+        for ch in sorted(c.pop('_from', []), key=lambda x: x['date']):
+            if ch['date'] <= TODAY:
+                c.update(ch['set'])
         c['tiers'] = [t for t in c.get('tiers', []) if not t.get('end') or t['end'] >= TODAY]
     return d
 # 東京值得再飛一次那頁的家數。好幾頁的「順便看看」要標它，寫死過一次
@@ -1032,6 +1038,9 @@ def plabel(kind,city_name='',city_key=None):
 # 都在這裡先讀：FC 是逐通路的回饋率，_FXF 只取國外交易手續費那個數字。
 FC = (json.load(open('flight-cards.json', encoding='utf-8'))
       if os.path.exists('flight-cards.json') else {})
+# 各通路的刷卡回饋帶 end（台北日期，含當天）的，過了就拿掉
+for _fch in (FC.get('channels') or {}).values():
+    _fch['cards'] = [c for c in _fch.get('cards', []) if c.get('end', '9999') >= TODAY]
 _FXF = ((json.load(open('cards.json', encoding='utf-8')).get('fx_fee') or {}).get('typical', 1.5)
         if os.path.exists('cards.json') else 1.5)
 
@@ -5575,7 +5584,9 @@ if os.path.exists('transit.json'):
                     and not t.get('sold_out')
                     and not re.search(r'新戶|核卡', t['label'] + t.get('cond', ''))]
 
-        _trok = [c for c in _TRC['cards'] if _trts(c)]
+        # transit_in_base：官方把交通卡儲值明列在基本回饋（方案）的指定消費裡，
+        # 沒有另一層加碼也要列進來（例如 CUBE 趣旅行的「Apple錢包指定交通卡」）。
+        _trok = [c for c in _TRC['cards'] if _trts(c) or c.get('transit_in_base')]
         _trun = [c for c in _TRC['cards'] if c.get('transit_unknown')]
 
         def _trrate(c):
@@ -20026,6 +20037,10 @@ if os.path.exists('bic-points.json'):
 # 與自己確認的方法，逐家表只列官網查得到的部分，其餘標未查。
 if os.path.exists('airline-card.json'):
     AC = json.load(open('airline-card.json', encoding='utf-8'))
+    # 航空公司那一列的「刷哪張卡」是期間限定的，帶 card_end 的過期就拿掉
+    for _aca in AC.get('airlines', []):
+        if _aca.get('card_end', '9999') < TODAY:
+            _aca.pop('card', None); _aca.pop('card_slug', None)
     _ar = AC['rule']; _ao = AC['outcomes']; _asc = AC['scoot_case']
 
     def _acell(v, src=None, src_name=None, note=None):
@@ -22172,7 +22187,7 @@ if os.path.exists('cards.json'):
         pre = '用這張卡' if where in ('labels', 'card') else f'用{name}'
         # 1) 精選通路名單裡有 Klook／KKday 的加碼層（永豐幣倍卡）
         for t in c.get('tiers', []):
-            row = next((x for x in t.get('store_scope') or []
+            row = next((x for x in (t.get('store_scope') or t.get('channels') or [])
                         if x.startswith('旅遊通路：') and 'Klook' in x), None)
             if not row or _cp_ended(t.get('cond')) or not t.get('cap'):
                 continue
@@ -23168,6 +23183,9 @@ if os.path.exists('cards.json'):
     def _lb_records():
         out = []
         for L in LB['labels']:
+            # until：這張小抄適用到哪天（含），過了就不產出，例如 CUBE 秋日遊 11/30 結束
+            if L.get('until') and L['until'] < TODAY:
+                continue
             c = next((x for x in CD['cards'] if x['slug'] == L['slug']), None)
             if c is None:
                 raise SystemExit(f'card-labels.json：cards.json 裡沒有 {L["slug"]}')
@@ -24851,6 +24869,9 @@ if os.path.exists('cards.json'):
                 f'<a href="{U("/japan-tax-free-2026/")}#store-fees">各店比較</a></li>')
     if os.path.exists('coupons.json'):
         CP = json.load(open('coupons.json', encoding='utf-8'))
+        # card_bonus 是期間限定的刷卡加碼（例如 CUBE 秋日遊），過了 end 就整塊不出現
+        if (CP.get('card_bonus') or {}).get('end', '9999') < TODAY:
+            CP['card_bonus'] = {}
         # steps 預設是未稅門檻。steps_tax == 'incl' 的店（鶴羽、唐吉訶德）發券頁寫的是
         # 含稅門檻，這裡換成未稅等值，下游的試算（頁面與 JS 都用 含稅/1.1 比門檻）就不用分兩套。
         # 不四捨五入：t/1.1 與 JS 的 y/1.1 是同一個浮點運算，剛好等於門檻時才會判定成立。

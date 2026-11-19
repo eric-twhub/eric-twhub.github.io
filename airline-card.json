@@ -46,6 +46,7 @@
    "fx_fee": null,
    "fx_fee_note": "官網費用頁只列行李費用，沒有跟付款幣別或卡別有關的收費",
    "card": "國泰世華 CUBE 秋日遊 3.5%（限臨櫃、官網或航空公司 App 購票，2026/10/1–11/30，消費當日要切換方案）",
+   "card_end": "2026-11-30",
    "card_slug": "cathay-cube"
   },
   {
@@ -81,6 +82,7 @@
    "fx_fee": null,
    "fx_fee_note": null,
    "card": "國泰世華 CUBE 秋日遊 3.5%（限臨櫃、官網或航空公司 App 購票，2026/10/1–11/30，消費當日要切換方案）",
+   "card_end": "2026-11-30",
    "card_slug": "cathay-cube"
   }
  ],
