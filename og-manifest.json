@@ -386,14 +386,14 @@
   {
    "slug": "deals-2026-11-19-taipei-okinawa",
    "url": "/deals/2026-11-19-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,136 來回含稅｜台灣虎航 12/17 出發",
-   "title": "台北飛沖繩 NT$2,136 來回含稅｜台灣虎航 12/17 出發"
+   "h1": "台北飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/17 出發",
+   "title": "台北飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/17 出發"
   },
   {
    "slug": "deals-2026-11-19-kaohsiung-okinawa",
    "url": "/deals/2026-11-19-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/29 出發",
-   "title": "高雄飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/29 出發"
+   "h1": "高雄飛沖繩 NT$2,995 來回含稅｜台灣虎航 12/29 出發",
+   "title": "高雄飛沖繩 NT$2,995 來回含稅｜台灣虎航 12/29 出發"
   },
   {
    "slug": "deals-2026-11-19-taipei-ishigaki",
@@ -410,8 +410,8 @@
   {
    "slug": "deals-2026-11-19-taipei-miyazaki",
    "url": "/deals/2026-11-19-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$4,859 來回含稅｜台灣虎航 12/28 出發",
-   "title": "台北飛宮崎 NT$4,859 來回含稅｜台灣虎航 12/28 出發"
+   "h1": "台北飛宮崎 NT$5,059 來回含稅｜台灣虎航 12/28 出發",
+   "title": "台北飛宮崎 NT$5,059 來回含稅｜台灣虎航 12/28 出發"
   },
   {
    "slug": "deals-2026-11-19-taipei-fukuoka",
@@ -422,8 +422,14 @@
   {
    "slug": "deals-2026-11-19-kaohsiung-fukuoka",
    "url": "/deals/2026-11-19-kaohsiung-fukuoka/",
-   "h1": "高雄飛福岡 NT$5,800 來回含稅｜台灣虎航 12/18 出發",
-   "title": "高雄飛福岡 NT$5,800 來回含稅｜台灣虎航 12/18 出發"
+   "h1": "高雄飛福岡 NT$5,100 來回含稅｜台灣虎航 12/29 出發",
+   "title": "高雄飛福岡 NT$5,100 來回含稅｜台灣虎航 12/29 出發"
+  },
+  {
+   "slug": "deals-2026-11-19-taipei-oita",
+   "url": "/deals/2026-11-19-taipei-oita/",
+   "h1": "台北飛大分・別府 NT$5,872 來回含稅｜台灣虎航 12/26 出發",
+   "title": "台北飛大分・別府 NT$5,872 來回含稅｜台灣虎航 12/26 出發"
   },
   {
    "slug": "deals-2026-11-19-taipei-osaka",
@@ -434,8 +440,8 @@
   {
    "slug": "deals-2026-11-19-taipei-nagoya",
    "url": "/deals/2026-11-19-taipei-nagoya/",
-   "h1": "台北飛名古屋 NT$7,059 來回含稅｜台灣虎航 12/15 出發",
-   "title": "台北飛名古屋 NT$7,059 來回含稅｜台灣虎航 12/15 出發"
+   "h1": "台北飛名古屋 NT$7,605 來回含稅｜台灣虎航 12/27 出發",
+   "title": "台北飛名古屋 NT$7,605 來回含稅｜台灣虎航 12/27 出發"
   },
   {
    "slug": "deals-2026-11-19-taipei-tokyo",
@@ -448,6 +454,12 @@
    "url": "/deals/2026-11-19-transfer-fukuoka-nagasaki/",
    "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,074",
    "title": "飛福岡轉乘去長崎，比直飛省 NT$4,074"
+  },
+  {
+   "slug": "deals-2026-11-19-transfer-tokyo-fukushima",
+   "url": "/deals/2026-11-19-transfer-tokyo-fukushima/",
+   "h1": "飛東京轉乘去福島，比直飛省 NT$1,083",
+   "title": "飛東京轉乘去福島，比直飛省 NT$1,083"
   },
   {
    "slug": "apple-japan-price",
