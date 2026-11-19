@@ -1833,5 +1833,420 @@
     "src": "https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/course/04/"
    }
   ]
+ },
+ "金澤": {
+  "kenrokuen": [
+   {
+    "name": "金澤城公園",
+    "ja": "金沢城公園",
+    "how": "和兼六園相鄰，下同一個巴士站「兼六園下・金沢城」走約 5 分就到石川門口",
+    "src": "https://shiro-niwa.pref.ishikawa.lg.jp/kenrokuen-garden/access.html",
+    "quote": "この二つの文化遺産は、金沢市の中心部にて互いに隣接しています。"
+   },
+   {
+    "name": "成巽閣",
+    "ja": "成巽閣",
+    "how": "緊鄰兼六園的前田家奧方御殿，晚上有點燈",
+    "src": "https://www.kanazawa-kankoukyoukai.or.jp/article/detail_219.html",
+    "quote": "兼六園に隣接する前田家の奥方御殿・ 成巽閣 （せいそんかく）も2021年末からライトアップが始まり"
+   }
+  ],
+  "kanazawajo": [
+   {
+    "name": "兼六園",
+    "ja": "兼六園",
+    "how": "和金澤城公園相鄰，石川門口對面就是兼六園桂坂口",
+    "src": "https://shiro-niwa.pref.ishikawa.lg.jp/kenrokuen-garden/access.html",
+    "quote": "この二つの文化遺産は、金沢市の中心部にて互いに隣接しています。"
+   },
+   {
+    "name": "尾山神社",
+    "ja": "尾山神社",
+    "how": "在城內玉泉院丸庭園的對面，走過鼠多門橋就到",
+    "src": "https://www.kanazawa-kankoukyoukai.or.jp/article/detail_219.html",
+    "quote": "尾山神社の向かい、主に土曜日に、光と音のショーが繰り広げられる金沢城公園の 玉泉院丸庭園 は、夜の金沢観光の新定番として人気。"
+   }
+  ],
+  "kzchobonooka": [
+   {
+    "name": "東茶屋街",
+    "ja": "ひがし茶屋街",
+    "how": "從ひがし茶屋街往山上走約 20～30 分",
+    "src": "https://www.kanazawa-kankoukyoukai.or.jp/article/detail_219.html",
+    "quote": "ひがし茶屋街から一番近い眺望の丘まで、歩いて20〜30分ほどで登ることもできます。"
+   },
+   {
+    "name": "卯辰山公園 花菖蒲園",
+    "ja": "",
+    "how": "就在眺望之丘旁邊，6 月上旬到 7 月中旬是花菖蒲與繡球花季",
+    "src": "https://www.kanazawa-kankoukyoukai.or.jp/spot/detail_50343.html",
+    "quote": "すぐ近くには花菖蒲やアジサイを鑑賞できる花菖蒲園があります。"
+   }
+  ],
+  "komatsuairport": [
+   {
+    "name": "石川縣立航空廣場",
+    "ja": "石川県立航空プラザ",
+    "how": "就在機場對面，從機場走約 3 分",
+    "src": "https://www.hot-ishikawa.jp/spot/detail_4630.html",
+    "quote": "JR小松駅から小松空港行きバス乗車、小松空港下車後、小松空港から徒歩3分"
+   }
+  ],
+  "notoairport": [
+   {
+    "name": "能登里山機場展望廣場",
+    "ja": "展望広場",
+    "how": "航廈西南側的戶外廣場，看得到飛機起降與 360 度全景",
+    "src": "https://www.noto-airport.jp/facilities/service.html",
+    "quote": "能登空港ターミナルビル南西側に屋外の展望広場があります。"
+   }
+  ],
+  "manshoen": [
+   {
+    "name": "藥王院溫泉寺",
+    "ja": "薬王院温泉寺",
+    "how": "從さざえ堂沿著石佛並排的步道走到藥王院後方，約 20 分",
+    "src": "https://www.hot-ishikawa.jp/spot/detail_6305.html",
+    "quote": "栄螺堂からの石仏が並ぶ自然遊歩道は、緩やかな起伏を伴いながら薬王院裏に続いています。"
+   }
+  ],
+  "toyamacityhall": [
+   {
+    "name": "富山大橋ポケットパーク",
+    "ja": "富山大橋ポケットパーク",
+    "how": "走約 10 分到「丸の内」電車站，搭市內電車 4 分到「トヨタモビリティ富山Gスクエア五福前」，再走 2 分",
+    "src": "https://www.toyamashi-kankoukyoukai.jp/model-course/toyama-tram-tateyama-viewpoints/",
+    "quote": "徒歩 約10分(市役所展望塔→「丸の内」電停) 路面電車 4分"
+   }
+  ],
+  "tenmonbashi": [
+   {
+    "name": "泉と滝の広場",
+    "ja": "泉と滝の広場",
+    "how": "同在環水公園內，和天門橋一起在日落到 22:00 點燈",
+    "src": "https://www.kansui-park.jp/how-to-enjoy-the-park/map/",
+    "quote": "また天門橋とともに日没から22時までライトアップを行っています。"
+   },
+   {
+    "name": "富岩水上ライン",
+    "ja": "富岩水上ライン",
+    "how": "從環水公園搭船到港町岩瀬的運河遊船，每年約 3 月下旬到 11 月行駛",
+    "src": "https://toyamashi-kankoukyoukai.jp/spot/%E5%AF%8C%E5%B2%A9%E9%81%8B%E6%B2%B3%E7%92%B0%E6%B0%B4%E5%85%AC%E5%9C%92",
+    "quote": "富岩水上ラインに乗れば、港町・岩瀬へ向かう小さな船旅へ（例年3月下旬〜11月運航）。"
+   }
+  ],
+  "toyamajo": [
+   {
+    "name": "富山市まちなか觀光案內所",
+    "ja": "富山市まちなか観光案内所",
+    "how": "在同一座富山城址公園裡，富山城的御城印在這裡買",
+    "src": "https://www.toyamashi-kankoukyoukai.jp/spot/toyamajou/",
+    "quote": "御城印は、公園内の「富山市まちなか観光案内所」で購入できます。"
+   }
+  ],
+  "kurehayama": [
+   {
+    "name": "富山市民俗民芸村",
+    "ja": "富山市民俗民芸村",
+    "how": "巴士站就在民俗民芸村，從這裡走約 20 分上展望台",
+    "src": "https://www.toyamashi-kankoukyoukai.jp/spot/kurehayama-kouen-tenboudai/",
+    "quote": "「富山市民俗民芸村」で下車、徒歩約20分"
+   }
+  ],
+  "shinminatobridge": [
+   {
+    "name": "海王丸パーク",
+    "ja": "海王丸パーク",
+    "how": "就在大橋旁邊，看得到永久停泊的帆船初代海王丸與大橋同框",
+    "src": "https://www.info-toyama.com/spot/21001/",
+    "quote": "隣接する海王丸パークからは、恒久係留されている帆船、初代海王丸と新湊大橋のコラボレーションも楽しめます。"
+   }
+  ],
+  "amaharashi": [
+   {
+    "name": "義經岩",
+    "ja": "義経岩",
+    "how": "就在道の駅正對面",
+    "src": "https://michinoeki-amaharashi.jp/facility/",
+    "quote": "道の駅正面に位置する「義経岩（よしつねいわ）」"
+   },
+   {
+    "name": "雨晴站展望デッキ AMAHARASHI VIEW",
+    "ja": "AMAHARASHI VIEW",
+    "how": "在雨晴站剪票口內、往高岡方向的月台海側，2025/12/20 啟用；雨晴站走約 5 分到道の駅",
+    "src": "https://www.city.takaoka.toyama.jp/soshiki/sogokotsuuka/2/3/1/4/13393.html",
+    "quote": "「JR雨晴駅」改札内高岡行き上りホーム（海岸側）"
+   }
+  ],
+  "yamabiko": [
+   {
+    "name": "やまびこ遊歩道",
+    "ja": "やまびこ遊歩道",
+    "how": "從宇奈月站走 2 分到入口，單程約 1 公里到宇奈月ダム；每年約 4 月下旬到 11 月底開放，冬季封閉、晚上禁止通行",
+    "src": "https://www.kurobe-unazuki.jp/tourism/5696/",
+    "quote": "例年の通行可能期間・・・４月下旬～１１月末頃"
+   },
+   {
+    "name": "宇奈月站 2 樓展示",
+    "ja": "宇奈月駅2階",
+    "how": "黒部峽谷鐵道宇奈月站 2 樓，有黒部川電源開發與宇奈月溫泉歷史的展示，也能休息",
+    "src": "https://www.kurotetu.co.jp/spot_unaduki/",
+    "quote": "黒部川電源開発の歴史や黒部峡谷鉄道のあゆみ、宇奈月温泉の歴史などをパネルや映像で紹介。"
+   }
+  ],
+  "tojinbo": [
+   {
+    "name": "東尋坊",
+    "ja": "東尋坊",
+    "how": "從停車場穿過東尋坊商店街就到岩場，最近的停車場走約 2 分",
+    "src": "https://kanko-sakai.com/spot/k001/",
+    "quote": "駐車場から東尋坊商店街を抜けると、東尋坊の岩場に到着します。"
+   },
+   {
+    "name": "雄島",
+    "ja": "雄島",
+    "how": "東尋坊外海的小島，走 224 公尺的紅橋上島，繞島一圈約 1.2 公里、40 分；也可以在京福巴士「雄島」站下車",
+    "src": "https://kanko-sakai.com/spot/k006/",
+    "quote": "島一周で約1.2km、およそ40分です。"
+   }
+  ],
+  "fukuishizenshi": [
+   {
+    "name": "ハピジャン",
+    "ja": "ハピジャン",
+    "how": "同在足羽山上的迷你動物園",
+    "src": "https://fuku-iro.jp/spot/detail_10069.html",
+    "quote": "同じ足羽山にあるミニ動物園「ハピジャン」"
+   }
+  ],
+  "echizenonojo": [
+   {
+    "name": "戌山城址的天空之城觀景點",
+    "ja": "戌山城址",
+    "how": "越前大野城西邊約 1 公里，從登山口爬約 20 分；清晨到 9 點左右才可能看到雲海，冬天積雪路況危險",
+    "src": "https://www.ono-kankou.jp/spot/%E8%B6%8A%E5%89%8D%E5%A4%A7%E9%87%8E%E5%9F%8E/",
+    "quote": "越前大野城の西、約1kmにある犬山の登山道を登った先が展望スポットとなっています。（所要時間：登り口から約20分）"
+   }
+  ],
+  "ogimachijoato": [
+   {
+    "name": "和田家",
+    "ja": "和田家",
+    "how": "展望台接駁車在和田家旁發車；從和田家後面的步道走 15～20 分到展望台",
+    "src": "https://shirakawa-go.gr.jp/events/441/",
+    "quote": "徒歩の場合、見学施設の和田家の裏の遊歩道から15～20分ほどで展望台へ行けます。"
+   }
+  ],
+  "ainokura": [
+   {
+    "name": "相倉合掌造り集落",
+    "ja": "相倉合掌造り集落",
+    "how": "從「相倉口」巴士站走 5 分；觀景點在集落停車場登山口沿梯田再走 5～6 分",
+    "src": "https://gokayama-info.jp/%E3%81%BF%E3%81%A9%E3%81%93%E3%82%8D/%E4%BA%94%E7%AE%87%E5%B1%B1%E3%81%A8%E4%B8%96%E7%95%8C%E9%81%BA%E7%94%A3/%E4%B8%96%E7%95%8C%E9%81%BA%E7%94%A3-%E7%9B%B8%E5%80%89%E5%90%88%E6%8E%8C%E9%80%A0%E3%82%8A%E9%9B%86%E8%90%BD",
+    "quote": "撮影スポットは集落駐車場の登り口から段々畑沿いに徒歩5～6分。"
+   }
+  ]
+ },
+ "靜岡": {
+  "nihondairayume": [
+   {
+    "name": "日本平纜車",
+    "ja": "日本平ロープウェイ",
+    "how": "從夢テラス走約 3 分到纜車日本平站",
+    "src": "https://nihondaira-yume-terrace.jp/",
+    "quote": "日本平夢テラスから日本平ロープウェイまで 徒歩3分"
+   },
+   {
+    "name": "久能山東照宮",
+    "ja": "久能山東照宮",
+    "how": "日本平纜車再搭約 5 分",
+    "src": "https://nihondaira-yume-terrace.jp/",
+    "quote": "久能東照宮まで ロープウェイでさらに5分"
+   }
+  ],
+  "nihondairarw": [
+   {
+    "name": "久能山東照宮",
+    "ja": "久能山東照宮",
+    "how": "久能山站下車沿石階往上約 80 階到御社殿",
+    "src": "https://ropeway.shizutetsu.co.jp/information/",
+    "quote": "境内は全て石段です。御社殿まで約80段ほどございます。（ロープウェイ乗り場から全て階段です）"
+   },
+   {
+    "name": "日本平夢テラス",
+    "ja": "日本平夢テラス",
+    "how": "從日本平站走約 3 分",
+    "src": "https://nihondaira-yume-terrace.jp/",
+    "quote": "日本平夢テラスから日本平ロープウェイまで 徒歩3分"
+   }
+  ],
+  "mihonomatsubara": [
+   {
+    "name": "神之道",
+    "ja": "神の道",
+    "how": "從羽衣の松沿約 500 公尺的松樹步道走到御穗神社",
+    "src": "https://www.visit-shizuoka.com/spot/detail_409.html",
+    "quote": "羽衣の松に来臨した神は、約500mの松並木、通称「神の道」を経て御穂神社に迎えられます"
+   }
+  ],
+  "dreamsky": [
+   {
+    "name": "清水 Marine Park",
+    "ja": "清水マリンパーク",
+    "how": "就在 Dream Plaza 靠海那一側的廣場與步道",
+    "src": "https://www.visit-shizuoka.com/spot/detail_12.html",
+    "quote": "エスパルスドリームプラザの海側周辺となるイベント広場・緑地遊歩道です"
+   }
+  ],
+  "fujiwhc": [
+   {
+    "name": "富士山本宮淺間大社",
+    "ja": "富士山本宮浅間大社",
+    "how": "在中心北側，走約 5 分",
+    "src": "https://mtfuji-whc.jp/faq/",
+    "quote": "構成資産である富士山本宮浅間大社は、センター北側の徒歩５分ほどの位置にございます"
+   }
+  ],
+  "hamamatsujo": [
+   {
+    "name": "松韻亭",
+    "ja": "松韻亭",
+    "how": "在濱松城公園日本庭園的一角，看完天守可以順路去喝茶（一席 500 円，10:00～16:00）",
+    "src": "https://hamamatsu-daisuki.net/pickup/7915/",
+    "quote": "浜松城公園内には、実は気軽に呈茶を楽しめる茶室があります。それが、日本庭園の一角に佇む「松韻亭（しょういんてい）」です"
+   }
+  ],
+  "kanzanjirw": [
+   {
+    "name": "濱名湖音樂盒博物館",
+    "ja": "浜名湖オルゴールミュージアム",
+    "how": "大草山山頂站前就到；屋頂也能 360 度眺望濱名湖",
+    "src": "https://www.kanzanji-ropeway.jp/faq/",
+    "quote": "山頂駅の前に「 浜名湖オルゴールミュージアム 」があります"
+   },
+   {
+    "name": "濱名湖 Pal Pal 遊樂園",
+    "ja": "浜名湖パルパル",
+    "how": "和山麓かんざんじ站直接相連",
+    "src": "https://www.kanzanji-ropeway.jp/faq/",
+    "quote": "山麓のかんざんじ駅からは、ファミリー向け遊園地「 浜名湖パルパル 」が併設しており、直通にて行き来できます"
+   }
+  ],
+  "fszdeck": [
+   {
+    "name": "石雲院展望台",
+    "ja": "石雲院展望デッキ",
+    "how": "出航廈往左（東側）走約 450 公尺，6:00～21:30",
+    "src": "https://www.mtfuji-shizuokaairport.jp/enjoy/play/",
+    "quote": "ターミナルビルを出て、左手（東側）に450ｍほど行った場所にある展望デッキ"
+   },
+   {
+    "name": "機場西側展望廣場",
+    "ja": "空港西側展望広場",
+    "how": "出航廈往右（西側）走約 750 公尺，小山丘上有涼亭與長椅",
+    "src": "https://www.mtfuji-shizuokaairport.jp/enjoy/play/",
+    "quote": "ターミナルビルを出て右手（西側）に750ｍほど歩くとあります"
+   },
+   {
+    "name": "機場東側展望廣場「だいだらぼっち」",
+    "ja": "空港東側展望広場 だいだらぼっち",
+    "how": "在跑道東端，可以躺在草地或木平台上看飛機",
+    "src": "https://www.mtfuji-shizuokaairport.jp/enjoy/play/",
+    "quote": "滑走路東端にある展望広場。駐車場やトイレが完備されていています"
+   }
+  ],
+  "atamijo": [
+   {
+    "name": "Atami 纜車愛情岬展望台",
+    "ja": "アタミロープウェイ あいじょう岬展望台",
+    "how": "熱海城走約 5 分到纜車山頂站",
+    "src": "https://www.atami-ropeway.jp/faq/",
+    "quote": "山頂駅より徒歩5分ほどの場所に、熱海城とトリックアート迷宮館がございます。"
+   },
+   {
+    "name": "熱海錯視藝術迷宮館",
+    "ja": "熱海トリックアート迷宮館",
+    "how": "和熱海城同一處，可買共通券",
+    "src": "https://www.atami-ropeway.jp/faq/",
+    "quote": "山頂駅より徒歩5分ほどの場所に、熱海城とトリックアート迷宮館がございます。"
+   }
+  ],
+  "atamirw": [
+   {
+    "name": "熱海城",
+    "ja": "熱海城",
+    "how": "山頂站走約 5 分",
+    "src": "https://www.atami-ropeway.jp/faq/",
+    "quote": "山頂駅より徒歩5分ほどの場所に、熱海城とトリックアート迷宮館がございます。"
+   },
+   {
+    "name": "ATAMI BAY RESORT KORAKUEN",
+    "ja": "ATAMI BAY RESORT KORAKUEN",
+    "how": "就在山麓站旁，有日歸溫泉與伊豆美食市集",
+    "src": "https://www.atami-ropeway.jp/aijoumisaki/",
+    "quote": "ロープウェイで山麓に下りたら、ATAMI BAY RESORT KORAKUEN で、日帰り温泉とグルメとショッピング。"
+   }
+  ],
+  "jukkoku": [
+   {
+    "name": "森之站箱根十國峠",
+    "ja": "森の駅箱根十国峠",
+    "how": "纜車山麓站就在這棟 2 樓",
+    "src": "https://www.jukkoku-cable.jp/guide/index.html",
+    "quote": "森の駅箱根十国峠2階にある「十国峠 山麓駅」"
+   }
+  ],
+  "komuroyama": [
+   {
+    "name": "小室神社",
+    "ja": "小室神社",
+    "how": "在小室山山頂",
+    "src": "https://www.tokaibus.jp/business/lift.html",
+    "quote": "山頂にある「小室神社」"
+   }
+  ],
+  "izupanorama": [
+   {
+    "name": "富士見足湯",
+    "ja": "富士見の足湯",
+    "how": "在山頂區，免費",
+    "src": "https://www.panoramapark.co.jp/mountain_top/",
+    "quote": "絶景を見ながら、のんびりと過ごせる足湯。無料でご利用いただけます。"
+   },
+   {
+    "name": "葛城神社",
+    "ja": "葛城神社",
+    "how": "在山頂碧テラス",
+    "src": "https://www.panoramapark.co.jp/mountain_top/",
+    "quote": "葛城山の名の由来になっている、平安時代からの歴史を誇る神社。"
+   }
+  ],
+  "nesugata": [
+   {
+    "name": "愛染堂",
+    "ja": "愛染堂",
+    "how": "山頂站沿步道走約 10 分",
+    "src": "https://ropeway.co.jp/map/",
+    "quote": "山頂駅から、遊歩道の一番奥にあります愛染堂までは、徒歩で約10分ほどの距離となります。"
+   }
+  ],
+  "kanukiyama": [
+   {
+    "name": "香陵台",
+    "ja": "香陵台",
+    "how": "在山腰，到山頂約 1 公里登山步道",
+    "src": "https://numazukanko.jp/spot/10050",
+    "quote": "香陵台から山頂までは約1kmの登山ルートか、約2kmの周遊ルートがあります。"
+   }
+  ],
+  "kadowaki": [
+   {
+    "name": "門脇吊橋",
+    "ja": "門脇つり橋",
+    "how": "就在燈塔旁",
+    "src": "https://www.city.ito.shizuoka.jp/gyosei/soshikikarasagasu/shogaigakushuka/bunka_supotsu/2/2/2314.html",
+    "quote": "門脇つり橋と、そのすぐ近くには、地上24.9メートルの門脇灯台。"
+   }
+  ]
  }
 }
