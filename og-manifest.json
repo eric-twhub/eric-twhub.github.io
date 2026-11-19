@@ -386,20 +386,20 @@
   {
    "slug": "deals-2026-11-20-taipei-okinawa",
    "url": "/deals/2026-11-20-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/17 出發",
-   "title": "台北飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/17 出發"
+   "h1": "台北飛沖繩 NT$2,536 來回含稅｜台灣虎航 12/21 出發",
+   "title": "台北飛沖繩 NT$2,536 來回含稅｜台灣虎航 12/21 出發"
+  },
+  {
+   "slug": "deals-2026-11-20-kaohsiung-okinawa",
+   "url": "/deals/2026-11-20-kaohsiung-okinawa/",
+   "h1": "高雄飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/29 出發",
+   "title": "高雄飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/29 出發"
   },
   {
    "slug": "deals-2026-11-20-taipei-ishigaki",
    "url": "/deals/2026-11-20-taipei-ishigaki/",
    "h1": "台北飛石垣島 NT$3,413 來回含稅｜台灣虎航 12/09 出發",
    "title": "台北飛石垣島 NT$3,413 來回含稅｜台灣虎航 12/09 出發"
-  },
-  {
-   "slug": "deals-2026-11-20-kaohsiung-okinawa",
-   "url": "/deals/2026-11-20-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$3,454 來回含稅｜台灣虎航 12/29 出發",
-   "title": "高雄飛沖繩 NT$3,454 來回含稅｜台灣虎航 12/29 出發"
   },
   {
    "slug": "deals-2026-11-20-taichung-okinawa",
@@ -410,14 +410,14 @@
   {
    "slug": "deals-2026-11-20-kaohsiung-ishigaki",
    "url": "/deals/2026-11-20-kaohsiung-ishigaki/",
-   "h1": "高雄飛石垣島 NT$4,472 來回含稅｜台灣虎航 11/29 出發",
-   "title": "高雄飛石垣島 NT$4,472 來回含稅｜台灣虎航 11/29 出發"
+   "h1": "高雄飛石垣島 NT$4,713 來回含稅｜台灣虎航 11/29 出發",
+   "title": "高雄飛石垣島 NT$4,713 來回含稅｜台灣虎航 11/29 出發"
   },
   {
    "slug": "deals-2026-11-20-taipei-miyazaki",
    "url": "/deals/2026-11-20-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$4,859 來回含稅｜台灣虎航 12/28 出發",
-   "title": "台北飛宮崎 NT$4,859 來回含稅｜台灣虎航 12/28 出發"
+   "h1": "台北飛宮崎 NT$5,059 來回含稅｜台灣虎航 12/28 出發",
+   "title": "台北飛宮崎 NT$5,059 來回含稅｜台灣虎航 12/28 出發"
   },
   {
    "slug": "deals-2026-11-20-taipei-fukuoka",
@@ -434,44 +434,50 @@
   {
    "slug": "deals-2026-11-20-taipei-saga",
    "url": "/deals/2026-11-20-taipei-saga/",
-   "h1": "台北飛佐賀 NT$5,513 來回含稅｜台灣虎航 12/03 出發",
-   "title": "台北飛佐賀 NT$5,513 來回含稅｜台灣虎航 12/03 出發"
+   "h1": "台北飛佐賀 NT$5,731 來回含稅｜台灣虎航 12/03 出發",
+   "title": "台北飛佐賀 NT$5,731 來回含稅｜台灣虎航 12/03 出發"
   },
   {
    "slug": "deals-2026-11-20-taipei-osaka",
    "url": "/deals/2026-11-20-taipei-osaka/",
-   "h1": "台北飛大阪 NT$6,352 來回含稅｜樂桃航空 12/22 出發",
-   "title": "台北飛大阪 NT$6,352 來回含稅｜樂桃航空 12/22 出發"
+   "h1": "台北飛大阪 NT$6,363 來回含稅｜樂桃航空 12/22 出發",
+   "title": "台北飛大阪 NT$6,363 來回含稅｜樂桃航空 12/22 出發"
   },
   {
    "slug": "deals-2026-11-20-kaohsiung-osaka",
    "url": "/deals/2026-11-20-kaohsiung-osaka/",
-   "h1": "高雄飛大阪 NT$6,352 來回含稅｜樂桃航空 12/16 出發",
-   "title": "高雄飛大阪 NT$6,352 來回含稅｜樂桃航空 12/16 出發"
+   "h1": "高雄飛大阪 NT$7,417 來回含稅｜樂桃航空 12/16 出發",
+   "title": "高雄飛大阪 NT$7,417 來回含稅｜樂桃航空 12/16 出發"
   },
   {
    "slug": "deals-2026-11-20-taipei-nagoya",
    "url": "/deals/2026-11-20-taipei-nagoya/",
-   "h1": "台北飛名古屋 NT$7,605 來回含稅｜台灣虎航 12/27 出發",
-   "title": "台北飛名古屋 NT$7,605 來回含稅｜台灣虎航 12/27 出發"
+   "h1": "台北飛名古屋 NT$7,605 來回含稅｜台灣虎航 12/15 出發",
+   "title": "台北飛名古屋 NT$7,605 來回含稅｜台灣虎航 12/15 出發"
   },
   {
    "slug": "deals-2026-11-20-taipei-tokyo",
    "url": "/deals/2026-11-20-taipei-tokyo/",
-   "h1": "台北飛東京 NT$9,191 來回含稅｜酷航 12/30 出發",
-   "title": "台北飛東京 NT$9,191 來回含稅｜酷航 12/30 出發"
+   "h1": "台北飛東京 NT$8,481 來回含稅｜台灣虎航 12/17 出發",
+   "title": "台北飛東京 NT$8,481 來回含稅｜台灣虎航 12/17 出發"
+  },
+  {
+   "slug": "deals-2026-11-20-transfer-fukuoka-kumamoto",
+   "url": "/deals/2026-11-20-transfer-fukuoka-kumamoto/",
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$1,531",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$1,531"
   },
   {
    "slug": "deals-2026-11-20-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-20-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,747",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,747"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,765",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,765"
   },
   {
    "slug": "deals-2026-11-20-transfer-tokyo-fukushima",
    "url": "/deals/2026-11-20-transfer-tokyo-fukushima/",
-   "h1": "飛東京轉乘去福島，比直飛省 NT$1,083",
-   "title": "飛東京轉乘去福島，比直飛省 NT$1,083"
+   "h1": "飛東京轉乘去福島，比直飛省 NT$810",
+   "title": "飛東京轉乘去福島，比直飛省 NT$810"
   },
   {
    "slug": "apple-japan-price",
@@ -567,7 +573,7 @@
    "slug": "japan-flight-good-times",
    "url": "/japan-flight-good-times/",
    "h1": "不浪費假期的日本機票",
-   "title": "早去晚回的日本機票｜不浪費假期的班次，目前 17 組"
+   "title": "早去晚回的日本機票｜不浪費假期的班次，目前 18 組"
   },
   {
    "slug": "japan-card-register",

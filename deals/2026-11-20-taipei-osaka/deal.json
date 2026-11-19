@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-20-taipei-osaka",
- "generated": "2026-11-20 01:36",
+ "generated": "2026-11-20 06:45",
  "kind": "fare",
  "origin": "taipei",
  "city": "osaka",
@@ -11,7 +11,7 @@
   "air": "MM",
   "airname": "樂桃航空",
   "cls": "lcc",
-  "price": 6352,
+  "price": 6363,
   "dep": "2026-12-22",
   "ret": "2027-01-14",
   "dept": "18:50",
@@ -21,31 +21,31 @@
   "dur": 360,
   "dur_to": 150,
   "gate": "Trip.com",
-  "url": "https://www.aviasales.com/search/TPE2212KIX14011?t=MM17979654001797978000000150TPEKIX17999109001799919900000210KIXTPE_51b15f1d2307a5bfe2d681f7880e9fad_15821&search_date=19112026&expected_price_uuid=01a1f4ba-1430-8040-6382-ad10d912cbe2&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=gXirYugaF1LkNLKdChfePA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6352&marker=775639"
+  "url": "https://www.aviasales.com/search/TPE2212KIX14011?t=MM17979654001797978000000150TPEKIX17999109001799919900000210KIXTPE_51b15f1d2307a5bfe2d681f7880e9fad_15821&search_date=19112026&expected_price_uuid=01a1f4ba-1430-8040-6382-ad10d912cbe2&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=gXirYugaF1LkNLKdChfePA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6363&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,721（11 天有紀錄），這張低 27%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,756（11 天有紀錄），這張低 27%"
  ],
- "med": 17330,
- "n_rt": 78,
+ "med": 17280,
+ "n_rt": 77,
  "others": [
   {
    "o": "TPE",
    "d": "OSA",
-   "air": "VZ",
-   "airname": "泰越捷航空",
+   "air": "MM",
+   "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 6787,
+   "price": 6963,
    "dep": "2026-12-10",
    "ret": "2026-12-15",
-   "dept": "07:30",
+   "dept": "18:50",
    "rett": "07:15",
    "rt": true,
    "tr": 0,
    "dur": 360,
    "dur_to": 150,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE1012KIX15121?t=MM17968878001796900400000150TPEKIX17973189001797327900000210KIXTPE_1a10b97df363cae08b61e231f47b9271_16897&search_date=19112026&expected_price_uuid=01a1f483-c94e-8040-2b9e-d572da28a532&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=zvyvCy5356ZzsNKMLCruig&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6787&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE1012KIX15121?t=MM17969286001796941200000150TPEKIX17973189001797327900000210KIXTPE_4c3f107a807ed868ce4734ba497c85ad_17339&search_date=19112026&expected_price_uuid=01a1f5a9-ede1-8040-a69a-e76956891c5a&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=2iSYi3xMiaG3GDYTVSU3UA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6963&marker=775639"
   },
   {
    "o": "TPE",
@@ -53,7 +53,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 6820,
+   "price": 7029,
    "dep": "2026-12-28",
    "ret": "2027-01-07",
    "dept": "13:40",
@@ -63,7 +63,7 @@
    "dur": 350,
    "dur_to": 150,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2812KIX07011?t=GK17984652001798477800000150TPEKIX17993634001799371800000200KIXTPE_d71b486dc3b3b2effad33d0cf18fe6b2_16974&search_date=19112026&expected_price_uuid=01a1f33f-c376-8031-28e2-90440aa881b9&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=DE5qlFbstNQzpPUeJNaNIw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6820&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2812KIX07011?t=GK17984652001798477800000150TPEKIX17993634001799371800000200KIXTPE_d71b486dc3b3b2effad33d0cf18fe6b2_17504&search_date=19112026&expected_price_uuid=01a1f575-e1ad-8030-aecd-11142af3259a&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=DE5qlFbstNQzpPUeJNaNIw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7029&marker=775639"
   },
   {
    "o": "TPE",
@@ -71,7 +71,7 @@
    "air": "VZ",
    "airname": "泰越捷航空",
    "cls": "lcc",
-   "price": 7248,
+   "price": 7128,
    "dep": "2026-12-01",
    "ret": "2026-12-03",
    "dept": "07:30",
@@ -81,7 +81,7 @@
    "dur": 360,
    "dur_to": 150,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE0112KIX03121?t=MM17961102001796122800000150TPEKIX17962821001796291100000210KIXTPE_dc348b9bdcde4435f227b543faa1d6ea_17998&search_date=19112026&expected_price_uuid=01a1f46a-2cec-8040-2262-e04841276f56&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=BWA4D_afizeZHcLfay6rZQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7248&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE0112KIX03121?t=MM17961102001796122800000150TPEKIX17962821001796291100000210KIXTPE_dc348b9bdcde4435f227b543faa1d6ea_17750&search_date=19112026&expected_price_uuid=01a1f5b3-7cd7-8040-65da-6fec36b1a49c&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=BWA4D_afizeZHcLfay6rZQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7128&marker=775639"
   }
  ]
 }

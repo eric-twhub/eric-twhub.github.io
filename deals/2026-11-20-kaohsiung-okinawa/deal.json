@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-20-kaohsiung-okinawa",
- "generated": "2026-11-20 01:36",
+ "generated": "2026-11-20 06:45",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "okinawa",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 3454,
+  "price": 2595,
   "dep": "2026-12-29",
   "ret": "2027-01-01",
   "dept": "17:30",
@@ -26,10 +26,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$6,744（5 天有紀錄），這張低 49%"
+  "12 月出發的票，每天最便宜的平均要 NT$6,568（7 天有紀錄），這張低 60%"
  ],
- "med": 4956,
- "n_rt": 6,
+ "med": 5665,
+ "n_rt": 8,
  "others": [
   {
    "o": "KHH",
@@ -56,25 +56,6 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4354,
-   "dep": "2026-12-20",
-   "ret": "2026-12-25",
-   "dept": "09:45",
-   "rett": "10:30",
-   "rt": true,
-   "tr": 0,
-   "dur": 215,
-   "dur_to": 105,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-20&inbound=OKA-KHH&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
-  {
-   "o": "KHH",
-   "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
    "price": 5559,
    "dep": "2026-12-17",
    "ret": "2027-01-06",
@@ -87,6 +68,24 @@
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-17&inbound=OKA-KHH&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
+  },
+  {
+   "o": "KHH",
+   "d": "OKA",
+   "air": "GK",
+   "airname": "捷星日本",
+   "cls": "lcc",
+   "price": 5588,
+   "dep": "2026-12-27",
+   "ret": "2027-01-01",
+   "dept": "14:35",
+   "rett": "10:30",
+   "rt": true,
+   "tr": 0,
+   "dur": 210,
+   "dur_to": 100,
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/KHH2712OKA01011?t=IT17983821001798391700000100KHHOKA17987994001798802400000110OKAKHH_548981bdc4e242fbb64c5ef82748ea13_13914&search_date=19112026&expected_price_uuid=01a1f5c2-1c12-8040-67b8-bbc433d5eddb&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=X0wMfBgqZEtf_Es2iNWxTA&expected_price_source=share&expected_price_currency=twd&expected_price=5588&marker=775639"
   }
  ]
 }

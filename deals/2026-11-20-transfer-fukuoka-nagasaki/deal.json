@@ -1,11 +1,11 @@
 {
  "schema": 1,
  "slug": "2026-11-20-transfer-fukuoka-nagasaki",
- "generated": "2026-11-20 01:36",
+ "generated": "2026-11-20 06:45",
  "kind": "transfer",
  "city": "nagasaki",
  "via": "fukuoka",
- "own": 11531,
+ "own": 11549,
  "fare": {
   "o": "TPE",
   "d": "FUK",
@@ -41,5 +41,5 @@
  "mode": "特急接力海鷗＋西九州新幹線",
  "tm": "約 1 小時 20 分",
  "total": 7784,
- "save": 3747
+ "save": 3765
 }
