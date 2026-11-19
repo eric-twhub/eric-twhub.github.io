@@ -386,8 +386,14 @@
   {
    "slug": "deals-2026-11-19-taipei-okinawa",
    "url": "/deals/2026-11-19-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,536 來回含稅｜台灣虎航 12/21 出發",
-   "title": "台北飛沖繩 NT$2,536 來回含稅｜台灣虎航 12/21 出發"
+   "h1": "台北飛沖繩 NT$2,136 來回含稅｜台灣虎航 12/17 出發",
+   "title": "台北飛沖繩 NT$2,136 來回含稅｜台灣虎航 12/17 出發"
+  },
+  {
+   "slug": "deals-2026-11-19-kaohsiung-okinawa",
+   "url": "/deals/2026-11-19-kaohsiung-okinawa/",
+   "h1": "高雄飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/29 出發",
+   "title": "高雄飛沖繩 NT$2,595 來回含稅｜台灣虎航 12/29 出發"
   },
   {
    "slug": "deals-2026-11-19-taipei-ishigaki",
@@ -402,28 +408,22 @@
    "title": "台中飛沖繩 NT$3,895 來回含稅｜台灣虎航 12/21 出發"
   },
   {
-   "slug": "deals-2026-11-19-kaohsiung-fukuoka",
-   "url": "/deals/2026-11-19-kaohsiung-fukuoka/",
-   "h1": "高雄飛福岡 NT$5,400 來回含稅｜台灣虎航 12/22 出發",
-   "title": "高雄飛福岡 NT$5,400 來回含稅｜台灣虎航 12/22 出發"
-  },
-  {
    "slug": "deals-2026-11-19-taipei-miyazaki",
    "url": "/deals/2026-11-19-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$5,513 來回含稅｜台灣虎航 12/07 出發",
-   "title": "台北飛宮崎 NT$5,513 來回含稅｜台灣虎航 12/07 出發"
+   "h1": "台北飛宮崎 NT$4,859 來回含稅｜台灣虎航 12/28 出發",
+   "title": "台北飛宮崎 NT$4,859 來回含稅｜台灣虎航 12/28 出發"
   },
   {
    "slug": "deals-2026-11-19-taipei-fukuoka",
    "url": "/deals/2026-11-19-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$5,859 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$5,859 來回含稅｜台灣虎航 12/01 出發"
+   "h1": "台北飛福岡 NT$5,100 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$5,100 來回含稅｜台灣虎航 12/01 出發"
   },
   {
-   "slug": "deals-2026-11-19-taipei-oita",
-   "url": "/deals/2026-11-19-taipei-oita/",
-   "h1": "台北飛大分・別府 NT$5,872 來回含稅｜台灣虎航 12/26 出發",
-   "title": "台北飛大分・別府 NT$5,872 來回含稅｜台灣虎航 12/26 出發"
+   "slug": "deals-2026-11-19-kaohsiung-fukuoka",
+   "url": "/deals/2026-11-19-kaohsiung-fukuoka/",
+   "h1": "高雄飛福岡 NT$5,800 來回含稅｜台灣虎航 12/18 出發",
+   "title": "高雄飛福岡 NT$5,800 來回含稅｜台灣虎航 12/18 出發"
   },
   {
    "slug": "deals-2026-11-19-taipei-osaka",
@@ -434,8 +434,8 @@
   {
    "slug": "deals-2026-11-19-taipei-nagoya",
    "url": "/deals/2026-11-19-taipei-nagoya/",
-   "h1": "台北飛名古屋 NT$7,605 來回含稅｜台灣虎航 12/15 出發",
-   "title": "台北飛名古屋 NT$7,605 來回含稅｜台灣虎航 12/15 出發"
+   "h1": "台北飛名古屋 NT$7,059 來回含稅｜台灣虎航 12/15 出發",
+   "title": "台北飛名古屋 NT$7,059 來回含稅｜台灣虎航 12/15 出發"
   },
   {
    "slug": "deals-2026-11-19-taipei-tokyo",
@@ -446,8 +446,8 @@
   {
    "slug": "deals-2026-11-19-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-19-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,774",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,774"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,074",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,074"
   },
   {
    "slug": "apple-japan-price",
@@ -1112,8 +1112,8 @@
   {
    "slug": "kyushu-observation-decks",
    "url": "/kyushu/observation-decks/",
-   "h1": "九州觀景台懶人包：32 個展望台的開放時間、要不要錢",
-   "title": "九州觀景台懶人包：福岡、北九州、長崎、熊本、別府、鹿兒島 32 個展望台開放時間與門票"
+   "h1": "九州觀景台懶人包：48 個展望台的開放時間、要不要錢",
+   "title": "九州觀景台懶人包：福岡、北九州、長崎、熊本、別府、鹿兒島 48 個展望台開放時間與門票"
   },
   {
    "slug": "osaka-observation-decks",
@@ -1200,10 +1200,64 @@
    "title": "靜岡觀景台：31 個展望台開放時間、票價、哪天休（可以選日期）"
   },
   {
+   "slug": "tohoku-observation-decks",
+   "url": "/tohoku/observation-decks/",
+   "h1": "東北觀景台：19 個展望台的開放時間、要不要錢",
+   "title": "東北觀景台：19 個展望台開放時間、票價、哪天休（可以選日期）"
+  },
+  {
+   "slug": "niigata-observation-decks",
+   "url": "/niigata/observation-decks/",
+   "h1": "新潟觀景台：6 個展望台的開放時間、要不要錢",
+   "title": "新潟觀景台：6 個展望台開放時間、票價、哪天休（可以選日期）"
+  },
+  {
+   "slug": "sanin-observation-decks",
+   "url": "/sanin/observation-decks/",
+   "h1": "山陰觀景台：10 個展望台的開放時間、要不要錢",
+   "title": "山陰觀景台：10 個展望台開放時間、票價、哪天休（可以選日期）"
+  },
+  {
+   "slug": "sakishima-observation-decks",
+   "url": "/sakishima/observation-decks/",
+   "h1": "石垣・宮古觀景台：6 個展望台的開放時間、要不要錢",
+   "title": "石垣・宮古觀景台：6 個展望台開放時間、票價、哪天休（可以選日期）"
+  },
+  {
+   "slug": "hakodate-observation-decks",
+   "url": "/hakodate/observation-decks/",
+   "h1": "函館觀景台：10 個展望台的開放時間、要不要錢",
+   "title": "函館觀景台：10 個展望台開放時間、票價、哪天休（可以選日期）"
+  },
+  {
+   "slug": "kumamoto-observation-decks",
+   "url": "/kumamoto/observation-decks/",
+   "h1": "熊本觀景台：7 個展望台的開放時間、要不要錢",
+   "title": "熊本觀景台：7 個展望台開放時間、票價、哪天休（可以選日期）"
+  },
+  {
+   "slug": "kagoshima-observation-decks",
+   "url": "/kagoshima/observation-decks/",
+   "h1": "鹿兒島觀景台：9 個展望台的開放時間、要不要錢",
+   "title": "鹿兒島觀景台：9 個展望台開放時間、票價、哪天休（可以選日期）"
+  },
+  {
+   "slug": "beppu-observation-decks",
+   "url": "/beppu/observation-decks/",
+   "h1": "別府・大分觀景台：7 個展望台的開放時間、要不要錢",
+   "title": "別府・大分觀景台：7 個展望台開放時間、票價、哪天休（可以選日期）"
+  },
+  {
+   "slug": "shikoku-observation-decks",
+   "url": "/shikoku/observation-decks/",
+   "h1": "四國・岡山觀景台：25 個展望台的開放時間、要不要錢",
+   "title": "四國・岡山觀景台：25 個展望台開放時間、票價、哪天休（可以選日期）"
+  },
+  {
    "slug": "hokkaido-observation-decks",
    "url": "/hokkaido/observation-decks/",
-   "h1": "北海道觀景台懶人包：29 個展望台的開放時間、要不要錢",
-   "title": "北海道觀景台懶人包：札幌、函館、小樽、洞爺湖、網走 29 個展望台開放時間與門票（可以選日期）"
+   "h1": "北海道觀景台懶人包：39 個展望台的開放時間、要不要錢",
+   "title": "北海道觀景台懶人包：札幌、函館、小樽、洞爺湖、網走 39 個展望台開放時間與門票（可以選日期）"
   },
   {
    "slug": "kanto-observation-decks",
@@ -1232,14 +1286,14 @@
   {
    "slug": "japan-free-observation-decks",
    "url": "/japan-free-observation-decks/",
-   "h1": "日本免費觀景台：74 處官網寫明免費",
-   "title": "日本免費觀景台：東京、首都圈、仙台、靜岡、名古屋、金澤、關西、廣島、九州、沖繩、北海道 74 處官網寫明免費的展望台（可以選日期）"
+   "h1": "日本免費觀景台：96 處官網寫明免費",
+   "title": "日本免費觀景台：東京、首都圈、東北、仙台、新潟、靜岡、名古屋、金澤、關西、山陰、廣島、四國・岡山、九州、沖繩、石垣・宮古、北海道 96 處官網寫明免費的展望台（可以選日期）"
   },
   {
    "slug": "japan-night-observation-decks",
    "url": "/japan-night-observation-decks/",
-   "h1": "晚上開到 21 點以後的觀景台：91 處",
-   "title": "晚上開到 21 點以後的觀景台：東京、首都圈、仙台、靜岡、名古屋、金澤、關西、廣島、九州、沖繩、北海道 91 處看夜景（可以選日期）"
+   "h1": "晚上開到 21 點以後的觀景台：106 處",
+   "title": "晚上開到 21 點以後的觀景台：東京、首都圈、東北、仙台、新潟、靜岡、名古屋、金澤、關西、山陰、廣島、四國・岡山、九州、沖繩、石垣・宮古、北海道 106 處看夜景（可以選日期）"
   },
   {
    "slug": "japan-takayama-shirakawago-bus",
