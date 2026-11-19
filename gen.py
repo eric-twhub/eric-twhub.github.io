@@ -32407,39 +32407,138 @@ write('search-text.json', _sx)
 # （Suica、折價券、USJ）。同一組裡任一個詞出現在搜尋字裡，就把它換成組內其他詞一起找。
 # 只收確定指同一件事的；一個詞太泛（pass、卡）會把無關的頁拉進來，不收。
 SEARCH_SYN = [
+    # 交通卡
     ['西瓜卡', 'suica', 'スイカ'],
     ['pasmo', 'パスモ'],
     ['icoca', 'イコカ'],
-    ['交通卡', 'ic卡', '交通ic卡', 'ic乘車卡'],
-    ['唐吉訶德', '唐吉軻德', '驚安殿堂', 'ドンキ', 'ドン・キホーテ', 'donki', 'don quijote'],
-    ['松本清', 'matsukiyo', 'マツキヨ'],
-    ['必酷', 'bic', 'ビックカメラ', 'bic camera'],
-    ['友都八喜', 'yodobashi', 'ヨドバシ'],
-    ['晴空塔', 'skytree', 'スカイツリー'],
-    ['環球影城', 'usj', 'ユニバーサル'],
+    ['交通卡', 'ic卡', '交通ic卡', 'ic乘車卡', 'icカード'],
+    # 店家
+    ['唐吉訶德', '唐吉軻德', '驚安殿堂', 'ドンキ', 'ドン・キホーテ', 'donki', 'don quijote', 'donquijote'],
+    ['松本清', 'matsukiyo', 'マツキヨ', 'matsumoto kiyoshi', 'マツモトキヨシ'],
+    ['必酷', 'bic', 'bic camera', 'biccamera', 'ビックカメラ'],
+    ['友都八喜', '淀橋', 'yodobashi', 'ヨドバシ'],
+    ['愛電王', 'edion', 'エディオン'],
+    ['大國藥妝', 'daikoku', 'ダイコク'],
+    ['札幌藥妝', 'sapporo drug', 'サツドラ'],
+    ['3coins', '3 coins', 'スリーコインズ'],
+    ['藥妝', '藥妝店', 'ドラッグストア', 'drugstore', 'drug store'],
+    # 景點與門票
+    ['晴空塔', '天空樹', '東京晴空塔', 'skytree', 'sky tree', 'スカイツリー'],
+    ['東京鐵塔', 'tokyo tower', '東京タワー'],
+    ['shibuya sky', '澀谷sky', '渋谷スカイ', '澀谷天空'],
+    ['澀谷', 'shibuya'],
+    ['teamlab', 'team lab', 'チームラボ'],
+    ['阿倍野展望台', '阿倍野harukas', 'abeno harukas', 'harukas', 'あべのハルカス', 'ハルカス'],
+    ['環球影城', '日本環球影城', '大阪環球影城', 'usj', 'universal studios', 'ユニバーサル'],
     ['迪士尼', 'disney', 'ディズニー'],
     ['吉卜力', 'ghibli', 'ジブリ'],
-    ['寶可夢', 'pokemon', 'pokémon', 'ポケモン', '神奇寶貝'],
-    ['優惠券', '折價券', '折扣券', 'coupon', 'クーポン'],
-    ['網卡', '上網卡', 'esim', 'sim卡'],
-    ['日圓', '日幣', '日元'],
-    ['換匯', '換日幣', '換日圓', '換錢'],
-    ['觀景台', '展望台', '瞭望台'],
-    ['賞楓', '紅葉', '楓葉'],
-    ['black friday', 'blackfriday', '黑色星期五', '黑五', 'ブラックフライデー'],
+    ['吉伊卡哇', 'chiikawa', 'ちいかわ'],
+    ['寶可夢', '神奇寶貝', '精靈寶可夢', 'pokemon', 'pokémon', 'ポケモン'],
+    ['任天堂', 'nintendo'],
+    ['哈利波特', 'harry potter', 'ハリー・ポッター', 'ハリーポッター'],
+    ['哆啦a夢', '多啦a夢', '小叮噹', 'doraemon', 'ドラえもん', '藤子不二雄', '藤子・f・不二雄'],
+    ['柯南', '名偵探柯南', 'conan', 'コナン', '青山剛昌'],
+    ['海遊館', 'kaiyukan'],
+    ['美麗海', '美ら海', 'churaumi'],
+    ['豪斯登堡', '荷蘭村', 'huis ten bosch', 'ハウステンボス'],
+    ['富士急', '富士急樂園', 'fuji-q', 'fujiq', '富士急ハイランド'],
+    ['名花之里', 'なばなの里', 'nabana'],
+    ['旭山動物園', 'asahiyama'],
+    ['藏王', 'zao'],
+    ['樹冰', '雪怪'],
+    ['銀山溫泉', 'ginzan'],
+    ['溫泉', 'onsen'],
+    ['鶴之湯', '鶴の湯', 'tsurunoyu'],
+    ['白川鄉', '合掌村', 'shirakawago', 'shirakawa-go'],
+    ['高千穗', 'takachiho'],
+    ['纜車', 'ropeway', 'ロープウェイ'],
+    ['流冰', 'ryuhyo'],
+    ['雪祭', '雪まつり', 'snow festival'],
+    ['大相撲', '相撲', 'sumo'],
+    ['富士山', 'mt fuji', 'mount fuji', 'fujisan'],
+    ['觀景台', '展望台', '瞭望台', '展望室'],
+    ['賞楓', '紅葉', '楓葉', '楓紅', '紅葉狩'],
+    ['聖誕', '耶誕', 'christmas', 'xmas', 'クリスマス'],
+    ['萬聖節', 'halloween', 'ハロウィン'],
+    ['水族館', 'aquarium'],
+    ['咖啡廳', '咖啡店', 'cafe', 'カフェ'],
+    ['門票', '入場券', '入場票', 'チケット', 'ticket'],
+    ['預約', '預訂', '予約'],
+    # 票券與交通
+    ['周遊券', '周遊卡', '周遊パス', 'free pass', 'フリーパス'],
+    ['大阪周遊卡', '大阪周遊券', 'osaka amazing pass', 'amazing pass', '大阪周遊パス'],
+    ['箱根周遊券', 'hakone freepass', 'hakone free pass', '箱根フリーパス'],
+    ['地鐵', '地下鐵', '捷運', 'metro', 'subway', 'メトロ'],
     ['新幹線', 'shinkansen'],
-    ['周遊券', '周遊卡', '周遊パス'],
-    ['藥妝', 'ドラッグストア'],
+    ['jr pass', 'jr周遊券', '鐵路周遊券'],
+    ['末班車', '最後一班車', '終電'],
+    ['機場', '空港', 'airport'],
+    ['纜車', 'ropeway'],
+    # 錢與購物
+    ['優惠券', '折價券', '折扣券', '折扣碼', '優惠碼', 'coupon', 'クーポン'],
     ['退稅', '免稅', 'tax free', 'taxfree'],
+    ['black friday', '黑色星期五', '黑五', 'ブラックフライデー'],
+    ['福袋', 'lucky bag'],
+    ['買一送一', 'bogo', '1+1'],
+    ['日圓', '日幣', '日元'],
+    ['換匯', '換日幣', '換日圓', '換錢', '換外幣'],
+    ['網卡', '上網卡', 'esim', 'sim卡'],
+    ['旅平險', '旅遊平安險', '旅遊險', 'travel insurance'],
+    ['國際駕照', '國際駕駛執照'],
+    ['駕照譯本', '駕照日文譯本', '日文譯本'],
+    ['租車', 'rent a car', 'rentacar', 'レンタカー'],
+    ['凶宅', '事故物件', '大島てる'],
+    ['雪票', 'lift ticket', 'リフト券'],
+    ['滑雪', 'ski', 'スキー'],
+    ['雪板', '單板', 'snowboard', 'スノーボード'],
+    ['吹風機', 'dryer', 'ドライヤー'],
+    ['飯店', '酒店', 'hotel', 'ホテル'],
+    # 航空
+    ['華航', '中華航空', 'china airlines'],
+    ['長榮', '長榮航空', 'eva air'],
+    ['星宇', '星宇航空', 'starlux'],
+    ['虎航', '台灣虎航', 'tigerair', 'tiger air'],
+    ['樂桃', 'peach'],
+    ['捷星', 'jetstar'],
+    # 地名
+    ['東京', 'tokyo'], ['大阪', 'osaka'], ['京都', 'kyoto'], ['北海道', 'hokkaido'],
+    ['札幌', 'sapporo'], ['函館', 'hakodate'], ['沖繩', 'okinawa'], ['石垣', 'ishigaki'],
+    ['福岡', 'fukuoka'], ['名古屋', 'nagoya'], ['橫濱', 'yokohama'], ['神戶', 'kobe'],
+    ['廣島', 'hiroshima'], ['仙台', 'sendai'], ['金澤', 'kanazawa'], ['長崎', 'nagasaki'],
+    ['熊本', 'kumamoto'], ['鹿兒島', 'kagoshima'], ['箱根', 'hakone'], ['關西', 'kansai'],
+    ['九州', 'kyushu'], ['淺草', 'asakusa'], ['新宿', 'shinjuku'],
 ]
-# 正規化成和前端一樣（NFKC、小寫、拿掉空白），多字的寫法才對得上
-SEARCH_SYN = [[re.sub(r'\s+', '', unicodedata.normalize('NFKC', w).lower()) for w in g] for g in SEARCH_SYN]
+# 日文新字體和繁體當成同一個字（沖縄＝沖繩、渋谷＝澀谷、温泉＝溫泉）。
+# 只收一對一、不會誤配的；前端畫重點靠「一個字換一個字」長度不變。
+SEARCH_FOLD = ('縄繩関關渋澀浜濱戸戶沢澤児兒広廣鉄鐵温溫蔵藏氷冰楽樂国國区區歩步塩鹽県縣庁廳'
+               '来來売賣気氣発發図圖万萬与與学學会會総總号號観觀覧覽鶏雞黒黑竜龍亀龜桜櫻恵惠'
+               '薬藥将將稲稻滝瀧峡峽栄榮営營晩晚徳德郷鄉豊豐斎齋弥彌横橫権權険險検檢験驗続續'
+               '読讀転轉軽輕経經継繼断斷実實写寫宝寶戦戰単單狭狹囲圍処處剣劍渓溪窓窗帰歸応應'
+               '湾灣満滿浅淺銭錢残殘説說税稅脱脫閲閱尽盡昼晝両兩乗乘仏佛価價伝傳済濟灯燈焼燒'
+               '拡擴黄黃声聲数數楼樓様樣歳歲対對団團姫姬帯帶従從悪惡担擔拝拜抜拔捜搜歓歡毎每'
+               '涙淚渋澀湿濕状狀献獻畳疊礼禮禅禪穏穩穂穗粋粹絵繪縁緣聴聽脳腦荘莊蛍螢装裝覚覺'
+               '訳譯証證譲讓賛贊辺邊遅遲酔醉釈釋隠隱雑雜霊靈頼賴駆驅騒騷髪髮闘鬥麦麥黙默齢齡'
+               '臺台')
+_SF = {SEARCH_FOLD[i]: SEARCH_FOLD[i + 1] for i in range(0, len(SEARCH_FOLD), 2)}
+def _sfold(w):
+    w = unicodedata.normalize('NFKC', w).lower()
+    return re.sub(r'\s+', '', ''.join(_SF.get(c, c) for c in w))
+# 正規化成和前端一樣（NFKC、小寫、新字體換繁體、拿掉空白），多字的寫法才對得上；
+# 同一個詞出現在兩組就把兩組併起來
+_syn = []
+for g in SEARCH_SYN:
+    g = list(dict.fromkeys(_sfold(w) for w in g))
+    hit = [x for x in _syn if set(x) & set(g)]
+    for x in hit:
+        _syn.remove(x); g = list(dict.fromkeys(x + g))
+    _syn.append(g)
+SEARCH_SYN = _syn
 
 SEARCH_JS = r'''<script>(function(){
-var IDX="__IDX__",TXT="__TXT__",SYN=__SYN__;
+var IDX="__IDX__",TXT="__TXT__",SYN=__SYN__,F=__FOLD__;
 var inp=document.getElementById("q"),out=document.getElementById("sr"),st=document.getElementById("sst"),fm=inp.form;
 var D=null,X=false,lim=20,tm,last="";
-function lo(s){return s.toLowerCase().replace(/臺/g,"台")}
+function lo(s){return s.toLowerCase().replace(/[\u3000-\u9fff]/g,function(c){return F[c]||c})}
 function N(s){return lo((s||"").normalize("NFKC"))}
 function Z(s){return N(s).replace(/\s+/g,"")}
 function esc(s){return s.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
@@ -32460,10 +32559,13 @@ g.forEach(function(b){if(b===a)return;var v=t.split(a).join(b);if(r.indexOf(v)<0
 var SA=[].concat.apply([],SYN).sort(function(a,b){return b.length-a.length});
 function sp(t){if(SA.indexOf(t)>=0)return[t];for(var k=0;k<SA.length;k++){var a=SA[k],i=t.indexOf(a);if(i<0)continue;
 return sp(t.slice(0,i)).concat([a],sp(t.slice(i+a.length)))}return t?[t]:[]}
+function mg(a){var o=[];for(var i=0;i<a.length;i++){var k=Math.min(4,a.length-i),j="";
+for(;k>1;k--){j=a.slice(i,i+k).join("");if(SA.indexOf(j)>=0)break}
+if(k>1){o.push(j);i+=k-1}else o.push(a[i])}return o}
 function hit(z,as){for(var i=0;i<as.length;i++)if(z.indexOf(as[i])>=0)return true;return false}
 function prep(){D.forEach(function(e){e.zt=Z(e.h+" "+e.t);e.zh=Z(e.h);e.zd=Z(e.d);
 e.zs=e.s.map(function(x){return Z(x[1])});e.zq=e.q.map(Z);e.zx=""})}
-function run(){if(!D)return;var raw=inp.value.trim(),ts=[].concat.apply([],N(raw).split(/\s+/).filter(Boolean).map(sp));
+function run(){if(!D)return;var raw=inp.value.trim(),ts=[].concat.apply([],mg(N(raw).split(/\s+/).filter(Boolean)).map(sp));
 if(raw!==last){lim=20;last=raw}
 try{history.replaceState(null,"",raw?"?q="+encodeURIComponent(raw):location.pathname)}catch(e){}
 if(!ts.length){out.innerHTML="";st.textContent=st.getAttribute("data-hint");return}
@@ -32503,6 +32605,7 @@ fetch(IDX).then(function(r){return r.json()}).then(function(j){D=j;prep();run();
 .catch(function(){if(!D)st.textContent="搜尋資料載入失敗，請重新整理再試一次。";else{X=true;run()}});
 })();</script>'''
 SEARCH_JS = (SEARCH_JS.replace('__SYN__', json.dumps(SEARCH_SYN, ensure_ascii=False))
+             .replace('__FOLD__', json.dumps(_SF, ensure_ascii=False))
              .replace('__IDX__', U('/search.json') + '?v=' + _sv)
              .replace('__TXT__', U('/search-text.json') + '?v=' + _sv))
 
