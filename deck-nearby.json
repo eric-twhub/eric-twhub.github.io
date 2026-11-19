@@ -1685,5 +1685,153 @@
     "src": "https://kankou.iwakuni-city.net/ropeway.html"
    }
   ]
+ },
+ "沖繩": {
+  "shurijo": [
+   {
+    "name": "龍潭",
+    "ja": "龍潭",
+    "how": "從首里站走過來的路上會經過，過了龍潭就快到首里城公園",
+    "src": "https://oki-park.jp/shurijo/access/9751/"
+   },
+   {
+    "name": "圓鑑池與弁財天堂",
+    "ja": "円鑑池・弁財天堂",
+    "how": "就在龍潭隔壁",
+    "src": "https://oki-park.jp/shurijo/guide/58/"
+   },
+   {
+    "name": "首里杜館",
+    "ja": "首里杜館",
+    "how": "首里城公園入口的休息處，有廁所、免費休息區、咖啡廳與餐廳",
+    "src": "https://oki-park.jp/shurijo/access/9751/"
+   }
+  ],
+  "shuriwest": [
+   {
+    "name": "龍潭",
+    "ja": "龍潭",
+    "how": "從首里站走過來的路上會經過，過了龍潭就快到首里城公園",
+    "src": "https://oki-park.jp/shurijo/access/9751/"
+   },
+   {
+    "name": "圓鑑池與弁財天堂",
+    "ja": "円鑑池・弁財天堂",
+    "how": "就在龍潭隔壁",
+    "src": "https://oki-park.jp/shurijo/guide/58/"
+   },
+   {
+    "name": "首里杜館",
+    "ja": "首里杜館",
+    "how": "首里城公園入口的休息處，有廁所、免費休息區、咖啡廳與餐廳",
+    "src": "https://oki-park.jp/shurijo/access/9751/"
+   }
+  ],
+  "katsuren": [
+   {
+    "name": "Amawari Park",
+    "ja": "あまわりパーク",
+    "how": "就在城跡山腳下，城跡門票含常設展",
+    "src": "https://www.katsuren-jo.jp/"
+   }
+  ],
+  "zanpa": [
+   {
+    "name": "赤犬子宮",
+    "ja": "赤犬子宮",
+    "how": "在殘波岬稍微往東一點",
+    "src": "https://www.tokokai.org/tourlight/tourlight14/"
+   }
+  ],
+  "chinen": [
+   {
+    "name": "南城市地域物產館",
+    "ja": "南城市地域物産館",
+    "how": "公園就在物產館後面",
+    "src": "https://www.kankou-nanjo.okinawa/enjoy/250/"
+   }
+  ],
+  "hedo": [
+   {
+    "name": "Asmui Hikes（舊大石林山）",
+    "ja": "アスムイハイクス",
+    "how": "開車約 5 分；可以先在邊戶岬看安須森全景再過去",
+    "src": "https://www.asmui.jp/post/how-to-enjoy%EF%BC%81%E3%82%A2%E3%82%B9%E3%83%A0%E3%82%A4%E3%83%8F%E3%82%A4%E3%82%AF%E3%82%B9%E3%81%AE%E6%A5%BD%E3%81%97%E3%81%BF%E6%96%B9"
+   },
+   {
+    "name": "蔡溫松並木",
+    "ja": "蔡温松並木",
+    "how": "在邊戶岬附近",
+    "src": "https://kunigami-kanko.com/sightseeing-spots/%E8%BE%BA%E6%88%B8%E5%B2%AC%E8%A6%B3%E5%85%89%E6%A1%88%E5%86%85%E6%89%80/"
+   },
+   {
+    "name": "義本王之墓",
+    "ja": "義本王の墓",
+    "how": "在邊戶岬附近",
+    "src": "https://kunigami-kanko.com/sightseeing-spots/%E8%BE%BA%E6%88%B8%E5%B2%AC%E8%A6%B3%E5%85%89%E6%A1%88%E5%86%85%E6%89%80/"
+   }
+  ],
+  "takatsuki": [
+   {
+    "name": "座間味港、座間味聚落",
+    "ja": "座間味港",
+    "how": "從港邊的座間味觀光協會走約 26 分（1.5 公里）",
+    "src": "https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/course/01/"
+   },
+   {
+    "name": "稻崎展望台",
+    "ja": "稲崎展望台",
+    "how": "開車約 7 分",
+    "src": "https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/course/05/"
+   }
+  ],
+  "inazaki": [
+   {
+    "name": "女瀨之崎展望台",
+    "ja": "女瀬の崎展望台",
+    "how": "開車約 7 分，又叫夕陽展望台",
+    "src": "https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/course/05/"
+   },
+   {
+    "name": "高月山展望台",
+    "ja": "高月山展望台",
+    "how": "開車約 7 分",
+    "src": "https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/course/05/"
+   }
+  ],
+  "teruyama": [
+   {
+    "name": "渡嘉志久海灘",
+    "ja": "渡嘉志久ビーチ",
+    "how": "步道就在渡嘉志久與阿波連兩座海灘之間",
+    "src": "https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/course/03/"
+   },
+   {
+    "name": "阿波連海灘",
+    "ja": "阿波連ビーチ",
+    "how": "步道就在渡嘉志久與阿波連兩座海灘之間",
+    "src": "https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/course/03/"
+   },
+   {
+    "name": "Kubandaki 展望台",
+    "ja": "クバンダキ展望台",
+    "how": "開車約 5 分",
+    "src": "https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/course/04/"
+   }
+  ],
+  "minatooka": [
+   {
+    "name": "渡嘉敷港",
+    "ja": "渡嘉敷港",
+    "how": "開車約 4 分",
+    "src": "https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/course/04/"
+   },
+   {
+    "name": "Aran 展望台",
+    "ja": "アラン展望台",
+    "how": "開車約 3 分",
+    "src": "https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/course/04/"
+   }
+  ]
  }
 }

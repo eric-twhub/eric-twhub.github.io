@@ -3651,7 +3651,7 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'（MIRAI TOWER、Midland Square、東山 Sky Tower，加上犬山城、岐阜城等近郊的開放時間與票價，可以選日期看，也有不用門票的展望處）。</p>')
         _obhub = {'sendai': 'AER、SS30 免費展望樓層，加上松島、山寺、藏王樹冰、仙台機場',
                   'hiroshima': '折鶴塔、比治山，加上宮島纜車與彌山、尾道千光寺、福山城、岩國城',
-                  'okinawa': '那霸市區與本島各地的展望台、海角與城跡'}
+                  'okinawa': '首里城、部瀨名海中展望塔、古宇利海洋塔、今歸仁與勝連城跡，加上慶良間的展望台'}
         if slug in _obhub and os.path.exists(f'{slug}-decks.json'):
             body += (f'<p class="lede">想找地方看景？'
                      f'<a href="{U(f"/{slug}/observation-decks/")}">{name}觀景台整理</a>'
@@ -29807,6 +29807,52 @@ if OBS:
           related=[('/japan-free-observation-decks/', '🆓 日本免費觀景台', '東京、名古屋、廣島、關西、九州、北海道'),
                    ('/japan-night-observation-decks/', '🌃 晚上開到 21 點以後的觀景台', '看夜景用'),
                    ('/kansai/observation-decks/', '🌆 關西觀景台懶人包', '大阪、京都、神戶、奈良'),
+                   ('/kyushu/observation-decks/', '🗼 九州觀景台懶人包', '福岡、北九州、長崎、熊本')]))
+    # ---- 沖繩（那霸＋本島各地＋慶良間） ----
+    if 'okinawa' in _OBC and all(('沖繩', k) in _OB for k in ('shurijo', 'busena', 'kouritower', 'nakijin')):
+        OK = _OBC['okinawa']
+        _ok_area = [('那霸', ('那霸',)), ('南部', ('南城', '糸滿')), ('中部', ('宜野灣', '中城', '宇流麻', '讀谷', '恩納')),
+                    ('北部', ('名護', '今歸仁', '國頭')), ('慶良間', ('座間味', '渡嘉敷'))]
+        _ok_all = OK['paid'] + OK['free']
+        _ok_keys = [e['key'] for _a, cs in _ok_area for e in _ok_all if e['city'] in cs]
+        _ok_keys += [e['key'] for e in _ok_all if e['key'] not in _ok_keys]
+        _oko = _ob_pick('沖繩', _ok_keys)
+        _ok_n = {a: sum(1 for e in _ok_all if e['city'] in cs) for a, cs in _ok_area}
+        _iso0 = _ob_today.isoformat()
+        _ok_bus = next(e for e in OK['paid'] if e['key'] == 'busena')
+        _ok_bc = [x for x in _ok_bus.get('closed_dates', []) if x >= _iso0]
+        _ok_bct = '、'.join(_ky_md(datetime.date.fromisoformat(x)) for x in _ok_bc)
+        _ok_free = [e['short'] for e in OK['free'] if e.get('price_cell') == '免費']
+        _ok_winter = [t for until, t in (
+            ('2026-11-22', '首里城 11/22 全園臨時休園，西のアザナ也不開'),
+            ('2026-11-23', '首里城正殿 11/23 重新公開，當天有料區域 12:00 才開，入場費大人改為 1,000 円'),
+            ('2026-12-03', '座間味的高速船進塢停駛到 12/3，這段期間只有渡輪（約 2 小時）'),
+            ('2027-02-28', '中城城跡一之郭北側城牆整修到 2027 年 2 月，部分區域不能進')) if _iso0 <= until]
+        _OBS_CITY.append(dict(
+          slug='okinawa', city='沖繩', hero='okinawa', recs=_oko, region_page=None, region_name='沖繩',
+          crumbs=[('首頁', '/'), ('沖繩', '/okinawa/'), ('沖繩觀景台', None)],
+          suns=['那霸'], jma=[_OB_JMA['那霸']],
+          unver=OK['unverified'],
+          lede=(f'沖繩本島能上去看景的地方，加上從那霸搭船當天來回的慶良間，共 {len(_oko)} 處：'
+                f'那霸 {_ok_n["那霸"]} 處（首里城的東のアザナ要買票、西のアザナ免費）、南部 {_ok_n["南部"]} 處（知念岬、Nirai Kanai 橋、喜屋武岬）、'
+                f'中部 {_ok_n["中部"]} 處（勝連城跡、中城城跡、座喜味城跡、殘波岬燈塔、萬座毛、果報 Banta、嘉數高台）、'
+                f'北部 {_ok_n["北部"]} 處（部瀨名海中展望塔、古宇利海洋塔與古宇利大橋、今歸仁城跡、名護城公園、邊戶岬、山原秧雞展望台）、'
+                f'慶良間 {_ok_n["慶良間"]} 處（座間味島、渡嘉敷島的展望台）。很多地方官網只寫開車怎麼去，交通欄照實寫。'),
+          picks=['<b>看海裡</b>：部瀨名海中展望塔大人 1,050 円，加玻璃船套票 2,100 円；'
+                 + (f'接下來的臨時休館日有 {_ok_bct}，先選日期看。' if _ok_bc else '臨時休館日官網按月公布，先選日期看。'),
+                 '<b>城跡（世界遺產）</b>：今歸仁城跡 1,000 円、勝連城跡 850 円、中城城跡 500 円；首里城有料區域 11/23 起大人 1,000 円。座喜味城跡官網沒寫收費。',
+                 ('<b>看日出</b>：中城城跡 12/19 冬至 6:30 起、元旦 6:00 開門，8:30 前免費（冬至雨天取消）。' if _iso0 <= '2027-01-01' else ''),
+                 '<b>沒有租車</b>：首里城從單軌首里站走約 15 分；今歸仁城跡搭やんばる急行在「今帰仁城跡」下車就到；部瀨名搭巴士到「ブセナリゾート前」。知念岬、古宇利、Nirai Kanai 橋官網只寫開車。',
+                 '<b>不想花錢</b>：' + '、'.join(_ok_free) + '寫明免費；萬座毛入口設施 3 樓的展望台也免費，斷崖步道 100 円。',
+                 '<b>慶良間</b>：座間味島的稻崎展望台 12 月下旬到 4 月可以看鯨魚；島上的展望台官網大多只寫開車路線。',
+                 ('<b>這陣子要注意</b>：' + '；'.join(_ok_winter) + '。') if _ok_winter else ''],
+          faq=[('首里城現在能進去嗎？', '可以。11/22 全園臨時休園；11/23 正殿重新公開，當天有料區域 12:00 才開，入場費大人從 400 円改為 1,000 円。進正殿內部要預約 30 分一個的時段，東のアザナ不用預約，西のアザナ免費。'),
+               ('沖繩有免費的觀景台嗎？', '寫明免費的有：' + '、'.join(_ok_free) + '；萬座毛入口設施 3 樓展望台也免費。知念岬、喜屋武岬、嘉數高台、名護城公園、座喜味城跡與慶良間的展望台官網沒寫收費也沒寫免費。'),
+               ('部瀨名海中展望塔哪天休？', (f'官網公布的臨時休館日：{_ok_bct}；' if _ok_bc else '') + '之後的月份官網還沒公布。11～3 月 9:00～17:30（最後入場 17:00）。'),
+               ('中城城跡可以看日出嗎？', '可以。12/19 冬至 6:30 起有看日出活動（雨天取消）、元旦 6:00 開門，兩天 8:30 前都免費，之後照常收費（大人 500 円）。天還很暗、高台很冷，要帶手電筒與保暖衣物。'),
+               ('古宇利海洋塔怎麼去？', '主要靠開車：從美麗海水族館約 25～30 分。路線巴士只到古宇利大橋前的屋我地島，在名護巴士總站轉 72 號屋我地線到「運天原入口」，再搭計程車約 15 分或走約 30～40 分。10:00～18:00，大人 1,000 円。')],
+          related=[('/okinawa/churaumi/', '🐋 美麗海水族館門票', '不用預約、官網網路票同價'),
+                   ('/japan-free-observation-decks/', '🆓 日本免費觀景台', '東京、名古屋、關西、九州、沖繩、北海道'),
                    ('/kyushu/observation-decks/', '🗼 九州觀景台懶人包', '福岡、北九州、長崎、熊本')]))
     for c in _OBS_CITY:
         recs = c['recs']
