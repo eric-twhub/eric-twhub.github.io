@@ -29646,13 +29646,13 @@ if OBS:
     # ---- 城市頁 ----
     _OBS_CITY = []
     if all(('關西', k) in _OB for k in ('umeda', 'tsutenkaku', 'castle', 'cosmo', 'nambaparks', 'sakai')):
-        _osa = _ob_pick('關西', ['umeda', 'harukas', 'tsutenkaku', 'castle', 'cosmo', 'osakastation', 'nambaparks', 'sakai', 'higashiosaka', 'itami', 'kixskyview', 'conrad', 'miyako'])
+        _osa = _ob_pick('關西', ['umeda', 'harukas', 'tsutenkaku', 'castle', 'cosmo', 'osakastation', 'nambaparks', 'sakai', 'higashiosaka', 'itami', 'kixskyview', 'conrad', 'miyako', 'adee', 'bar36'])
         _pl = [(_KDP[k]['short'], _kd_pass(k)) for k in ('umeda', 'tsutenkaku', 'castle', 'harukas') if _kd_pass(k)]
         _OBS_CITY.append(dict(
           slug='osaka', city='大阪', hero='kansai', recs=_osa, region_page='/kansai/observation-decks/', region_name='關西',
           lede=(f'大阪市區加上堺市、東大阪和兩座機場，能上去看景的 {len(_osa)} 個地方：梅田空中庭園、HARUKAS 300、通天閣、大阪城天守閣、咲洲宇宙塔要買票，'
                 '難波公園屋頂花園、堺市役所 21 樓、東大阪市役所 22 樓、伊丹機場與關西機場的展望台官網寫免費，大阪站時空廣場官網沒寫收不收；'
-                '中之島康萊德 40 樓、HARUKAS 裡萬豪都酒店 19 樓要在店裡消費。'),
+                '中之島康萊德 40 樓、HARUKAS 裡萬豪都酒店 19 樓、梅田洲際 20 樓的酒吧、難波南海瑞士 36 樓的酒吧要在店裡消費。'),
           picks=[f'<b>晚上去</b>：梅田空中庭園開到 22:30（最後入場 22:00），HARUKAS 300、咲洲宇宙塔到 22:00，通天閣到 21:45；免費的難波公園屋頂花園開到 24:00。',
                  '<b>不想花錢</b>：難波公園屋頂花園（10:00～24:00）、堺市役所 21 樓（9:00～21:00）、東大阪市役所 22 樓（9:00～23:00，登錄日本夜景遺產），官網都寫免費。',
                  ('<b>有大阪周遊卡</b>：' + '；'.join(f'{n}：{html.escape(t)}' for n, t in _pl)
@@ -29780,12 +29780,12 @@ if OBS:
                    ('/osaka/observation-decks/', '🌆 大阪觀景台', '梅田空中庭園、HARUKAS 300、通天閣'),
                    ('/japan-free-observation-decks/', '🆓 日本免費觀景台', '東京、關西、九州、北海道')]))
     if 'KN' in globals() and all(('首都圈', k) in _OB for k in ('marinetower', 'cosmoclock', 'osanbashi', 'minatonomieruoka')):
-        _yok = _ob_pick('首都圈', ['marinetower', 'cosmoclock', 'osanbashi', 'minatonomieruoka', 'symboltower', 'shinyokohama'])
+        _yok = _ob_pick('首都圈', ['marinetower', 'cosmoclock', 'osanbashi', 'minatonomieruoka', 'symboltower', 'shinyokohama', 'westinyokohama'])
         _OBS_CITY.append(dict(
           slug='yokohama', city='橫濱', hero='kanto', recs=_yok, region_page='/kanto/observation-decks/', region_name='首都圈',
           crumbs=[('首頁', '/'), ('東京', '/kanto/'), ('橫濱觀景台', None)],
           lede=(f'橫濱能上去看景的 {len(_yok)} 個地方：橫濱海洋塔、Cosmo Clock 21 大摩天輪要買票，大棧橋屋頂廣場官網寫免費、24 小時開放，'
-                '本牧埠頭的橫濱港 Symbol Tower 免費（搭巴士去），港見丘公園官網沒寫收不收；新橫濱王子大飯店 42 樓的酒吧要在店裡消費。橫濱地標塔 69 樓的 Sky Garden 大樓修繕暫停營業，官網寫預定 2028 年以後才重開。'),
+                '本牧埠頭的橫濱港 Symbol Tower 免費（搭巴士去），港見丘公園官網沒寫收不收；新橫濱王子大飯店 42 樓的酒吧、港未來威斯汀 23 樓的 lounge 與酒吧要在店裡消費。橫濱地標塔 69 樓的 Sky Garden 大樓修繕暫停營業，官網寫預定 2028 年以後才重開。'),
           picks=['<b>晚上去</b>：橫濱海洋塔開到 22:00（最後入場 21:30），18:00 以後是夜間票；大棧橋屋頂 24 小時開放、免費。',
                  '<b>不想花錢</b>：大棧橋屋頂廣場官網寫免費，看得到港未來的高樓群、大摩天輪和海灣大橋。',
                  '<b>週四要注意</b>：Cosmo Clock 21 11、12 月每週四休園（12/24、12/31 照開）；週末開得比平日晚。',
@@ -29892,7 +29892,7 @@ if OBS:
           jma=[_OB_JMA['廣島'], ('350000', '山口')],
           unver=HS['unverified'],
           lede=(f'廣島市區能上去看景的 {len(_hso)} 個地方：原爆圓頂旁的折鶴塔要買票，比治山的和平訊息廣場、廣島市役所屋頂（只開平日）、黃金山不用門票，RIHGA Royal 飯店 33 樓與宇品的格蘭王子 23 樓要在店裡消費。'
-                f'再加上電車、渡輪一日遊到得了的近郊 {len(_hsx)} 處：宮島纜車與彌山展望台、尾道的千光寺山纜車與展望台 PEAK、福山城、岩國城、'
+                f'再加上電車、渡輪一日遊到得了的近郊 {len(_hsx)} 處：宮島纜車與彌山展望台、尾道的千光寺山纜車與展望台 PEAK、福山城、鞆の浦的對潮樓與醫王寺太子殿、岩國城、'
                 '吳的歷史の見える丘與アレイからすこじま、廣島機場展望台。廣島城天守 2026/3/22 起閉館，只能看外觀，所以沒列。'),
           picks=['<b>一次看兩處世界遺產</b>：折鶴塔屋頂看得到平和記念公園與原爆圓頂，晴天遠方看得到宮島的彌山；大人 2,200 円、10:00～18:00，當天可以重複進出。',
                  '<b>上宮島的山</b>：宮島纜車往返大人 2,000 円，獅子岩站再走約 30 分山路到彌山展望台；上山末班 16:00、下山末班 16:30，獅子岩站只收現金。',
@@ -29915,7 +29915,7 @@ if OBS:
         OK = _OBC['okinawa']
         _ok_area = [('那霸', ('那霸',)), ('南部', ('南城', '糸滿')), ('中部', ('宜野灣', '中城', '宇流麻', '讀谷', '恩納')),
                     ('北部', ('名護', '今歸仁', '國頭')), ('慶良間', ('座間味', '渡嘉敷'))]
-        _ok_all = OK['paid'] + OK['free']
+        _ok_all = OK['paid'] + OK['free'] + OK.get('cafe', [])
         _ok_keys = [e['key'] for _a, cs in _ok_area for e in _ok_all if e['city'] in cs]
         _ok_keys += [e['key'] for e in _ok_all if e['key'] not in _ok_keys]
         _oko = _ob_pick('沖繩', _ok_keys)
@@ -29936,7 +29936,7 @@ if OBS:
           suns=['那霸'], jma=[_OB_JMA['那霸']],
           unver=OK['unverified'],
           lede=(f'沖繩本島能上去看景的地方，加上從那霸搭船當天來回的慶良間，共 {len(_oko)} 處：'
-                f'那霸 {_ok_n["那霸"]} 處（首里城的東のアザナ要買票、西のアザナ免費，那霸機場見學者甲板免費）、南部 {_ok_n["南部"]} 處（知念岬、Nirai Kanai 橋、喜屋武岬）、'
+                f'那霸 {_ok_n["那霸"]} 處（首里城的東のアザナ要買票、西のアザナ免費，那霸機場見學者甲板免費，Loisir 那霸 12 樓的酒吧要在店裡消費）、南部 {_ok_n["南部"]} 處（知念岬、Nirai Kanai 橋、喜屋武岬）、'
                 f'中部 {_ok_n["中部"]} 處（勝連城跡、中城城跡、座喜味城跡、殘波岬燈塔、萬座毛、果報 Banta、嘉數高台）、'
                 f'北部 {_ok_n["北部"]} 處（部瀨名海中展望塔、古宇利海洋塔與古宇利大橋、今歸仁城跡、名護城公園、邊戶岬、山原秧雞展望台）、'
                 f'慶良間 {_ok_n["慶良間"]} 處（座間味島、渡嘉敷島的展望台）。很多地方官網只寫開車怎麼去，交通欄照實寫。'),
@@ -30140,7 +30140,7 @@ if OBS:
     # ---- 首都圈懶人包：東京都內只列總表（連回東京頁），神奈川、千葉、埼玉寫詳細段落 ----
     _kn_recs = [r for r in OBS if r['region'] == '首都圈']
     if _kn_recs:
-        _KN_CITY = ['橫濱', '川崎', '藤澤', '平塚', '小田原', '伊勢原', '橫須賀', '千葉', '市川', '成田', '富津', '銚子', '長瀞']
+        _KN_CITY = ['橫濱', '川崎', '藤澤', '平塚', '小田原', '伊勢原', '橫須賀', '千葉', '市川', '成田', '富津', '銚子', '浦和', '長瀞']
         _kn_sort = lambda rs: sorted(rs, key=lambda r: _KN_CITY.index(r['city']) if r['city'] in _KN_CITY else 99)
         _kn_paid = _kn_sort([r for r in _kn_recs if not r['free'] and not r.get('cafe')])
         _kn_free = _kn_sort([r for r in _kn_recs if r['free']])

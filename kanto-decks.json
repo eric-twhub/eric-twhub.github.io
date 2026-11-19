@@ -742,7 +742,10 @@
   "東京灣觀音（富津）：500 円、8:00～16:00 受理、週四休，2027/3/31 結束參拜；交通這次沒查，先不放",
   "美之山公園（秩父）：常時開放、免費，但沒有巴士",
   "富津公園展望塔：開放時間官網沒寫；野島埼燈塔：11/4 起暫停參觀；八景島 Sea Paradise 的塔停駛中",
-  "橫濱洲際 31 樓、橫濱 Sky Building 28～29 樓：是要正式用餐的餐廳，沒收"
+  "橫濱洲際 31 樓、橫濱 Sky Building 28～29 樓：是要正式用餐的餐廳，沒收",
+  "橫濱卡哈拉飯店 14 樓 THE KAHALA Lounge：官網沒寫看得到什麼景色，樓層也不高，先不放",
+  "Palace Hotel 大宮：官網的餐廳頁沒寫樓層也沒寫景色",
+  "川越、大宮：沒找到官方介紹的展望台或高樓層展望餐廳"
  ],
  "cafe": [
   {
@@ -769,6 +772,50 @@
    "desc": "新橫濱站旁飯店最上層 42 樓的酒吧，地上 150 公尺。週日的時間官網沒有分開寫，表上照平日算，去之前先確認。",
    "src": "https://www.princehotels.co.jp/shinyokohama/restaurant/top_bar/",
    "map": "新横浜プリンスホテル トップオブヨコハマ"
+  },
+  {
+   "key": "westinyokohama",
+   "name": "橫濱威斯汀 23 樓 Lobby Lounge、Code Bar",
+   "short": "橫濱威斯汀 23 樓",
+   "area": "港未來",
+   "city": "橫濱",
+   "ill": "skybar",
+   "floor": "23 樓（最上層）",
+   "hours": "Lobby Lounge 10:00～22:00；Code Bar 15:00～24:00；Iron Bay 餐廳 12:00～15:00、17:30～22:00",
+   "hours_short": "10:00～24:00（lounge、酒吧、餐廳時段不同）",
+   "ye_caveat": true,
+   "closed": "官網沒寫休日",
+   "cond": "三家都是 smart casual 服裝規定；官網沒寫低消、座位費和年齡限制；訂位頁的例子：平日下午茶 8,200 円、Iron Bay 商務午餐 4,000 円",
+   "price_cell": "要消費（低消官網沒寫）",
+   "near": "高島町站約 300 公尺",
+   "station": "橫濱市營地下鐵高島町站約 300 公尺、港未來線港未來站約 500 公尺（飯店訂位頁寫的距離，沒寫走幾分）",
+   "desc": "港未來威斯汀最上層 23 樓：Lobby Lounge 天氣好的日子看得到富士山，Code Bar 可以 180 度看橫濱街景與夜景，Iron Bay 是看夜景的薪火料理餐廳。",
+   "src": "https://www.marriott.com/ja/hotels/hotel-information/restaurant/tyowy-the-westin-yokohama/",
+   "map": "ウェスティンホテル横浜"
+  },
+  {
+   "key": "royalpines",
+   "name": "浦和皇家松樹飯店 19 樓頂樓 Lounge",
+   "short": "浦和皇家松樹 19 樓",
+   "area": "浦和",
+   "city": "浦和",
+   "ill": "skybar",
+   "floor": "19 樓",
+   "hours": "Tea time 12:00～17:00；Bar time 17:00～22:00",
+   "hours_short": "12:00～22:00",
+   "closed_wd": [
+    0
+   ],
+   "closed_wd_text": "週一休",
+   "ye_caveat": true,
+   "closed": "週一休（假日照常營業）",
+   "cond": "17:00 以後桌費 550 円，另加服務費 10%；同層餐廳 RPR 午餐 3,300 円起（週一休），18 樓中餐廳彩湖午餐 2,200 円起（週四休）；官網沒寫年齡限制",
+   "price_cell": "要消費（17:00 起桌費 550 円）",
+   "near": "浦和站西口走 7 分",
+   "station": "JR 浦和站西口走 7 分",
+   "desc": "浦和站附近飯店 19 樓、挑高 6 公尺的頂樓 lounge，晚上可以邊喝邊看夜景；同層餐廳 RPR 也看得到窗外景色。",
+   "src": "https://www.royalpines.co.jp/restaurant_bar/toplounge",
+   "map": "浦和ロイヤルパインズホテル"
   }
  ]
 }
