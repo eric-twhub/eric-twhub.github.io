@@ -24959,6 +24959,49 @@ if os.path.exists('cards.json'):
                             "acceptedAnswer": {"@type": "Answer", "text": a}}
                            for q, a in cp_faq]}, ensure_ascii=False)
 
+        # ---- Black Friday 檔期（blackfriday.json） ----
+        # 2026-11-19 使用者看到 Threads 上福岡 Black Friday 的貼文後要加進這頁。只收商場官網寫的期間與內容，
+        # 折扣百分比官網沒寫就不寫。期間結束（日本時間 end 早於今天）或超過 stale_days 沒重查的項目自動不列，
+        # 全部下架後整個區塊消失。
+        _bf_block = ''
+        if os.path.exists('blackfriday.json'):
+            _BF = json.load(open('blackfriday.json', encoding='utf-8'))
+            _bf_t = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+            _bf_stale = (_bf_t - datetime.date.fromisoformat(_BF['checked'])).days > _BF.get('stale_days', 7)
+            _bf_live = [] if _bf_stale else sorted(
+                (x for x in _BF['items'] if datetime.date.fromisoformat(x['end']) >= _bf_t),
+                key=lambda x: (x['end'], x['name']))
+            if _bf_stale:
+                print('   ⚠ blackfriday.json 超過重查期限，Black Friday 區塊不列')
+
+            def _bf_md(v):
+                d = datetime.date.fromisoformat(v)
+                return f'{d.month}/{d.day}（{"一二三四五六日"[d.weekday()]}）'
+
+            def _bf_li(x):
+                started = datetime.date.fromisoformat(x['start']) <= _bf_t
+                rows = [('內容', x.get('what')), ('會員點數', x.get('points')), ('要注意', x.get('note'))]
+                return (f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span>'
+                        f'<span class="xbadge{" on" if started else ""}">{"進行中" if started else _bf_md(x["start"]) + " 開始"}</span></div>'
+                        f'<div class="xw">{_bf_md(x["start"])}～{_bf_md(x["end"])}・{html.escape(x["scope"])}</div>'
+                        + ''.join(f'<div class="xt"><b>{k}：</b>{html.escape(v)}</div>' for k, v in rows if v)
+                        + (('<div class="xt"><b>各館最大折扣：</b>' + '、'.join(
+                            f'<a href="{html.escape(f["src"])}" rel="nofollow noopener" target="_blank">{html.escape(f["name"])}</a> '
+                            + (html.escape(f['max']) if f.get('max') else '沒寫百分比') for f in x['facilities']) + '</div>')
+                           if x.get('facilities') else '')
+                        + f'<p class="xo">出處：<a href="{html.escape(x["src"])}" rel="nofollow noopener" target="_blank">'
+                        f'{html.escape(x.get("src_name") or "官方活動頁")} →</a></p></li>')
+            if _bf_live:
+                _bf_block = ('<h2 id="black-friday">這幾週的 Black Friday 檔期</h2>'
+                             '<p class="lede">日本的大型商場與 Outlet 每年 11 月下旬辦 Black Friday。下面只列官網公布、'
+                             f'還沒結束的檔期，期間過了會自動拿掉。參加的店家與折扣各店不同，官網沒寫的折扣幅度這裡不寫。</p>'
+                             '<ul class="xl">' + ''.join(_bf_li(x) for x in _bf_live) + '</ul>'
+                             + ('<details class="faq"><summary>查過、沒列進來的商場</summary><div><ul>'
+                                + ''.join(f'<li>{html.escape(u)}</li>' for u in _BF.get('unverified', [])) + '</ul></div></details>'
+                                if _BF.get('unverified') else '')
+                             + f'<p class="disc">查證於 {html.escape(_BF["checked"])}。Black Friday 的折扣和上面的觀光客折價券、'
+                             '免稅能不能一起用，各店規定不同，結帳前問店員。</p>')
+
         write('japan-coupon/index.html',
           head('日本購物折扣怎麼疊？折價券 × 免稅 × 刷卡回饋實付價計算機',
                f'日本藥妝、電器行折價券常見折扣幅度整理，並提供實付價試算：'
@@ -24998,6 +25041,7 @@ if os.path.exists('cards.json'):
           + '</div>'
           + '<p class="disc">連到的是各店的官方發券頁或官方合作平台，本站不重製券面、'
             '不提供券本身，也與這些店家沒有合作關係。券的版本與期限由店家隨時調整。</p>'
+          + _bf_block
           + '<h2>這筆金額，哪家折最多</h2>'
           + '<p class="lede">輸入預計消費的含稅金額，算出各店扣完免稅與券之後的實付價，'
             '由低到高排序。級距不同，金額一變名次就會換人。</p>'

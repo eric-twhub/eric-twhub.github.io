@@ -1,0 +1,223 @@
+{
+ "_說明": "購物折扣總覽 /japan-coupon/ 的「這幾週的 Black Friday 檔期」區塊。只收商場官網公布的期間與內容；end（日本時間）過了自動不列，checked 超過 stale_days 天沒重查整區不列。facilities 是各館最大折扣與各館官網，what 裡不重複寫各館百分比。",
+ "checked": "2026-11-19",
+ "stale_days": 7,
+ "_回查": [
+  "三井ショッピングパークアプリ 11/18 起因遭不正存取暫停服務（營運公司 11/19 公告），恢復時間未定；恢復前 App 優惠券與「アプリde支払い」都用不了，11/22 前回查 https://www.mf-shogyo.co.jp/ 看是否恢復",
+  "Premium Outlets 佐野、ふかや花園兩館的 Black Friday 頁沒有寫最大折扣，若之後補上再加",
+  "博多運河城參加店家官網註明「参加店舗は予告なく変更になる場合がございます」，上線前再開一次頁面確認 Gap、Dr.Martens、RAGEBLUE 還在",
+  "AEON MALL 各館活動與 WAON POINT 10 倍日期依地區不同，北海道、東北的 AEON MALL 不在 10 倍名單內",
+  "2026-11-30 後整區下架（最晚的 AEON MALL 到 11/30）"
+ ],
+ "items": [
+  {
+   "key": "lalaport",
+   "name": "LaLaport 等三井購物中心（三井ショッピングパーク ららぽーと）",
+   "scope": "全國約 30 館：LaLaport 20 館、LAZONA 川崎 Plaza、DiverCity Tokyo Plaza，另有 LaLa Terrace、LaLa Garden、錦糸町 ARCAKIT、新潟 LoveLa 萬代",
+   "areas": [
+    "東京",
+    "千葉",
+    "橫濱",
+    "川崎",
+    "名古屋",
+    "大阪",
+    "福岡",
+    "仙台",
+    "新潟"
+   ],
+   "start": "2026-11-13",
+   "end": "2026-11-29",
+   "what": "全館特價「最大75％OFF」，加上 Black Friday 限定餐飲、部分館有抽獎；各館最大折扣不同，列在下面",
+   "points": "點數加碼只限三井ショッピングパークポイント的 Premium、Gold 獎牌會員，11/13～15、11/20～23 用指定信用卡付款回饋 10％／5％，現金或其他付款 5％／3％。獎牌要在當年 4 月起累積消費 10 萬日圓（Gold）或 30 萬日圓（Premium），達標隔月才升級，一般觀光客拿不到；點數會員本身能不能用海外資料註冊，官網沒寫",
+   "src": "https://www.mf-shogyo.co.jp/pdf/newsrelease-20261027-1055.pdf",
+   "src_name": "三井不動產商業管理 新聞稿",
+   "facilities": [
+    {
+     "name": "LaLaport 福岡",
+     "max": "最大70%OFF",
+     "src": "https://mitsui-shopping-park.com/lalaport/fukuoka/event/3645669.html"
+    },
+    {
+     "name": "LaLaport TOKYO-BAY",
+     "max": "最大70％OFF",
+     "src": "https://mitsui-shopping-park.com/lalaport/tokyo-bay/event/3611904.html"
+    },
+    {
+     "name": "LaLaport 門真",
+     "max": "最大70％OFF",
+     "src": "https://mitsui-shopping-park.com/lalaport/kadoma/event/3630229.html"
+    },
+    {
+     "name": "LaLaport 橫濱",
+     "max": "最大60%OFF",
+     "src": "https://mitsui-shopping-park.com/lalaport/yokohama/event/3611496.html"
+    },
+    {
+     "name": "DiverCity Tokyo Plaza",
+     "max": "最大60％OFF",
+     "src": "https://mitsui-shopping-park.com/divercity-tokyo/event/3631902.html"
+    },
+    {
+     "name": "LAZONA 川崎 Plaza",
+     "max": "最大50%OFF",
+     "src": "https://mitsui-shopping-park.com/lazona-kawasaki/event/3634665.html"
+    },
+    {
+     "name": "LaLaport 名古屋 Minato AQULS",
+     "max": "最大50％OFF",
+     "src": "https://mitsui-shopping-park.com/lalaport/minatoaquls/event/3630811.html"
+    },
+    {
+     "name": "LaLaport 豐洲",
+     "max": "",
+     "src": "https://mitsui-shopping-park.com/lalaport/toyosu/event/3613509.html"
+    },
+    {
+     "name": "LaLaport EXPOCITY",
+     "max": "",
+     "src": "https://mitsui-shopping-park.com/lalaport/expocity/event/3616639.html"
+    }
+   ],
+   "note": "LaLa Garden 春日部 11/16 才開始、LaLa Garden 長町 11/20 才開始。三井ショッピングパークアプリ 11/18 起暫停服務，App 優惠券暫時無法使用"
+  },
+  {
+   "key": "mitsui-outlet",
+   "name": "三井 Outlet Park（三井アウトレットパーク）",
+   "scope": "全國 14 館：札幌北廣島、仙台港、木更津、入間、幕張、多摩南大澤、橫濱 Bayside、北陸小矢部、岡崎、Jazz Dream 長島、滋賀竜王、大阪門真、Marinpia 神戶、倉敷",
+   "areas": [
+    "札幌",
+    "仙台",
+    "東京",
+    "千葉",
+    "橫濱",
+    "名古屋",
+    "大阪",
+    "神戶",
+    "倉敷"
+   ],
+   "start": "2026-11-13",
+   "end": "2026-11-29",
+   "what": "全館特價「最大80%OFF」，部分餐飲份量加量（GODIVA、TULLY'S COFFEE，適用館別不同），11/13～15 有樣品與瑕疵品特賣",
+   "points": "11/13～15、11/20～23 只限三井ショッピングパークポイント的 Premium、Gold 獎牌會員，回饋 10％／5％（現金等 5％／3％）；11/27～29 一般點數會員用指定信用卡或「アプリde支払い」付款，每 100 日圓（未稅）回饋從 2％提高到 5％，現金等從 1％提高到 2％，大阪門真不適用。獎牌門檻是年度累積消費 10 萬或 30 萬日圓，觀光客拿不到；點數會員能不能用海外資料註冊，官網沒寫",
+   "src": "https://www.mf-shogyo.co.jp/pdf/newsrelease-20261027-1054.pdf",
+   "src_name": "三井 Outlet Park 新聞稿",
+   "note": "Jazz Dream 長島在三重縣桑名市，從名古屋出發；札幌北廣島在札幌與新千歲機場之間。大阪門真的點數加碼日期與內容不同。三井ショッピングパークアプリ 11/18 起暫停服務，「アプリde支払い」目前不能用"
+  },
+  {
+   "key": "premium-outlets",
+   "name": "Premium Outlets",
+   "scope": "全國 10 館：御殿場、佐野、阿見、酒酒井、深谷花園、臨空、神戶三田、仙台泉、土岐、鳥栖",
+   "areas": [
+    "東京",
+    "大阪",
+    "神戶",
+    "名古屋",
+    "福岡",
+    "仙台"
+   ],
+   "start": "2026-11-20",
+   "end": "2026-11-29",
+   "what": "全館特價，各館最大折扣不同，列在下面",
+   "points": "官網沒寫點數加倍",
+   "src": "https://www.premiumoutlets.co.jp/sp/bf_202611/",
+   "src_name": "Premium Outlets 官網",
+   "facilities": [
+    {
+     "name": "御殿場",
+     "max": "MAX 70％OFF",
+     "src": "https://www.premiumoutlets.co.jp/gotemba/sp/202611bf/"
+    },
+    {
+     "name": "阿見",
+     "max": "MAX 70％OFF",
+     "src": "https://www.premiumoutlets.co.jp/ami/sp/202611bf/"
+    },
+    {
+     "name": "酒酒井",
+     "max": "MAX 70％OFF",
+     "src": "https://www.premiumoutlets.co.jp/shisui/sp/202611bf/"
+    },
+    {
+     "name": "臨空",
+     "max": "MAX 70％OFF",
+     "src": "https://www.premiumoutlets.co.jp/rinku/sp/202611bf/"
+    },
+    {
+     "name": "神戶三田",
+     "max": "MAX 80％OFF",
+     "src": "https://www.premiumoutlets.co.jp/kobesanda/sp/202611bf/"
+    },
+    {
+     "name": "仙台泉",
+     "max": "MAX 70％OFF",
+     "src": "https://www.premiumoutlets.co.jp/sendaiizumi/sp/202611bf/"
+    },
+    {
+     "name": "土岐",
+     "max": "MAX 70％OFF",
+     "src": "https://www.premiumoutlets.co.jp/toki/sp/202611bf/"
+    },
+    {
+     "name": "鳥栖",
+     "max": "MAX 70％OFF",
+     "src": "https://www.premiumoutlets.co.jp/tosu/sp/202611bf/"
+    },
+    {
+     "name": "佐野",
+     "max": "",
+     "src": "https://www.premiumoutlets.co.jp/sano/sp/202611bf/"
+    },
+    {
+     "name": "深谷花園",
+     "max": "",
+     "src": "https://www.premiumoutlets.co.jp/fukayahanazono/sp/202611bf/"
+    }
+   ],
+   "note": "御殿場、酒酒井、佐野、阿見、深谷花園多從東京出發，臨空在關西機場對岸，土岐從名古屋出發，鳥栖從福岡出發。各館頁面註明三菱地所グループCARD／PO PAY、クーポンシート、ウェブクーポン等可能不能和特價併用，部分商品不適用"
+  },
+  {
+   "key": "aeonmall",
+   "name": "AEON MALL 永旺夢樂城（イオンモール）",
+   "scope": "全國 AEON MALL，部分店家不參加",
+   "areas": [
+    "東京",
+    "千葉",
+    "名古屋",
+    "京都",
+    "大阪",
+    "廣島",
+    "福岡",
+    "沖繩"
+   ],
+   "start": "2026-11-20",
+   "end": "2026-11-30",
+   "what": "活動名「超！BLACK FRIDAY Fes」，沒有全館統一折扣，是各專門店與 AEON MALL 限定商品各自優惠，例如 Sanrio GIFT GATE 店內部分商品「50%OFF」、Zoff NIGHT&DAY 2WAY 眼鏡「50%OFF」（11/20～12/3、數量限定），另有購物滿額收據抽獎（滿 3,000、5,000 日圓一口，12/13 截止）",
+   "points": "專門店 WAON POINT 基本的 10 倍（每 200 日圓給 10 點），要用 AEON 標誌信用卡或 AEON Pay 付款，日期依地區：關東・甲信越 11/21～23、東海 11/27～29、北陸・近畿・中四國 11/21～23、九州・沖繩 11/20～23 與 11/28～30。App 優惠券要用 iAEON ID 登入；觀光客能不能申辦這些卡與帳號，官網沒寫",
+   "src": "https://lp.aeonmall.com/lp/blackfriday/",
+   "src_name": "AEON MALL 官網特設頁",
+   "note": "WAON POINT 10 倍名單有 AEON MALL 福岡、沖繩 Rycom、KYOTO、京都桂川、鶴見綠地、大阪 Dome City、臨空泉南、Nagoya Dome 前、Nagoya Noritake Garden、幕張新都心、多摩平之森等；北海道、東北的 AEON MALL 不在名單內。該館沒有對應店家就沒有該項商品"
+  },
+  {
+   "key": "canalcity",
+   "name": "博多運河城（キャナルシティ博多）",
+   "scope": "只有福岡博多這一館，部分店家參加",
+   "areas": [
+    "福岡"
+   ],
+   "start": "2026-11-21",
+   "end": "2026-11-29",
+   "what": "活動名「CANAL BLACK FRIDAY」，各店自訂優惠，沒有全館統一折扣。例如 Gap／GapKids 定價商品「40％ OFF」（11/19～11/30）、Dr.Martens 一部商品「30%OFF」、RAGEBLUE 一部商品「50%OFF」、ABC-MART GRAND STAGE 一部商品「30%OFF」、GEAR'S JAM 行李箱「30～50%OFF」",
+   "points": "官網沒寫點數加倍",
+   "src": "https://canalcity.co.jp/sale/detail/blackfriday2026",
+   "src_name": "博多運河城官網",
+   "note": "各店期間可能不同（Gap 到 11/30、Zoff 到 12/3），部分商品不適用，部分優惠不能和其他服務併用，參加店家可能變動"
+  }
+ ],
+ "unverified": [
+  "大丸松坂屋：首頁「ブラックフライデー開催中！」連到網路商店特賣頁，不是實體百貨的檔期",
+  "高島屋、三越伊勢丹：媒體列的是網路商店的 Black Friday，實體店沒查到館方檔期",
+  "PARCO（澀谷、心齋橋、名古屋、福岡、札幌）、LUMINE、丸井（含博多、難波）、atré、SHIBUYA109、東急 Plaza、澀谷 Hikarie、KITTE 丸之內、東京晴空街道、東京中城、台場 AQUA CiTY、DECKS、Grand Front Osaka、LUCUA、阪急百貨店、難波 Parks、難波 CITY、札幌 Factory、Stellar Place、Le Trois、天神 Core、Solaria Plaza、JR 博多城：官網首頁查不到館方層級的 Black Friday 檔期。部分網站是程式產生內容，首頁查不到不等於沒有",
+  "池袋 Sunshine City、天神地下街、阿倍野 Q's MALL、mozo wondercity：只有個別店家（Zoff、東京シャツ、ACE、ABC-MART、ONLY 等）自己的 Black Friday，不是館方活動",
+  "沖繩 Outlet Mall Ashibinaa、iias 沖繩豐崎、PARCO CITY、JR Gate Tower、Hakata Riverain、THE OUTLETS 北九州、THE OUTLETS 廣島：官網連不上或網域查不到，無法確認"
+ ]
+}
