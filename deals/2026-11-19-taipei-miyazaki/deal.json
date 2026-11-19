@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-taipei-miyazaki",
- "generated": "2026-11-19 10:02",
+ "generated": "2026-11-19 10:43",
  "kind": "fare",
  "origin": "taipei",
  "city": "miyazaki",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5059,
+  "price": 4859,
   "dep": "2026-12-28",
   "ret": "2027-01-01",
   "dept": "06:20",
@@ -27,8 +27,8 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11666,
- "n_rt": 6,
+ "med": 11164,
+ "n_rt": 4,
  "others": [
   {
    "o": "TPE",
@@ -52,24 +52,6 @@
   {
    "o": "TPE",
    "d": "KMI",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 6735,
-   "dep": "2026-11-20",
-   "ret": "2026-11-27",
-   "dept": "06:20",
-   "rett": "10:30",
-   "rt": true,
-   "tr": 0,
-   "dur": 270,
-   "dur_to": 120,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2011KMI27111?t=IT17951556001795166400000120TPEKMI17957754001795780800000150KMITPE_85c115843a613b64edffba67489d305f_16948&search_date=12112026&expected_price_uuid=01a1cd9a-e3b6-8030-e144-87864ebe934c&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=2Ls-x9Pku_W60pVyDHdKgw&expected_price_source=share&expected_price_currency=twd&expected_price=6735&marker=775639"
-  },
-  {
-   "o": "TPE",
-   "d": "KMI",
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
@@ -84,6 +66,24 @@
    "dur_to": 280,
    "gate": "Wingie",
    "url": "https://www.aviasales.com/search/TSA0712KMI14121?t=NH17966622001796718900000885TSAHNDKMI17972739001797337800001125KMIITMHNDTSA_da199aa6247f4461a119363cfa4e83c2_41599&search_date=12112026&expected_price_uuid=01a1d074-5fd0-8030-aa33-e2403f345c1c&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=U97qDFZ26w4w3KJKpJZTDw&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=16597&marker=775639"
+  },
+  {
+   "o": "TPE",
+   "d": "KMI",
+   "air": "NH",
+   "airname": "全日空",
+   "cls": "fsc",
+   "price": 32462,
+   "dep": "2026-12-28",
+   "ret": "2027-01-01",
+   "dept": "13:30",
+   "rett": "08:15",
+   "rt": true,
+   "tr": 2,
+   "dur": 890,
+   "dur_to": 285,
+   "gate": "Kiwi.com",
+   "url": "https://www.aviasales.com/search/TSA2812KMI01011?t=NH17984646001798490700000375TSAHNDKMI17987913001798818600000515KMIHNDTSA_9ac1947cce3eaff857fbd863692fc726_81411&search_date=17112026&expected_price_uuid=01a1e878-d4ea-8040-a4f9-65c8bbcffac8&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tX6q04NiYnEbuzq8_pFvmg&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=32462&marker=775639"
   }
  ]
 }
