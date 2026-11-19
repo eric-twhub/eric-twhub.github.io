@@ -1401,5 +1401,289 @@
     "src": "https://www.city.toyohashi.lg.jp/9100.htm"
    }
   ]
+ },
+ "仙台": {
+  "aer": [
+   {
+    "name": "仙台朝市",
+    "ja": "仙台朝市",
+    "how": "從 AER 走約 14 分",
+    "src": "https://www.sentabi.jp/courses/10"
+   },
+   {
+    "name": "三瀧山不動院",
+    "ja": "三瀧山不動院",
+    "how": "從 AER 走商店街拱廊約 15 分",
+    "src": "https://www.sentabi.jp/courses/11"
+   }
+  ],
+  "kencho": [
+   {
+    "name": "勾當台公園",
+    "ja": "勾当台公園",
+    "how": "縣廳就在公園旁邊",
+    "src": "https://www.sentabi.jp/spots/26"
+   }
+  ],
+  "sendaijo": [
+   {
+    "name": "仙台城 脇櫓",
+    "ja": "仙台城 脇櫓",
+    "how": "從政宗騎馬像走約 15 分",
+    "src": "https://www.sentabi.jp/courses/37"
+   },
+   {
+    "name": "青葉山公園 仙臺綠彩館",
+    "ja": "青葉山公園 仙臺緑彩館",
+    "how": "走登城路約 20 分",
+    "src": "https://www.sentabi.jp/courses/17"
+   },
+   {
+    "name": "青葉城資料展示館",
+    "ja": "青葉城資料展示館",
+    "how": "就在城跡裡（11～3 月 9:00～16:00）",
+    "src": "https://www.sentabi.jp/spots/60"
+   }
+  ],
+  "daikannon": [
+   {
+    "name": "緣結油掛大黑天",
+    "ja": "油掛大黒天",
+    "how": "就在大觀音後面",
+    "src": "https://www.sentabi.jp/spots/16"
+   },
+   {
+    "name": "大觀密寺本堂",
+    "ja": "大観密寺 本堂",
+    "how": "同一個寺院境內",
+    "src": "https://www.sentabi.jp/spots/16"
+   }
+  ],
+  "benyland": [
+   {
+    "name": "八木山動物公園 Fujisaki 之森",
+    "ja": "八木山動物公園フジサキの杜",
+    "how": "就在遊樂園隔壁",
+    "src": "https://www.sentabi.jp/spots/85"
+   }
+  ],
+  "dainenji": [
+   {
+    "name": "仙台市野草園",
+    "ja": "仙台市野草園",
+    "how": "在大年寺山公園裡（12/1～3/19 休園）",
+    "src": "https://www.sentabi.jp/spots/120"
+   }
+  ],
+  "arahama": [
+   {
+    "name": "震災遺構 荒濱地區住宅基礎",
+    "ja": "震災遺構 荒浜地区住宅基礎",
+    "how": "從荒濱小學校走約 5 分",
+    "src": "https://arahama.sendai311-memorial.jp/model_course/index.html"
+   }
+  ],
+  "shintomiyama": [
+   {
+    "name": "瑞巌寺",
+    "ja": "瑞巌寺",
+    "how": "展望台就在瑞巌寺北側",
+    "src": "https://www.matsushima-kanko.com/miru/detail.php?id=138"
+   }
+  ],
+  "ogitani": [
+   {
+    "name": "雙觀山",
+    "ja": "双観山",
+    "how": "扇谷就在雙觀山後面",
+    "src": "https://www.matsushima-kanko.com/miru/detail.php?id=135"
+   }
+  ],
+  "tomiyama": [
+   {
+    "name": "大仰寺 富山觀音",
+    "ja": "大仰寺 富山観音",
+    "how": "就在山頂",
+    "src": "https://www.matsushima-kanko.com/miru/detail.php?id=133"
+   }
+  ],
+  "tamonzan": [
+   {
+    "name": "毘沙門堂",
+    "ja": "毘沙門堂",
+    "how": "從公園停車場照指標走到堂後面看景",
+    "src": "https://www.shichigahama.com/relax2/spot02.html"
+   }
+  ],
+  "shiogama": [
+   {
+    "name": "鹽竈神社博物館",
+    "ja": "鹽竈神社博物館",
+    "how": "在神社境內（9:00～16:00，週四休）",
+    "src": "https://shiogamajinja.jp/shiogama-shrine-museum/"
+   },
+   {
+    "name": "志波彦神社",
+    "ja": "志波彦神社",
+    "how": "和鹽竈神社同在一森山上",
+    "src": "https://shiogamajinja.jp/history/"
+   }
+  ],
+  "hiyoriyama": [
+   {
+    "name": "鹿島御兒神社",
+    "ja": "鹿島御児神社",
+    "how": "就在公園入口",
+    "src": "https://visitmiyagi.com/contents/hiyoriyama-park"
+   }
+  ],
+  "yamadera": [
+   {
+    "name": "山寺芭蕉記念館",
+    "ja": "山寺芭蕉記念館",
+    "how": "在看得到山寺的高台上，館後的見晴台可以看立石寺",
+    "src": "https://yamagatakanko.com/attractions/detail_2500.html"
+   },
+   {
+    "name": "山寺觀光案內所",
+    "ja": "山寺観光案内所",
+    "how": "在立石寺門前町，山寺站走約 5 分",
+    "src": "https://yamagatakanko.com/attractions/detail_7321.html"
+   }
+  ],
+  "zao": [
+   {
+    "name": "藏王溫泉",
+    "ja": "蔵王温泉",
+    "how": "從藏王溫泉巴士總站走約 15 分到纜車山麓站",
+    "src": "https://yamagatakanko.com/attractions/detail_2721.html"
+   }
+  ]
+ },
+ "廣島": {
+  "orizuru": [
+   {
+    "name": "平和記念公園",
+    "ja": "平和記念公園",
+    "how": "從公園走約 10 分到折鶴塔",
+    "src": "https://dive-hiroshima.com/course/course-94860/"
+   },
+   {
+    "name": "EDION Peace Wing 廣島足球場",
+    "ja": "",
+    "how": "從折鶴塔走約 10 分",
+    "src": "https://dive-hiroshima.com/course/course-94860/"
+   },
+   {
+    "name": "原爆圓頂",
+    "ja": "原爆ドーム",
+    "how": "就在折鶴塔旁邊",
+    "src": "https://dive-hiroshima.com/course/first-time/"
+   }
+  ],
+  "hijiyama": [
+   {
+    "name": "廣島市現代美術館",
+    "ja": "広島市現代美術館",
+    "how": "展望廣場所在的入口廣場一路通往美術館",
+    "src": "https://www.city.hiroshima.lg.jp/site/hijiyamakoen-heiwanooka/12354.html"
+   },
+   {
+    "name": "富士見台展望台",
+    "ja": "富士見台展望台",
+    "how": "同在比治山公園內的另一處展望台，也有和平訊息石碑",
+    "src": "https://www.city.hiroshima.lg.jp/site/hijiyamakoen-heiwanooka/12354.html"
+   }
+  ],
+  "miyajimarw": [
+   {
+    "name": "紅葉谷公園",
+    "ja": "紅葉谷公園",
+    "how": "從紅葉谷站走約 10 分",
+    "src": "https://miyajima-ropeway.info/access/"
+   },
+   {
+    "name": "嚴島神社",
+    "ja": "嚴島神社",
+    "how": "從紅葉谷站走約 10 分到紅葉谷公園，再走約 6 分",
+    "src": "https://miyajima-ropeway.info/access/"
+   },
+   {
+    "name": "彌山展望台",
+    "ja": "弥山展望台",
+    "how": "從獅子岩站走約 30 分",
+    "src": "https://dive-hiroshima.com/explore/1467/"
+   }
+  ],
+  "misen": [
+   {
+    "name": "宮島纜車獅子岩站",
+    "ja": "宮島ロープウエー 獅子岩駅",
+    "how": "下山走約 30 分到纜車站",
+    "src": "https://dive-hiroshima.com/explore/1467/"
+   }
+  ],
+  "senkojirw": [
+   {
+    "name": "千光寺",
+    "ja": "千光寺",
+    "how": "從山頂站走約 10 分",
+    "src": "https://mt-senkoji-rw.jp/page/2/?post_type=faq"
+   },
+   {
+    "name": "文學小徑",
+    "ja": "文学のこみち",
+    "how": "從山頂站往千光寺走的路就是這條",
+    "src": "https://mt-senkoji-rw.jp/page/2/?post_type=faq"
+   },
+   {
+    "name": "貓之細道",
+    "ja": "猫の細道",
+    "how": "在三重塔與艮神社之間，走路下山時會經過這一帶",
+    "src": "https://mt-senkoji-rw.jp/page/3/?post_type=faq"
+   }
+  ],
+  "peak": [
+   {
+    "name": "千光寺山纜車山頂站",
+    "ja": "千光寺山ロープウェイ 山頂駅",
+    "how": "就在展望台下方",
+    "src": "https://mt-senkoji-rw.jp/travelhowto/"
+   },
+   {
+    "name": "千光寺",
+    "ja": "千光寺",
+    "how": "從山頂一帶走約 10 分",
+    "src": "https://mt-senkoji-rw.jp/travelhowto/"
+   }
+  ],
+  "fukuyamajo": [
+   {
+    "name": "福山美術館",
+    "ja": "ふくやま美術館",
+    "how": "同在福山城旁的文化區",
+    "src": "https://fukuyamajo.jp/access/"
+   },
+   {
+    "name": "廣島縣立歷史博物館",
+    "ja": "広島県立歴史博物館",
+    "how": "同在福山城旁的文化區",
+    "src": "https://fukuyamajo.jp/access/"
+   }
+  ],
+  "iwakunijo": [
+   {
+    "name": "錦帶橋",
+    "ja": "錦帯橋",
+    "how": "從纜車山麓站走約 10 分",
+    "src": "https://yamaguchi-tourism.jp/spot/detail_11254.html"
+   },
+   {
+    "name": "吉香公園",
+    "ja": "吉香公園",
+    "how": "纜車山麓站就在公園前",
+    "src": "https://kankou.iwakuni-city.net/ropeway.html"
+   }
+  ]
  }
 }
