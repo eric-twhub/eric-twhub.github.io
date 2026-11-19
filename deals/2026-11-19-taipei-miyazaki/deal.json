@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-taipei-miyazaki",
- "generated": "2026-11-19 18:41",
+ "generated": "2026-11-19 20:54",
  "kind": "fare",
  "origin": "taipei",
  "city": "miyazaki",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11725,
+ "med": 11737,
  "n_rt": 4,
  "others": [
   {
@@ -55,7 +55,7 @@
    "air": "NH",
    "airname": "全日空",
    "cls": "fsc",
-   "price": 17937,
+   "price": 17962,
    "dep": "2026-12-07",
    "ret": "2026-12-14",
    "dept": "16:50",
@@ -65,7 +65,7 @@
    "dur": 1910,
    "dur_to": 280,
    "gate": "Wingie",
-   "url": "https://www.aviasales.com/search/TSA0712KMI14121?t=NH17966622001796718900000885TSAHNDKMI17972799001797337800001025KMIHNDTSA_74c1d86b80976711e41e61dba9bcb04a_44684&search_date=19112026&expected_price_uuid=01a1f355-ded7-8040-6c45-085b18dde84f&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=5c2kCId21pde6wpPMYRZnw&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17937&marker=775639"
+   "url": "https://www.aviasales.com/search/TSA0712KMI14121?t=NH17966622001796718900000885TSAHNDKMI17972799001797337800001025KMIHNDTSA_74c1d86b80976711e41e61dba9bcb04a_44684&search_date=19112026&expected_price_uuid=01a1f355-ded7-8040-6c45-085b18dde84f&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH1%7CR0%7CTBC1&itinerary_key=5c2kCId21pde6wpPMYRZnw&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=17962&marker=775639"
   },
   {
    "o": "TPE",

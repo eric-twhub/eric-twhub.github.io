@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-taipei-osaka",
- "generated": "2026-11-19 18:41",
+ "generated": "2026-11-19 20:54",
  "kind": "fare",
  "origin": "taipei",
  "city": "osaka",
@@ -24,18 +24,36 @@
   "url": "https://www.aviasales.com/search/TPE2212KIX14011?t=MM17979654001797978000000150TPEKIX17999109001799919900000210KIXTPE_51b15f1d2307a5bfe2d681f7880e9fad_15833&search_date=18112026&expected_price_uuid=01a1ef91-9f63-8040-a14a-568cf7cddc89&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=gXirYugaF1LkNLKdChfePA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6333&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,590（9 天有紀錄），這張低 26%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,397（10 天有紀錄），這張低 25%"
  ],
  "med": 16426,
- "n_rt": 54,
+ "n_rt": 58,
  "others": [
+  {
+   "o": "TPE",
+   "d": "OSA",
+   "air": "VZ",
+   "airname": "泰越捷航空",
+   "cls": "lcc",
+   "price": 6625,
+   "dep": "2026-12-10",
+   "ret": "2026-12-15",
+   "dept": "07:30",
+   "rett": "07:15",
+   "rt": true,
+   "tr": 0,
+   "dur": 360,
+   "dur_to": 150,
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/TPE1012KIX15121?t=MM17968878001796900400000150TPEKIX17973189001797327900000210KIXTPE_1a10b97df363cae08b61e231f47b9271_16483&search_date=19112026&expected_price_uuid=01a1f3b3-f7b5-8040-a40d-b3c0052e31b9&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=zvyvCy5356ZzsNKMLCruig&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6625&marker=775639"
+  },
   {
    "o": "TPE",
    "d": "OSA",
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 6814,
+   "price": 6823,
    "dep": "2026-12-28",
    "ret": "2027-01-07",
    "dept": "13:40",
@@ -45,7 +63,7 @@
    "dur": 350,
    "dur_to": 150,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2812KIX07011?t=GK17984652001798477800000150TPEKIX17993634001799371800000200KIXTPE_d71b486dc3b3b2effad33d0cf18fe6b2_16974&search_date=19112026&expected_price_uuid=01a1f33f-c376-8031-28e2-90440aa881b9&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=DE5qlFbstNQzpPUeJNaNIw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6814&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2812KIX07011?t=GK17984652001798477800000150TPEKIX17993634001799371800000200KIXTPE_d71b486dc3b3b2effad33d0cf18fe6b2_16974&search_date=19112026&expected_price_uuid=01a1f33f-c376-8031-28e2-90440aa881b9&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=DE5qlFbstNQzpPUeJNaNIw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6823&marker=775639"
   },
   {
    "o": "TPE",
@@ -64,24 +82,6 @@
    "dur_to": 225,
    "gate": "Farera",
    "url": "https://www.aviasales.com/search/TPE0112KIX03121?t=MM17960901001796148900000920TPETAEKIX17962821001796291100000210KIXTPE_78fcb253df55065c4e005be1cf83500a_19432&search_date=14112026&expected_price_uuid=01a1daa2-5e14-8040-2b94-37a150cd8703&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=g0m0i5zrChZ3cUjprwTFFQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7716&marker=775639"
-  },
-  {
-   "o": "TPE",
-   "d": "OSA",
-   "air": "VZ",
-   "airname": "泰越捷航空",
-   "cls": "lcc",
-   "price": 8130,
-   "dep": "2026-12-21",
-   "ret": "2026-12-24",
-   "dept": "07:30",
-   "rett": "07:15",
-   "rt": true,
-   "tr": 0,
-   "dur": 360,
-   "dur_to": 150,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2112KIX24121?t=MM17978382001797850800000150TPEKIX17980965001798105500000210KIXTPE_5080b7709ee4784533efb87e6047de34_20254&search_date=19112026&expected_price_uuid=01a1f332-3fb6-8031-6bb4-a8efa554c02b&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0AViFFomLLuLw3l-h8aWkQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8130&marker=775639"
   }
  ]
 }
