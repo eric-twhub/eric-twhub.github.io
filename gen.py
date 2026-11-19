@@ -1814,8 +1814,17 @@ def topnav(cur=''):
             + (link('/okinawa/observation-decks/', '🌊 沖繩觀景台開放時間與門票') if os.path.exists('okinawa-decks.json') else '')
             + (link('/kanazawa/observation-decks/', '🏯 金澤觀景台（富山、福井、白川鄉）') if os.path.exists('kanazawa-decks.json') else '')
             + (link('/shizuoka/observation-decks/', '🗻 靜岡觀景台（看富士山、伊豆、濱松）') if os.path.exists('shizuoka-decks.json') else '')
+            + (link('/tohoku/observation-decks/', '🍎 東北觀景台（青森、秋田、八戶、福島）') if os.path.exists('tohoku-decks.json') else '')
+            + (link('/niigata/observation-decks/', '🌾 新潟觀景台（朱鷺 Messe、彌彥山）') if os.path.exists('niigata-decks.json') else '')
+            + (link('/sanin/observation-decks/', '🏜️ 山陰觀景台（鳥取砂丘、松江、境港）') if os.path.exists('sanin-decks.json') else '')
+            + (link('/sakishima/observation-decks/', '🏝️ 石垣・宮古觀景台（不用租車）') if os.path.exists('sakishima-decks.json') else '')
+            + (link('/shikoku/observation-decks/', '🌉 四國・岡山觀景台（高松、松山、鳴門）') if os.path.exists('shikoku-decks.json') else '')
             + link('/kyushu/observation-decks/', '🗼 九州觀景台開放時間與門票')
+            + link('/kumamoto/observation-decks/', '🏯 熊本觀景台（熊本城、阿蘇）')
+            + link('/kagoshima/observation-decks/', '🌋 鹿兒島觀景台（看櫻島）')
+            + link('/beppu/observation-decks/', '♨️ 別府・大分觀景台（看湯煙）')
             + link('/hokkaido/observation-decks/', '❄️ 北海道觀景台開放時間與門票')
+            + link('/hakodate/observation-decks/', '🌃 函館觀景台（函館山、五稜郭塔）')
             + link('/japan-free-observation-decks/', '🆓 日本免費觀景台')
             + link('/japan-night-observation-decks/', '🌃 晚上開到 21 點以後的觀景台')
             + link('/hakodate/christmas-fantasy/', '🎄 函館聖誕夢幻節')
@@ -2032,6 +2041,15 @@ _AD_MAP = [
     ('okinawa/observation-decks', 'activity2'),
     ('kanazawa/observation-decks', 'activity2'),
     ('shizuoka/observation-decks', 'activity2'),
+    ('tohoku/observation-decks', 'activity2'),
+    ('niigata/observation-decks', 'activity2'),
+    ('sanin/observation-decks', 'activity2'),
+    ('sakishima/observation-decks', 'activity2'),
+    ('hakodate/observation-decks', 'activity2'),
+    ('kumamoto/observation-decks', 'activity2'),
+    ('kagoshima/observation-decks', 'activity2'),
+    ('beppu/observation-decks', 'activity2'),
+    ('shikoku/observation-decks', 'activity2'),
     ('japan-free-observation-decks', 'activity2'),
     ('japan-night-observation-decks', 'activity2'),
     ('hakodate/christmas-fantasy', 'esim'),
@@ -3088,6 +3106,15 @@ _STK_PREFIX = sorted({
     '/okinawa/observation-decks/': '',
     '/kanazawa/observation-decks/': '',
     '/shizuoka/observation-decks/': '',
+    '/tohoku/observation-decks/': '',
+    '/niigata/observation-decks/': '',
+    '/sanin/observation-decks/': '',
+    '/sakishima/observation-decks/': '',
+    '/hakodate/observation-decks/': '',
+    '/kumamoto/observation-decks/': '',
+    '/kagoshima/observation-decks/': '',
+    '/beppu/observation-decks/': '',
+    '/shikoku/observation-decks/': '',
     '/kobe/observation-decks/': '',
     '/fukuoka/observation-decks/': '',
     '/nagasaki/observation-decks/': '',
@@ -29290,7 +29317,7 @@ if os.path.exists('kyushu-decks.json'):
                             name=_e['short'], near=_e['near'], cell=(lambda dd, e=_e: (_ky_hours(e, dd), e['price_cell'])),
                             sec=(lambda e=_e: _ky_cafe_sec(e)), free=False, cafe=True, cond=_e.get('cond', '')))
 
-    _KY_CITY =['福岡', '北九州', '佐世保', '長崎', '雲仙', '佐賀', '熊本', '阿蘇', '別府', '大分', '鹿兒島']
+    _KY_CITY =['福岡', '北九州', '佐世保', '長崎', '雲仙', '佐賀', '唐津', '熊本', '阿蘇', '別府', '大分', '鹿兒島', '宮崎']
     _ky_paid_html = ''.join(_ky_paid_sec(e) for c in _KY_CITY for e in KY['paid'] if e['city'] == c)
     _ky_free_html = ''.join(_ky_free_sec(e) for c in _KY_CITY for e in KY['free'] if e['city'] == c)
     _ky_cafe_html = ''.join(_ky_cafe_sec(e) for c in _KY_CITY for e in KY.get('cafe', []) if e['city'] == c)
@@ -29336,7 +29363,7 @@ if os.path.exists('kyushu-decks.json'):
       + f'<h1>九州觀景台懶人包：{_ky_n_all} 個展望台的開放時間、要不要錢</h1>'
       + f'<p class="by">更新於 {KY["checked"]}・資料來自各觀景台官網與縣市政府網站</p>'
       + _ky_ill('sp/kyushu-observation-decks/hero', 'ill hero')
-      + f'<p class="ap">福岡、北九州、長崎、佐賀、熊本、大分、鹿兒島能上去看景的地方，我整理成一篇：要買票的 {_ky_n_paid} 個、'
+      + f'<p class="ap">福岡、北九州、長崎、佐賀、熊本、大分、鹿兒島、宮崎能上去看景的地方，我整理成一篇：要買票的 {_ky_n_paid} 個、'
         f'不用門票（或官網沒寫要收費）的 {_ky_n_free} 個' + (f'、要在店裡消費才能上去的 {len(KY["cafe"])} 個' if KY.get('cafe') else '') + '。開放時間、大人票價、要不要預約和離哪個車站多近，都是回去翻官網和縣市政府網站查的。</p>'
       + '<p class="ap">先講結論：九州的<mark>縣廳、市役所展望樓層</mark>很多開到晚上，長崎市役所 19 樓、熊本市役所 14 樓、佐賀縣廳 SAGA360 都看得到夜景；'
         '皿倉山纜車週二休；稻佐山的長崎纜車 11/24、11/25 停駛。</p>'
@@ -29371,6 +29398,11 @@ if os.path.exists('kyushu-decks.json'):
       + ''.join(f'<li>{html.escape(x)}</li>' for x in KY['unverified']) + '</ul></details>'
       + '<details class="more"><summary>資料來源</summary><ul>' + _ky_src + '</ul></details>'
       + '<h2>延伸閱讀</h2><div class="cities">'
+      + ''.join(f'<a class="ct" href="{U(u)}"><b>{x}</b><s>{y}</s></a>' for u, x, y in (
+          ('/fukuoka/observation-decks/', '🗼 福岡觀景台', '福岡塔、ACROS、博多 City 屋頂'),
+          ('/kumamoto/observation-decks/', '🏯 熊本觀景台', '熊本城、市役所 14 樓、阿蘇'),
+          ('/kagoshima/observation-decks/', '🌋 鹿兒島觀景台', '看櫻島的地方'),
+          ('/beppu/observation-decks/', '♨️ 別府・大分觀景台', '看湯煙、鶴見岳')))
       + f'<a class="ct" href="{U("/kansai/observation-decks/")}"><b>🌆 關西觀景台懶人包</b><s>梅田、通天閣、京都塔、神戶港塔</s></a>'
       + f'<a class="ct" href="{U("/tokyo/observation-decks/")}"><b>🌃 東京觀景台懶人包</b><s>晴空塔、東京鐵塔、SHIBUYA SKY</s></a></div>'
       + f'<p class="disc">時間與票價以各觀景台官網為準，整理可能有疏漏。查證於 {KY["checked"]}，之後官方若有更改，本頁不一定跟上。'
@@ -29449,7 +29481,8 @@ if os.path.exists('kanto-decks.json') and 'KY' in globals():
 # ---------- 名古屋、仙台、廣島、沖繩觀景台（登記） ----------
 # 這幾個城市沒有區域頁，只有城市頁 /<slug>/observation-decks/（市區＋電車一日遊可到的近郊），資料在 <slug>-decks.json，規則欄位同九州。
 # 頁面在下面城市頁那段寫，免費頁、夜景頁也會自動帶進來。附近景點在 deck-nearby.json 的同名地區。
-_OB_CITYONLY = [('nagoya', '名古屋'), ('sendai', '仙台'), ('hiroshima', '廣島'), ('okinawa', '沖繩'), ('kanazawa', '金澤'), ('shizuoka', '靜岡')]
+_OB_CITYONLY = [('nagoya', '名古屋'), ('sendai', '仙台'), ('hiroshima', '廣島'), ('okinawa', '沖繩'), ('kanazawa', '金澤'), ('shizuoka', '靜岡'),
+                ('tohoku', '東北'), ('niigata', '新潟'), ('sanin', '山陰'), ('sakishima', '石垣・宮古'), ('shikoku', '四國・岡山')]
 _OBC = {}
 for _slug, _rg in _OB_CITYONLY:
     if not (os.path.exists(f'{_slug}-decks.json') and 'KY' in globals()):
@@ -29483,14 +29516,18 @@ if OBS:
                '福岡': (33.5902, 130.4017), '長崎': (32.7503, 129.8777), '北九州': (33.8834, 130.8752),
                '札幌': (43.0621, 141.3544), '函館': (41.7687, 140.7288), '京都': (35.0116, 135.7681),
                '橫濱': (35.4437, 139.6380), '名古屋': (35.1709, 136.8815),
-               '仙台': (38.2601, 140.8822), '廣島': (34.3966, 132.4753), '那霸': (26.2124, 127.6809), '金澤': (36.5781, 136.6480), '靜岡': (34.9716, 138.3890)}
+               '仙台': (38.2601, 140.8822), '廣島': (34.3966, 132.4753), '那霸': (26.2124, 127.6809), '金澤': (36.5781, 136.6480), '靜岡': (34.9716, 138.3890),
+               '青森': (40.8246, 140.7400), '新潟': (37.9161, 139.0364), '松江': (35.4723, 133.0505), '石垣': (24.3448, 124.1572),
+               '熊本': (32.8031, 130.7079), '鹿兒島': (31.5966, 130.5571), '別府': (33.2846, 131.4914), '高松': (34.3428, 134.0466)}
     _OB_JMA = {'東京': ('130000', '東京'), '大阪': ('270000', '大阪'), '神戶': ('280000', '兵庫'),
                '福岡': ('400000', '福岡'), '北九州': ('400000', '福岡'), '長崎': ('420000', '長崎'),
                '札幌': ('016000', '札幌'), '函館': ('017000', '函館'), '京都': ('260000', '京都'),
                '橫濱': ('140000', '神奈川'), '名古屋': ('230000', '愛知'),
-               '仙台': ('040000', '宮城'), '廣島': ('340000', '廣島'), '那霸': ('471000', '沖繩本島'), '金澤': ('170000', '石川'), '靜岡': ('220000', '靜岡')}
+               '仙台': ('040000', '宮城'), '廣島': ('340000', '廣島'), '那霸': ('471000', '沖繩本島'), '金澤': ('170000', '石川'), '靜岡': ('220000', '靜岡'),
+               '青森': ('020000', '青森'), '新潟': ('150000', '新潟'), '松江': ('320000', '島根'), '石垣': ('474000', '八重山'),
+               '熊本': ('430000', '熊本'), '鹿兒島': ('460100', '鹿兒島'), '別府': ('440000', '大分'), '高松': ('370000', '香川')}
     _OB_REGION_SUN = {'東京': '東京', '首都圈': '橫濱', '仙台': '仙台', '名古屋': '名古屋', '金澤': '金澤', '靜岡': '靜岡', '關西': '大阪', '廣島': '廣島',
-                      '九州': '福岡', '沖繩': '那霸', '北海道': '札幌'}
+                      '九州': '福岡', '沖繩': '那霸', '北海道': '札幌', '東北': '青森', '新潟': '新潟', '山陰': '松江', '石垣・宮古': '石垣', '四國・岡山': '高松'}
 
     def _ob_md(d):
         return f'{d.month}/{d.day}（{_ob_wd[d.weekday()]}）'
@@ -30050,6 +30087,249 @@ if OBS:
           related=[('/japan-fuji-q/', '🎢 富士急樂園門票', '哪天去比較便宜'),
                    ('/japan-hakone-freepass/', '♨️ 箱根周遊券', '纜車、登山電車怎麼搭'),
                    ('/kanto/observation-decks/', '🗼 首都圈觀景台懶人包', '橫濱、江之島、千葉、銚子')]))
+    # ---- 東北北部與福島（仙台另一頁） ----
+    if 'tohoku' in _OBC and all(('東北', k) in _OB for k in ('hakkoda', 'aspam', 'selion', 'tsurugajo')):
+        TH = _OBC['tohoku']
+        _th_area = [('青森', ('青森', '五所川原')), ('弘前', ('弘前',)), ('八戶', ('八戶',)), ('秋田', ('秋田',)),
+                    ('盛岡與花卷', ('盛岡', '花卷')), ('福島、郡山、會津', ('福島', '郡山', '會津若松'))]
+        _th_all = TH['paid'] + TH['free'] + TH.get('cafe', [])
+        _th_keys = [e['key'] for _a, cs in _th_area for e in _th_all if e['city'] in cs]
+        _th_keys += [e['key'] for e in _th_all if e['key'] not in _th_keys]
+        _tho = _ob_pick('東北', _th_keys)
+        _th_n = {a: sum(1 for e in _th_all if e['city'] in cs) for a, cs in _th_area}
+        _th_free = [e['short'] for e in TH['free'] if e.get('price_cell') == '免費']
+        _iso0 = _ob_today.isoformat()
+        _th_winter = [t for until, t in (
+            ('2026-11-20', '八甲田纜車 11/19～11/20 停電作業停駛'),
+            ('2027-01-15', '青森 ASPAM 12/31、1/14～1/15 休館'),
+            ('2027-01-22', '郡山 Big-i 1/1、1/18～1/22 全館休館'),
+            ('2027-03-31', '秋田御隅櫓 12/1～3/31 冬季休館')) if _iso0 <= until]
+        _OBS_CITY.append(dict(
+          slug='tohoku', city='東北', hero='tohoku', recs=_tho, region_page=None, region_name='東北',
+          crumbs=[('首頁', '/'), ('東北', '/tohoku/'), ('東北觀景台', None)],
+          suns=['青森'], jma=[('020000', '青森'), ('050000', '秋田'), ('030000', '岩手'), ('070000', '福島')],
+          unver=TH['unverified'],
+          lede=(f'青森、秋田、岩手、福島能上去看景的地方，共 {len(_tho)} 處：'
+                f'青森 {_th_n["青森"]} 處（八甲田纜車、ASPAM 13 樓、青森機場、五所川原立佞武多之館）、弘前 {_th_n["弘前"]} 處（蘋果公園）、'
+                f'八戶 {_th_n["八戶"]} 處（Gret Tower、Marient、八戶峽谷、葦毛崎）、秋田 {_th_n["秋田"]} 處（Selion、御隅櫓、秋田機場）、'
+                f'盛岡與花卷 {_th_n["盛岡與花卷"]} 處、福島郡山會津 {_th_n["福島、郡山、會津"]} 處（Corasse 福島、Big-i、鶴之城、飯盛山、福島機場）。'
+                '仙台、松島、山寺、藏王在仙台觀景台那一頁。機場與戶外展望點很多官網只寫有這個地方，沒寫時間或收不收，表上照實寫。'),
+          picks=['<b>不想花錢</b>：' + '、'.join(_th_free) + '寫明免費。',
+                 '<b>在青森市區</b>：ASPAM 13 樓大人 500 円，青森站東口走約 8 分，看得到陸奧灣和八甲田山；想看樹冰就搭 JR 巴士上八甲田纜車，往返大人 2,500 円。',
+                 '<b>晚上去</b>：秋田港 Selion 免費開到 21:00，郡山 Big-i 開到 20:00，Corasse 福島開到 21:00；八戶 Gret Tower 冬天到 19:00，週一休。',
+                 '<b>看城</b>：會津鶴之城天守最上層是展望層，大人 410 円；秋田御隅櫓 12～3 月冬季休館。',
+                 ('<b>這陣子要注意</b>：' + '；'.join(_th_winter) + '。') if _th_winter else ''],
+          faq=[('東北有免費的觀景台嗎？', '寫明免費的有：' + '、'.join(_th_free) + '。盛岡 Marios、Corasse 福島 12 樓、會津飯盛山沒寫收費也沒寫免費。'),
+               ('秋田港 Selion 要錢嗎？', '展望台免費，9:00～21:00，地上 100 公尺，看得到秋田市區和日本海。秋田站前 4 號乘車處搭 Selion 線約 25 分。強風時展望台會提早關。'),
+               ('八甲田纜車冬天有開嗎？', '一年四季都開。冬季 9:00 起、上行末班 15:40，3～10 月到 16:20；往返大人 2,500 円。風速 25 m/s 以上或天候不好會停駛，山頂遊步道冬天因積雪不能走。'),
+               ('青森 ASPAM 幾點開？', '9:00～18:00，13 樓展望台大人 500 円；12/31、1/14～1/15 休館。青森站東口走約 8 分。'),
+               ('郡山 Big-i 的展望大廳週一有開嗎？', '有。週一是科學館的展示區休館，22 樓展望大廳照開，10:00～20:00、免費；1/1、1/18～1/22 全館休館。')],
+          related=[('/sendai/observation-decks/', '🗼 仙台觀景台', '仙台、松島、山寺、藏王'),
+                   ('/japan-zao-juhyo/', '❄️ 藏王樹冰怎麼去', '纜車票價、雪怪車'),
+                   ('/japan-free-observation-decks/', '🆓 日本免費觀景台', '各地官網寫明免費的展望台')]))
+
+    # ---- 新潟（市區＋彌彥山） ----
+    if 'niigata' in _OBC and all(('新潟', k) in _OB for k in ('befco', 'yahiko', 'kencho')):
+        NI = _OBC['niigata']
+        _nio = _ob_pick('新潟', [e['key'] for e in NI['paid'] + NI['free'] + NI.get('cafe', [])])
+        _ni_free = [e['short'] for e in NI['free'] if e.get('price_cell') == '免費']
+        _OBS_CITY.append(dict(
+          slug='niigata', city='新潟', hero='niigata', recs=_nio, region_page=None, region_name='新潟',
+          crumbs=[('首頁', '/'), ('新潟', '/niigata/'), ('新潟觀景台', None)],
+          suns=['新潟'], jma=[('150000', '新潟')],
+          unver=NI['unverified'],
+          lede=(f'新潟市區與彌彥山能上去看景的地方，共 {len(_nio)} 處：朱鷺 Messe 31 樓、Mediaship 20 樓、NEXT21 19 樓、新潟縣廳 18 樓四座高樓，'
+                '新潟機場 4 樓展望デッキ，以及搭電車加巴士到得了的彌彥山纜車。四座高樓裡朱鷺 Messe 與縣廳寫明免費，另外兩座沒寫收費。'),
+          picks=['<b>只去一個</b>：朱鷺 Messe 31 樓免費、開到 22:00，看得到萬代橋、新潟市區和天氣好時的佐渡島；新潟站巴士總站 17 號乘車處搭車約 14 分。',
+                 '<b>看夕陽</b>：Mediaship 20 樓開到 23:00、NEXT21 19 樓開到 21:00，都看得到日本海的夕陽。',
+                 '<b>週末</b>：新潟縣廳 18 樓展望回廊週末 10:00 開到日落，平日 8:30～17:15。',
+                 '<b>彌彥山</b>：纜車往返大人 1,500 円，山頂看得到日本海與佐渡、越後平原；山頂的 Panorama Tower 冬天停，纜車照開，官網每天公布當天時刻。'],
+          faq=[('新潟有免費的觀景台嗎？', '寫明免費的有：' + '、'.join(_ni_free) + '。Mediaship 20 樓與 NEXT21 19 樓沒寫收費也沒寫免費，誰都可以進去。'),
+               ('朱鷺 Messe 展望室開到幾點？', '8:00～22:00，免費。同層的 Sky Lounge PANORAMA 10:00～20:00 可以邊吃邊看，不消費也能上展望室；有活動時會縮短時間或休館。'),
+               ('新潟縣廳展望回廊週末有開嗎？', '有。平日 8:30～17:15，週六日與假日 10:00 開到日落，週末只開放 18 樓展望回廊。年末年始也開放，元旦的時間縣府還沒公布。'),
+               ('新潟機場展望デッキ要錢嗎？', '要。4 樓展望デッキ大人 100 円，7:10～20:00，可以近看飛機起降。新潟站搭機場巴士約 25～33 分。')],
+          related=[('/tohoku/observation-decks/', '🗼 東北觀景台', '青森、秋田、八戶、福島'),
+                   ('/sendai/observation-decks/', '🗼 仙台觀景台', '仙台、松島、山寺、藏王'),
+                   ('/japan-free-observation-decks/', '🆓 日本免費觀景台', '各地官網寫明免費的展望台')]))
+
+    # ---- 山陰（鳥取、米子、境港、松江、出雲） ----
+    if 'sanin' in _OBC and all(('山陰', k) in _OB for k in ('yumeminato', 'sandmuseum', 'matsuejo', 'hinomisaki')):
+        SN = _OBC['sanin']
+        _sn_area = [('鳥取', ('鳥取',)), ('米子與境港', ('米子', '境港')), ('松江', ('松江',)), ('出雲', ('出雲',))]
+        _sn_all = SN['paid'] + SN['free'] + SN.get('cafe', [])
+        _sn_keys = [e['key'] for _a, cs in _sn_area for e in _sn_all if e['city'] in cs]
+        _sn_keys += [e['key'] for e in _sn_all if e['key'] not in _sn_keys]
+        _sno = _ob_pick('山陰', _sn_keys)
+        _sn_n = {a: sum(1 for e in _sn_all if e['city'] in cs) for a, cs in _sn_area}
+        _iso0 = _ob_today.isoformat()
+        _sn_winter = [t for until, t in (
+            ('2026-12-31', '米子鬼太郎機場屋頂送迎甲板補修，11 月初到 12 月底限制進入'),
+            ('2027-04-22', '砂の美術館 2027/1/4～4/22 換展休館，第 18 期 4/23 開幕')) if _iso0 <= until]
+        _OBS_CITY.append(dict(
+          slug='sanin', city='山陰', hero='sanin', recs=_sno, region_page=None, region_name='山陰',
+          crumbs=[('首頁', '/'), ('米子・鳥取', '/yonago/'), ('山陰觀景台', None)],
+          suns=['松江'], jma=[('310000', '鳥取'), ('320000', '島根')],
+          unver=SN['unverified'],
+          lede=(f'鳥取、米子、境港、松江、出雲能上去看景的地方，共 {len(_sno)} 處：'
+                f'鳥取 {_sn_n["鳥取"]} 處（砂の美術館、砂丘センター、鳥取城跡）、米子與境港 {_sn_n["米子與境港"]} 處（夢みなとタワー、米子城跡、米子鬼太郎機場）、'
+                f'松江 {_sn_n["松江"]} 處（松江城天守）、出雲 {_sn_n["出雲"]} 處（出雲日御碕燈台、出雲緣結機場）。'
+                '城跡與砂丘旁的展望點官網常常只寫地點，沒寫時間或收不收，表上照實寫。'),
+          picks=['<b>看鳥取砂丘</b>：砂の美術館館外的展望廣場一次看得到砂丘和日本海，大人 800 円；砂丘センター屋頂的眺望露台也看得到整片砂丘。',
+                 '<b>從米子機場出發</b>：境港夢みなとタワー地上 43 公尺，大人 300 円，看得到大山與中海；4 樓咖啡不用買展望室門票。',
+                 '<b>看城</b>：松江城是現存天守，最上層「天狗の間」360 度看松江市區，大人 1,200 円；米子城跡天守台看得到大山和中海。',
+                 '<b>出雲</b>：出雲日御碕燈台是日本最高的石造燈塔，可以登塔，大人 300 円，中午 12:00～13:00 不能上。',
+                 ('<b>這陣子要注意</b>：' + '；'.join(_sn_winter) + '。') if _sn_winter else ''],
+          faq=[('鳥取砂丘從哪裡看最清楚？', '砂の美術館館外的展望廣場（大人 800 円，9:00～18:00）和砂丘センター屋頂的眺望露台（9:00～17:00）都看得到整片砂丘和日本海。砂丘センター也是觀光吊椅的起點，搭約 5 分到砂丘入口。'),
+               ('夢みなとタワー哪天休？', '每月第 2 個週三休館，表上可以選日期看；10～3 月 9:00～17:00，4～9 月到 18:00，大人 300 円。'),
+               ('松江城天守幾點關？', '10～3 月 8:30～17:00，4～9 月到 18:00，大人 1,200 円。進天守要脫鞋，鞋子裝袋帶著走。'),
+               ('出雲日御碕燈台可以上去嗎？', '可以登塔，大人 300 円，9:00～12:00、13:00～16:30。燈塔從基礎到塔頂 43.7 公尺，是日本最高的石造燈塔。')],
+          related=[('/yonago/conan-museum/', '🔍 柯南博物館', '米子出發怎麼去'),
+                   ('/hiroshima/observation-decks/', '🗼 廣島觀景台', '宮島、尾道、福山'),
+                   ('/japan-free-observation-decks/', '🆓 日本免費觀景台', '各地官網寫明免費的展望台')]))
+
+    # ---- 石垣、宮古、竹富 ----
+    if 'sakishima' in _OBC and all(('石垣・宮古', k) in _OB for k in ('hakuai', 'tamatori', 'ishigakiairport')):
+        SK = _OBC['sakishima']
+        _sk_area = [('石垣', ('石垣',)), ('竹富', ('竹富',)), ('宮古', ('宮古',))]
+        _sk_all = SK['paid'] + SK['free'] + SK.get('cafe', [])
+        _sk_keys = [e['key'] for _a, cs in _sk_area for e in _sk_all if e['city'] in cs]
+        _sk_keys += [e['key'] for e in _sk_all if e['key'] not in _sk_keys]
+        _sko = _ob_pick('石垣・宮古', _sk_keys)
+        _OBS_CITY.append(dict(
+          slug='sakishima', city='石垣・宮古', hero='sakishima', recs=_sko, region_page=None, region_name='石垣・宮古',
+          crumbs=[('首頁', '/'), ('石垣島', '/ishigaki/'), ('石垣・宮古觀景台', None)],
+          suns=['石垣'], jma=[('474000', '八重山'), ('473000', '宮古島')],
+          unver=SK['unverified'],
+          lede=(f'石垣島、竹富島、宮古島搭巴士或船到得了的展望點，共 {len(_sko)} 處：石垣的玉取崎展望台、川平灣、石垣機場屋頂，竹富島西棧橋，'
+                '宮古的博愛記念館與來間島竜宮城展望台。兩座島上很多有名的展望點只能開車去（平久保崎、東平安名崎等），這些寫在下面「查不到的」清單，附上理由。'),
+          picks=['<b>沒租車</b>：石垣搭東運輸巴士到「玉取崎」「川平公園前」，宮古搭協栄巴士到「来間」「うえのドイツ村」；班次不多，出發前先看時刻表。',
+                 '<b>看夕陽</b>：竹富島西棧橋筆直伸向西邊的海，是島上看夕陽的地方；回石垣的船末班要先查好。',
+                 '<b>等飛機時</b>：石垣機場屋頂展望デッキ 7:30～20:30、免費，看得到整條跑道和周邊的海。',
+                 '<b>宮古島</b>：博愛記念館地上 42 公尺的窗戶看得到海與來間島，大人 750 円，週二、週四休。'],
+          faq=[('石垣島沒租車能去哪些展望台？', '玉取崎展望台（東運輸 2、3 號一周線，或 5、6 號往平野的車，「玉取崎」下車）、川平灣（9 號川平リゾート線等，「川平公園前」下車）、石垣機場屋頂展望デッキ。平久保崎、御神崎、バンナ公園沒有寫明大眾運輸怎麼到，所以沒列。'),
+               ('東平安名崎可以搭巴士去嗎？', '燈塔的管理單位寫明沒有路線巴士，所以這頁沒列。'),
+               ('石垣機場展望デッキ要錢嗎？', '免費，7:30～20:30，天候等因素可能變更時間；2 樓另有送迎デッキ。'),
+               ('宮古島博愛記念館多少錢？', '大人 750 円，9:30～17:30，週二、週四休。協栄巴士 5 號新里宮國線的終點就是「うえのドイツ村」。')],
+          related=[('/ishigaki/ferry/', '⛴️ 石垣島離島船票', '竹富島、西表島怎麼去'),
+                   ('/okinawa/observation-decks/', '🗼 沖繩觀景台', '那霸、美麗海周邊'),
+                   ('/japan-free-observation-decks/', '🆓 日本免費觀景台', '各地官網寫明免費的展望台')]))
+
+    # ---- 函館（北海道區域頁的城市頁） ----
+    if all(('北海道', k) in _OB for k in ('hakodateyama', 'goryokaku', 'kokaido', 'midorinoshima')):
+        _hkd = _ob_pick('北海道', ['hakodateyama', 'goryokaku', 'kokaido', 'motomachi', 'hachimanzaka', 'hakodatepark', 'midorinoshima', 'tachimachi', 'hakodateairport', 'estelado'])
+        _hkd_free = [r['name'] for r in _hkd if r['free'] and _ob_cell(r, _ob_today)[1] == '免費']
+        _OBS_CITY.append(dict(
+          slug='hakodate', hero='hokkaido', city='函館', recs=_hkd, region_page='/hokkaido/observation-decks/', region_name='北海道',
+          lede=(f'函館能上去看景的 {len(_hkd)} 個地方：函館山搭纜車、五稜郭塔、舊函館區公會堂的陽台要買票；'
+                '元町公園、八幡坂、函館公園、綠之島、立待岬、函館機場不用門票；函館站前飯店 13 樓的酒吧要在店裡消費。'),
+          picks=['<b>夜景首選</b>：函館山纜車往返大人 1,800 円，10:00～21:00。登山道路 2026/11/9～2027/4/12 冬季封閉，這段期間只能搭纜車或走步道上山。',
+                 '<b>不想花錢</b>：' + '、'.join(_hkd_free) + '寫明免費；綠之島冬天 9:00～17:00，1/1～1/3 封閉。',
+                 '<b>看港</b>：舊函館區公會堂 2 樓陽台看得到函館港，大人 300 円；12/31～1/3、2027/1/26 休館。',
+                 '<b>晚上不上山</b>：函館站前 CABIN PRESIDENT 13 樓酒吧 17:30～23:00，飲料 980 円起，不收座位費，函館站走 1 分。'],
+          faq=[('函館山纜車多少錢、開到幾點？', '往返大人 1,800 円，10:00～21:00，纜車約 3 分到山頂。市電「十字街」下車走約 7～8 分到山麓站。登山道路 2026/11/9～2027/4/12 冬季封閉。'),
+               ('函館有免費的展望點嗎？', '寫明免費的有：' + '、'.join(_hkd_free) + '。八幡坂、立待岬沒寫收費也沒寫免費，函館機場送迎甲板沒寫開放時間。'),
+               ('立待岬冬天去得了嗎？', '冬天車輛禁止通行、免費停車場封閉，只能從市電「谷地頭」走約 20 分上去。'),
+               ('五稜郭塔怎麼去？', '市電「五稜郭公園前」下車走約 10 分，或函館巴士 5 系統「五稜郭タワー前」下車走 1 分。展望 2 樓在地上 90 公尺，大人 1,200 円。')],
+          related=[('/hakodate/ropeway/', '🚡 函館山纜車', '夜景時間與票價'),
+                   ('/sapporo/observation-decks/', '🗼 札幌觀景台', '電視塔、T38、藻岩山')]))
+
+    # ---- 熊本（市區＋阿蘇） ----
+    if all(('九州', k) in _OB for k in ('kumamotojo', 'kumamotocity', 'katojinja')):
+        _kmm = _ob_pick('九州', ['kumamotojo', 'kumamotocity', 'sakuramachi', 'katojinja', 'honmyoji', 'daikanbo', 'kusasenri'])
+        _OBS_CITY.append(dict(
+          slug='kumamoto', hero='kyushu', city='熊本', recs=_kmm, region_page='/kyushu/observation-decks/', region_name='九州',
+          lede=(f'熊本市區與阿蘇能上去看景的 {len(_kmm)} 個地方：熊本城天守要買票；熊本市役所 14 樓、SAKURA MACHI 屋頂、'
+                '加藤神社、本妙寺淨池廟不用門票，都看得到熊本城；阿蘇的大觀峰、草千里展望所搭巴士到得了。'),
+          picks=['<b>上熊本城</b>：天守閣 9:00～17:00，大人 800 円，12/29 休園；最上層看得到熊本市區和遠方的阿蘇山。',
+                 '<b>晚上看熊本城</b>：熊本市役所 14 樓開到 22:00（12/29～1/3、2027/1/9 不開），SAKURA MACHI 屋頂開到 22:30。',
+                 '<b>拍熊本城</b>：加藤神社在熊本城內，境內看得到天守閣和宇土櫓。',
+                 '<b>去阿蘇</b>：JR 阿蘇站搭產交巴士阿蘇登山線到草千里，一天 9 班；中岳火口目前不能參觀。'],
+          faq=[('熊本城幾點關？', '9:00～17:00，大人 800 円，12/29 休園。平日只能從南口進出。'),
+               ('熊本市役所展望大廳開到幾點？', '平日 8:30～22:00，週六日與假日 9:00～22:00；12/29～1/3 與 2027/1/9 不開。平日 18:00 以後和假日從 1 樓南側玄關搭直通電梯。沒寫收費也沒寫免費。'),
+               ('阿蘇中岳火口現在能去嗎？', '目前不能參觀，阿蘇山公園道路封閉、火口接駁巴士停駛。草千里展望所看得到冒煙的中岳，JR 阿蘇站搭產交巴士阿蘇登山線可以到。')],
+          related=[('/fukuoka/observation-decks/', '🗼 福岡觀景台', '福岡塔、ACROS、博多 City 屋頂'),
+                   ('/kagoshima/observation-decks/', '🌋 鹿兒島觀景台', '看櫻島的地方')]))
+
+    # ---- 鹿兒島（市區＋櫻島） ----
+    if all(('九州', k) in _OB for k in ('amuran', 'kagoshimapref', 'yunohira')):
+        _kgs = _ob_pick('九州', ['amuran', 'kagoshimapref', 'shiroyama', 'tagayama', 'yunohira', 'akamizu', 'karasujima', 'kagoshimaairport', 'vivarium'])
+        _OBS_CITY.append(dict(
+          slug='kagoshima', hero='kyushu', city='鹿兒島', recs=_kgs, region_page='/kyushu/observation-decks/', region_name='九州',
+          lede=(f'鹿兒島市區與櫻島能上去看景的 {len(_kgs)} 個地方：鹿兒島中央站的摩天輪アミュラン要買票；'
+                '縣廳 18 樓、城山、多賀山公園、櫻島的湯之平與赤水、烏島、鹿兒島機場展望台不用門票；Sheraton 最上層的酒吧要在店裡消費。'),
+          picks=['<b>在市區看櫻島</b>：縣廳 18 樓東側面向櫻島，平日 7:00～21:00、週末 10:00～21:00；城山在巴士「城山」站下車即到。',
+                 '<b>搭摩天輪</b>：アミュラン在鹿兒島中央站的站體商場屋頂，大人 800 円，平日 12:00～19:45、週末 10:00～19:45，正面看得到櫻島。',
+                 '<b>上櫻島</b>：櫻島港搭周遊巴士 Sakurajima Island View 約 40 分到湯之平展望所，海拔 373 公尺。'],
+          faq=[('不上櫻島，在鹿兒島市區哪裡看得到櫻島？', '縣廳 18 樓東側面向櫻島（平日 7:00～21:00、週末 10:00～21:00）、城山看得到櫻島、錦江灣和市區，アミュラン摩天輪正面看得到櫻島。'),
+               ('湯之平展望所怎麼去？', '從鹿兒島港搭櫻島渡輪到櫻島港，再搭周遊巴士 Sakurajima Island View 約 40 分，「湯之平展望所」下車。'),
+               ('アミュラン多少錢？', '大人 800 円，平日 12:00～19:45、週六日與假日 10:00～19:45；轉一圈約 14 分 30 秒，有 2 台四面透明的車廂。')],
+          related=[('/kumamoto/observation-decks/', '🏯 熊本觀景台', '熊本城、市役所 14 樓、阿蘇'),
+                   ('/fukuoka/observation-decks/', '🗼 福岡觀景台', '福岡塔、ACROS、博多 City 屋頂')]))
+
+    # ---- 別府・大分 ----
+    if all(('九州', k) in _OB for k in ('globaltower', 'bepputower', 'yukemuri')):
+        _bpu = _ob_pick('九州', ['beppuropeway', 'globaltower', 'bepputower', 'rakutenchi', 'yukemuri', 'jumonji', 'oitapref'])
+        _iso0 = _ob_today.isoformat()
+        _bp_lt = sorted(k for k, v in next(e for e in KY['paid'] if e['key'] == 'rakutenchi').get('special', {}).items() if k >= _iso0 and '21:00' in v)
+        _OBS_CITY.append(dict(
+          slug='beppu', hero='kyushu', city='別府・大分', recs=_bpu, region_page='/kyushu/observation-decks/', region_name='九州',
+          crumbs=[('首頁', '/'), ('大分', '/oita/'), ('別府・大分觀景台', None)],
+          suns=['別府'], jma=[('440000', '大分')],
+          lede=(f'別府與大分能上去看景的 {len(_bpu)} 個地方：別府纜車、Global Tower、別府塔、ラクテンチ要買票；'
+                '湯煙展望台、十文字原展望台、大分縣廳 14 樓不用門票。'),
+          picks=['<b>看湯煙</b>：湯煙展望台免費，8:00～21:00，週六日與假日 19:00～21:00 湯煙點燈。',
+                 '<b>上鶴見岳</b>：別府纜車往返大人 1,800 円，冬季 11/15～3/14 9:00～17:00（上行末班 16:30），冬天山上有霧冰。',
+                 '<b>晚上去</b>：別府塔開到 21:30，大人 800 円；Global Tower 12～2 月到 19:00；十文字原 24 小時開放、免費。',
+                 ('<b>ラクテンチ</b>：' + _ky_md(datetime.date.fromisoformat(_bp_lt[0])) + '～' + _ky_md(datetime.date.fromisoformat(_bp_lt[-1])) + '開到 21:00；12 月起每週二、三休園，2027/1/12～1/31 休園。') if _bp_lt
+                 else '<b>ラクテンチ</b>：12 月起每週二、三休園，2027/1/12～1/31 休園。'],
+          faq=[('別府哪裡看得到湯煙？', '湯煙展望台看得到鐵輪溫泉一帶的湯煙，免費、8:00～21:00；Global Tower 白天也看得到湯煙和海，大人 300 円。'),
+               ('別府纜車冬天幾點開？', '冬季 11/15～3/14 是 9:00～17:00，上行末班 16:30；3/15 起 9:00～17:30。往返大人 1,800 円。JR 別府站西口 1 號乘車處搭龜之井巴士 36 系統約 23 分。'),
+               ('十文字原展望台搭巴士到得了嗎？', '可以。JR 別府站西口 3 號乘車處搭龜之井巴士 5 系統（野口原經由 APU 線）約 32 分，「十文字原展望台前」下車。展望台 24 小時開放、免費。'),
+               ('大分縣廳展望樓層週末有開嗎？', '沒有，只在縣廳上班的日子開放，平日 8:30～17:45。JR 大分站走約 15 分。')],
+          related=[('/fukuoka/observation-decks/', '🗼 福岡觀景台', '福岡塔、ACROS、博多 City 屋頂'),
+                   ('/kumamoto/observation-decks/', '🏯 熊本觀景台', '熊本城、市役所 14 樓、阿蘇')]))
+
+    # ---- 四國與岡山（高松、德島、松山、高知、岡山、倉敷） ----
+    if 'shikoku' in _OBC and all(('四國・岡山', k) in _OB for k in ('sksymboltower', 'uzunomichi', 'matsuyamajo', 'okayamajo')):
+        SH = _OBC['shikoku']
+        _sh_area = [('高松與近郊', ('高松', '宇多津', '坂出', '琴平', '小豆島')), ('德島與鳴門', ('德島', '鳴門')), ('松山', ('松山',)),
+                    ('高知', ('高知',)), ('岡山與倉敷', ('岡山', '倉敷'))]
+        _sh_all = SH['paid'] + SH['free'] + SH.get('cafe', [])
+        _sh_keys = [e['key'] for _a, cs in _sh_area for e in _sh_all if e['city'] in cs]
+        _sh_keys += [e['key'] for e in _sh_all if e['key'] not in _sh_keys]
+        _sho = _ob_pick('四國・岡山', _sh_keys)
+        _sh_n = {a: sum(1 for e in _sh_all if e['city'] in cs) for a, cs in _sh_area}
+        _sh_free = [e['short'] for e in SH['free'] if e.get('price_cell') == '免費']
+        _iso0 = _ob_today.isoformat()
+        _sh_winter = [t for until, t in (
+            ('2026-11-29', '岡山城 11/20～11/29 秋季點燈，開到 20:30（天守入場到 20:00）'),
+            ('2026-12-10', 'Gold Tower 12/10 設備維護休館'),
+            ('2026-12-16', '渦之道 12/14～12/16 臨時休館，松山城 12/16 大掃除休館')) if _iso0 <= until]
+        _OBS_CITY.append(dict(
+          slug='shikoku', city='四國・岡山', hero='shikoku', recs=_sho, region_page=None, region_name='四國・岡山',
+          crumbs=[('首頁', '/'), ('四國・岡山觀景台', None)],
+          suns=['高松'], jma=[('370000', '香川'), ('360000', '德島'), ('380000', '愛媛'), ('390000', '高知'), ('330000', '岡山')],
+          unver=SH['unverified'],
+          lede=(f'四國四縣加上岡山能上去看景的地方，共 {len(_sho)} 處：'
+                f'高松與近郊 {_sh_n["高松與近郊"]} 處（Symbol Tower 29 樓、香川縣廳、屋島、Gold Tower、瀨戶大橋塔、金刀比羅宮、小豆島寒霞溪與天使之路）、'
+                f'德島與鳴門 {_sh_n["德島與鳴門"]} 處（眉山纜車、渦之道）、松山 {_sh_n["松山"]} 處（松山城、Kururin 摩天輪、松山綜合公園、道後公園）、'
+                f'高知 {_sh_n["高知"]} 處（高知城、五台山）、岡山與倉敷 {_sh_n["岡山與倉敷"]} 處（岡山城、鷲羽山、阿智神社）。'
+                '神社、公園與機場的展望處官網常常只寫地點，沒寫時間或收不收，表上照實寫。'),
+          picks=['<b>在高松市區</b>：Symbol Tower 29 樓免費，10:00～20:00，看得到瀨戶內海和屋島；20:00 以後要在同層的店消費才能留下。',
+                 '<b>屋島</b>：やしまーる入館免費，週二休；部分週五、週六與假日前一天開到 21:00，會加開夜間接駁巴士。',
+                 '<b>看城</b>：松山城天守大人 520 円、高知城 500 円、岡山城 500 円，三座城的天守都看得到整個市區。',
+                 '<b>看漩渦</b>：鳴門的渦之道走在大鳴門橋橋桁裡，大人 510 円；JR 德島站前搭巴士約 80 分。',
+                 '<b>小豆島寒霞溪</b>：纜車往返大人 11 月 2,700 円、12/1～12/10 2,340 円、12/11 起 2,160 円，11 月是紅葉季。',
+                 ('<b>這陣子要注意</b>：' + '；'.join(_sh_winter) + '。') if _sh_winter else ''],
+          faq=[('四國有免費的觀景台嗎？', '寫明免費的有：' + '、'.join(_sh_free) + '。香川縣廳 21 樓、高松機場、五台山、鷲羽山沒寫收費也沒寫免費。'),
+               ('高松 Symbol Tower 展望空間要錢嗎？', '29 樓展望空間誰都能進、免費，10:00～20:00；20:00 以後只有同層咖啡酒吧的客人能進。展望空間禁止飲食。JR 高松站走約 3 分。'),
+               ('寒霞溪纜車多少錢？', '往返大人 11/1～11/30 是 2,700 円，12/1～12/10 是 2,340 円，12/11～3/20 是 2,160 円。11/30 前 8:00～17:00，12/21～3/20 到 16:30。最後一班上去就不能搭往返。'),
+               ('瀨戶大橋塔哪天休？', '週一休，遇假日改隔天休（11/24、1/12 休），9:00～17:00，大人 800 円。JR 坂出站搭巴士或計程車約 20 分。'),
+               ('岡山城開到幾點？', '平常 9:00～17:30，大人 500 円；11/20～11/29 秋季點燈開到 20:30，天守入場到 20:00。')],
+          related=[('/hiroshima/observation-decks/', '🗼 廣島觀景台', '宮島、尾道、福山'),
+                   ('/kansai/observation-decks/', '🌆 關西觀景台懶人包', '梅田、通天閣、神戶'),
+                   ('/japan-free-observation-decks/', '🆓 日本免費觀景台', '各地官網寫明免費的展望台')]))
+
     for c in _OBS_CITY:
         recs = c['recs']
         for r in recs:
@@ -30081,7 +30361,7 @@ if OBS:
     if _hk_recs:
         for r in _hk_recs:
             r['href'] = '#' + r['key']
-        _HK_CITY = ['札幌', '小樽', '函館', '洞爺湖', '苫小牧', '旭川', '東川', '上川', '帶廣', '釧路', '中標津', '網走', '紋別']
+        _HK_CITY = ['札幌', '小樽', '函館', '洞爺湖', '苫小牧', '旭川', '東川', '上川', '帶廣', '釧路', '中標津', '網走', '紋別', '稚內']
         _hk_sort = lambda rs: sorted(rs, key=lambda r: _HK_CITY.index(r['city']) if r['city'] in _HK_CITY else 99)
         _hk_paid = _hk_sort([r for r in _hk_recs if not r['free'] and not r.get('cafe')])
         _hk_free = _hk_sort([r for r in _hk_recs if r['free']])
@@ -30103,7 +30383,7 @@ if OBS:
           + ('今天停駛的有' + '、'.join(r['name'] for r in _hk_stop) + '；' if _hk_stop else '')
           + '函館山登山道路 11/9 起冬季封閉，只能搭纜車或走步道上山；札幌電視塔 1/1 全館休業。'
           + (f'札幌巨蛋展望台未來 90 天裡有 {_hk_dome_n} 天不營業。' if _hk_dome_n else '') + '</p>'
-          + f'<p class="ap">只在札幌市區逛的話，看<a href="{U("/sapporo/observation-decks/")}">札幌觀景台</a>那篇比較短。</p>',
+          + f'<p class="ap">只在札幌市區逛的話，看<a href="{U("/sapporo/observation-decks/")}">札幌觀景台</a>、<a href="{U("/hakodate/observation-decks/")}">函館觀景台</a>那兩篇比較短。</p>',
           _hk_recs, ['札幌', '函館'], [_OB_JMA['札幌'], _OB_JMA['函館']],
           ['<b>在札幌</b>：晚上札幌電視塔、JR Tower T38、藻岩山開到 22:00；nORIA 摩天輪週五、週六和假日前一天開到半夜 1 點。',
            '<b>在函館</b>：函館山登山道路 2026/11/9～2027/4/12 冬季封閉，車子不能上山；五稜郭塔 9:00～18:00。',
@@ -30131,6 +30411,7 @@ if OBS:
            ('札幌巨蛋展望台每天都開嗎？', '不是。營業日照官網每月的行事曆，有活動的日子不開或只開給活動入場者，12/28～1/3 和 2 月以後還沒公布。')],
           HK['unverified'],
           [('/sapporo/observation-decks/', '🗼 札幌觀景台', '電視塔、T38、藻岩山、nORIA'),
+           ('/hakodate/observation-decks/', '🌃 函館觀景台', '函館山、五稜郭塔、公會堂'),
            ('/hakodate/ropeway/', '🚡 函館山纜車', '冬天怎麼上山、這兩週幾點日落'),
            ('/japan-night-observation-decks/', '🌃 晚上開到 21 點以後的觀景台', '東京、關西、九州、北海道'),
            ('/tokyo/observation-decks/', '🌃 東京觀景台懶人包', '晴空塔、東京鐵塔、SHIBUYA SKY')],
@@ -30317,7 +30598,7 @@ if OBS:
     _ob_free = [r for r in OBS if _ob_cell(r, _ob_today)[1].startswith('免費')]
     _ob_unk = [r for r in OBS if r['free'] and r not in _ob_free and _ob_cell(r, _ob_today)[1] == '官網沒寫'
                and not _ob_h(r).startswith('官網沒寫')]
-    _ob_regions = [x for x in ('東京', '首都圈', '仙台', '靜岡', '名古屋', '金澤', '關西', '廣島', '九州', '沖繩', '北海道') if any(r['region'] == x for r in OBS)]
+    _ob_regions = [x for x in ('東京', '首都圈', '東北', '仙台', '新潟', '靜岡', '名古屋', '金澤', '關西', '山陰', '廣島', '四國・岡山', '九州', '沖繩', '石垣・宮古', '北海道') if any(r['region'] == x for r in OBS)]
     if _ob_free:
         recs = _ob_free + _ob_unk
         for r in recs:
