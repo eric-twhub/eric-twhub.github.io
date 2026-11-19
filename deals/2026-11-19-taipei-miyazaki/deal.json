@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-19-taipei-miyazaki",
- "generated": "2026-11-19 10:43",
+ "generated": "2026-11-19 10:59",
  "kind": "fare",
  "origin": "taipei",
  "city": "miyazaki",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11164,
+ "med": 10934,
  "n_rt": 4,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5731,
+   "price": 5272,
    "dep": "2026-12-07",
    "ret": "2026-12-14",
    "dept": "06:20",
