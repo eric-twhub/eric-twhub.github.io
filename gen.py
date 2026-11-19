@@ -1876,7 +1876,7 @@ def topnav(cur=''):
             + '<hr><b>錢的事</b>'
             + link('/japan-yen-exchange/', '💴 換日幣怎麼換')
             + link('/japan-payment/', '📲 日本怎麼付錢')
-            + link('/japan-transit-card/', '🚃 交通卡怎麼儲值')
+            + link('/japan-transit-card/', '🚃 西瓜卡怎麼儲值')
             + link('/taiwan-airport-parking/', '🅿️ 機場停車')
             + '<hr><b>租車自駕</b>'
             + link('/japan-driving-licence/', '🚗 駕照日文譯本')
@@ -5710,9 +5710,10 @@ if os.path.exists('transit.json'):
             _bv, _bc = _trrows2[0]
             _trx = [x for x in TR.get('extra_promos', []) if x['end'] >= TODAY]
             _trbest = (
-                f'<h2 id="{_hid("怎麼儲值最划算")}">怎麼儲值最划算</h2>'
+                f'<h2 id="{_hid("怎麼儲值最划算")}">西瓜卡（Suica）、PASMO、ICOCA 怎麼儲值最划算</h2>'
                 '<p class="lede">實體卡在車站與便利商店只能投現金，要拿信用卡回饋，'
                 '只能用 iPhone 的 Apple 錢包版（Suica、PASMO、ICOCA，含 Welcome Suica Mobile）綁卡儲值。'
+                '台灣常說的「西瓜卡」就是 Suica。'
                 f'下面把每儲 ¥{_trY:,} 實際要付的台幣算出來：刷卡加上 {_trfee:g}% 國外交易手續費再扣回饋，'
                 '換現鈔則加上臺灣銀行現鈔賣出的匯差。</p>'
                 '<div class="tw"><table><thead><tr><th>怎麼儲</th>'
@@ -5750,7 +5751,7 @@ if os.path.exists('transit.json'):
                 + f'<p class="disc">匯率用 {html.escape(_trrd or "最近一次")} 的日圓中價 {_trmid:.4f}；'
                 f'現鈔匯差用臺灣銀行 {html.escape(_trbot.get("date", ""))} 牌告的現鈔賣出與即期中價比例。'
                 '刷卡的匯率以卡組織匯率約等於中價估算，實際入帳依發卡行。回饋算法與上限見下面「搭哪張信用卡儲值」。</p>')
-            _trbest_faq = ('交通卡怎麼儲值最划算？',
+            _trbest_faq = ('西瓜卡（Suica）、交通卡怎麼儲值最划算？',
                 '實體卡只能投現金，要拿信用卡回饋只能用 iPhone 的 Apple 錢包版綁卡儲值。'
                 f'依本頁試算，每儲 ¥{_trY:,} 用{_bc["name"]}約付 {money(round(_bv))}'
                 + (f'，換現鈔投現金約付 {money(round(_trcash))}' if _trcash else '')
@@ -5821,13 +5822,14 @@ if os.path.exists('transit.json'):
 
     _H = TR['headline']
     write('japan-transit-card/index.html',
-      head('日本交通卡怎麼選、怎麼儲值、搭哪張信用卡',
+      head('西瓜卡 Suica 怎麼儲值最划算？日本交通卡怎麼選、搭哪張信用卡',
+           '西瓜卡（Suica）、PASMO、ICOCA 用哪張信用卡儲值最划算，每儲 1 萬日圓實付台幣直接比；'
            '十張全國互通卡的區域與差別、旅客版效期與退款、儲值管道與餘額上限，'
            '以及台灣發行的卡能不能在 Apple 錢包裡儲值。逐條對官方條文，查不到的就寫查不到。',
            'japan-transit-card/',
            '<script type="application/ld+json">' + tr_ld + '</script>')
       + topnav() + crumbs([('首頁', '/'), ('交通卡', None)])
-      + '<h1>日本交通卡怎麼選、怎麼儲值、搭哪張信用卡</h1>'
+      + '<h1>西瓜卡 Suica 怎麼儲值最划算？日本交通卡怎麼選、搭哪張信用卡</h1>'
       + f'<p class="lede">{html.escape(_H["sub"])}</p>'
       + f'<div class="today"><div class="tday">查證於 {TR["checked"]}</div>'
         f'<div class="tans">{html.escape(_H["a"])}</div>'
@@ -13283,7 +13285,7 @@ if os.path.exists('tsub.json'):
       + (f'<a class="ct" href="{U("/japan-hakone-freepass/")}"><b>🚠 箱根周遊券</b><s>從新宿出發的那一天</s></a>'
          if os.path.exists('hakone.json') else '')
       + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b><s>成田、羽田進市區</s></a>'
-      + f'<a class="ct" href="{U("/japan-transit-card/")}"><b>💳 交通卡怎麼儲值</b><s>地鐵券以外的車</s></a>'
+      + f'<a class="ct" href="{U("/japan-transit-card/")}"><b>💳 西瓜卡怎麼儲值</b><s>地鐵券以外的車</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>🗼 東京機票</b><s>各出發地的票價</s></a></div>'
       + '<p class="disc">價格、範圍與規定以東京 Metro 官網為準，整理可能有疏漏。本頁為公開資訊整理，與東京 Metro、都營地下鐵無合作關係。</p>'
       + foot())
@@ -32401,8 +32403,40 @@ _sv = hashlib.sha1((_sj + _sx).encode('utf-8')).hexdigest()[:10]
 write('search.json', _sj)
 write('search-text.json', _sx)
 
+# 同義詞：讀者用俗稱或別的寫法搜（西瓜卡、優惠券、環球影城），頁面寫的是另一種
+# （Suica、折價券、USJ）。同一組裡任一個詞出現在搜尋字裡，就把它換成組內其他詞一起找。
+# 只收確定指同一件事的；一個詞太泛（pass、卡）會把無關的頁拉進來，不收。
+SEARCH_SYN = [
+    ['西瓜卡', 'suica', 'スイカ'],
+    ['pasmo', 'パスモ'],
+    ['icoca', 'イコカ'],
+    ['交通卡', 'ic卡', '交通ic卡', 'ic乘車卡'],
+    ['唐吉訶德', '唐吉軻德', '驚安殿堂', 'ドンキ', 'ドン・キホーテ', 'donki', 'don quijote'],
+    ['松本清', 'matsukiyo', 'マツキヨ'],
+    ['必酷', 'bic', 'ビックカメラ', 'bic camera'],
+    ['友都八喜', 'yodobashi', 'ヨドバシ'],
+    ['晴空塔', 'skytree', 'スカイツリー'],
+    ['環球影城', 'usj', 'ユニバーサル'],
+    ['迪士尼', 'disney', 'ディズニー'],
+    ['吉卜力', 'ghibli', 'ジブリ'],
+    ['寶可夢', 'pokemon', 'pokémon', 'ポケモン', '神奇寶貝'],
+    ['優惠券', '折價券', '折扣券', 'coupon', 'クーポン'],
+    ['網卡', '上網卡', 'esim', 'sim卡'],
+    ['日圓', '日幣', '日元'],
+    ['換匯', '換日幣', '換日圓', '換錢'],
+    ['觀景台', '展望台', '瞭望台'],
+    ['賞楓', '紅葉', '楓葉'],
+    ['black friday', 'blackfriday', '黑色星期五', '黑五', 'ブラックフライデー'],
+    ['新幹線', 'shinkansen'],
+    ['周遊券', '周遊卡', '周遊パス'],
+    ['藥妝', 'ドラッグストア'],
+    ['退稅', '免稅', 'tax free', 'taxfree'],
+]
+# 正規化成和前端一樣（NFKC、小寫、拿掉空白），多字的寫法才對得上
+SEARCH_SYN = [[re.sub(r'\s+', '', unicodedata.normalize('NFKC', w).lower()) for w in g] for g in SEARCH_SYN]
+
 SEARCH_JS = r'''<script>(function(){
-var IDX="__IDX__",TXT="__TXT__";
+var IDX="__IDX__",TXT="__TXT__",SYN=__SYN__;
 var inp=document.getElementById("q"),out=document.getElementById("sr"),st=document.getElementById("sst"),fm=inp.form;
 var D=null,X=false,lim=20,tm,last="";
 function lo(s){return s.toLowerCase().replace(/臺/g,"台")}
@@ -32419,36 +32453,44 @@ function cut(s,ts){var n=s,l=lo(n),b=-1;
 ts.forEach(function(t){var i=l.indexOf(t);if(i>=0&&(b<0||i<b))b=i});
 if(b<0)return null;var a=Math.max(0,b-45),e=Math.min(n.length,b+75);
 return(a>0?"…":"")+mk(n.slice(a,e),ts)+(e<n.length?"…":"")}
+// 每個詞展開成同義詞，任一個對到就算這個詞有對到
+function ex(t){var r=[t];SYN.forEach(function(g){g.forEach(function(a){if(t.indexOf(a)<0)return;
+g.forEach(function(b){if(b===a)return;var v=t.split(a).join(b);if(r.indexOf(v)<0)r.push(v)})})});return r}
+// 中文常連著打（西瓜卡儲值），先把裡面的同義詞切出來當一個詞，剩下的另成一詞
+var SA=[].concat.apply([],SYN).sort(function(a,b){return b.length-a.length});
+function sp(t){if(SA.indexOf(t)>=0)return[t];for(var k=0;k<SA.length;k++){var a=SA[k],i=t.indexOf(a);if(i<0)continue;
+return sp(t.slice(0,i)).concat([a],sp(t.slice(i+a.length)))}return t?[t]:[]}
+function hit(z,as){for(var i=0;i<as.length;i++)if(z.indexOf(as[i])>=0)return true;return false}
 function prep(){D.forEach(function(e){e.zt=Z(e.h+" "+e.t);e.zh=Z(e.h);e.zd=Z(e.d);
 e.zs=e.s.map(function(x){return Z(x[1])});e.zq=e.q.map(Z);e.zx=""})}
-function run(){if(!D)return;var raw=inp.value.trim(),ts=N(raw).split(/\s+/).filter(Boolean);
+function run(){if(!D)return;var raw=inp.value.trim(),ts=[].concat.apply([],N(raw).split(/\s+/).filter(Boolean).map(sp));
 if(raw!==last){lim=20;last=raw}
 try{history.replaceState(null,"",raw?"?q="+encodeURIComponent(raw):location.pathname)}catch(e){}
 if(!ts.length){out.innerHTML="";st.textContent=st.getAttribute("data-hint");return}
-var whole=Z(raw),R=[];
+var whole=ex(Z(raw)),A=ts.map(ex),FL=[].concat.apply([],A),R=[];
 D.forEach(function(e){var sc=0,hs=[],qs=[],ok=true;
-ts.forEach(function(t){if(!ok)return;var s=0;
-if(e.zt.indexOf(t)>=0)s+=20;if(e.zd.indexOf(t)>=0)s+=8;
-e.zs.forEach(function(z,i){if(z.indexOf(t)>=0&&hs.indexOf(i)<0)hs.push(i)});
-e.zq.forEach(function(z,i){if(z.indexOf(t)>=0&&qs.indexOf(i)<0)qs.push(i)});
-if(!e.f&&e.zs.some(function(z){return z.indexOf(t)>=0}))s+=6;
-if(!e.f&&e.zq.some(function(z){return z.indexOf(t)>=0}))s+=5;
-var c=0,j=0;while(c<20&&(j=e.zx.indexOf(t,j))>=0){c++;j+=t.length}if(c)s+=2+c*0.5;
+A.forEach(function(as){if(!ok)return;var s=0;
+if(hit(e.zt,as))s+=20;if(hit(e.zd,as))s+=8;
+e.zs.forEach(function(z,i){if(hit(z,as)&&hs.indexOf(i)<0)hs.push(i)});
+e.zq.forEach(function(z,i){if(hit(z,as)&&qs.indexOf(i)<0)qs.push(i)});
+if(!e.f&&e.zs.some(function(z){return hit(z,as)}))s+=6;
+if(!e.f&&e.zq.some(function(z){return hit(z,as)}))s+=5;
+var c=0;as.forEach(function(t){var j=0;while(c<20&&(j=e.zx.indexOf(t,j))>=0){c++;j+=t.length}});if(c)s+=2+c*0.5;
 if(!s)ok=false;sc+=s});
-if(!ok)return;if(e.zh.indexOf(whole)>=0)sc+=15;if(e.f)sc-=3;
+if(!ok)return;if(hit(e.zh,whole))sc+=15;if(e.f)sc-=3;
 R.push({e:e,sc:sc,hs:hs,qs:qs})});
 R.sort(function(a,b){return b.sc-a.sc||a.e.u.length-b.e.u.length});
 if(!R.length){st.innerHTML="找不到「"+esc(raw)+"」。試試少打幾個字，或換個說法"+(X?"":"（內文還在載入，等一下會再找一次）");out.innerHTML="";return}
 st.textContent="找到 "+R.length+" 頁"+(X?"":"（內文還在載入，目前只比對標題和段落）");
 var h="";R.slice(0,lim).forEach(function(r){var e=r.e,sn=null;
-if(e.zd&&ts.some(function(t){return e.zd.indexOf(t)>=0}))sn=mk(e.d,ts);
-if(!sn&&e.x)sn=cut(e.x,ts);if(!sn)sn=esc(e.d);
-h+='<div class="sri"><a class="srt" href="'+e.u+'">'+mk(e.h||e.t,ts)+'</a>'
+if(e.zd&&hit(e.zd,FL))sn=mk(e.d,FL);
+if(!sn&&e.x)sn=cut(e.x,FL);if(!sn)sn=esc(e.d);
+h+='<div class="sri"><a class="srt" href="'+e.u+'">'+mk(e.h||e.t,FL)+'</a>'
 +'<div class="sru">'+esc(decodeURI(e.u))+'</div><p class="srs">'+sn+'</p>';
 if(r.hs.length&&!e.f)h+='<div class="srh">段落：'+r.hs.slice(0,3).map(function(i){var s=e.s[i];
-return'<a href="'+e.u+(s[0]?"#"+s[0]:"")+'">'+mk(s[1],ts)+'</a>'}).join("")+'</div>';
+return'<a href="'+e.u+(s[0]?"#"+s[0]:"")+'">'+mk(s[1],FL)+'</a>'}).join("")+'</div>';
 if(r.qs.length&&!e.f)h+='<div class="srh">常見問題：'+r.qs.slice(0,2).map(function(i){
-return'<a href="'+e.u+(e.qi?"#"+e.qi:"")+'">'+mk(e.q[i],ts)+'</a>'}).join("")+'</div>';
+return'<a href="'+e.u+(e.qi?"#"+e.qi:"")+'">'+mk(e.q[i],FL)+'</a>'}).join("")+'</div>';
 h+='</div>'});
 if(R.length>lim)h+='<button type="button" id="srm" class="srm">再顯示 '+Math.min(20,R.length-lim)+' 頁</button>';
 out.innerHTML=h;var m=document.getElementById("srm");if(m)m.onclick=function(){lim+=20;run()}}
@@ -32460,7 +32502,8 @@ fetch(IDX).then(function(r){return r.json()}).then(function(j){D=j;prep();run();
 .then(function(r){return r.json()}).then(function(xs){D.forEach(function(e,i){e.x=xs[i]||"";e.zx=Z(e.x)});X=true;run()})
 .catch(function(){if(!D)st.textContent="搜尋資料載入失敗，請重新整理再試一次。";else{X=true;run()}});
 })();</script>'''
-SEARCH_JS = (SEARCH_JS.replace('__IDX__', U('/search.json') + '?v=' + _sv)
+SEARCH_JS = (SEARCH_JS.replace('__SYN__', json.dumps(SEARCH_SYN, ensure_ascii=False))
+             .replace('__IDX__', U('/search.json') + '?v=' + _sv)
              .replace('__TXT__', U('/search-text.json') + '?v=' + _sv))
 
 write('search/index.html',
