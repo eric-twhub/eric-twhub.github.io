@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21 06:20",
+ "generated": "2026-11-21 07:24",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -1459,8 +1459,8 @@
     ],
     "fare": {
      "n": 73,
-     "median": 8580,
-     "low": 4505,
+     "median": 8581,
+     "low": 4506,
      "enough": true
     },
     "areas": [
@@ -1902,8 +1902,8 @@
     ],
     "fare": {
      "n": 67,
-     "median": 9174,
-     "low": 4914,
+     "median": 9175,
+     "low": 4915,
      "enough": true
     },
     "areas": [
@@ -2307,7 +2307,7 @@
     "fare": {
      "n": 24,
      "median": 10066,
-     "low": 5247,
+     "low": 5248,
      "enough": true
     },
     "areas": [
@@ -2745,7 +2745,7 @@
     "fare": {
      "n": 17,
      "median": 8950,
-     "low": 5313,
+     "low": 5314,
      "enough": true
     },
     "areas": [
@@ -3171,8 +3171,8 @@
     ],
     "fare": {
      "n": 19,
-     "median": 9207,
-     "low": 5841,
+     "median": 9208,
+     "low": 5842,
      "enough": true
     },
     "areas": [
@@ -3606,8 +3606,8 @@
     "fest": [],
     "fare": {
      "n": 5,
-     "median": 8415,
-     "low": 5841,
+     "median": 8416,
+     "low": 5842,
      "enough": false
     },
     "areas": [
@@ -4028,8 +4028,8 @@
     "fest": [],
     "fare": {
      "n": 1,
-     "median": 8910,
-     "low": 8910,
+     "median": 8911,
+     "low": 8911,
      "enough": false
     },
     "areas": [
@@ -4482,8 +4482,8 @@
     ],
     "fare": {
      "n": 9,
-     "median": 11061,
-     "low": 7528,
+     "median": 11062,
+     "low": 7529,
      "enough": true
     },
     "areas": [
@@ -4967,7 +4967,7 @@
     "fare": {
      "n": 3,
      "median": 11816,
-     "low": 7994,
+     "low": 7995,
      "enough": false
     },
     "areas": [
@@ -5846,7 +5846,7 @@
     ],
     "fare": {
      "n": 4,
-     "median": 8712,
+     "median": 8713,
      "low": 7487,
      "enough": false
     },
@@ -6821,7 +6821,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-11-20 22:18"
+   "generated": "2026-11-20 23:22"
   },
   "last": "2027-12-31",
   "partial": [

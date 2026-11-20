@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-21-taipei-nagoya",
- "generated": "2026-11-21 06:20",
+ "generated": "2026-11-21 07:24",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -36,7 +36,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 8679,
+   "price": 8680,
    "dep": "2026-12-27",
    "ret": "2027-01-05",
    "dept": "02:55",
@@ -46,7 +46,7 @@
    "dur": 370,
    "dur_to": 150,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2712NGO05011?t=MM17983401001798352700000150TPENGO17991894001799199000000220NGOTPE_18c69cab2aec0f3c395fb0026e403fee_21520&search_date=20112026&expected_price_uuid=01a1f9c4-8147-8030-a450-473d47c54814&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=34cueo8YWJmbFj_7nZr_Ag&expected_price_source=share&expected_price_currency=twd&expected_price=8679&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2712NGO05011?t=MM17983401001798352700000150TPENGO17991894001799199000000220NGOTPE_18c69cab2aec0f3c395fb0026e403fee_21520&search_date=20112026&expected_price_uuid=01a1f9c4-8147-8030-a450-473d47c54814&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=34cueo8YWJmbFj_7nZr_Ag&expected_price_source=share&expected_price_currency=twd&expected_price=8680&marker=775639"
   },
   {
    "o": "TPE",
@@ -54,7 +54,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 8910,
+   "price": 8911,
    "dep": "2026-12-27",
    "ret": "2026-12-31",
    "dept": "02:55",
@@ -64,7 +64,7 @@
    "dur": 370,
    "dur_to": 150,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2712NGO31121?t=MM17983401001798352700000150TPENGO17987574001798767000000220NGOTPE_376242052560ba603bb3e5d44b4dbbde_22093&search_date=20112026&expected_price_uuid=01a1f9a0-7faf-8031-2264-622663c743de&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0xt-UazPO-XkhEKnMzoC_g&expected_price_source=share&expected_price_currency=twd&expected_price=8910&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2712NGO31121?t=MM17983401001798352700000150TPENGO17987574001798767000000220NGOTPE_376242052560ba603bb3e5d44b4dbbde_22093&search_date=20112026&expected_price_uuid=01a1f9a0-7faf-8031-2264-622663c743de&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0xt-UazPO-XkhEKnMzoC_g&expected_price_source=share&expected_price_currency=twd&expected_price=8911&marker=775639"
   },
   {
    "o": "TPE",
