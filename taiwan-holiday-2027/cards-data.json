@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-20 16:24",
+ "generated": "2026-11-21 01:32",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -1459,8 +1459,8 @@
     ],
     "fare": {
      "n": 73,
-     "median": 8574,
-     "low": 4419,
+     "median": 8556,
+     "low": 4180,
      "enough": true
     },
     "areas": [
@@ -1901,9 +1901,9 @@
      }
     ],
     "fare": {
-     "n": 66,
-     "median": 9258,
-     "low": 4782,
+     "n": 67,
+     "median": 9250,
+     "low": 4901,
      "enough": true
     },
     "areas": [
@@ -2306,8 +2306,8 @@
     ],
     "fare": {
      "n": 24,
-     "median": 10096,
-     "low": 5079,
+     "median": 10038,
+     "low": 5233,
      "enough": true
     },
     "areas": [
@@ -2743,9 +2743,9 @@
     ],
     "fest": [],
     "fare": {
-     "n": 16,
-     "median": 8778,
-     "low": 5277,
+     "n": 17,
+     "median": 8950,
+     "low": 5299,
      "enough": true
     },
     "areas": [
@@ -3170,9 +3170,9 @@
      }
     ],
     "fare": {
-     "n": 18,
-     "median": 9530,
-     "low": 5705,
+     "n": 19,
+     "median": 9182,
+     "low": 5825,
      "enough": true
     },
     "areas": [
@@ -3605,9 +3605,9 @@
     ],
     "fest": [],
     "fare": {
-     "n": 3,
-     "median": 7783,
-     "low": 5804,
+     "n": 5,
+     "median": 8392,
+     "low": 5825,
      "enough": false
     },
     "areas": [
@@ -4028,8 +4028,8 @@
     "fest": [],
     "fare": {
      "n": 1,
-     "median": 9131,
-     "low": 9131,
+     "median": 9121,
+     "low": 9121,
      "enough": false
     },
     "areas": [
@@ -4481,9 +4481,9 @@
      }
     ],
     "fare": {
-     "n": 8,
-     "median": 10980,
-     "low": 7517,
+     "n": 9,
+     "median": 11031,
+     "low": 7508,
      "enough": true
     },
     "areas": [
@@ -4967,7 +4967,7 @@
     "fare": {
      "n": 3,
      "median": 11816,
-     "low": 7986,
+     "low": 7972,
      "enough": false
     },
     "areas": [
@@ -5846,7 +5846,7 @@
     ],
     "fare": {
      "n": 4,
-     "median": 8726,
+     "median": 8688,
      "low": 7487,
      "enough": false
     },
@@ -6821,7 +6821,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-11-20 08:23"
+   "generated": "2026-11-20 17:30"
   },
   "last": "2027-12-31",
   "partial": [
