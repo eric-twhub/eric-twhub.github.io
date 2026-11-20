@@ -2017,6 +2017,7 @@ _AD_MAP = [
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
     ('okinawa/churasun6', 'activity2'), ('tokyo/worth-flying-for', 'activity2'),
+    ('sapporo/jolijo', 'activity2'),
     ('tokyo/street-fashion', 'activity2'), ('tokyo/hostel', 'transfer'),
     ('tokyo/budget-hotel', 'transfer'),
     ('japan-worth-buying', 'esim'),
@@ -3154,6 +3155,7 @@ _STK_PREFIX = sorted({
     '/japan-takayama-shirakawago-bus/': 'st/skgbus',
     '/japan-tokyo-tower/': 'xmas/tower', '/japan-skytree/': 'xmas/skytree', '/japan-chiikawa-park/': 'xmas/gift',
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
+    '/sapporo/jolijo/': 'st/girl',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
     '/japan-sumo/': 'st/sumo', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
@@ -3760,6 +3762,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
                      f'<a href="{U("/okinawa/churasun6/")}">那霸ちゅらさん6 的座位方案與取消規定</a>'
                      f'（六本木 63 ANGEL 官網連過去的沖繩店，官網原文整理；演出前 10 分鐘沒到就取消，'
                      f'未滿 20 歲不得入場）。</p>')
+        if slug == 'sapporo' and os.path.exists('jolijo.json'):
+            body += (f'<p class="lede">晚上想看表演？'
+                     f'<a href="{U("/sapporo/jolijo/")}">すすきの JOLIJO 的價格、場次與 KKday 差在哪</a>'
+                     f'（官網原文整理：價目表另加 20% 服務費、週日公休）。</p>')
         if slug == 'tokyo' and os.path.exists('tsub.json'):
             body += (f'<p class="lede">要買東京地鐵券？'
                      f'<a href="{U("/tokyo/subway-ticket/")}">24／48／72 小時券怎麼買、機場能不能換、坐幾趟回本</a>'
@@ -15712,6 +15718,148 @@ if os.path.exists('churasun6.json'):
         f'本頁為公開資訊整理，與店家無合作關係。</p>'
       + foot())
     pages.append(('/okinawa/churasun6/', 0.6))
+
+# ---------- 札幌すすきの SHOW MUSEUM JOLIJO ----------
+# 價目表是官網 SYSTEM 頁的一張圖（2026/07 版），每項都另加 20% 服務費，頁面把加完的實付算出來。
+# KKday 商品 597466 的售價前端算繪拿不到，不標價；只寫它寫明的超時費剛好是官網延長費加 20%。
+# 年齡、拍照等規定官網沒寫，引 KKday 商品頁並標出處。
+if os.path.exists('jolijo.json'):
+    JL = json.load(open('jolijo.json', encoding='utf-8'))
+    _jl_sc = 1 + JL['sc'] / 100
+
+    def _jl_tw(y):
+        return f'NT${round(y * JPY):,}'
+
+    def _jl_y(y):
+        return f'¥{round(y):,}'
+
+    _jl_t90 = next(t for t in JL['table'] if t['min'] == 90)
+    _jl_rows = ''.join(
+        f'<tr><td class="nm"><b>桌席 {t["min"]} 分鐘</b></td><td class="nm">{_jl_y(t["p"])}</td>'
+        f'<td class="nm"><b>{_jl_y(t["p"] * _jl_sc)}</b><br><small style="color:var(--dim)">約 {_jl_tw(t["p"] * _jl_sc)}</small></td></tr>'
+        for t in JL['table'])
+    _sf = JL['sofa']
+    _jl_rows += (f'<tr><td class="nm"><b>沙發席 {_sf["min"]} 分鐘</b><br><small style="color:var(--dim)">{html.escape(_sf["cond"])}</small></td>'
+                 f'<td class="nm">{_jl_y(_sf["p"])}</td>'
+                 f'<td class="nm"><b>{_jl_y(_sf["p"] * _jl_sc)}</b><br><small style="color:var(--dim)">約 {_jl_tw(_sf["p"] * _jl_sc)}</small></td></tr>')
+    _jl_rows += ''.join(
+        f'<tr><td class="nm"><b>{html.escape(n)}延長 30 分鐘</b></td><td class="nm">{_jl_y(p)}</td>'
+        f'<td class="nm"><b>{_jl_y(p * _jl_sc)}</b></td></tr>' for n, p in JL['ext'])
+    _jl_plans = ''.join(f'<li><b>{html.escape(p["n"])}。</b>{html.escape(p["what"])}。</li>'
+                        for p in JL['plans'] if not p.get('end') or p['end'] >= TODAY)
+    _pr = JL.get('promo') or {}
+    if _pr and _pr['start'] <= TODAY <= _pr['end']:
+        _jl_plans += (f'<li><b>{int(_pr["end"][5:7])}/{int(_pr["end"][8:])} 前的活動。</b>'
+                      f'{html.escape(_pr["what"])}。{html.escape(_pr["note"])}</li>')
+    _kk = JL['kkday']
+    _jl_ext_t = JL['ext'][0][1]
+    _jl_kkplans = ''.join(f'<tr><td class="nm"><b>{html.escape(a)}</b></td><td class="nm">{b}</td>'
+                          f'<td class="nm">{c}</td></tr>' for a, b, c in _kk['plans'])
+    _jl_rules = ''.join(f'<li>{html.escape(r)}。</li>' for r in _kk['rules'])
+    _jl_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>：{html.escape(u["why"])}</li>'
+                     for u in JL['unverified'])
+    _jl_ad = adbox_tickets(
+        [{'provider': 'kkday', 'id': _kk['id'], 'url': _kk['url'],
+          'name': 'JOLIJO 入場券＋無限暢飲', 'area': '札幌すすきの',
+          'note': '2 天前可免費取消'}],
+        'sapporo/jolijo', '想先訂好再去', '中文介面、台幣付款，兩個場次分開賣。',
+        '售價以 KKday 頁面為準，本站不另外標價。')
+
+    _jl_faq = [
+        ('JOLIJO 一個人多少錢？',
+         f'官網價目表的桌席是 60 分鐘 ¥{JL["table"][0]["p"]:,}、90 分鐘 ¥{_jl_t90["p"]:,}、'
+         f'120 分鐘 ¥{JL["table"][-1]["p"]:,}，含飲料無限暢飲，但每一項都另加 {JL["sc"]}% 服務費。'
+         f'加上去之後 90 分鐘是 {_jl_y(_jl_t90["p"] * _jl_sc)}。請女孩喝的飲料另外算。'),
+        ('JOLIJO 幾點開演？',
+         f'官網寫每天兩場，{JL["shows"][0]} 與 {JL["shows"][1]}，營業 {JL["hours"]}，{JL["closed"]}公休。'
+         f'KKday 的票要在開演前 15 分鐘入店。'),
+        ('JOLIJO 在 KKday 買比較便宜嗎？',
+         f'KKday 的售價要點進去看，本站不標價。可以對照的是超時費：KKday 寫每 30 分鐘 ¥{_kk["overtime"]:,}，'
+         f'剛好是官網桌席延長 ¥{_jl_ext_t:,} 加 {JL["sc"]}% 服務費，表示 KKday 的價格是把服務費算進去的。'
+         f'差別在 KKday 可以用中文先訂、{_kk["cancel"]}。'),
+        ('幾歲可以進去？',
+         '官網沒寫。KKday 商品頁寫未滿 20 歲不能訂、不能入場。'),
+        ('JOLIJO 週日有開嗎？',
+         f'沒有。官網寫{JL["closed"]}公休。'),
+    ]
+    _jl_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                       for q, a in _jl_faq]}, ensure_ascii=False)
+
+    _jl_title = '札幌薄野 JOLIJO 夜秀：官網價格加 20% 服務費實付多少、KKday 差在哪'
+    _jl_desc = ('札幌すすきの的 SHOW MUSEUM JOLIJO（ジョリージョ），每天 21:00、23:20 兩場。'
+                '官網價目表另加 20% 服務費，這頁把實付算好；KKday 和現場差在哪、週日公休、'
+                '超時費與年齡限制。')
+
+    write('sapporo/jolijo/index.html',
+      head(_jl_title, _jl_desc, 'sapporo/jolijo/',
+           '<script type="application/ld+json">' + _jl_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('札幌', '/sapporo/'), ('JOLIJO', None)])
+      + '<h1>札幌薄野 JOLIJO 夜秀，進門前要知道的幾件事</h1>'
+      + f'<p class="lede">SHOW MUSEUM JOLIJO 在すすきの一棟大樓的地下 1 樓，'
+        f'官網形容是有大型 LED 螢幕與音響燈光的地下大空間，每天兩場女孩舞蹈秀，'
+        f'其他時間是可以喝酒聊天的店。台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網價目表，查證於 {JL["checked"]}</div>'
+        f'<div class="tans">價目表另加 <b>{JL["sc"]}%</b> 服務費：90 分鐘桌席實付 '
+        f'<b>{_jl_y(_jl_t90["p"] * _jl_sc)}</b>（約 {_jl_tw(_jl_t90["p"] * _jl_sc)}）</div>'
+        f'<div class="tsub">每天 {JL["shows"][0]}、{JL["shows"][1]} 兩場，營業 {JL["hours"]}，'
+        f'<b>{JL["closed"]}公休</b>。請女孩喝的飲料另外算。</div></div>'
+
+      + '<h2>官網價目表：加上服務費實付多少</h2>'
+      + '<div class="tw"><table><tr><th>方案</th><th>價目表</th>'
+        f'<th>加 {JL["sc"]}% 服務費</th></tr>' + _jl_rows + '</table></div>'
+      + f'<p class="disc">{html.escape(JL["price_note"])}{html.escape(JL["tax_note"])}'
+        f'實付欄只加服務費，沒有另外加稅。</p>'
+      + (f'<h3>另外的方案與活動</h3><div class="tldr"><ul>{_jl_plans}</ul></div>' if _jl_plans else '')
+
+      + '<h2>KKday 和現場差在哪</h2>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>價格差不多。</b>KKday 寫超時每 30 分鐘 ¥{_kk["overtime"]:,}，'
+        f'剛好是官網桌席延長 ¥{_jl_ext_t:,} 加 {JL["sc"]}% 服務費，'
+        f'KKday 的價格是把服務費算進去的。售價要點進 KKday 看，這裡不標價。</li>'
+        f'<li><b>可以先用中文訂、可以取消。</b>{html.escape(_kk["cancel"])}。'
+        f'官網沒有線上訂位，只有電話、Email 與聯絡表單。</li>'
+        f'<li><b>只能選場次。</b>KKday 兩個方案就是兩個場次，{html.escape(_kk["stay"])}，'
+        f'但沒寫哪個方案是哪一種。想坐沙發席或只待 60 分鐘，要在現場跟店家說。</li>'
+        '</ul></div>'
+      + '<div class="tw narrow"><table><tr><th>KKday 方案</th><th>入場</th><th>開演</th></tr>'
+      + _jl_kkplans + '</table></div>'
+      + _jl_ad
+
+      + '<h2>到店的規定</h2>'
+      + '<p class="lede">官網沒有寫規定，下面是 KKday 商品頁寫的。</p>'
+      + f'<div class="tldr"><ul>{_jl_rules}</ul></div>'
+
+      + '<h2>地址與營業時間</h2><div class="tldr"><ul>'
+        f'<li><b>地址。</b>{html.escape(JL["addr"])}</li>'
+        f'<li><b>營業。</b>{JL["hours"]}，{JL["closed"]}公休。</li>'
+        f'<li><b>電話。</b>{JL["tel"]}；Email {html.escape(JL["mail"])}</li>'
+        '</ul></div>'
+      + f'<p class="lede">官網：<a href="{JL["site"]}" rel="nofollow noopener" target="_blank">jolijo-sapporo.com</a>'
+        f'　·　<a href="{JL["system"]}" rel="nofollow noopener" target="_blank">價目表</a>'
+        f'　·　<a href="{JL["instagram"]}" rel="nofollow noopener" target="_blank">Instagram</a></p>'
+
+      + '<h2>這頁查不到的部分</h2><div class="tldr"><ul>' + _jl_un + '</ul></div>'
+
+      + '<h2>常見問題</h2>' + ''.join('<details class="faq"><summary>' + html.escape(q)
+                                     + '</summary><div>' + html.escape(a) + '</div></details>'
+                                     for q, a in _jl_faq)
+
+      + fare_cta('sapporo', '飛札幌的機票多少')
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + (f'<a class="ct" href="{U("/sapporo/snow-festival/")}"><b>❄️ 札幌雪祭</b>'
+         f'<s>日期與連假怎麼排</s></a>' if os.path.exists('snowfes.json') else '')
+      + f'<a class="ct" href="{U("/sapporo/observation-decks/")}"><b>🌃 札幌觀景台</b><s>晚上去哪看夜景</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 六本木 63 ANGEL</b><s>東京的表演秀</s></a>'
+      + f'<a class="ct" href="{U("/sapporo/")}"><b>⛄ 札幌機票</b><s>各出發地的票價</s></a></div>'
+      + f'<p class="disc">內容引自 JOLIJO 官網與 KKday 商品頁，查證於 {JL["checked"]}。'
+        f'價格、場次與規定由店家隨時調整，請以官網為準。本頁為公開資訊整理，與店家無合作關係。</p>'
+      + foot())
+    pages.append(('/sapporo/jolijo/', 0.6))
 
 # ---------- 六本木 SUPER SPARK TOKYO ----------
 # 跟 63 ANGEL 同一棟樓（63 在 B2F、這家在 B1），63 官網列在相關連結裡。
@@ -32439,6 +32587,11 @@ SEARCH_SYN = [
     ['哆啦a夢', '多啦a夢', '小叮噹', 'doraemon', 'ドラえもん', '藤子不二雄', '藤子・f・不二雄'],
     ['柯南', '名偵探柯南', 'conan', 'コナン', '青山剛昌'],
     ['海遊館', 'kaiyukan'],
+    ['jolijo', 'ジョリージョ', 'show museum jolijo', 'ショーミュージアム'],
+    ['薄野', 'すすきの', 'ススキノ', 'susukino'],
+    ['六本木', 'roppongi'],
+    ['63angel', '63 angel', 'rokusan angel', 'ロクサンエンジェル'],
+    ['夜秀', '表演秀', 'show', 'ショー'],
     ['美麗海', '美ら海', 'churaumi'],
     ['豪斯登堡', '荷蘭村', 'huis ten bosch', 'ハウステンボス'],
     ['富士急', '富士急樂園', 'fuji-q', 'fujiq', '富士急ハイランド'],
