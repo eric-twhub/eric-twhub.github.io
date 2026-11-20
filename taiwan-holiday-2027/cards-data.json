@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21 01:32",
+ "generated": "2026-11-21 06:20",
  "year": "2027",
  "checked": "2026-09-26",
  "fest_checked": "2026-09-29",
@@ -1459,8 +1459,8 @@
     ],
     "fare": {
      "n": 73,
-     "median": 8556,
-     "low": 4180,
+     "median": 8580,
+     "low": 4505,
      "enough": true
     },
     "areas": [
@@ -1902,8 +1902,8 @@
     ],
     "fare": {
      "n": 67,
-     "median": 9250,
-     "low": 4901,
+     "median": 9174,
+     "low": 4914,
      "enough": true
     },
     "areas": [
@@ -2306,8 +2306,8 @@
     ],
     "fare": {
      "n": 24,
-     "median": 10038,
-     "low": 5233,
+     "median": 10066,
+     "low": 5247,
      "enough": true
     },
     "areas": [
@@ -2745,7 +2745,7 @@
     "fare": {
      "n": 17,
      "median": 8950,
-     "low": 5299,
+     "low": 5313,
      "enough": true
     },
     "areas": [
@@ -3171,8 +3171,8 @@
     ],
     "fare": {
      "n": 19,
-     "median": 9182,
-     "low": 5825,
+     "median": 9207,
+     "low": 5841,
      "enough": true
     },
     "areas": [
@@ -3606,8 +3606,8 @@
     "fest": [],
     "fare": {
      "n": 5,
-     "median": 8392,
-     "low": 5825,
+     "median": 8415,
+     "low": 5841,
      "enough": false
     },
     "areas": [
@@ -4028,8 +4028,8 @@
     "fest": [],
     "fare": {
      "n": 1,
-     "median": 9121,
-     "low": 9121,
+     "median": 8910,
+     "low": 8910,
      "enough": false
     },
     "areas": [
@@ -4482,8 +4482,8 @@
     ],
     "fare": {
      "n": 9,
-     "median": 11031,
-     "low": 7508,
+     "median": 11061,
+     "low": 7528,
      "enough": true
     },
     "areas": [
@@ -4967,7 +4967,7 @@
     "fare": {
      "n": 3,
      "median": 11816,
-     "low": 7972,
+     "low": 7994,
      "enough": false
     },
     "areas": [
@@ -5846,7 +5846,7 @@
     ],
     "fare": {
      "n": 4,
-     "median": 8688,
+     "median": 8712,
      "low": 7487,
      "enough": false
     },
@@ -6821,7 +6821,7 @@
     "福岡",
     "沖繩"
    ],
-   "generated": "2026-11-20 17:30"
+   "generated": "2026-11-20 22:18"
   },
   "last": "2027-12-31",
   "partial": [

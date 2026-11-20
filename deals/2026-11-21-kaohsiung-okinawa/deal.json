@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-21-kaohsiung-okinawa",
- "generated": "2026-11-21 01:32",
+ "generated": "2026-11-21 06:20",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "okinawa",
@@ -26,9 +26,9 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$6,094（10 天有紀錄），這張低 50%"
+  "12 月出發的票，每天最便宜的平均要 NT$6,101（10 天有紀錄），這張低 50%"
  ],
- "med": 5315,
+ "med": 5329,
  "n_rt": 12,
  "others": [
   {

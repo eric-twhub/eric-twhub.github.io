@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-21-kaohsiung-osaka",
- "generated": "2026-11-21 01:32",
+ "generated": "2026-11-21 06:20",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "osaka",
@@ -24,9 +24,9 @@
   "url": "https://www.aviasales.com/search/KHH1612KIX14011?t=IT17974308001797444300000165KHHKIX17999262001799935200000210KIXKHH_714e4c00c8d99136f0cf61fd183f6483_18470&search_date=19112026&expected_price_uuid=01a1f5bd-da68-8040-24a0-fa71f06fa3ee&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Vs4DVZj-s0QmIWOkx35L_Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7420&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,580（8 天有紀錄），這張低 14%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,594（8 天有紀錄），這張低 14%"
  ],
- "med": 10465,
+ "med": 10494,
  "n_rt": 28,
  "others": [
   {
@@ -35,7 +35,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 8063,
+   "price": 8085,
    "dep": "2026-12-22",
    "ret": "2026-12-25",
    "dept": "14:20",
@@ -45,7 +45,7 @@
    "dur": 390,
    "dur_to": 165,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH2212KIX25121?t=MM17979492001797962700000165KHHKIX17981835001798193400000225KIXKHH_6c9462c7cb49eaedf04923bd486c002c_20047&search_date=20112026&expected_price_uuid=01a1f9c1-810a-8030-6dcb-8347654cb418&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=kqIcNBgDaOzLqyCD3oZlcQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8063&marker=775639"
+   "url": "https://www.aviasales.com/search/KHH2212KIX25121?t=MM17979492001797962700000165KHHKIX17981835001798193400000225KIXKHH_6c9462c7cb49eaedf04923bd486c002c_20047&search_date=20112026&expected_price_uuid=01a1f9c1-810a-8030-6dcb-8347654cb418&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=kqIcNBgDaOzLqyCD3oZlcQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8085&marker=775639"
   },
   {
    "o": "KHH",
@@ -53,7 +53,7 @@
    "air": "AK",
    "airname": "馬來西亞亞航",
    "cls": "lcc",
-   "price": 8096,
+   "price": 8118,
    "dep": "2026-12-20",
    "ret": "2027-01-13",
    "dept": "09:00",
@@ -63,7 +63,7 @@
    "dur": 415,
    "dur_to": 190,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH2012KIX13011?t=MM17977572001797772200000190KHHKIX17998365001799846400000225KIXKHH_8e76575271cd5c80b145b8e4ede5ef6f_20222&search_date=20112026&expected_price_uuid=01a1f8e0-03d3-8040-60c5-80aebe04b022&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=E4KncYDWzKcj4X_eihwfQw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8096&marker=775639"
+   "url": "https://www.aviasales.com/search/KHH2012KIX13011?t=MM17977572001797772200000190KHHKIX17998365001799846400000225KIXKHH_8e76575271cd5c80b145b8e4ede5ef6f_20222&search_date=20112026&expected_price_uuid=01a1f8e0-03d3-8040-60c5-80aebe04b022&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=E4KncYDWzKcj4X_eihwfQw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8118&marker=775639"
   },
   {
    "o": "KHH",
@@ -71,7 +71,7 @@
    "air": "AK",
    "airname": "馬來西亞亞航",
    "cls": "lcc",
-   "price": 8096,
+   "price": 8118,
    "dep": "2026-12-01",
    "ret": "2026-12-09",
    "dept": "09:00",
@@ -81,7 +81,7 @@
    "dur": 390,
    "dur_to": 190,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH0112KIX09121?t=AK17961156001796130600000190KHHKIX17968254001796833800000200KIXKHH_fdd6c951ef5eaf8af1dc960c7ed3406b_20129&search_date=20112026&expected_price_uuid=01a1f9b9-6d50-8040-22e4-2e25e09fd4e0&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LToUf37MT2-_QW4b__qoiw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8096&marker=775639"
+   "url": "https://www.aviasales.com/search/KHH0112KIX09121?t=AK17961156001796130600000190KHHKIX17968254001796833800000200KIXKHH_fdd6c951ef5eaf8af1dc960c7ed3406b_20129&search_date=20112026&expected_price_uuid=01a1f9b9-6d50-8040-22e4-2e25e09fd4e0&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LToUf37MT2-_QW4b__qoiw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8118&marker=775639"
   }
  ]
 }
