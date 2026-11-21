@@ -1,0 +1,31 @@
+{
+ "page": "/nagoya/burlesque/",
+ "dir": "nagoya-burlesque",
+ "_說明": "插圖參考兩家官網（nagoya-de.show、barlesque.nagoya）的文字畫成可愛版，只畫一般舞台、樂器與 Q 版表演者，不畫任何真實成員或 logo；說明文字來自官網與 nagoya-shows.json，2026-11-21 查",
+ "blocks": [
+  {
+   "before": "NAGOYA de SHOW! 的表演：官網怎麼介紹",
+   "h2": "兩家店長什麼樣子",
+   "intro": "都在栄，走路大約 10 分鐘；一家看一場算一次錢，一家用座位算時間。",
+   "gallery": [
+    ["two", "NAGOYA de SHOW! 有 burlesque 舞、鋼管和唱歌；BARLESQUE NAGOYA 有男舞者和樂團"],
+    ["cube", "BARLESQUE NAGOYA 官網說日本只有這裡看得到的空中方塊表演，在頭頂上演出"],
+    ["band", "BARLESQUE NAGOYA 還有鼓、吉他、貝斯的現場演奏"],
+    ["cal", "NAGOYA de SHOW! 每天場次不一樣，有些週日、週一照常營業，有些日子休息，下面可以選日期看"],
+    ["nophoto", "BARLESQUE NAGOYA 主秀和半場秀時一律不能拍；NAGOYA de SHOW! 基本上可以拍"]
+   ]
+  },
+  {
+   "end_of": "NAGOYA de SHOW! 票價：1 週前訂比較便宜",
+   "remind": [
+    ["r-week", "1 週前以前訂", "NAGOYA de SHOW! 的優惠價要在來店日 1 週前以前訂，之後每個方案貴 ¥500。"]
+   ]
+  },
+  {
+   "end_of": "BARLESQUE NAGOYA 票價：90 分鐘一組",
+   "remind": [
+    ["r-sc", "另加 20% 服務費", "BARLESQUE NAGOYA 的座位價還要加 20%，延長也一樣；請喝飲料和小費另外算。"]
+   ]
+  }
+ ]
+}

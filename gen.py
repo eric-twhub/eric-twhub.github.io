@@ -645,7 +645,7 @@ def adbox_tickets(items, slug, title, sub, note=''):
 _KK1 = None
 
 
-def venue_extras(V, slug):
+def venue_extras(V, slug, who=None):
     """秀場頁共用的三段：官網怎麼介紹表演、去過的人怎麼說、相似商品。
 
     2026-11-21 使用者兩次糾正：頁面沒有店家照片，表演內容一定要寫清楚；
@@ -658,7 +658,8 @@ def venue_extras(V, slug):
     show = V.get('show') or {}
     s_html = ''
     if show.get('items'):
-        s_html = ('<h2>表演內容：官網怎麼介紹</h2><div class="tldr"><ul>'
+        s_html = ((f'<h2>{html.escape(who)} 的表演：官網怎麼介紹</h2>' if who else '<h2>表演內容：官網怎麼介紹</h2>')
+                  + '<div class="tldr"><ul>'
                   + ''.join(f'<li><b>{html.escape(t)}。</b>{html.escape(d)}</li>' for t, d in show['items'])
                   + '</ul></div>'
                   + (f'<p class="disc">{html.escape(show["note"])}</p>' if show.get('note') else '')
@@ -2077,7 +2078,7 @@ _AD_MAP = [
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
     ('okinawa/churasun6', 'activity2'), ('tokyo/worth-flying-for', 'activity2'),
-    ('sapporo/jolijo', 'activity2'), ('osaka/splash', 'activity2'), ('osaka/burlesque', 'activity2'), ('tokyo/samurai-restaurant', 'activity2'),
+    ('sapporo/jolijo', 'activity2'), ('osaka/splash', 'activity2'), ('osaka/burlesque', 'activity2'), ('nagoya/burlesque', 'activity2'), ('tokyo/rockza', 'activity2'), ('tokyo/samurai-restaurant', 'activity2'),
     ('tokyo/street-fashion', 'activity2'), ('tokyo/hostel', 'transfer'),
     ('tokyo/budget-hotel', 'transfer'),
     ('japan-worth-buying', 'esim'),
@@ -3215,7 +3216,7 @@ _STK_PREFIX = sorted({
     '/japan-takayama-shirakawago-bus/': 'st/skgbus',
     '/japan-tokyo-tower/': 'xmas/tower', '/japan-skytree/': 'xmas/skytree', '/japan-chiikawa-park/': 'xmas/gift',
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
-    '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
+    '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
     '/japan-sumo/': 'st/sumo', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
@@ -3765,6 +3766,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要去乳頭溫泉鄉的鶴之湯？'
                      f'<a href="{U("/japan-tsurunoyu/")}">電話與網路怎麼訂、各房型價格、不住宿泡湯、從田澤湖站怎麼去</a>'
                      f'（官網原文整理：冬天網路上幾乎訂不到、週一不開放日歸、送迎車要先打電話）。</p>')
+        if slug == 'nagoya' and os.path.exists('nagoya-shows.json'):
+            body += (f'<p class="lede">在找名古屋的 63 ANGEL？'
+                     f'<a href="{U("/nagoya/burlesque/")}">栄的 NAGOYA de SHOW! 與 BARLESQUE NAGOYA 票價、場次比較</a>'
+                     f'（官網原文整理：一家 1 週前網路訂比較便宜、一家 90 分鐘一組另加服務費）。</p>')
         if slug == 'nagoya' and os.path.exists('nabana.json'):
             body += (f'<p class="lede">要去名花之里看燈海？'
                      f'<a href="{U("/nagoya/nabana-no-sato/")}">門票怎麼買、聖誕節要日期指定券、從名古屋怎麼去</a>'
@@ -3850,6 +3855,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">晚上想找點事做？'
                      f'<a href="{U("/tokyo/63angel/")}">六本木 63 ANGEL 的座位方案與取消規定</a>'
                      f'（官網原文整理，取消規定官方兩頁寫得不一樣，未滿 20 歲不得入場）。</p>')
+        if slug == 'tokyo' and os.path.exists('rockza.json'):
+            body += (f'<p class="lede">想去淺草ロック座？'
+                     f'<a href="{U("/tokyo/rockza/")}">票價、一天四場時間、入場規定與去過的人怎麼說</a>'
+                     f'（官網原文整理：不能預約、當天現場買，場內不能拿出手機）。</p>')
         if slug == 'tokyo' and os.path.exists('samurai.json'):
             body += (f'<p class="lede">白天想看表演？'
                      f'<a href="{U("/tokyo/samurai-restaurant/")}">新宿武士餐廳 SAMURAI RESTAURANT 的場次與每天票價</a>'
@@ -15348,6 +15357,9 @@ if os.path.exists('angel63.json'):
            f'<a href="{U("/osaka/burlesque/")}">Burlesque 大阪</a>（兩家官網都沒提到對方）'
            + (f'，櫻川另有不限時間的<a href="{U("/osaka/splash/")}">Splash</a>' if os.path.exists('splash.json') else '')
            + '。</div>' if os.path.exists('burlesque-osaka.json') else '')
+        + (f'<div class="tbuf">人在名古屋的話，栄有兩家同類型的秀場：'
+           f'<a href="{U("/nagoya/burlesque/")}">NAGOYA de SHOW! 與 BARLESQUE NAGOYA</a>（官網都沒提到 63 ANGEL）。</div>'
+           if os.path.exists('nagoya-shows.json') else '')
         + '</div>'
       + _agt_html
       + _ag_show
@@ -16287,6 +16299,329 @@ if os.path.exists('burlesque-osaka.json'):
         f'價格、場次與規定由店家隨時調整，請以官網為準。本頁為公開資訊整理，與店家無合作關係。</p>'
       + foot())
     pages.append(('/osaka/burlesque/', 0.6))
+
+# ---------- 名古屋栄：NAGOYA de SHOW! 與 BARLESQUE NAGOYA ----------
+# 讀者搜「63 angel 名古屋」「名古屋 burlesque」。63 ANGEL 官網沒有名古屋店；栄有兩家 burlesque 風格的秀場，
+# 兩家官網互不提及，頁面只並列事實。NAGOYA de SHOW! 的逐日場次來自官網訂位頁（nagoya-shows.json 的 nds.cal，
+# 每月初重抓）；BARLESQUE NAGOYA 的價格是官網 SYSTEM 頁的圖。KKday／Klook 兩家都查不到商品。
+if os.path.exists('nagoya-shows.json'):
+    NG = json.load(open('nagoya-shows.json', encoding='utf-8'))
+    _nd, _bn = NG['nds'], NG['bn']
+    _nd_show, _, _ = venue_extras(_nd, 'nagoya/burlesque', _nd['name'])
+    _bn_show, _, _ = venue_extras(_bn, 'nagoya/burlesque', _bn['name'])
+    _, _ng_voice, _ng_sim = venue_extras(NG, 'nagoya/burlesque')
+    _ng_wd = '一二三四五六日'
+
+    def _ng_y(y):
+        return f'¥{y:,}'
+
+    def _ng_tw(y):
+        return f'NT${round(y * JPY):,}'
+
+    def _ng_md(d):
+        return f'{d.month}/{d.day}（{_ng_wd[d.weekday()]}）'
+
+    _ng_t = datetime.date.fromisoformat(TODAY)
+    _ng_last = datetime.date.fromisoformat(_nd['cal_to'])
+    _ng_days = [_ng_t + datetime.timedelta(days=i) for i in range(91)]
+    _NG_TBD = '官網訂位還沒開放到這天'
+
+    def _ng_day(d):
+        v = _nd['cal'].get(d.isoformat())
+        if v == '休':
+            return 'closed', None
+        if isinstance(v, dict):
+            return 'open', v
+        if d > _ng_last:
+            return 'tbd', None
+        return 'none', None
+
+    def _ng_open(hm):
+        h, m = map(int, hm.split(':'))
+        t = h * 60 + m - 30
+        return f'{t // 60}:{t % 60:02d}'
+
+    def _ng_cells(d):
+        st, v = _ng_day(d)
+        if st == 'open':
+            return [[_ng_open(x), x] for x in v['s']]
+        txt = {'closed': '休息', 'tbd': _NG_TBD, 'none': '訂位頁沒列'}[st]
+        return [[txt, ''] for _ in range(3)]
+
+    def _ng_note(d):
+        st, v = _ng_day(d)
+        if st == 'closed':
+            return '官網訂位頁這天標「休」。'
+        if st == 'tbd':
+            return f'官網訂位目前只開放到 {_ng_md(_ng_last)}，這天的場次還沒公布。'
+        if st == 'none':
+            return '官網訂位頁這天沒有列出場次，網路上可能已經不能訂，想去的話打電話問。'
+        return ('這天是主題日「' + v['ev'] + '」。' if v['ev'] else '') + '時間照官網訂位頁。'
+
+    _ng_data = {d.isoformat(): [_ng_md(d), _ng_note(d), _ng_cells(d)] for d in _ng_days}
+    _ng_c0 = _ng_cells(_ng_t)
+    _ng_pk = (
+        '<div class="tdpk" id="ngpk" hidden><b>你哪天去？</b><div class="tdch" id="ngch"></div>'
+        '<label class="tdmore">更後面的日期<input type="date" id="ngdt"></label>'
+        f'<p class="disc">官網訂位目前開放到 {_ng_md(_ng_last)}，更後面的日子會照實寫「{_NG_TBD}」。</p></div>'
+        '<div class="tw narrow" id="ngtb"><table><thead><tr><th>場次</th><th>開門</th><th id="ngth">今天開演</th></tr></thead><tbody>'
+        + ''.join(f'<tr><td><b>第 {i} 部</b></td><td>{html.escape(c[0])}</td><td>{html.escape(c[1])}</td></tr>'
+                  for i, c in enumerate(_ng_c0, 1))
+        + '</tbody></table></div>'
+        + f'<p class="disc" id="ngnote">日本時間今天 {_ng_md(_ng_t)}：{html.escape(_ng_note(_ng_t))}</p>')
+    _ng_js = ('<script>(function(){var D=' + json.dumps(_ng_data, ensure_ascii=False, separators=(',', ':'))
+      + ';var pk=document.getElementById("ngpk");if(!pk)return;'
+      'var t=new Date(Date.now()+324e5).toISOString().slice(0,10);'
+      'var ks=Object.keys(D).sort().filter(function(k){return k>=t});if(!ks.length)return;'
+      'var ch=document.getElementById("ngch"),inp=document.getElementById("ngdt"),th=document.getElementById("ngth"),'
+      'nt=document.getElementById("ngnote"),rs=document.querySelectorAll("#ngtb tbody tr"),bs=[];'
+      'function lab(k){return k===t?"今天":D[k][0]}'
+      'function show(k){var v=D[k];if(!v)return;'
+      'for(var i=0;i<rs.length&&i<v[2].length;i++){rs[i].cells[1].textContent=v[2][i][0];rs[i].cells[2].textContent=v[2][i][1];}'
+      'th.textContent=lab(k)+"開演";'
+      'nt.textContent=(k===t?"日本時間今天 "+v[0]:v[0])+"："+v[1];'
+      'bs.forEach(function(b){b.className=b.getAttribute("data-k")===k?"on":""});inp.value=k;}'
+      'ks.slice(0,14).forEach(function(k){var b=document.createElement("button");b.type="button";'
+      'b.setAttribute("data-k",k);b.textContent=k===t?"今天":D[k][0].replace("（"," ").replace("）","");'
+      'b.onclick=function(){show(k)};ch.appendChild(b);bs.push(b);});'
+      'inp.min=ks[0];inp.max=ks[ks.length-1];inp.onchange=function(){if(D[inp.value])show(inp.value)};'
+      'pk.hidden=false;show(ks[0]);})();</script>')
+    _ng_css = ('<style>'
+      '.tdpk{border:2px dashed var(--edge);border-radius:14px;padding:12px 14px;margin:10px 0 14px;background:var(--paper)}'
+      '.tdpk>b{color:var(--ink);font-size:1.02rem}'
+      '.tdch{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}'
+      '.tdch button{font:inherit;font-size:.88rem;padding:5px 10px;border:1.5px solid var(--edge);border-radius:999px;'
+      'background:var(--card);color:var(--ink);cursor:pointer}'
+      '.tdch button.on{background:#c2410c;border-color:#c2410c;color:#fff;font-weight:700}'
+      '.tdmore{display:flex;align-items:center;gap:8px;font-size:.9rem;flex-wrap:wrap}'
+      '.tdmore input{font:inherit;font-size:16px;padding:5px 8px;border:1.5px solid var(--edge);border-radius:8px;background:var(--card)}'
+      '.tdpk .disc{margin:8px 0 0}'
+      '</style>')
+
+    _nd_rows = ''.join(f'<tr><td class="nm"><b>{html.escape(n)}</b><br><small>{html.escape(w)}</small></td>'
+                       f'<td class="nm">{_ng_y(a)}<br><small>約 {_ng_tw(a)}</small></td><td class="nm">{_ng_y(b)}</td></tr>'
+                       for n, a, b, w in _nd['plans'])
+    _nd_cancel = ''.join(f'<li><b>{html.escape(a)}。</b>{html.escape(b)}</li>' for a, b in _nd['cancel'])
+    _bn_sc = 1 + _bn['sc'] / 100
+    _bn_rows = ''.join(f'<tr><td class="nm"><b>{html.escape(n)}</b></td><td class="nm">{_ng_y(p)}</td>'
+                       f'<td class="nm"><b>{_ng_y(round(p * _bn_sc))}</b><br><small>約 {_ng_tw(round(p * _bn_sc))}</small></td>'
+                       f'<td class="nm">{_ng_y(e)}</td></tr>' for n, p, e in _bn['seats'])
+    _bn_min = round(_bn['seats'][0][1] * _bn_sc)
+    _nd_min = _nd['plans'][0][1]
+    _ng_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>：{html.escape(u["why"])}</li>' for u in NG['unverified'])
+    _ng_map = lambda q: ('<a href="https://www.google.com/maps/search/?api=1&query='
+                         + urllib.parse.quote(q, safe='') + '" target="_blank" rel="nofollow noopener">📍 在 Google 地圖開啟</a>')
+
+    _ng_faq = [
+        ('名古屋有 63 ANGEL 嗎？',
+         '63 ANGEL 的官網沒有列名古屋的店。名古屋栄有兩家同類型的秀場：NAGOYA de SHOW!（舊名バーレスクTS）和 BARLESQUE NAGOYA（バーレスク名古屋），'
+         '兩家官網都沒有提到 63 ANGEL，也沒提到對方。'),
+        ('NAGOYA de SHOW! 多少錢？',
+         f'一般席 1 週前以前在官網訂 {_ng_y(_nd_min)}，之後或當天 {_ng_y(_nd["plans"][0][2])}，含稅、含 1 杯飲料。'
+         f'保證前排 {_ng_y(_nd["plans"][1][1])}、最前排 {_ng_y(_nd["plans"][2][1])}（1 週前價）。女生限定方案 ¥3,000。'),
+        ('BARLESQUE NAGOYA 多少錢？',
+         f'用座位算時間，一組 {_bn["set_min"]} 分鐘：桌席 {_ng_y(_bn["seats"][0][1])}、沙發席 {_ng_y(_bn["seats"][1][1])}、VIP 席 {_ng_y(_bn["seats"][2][1])}，'
+         f'含消費稅但另加 {_bn["sc"]}% 服務費，桌席實付約 {_ng_y(_bn_min)}。無限暢飲另加 {_ng_y(_bn["nomi"][0])}。'),
+        ('可以拍照嗎？',
+         'NAGOYA de SHOW! 官網寫基本上可以拍，有幾段節目禁止。BARLESQUE NAGOYA 主秀和半場秀的時間一律禁止拍照錄影，連客人互拍也不行。'),
+        ('幾歲可以進？',
+         'NAGOYA de SHOW! 官網寫未滿 20 歲不能入場，入場時可能查證件。BARLESQUE NAGOYA 新官網沒寫，帶護照比較保險。'),
+        ('怎麼訂？',
+         f'NAGOYA de SHOW! 有官網網路訂位（有繁體中文），也可以打 {_nd["tel"]}。'
+         f'BARLESQUE NAGOYA 官網沒有網路訂位，只寫了電話 {_bn["tel"]}。KKday、Klook 都查不到這兩家的商品。'),
+    ]
+    _ng_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _ng_faq]}, ensure_ascii=False)
+    _ng_title = '名古屋有 63 ANGEL 嗎？栄的 NAGOYA de SHOW! 與 BARLESQUE NAGOYA 票價、場次比較'
+    _ng_desc = ('名古屋栄的兩家 burlesque 秀場：NAGOYA de SHOW!（舊名バーレスクTS）一般席 1 週前訂 ¥4,500，選日期看場次；'
+                'BARLESQUE NAGOYA 一組 90 分鐘桌席 ¥4,000 另加服務費 20%。表演內容、拍照規定、怎麼訂。')
+
+    write('nagoya/burlesque/index.html',
+      head(_ng_title, _ng_desc, 'nagoya/burlesque/',
+           '<script type="application/ld+json">' + _ng_ld + '</script>' + _ng_css)
+      + topnav() + crumbs([('首頁', '/'), ('名古屋', '/nagoya/'), ('Burlesque 秀場', None)])
+      + '<h1>名古屋有 63 ANGEL 嗎？栄的兩家 burlesque 秀場</h1>'
+      + '<p class="lede">63 ANGEL 的官網沒有名古屋的店。名古屋栄有兩家同類型、女孩跳舞給你看的秀場：'
+        f'<b>{html.escape(_nd["name"])}</b>（舊名{html.escape(_nd["old"])}）和 <b>{html.escape(_bn["name"])}</b>（{html.escape(_bn["name_ja"])}），'
+        f'走路大約 10 分鐘。兩家官網都沒提到對方。台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網價目，查證於 {NG["checked"]}</div>'
+        f'<div class="tans">看一場最便宜：NAGOYA de SHOW! <b>{_ng_y(_nd_min)}</b>，BARLESQUE NAGOYA 約 <b>{_ng_y(_bn_min)}</b></div>'
+        f'<div class="tsub">NAGOYA de SHOW! 是一般席 1 週前訂的價格，含 1 杯飲料；BARLESQUE NAGOYA 是桌席 {_bn["set_min"]} 分鐘加 {_bn["sc"]}% 服務費，'
+        '喝的另外算，無限暢飲加 ¥3,000。</div></div>'
+
+      + '<h2>兩家差在哪</h2>'
+      + '<div class="tw"><table><tr><th></th><th>NAGOYA de SHOW!</th><th>BARLESQUE NAGOYA</th></tr>'
+        '<tr><td class="nm"><b>怎麼算錢</b></td><td class="nm">看一場一個價，含 1 杯飲料</td>'
+        f'<td class="nm">座位 {_bn["set_min"]} 分鐘一組，另加服務費 {_bn["sc"]}%</td></tr>'
+        f'<tr><td class="nm"><b>最便宜</b></td><td class="nm">{_ng_y(_nd_min)}（1 週前訂）</td><td class="nm">約 {_ng_y(_bn_min)}（桌席）</td></tr>'
+        '<tr><td class="nm"><b>場次</b></td><td class="nm">一晚三部，看日子</td><td class="nm">主秀三場、每場約 40 分鐘，中間有半場秀</td></tr>'
+        '<tr><td class="nm"><b>特色</b></td><td class="nm">burlesque、鋼管、唱歌</td><td class="nm">空中方塊特技、男舞者、現場樂團</td></tr>'
+        '<tr><td class="nm"><b>拍照</b></td><td class="nm">基本上可以，有幾段禁止</td><td class="nm">表演時一律禁止</td></tr>'
+        '<tr><td class="nm"><b>怎麼訂</b></td><td class="nm">官網網路訂位（有繁中）</td><td class="nm">只有電話</td></tr>'
+        '<tr><td class="nm"><b>年齡</b></td><td class="nm">未滿 20 歲不能進</td><td class="nm">官網沒寫</td></tr>'
+        '</table></div>'
+
+      + _nd_show
+      + f'<h2>{html.escape(_nd["name"])} 票價：1 週前訂比較便宜</h2>'
+      + '<div class="tw"><table><tr><th>方案</th><th>1 週前以前訂</th><th>之後或當天</th></tr>' + _nd_rows + '</table></div>'
+      + f'<p class="disc">{html.escape(_nd["adv_rule"])}。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>VIP 沙發席。</b>{html.escape(_nd["vip"])}。</li>'
+        f'<li><b>女生方案。</b>{html.escape(_nd["girls"])}。</li>'
+        + ''.join(f'<li><b>{html.escape(n)}。</b>加 {_ng_y(p)}</li>' for n, p in _nd['options'])
+        + f'<li><b>團體。</b>{html.escape(_nd["group"])}。</li>'
+        '</ul></div>'
+      + f'<h2>{html.escape(_nd["name"])} 選日期看場次</h2>'
+      + _ng_pk + _ng_js
+      + f'<p class="disc">{html.escape(_nd["home_times"])}。{html.escape(_nd["cal_note"])}</p>'
+      + f'<h3>取消規定</h3><div class="tldr"><ul>{_nd_cancel}<li>{html.escape(_nd["cancel_extra"])}。</li></ul></div>'
+      + f'<p class="lede">官網：<a href="{_nd["site"]}" rel="nofollow noopener" target="_blank">nagoya-de.show</a>'
+        f'　·　<a href="{_nd["system"]}" rel="nofollow noopener" target="_blank">方案</a>'
+        f'　·　<a href="{_nd["booking"]}" rel="nofollow noopener" target="_blank">網路訂位</a>'
+        f'　·　<a href="{_nd["instagram"]}" rel="nofollow noopener" target="_blank">Instagram</a></p>'
+
+      + _bn_show
+      + f'<h2>{html.escape(_bn["name"])} 票價：{_bn["set_min"]} 分鐘一組</h2>'
+      + f'<div class="tw"><table><tr><th>座位</th><th>{_bn["set_min"]} 分鐘</th><th>加 {_bn["sc"]}% 服務費</th><th>延長 {_bn["ext_min"]} 分鐘</th></tr>'
+        + _bn_rows + '</table></div>'
+      + f'<p class="disc">{html.escape(_bn["price_note"])}。延長費是官網價，結帳時同樣加服務費。</p>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>無限暢飲 {_bn["set_min"]} 分鐘。</b>加 {_ng_y(_bn["nomi"][0])}，延長 {_bn["ext_min"]} 分鐘 {_ng_y(_bn["nomi"][1])}；有啤酒、燒酎兌水、威士忌、Highball、檸檬沙瓦，不喝酒可以選綠茶、烏龍茶。</li>'
+        f'<li><b>時間到了。</b>{_bn["set_min"]} 分鐘到時店員會來問要不要延長，在座位上結帳。</li>'
+        '<li><b>小費和請喝飲料。</b>小費 10 張 ¥1,000 起，請女孩喝的飲料一杯 ¥1,000 起，都另外算。</li>'
+        f'<li><b>營業。</b>{_bn["hours"]}，公休{html.escape(_bn["closed"])}。</li>'
+        '</ul></div>'
+      + f'<p class="lede">官網：<a href="{_bn["site"]}" rel="nofollow noopener" target="_blank">barlesque.nagoya</a>'
+        f'　·　<a href="{_bn["system"]}" rel="nofollow noopener" target="_blank">價目與玩法（圖）</a>'
+        f'　·　<a href="{_bn["news"]}" rel="nofollow noopener" target="_blank">活動公告</a></p>'
+
+      + _ng_voice + _ng_sim
+      + '<h2>地址</h2><div class="tldr"><ul>'
+        f'<li><b>{html.escape(_nd["name"])}。</b>{html.escape(_nd["addr"])}，{html.escape(_nd["access"])}　{_ng_map(_nd["map_q"])}'
+        f'<br>電話 {_nd["tel"]}（{_nd["tel_hours"]}）</li>'
+        f'<li><b>{html.escape(_bn["name"])}。</b>{html.escape(_bn["addr"])}，{html.escape(_bn["station"])}　{_ng_map(_bn["map_q"])}'
+        f'<br>電話 {_bn["tel"]}</li>'
+        '</ul></div>'
+      + '<h2>這頁查不到的部分</h2><div class="tldr"><ul>' + _ng_un + '</ul></div>'
+      + '<h2>常見問題</h2>' + ''.join('<details class="faq"><summary>' + html.escape(q)
+                                     + '</summary><div>' + html.escape(a) + '</div></details>' for q, a in _ng_faq)
+      + fare_cta('nagoya', '飛名古屋的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 六本木 63 ANGEL</b><s>東京那家怎麼訂</s></a>'
+      + (f'<a class="ct" href="{U("/osaka/burlesque/")}"><b>🎭 Burlesque 大阪</b><s>大阪北新地那家</s></a>'
+         if os.path.exists('burlesque-osaka.json') else '')
+      + (f'<a class="ct" href="{U("/nagoya/observation-decks/")}"><b>🌃 名古屋觀景台</b><s>晚上去哪看夜景</s></a>'
+         if os.path.exists('nagoya-decks.json') else '')
+      + f'<a class="ct" href="{U("/nagoya/")}"><b>🏯 名古屋機票</b><s>各出發地的票價</s></a></div>'
+      + f'<p class="disc">內容引自 NAGOYA de SHOW! 官網與網路訂位頁、BARLESQUE NAGOYA 官網，查證於 {NG["checked"]}。'
+        '價格、場次與規定由店家隨時調整，請以官網為準。本頁為公開資訊整理，與店家無合作關係。</p>'
+      + foot())
+    pages.append(('/nagoya/burlesque/', 0.6))
+
+# ---------- 浅草ロック座 ----------
+# 讀者搜「淺草搖滾座」「ロック座 票價」。官網 http://asakusa-rockza.com/（https 連不上）。不接受預約、KKday／Klook 沒有商品，
+# 所以頁面放東京可先訂的表演。檔期每約 20 天換一次，rockza.json 的 seasons 要在最後一檔結束前補下一檔。
+# 只寫表演形式與規定，不列表演者姓名、不放照片。
+if os.path.exists('rockza.json'):
+    RZ = json.load(open('rockza.json', encoding='utf-8'))
+    _rz_show, _rz_voice, _rz_sim = venue_extras(RZ, 'tokyo/rockza')
+
+    def _rz_y(y):
+        return f'¥{y:,}'
+
+    def _rz_md(iso):
+        d = datetime.date.fromisoformat(iso)
+        return f'{d.month}/{d.day}'
+    _rz_ss = [x for x in RZ['seasons'] if x['to'] >= TODAY]
+    _rz_last = RZ['seasons'][-1]['to']
+    _rz_season = ''.join(
+        f'<li><b>{_rz_md(x["from"])}～{_rz_md(x["to"])}：{html.escape(x["name"])}。</b>'
+        + (f'共 {x["scenes"]} 景，' if x['scenes'] else '景的順序還沒公布，')
+        + f'{x["leads"]} 位主演' + (f'，另有 {x["dancers"]} 位伴舞' if x['dancers'] else '') + '。</li>'
+        for x in _rz_ss) or '<li>官網目前公布的檔期都已經結束，下一檔請看官網公演日程。</li>'
+    _rz_prices = ''.join(f'<tr><td class="nm"><b>{html.escape(n)}</b></td><td class="nm">{_rz_y(p)}</td>'
+                         f'<td class="nm">約 NT${round(p * JPY):,}</td></tr>' for n, p in RZ['prices'])
+    _rz_shows = ''.join(f'<tr><td class="nm"><b>{n}</b></td><td class="nm">{a}</td><td class="nm">{b}</td></tr>'
+                        for n, a, b in RZ['shows'])
+    _rz_rules = ''.join(f'<li>{html.escape(r)}。</li>' for r in RZ['rules'])
+    _rz_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>：{html.escape(u["why"])}</li>' for u in RZ['unverified'])
+    _rz_p = dict(RZ['prices'])
+    _rz_faq = [
+        ('淺草ロック座多少錢？',
+         f'官網價格：一般 {_rz_y(RZ["prices"][0][1])}、女性 {_rz_y(RZ["prices"][1][1])}、65 歲以上 {_rz_y(RZ["prices"][2][1])}（要出示證明）。'
+         '去過的人寫中間不清場，買一次票可以一直看下一場。'),
+        ('可以先訂票嗎？',
+         '官網沒有網路訂位，表演者本人在社群寫門票不接受預約，當天到現場用現金買。KKday、Klook 也查不到商品。'),
+        ('幾點開演？',
+         '13:30 開門，一天四場：' + '、'.join(f'{a} 開演' for n, a, b in RZ['shows']) + f'，{RZ["length"]}。'),
+        ('可以拍照或滑手機嗎？',
+         '不行。官網寫相機、攝影機要寄放在窗口，場內完全不能拿出手機，要用手機得走到大廳或外面。'),
+        ('女生可以去嗎？',
+         f'可以，官網有女性票價 {_rz_y(RZ["prices"][1][1])}。去過的人寫女生觀眾不少，外國旅客也很多。'),
+        ('幾歲可以進？',
+         '官網寫未滿 18 歲不能入場，高中生也不行，看不出年齡時會要求出示證件。'),
+    ]
+    _rz_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _rz_faq]}, ensure_ascii=False)
+    _rz_title = '淺草ロック座（淺草搖滾座）票價、一天四場時間、入場規定與去過的人怎麼說'
+    _rz_desc = ('淺草ロック座一般 ¥6,000、女性 ¥5,000，不接受預約、當天現場買；一天四場、一場約 1 小時 50 分鐘。'
+                '表演是什麼樣子、不能拍也不能拿出手機，以及去過的人寫的排隊與座位經驗。')
+
+    write('tokyo/rockza/index.html',
+      head(_rz_title, _rz_desc, 'tokyo/rockza/',
+           '<script type="application/ld+json">' + _rz_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('淺草ロック座', None)])
+      + '<h1>淺草ロック座（淺草搖滾座），去之前要知道的幾件事</h1>'
+      + '<p class="lede">淺草ロック座是東京淺草的脫衣舞劇場，1947 年開業。'
+        '一天四場歌舞秀，一段一段由不同的主演跳。這頁整理官網的票價、場次和入場規定，加上去過的人寫的心得。'
+        f'台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網價格，查證於 {RZ["checked"]}　·　未滿 18 歲不能入場</div>'
+        f'<div class="tans">一般 <b>{_rz_y(_rz_p["一般"])}</b>、女性 {_rz_y(_rz_p["女性"])}，當天到現場買</div>'
+        '<div class="tsub">官網沒有網路訂位，平台也沒有商品。相機要寄放、場內不能拿出手機。</div></div>'
+
+      + _rz_show
+      + '<h2>票價</h2>'
+      + '<div class="tw narrow"><table><tr><th>票種</th><th>官網價</th><th>台幣</th></tr>' + _rz_prices + '</table></div>'
+      + f'<p class="disc">{html.escape(RZ["price_note"])}。</p>'
+      + '<h2>一天四場</h2>'
+      + '<div class="tw narrow"><table><tr><th>場次</th><th>開演</th><th>結束</th></tr>' + _rz_shows + '</table></div>'
+      + f'<p class="disc">{RZ["open"]} 開門，{RZ["length"]}。官網沒寫公休日。</p>'
+      + f'<h3>檔期</h3><div class="tldr"><ul>{_rz_season}</ul></div>'
+      + f'<p class="disc">官網目前公布到 {_rz_md(_rz_last)}，每一檔大約 20 天、換一批主演。</p>'
+      + '<h2>入場規定</h2><div class="tldr"><ul>' + _rz_rules + '</ul></div>'
+      + f'<p class="lede">官網：<a href="{RZ["site"]}" rel="nofollow noopener" target="_blank">asakusa-rockza.com</a>'
+        f'　·　<a href="{RZ["schedule"]}" rel="nofollow noopener" target="_blank">公演日程</a>'
+        f'　·　<a href="{RZ["taito"]}" rel="nofollow noopener" target="_blank">台東區觀光網</a></p>'
+
+      + _rz_voice + _rz_sim
+      + '<h2>地址</h2><div class="tldr"><ul>'
+        f'<li><b>地址。</b>{html.escape(RZ["addr"])}　'
+        f'<a href="https://www.google.com/maps/search/?api=1&query={urllib.parse.quote(RZ["map_q"], safe="")}" '
+        f'target="_blank" rel="nofollow noopener">📍 在 Google 地圖開啟</a></li>'
+        f'<li><b>怎麼去。</b>{html.escape(RZ["station"])}。</li>'
+        f'<li><b>電話。</b>{RZ["tel"]}</li>'
+        '</ul></div>'
+      + '<h2>這頁查不到的部分</h2><div class="tldr"><ul>' + _rz_un + '</ul></div>'
+      + '<h2>常見問題</h2>' + ''.join('<details class="faq"><summary>' + html.escape(q)
+                                     + '</summary><div>' + html.escape(a) + '</div></details>' for q, a in _rz_faq)
+      + fare_cta('tokyo', '飛東京的機票多少')
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 六本木 63 ANGEL</b><s>可以先訂的女孩舞蹈秀</s></a>'
+      + (f'<a class="ct" href="{U("/tokyo/samurai-restaurant/")}"><b>⚔️ 新宿武士餐廳</b><s>白天的表演</s></a>'
+         if os.path.exists('samurai.json') else '')
+      + (f'<a class="ct" href="{U("/tokyo/observation-decks/")}"><b>🌃 東京觀景台</b><s>晚上去哪看夜景</s></a>'
+         if os.path.exists('tokyo-decks.json') else '')
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>🗼 東京機票</b><s>各出發地的票價</s></a></div>'
+      + f'<p class="disc">內容引自淺草ロック座官網與台東區觀光網，查證於 {RZ["checked"]}。'
+        '價格、場次與規定由劇場隨時調整，請以官網為準。本頁為公開資訊整理，與劇場無合作關係。</p>'
+      + foot())
+    pages.append(('/tokyo/rockza/', 0.6))
 
 # ---------- 新宿歌舞伎町 SAMURAI RESTAURANT ----------
 # 讀者搜「武士餐廳」「samurai restaurant 時間」。官網 samurai-restaurant.tokyo；逐日價格來自官網訂位系統
@@ -33265,6 +33600,11 @@ SEARCH_SYN = [
     ['六本木', 'roppongi'],
     ['63angel', '63 angel', 'rokusan angel', 'ロクサンエンジェル', '63天使', 'burlesque tokyo', 'burlesque東京', 'バーレスク東京'],
     ['burlesque osaka', 'burlesque大阪', 'バーレスク大阪', 'バーレスクosaka'],
+    ['ロック座', '浅草ロック座', '淺草ロック座', 'rockza', 'rock za', 'rock-za', 'rockza浅草', '淺草搖滾座', '浅草搖滾座', '搖滾座', '浅草rockza', '淺草rockza'],
+    ['脫衣舞', '脫衣秀', 'ストリップ', 'strip show', 'stripshow', '脱衣舞'],
+    ['nagoya de show', 'nagoyadeshow', 'ナゴヤデショー', 'ナゴヤ・デ・ショー', 'バーレスクts', 'burlesque ts', 'burlesquets', 'バーレスクTS'],
+    ['barlesque', 'barlesque nagoya', 'burlesque nagoya', 'burlesque名古屋', 'バーレスク名古屋', '名古屋バーレスク', '名古屋burlesque', '名古屋 burlesque'],
+    ['名古屋夜生活', '名古屋 夜生活', '名古屋夜店', '名古屋秀場', '名古屋 秀'],
     ['samurai restaurant', 'samurairestaurant', 'samurai餐廳', '武士餐廳', '武士秀', '武士表演', 'サムライレストラン', '侍餐廳', '機器人餐廳', 'robot restaurant', 'ロボットレストラン', '新宿武士'],
     ['gira gira girls', 'giragiragirls', 'ギラギラガールズ'],
     ['歌舞伎町', 'kabukicho', 'kabukichō'],
