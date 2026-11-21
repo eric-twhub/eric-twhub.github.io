@@ -642,6 +642,65 @@ def adbox_tickets(items, slug, title, sub, note=''):
             + (f'<p class="adfp">{html.escape(note)}</p>' if note else '')
             + '</aside>')
 
+_KK1 = None
+
+
+def venue_extras(V, slug):
+    """秀場頁共用的三段：官網怎麼介紹表演、去過的人怎麼說、相似商品。
+
+    2026-11-21 使用者兩次糾正：頁面沒有店家照片，表演內容一定要寫清楚；
+    懶人包的價值在幫讀者整理別人的心得，所以每頁都要有「去過的人怎麼說」。
+    心得段每一條都要附原文連結與日期，跟官方資料分開標示。
+    相似商品只給沒有 KKday／Klook 商品的店，KKday 商品在這裡再驗一次 1% 清單。
+    回傳 (表演段, 心得段, 相似商品版位)，資料檔沒有那一欄就回空字串。
+    """
+    global _KK1
+    show = V.get('show') or {}
+    s_html = ''
+    if show.get('items'):
+        s_html = ('<h2>表演內容：官網怎麼介紹</h2><div class="tldr"><ul>'
+                  + ''.join(f'<li><b>{html.escape(t)}。</b>{html.escape(d)}</li>' for t, d in show['items'])
+                  + '</ul></div>'
+                  + (f'<p class="disc">{html.escape(show["note"])}</p>' if show.get('note') else '')
+                  + ('<p class="disc">出處：' + '、'.join(
+                      f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{html.escape(n)}</a>'
+                      for n, u in show.get('src', [])) + '</p>' if show.get('src') else ''))
+    vo = V.get('voices') or {}
+    v_html = ''
+    if vo.get('items'):
+        def refs(rs):
+            return ''.join(f' <a class="vref" href="{html.escape(u)}" target="_blank" rel="nofollow noopener">'
+                           f'{html.escape(n)} {html.escape(d)}</a>' for n, u, d in rs)
+        v_html = ('<h2>去過的人怎麼說</h2>'
+                  '<p class="lede">整理網路上去過的人寫的心得，不是官方說法，每個人的經驗不一定一樣。'
+                  '每一點後面附原文連結和日期，可以點進去看完整內容。</p>'
+                  '<div class="tldr"><ul>'
+                  + ''.join(f'<li><b>{html.escape(it["t"])}。</b>{html.escape(it["s"])}{refs(it.get("refs", []))}</li>'
+                            for it in vo['items'])
+                  + '</ul></div>'
+                  + (f'<p class="disc">{html.escape(vo["note"])}</p>' if vo.get('note') else '')
+                  + f'<p class="disc">心得整理於 {vo.get("checked", "")}。</p>')
+    elif vo.get('none'):
+        lk = vo.get('link')
+        v_html = ('<h2>去過的人怎麼說</h2><p>' + html.escape(vo['none'])
+                  + (f' <a href="{lk[0]}">{html.escape(lk[1])}</a>' if lk else '')
+                  + f'</p><p class="disc">整理於 {vo.get("checked", "")}。</p>')
+    sim = V.get('similar') or {}
+    a_html = ''
+    if sim.get('items'):
+        if _KK1 is None:
+            _KK1 = {str(x) for x in json.load(open('kkday-1pct.json', encoding='utf-8'))['ids']}
+        its = []
+        for it in sim['items']:
+            if str(it['id']) in _KK1:
+                raise SystemExit(f'venue_extras：{slug} 的相似商品 {it["id"]} 在 KKday 1% 清單裡')
+            its.append({'provider': 'kkday', 'id': it['id'],
+                        'url': f'https://www.kkday.com/zh-tw/product/{it["id"]}',
+                        'name': it['name'], 'area': it['area'], 'note': it.get('note', '')})
+        a_html = adbox_tickets(its, slug, sim['title'], sim['sub'], '售價以 KKday 頁面為準，本站不另外標價。')
+    return s_html, v_html, a_html
+
+
 def ticket_block(slug, name):
     """城市頁的門票區塊。
 
@@ -1288,6 +1347,7 @@ td b{color:var(--acc)}
 border-radius:10px;padding:16px 18px 16px 34px;margin-top:12px}
 .tldr ul{margin:0;padding-left:2px}
 .tldr li{margin-bottom:9px;font-size:.94rem;line-height:1.75}
+.vref{font-size:.78rem;white-space:nowrap;margin-left:2px}
 .tldr li:last-child{margin-bottom:0}
 /* 規格／官方原文的引用塊：原文照抄，cite 放出處或中譯 */
 blockquote.q{margin:14px 0;padding:12px 16px;background:var(--card);
@@ -15116,6 +15176,7 @@ if SH:
 # 真正會讓人吃虧的是取消規定，而官網自己兩頁寫得不一樣，所以那段單獨做。
 if os.path.exists('angel63.json'):
     AG = json.load(open('angel63.json', encoding='utf-8'))
+    _ag_show, _ag_voice, _ag_sim = venue_extras(AG, 'tokyo/63angel')
     _ag_rate = JPY
 
     def _ag_tw(y):
@@ -15289,6 +15350,7 @@ if os.path.exists('angel63.json'):
            + '。</div>' if os.path.exists('burlesque-osaka.json') else '')
         + '</div>'
       + _agt_html
+      + _ag_show
       + '<h2>場次時間</h2>' + _ag_shows
       + f'<p class="disc">{html.escape(AG["shows"]["note"])}</p>'
       + '<h2>座位方案與價格</h2>'
@@ -15357,6 +15419,7 @@ if os.path.exists('angel63.json'):
          if _agk.get('compare') else '')
       # 比價表是 9/28 的快照，圖卡是 Klook 即時價；放在快照說明之後，不讓兩個數字並排
       + klook_card(re.search(r'/activity/(\d+)', _agk['url']).group(1))
+      + _ag_voice + _ag_sim
       + '<h2>基本資料</h2>'
       + '<div class="tldr"><ul>'
         f'<li><b>地址</b>：{html.escape(AG["addr"])}</li>'
@@ -15600,6 +15663,7 @@ def _ag_tw_voucher(shop, others):
 
 if os.path.exists('churasun6.json'):
     CS = json.load(open('churasun6.json', encoding='utf-8'))
+    _cs_show, _cs_voice, _cs_sim = venue_extras(CS, 'okinawa/churasun6')
     _cs_rate = JPY
 
     def _cs_tw(y):
@@ -15677,6 +15741,7 @@ if os.path.exists('churasun6.json'):
         '以及 VIP 席要不要另付 20% 稅服務費。下面都並列出來。</div>'
         + _cs_tw + '</div>'
 
+      + _cs_show
       + '<h2>場次時間</h2>' + _cs_shows
       + f'<p class="disc">{html.escape(CS["shows"]["note"])}營業時間官網寫 {html.escape(CS["hours"])}。</p>'
 
@@ -15707,6 +15772,7 @@ if os.path.exists('churasun6.json'):
         f'{html.escape(CS["cancel"]["extra_zh"])}</p>'
       + f'<p class="disc">{html.escape(CS["cancel"]["so"])}</p>'
 
+      + _cs_voice + _cs_sim
       + '<h2>地址、電話與付款</h2><div class="tldr"><ul>'
         f'<li><b>地址。</b>{html.escape(CS["addr"])}</li>'
         f'<li><b>電話。</b>{html.escape(CS["tel"])}；當天預約 {html.escape(CS["tel_today"])}。'
@@ -15749,6 +15815,7 @@ if os.path.exists('churasun6.json'):
 # 年齡、拍照等規定官網沒寫，引 KKday 商品頁並標出處。
 if os.path.exists('jolijo.json'):
     JL = json.load(open('jolijo.json', encoding='utf-8'))
+    _jl_show, _jl_voice, _jl_sim = venue_extras(JL, 'sapporo/jolijo')
     _jl_sc = 1 + JL['sc'] / 100
 
     def _jl_tw(y):
@@ -15832,6 +15899,7 @@ if os.path.exists('jolijo.json'):
         f'<div class="tsub">每天 {JL["shows"][0]}、{JL["shows"][1]} 兩場，營業 {JL["hours"]}，'
         f'<b>{JL["closed"]}公休</b>。請女孩喝的飲料另外算。</div></div>'
 
+      + _jl_show
       + '<h2>官網價目表：加上服務費實付多少</h2>'
       + '<div class="tw"><table><tr><th>方案</th><th>價目表</th>'
         f'<th>加 {JL["sc"]}% 服務費</th></tr>' + _jl_rows + '</table></div>'
@@ -15857,6 +15925,7 @@ if os.path.exists('jolijo.json'):
       + '<p class="lede">官網沒有寫規定，下面是 KKday 商品頁寫的。</p>'
       + f'<div class="tldr"><ul>{_jl_rules}</ul></div>'
 
+      + _jl_voice + _jl_sim
       + '<h2>地址與營業時間</h2><div class="tldr"><ul>'
         f'<li><b>地址。</b>{html.escape(JL["addr"])}　'
         f'<a href="https://www.google.com/maps/search/?api=1&query={urllib.parse.quote(JL["map_q"], safe="")}" '
@@ -15893,6 +15962,7 @@ if os.path.exists('jolijo.json'):
 # KKday／Klook 查無商品，所以沒有商品區塊。第三方網站寫的票券內容不採用。
 if os.path.exists('splash.json'):
     SP = json.load(open('splash.json', encoding='utf-8'))
+    _sp_show, _sp_voice, _sp_sim = venue_extras(SP, 'osaka/splash')
 
     def _sp_tw(y):
         return f'NT${round(y * JPY):,}'
@@ -16021,6 +16091,7 @@ if os.path.exists('splash.json'):
         f'不限時間、沒有延長費</div>'
         f'<div class="tsub">{_sp_today}。未滿 20 歲不能入店，店內不能拍照。</div></div>'
 
+      + _sp_show
       + '<h2>入場費包含什麼</h2>'
       + '<div class="tw narrow"><table><tr><th>項目</th><th>官網寫的</th></tr>' + _sp_fee + '</table></div>'
       + f'<p class="disc">官網只寫入場費一人 ¥{SP["fee"]:,}，沒寫含不含稅、有沒有另加服務費。'
@@ -16045,6 +16116,7 @@ if os.path.exists('splash.json'):
       + '<h2>到店的規定</h2>'
       + f'<div class="tldr"><ul>{_sp_rules}</ul></div>'
 
+      + _sp_voice + _sp_sim
       + '<h2>地址與怎麼去</h2><div class="tldr"><ul>'
         f'<li><b>地址。</b>{html.escape(SP["addr"])}，同一棟大樓其他樓層是別的店，Splash 在地下 1 樓。'
         f'<a href="https://www.google.com/maps/search/?api=1&query={urllib.parse.quote(SP["map_q"], safe="")}" '
@@ -16079,6 +16151,7 @@ if os.path.exists('splash.json'):
 # 場次引營業時間圖與網路訂位頁。63 ANGEL 與這家的官網互不提及，頁面只並列事實。KKday／Klook 查無商品。
 if os.path.exists('burlesque-osaka.json'):
     BQ = json.load(open('burlesque-osaka.json', encoding='utf-8'))
+    _bq_show, _bq_voice, _bq_sim = venue_extras(BQ, 'osaka/burlesque')
 
     def _bq_tw(y):
         return f'NT${round(y * JPY):,}'
@@ -16163,6 +16236,7 @@ if os.path.exists('burlesque-osaka.json'):
         + (f'下一個優惠日是 <b>{_bq_next_s}</b>，第 1、2 場 {_bq_y(_pm["p"][0])}。' if _bq_next else '')
         + '</div></div>'
 
+      + _bq_show
       + '<h2>票價：前一天訂比較便宜</h2>'
       + '<div class="tw"><table><tr><th>座位</th><th>第 1、2 場<br>前一天以前訂</th><th>第 1、2 場<br>當天</th>'
         '<th>第 3 場<br>前一天以前訂</th><th>第 3 場<br>當天</th></tr>' + _bq_rows + '</table></div>'
@@ -16187,6 +16261,7 @@ if os.path.exists('burlesque-osaka.json'):
         f'　·　<a href="{BQ["resv"]}" rel="nofollow noopener" target="_blank">網路訂位</a>'
         f'　·　<a href="{BQ["instagram"]}" rel="nofollow noopener" target="_blank">Instagram</a></p>'
 
+      + _bq_voice + _bq_sim
       + '<h2>地址</h2><div class="tldr"><ul>'
         f'<li><b>地址。</b>{html.escape(BQ["addr"])}　'
         f'<a href="https://www.google.com/maps/search/?api=1&query={urllib.parse.quote(BQ["map_q"], safe="")}" '
@@ -16219,6 +16294,7 @@ if os.path.exists('burlesque-osaka.json'):
 # KKday 533653 已對 kkday-1pct.json 驗過；舊商品 1655 在 1% 清單裡，不要換回去。
 if os.path.exists('samurai.json'):
     SR = json.load(open('samurai.json', encoding='utf-8'))
+    _sr_show, _sr_voice, _sr_sim = venue_extras(SR, 'tokyo/samurai-restaurant')
     _sr_wd = '一二三四五六日'
 
     def _sr_y(y):
@@ -16396,6 +16472,7 @@ if os.path.exists('samurai.json'):
          f'<div class="tsub">含入場和便當或 2 杯飲料。' + _sr_drop_s + _sr_cl_s + '</div></div>'
          if _sr_st0 == 'price' else '')
 
+      + _sr_show
       + '<h2>選日期看票價</h2>'
       + _sr_pk
       + f'<p class="disc">價格引官網訂位系統（查證於 {SR["checked"]}），每人一張的網路價。'
@@ -16423,6 +16500,7 @@ if os.path.exists('samurai.json'):
       + '<p class="lede">官網餐點頁列的便當：' + '、'.join(html.escape(b) for b in SR['bento'])
         + f'。每份附一瓶水，也可以改選 2 杯飲料。加點的價格看<a href="{SR["food"]}" rel="nofollow noopener" target="_blank">官網餐點頁</a>。</p>'
 
+      + _sr_voice + _sr_sim
       + '<h2>地址</h2><div class="tldr"><ul>'
         f'<li><b>地址。</b>{html.escape(SR["addr"])}　'
         f'<a href="https://www.google.com/maps/search/?api=1&query={urllib.parse.quote(SR["map_q"], safe="")}" '
@@ -16456,6 +16534,7 @@ if os.path.exists('samurai.json'):
 # 年齡限制在四個官方頁面都沒找到，照「沒查到≠沒有」標未查。
 if os.path.exists('superspark.json'):
     SS = json.load(open('superspark.json', encoding='utf-8'))
+    _ss_show, _ss_voice, _ss_sim = venue_extras(SS, 'tokyo/superspark')
     _ss_rate = JPY
 
     def _ss_tw(y):
@@ -16519,6 +16598,7 @@ if os.path.exists('superspark.json'):
         f'計價方式跟樓下的 63 ANGEL 不一樣。年齡限制官網沒寫，帶證件去。</div>'
         + _ssp_tw + '</div>'
 
+      + _ss_show
       + '<h2>場次時間</h2>' + _ss_shows
       + f'<p class="disc">{html.escape(SS["shows"]["note"])}</p>'
 
@@ -16534,6 +16614,7 @@ if os.path.exists('superspark.json'):
       + f'<li><b>取消。</b>{html.escape(SS["cancel"]["rule"])}。{html.escape(SS["cancel"]["note"])}</li>'
       + '</ul></div>'
 
+      + _ss_voice + _ss_sim
       + '<h2>地址與電話</h2><div class="tldr"><ul>'
         f'<li><b>地址。</b>{html.escape(SS["addr"])}</li>'
         f'<li><b>電話。</b>{html.escape(SS["tel"])}。{html.escape(SS["tel_conflict"])}</li>'
