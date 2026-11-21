@@ -85,6 +85,12 @@ jobs:
       - name: 更新日圓匯率
         run: python3 update_rate.py
 
+      # /japan-cashback/ 的 ShopBack、LINE 旅遊回饋率。抓失敗會保留上一次的資料，不擋建置
+      - name: 抓取返利平台回饋率
+        continue-on-error: true
+        timeout-minutes: 5
+        run: python3 scan_cashback.py
+
       - name: 重新產生網站
         run: python3 gen.py
 

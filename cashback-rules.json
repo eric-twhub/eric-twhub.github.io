@@ -1,0 +1,55 @@
+{
+  "_說明": "回饋整理頁的人工資料：兩個平台的取消條件、領取方式、已公告的檔期與折扣碼。2026-11-21 讀官方頁。codes／schedule 每一筆有 end，過了自動不顯示。checked 超過 30 天沒更新，gen.py 會印警告。",
+  "checked": "2026-11-21",
+  "platforms": [
+    {"key": "sb", "name": "ShopBack",
+     "what": "現金回饋，存在 ShopBack 帳戶，滿 NT$200 可以轉到銀行帳戶",
+     "rules": [
+       ["用了不是 ShopBack 給的優惠碼，整筆不給回饋", "https://support.shopback.com.tw/hc/zh-tw/articles/360039388814"],
+       ["稅金、服務費不算進回饋金額", "https://www.shopback.com.tw/klook"],
+       ["Klook：帳號的居住國家要設成台灣；到現場付款、延後付款不給", "https://www.shopback.com.tw/klook"],
+       ["KKday：只認 ShopBack 專屬折扣碼，用其他折扣碼整筆不給；訂購人國籍要是台灣", "https://www.shopback.com.tw/kkday"],
+       ["Trip.com：機＋酒套裝、兒童與嬰兒機票、加購行李與餐點不給", "https://www.shopback.com.tw/tripcom"],
+       ["Booking.com：沒有接受全部 Cookie 的訂單不給；房費以外的消費不算", "https://www.shopback.com.tw/booking-com"],
+       ["回饋比例以下單當下為準，加碼結束後才下單就是平時的比例", "https://support.shopback.com.tw/hc/zh-tw/articles/360039163614"]
+     ],
+     "pay": [
+       ["什麼時候能領", "住宿、行程要等入住或使用完後 60～125 天才確認，各商家不同"],
+       ["怎麼領", "滿 NT$200 轉入銀行帳戶，手續費 NT$10～15（台新銀行免）；11/9 起也能換長榮哩程，每 NT$100 換 152 哩"],
+       ["會不會過期", "帳號一年沒有任何成功的導購交易，回饋全部歸零，到期前兩個月寄信提醒"]
+     ],
+     "pay_src": "https://support.shopback.com.tw/hc/zh-tw/articles/115010371768",
+     "daily": "https://www.shopback.com.tw/upsize--daily"},
+    {"key": "line", "name": "LINE 旅遊",
+     "what": "LINE POINTS，1 點折抵 1 元，可以在 LINE Pay 店家折抵",
+     "rules": [
+       ["要綁台灣手機號碼，從 LINE 旅遊點過去後 24 小時內、同一個視窗結帳", "https://help2.line.me/linetraveltw/web/?lang=zh-Hant"],
+       ["無痕視窗、廣告阻擋、轉傳網址都會失效；中途開別的比價網或回饋網也會失效", "https://help2.line.me/linetraveltw/web/?lang=zh-Hant"],
+       ["稅金、服務費、燃油費、手續費、加購服務不給點；住宿只算房價", "https://help2.line.me/linetraveltw/web/?lang=zh-Hant"],
+       ["Klook：用不是 LINE 旅遊給的優惠碼、到店付款、禮品卡不給；特別活動商品只給 0.5%", "https://travel.line.me/"],
+       ["KKday：用新台幣以外的幣別結帳不給", "https://help2.line.me/linetraveltw/web/?lang=zh-Hant"],
+       ["在虎航、可樂等 App 裡面結帳不給", "https://help2.line.me/linetraveltw/web/?lang=zh-Hant"],
+       ["加碼有單筆點數上限，超過的部分不會再多給", "https://buy.line.me/"]
+     ],
+     "pay": [
+       ["什麼時候能領", "機票、住宿、行程在使用完成後最晚 60 天入帳"],
+       ["怎麼用", "1 點折抵 1 元，在 LINE Pay 店家折抵或換貼圖；不能轉送"],
+       ["會不會過期", "最後一次拿到點數那天起算 180 天；限時點數另外算"]
+     ],
+     "pay_src": "https://help2.line.me/linepoints/web?lang=zh-Hant",
+     "daily": "https://travel.line.me/"}
+  ],
+  "codes": [
+    {"p": "LINE 旅遊", "what": "KKday 日本 JR 票券 92 折", "cap": "最多折 300 元", "end": "2026-11-30", "src": "https://linetravel.landpress.line.me/LINETRAVELdiscount/"},
+    {"p": "LINE 旅遊", "what": "Trip.com 日本門票與體驗 92 折", "cap": "最多折 100 元", "end": "2026-12-31", "src": "https://linetravel.landpress.line.me/LINETRAVELdiscount/"},
+    {"p": "LINE 旅遊", "what": "Klook 國泰卡友日本商品 88 折", "cap": "最多折 150 元，每月 1 次", "end": "2026-11-30", "src": "https://linetravel.landpress.line.me/LINETRAVELdiscount/"},
+    {"p": "LINE 旅遊", "what": "Klook 玉山卡友日本新幹線 88 折", "cap": "最多折 300 元", "end": "2026-12-31", "src": "https://linetravel.landpress.line.me/LINETRAVELdiscount/"}
+  ],
+  "klook_krazy": {
+    "_說明": "ShopBack Klook 商家頁頁首橫幅：每月最後一個星期二、三、六是 Klook Krazy。同一個官網另一張橫幅寫的平日加碼星期不一樣，所以只用「每月最後一個」這條，頁面標明是橫幅寫的規則。",
+    "src": "https://www.shopback.com.tw/klook",
+    "weekdays": [1, 2, 5]
+  },
+  "sb_plus_day": {"day": 18, "src": "https://support.shopback.com.tw/hc/zh-tw/articles/29535196108947",
+                  "note": "ShopBack Plus 付費會員日，精選商家回饋比一般會員高；哪些商家參加沒有事先公告"}
+}

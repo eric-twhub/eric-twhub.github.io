@@ -2177,7 +2177,9 @@ _NO_AD_OK = {'/japan-hotel-check/', '/kawaguchiko-hotel-case/',
              # 同上：Asoview 與 Klook 兩個官方通路就是頁面本身
              '/japan-chiikawa-park/',
              # 同上：Lawson 官方售票站與 JTB 巴士團就是頁面本身
-             '/japan-ghibli-museum/'}
+             '/japan-ghibli-museum/',
+             # 頁面寫明「這頁的連結都沒有分潤」，而且是在教讀者繞去返利平台，掛 Trip.com／KKday 版位會互相矛盾
+             '/japan-cashback/'}
 
 def u_region(path):
     """地區頁回地區名，其餘回空字串。"""
@@ -3256,7 +3258,7 @@ _STK_PREFIX = sorted({
     '/japan-credit-card/': 'st/card', '/japan-airline-card/': 'st/card', '/japan-card-': 'st/card', '/iphone-card/': 'st/card',
     '/japan-shop-card/': 'st/card',
     '/japan-fukubukuro/': 'st/fukubukuro',
-    '/japan-coupon/': 'st/coupon', '/japan-bogo/': 'st/coupon', '/japan-store-points/': 'st/coupon', '/japan-bic-points/': 'st/coupon',
+    '/japan-coupon/': 'st/coupon', '/japan-cashback/': 'st/coupon', '/japan-bogo/': 'st/coupon', '/japan-store-points/': 'st/coupon', '/japan-bic-points/': 'st/coupon',
     '/japan-tax-free-2026/': 'st/receipt', '/japan-esim': 'st/phone', '/japan-sms-roaming/': 'st/phone',
     '/japan-yen-exchange/': 'st/yen', '/japan-payment/': 'st/yen', '/japan-transit-card/': 'st/iccard',
     '/tokyo/subway-ticket/': 'st/subway',
@@ -19660,7 +19662,8 @@ if _FS:
     _chk = _FS['checked']; _chk_md = f'{int(_chk[5:7])}/{int(_chk[8:10])}'
     flash_html = ('<h2 id="flash-sale" data-toc="要搶的便宜機票">要搶的便宜機票：Trip.com 999 元、易遊網 1 元這類秒殺</h2>'
                   '<p class="lede">旅遊平台的秒殺和航空公司的限時特價，都是名額有限、準時開搶。'
-                  '先看接下來有哪一檔，再看各家通常什麼時候辦。</p>')
+                  '先看接下來有哪一檔，再看各家通常什麼時候辦。'
+                  f'訂住宿或行程想多拿一點回饋，看 <a href="{U("/japan-cashback/")}">ShopBack、LINE 旅遊現在的加碼</a>。</p>')
     if _up:
         _li = ''
         for x in _up:
@@ -27552,6 +27555,297 @@ if BH:
     print(f'   東京便宜旅館頁：{len(_bh_all)} 家（查證 {BH["checked"]}，'
           f'{money(_bh_lo["total"])} 起／{_bh_n} 晚）')
 
+# ---------- 返利平台回饋整理（ShopBack × LINE 旅遊）----------
+# 資料：scan_cashback.py 抓兩邊商家頁寫成 cashback.json（rows 已經正規化成「商家 × 類別」），
+# 加碼紀錄在 cashback-log.json；取消條件、領取方式、折扣碼是人工的 cashback-rules.json。
+# 加碼常常只有幾個小時，GitHub 排程又會延遲好幾個小時，所以「現在加碼」與比較表
+# 在瀏覽器端再讀一次 /cashback.json 重畫，過了結束時間的加碼自動當成平時。
+# 兩個平台都和本站沒有合作，頁面上的連結都沒有分潤（讀者從這裡繞去返利平台，
+# Klook／KKday 的訂單就不算本站的，這是 2026-11-21 使用者決定接受的取捨）。
+if os.path.exists('cashback.json') and os.path.exists('cashback-rules.json'):
+    CB = json.load(open('cashback.json', encoding='utf-8'))
+    CBS = json.load(open('cashback-src.json', encoding='utf-8'))
+    CBR = json.load(open('cashback-rules.json', encoding='utf-8'))
+    CBL = (json.load(open('cashback-log.json', encoding='utf-8'))
+           if os.path.exists('cashback-log.json') else [])
+    _cb_now = NOW.isoformat(timespec='minutes')
+    _WD = '一二三四五六日'
+
+    def _cb_p(v):
+        return f'{v:g}%'
+
+    def _cb_t(iso):
+        d = datetime.datetime.fromisoformat(iso)
+        return f'{d.month}/{d.day}（{_WD[d.weekday()]}）{d:%H:%M}'
+
+    def _cb_live(x):
+        """過了結束時間的加碼當成平時（建置時算一次，瀏覽器端再算一次）"""
+        if x.get('st') == 'ok' and x.get('boost') and x.get('end') and x['end'] < _cb_now:
+            x = dict(x, boost=False, now=x['base'] if x.get('base') is not None else x['now'])
+        return x
+    _cb_rows = [dict(r, sb=_cb_live(r['sb']), line=_cb_live(r['line'])) for r in CB['rows']]
+
+    # 頁面要知道 ShopBack 層級名稱是不是都還對得到；改名了就會掉出比較表
+    for _m in CBS['merchants']:
+        _o = CB['sb'].get(_m.get('sb') or '')
+        if _o:
+            _miss = [l for l in (_m.get('sb_cat') or {}) if l not in [t[0] for t in _o['tiers']]]
+            if _miss:
+                print(f'   ⚠️ ShopBack {_m["name"]} 的層級對不到：{"、".join(_miss)}（改了名要更新 cashback-src.json）')
+    if (NOW.date() - datetime.date.fromisoformat(CBR['checked'])).days > 30:
+        print(f'   ⚠️ cashback-rules.json 已經 {CBR["checked"]} 沒更新，取消條件與折扣碼要回查')
+
+    def _cb_cell(x, pname):
+        st = x.get('st')
+        if st == 'none':
+            return f'<td class="dimcell">{pname}沒有這家</td>'
+        if st == 'nocat':
+            return '<td class="dimcell">沒有這類</td>'
+        if st == 'err':
+            return '<td class="dimcell">這次沒抓到</td>'
+        sub = []
+        if x.get('boost'):
+            sub.append('平時 ' + _cb_p(x['base']) if x.get('base') is not None
+                       else ('平時最高 ' + _cb_p(x['bmax']) if x.get('bmax') else '平時值還沒抓到'))
+            if x.get('end'):
+                _e = datetime.datetime.fromisoformat(x['end'])
+                sub.append(f'到 {_e.month}/{_e.day} {_e:%H:%M}')
+        return (f'<td><b>{_cb_p(x["now"])}</b>' + ('<span class="pw">加碼</span>' if x.get('boost') else '')
+                + (f'<span class="qz">{"，".join(sub)}</span>' if sub else '') + '</td>')
+
+    def _cb_cat_tables(rows):
+        out = ''
+        for cat in CBS['cats']:
+            rs = [r for r in rows if r['cat'] == cat]
+            if not rs:
+                continue
+            rs.sort(key=lambda r: -max(r[k].get('now', -1) if r[k].get('st') == 'ok' else -1 for k in ('sb', 'line')))
+            out += (f'<h3>{cat}</h3><div class="tw narrow"><table class="wrapt cbt"><tr><th>商家</th><th>ShopBack</th><th>LINE 旅遊</th></tr>'
+                    + ''.join(f'<tr><td class="nm"><b>{html.escape(r["name"])}</b></td>'
+                              + _cb_cell(r['sb'], 'ShopBack ') + _cb_cell(r['line'], 'LINE 旅遊') + '</tr>'
+                              for r in rs) + '</table></div>')
+        return out
+
+    def _cb_boost_list(rows):
+        bs = []
+        for r in rows:
+            hit = [r[k] for k in ('sb', 'line') if r[k].get('st') == 'ok' and r[k].get('boost')]
+            if not hit or max(x['now'] for x in hit) < 3:
+                continue
+            bs.append((max(x['now'] for x in hit), r))
+        bs.sort(key=lambda t: -t[0])
+
+        def side(x, nm):
+            if x.get('st') != 'ok':
+                return ''
+            nm = f'<a href="{html.escape(x["url"])}" target="_blank" rel="nofollow noopener">{nm}</a>'
+            if not x.get('boost'):
+                return f'{nm} {_cb_p(x["now"])}（沒加碼）'
+            b = ('平時 ' + _cb_p(x['base']) if x.get('base') is not None
+                 else ('平時最高 ' + _cb_p(x['bmax']) if x.get('bmax') else '平時值還沒抓到'))
+            return (f'{nm} <b>{_cb_p(x["now"])}</b>（{b}'
+                    + (f'，單筆最多 {x["cap"]:,} 點' if x.get('cap') else '') + '）'
+                    + (f'，到 {_cb_t(x["end"])}' if x.get('end') else ''))
+        return ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(r["name"])} {r["cat"]}</span>'
+            f'<span class="xbadge on">最高 {_cb_p(v)}</span></div>'
+            f'<div class="xt">' + '　·　'.join(s for s in (side(r['sb'], 'ShopBack'), side(r['line'], 'LINE 旅遊')) if s)
+            + '</div></li>' for v, r in bs)
+
+    _cb_boost = _cb_boost_list(_cb_rows)
+    _cb_top = None
+    for r in _cb_rows:
+        for k, nm in (('sb', 'ShopBack'), ('line', 'LINE 旅遊')):
+            x = r[k]
+            if x.get('st') == 'ok' and x.get('boost') and (not _cb_top or x['now'] > _cb_top[0]):
+                _cb_top = (x['now'], r, nm, x)
+    _cb_age_h = (NOW - datetime.datetime.fromisoformat(CB['checked'])).total_seconds() / 3600
+
+    # 最近的加碼紀錄（只列夠大的：5% 以上，而且至少是平時的 1.5 倍或平時值不知道）
+    _cb_name = {}
+    for _m in CBS['merchants']:
+        for cat, pid in (_m.get('line') or {}).items():
+            _cb_name[('line', pid)] = f'{_m["name"]} {cat}'
+    _cb_lab = {(m['sb'], l): (m['name'], c) for m in CBS['merchants'] if m.get('sb')
+               for l, c in (m.get('sb_cat') or {}).items()}
+    _cb_cut = (NOW - datetime.timedelta(days=30)).isoformat(timespec='minutes')
+    _cb_hist = []
+    for e in CBL:
+        if e['last_seen'] < _cb_cut or e['value'] < 5 or (e.get('base') and e['value'] < e['base'] * 1.5):
+            continue
+        if e['src'] == 'sb':
+            if not e.get('end') or (e['id'], e['label']) not in _cb_lab:
+                continue
+            nm, cat = _cb_lab[(e['id'], e['label'])]
+            what = f'ShopBack {nm} {cat}'
+        else:
+            what = 'LINE 旅遊 ' + _cb_name.get(('line', e['id']), e['label'])
+        t0 = e.get('start') or e['first_seen']
+        _cb_hist.append((t0, what, e))
+    _cb_hist.sort(key=lambda t: t[0], reverse=True)
+    _cb_hist_html = ''.join(
+        f'<li><div class="xh"><span class="xn">{html.escape(w)} {_cb_p(e["value"])}</span>'
+        + (f'<span class="xbadge">平時 {_cb_p(e["base"])}</span>' if e.get('base') else '') + '</div>'
+        f'<div class="xw">' + (f'{_cb_t(t0)} 起' if e.get('start') else f'本站 {_cb_t(t0)} 看到')
+        + (f'，到 {_cb_t(e["end"])}' if e.get('end') else '') + '</div></li>'
+        for t0, w, e in _cb_hist[:30])
+    _cb_first = min((e['first_seen'] for e in CBL), default=_cb_now)
+
+    # 已公告的檔期：Klook Krazy（每月最後一個星期二、三、六）與 ShopBack Plus Day
+    def _cb_last_wd(y, m, wd):
+        d = datetime.date(y + (m == 12), m % 12 + 1, 1) - datetime.timedelta(days=1)
+        while d.weekday() != wd:
+            d -= datetime.timedelta(days=1)
+        return d
+    _cb_kk = []
+    _y, _m = NOW.year, NOW.month
+    for _ in range(2):
+        _cb_kk += sorted(_cb_last_wd(_y, _m, w) for w in CBR['klook_krazy']['weekdays'])
+        _y, _m = (_y + (_m == 12), _m % 12 + 1)
+    _cb_kk = [d for d in _cb_kk if d >= NOW.date()][:3]
+    _pd = CBR['sb_plus_day']['day']
+    _cb_plus = datetime.date(NOW.year, NOW.month, _pd)
+    if _cb_plus < NOW.date():
+        _cb_plus = datetime.date(NOW.year + (NOW.month == 12), NOW.month % 12 + 1, _pd)
+    _cb_codes = [c for c in CBR['codes'] if c['end'] >= TODAY]
+
+    def _cb_md(d):
+        return f'{d.month}/{d.day}（{_WD[d.weekday()]}）'
+    _cb_lk = lambda u, t: f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{html.escape(t)}</a>'
+
+    _cb_plat = ''.join(
+        f'<div><h3>{html.escape(p["name"])}</h3><p class="disc" style="margin:0 0 8px">{html.escape(p["what"])}。</p>'
+        '<ul class="lede" style="margin:0;padding-left:1.2em">'
+        + ''.join(f'<li>{html.escape(t)}（{_cb_lk(u, "出處")}）</li>' for t, u in p['rules'])
+        + '</ul></div>' for p in CBR['platforms'])
+    _cb_pay = ('<div class="tw narrow"><table class="wrapt"><tr><th></th>'
+               + ''.join(f'<th>{html.escape(p["name"])}</th>' for p in CBR['platforms']) + '</tr>'
+               + ''.join('<tr><td class="nm"><b>' + html.escape(CBR['platforms'][0]['pay'][i][0]) + '</b></td>'
+                         + ''.join(f'<td>{html.escape(p["pay"][i][1])}</td>' for p in CBR['platforms']) + '</tr>'
+                         for i in range(len(CBR['platforms'][0]['pay'])))
+               + '</table></div>'
+               + '<p class="disc">出處：' + '、'.join(_cb_lk(p['pay_src'], p['name'] + ' 說明') for p in CBR['platforms']) + '。</p>')
+
+    _cb_faq = [
+        ('ShopBack 和 LINE 旅遊可以一起用嗎？',
+         '不行。兩邊都是靠「從哪個連結點進去下單」來認訂單，最後點的那一個才算，另一邊就拿不到。'
+         'LINE 旅遊的規則也寫中途開別的比價網或回饋網會失效。LINE購物上的 Klook、KKday 其實就是 LINE 旅遊的同一批商家，兩邊也不能疊加。'),
+        ('加碼多久換一次？',
+         f'很頻繁，常常只有幾個小時，例如 {_cb_t(_cb_top[3]["end"]) if _cb_top and _cb_top[3].get("end") else "晚上 18:00 到 23:59"} 就結束。'
+         '回饋比例看的是下單當下，所以看到加碼要在結束前付款。這頁每天自動抓好幾次，打開時會再讀一次最新資料，過了結束時間的加碼會自動拿掉。'),
+        ('從返利平台點進去會不會比較貴？',
+         '本站之前在 Booking.com 實測過：帶聯盟參數的連結會讓手機版失去 Genius 的 9.09% 價差，回饋要有 11% 以上才補得回來。'
+         '下單前先在同一台手機直接開一次商家 App 或網站，比一下價格再決定。'),
+        ('回饋多久拿得到？',
+         'ShopBack 要等入住或使用完後 60～125 天確認，滿 NT$200 才能轉到銀行；LINE 旅遊是使用完成後最晚 60 天入帳 LINE POINTS。'
+         '取消訂單回饋就沒了，所以訂可免費取消的房要有心理準備。'),
+        ('用了優惠碼還有回饋嗎？',
+         '多半沒有。ShopBack 寫明用了不是 ShopBack 給的優惠碼整筆不給，KKday 只認 ShopBack 專屬碼；'
+         'LINE 旅遊的 Klook 也只認 LINE 旅遊給的碼。優惠碼和回饋二選一時，先算哪個比較多。'),
+        ('這頁的連結有分潤嗎？',
+         '沒有。本站和 ShopBack、LINE 都沒有合作，這頁的連結都是一般連結。'),
+    ]
+    _cb_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q,
+                                         'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _cb_faq]},
+                        ensure_ascii=False)
+
+    # 瀏覽器端重畫：和上面的 Python 版同一套規則（過期加碼當平時、3% 以下不列）
+    _cb_js = r'''<script>(function(){
+var WD="日一二三四五六";function P(v){return (+v).toString()+"%"}
+function T(s){var d=new Date(s);return (d.getMonth()+1)+"/"+d.getDate()+"（"+WD[d.getDay()]+"）"+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2)}
+function live(x){if(x.st=="ok"&&x.boost&&x.end&&new Date(x.end)<new Date()){x=Object.assign({},x,{boost:false,now:x.base!=null?x.base:x.now})}return x}
+function bs(x){return x.base!=null?"平時 "+P(x.base):(x.bmax?"平時最高 "+P(x.bmax):"平時值還沒抓到")}
+function cell(x,pn){if(x.st=="none")return '<td class="dimcell">'+pn+'沒有這家</td>';if(x.st=="nocat")return '<td class="dimcell">沒有這類</td>';
+if(x.st=="err")return '<td class="dimcell">這次沒抓到</td>';var s=[];if(x.boost){s.push(bs(x));if(x.end){var e=new Date(x.end);s.push("到 "+(e.getMonth()+1)+"/"+e.getDate()+" "+("0"+e.getHours()).slice(-2)+":"+("0"+e.getMinutes()).slice(-2))}}
+return '<td><b>'+P(x.now)+'</b>'+(x.boost?'<span class="pw">加碼</span>':'')+(s.length?'<span class="qz">'+s.join("，")+'</span>':'')+'</td>'}
+function side(x,nm){if(x.st!="ok")return "";nm='<a href="'+x.url+'" target="_blank" rel="nofollow noopener">'+nm+'</a>';if(!x.boost)return nm+" "+P(x.now)+"（沒加碼）";
+return nm+" <b>"+P(x.now)+"</b>（"+bs(x)+(x.cap?"，單筆最多 "+x.cap.toLocaleString()+" 點":"")+"）"+(x.end?"，到 "+T(x.end):"")}
+fetch("/cashback.json?t="+Date.now()).then(function(r){return r.json()}).then(function(d){
+var rows=d.rows.map(function(r){return Object.assign({},r,{sb:live(r.sb),line:live(r.line)})});
+var b=[];rows.forEach(function(r){var h=[r.sb,r.line].filter(function(x){return x.st=="ok"&&x.boost});if(!h.length)return;
+var v=Math.max.apply(null,h.map(function(x){return x.now}));if(v>=3)b.push([v,r])});b.sort(function(a,c){return c[0]-a[0]});
+var ul=document.getElementById("cbnow");if(ul){ul.innerHTML=b.map(function(t){var r=t[1];return '<li><div class="xh"><span class="xn">'+r.name+" "+r.cat+'</span><span class="xbadge on">最高 '+P(t[0])+'</span></div><div class="xt">'+[side(r.sb,"ShopBack"),side(r.line,"LINE 旅遊")].filter(Boolean).join("　·　")+"</div></li>"}).join("")||'<li><div class="xt">現在兩邊都沒有 3% 以上的加碼，下面的比較表是平時的回饋。</div></li>'}
+var ct=document.getElementById("cbcat");if(ct){var cats=[];rows.forEach(function(r){if(cats.indexOf(r.cat)<0)cats.push(r.cat)});
+ct.innerHTML=cats.map(function(c){var rs=rows.filter(function(r){return r.cat==c});rs.sort(function(a,z){function m(r){return Math.max(r.sb.st=="ok"?r.sb.now:-1,r.line.st=="ok"?r.line.now:-1)}return m(z)-m(a)});
+return "<h3>"+c+'</h3><div class="tw narrow"><table class="wrapt cbt"><tr><th>商家</th><th>ShopBack</th><th>LINE 旅遊</th></tr>'+rs.map(function(r){return '<tr><td class="nm"><b>'+r.name+"</b></td>"+cell(r.sb,"ShopBack ")+cell(r.line,"LINE 旅遊")+"</tr>"}).join("")+"</table></div>"}).join("")}
+var at=document.getElementById("cbat");if(at&&d.checked)at.textContent=T(d.checked);
+var top=null;rows.forEach(function(r){[["sb","ShopBack"],["line","LINE 旅遊"]].forEach(function(k){var x=r[k[0]];if(x.st=="ok"&&x.boost&&(!top||x.now>top[0]))top=[x.now,r,k[1]]})});
+var tp=document.getElementById("cbtop");if(tp)tp.innerHTML=top?"現在最高："+top[1].name+" "+top[1].cat+" <b>"+P(top[0])+"</b>（"+top[2]+"）":"現在兩邊都沒有加碼";
+}).catch(function(){})})();</script>'''
+    _cb_js = _cb_js.replace('"/cashback.json', '"' + U('/cashback.json'))
+
+    _cb_title = 'ShopBack、LINE 旅遊回饋加碼整理：Klook、KKday、Trip.com、Agoda 現在哪邊回饋高'
+    _cb_desc = ('訂日本住宿、行程、機票前先看：ShopBack 與 LINE 旅遊各商家現在回饋多少、平時多少、加碼到幾點，'
+                '每天自動更新；加上回饋會被取消的情況、多久拿得到，以及兩邊不能疊加的原因。')
+    _cb_tans = (f'現在最高：{html.escape(_cb_top[1]["name"])} {_cb_top[1]["cat"]} <b>{_cb_p(_cb_top[0])}</b>（{_cb_top[2]}）'
+                if _cb_top else '現在兩邊都沒有加碼')
+    write('japan-cashback/index.html',
+      head(_cb_title, _cb_desc, 'japan-cashback/',
+           '<script type="application/ld+json">' + _cb_ld + '</script>'
+           '<style>.cbt td.nm{min-width:0;width:24%}.cbt td{vertical-align:top}'
+           '.cbt td .pw{white-space:nowrap;margin-left:4px}.cbt th:not(:first-child),.cbt td:not(:first-child){width:38%}</style>')
+      + topnav() + crumbs([('首頁', '/'), ('ShopBack、LINE 旅遊回饋整理', None)])
+      + '<h1>訂 Klook、KKday、Trip.com 之前，先看 ShopBack 和 LINE 旅遊現在回饋多少</h1>'
+      + '<p class="lede">同一筆日本住宿或行程，從 ShopBack 或 LINE 旅遊點進去再下單，可以拿回一部分現金或 LINE POINTS。'
+        '平時大多只有 2～5%，加碼時會到 10～20%，但常常只有幾個小時。'
+        '這頁每天自動抓兩邊的商家頁好幾次，正在加碼的排在最前面，打開頁面時也會再讀一次最新資料。</p>'
+      + '<div class="today">'
+        f'<div class="tday">資料抓取時間 <span id="cbat">{_cb_t(CB["checked"])}</span>　·　兩邊都不能疊加，只能選一個</div>'
+        f'<div class="tans" id="cbtop">{_cb_tans}</div>'
+        '<div class="tsub">回饋比例看的是下單當下。加碼結束後才付款，就只有平時的比例。'
+        + (f'<br><b>資料已經 {int(_cb_age_h)} 小時沒更新</b>，下單前請點進商家頁確認。' if _cb_age_h > 30 else '')
+        + '</div></div>'
+      + '<h2>現在正在加碼</h2>'
+      + '<p class="lede">只列 3% 以上的加碼。點進去的那一頁會顯示當下的比例，以那一頁為準。</p>'
+      + '<ul class="xl" id="cbnow">' + (_cb_boost or '<li><div class="xt">現在兩邊都沒有 3% 以上的加碼，下面的比較表是平時的回饋。</div></li>') + '</ul>'
+      + '<p class="disc">去看兩邊今天的加碼：' + '、'.join(_cb_lk(p['daily'], p['name']) for p in CBR['platforms'])
+      + '。ShopBack 的平時值是本站在沒有加碼時抓到的數字，還沒抓到過的商家寫「平時值還沒抓到」。</p>'
+      + '<h2>依類別比較：住宿、行程門票、機票、網卡</h2>'
+      + '<p class="lede">每一格是那個類別裡最高的那一層。各商家怎麼分層不一樣，細項請點進商家頁看。'
+        'LINE購物上的 Klook、KKday 就是 LINE 旅遊的同一批商家，比例相同，所以這裡只列 LINE 旅遊。</p>'
+      + '<div id="cbcat">' + _cb_cat_tables(_cb_rows) + '</div>'
+      + '<h2>接下來已知的加碼時間</h2>'
+      + '<div class="tldr"><ul>'
+      + (f'<li><b>ShopBack Klook Krazy：' + '、'.join(_cb_md(d) for d in _cb_kk) + '</b>。'
+         f'ShopBack 的 Klook 頁首橫幅寫「每月最後一個星期二、三、六」是 Klook Krazy，日期是照這條規則算的，當天以商家頁為準'
+         f'（{_cb_lk(CBR["klook_krazy"]["src"], "ShopBack Klook")}）。</li>' if _cb_kk else '')
+      + f'<li><b>ShopBack Plus Day：{_cb_md(_cb_plus)}</b>。每月 {_pd} 號，{html.escape(CBR["sb_plus_day"]["note"])}'
+        f'（{_cb_lk(CBR["sb_plus_day"]["src"], "說明")}）。</li>'
+      + '<li>LINE 旅遊沒有公布固定的加碼日，都是限時檔期。</li>'
+      + '</ul></div>'
+      + ((f'<h3>LINE 旅遊折扣碼（日本相關）</h3><ul class="xl">'
+          + ''.join(f'<li><div class="xh"><span class="xn">{html.escape(c["what"])}</span>'
+                    f'<span class="xbadge">到 {int(c["end"][5:7])}/{int(c["end"][8:])}</span></div>'
+                    f'<div class="xw">{html.escape(c["cap"])}　·　{_cb_lk(c["src"], "折扣碼專區")}</div></li>' for c in _cb_codes)
+          + '</ul><p class="disc">用這些碼仍然有 LINE POINTS；用其他來源的碼就沒有。</p>') if _cb_codes else '')
+      + '<h2>最近的加碼紀錄</h2>'
+      + f'<p class="lede">本站從 {_cb_t(_cb_first)} 開始記錄，只列 5% 以上、而且比平時高很多的加碼。紀錄越久，越看得出哪幾天常加碼。</p>'
+      + '<ul class="xl">' + (_cb_hist_html or '<li><div class="xt">還沒有紀錄。</div></li>') + '</ul>'
+      + '<h2>回饋會被取消的情況</h2>'
+      + '<div class="xv">' + _cb_plat + '</div>'
+      + '<h2>多久拿得到、拿到的是什麼</h2>' + _cb_pay
+      + '<h2>從返利平台繞過去，一定比較划算嗎？</h2>'
+      + '<p class="lede">不一定。回饋只算房價或商品價，稅金、服務費不算；而且本站實測過，Booking.com 帶聯盟參數的連結'
+        '會讓手機版失去 Genius 那 9.09% 的價差，那一次回饋要 11% 以上才補得回來。'
+        f'下單前用同一台手機直接開商家看一次價格，比完再決定（實測過程在<a href="{U("/hotel-price-check/")}">訂房比價那一頁</a>）。</p>'
+      + '<div class="tldr"><ul>'
+        '<li><b>值得繞</b>：加碼到 10% 以上、沒有要用其他優惠碼、行程確定不會取消。</li>'
+        '<li><b>不用繞</b>：手上有更划算的優惠碼、訂的是可免費取消而且可能會改的房、只差 1～2%。</li>'
+        '</ul></div>'
+      + faq_visible(_cb_faq)
+      + '<h2>延伸閱讀</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/deals/")}"><b>✈️ 要搶的便宜機票</b><s>各家航空與旅行社的限時活動</s></a>'
+      + f'<a class="ct" href="{U("/hotel-price-check/")}"><b>🏨 訂房比價</b><s>手機、桌機、返利連結的價差實測</s></a>'
+      + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🎟️ 日本購物折扣</b><s>藥妝、電器、百貨的優惠券</s></a></div>'
+      + '<p class="disc">回饋比例取自 ShopBack 台灣與 LINE 旅遊（buy.line.me）的公開商家頁，每天自動抓取數次；'
+        f'取消條件、領取方式與折扣碼查證於 {CBR["checked"]}。各平台隨時調整，請以點進去當下的頁面為準。'
+        '本站與 ShopBack、LINE 沒有合作，這頁的連結都沒有分潤。</p>'
+      + _cb_js
+      + foot())
+    pages.append(('/japan-cashback/', 0.7))
+    print(f'   返利回饋頁：{len(_cb_rows)} 列、加碼 {_cb_boost.count("<li>")} 項、紀錄 {len(_cb_hist)} 筆（資料 {CB["checked"]}）')
+
 # ---------- 訂房比價（跨平台方法論）----------
 PC = (json.load(open('price-check.json', encoding='utf-8'))
       if os.path.exists('price-check.json') else None)
@@ -33587,6 +33881,9 @@ write('search-text.json', _sx)
 # （Suica、折價券、USJ）。同一組裡任一個詞出現在搜尋字裡，就把它換成組內其他詞一起找。
 # 只收確定指同一件事的；一個詞太泛（pass、卡）會把無關的頁拉進來，不收。
 SEARCH_SYN = [
+    # 返利平台
+    ['shopback', 'shop back', '回饋網', '返利', '返利網', '現金回饋網', '回饋平台'],
+    ['line旅遊', 'line travel', 'linetravel', 'line購物', 'line shopping', 'line point', 'line points', 'linepoints', 'line點數'],
     # 交通卡
     ['西瓜卡', 'suica', 'スイカ'],
     ['pasmo', 'パスモ'],
