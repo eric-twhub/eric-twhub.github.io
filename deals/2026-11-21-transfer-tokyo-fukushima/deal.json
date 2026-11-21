@@ -1,35 +1,35 @@
 {
  "schema": 1,
  "slug": "2026-11-21-transfer-tokyo-fukushima",
- "generated": "2026-11-21 11:18",
+ "generated": "2026-11-21 11:41",
  "kind": "transfer",
  "city": "fukushima",
  "via": "tokyo",
- "own": 12389,
+ "own": 13172,
  "fare": {
   "o": "KHH",
   "d": "TYO",
   "air": "GK",
   "airname": "捷星日本",
   "cls": "lcc",
-  "price": 7924,
-  "dep": "2026-12-03",
-  "ret": "2026-12-08",
+  "price": 8020,
+  "dep": "2026-12-10",
+  "ret": "2027-01-06",
   "dept": "14:00",
   "rett": "09:25",
   "rt": true,
   "tr": 0,
   "dur": 485,
   "dur_to": 210,
-  "gate": "City.Travel",
-  "url": "https://www.aviasales.com/search/KHH0312NRT08121?t=GK17963064001796322600000210KHHNRT17967219001796734800000275NRTKHH_798d44a6574f2617e9430eef9a0e5e76_19762&search_date=18112026&expected_price_uuid=01a1ed8b-08ae-8030-e380-87bbd35e607e&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=yJSy11REnMvZQ3-UXfVyoA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7924&marker=775639"
+  "gate": "Farera",
+  "url": "https://www.aviasales.com/search/KHH1012NRT06011?t=GK17969112001796927400000210KHHNRT17992275001799240400000275NRTKHH_4789b047764565a04e197efdfa344785_19948&search_date=20112026&expected_price_uuid=01a1f93c-45a6-8040-2f7b-281fdf69e3ac&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LBX4-5ZR7BOgZf6495cM5A&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8020&marker=775639"
  },
  "fare_rt": true,
  "jpy_text": "約 ¥9,000",
  "twd_one_way": 1888,
  "rate": 0.2098,
  "rate_at": "2026-11-20 08:02",
- "fare_gate": "City.Travel",
+ "fare_gate": "Farera",
  "tc_alt": {
   "price": 9191,
   "airname": "酷航",
@@ -39,6 +39,6 @@
  "route": "東京 → 福島",
  "mode": "東北新幹線",
  "tm": "約 1.5 小時",
- "total": 11700,
- "save": 689
+ "total": 11796,
+ "save": 1376
 }
