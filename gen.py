@@ -21318,6 +21318,9 @@ if os.path.exists('airline-card.json'):
         if al['anchor'] == 'tigerair' and AC.get('tigerair_page'):
             _bd_html += (f'<p class="disc"><a href="{U("/japan-airline-card/tigerair/")}">虎航完整整理</a>：'
                          '刷卡有沒有手續費、能不能分期、刷卡失敗怎麼辦、日本出發算國內還是國外。</p>')
+        if al['anchor'] == 'peach' and AC.get('peach_page'):
+            _bd_html += (f'<p class="disc"><a href="{U("/japan-airline-card/peach/")}">樂桃完整整理</a>：'
+                         '票務手續費什麼時候收、日本出發只能付日圓、付款失敗、名單有樂桃的刷卡活動。</p>')
     _cross = _live_deals(_BD['cross'])
     if _cross:
         _bd_html += ('<h2 id="any-airline">不限航空：買哪家都算的刷卡活動</h2>'
@@ -21624,6 +21627,156 @@ if os.path.exists('airline-card.json'):
             '.tgptt{padding-left:1.2em;margin:4px 0 12px}.tgptt li{margin:4px 0}</style>'
           + foot())
         pages.append(('/japan-airline-card/tigerair/', 0.7))
+
+    # ---------- 樂桃刷哪張卡（/japan-airline-card/peach/）----------
+    # 2026-11-21 使用者選「做樂桃」。樂桃跟虎航最大的差別：付款幣別看第一航段出發地、
+    # 日本出發只能付日圓，Minimum 票價有票務手續費但台灣出發／抵達付台幣不收。
+    # 付款規定在 airline-card.json 的 peach_page，全部是樂桃官網原文。
+    _PP = AC.get('peach_page')
+    _pcal = next((a for a in _BD['airlines'] if a['anchor'] == 'peach'), None)
+    if _PP and _pcal:
+        _pcl = _live_deals(_pcal['deals'])
+        _pc_cross = [x for x in _live_deals(_BD['cross']) if 'peach' in x.get('cover', ())]
+        _pf = _PP['fee']
+
+        def _psrc(u, n):
+            return f'<a href="{u}" rel="nofollow noopener" target="_blank">{html.escape(n)}</a>'
+
+        _ppay = ''.join(
+            f'<tr><td class="nm"><b>{html.escape(m)}</b></td><td>{html.escape(w)}</td>'
+            f'<td>{html.escape(n)}</td></tr>' for m, w, n in _PP['pay'])
+        _ppay += (f'<tr><td class="nm"><b>{html.escape(_PP["pay_none"])}</b></td>'
+                  '<td class="dimcell">官網沒寫</td><td class="dimcell">付款方式頁沒有列</td></tr>')
+        _pref = ''.join(f'<tr><td class="nm"><b>{html.escape(a)}</b></td><td>{html.escape(b)}</td></tr>'
+                        for a, b in _PP['refund'])
+        _pptt = ''.join(
+            f'<li>{p["date"][:4]}/{int(p["date"][5:7])}/{int(p["date"][8:10])}：{html.escape(p["said"])}'
+            f'（<a href="{p["url"]}" rel="nofollow noopener" target="_blank">PTT 信用卡板</a>）</li>'
+            for p in _PP['ptt'])
+        _pc_cnt = len(_pcl) + len(_pc_cross)
+
+        _pfaq = [
+            ('樂桃刷卡有手續費嗎？',
+             f'沒有依刷卡收的手續費。樂桃收的是「票務手續費」，只有 Minimum 票價才收，'
+             f'每人每航段 ¥{_pf["ticket_jpy"]}，而且樂桃寫「{_pf["quote"]}」。'
+             'Standard 和 Standard Plus 不收。透過客服或機場櫃台訂位另收開票手續費。'),
+            ('樂桃日本出發的回程可以用台幣付嗎？',
+             f'單獨訂不行。樂桃寫「{_PP["ccy_quote2"]}」，日本出發的單程只能付日圓。'
+             f'從台灣出發一起訂來回就可以整筆付台幣，樂桃的例子是「{_PP["ccy_eg"]}」。'),
+            ('樂桃刷哪張信用卡比較好？',
+             f'樂桃官網目前沒有台灣銀行的購票合作。名單有樂桃的刷卡活動，本頁列了 {_pc_cnt} 筆，'
+             '大多只算航空公司官網、App 或櫃台。'),
+            ('樂桃付款失敗怎麼辦？',
+             '樂桃列出的信用卡情況是：輸入卡號前就關掉頁面、還沒完成 SMS 或一次性密碼驗證就關掉頁面、'
+             '畫面顯示付款錯誤。沒收到訂位完成信表示付款沒完成，要重新訂位。'),
+            ('樂桃可以刷卡分期嗎？',
+             '官網沒有寫信用卡分期。付款方式裡有 AFTEE 先享後付，只收新台幣、總金額 5 萬元以內，'
+             f'而且樂桃寫「{_PP["aftee_quote"]}」'),
+            ('樂桃退票退到哪裡？',
+             'Minimum 不能退；Standard 扣手續費後退成 Peach 點數；Standard Plus 扣手續費後退回原付款方式。'
+             '航班被取消或大幅延誤時，可以選退回原付款方式。'),
+        ]
+        _pfaq_ld = json.dumps({
+            '@context': 'https://schema.org', '@type': 'FAQPage',
+            'mainEntity': [{'@type': 'Question', 'name': q,
+                            'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                           for q, a in _pfaq]}, ensure_ascii=False)
+
+        _ptt = '樂桃刷哪張信用卡？手續費、付款幣別、付款失敗與信用卡優惠'
+        _ptd = ('樂桃航空刷卡一次看：票務手續費什麼時候收、日本出發只能付日圓、'
+                f'能用哪些付款方式、付款失敗的原因、名單有樂桃的刷卡活動 {_pc_cnt} 筆、退票退到哪。')
+
+        write('japan-airline-card/peach/index.html',
+          head(_ptt, _ptd, 'japan-airline-card/peach/',
+               '<script type="application/ld+json">' + _pfaq_ld + '</script>')
+          + topnav()
+          + crumbs([('首頁', '/'), ('買機票刷哪張卡', '/japan-airline-card/'), ('樂桃航空', None)])
+          + '<h1>樂桃刷哪張信用卡</h1>'
+          + f'<p class="lede">刷卡活動取自發卡銀行官網，核對於 {_BD.get("checked", AC["checked"])}，'
+            f'過期的會自動拿掉。付款規定取自樂桃官網，核對於 {_PP["checked"]}。</p>'
+          + '<div class="today"><div class="tday">刷卡另收手續費嗎</div>'
+            '<div class="tans">不收，但付款幣別不能自己選</div>'
+            f'<div class="tsub">Minimum 票價收票務手續費每人每航段 ¥{_pf["ticket_jpy"]}，'
+            '付台幣的台灣出發／抵達航班不收，Standard 以上也不收。</div>'
+            '<div class="tbuf">幣別看第一段從哪裡出發：日本出發的單程只能付日圓。'
+            '從台灣出發一起訂來回，整筆付台幣。見<a href="#currency">付款幣別那一段</a>。</div></div>'
+
+          + '<h2 id="cards">名單有樂桃的刷卡活動</h2>'
+          + f'<p class="lede">{html.escape(_PP["no_bank"])}下面是發卡銀行自己的活動，名單都有樂桃：</p>'
+          + ('<ul class="xl">' + ''.join(_deal_li(dict(x, airlines=None)) for x in _pcl + _pc_cross) + '</ul>'
+             if _pcl or _pc_cross else '<p class="lede">目前沒查到進行中的刷卡活動。</p>')
+          + '<p class="disc">透過旅行社或訂票網站買，大多不算。一銀 FUN旅遊、玉山旅遊通路滿額活動的名單沒有樂桃。</p>'
+
+          + '<h2 id="fee">手續費：只有 Minimum 會收</h2>'
+          + '<div class="tldr"><ul>'
+            f'<li><b>票務手續費。</b>Minimum 票價每人每航段 ¥{_pf["ticket_jpy"]}；樂桃寫'
+            f'「{html.escape(_pf["quote"])}」（{_psrc(_pf["src"], _pf["src_name"])}）。'
+            f'常見問題的寫法是「{html.escape(_pf["faq_quote"])}」（{_psrc(_pf["faq_src"], _pf["faq_src_name"])}）。</li>'
+            f'<li><b>開票手續費。</b>網路訂免費；透過客服訂 NT${_pf["call_twd"]:,}／¥{_pf["call_jpy"]:,}，'
+            f'機場櫃台訂 NT${_pf["counter_twd"]:,}／¥{_pf["counter_jpy"]:,}，每人每航段。</li>'
+            '<li><b>沒有依卡別收的付款手續費。</b>費用表沒有這一項。</li>'
+            '</ul></div>'
+
+          + '<h2 id="currency">付款幣別看第一段從哪裡出發</h2>'
+          + f'<p class="lede">樂桃寫「{html.escape(_PP["ccy_quote2"])}」'
+            f'（{_psrc(_PP["ccy_src2"], _PP["ccy_src2_name"])}）。</p>'
+          + '<div class="tldr"><ul>'
+            '<li><b>日本出發的單程。</b>只能付日圓，刷外幣多半會被銀行收國外交易手續費。</li>'
+            f'<li><b>台灣出發的來回。</b>整筆付台幣。樂桃的例子：「{html.escape(_PP["ccy_eg"])}」'
+            f'（{_psrc(_PP["ccy_eg_src"], _PP["ccy_eg_src_name"])}）。</li>'
+            '</ul></div>'
+          + '<h3>付台幣算國內還是國外</h3>'
+          + '<p class="lede">樂桃和銀行都沒有公開寫。樂桃是日本公司，網友回報的帳單即使付台幣，'
+            '國家也顯示 JP（不是官方說法，而且是舊資料）：</p><ul class="tgptt">' + _pptt + '</ul>'
+          + f'<p class="disc">如果這一筆算國外，要看卡片的海外回饋扣掉 1.5%。判斷方法見'
+            f'<a href="{U("/japan-airline-card/")}#domestic-or-foreign">主頁那一段</a>，'
+            f'卡片可以從<a href="{U("/japan-credit-card/")}">旅日信用卡比較</a>挑。</p>'
+
+          + '<h2 id="pay">樂桃收哪些付款方式</h2>'
+          + '<div class="tw"><table class="tgp"><thead><tr><th>付款方式</th><th>能用什麼</th>'
+            '<th>要注意</th></tr></thead><tbody>' + _ppay + '</tbody></table></div>'
+          + f'<p class="disc">取自{_psrc(_PP["pay_src"], _PP["pay_src_name"])}。'
+            f'{html.escape(_PP["linepay"])}（{_psrc(_PP["linepay_src"], _PP["linepay_src_name"])}）。</p>'
+
+          + '<h2 id="installment">可以刷卡分期嗎</h2>'
+          + '<p class="lede">樂桃官網沒有寫信用卡分期。付款方式裡的 AFTEE 先享後付只收新台幣、'
+            f'總金額 5 萬元以內，而且樂桃寫「{html.escape(_PP["aftee_quote"])}」'
+            f'（{_psrc(_PP["aftee_src"], _PP["aftee_src_name"])}）。'
+            '要用信用卡分期，只能刷完之後自己問發卡銀行。</p>'
+
+          + '<h2 id="declined">付款失敗怎麼辦</h2>'
+          + '<p class="lede">樂桃列出按下付款後沒出現完成畫面的信用卡情況：</p>'
+          + '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(x)}</li>' for x in _PP['fail'])
+          + '</ul></div>'
+          + f'<p class="disc">沒收到訂位完成信，表示付款沒完成或還在暫時訂位，要重新訂位；'
+            f'在最後確認畫面不要重複按「進行購買」（{_psrc(_PP["fail_src"], _PP["fail_src_name"])}）。'
+            '發卡國、持卡人姓名、額度的限制，官網沒寫。</p>'
+
+          + '<h2 id="refund">退票退到哪裡</h2>'
+          + '<div class="tw"><table class="tgp"><thead><tr><th>票價</th><th>自己取消</th></tr></thead>'
+            '<tbody>' + _pref + '</tbody></table></div>'
+          + f'<p class="disc">取自{_psrc(_PP["refund_src"], _PP["refund_src_name"])}。'
+            f'{html.escape(_PP["refund_cancel"])}（{_psrc(_PP["refund_cancel_src"], _PP["ccy_src2_name"])}）。'
+            f'{html.escape(_PP["refund_days"])}（{_psrc(_PP["refund_days_src"], "樂桃日文常見問題")}）。'
+            '持卡人要不要本人搭機，官網沒寫。</p>'
+
+          + fare_cta('osaka', '看今天的便宜機票')
+          + '<h2>相關頁面</h2><div class="cities">'
+          + f'<a class="ct" href="{U("/japan-airline-card/")}"><b>✈️ 各航空刷哪張卡</b>'
+            f'<s>虎航、星宇、華航、長榮等 11 家</s></a>'
+          + f'<a class="ct" href="{U("/japan-airline-card/tigerair/")}"><b>✈️ 虎航刷哪張卡</b>'
+            f'<s>專屬購票頁折扣與刷卡回饋</s></a>'
+          + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
+            f'<s>虎航、樂桃、捷星逐家比</s></a>'
+          + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
+            f'<s>日本刷哪張回饋最高</s></a></div>'
+          + faq_visible(_pfaq)
+          + '<p class="disc">付款規定取自樂桃航空官網，刷卡活動取自各發卡銀行官網，'
+            '各卡條款請以銀行公告為準。本頁為公開資訊整理，非理財建議。</p>'
+          + '<style>.tgp td{vertical-align:top}.tgp td.nm{min-width:7.5em}'
+            '.tgptt{padding-left:1.2em;margin:4px 0 12px}.tgptt li{margin:4px 0}</style>'
+          + foot())
+        pages.append(('/japan-airline-card/peach/', 0.7))
 
 # ---------- 航空聯名卡：華航、星宇、長榮 ----------
 # 以航空公司為主角，一家一頁。聯名卡的回饋是哩程，不能跟旅日信用卡那 15 張

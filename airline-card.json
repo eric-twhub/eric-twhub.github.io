@@ -56,7 +56,7 @@
    "twd": "可以",
    "twd_src": "https://www.flypeach.com/tw/lm/fares/payment",
    "twd_src_name": "樂桃航空・付款方式",
-   "twd_note": "官網列出的信用卡付款幣別有 JPY、KRW、CNY、TWD、HKD、THB、SGD 七種。另有限台灣國內使用的 AFTEE 先享後付（TWD）。",
+   "twd_note": "官網列出的信用卡付款幣別有 JPY、KRW、CNY、TWD、HKD、THB、SGD 七種，但要依第一航段的出發地用當地貨幣付，日本出發只能付日圓。另有限台灣國內使用的 AFTEE 先享後付（TWD）。",
    "fx_fee": null,
    "fx_fee_note": "付款方式頁沒有提到跟幣別有關的手續費，也沒有提到發卡行的海外手續費",
    "card": null
@@ -645,6 +645,106 @@
     "date": "2024-02-27",
     "url": "https://www.ptt.cc/bbs/creditcard/M.1709044993.A.A22.html",
     "said": "原 PO 實測：刷日圓的回程機票，消費地顯示日本；推文說虎航刷台幣是國內交易"
+   }
+  ]
+ },
+ "peach_page": {
+  "_說明": "/japan-airline-card/peach/ 用。樂桃官網 curl 會被擋，要用瀏覽器讀；費用表金額在表格列裡（tr[id*=pay_commision]）。常見問題站 cs.flypeach.com 是 Zendesk，可用公開 API 抓。2026-11-21 逐句核對。費用表 2027-03-28 起有新版（金額相同），每季回查。",
+  "checked": "2026-11-21",
+  "fee": {
+   "ticket_jpy": 640,
+   "call_twd": 820,
+   "call_jpy": 2200,
+   "counter_twd": 1230,
+   "counter_jpy": 3300,
+   "quote": "以新台幣(TWD)計價的台灣出發/抵達航班，將不收取票務手續費。",
+   "faq_quote": "僅Minimum票價類型將收取票務手續費（從台灣出發的行程中的台灣航段將不收取票務手續費）",
+   "faq_src": "https://cs.flypeach.com/hc/zh-tw/articles/4659119978526",
+   "faq_src_name": "樂桃・票務手續費常見問題",
+   "src": "https://www.flypeach.com/tw/lm/fares/fees_and_charges",
+   "src_name": "樂桃・各項費用・手續費"
+  },
+  "ccy_quote": "各項費用及手續費適用於行程第一航段之出發國家/地區所設定之費用及貨幣。",
+  "ccy_quote2": "各項費用及手續費根據您行程第一航段的出發國家/地區為設定，且必須以當地貨幣支付。",
+  "ccy_src2": "https://www.flypeach.com/tw/lm/fares/fare_conditions",
+  "ccy_src2_name": "樂桃・更改・取消・退費",
+  "ccy_eg": "來回：台北(桃園)→大阪（關西）→台北(桃園) 去程與回程皆適用於台灣設定的費用",
+  "ccy_eg_src": "https://cs.flypeach.com/hc/zh-tw/articles/4659227691166",
+  "ccy_eg_src_name": "樂桃・費用適用哪個國家常見問題",
+  "pay_src": "https://www.flypeach.com/tw/lm/fares/payment",
+  "pay_src_name": "樂桃・付款方式",
+  "pay": [
+   [
+    "信用卡、簽帳金融卡",
+    "VISA、Master、JCB、Diners Club、American Express、DISCOVER、銀聯",
+    "銀聯要用手機收 SMS 認證碼"
+   ],
+   [
+    "AFTEE 先享後付",
+    "只收新台幣",
+    "只能網路新購，總金額台幣 5 萬元以內；未滿 18 歲不能用"
+   ],
+   [
+    "超商、ATM、網路銀行",
+    "只收日圓",
+    "限日本國內使用，訂完 24 小時內要付，沒付自動取消"
+   ],
+   [
+    "樂天 Pay、PayPay、d払い",
+    "只收日圓",
+    "PayPay 只收 PayPay 餘額付款"
+   ],
+   [
+    "Peach 點數",
+    "點數發行時的幣別",
+    "其中一位乘客要是點數持有人"
+   ]
+  ],
+  "pay_none": "Apple Pay、Google Pay、PayPal",
+  "linepay": "LINE Pay 已在 2024 年 6 月 30 日停用",
+  "linepay_src": "https://www.flypeach.com/tw/news/20240621",
+  "linepay_src_name": "樂桃公告",
+  "aftee_quote": "即使機票取消亦必須繳付機票費用，不得取消繳費。",
+  "aftee_src": "https://cs.flypeach.com/hc/zh-tw/articles/4659141567262",
+  "aftee_src_name": "樂桃・取消常見問題",
+  "fail": [
+   "在輸入信用卡資料前關閉頁面",
+   "尚未完成身分驗證（SMS 驗證／一次性密碼）便關閉頁面",
+   "畫面顯示付款錯誤"
+  ],
+  "fail_src": "https://cs.flypeach.com/hc/zh-tw/articles/4659141631006",
+  "fail_src_name": "樂桃・付款後沒出現完成畫面常見問題",
+  "refund": [
+   [
+    "Minimum",
+    "無法退款"
+   ],
+   [
+    "Standard",
+    "扣手續費後以 Peach 點數返還"
+   ],
+   [
+    "Standard Plus",
+    "扣手續費後以原支付方式退還"
+   ]
+  ],
+  "refund_src": "https://cs.flypeach.com/hc/zh-tw/articles/4659210416414",
+  "refund_src_name": "樂桃・退款常見問題",
+  "refund_cancel": "航班取消或大幅延誤時，可以選退回原付款方式或 Peach 點數",
+  "refund_cancel_src": "https://www.flypeach.com/tw/lm/fares/fare_conditions",
+  "refund_days": "日文版常見問題寫退回信用卡約需 1～2 個月，點數約 1 週",
+  "refund_days_src": "https://cs.flypeach.com/hc/ja/articles/4659163019294",
+  "no_bank": "樂桃官網的優惠頁、公告與折扣代碼頁，目前都沒有列出台灣銀行信用卡的購票合作。",
+  "ptt": [
+   {
+    "date": "2014-04-25",
+    "url": "https://www.ptt.cc/bbs/creditcard/M.1398357608.A.006.html",
+    "said": "台灣飛日本單程用台幣付，銀行查到請款地是 JP、幣別 TWD，另收 1.5%"
+   },
+   {
+    "date": "2016-08-17",
+    "url": "https://www.ptt.cc/bbs/creditcard/M.1471366533.A.E5C.html",
+    "said": "高雄飛關西來回付台幣，帳單顯示國家 JP、幣別 TWD；那張卡沒收手續費，推文有人說每次都被收 1.5%"
    }
   ]
  }
