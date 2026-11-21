@@ -422,20 +422,20 @@
   {
    "slug": "deals-2026-11-21-taipei-okinawa",
    "url": "/deals/2026-11-21-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,997 來回含稅｜台灣虎航 12/17 出發",
-   "title": "台北飛沖繩 NT$2,997 來回含稅｜台灣虎航 12/17 出發"
+   "h1": "台北飛沖繩 NT$2,538 來回含稅｜台灣虎航 12/17 出發",
+   "title": "台北飛沖繩 NT$2,538 來回含稅｜台灣虎航 12/17 出發"
+  },
+  {
+   "slug": "deals-2026-11-21-kaohsiung-okinawa",
+   "url": "/deals/2026-11-21-kaohsiung-okinawa/",
+   "h1": "高雄飛沖繩 NT$3,057 來回含稅｜台灣虎航 12/17 出發",
+   "title": "高雄飛沖繩 NT$3,057 來回含稅｜台灣虎航 12/17 出發"
   },
   {
    "slug": "deals-2026-11-21-taipei-ishigaki",
    "url": "/deals/2026-11-21-taipei-ishigaki/",
    "h1": "台北飛石垣島 NT$3,416 來回含稅｜台灣虎航 12/09 出發",
    "title": "台北飛石垣島 NT$3,416 來回含稅｜台灣虎航 12/09 出發"
-  },
-  {
-   "slug": "deals-2026-11-21-kaohsiung-okinawa",
-   "url": "/deals/2026-11-21-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$3,626 來回含稅｜台灣虎航 12/17 出發",
-   "title": "高雄飛沖繩 NT$3,626 來回含稅｜台灣虎航 12/17 出發"
   },
   {
    "slug": "deals-2026-11-21-taichung-okinawa",
@@ -450,16 +450,16 @@
    "title": "台北飛宮崎 NT$4,717 來回含稅｜台灣虎航 12/14 出發"
   },
   {
-   "slug": "deals-2026-11-21-kaohsiung-ishigaki",
-   "url": "/deals/2026-11-21-kaohsiung-ishigaki/",
-   "h1": "高雄飛石垣島 NT$4,917 來回含稅｜台灣虎航 11/29 出發",
-   "title": "高雄飛石垣島 NT$4,917 來回含稅｜台灣虎航 11/29 出發"
-  },
-  {
    "slug": "deals-2026-11-21-taipei-fukuoka",
    "url": "/deals/2026-11-21-taipei-fukuoka/",
    "h1": "台北飛福岡 NT$4,945 來回含稅｜台灣虎航 12/01 出發",
    "title": "台北飛福岡 NT$4,945 來回含稅｜台灣虎航 12/01 出發"
+  },
+  {
+   "slug": "deals-2026-11-21-kaohsiung-ishigaki",
+   "url": "/deals/2026-11-21-kaohsiung-ishigaki/",
+   "h1": "高雄飛石垣島 NT$5,136 來回含稅｜台灣虎航 11/29 出發",
+   "title": "高雄飛石垣島 NT$5,136 來回含稅｜台灣虎航 11/29 出發"
   },
   {
    "slug": "deals-2026-11-21-kaohsiung-fukuoka",
@@ -468,16 +468,16 @@
    "title": "高雄飛福岡 NT$5,565 來回含稅｜台灣虎航 12/29 出發"
   },
   {
-   "slug": "deals-2026-11-21-taipei-okayama",
-   "url": "/deals/2026-11-21-taipei-okayama/",
-   "h1": "台北飛岡山 NT$6,145 來回含稅｜台灣虎航 12/17 出發",
-   "title": "台北飛岡山 NT$6,145 來回含稅｜台灣虎航 12/17 出發"
-  },
-  {
    "slug": "deals-2026-11-21-taipei-osaka",
    "url": "/deals/2026-11-21-taipei-osaka/",
    "h1": "台北飛大阪 NT$6,338 來回含稅｜樂桃航空 12/22 出發",
    "title": "台北飛大阪 NT$6,338 來回含稅｜樂桃航空 12/22 出發"
+  },
+  {
+   "slug": "deals-2026-11-21-taipei-okayama",
+   "url": "/deals/2026-11-21-taipei-okayama/",
+   "h1": "台北飛岡山 NT$6,605 來回含稅｜台灣虎航 12/17 出發",
+   "title": "台北飛岡山 NT$6,605 來回含稅｜台灣虎航 12/17 出發"
   },
   {
    "slug": "deals-2026-11-21-kaohsiung-osaka",
@@ -506,8 +506,8 @@
   {
    "slug": "deals-2026-11-21-transfer-tokyo-fukushima",
    "url": "/deals/2026-11-21-transfer-tokyo-fukushima/",
-   "h1": "飛東京轉乘去福島，比直飛省 NT$1,786",
-   "title": "飛東京轉乘去福島，比直飛省 NT$1,786"
+   "h1": "飛東京轉乘去福島，比直飛省 NT$2,569",
+   "title": "飛東京轉乘去福島，比直飛省 NT$2,569"
   },
   {
    "slug": "apple-japan-price",
@@ -1096,6 +1096,12 @@
    "url": "/tokyo/budget-hotel/",
    "h1": "東京便宜旅館：有自己一間房，但衛浴共用",
    "title": "東京便宜旅館｜共用衛浴的私人房，4 晚 NT$2,097 起"
+  },
+  {
+   "slug": "japan-cashback",
+   "url": "/japan-cashback/",
+   "h1": "訂 Klook、KKday、Trip.com 之前，先看 ShopBack 和 LINE 旅遊現在回饋多少",
+   "title": "ShopBack、LINE 旅遊回饋加碼整理：Klook、KKday、Trip.com、Agoda 現在哪邊回饋高"
   },
   {
    "slug": "hotel-price-check",
