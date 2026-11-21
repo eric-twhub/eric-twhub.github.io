@@ -422,14 +422,8 @@
   {
    "slug": "deals-2026-11-21-taipei-okinawa",
    "url": "/deals/2026-11-21-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,997 來回含稅｜台灣虎航 12/17 出發",
-   "title": "台北飛沖繩 NT$2,997 來回含稅｜台灣虎航 12/17 出發"
-  },
-  {
-   "slug": "deals-2026-11-21-kaohsiung-okinawa",
-   "url": "/deals/2026-11-21-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$3,057 來回含稅｜台灣虎航 12/17 出發",
-   "title": "高雄飛沖繩 NT$3,057 來回含稅｜台灣虎航 12/17 出發"
+   "h1": "台北飛沖繩 NT$2,538 來回含稅｜台灣虎航 12/17 出發",
+   "title": "台北飛沖繩 NT$2,538 來回含稅｜台灣虎航 12/17 出發"
   },
   {
    "slug": "deals-2026-11-21-taipei-ishigaki",
@@ -438,10 +432,16 @@
    "title": "台北飛石垣島 NT$3,416 來回含稅｜台灣虎航 12/09 出發"
   },
   {
+   "slug": "deals-2026-11-21-kaohsiung-okinawa",
+   "url": "/deals/2026-11-21-kaohsiung-okinawa/",
+   "h1": "高雄飛沖繩 NT$3,626 來回含稅｜台灣虎航 12/17 出發",
+   "title": "高雄飛沖繩 NT$3,626 來回含稅｜台灣虎航 12/17 出發"
+  },
+  {
    "slug": "deals-2026-11-21-taichung-okinawa",
    "url": "/deals/2026-11-21-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$4,357 來回含稅｜台灣虎航 11/23 出發",
-   "title": "台中飛沖繩 NT$4,357 來回含稅｜台灣虎航 11/23 出發"
+   "h1": "台中飛沖繩 NT$3,857 來回含稅｜台灣虎航 11/23 出發",
+   "title": "台中飛沖繩 NT$3,857 來回含稅｜台灣虎航 11/23 出發"
   },
   {
    "slug": "deals-2026-11-21-kaohsiung-ishigaki",
@@ -458,8 +458,8 @@
   {
    "slug": "deals-2026-11-21-taipei-fukuoka",
    "url": "/deals/2026-11-21-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$5,405 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$5,405 來回含稅｜台灣虎航 12/01 出發"
+   "h1": "台北飛福岡 NT$4,945 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$4,945 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-21-kaohsiung-fukuoka",
@@ -468,16 +468,16 @@
    "title": "高雄飛福岡 NT$5,565 來回含稅｜台灣虎航 12/29 出發"
   },
   {
-   "slug": "deals-2026-11-21-taipei-okayama",
-   "url": "/deals/2026-11-21-taipei-okayama/",
-   "h1": "台北飛岡山 NT$6,145 來回含稅｜台灣虎航 12/17 出發",
-   "title": "台北飛岡山 NT$6,145 來回含稅｜台灣虎航 12/17 出發"
-  },
-  {
    "slug": "deals-2026-11-21-taipei-osaka",
    "url": "/deals/2026-11-21-taipei-osaka/",
    "h1": "台北飛大阪 NT$6,338 來回含稅｜樂桃航空 12/22 出發",
    "title": "台北飛大阪 NT$6,338 來回含稅｜樂桃航空 12/22 出發"
+  },
+  {
+   "slug": "deals-2026-11-21-taipei-okayama",
+   "url": "/deals/2026-11-21-taipei-okayama/",
+   "h1": "台北飛岡山 NT$6,605 來回含稅｜台灣虎航 12/17 出發",
+   "title": "台北飛岡山 NT$6,605 來回含稅｜台灣虎航 12/17 出發"
   },
   {
    "slug": "deals-2026-11-21-kaohsiung-osaka",
@@ -494,14 +494,14 @@
   {
    "slug": "deals-2026-11-21-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-21-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,829",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,829"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,289",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,289"
   },
   {
    "slug": "deals-2026-11-21-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-21-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,778",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,778"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,238",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,238"
   },
   {
    "slug": "deals-2026-11-21-transfer-tokyo-fukushima",
@@ -578,8 +578,8 @@
   {
    "slug": "japan-airline-card-eva-air",
    "url": "/japan-airline-card/eva-air/",
-   "h1": "長榮聯名卡，飛日本的人實際拿到什麼",
-   "title": "長榮聯名卡怎麼選？買長榮日本機票、換台日來回要刷多少（國泰世華、美國運通 6 張卡比較）"
+   "h1": "長榮刷哪張信用卡：聯名卡與一般卡",
+   "title": "長榮刷哪張信用卡？聯名卡怎麼選、刷卡優惠與刷卡失敗"
   },
   {
    "slug": "iphone-cost",
