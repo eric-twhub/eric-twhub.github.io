@@ -21322,6 +21322,11 @@ if os.path.exists('airline-card.json'):
             _bd_html += (f'<p class="disc"><a href="{U("/japan-airline-card/" + al["anchor"] + "/")}">'
                          f'{html.escape(al["name"][:2])}完整整理</a>：'
                          '聯名卡比較、不辦聯名卡刷哪張、官網付款規定與刷卡失敗。</p>')
+        _gp = AC.get(al['anchor'].replace('-', '_') + '_page') or {}
+        if _gp.get('standalone'):
+            _bd_html += (f'<p class="disc"><a href="{U("/japan-airline-card/" + al["anchor"] + "/")}">'
+                         f'{html.escape(_gp["short"])}完整整理</a>：'
+                         '官網收哪些付款方式、台灣與日本出發用什麼幣別、刷卡失敗與退款。</p>')
         if al['anchor'] == 'peach' and AC.get('peach_page'):
             _bd_html += (f'<p class="disc"><a href="{U("/japan-airline-card/peach/")}">樂桃完整整理</a>：'
                          '票務手續費什麼時候收、日本出發只能付日圓、付款失敗、名單有樂桃的刷卡活動。</p>')
@@ -21781,6 +21786,91 @@ if os.path.exists('airline-card.json'):
             '.tgptt{padding-left:1.2em;margin:4px 0 12px}.tgptt li{margin:4px 0}</style>'
           + foot())
         pages.append(('/japan-airline-card/peach/', 0.7))
+
+    # ---------- 沒有聯名卡比較頁的航空：通用子頁（/japan-airline-card/<anchor>/）----------
+    # 2026-11-21 使用者選「接著做日航、全日空」。這兩家兌換里數不好算（國泰就卡在這），
+    # 所以不做哩程試算，只回答「刷哪張卡、官網付款規定、幣別、刷卡失敗」。
+    # airline-card.json 的 <anchor 的 - 換 _>_page 有 standalone: true 才產生；
+    # 欄位：short、checked、intro、fee_tans、fee_sub、fee_src、fee_src_name、pay、pay_src、
+    # pay_src_name、pay_note、notes、faq，選填 cobrand [[卡名, 說明, 網址, 來源名]]、fare_city。
+    for _gal in _BD['airlines']:
+        _GP = AC.get(_gal['anchor'].replace('-', '_') + '_page')
+        if not (_GP and _GP.get('standalone')):
+            continue
+        _gs, _gsh = _gal['anchor'], _GP['short']
+        _gown = _live_deals(_gal['deals'])
+        _gcross = [x for x in _live_deals(_BD['cross']) if _gs in x.get('cover', ())]
+
+        def _gsrc(u, n):
+            return f'<a href="{u}" rel="nofollow noopener" target="_blank">{html.escape(n)}</a>'
+        _gpay = ''.join(f'<tr><td class="nm"><b>{html.escape(m)}</b></td><td>{html.escape(w)}</td>'
+                        f'<td>{html.escape(n)}</td></tr>' for m, w, n in _GP['pay'])
+        _gnotes = ''.join(
+            f'<li><b>{html.escape(t)}。</b>{html.escape(b)}' + (f'（{_gsrc(u, n)}）' if u else '') + '</li>'
+            for t, b, u, n in _GP['notes'])
+        _gcb = ''.join(
+            f'<li><b>{html.escape(c)}。</b>{html.escape(t)}（{_gsrc(u, n)}）</li>'
+            for c, t, u, n in (_GP.get('cobrand') or []))
+        _gfaq = [tuple(x) for x in _GP.get('faq', [])] + [
+            (f'買{_gsh}機票刷哪張卡？',
+             (f'本頁列了 {len(_gown) + len(_gcross)} 筆名單有{_gsh}的刷卡活動，'
+              '每一筆的通路與登錄條件不同，寫在各自那一筆。') if _gown or _gcross
+             else f'目前沒查到名單有{_gsh}的刷卡活動，可以挑海外回饋高的卡，並留意國外交易手續費。'),
+        ]
+        _gfaq_ld = json.dumps({
+            '@context': 'https://schema.org', '@type': 'FAQPage',
+            'mainEntity': [{'@type': 'Question', 'name': q,
+                            'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                           for q, a in _gfaq]}, ensure_ascii=False)
+        _gt = f'{_gsh}刷哪張信用卡？刷卡優惠、付款方式、幣別與刷卡失敗'
+        _gd = (f'{_gal["name"]}的機票刷哪張卡：名單有{_gsh}的刷卡活動、'
+               f'{_gsh}官網收哪些付款方式、台灣與日本出發用什麼幣別、刷卡失敗與退款。')
+        write(f'japan-airline-card/{_gs}/index.html',
+          head(_gt, _gd, f'japan-airline-card/{_gs}/',
+               '<script type="application/ld+json">' + _gfaq_ld + '</script>')
+          + topnav()
+          + crumbs([('首頁', '/'), ('買機票刷哪張卡', '/japan-airline-card/'), (_gal['name'], None)])
+          + f'<h1>{html.escape(_gsh)}刷哪張信用卡</h1>'
+          + f'<p class="lede">{html.escape(_GP["intro"])}銀行優惠取自發卡銀行官網，'
+            f'核對於 {_BD.get("checked", AC["checked"])}，過期的會自動拿掉。'
+            f'付款規定取自{html.escape(_gal["name"])}官網，核對於 {_GP["checked"]}。</p>'
+          + '<div class="today"><div class="tday">刷卡另收手續費嗎</div>'
+            f'<div class="tans">{html.escape(_GP["fee_tans"])}</div>'
+            f'<div class="tsub">{html.escape(_GP["fee_sub"])}（{_gsrc(_GP["fee_src"], _GP["fee_src_name"])}）</div></div>'
+          + f'<h2 id="cards">買{html.escape(_gsh)}機票刷哪張卡</h2>'
+          + (('<p class="lede">只限這家航空的：</p><ul class="xl">'
+              + ''.join(_deal_li(dict(x, airlines=None)) for x in _gown) + '</ul>') if _gown else '')
+          + (f'<p class="lede">{"另外" if _gown else ""}發卡銀行自己的活動，名單都有{html.escape(_gsh)}：</p>'
+             '<ul class="xl">' + ''.join(_deal_li(dict(x, airlines=None)) for x in _gcross) + '</ul>'
+             if _gcross else '')
+          + ('' if _gown or _gcross else f'<p class="lede">目前沒查到名單有{html.escape(_gsh)}的刷卡活動。</p>')
+          + '<p class="disc">大多只算航空公司官網、App 或櫃台，透過旅行社或訂票網站買不算。'
+            f'沒有活動的話，就是挑海外回饋高的卡，見<a href="{U("/japan-credit-card/")}">旅日信用卡比較</a>。</p>'
+          + ((f'<h2 id="cobrand">台灣的{html.escape(_gsh)}聯名卡</h2><div class="tldr"><ul>' + _gcb + '</ul></div>')
+             if _gcb else '')
+          + f'<h2 id="payment">{html.escape(_gsh)}官網收哪些付款方式</h2>'
+          + '<div class="tw"><table class="tgp"><thead><tr><th>付款方式</th><th>能用什麼</th>'
+            '<th>要注意</th></tr></thead><tbody>' + _gpay + '</tbody></table></div>'
+          + f'<p class="disc">取自{_gsrc(_GP["pay_src"], _GP["pay_src_name"])}。'
+            f'{html.escape(_GP.get("pay_note") or "")}</p>'
+          + '<h2 id="rules">幣別、刷卡失敗與退款</h2>'
+          + '<div class="tldr"><ul>' + _gnotes
+          + f'<li><b>銀行怎麼判斷國內還是國外。</b>見<a href="{U("/japan-airline-card/")}#domestic-or-foreign">'
+            '主頁那一段</a>。</li></ul></div>'
+          + fare_cta(_GP.get('fare_city') or 'tokyo', '看今天的便宜機票')
+          + '<h2>相關頁面</h2><div class="cities">'
+          + f'<a class="ct" href="{U("/japan-airline-card/")}"><b>✈️ 各航空刷哪張卡</b>'
+            f'<s>虎航、星宇、華航、長榮等 11 家</s></a>'
+          + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
+            f'<s>日本刷哪張回饋最高</s></a>'
+          + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日機票特價</b>'
+            f'<s>每天更新</s></a></div>'
+          + faq_visible(_gfaq)
+          + f'<p class="disc">付款規定取自{html.escape(_gal["name"])}官網，銀行優惠取自各發卡銀行官網，'
+            '各卡條款請以銀行公告為準。本頁為公開資訊整理，非理財建議。</p>'
+          + '<style>.tgp td{vertical-align:top}.tgp td.nm{min-width:7.5em}</style>'
+          + foot())
+        pages.append((f'/japan-airline-card/{_gs}/', 0.6))
 
 # ---------- 航空聯名卡：華航、星宇、長榮 ----------
 # 以航空公司為主角，一家一頁。聯名卡的回饋是哩程，不能跟旅日信用卡那 15 張
@@ -34471,6 +34561,8 @@ SEARCH_SYN = [
     ['虎航', '台灣虎航', 'tigerair', 'tiger air'],
     ['國泰航空', 'cathay pacific', 'cathay', 'cathaypacific'],
     ['亞洲萬里通', 'asia miles', 'asiamiles', '亞萬'],
+    ['日航', '日本航空', 'jal', 'japan airlines'],
+    ['全日空', '全日本空輸', 'ana', 'all nippon airways'],
     ['樂桃', 'peach'],
     ['捷星', 'jetstar'],
     # 地名
