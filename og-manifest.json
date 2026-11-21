@@ -360,6 +360,18 @@
    "title": "大阪有 63 ANGEL 嗎？北新地 Burlesque 大阪的票價、場次與訂位"
   },
   {
+   "slug": "nagoya-burlesque",
+   "url": "/nagoya/burlesque/",
+   "h1": "名古屋有 63 ANGEL 嗎？栄的兩家 burlesque 秀場",
+   "title": "名古屋有 63 ANGEL 嗎？栄的 NAGOYA de SHOW! 與 BARLESQUE NAGOYA 票價、場次比較"
+  },
+  {
+   "slug": "tokyo-rockza",
+   "url": "/tokyo/rockza/",
+   "h1": "淺草ロック座（淺草搖滾座），去之前要知道的幾件事",
+   "title": "淺草ロック座（淺草搖滾座）票價、一天四場時間、入場規定與去過的人怎麼說"
+  },
+  {
    "slug": "tokyo-samurai-restaurant",
    "url": "/tokyo/samurai-restaurant/",
    "h1": "新宿武士餐廳 SAMURAI RESTAURANT，去之前要知道的幾件事",
@@ -414,16 +426,16 @@
    "title": "台北飛沖繩 NT$2,997 來回含稅｜台灣虎航 12/17 出發"
   },
   {
-   "slug": "deals-2026-11-21-kaohsiung-okinawa",
-   "url": "/deals/2026-11-21-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$3,057 來回含稅｜台灣虎航 12/17 出發",
-   "title": "高雄飛沖繩 NT$3,057 來回含稅｜台灣虎航 12/17 出發"
-  },
-  {
    "slug": "deals-2026-11-21-taipei-ishigaki",
    "url": "/deals/2026-11-21-taipei-ishigaki/",
    "h1": "台北飛石垣島 NT$3,416 來回含稅｜台灣虎航 12/09 出發",
    "title": "台北飛石垣島 NT$3,416 來回含稅｜台灣虎航 12/09 出發"
+  },
+  {
+   "slug": "deals-2026-11-21-kaohsiung-okinawa",
+   "url": "/deals/2026-11-21-kaohsiung-okinawa/",
+   "h1": "高雄飛沖繩 NT$3,626 來回含稅｜台灣虎航 12/17 出發",
+   "title": "高雄飛沖繩 NT$3,626 來回含稅｜台灣虎航 12/17 出發"
   },
   {
    "slug": "deals-2026-11-21-taichung-okinawa",
@@ -434,14 +446,14 @@
   {
    "slug": "deals-2026-11-21-taipei-miyazaki",
    "url": "/deals/2026-11-21-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$4,717 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台北飛宮崎 NT$4,717 來回含稅｜台灣虎航 12/14 出發"
+   "h1": "台北飛宮崎 NT$4,917 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台北飛宮崎 NT$4,917 來回含稅｜台灣虎航 12/14 出發"
   },
   {
    "slug": "deals-2026-11-21-kaohsiung-ishigaki",
    "url": "/deals/2026-11-21-kaohsiung-ishigaki/",
-   "h1": "高雄飛石垣島 NT$5,136 來回含稅｜台灣虎航 11/29 出發",
-   "title": "高雄飛石垣島 NT$5,136 來回含稅｜台灣虎航 11/29 出發"
+   "h1": "高雄飛石垣島 NT$4,917 來回含稅｜台灣虎航 11/29 出發",
+   "title": "高雄飛石垣島 NT$4,917 來回含稅｜台灣虎航 11/29 出發"
   },
   {
    "slug": "deals-2026-11-21-taipei-fukuoka",
@@ -476,8 +488,8 @@
   {
    "slug": "deals-2026-11-21-taipei-nagoya",
    "url": "/deals/2026-11-21-taipei-nagoya/",
-   "h1": "台北飛名古屋 NT$8,682 來回含稅｜台灣虎航 12/15 出發",
-   "title": "台北飛名古屋 NT$8,682 來回含稅｜台灣虎航 12/15 出發"
+   "h1": "台北飛名古屋 NT$8,112 來回含稅｜台灣虎航 12/15 出發",
+   "title": "台北飛名古屋 NT$8,112 來回含稅｜台灣虎航 12/15 出發"
   },
   {
    "slug": "deals-2026-11-21-transfer-fukuoka-kumamoto",
