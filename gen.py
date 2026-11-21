@@ -2017,7 +2017,7 @@ _AD_MAP = [
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
     ('okinawa/churasun6', 'activity2'), ('tokyo/worth-flying-for', 'activity2'),
-    ('sapporo/jolijo', 'activity2'),
+    ('sapporo/jolijo', 'activity2'), ('osaka/splash', 'activity2'),
     ('tokyo/street-fashion', 'activity2'), ('tokyo/hostel', 'transfer'),
     ('tokyo/budget-hotel', 'transfer'),
     ('japan-worth-buying', 'esim'),
@@ -3155,7 +3155,7 @@ _STK_PREFIX = sorted({
     '/japan-takayama-shirakawago-bus/': 'st/skgbus',
     '/japan-tokyo-tower/': 'xmas/tower', '/japan-skytree/': 'xmas/skytree', '/japan-chiikawa-park/': 'xmas/gift',
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
-    '/sapporo/jolijo/': 'st/girl',
+    '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
     '/japan-sumo/': 'st/sumo', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
@@ -3749,6 +3749,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要上阿倍野 HARUKAS 展望台？'
                      f'<a href="{U("/osaka/abeno-harukas/")}">門票要不要先買、周遊卡怎麼用、Klook／KKday 要不要換票</a>'
                      f'（官網原文整理：前一天以前網路買便宜一成、官方沒有買一送一）。</p>')
+        if slug == 'osaka' and os.path.exists('splash.json'):
+            body += (f'<p class="lede">晚上想看表演？'
+                     f'<a href="{U("/osaka/splash/")}">櫻川 Splash 的入場費、哪天有開與規定</a>'
+                     f'（官網原文整理：入場 ¥12,000 不限時間、沒有固定公休、未滿 20 歲不能進）。</p>')
         if slug == 'osaka' and os.path.exists('kaiyukan.json'):
             body += (f'<p class="lede">要去海遊館？'
                      f'<a href="{U("/osaka/kaiyukan/")}">門票可以現場買嗎、每日票價、Klook／KKday 差在哪</a>'
@@ -15860,6 +15864,191 @@ if os.path.exists('jolijo.json'):
         f'價格、場次與規定由店家隨時調整，請以官網為準。本頁為公開資訊整理，與店家無合作關係。</p>'
       + foot())
     pages.append(('/sapporo/jolijo/', 0.6))
+
+# ---------- 大阪櫻川 Splash（i スプラッシュ） ----------
+# 官網整頁是圖（isplash-bf/official.html 的 bf_001～bf_014）；營業日曆與全館活動是大樓首頁的圖。
+# 不是固定公休，11、12 月日曆逐日抄進 splash.json；日曆只公布到哪個月，頁面就只畫到哪個月。
+# KKday／Klook 查無商品，所以沒有商品區塊。第三方網站寫的票券內容不採用。
+if os.path.exists('splash.json'):
+    SP = json.load(open('splash.json', encoding='utf-8'))
+
+    def _sp_tw(y):
+        return f'NT${round(y * JPY):,}'
+
+    def _sp_md(d):
+        return f'{int(d[5:7])}/{int(d[8:10])}'
+
+    _sp_open = {f'{ym}-{d:02d}' for ym, ds in SP['days'].items() for d in ds}
+    _sp_months = sorted(SP['days'])
+    _sp_last = max(_sp_open)
+    _sp_ev = []
+    for e in SP['events']:
+        rs = [r for r in e['ranges'] if r[1] >= TODAY]
+        if rs:
+            _sp_ev.append(dict(e, ranges=rs))
+    _sp_evdays = set()
+    for e in _sp_ev:
+        for a, b in e['ranges']:
+            d0 = datetime.date.fromisoformat(a)
+            while d0.isoformat() <= b:
+                _sp_evdays.add(d0.isoformat())
+                d0 += datetime.timedelta(days=1)
+
+    _sp_cal = ''
+    for ym in _sp_months:
+        y, m = int(ym[:4]), int(ym[5:7])
+        first = datetime.date(y, m, 1)
+        nd = (datetime.date(y + (m == 12), m % 12 + 1, 1) - first).days
+        if f'{ym}-{nd:02d}' < TODAY:
+            continue
+        lead = first.weekday()
+        cells = '<div class="cd pad"></div>' * lead
+        for i in range(1, nd + 1):
+            d = f'{ym}-{i:02d}'
+            op = d in _sp_open
+            cls = ['cd', 'mk' if op else 'we']
+            if d < TODAY:
+                cls.append('gone')
+            txt = '<s>有開</s>' if op else '<s>沒開</s>'
+            if op and d in _sp_evdays:
+                txt += '<span class="tag">折扣</span>'
+            cells += f'<div class="{" ".join(cls)}"><i>{i}</i>{txt}</div>'
+        cells += '<div class="cd pad"></div>' * ((7 - (lead + nd) % 7) % 7)
+        _sp_cal += (f'<div class="calm"><b>{y} 年 {m} 月</b><div class="calg">'
+                    + ''.join(f'<div class="wd">{w}</div>' for w in '一二三四五六日')
+                    + cells + '</div></div>')
+    _sp_callg = ('<div class="callg">'
+                 '<span><u style="background:#eef6fb;border-color:#b9d8ea"></u>Splash 有開</span>'
+                 '<span><u style="background:#efeeea"></u>沒開</span>'
+                 + ('<span><span class="tag" style="display:inline-block;font-size:.62rem;font-weight:700;'
+                    'color:#fff;background:var(--acc);border-radius:3px;padding:0 3px">折扣</span>'
+                    '大樓全館折扣活動的日子</span>' if _sp_ev else '')
+                 + '</div>')
+    _sp_lastm = int(_sp_last[5:7])
+    if TODAY <= _sp_last:
+        _sp_today = (f'今天（{_sp_md(TODAY)}）<b>{"有開" if TODAY in _sp_open else "沒開"}</b>'
+                     f'，{SP["open"]} 開店')
+        _sp_nexts = [d for d in sorted(_sp_open) if d > TODAY][:1]
+        if TODAY not in _sp_open and _sp_nexts:
+            _sp_today += f'；下一個有開的日子是 {_sp_md(_sp_nexts[0])}'
+    else:
+        _sp_today = f'官網的營業日曆只公布到 {_sp_lastm} 月，之後哪天有開要打電話問'
+    _sp_offs = [d for d in sorted(f'{ym}-{i:02d}' for ym in _sp_months
+                                  for i in range(1, calendar.monthrange(int(ym[:4]), int(ym[5:7]))[1] + 1))
+                if TODAY <= d <= _sp_last and d not in _sp_open]
+
+    _sp_fee = ''.join(f'<tr><td class="nm"><b>{html.escape(a)}</b></td><td>{html.escape(b)}</td></tr>'
+                      for a, b in SP['fee_items'])
+    _sp_wed = ''.join(f'<li>{html.escape(w)}。</li>' for w in SP['wed'])
+    _sp_rules = ''.join(f'<li>{html.escape(r)}。</li>' for r in SP['rules'])
+    _sp_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>：{html.escape(u["why"])}</li>'
+                     for u in SP['unverified'])
+    _sp_evh = ''
+    for e in _sp_ev:
+        rs = '、'.join(f'{_sp_md(a)}～{_sp_md(b)}' for a, b in e['ranges'])
+        both = sorted(d for d in _sp_evdays if d in _sp_open and d >= TODAY)
+        _sp_evh += (f'<h3>{html.escape(e["n"])}</h3><div class="tldr"><ul>'
+                    f'<li><b>日期。</b>{rs}。其中 Splash 有開的是 '
+                    f'{"、".join(_sp_md(d) for d in both)}，共 {len(both)} 天。</li>'
+                    + ''.join(f'<li>{html.escape(w)}。</li>' for w in e['what'])
+                    + f'<li>{html.escape(e["note"])}</li></ul></div>')
+    _sp_acc = '、'.join(f'{a}{b}' for a, b in SP['access'])
+
+    _sp_faq = [
+        ('Splash 一個人多少錢？',
+         f'官網寫入場費一人 ¥{SP["fee"]:,}（約 {_sp_tw(SP["fee"])}），沒有時間限制也沒有延長費，'
+         f'含 1 杯酒精飲料，果汁喝到飽。官網沒寫含不含稅、有沒有另加服務費。'),
+        ('Splash 幾點開？哪天公休？',
+         f'官網寫 {SP["open"]} 開店，沒寫打烊時間與表演場次。沒有固定公休，'
+         f'大樓首頁每個月公布一張營業日曆，目前公布到 {_sp_lastm} 月，這頁把每天有沒有開畫成月曆。'),
+        ('可以刷卡嗎？',
+         '可以。官網寫收 VISA、Mastercard、JCB、AMEX、Diners，也收 PayPay。'),
+        ('可以拍照嗎？',
+         '不行。官網寫不管什麼理由都不能拍照、錄影。'),
+        ('幾歲可以進去？',
+         '官網寫未滿 20 歲不能入店。'),
+        ('KKday、Klook 買得到嗎？',
+         f'{SP["checked"]} 查兩個平台都沒有這家的商品。官網也沒有線上訂位，只有電話 {SP["tel"]}。'),
+        ('跟六本木 63 ANGEL 是同一種店嗎？',
+         '是兩家不同的店。63 ANGEL 在東京六本木，可以在官網或平台先訂座位；'
+         f'Splash 在大阪櫻川，官網沒有線上訂位，入場費一律 ¥{SP["fee"]:,}、不限時間。'),
+    ]
+    _sp_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                       for q, a in _sp_faq]}, ensure_ascii=False)
+
+    _sp_title = '大阪 Splash 秀酒吧：入場 ¥12,000 包含什麼、哪天有開、怎麼去'
+    _sp_desc = ('大阪櫻川アポロ1ビル地下 1 樓的 Splash（i スプラッシュ）。入場費一人 ¥12,000 不限時間、'
+                '含 1 杯酒；沒有固定公休，這頁把官網營業日曆畫成月曆。週三優惠、能不能刷卡、'
+                '不能拍照、未滿 20 歲不能進。')
+
+    write('osaka/splash/index.html',
+      head(_sp_title, _sp_desc, 'osaka/splash/',
+           '<script type="application/ld+json">' + _sp_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('大阪', '/osaka/'), ('Splash', None)])
+      + '<h1>大阪櫻川 Splash 秀酒吧，進門前要知道的幾件事</h1>'
+      + f'<p class="lede">Splash（{html.escape(SP["name_ja"])}）在大阪浪速區櫻川一棟大樓的地下 1 樓，'
+        f'官網形容是只有這裡看得到的舞台秀，入場之後不限時間。'
+        f'官網整頁都是圖片，這頁把上面寫的價格、營業日與規定整理成文字。'
+        f'台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網與大樓營業日曆，查證於 {SP["checked"]}</div>'
+        f'<div class="tans">入場一人 <b>¥{SP["fee"]:,}</b>（約 {_sp_tw(SP["fee"])}），'
+        f'不限時間、沒有延長費</div>'
+        f'<div class="tsub">{_sp_today}。未滿 20 歲不能入店，店內不能拍照。</div></div>'
+
+      + '<h2>入場費包含什麼</h2>'
+      + '<div class="tw narrow"><table><tr><th>項目</th><th>官網寫的</th></tr>' + _sp_fee + '</table></div>'
+      + f'<p class="disc">官網只寫入場費一人 ¥{SP["fee"]:,}，沒寫含不含稅、有沒有另加服務費。'
+        f'{html.escape(SP["spend_note"])}</p>'
+
+      + '<h2>哪天有開</h2>'
+      + f'<p class="lede">Splash 沒有固定公休，大樓首頁每個月公布一張營業日曆，列出每天有開的店。'
+        f'{SP["open"]} 開店，官網沒寫打烊時間。'
+        + (f'{_sp_md(TODAY)} 之後到 {_sp_lastm} 月底沒開的是 '
+           f'{"、".join(_sp_md(d) for d in _sp_offs)}。' if _sp_offs else '')
+        + '</p>'
+      + _sp_callg + '<div class="cal">' + _sp_cal + '</div>'
+      + f'<p class="disc">{html.escape(SP["days_src"])}{html.escape(SP["after_note"])}'
+        f'{_sp_lastm + 1 if _sp_lastm < 12 else 1} 月以後官網還沒公布。</p>'
+
+      + '<h2>週三與年末的優惠</h2>'
+      + '<h3>每週三「地下の日」</h3>'
+      + f'<div class="tldr"><ul>{_sp_wed}</ul></div>'
+      + '<p class="disc">官網沒寫這個活動到什麼時候，也沒寫ダンスチケット一張多少錢。</p>'
+      + _sp_evh
+
+      + '<h2>到店的規定</h2>'
+      + f'<div class="tldr"><ul>{_sp_rules}</ul></div>'
+
+      + '<h2>地址與怎麼去</h2><div class="tldr"><ul>'
+        f'<li><b>地址。</b>{html.escape(SP["addr"])}，同一棟大樓其他樓層是別的店，Splash 在地下 1 樓。</li>'
+        f'<li><b>交通。</b>{_sp_acc}。</li>'
+        f'<li><b>電話。</b>{SP["tel"]}</li>'
+        '</ul></div>'
+      + f'<p class="lede">官網：<a href="{SP["site"]}" rel="nofollow noopener" target="_blank">Splash 官方頁</a>'
+        f'　·　<a href="{SP["bld"]}" rel="nofollow noopener" target="_blank">大樓首頁（營業日曆）</a></p>'
+
+      + '<h2>這頁查不到的部分</h2><div class="tldr"><ul>' + _sp_un + '</ul></div>'
+
+      + '<h2>常見問題</h2>' + ''.join('<details class="faq"><summary>' + html.escape(q)
+                                     + '</summary><div>' + html.escape(a) + '</div></details>'
+                                     for q, a in _sp_faq)
+
+      + fare_cta('osaka', '飛大阪的機票多少')
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 六本木 63 ANGEL</b><s>東京的表演秀怎麼訂</s></a>'
+      + (f'<a class="ct" href="{U("/sapporo/jolijo/")}"><b>🎭 札幌 JOLIJO</b><s>すすきの的夜秀</s></a>'
+         if os.path.exists('jolijo.json') else '')
+      + f'<a class="ct" href="{U("/osaka/observation-decks/")}"><b>🌃 大阪觀景台</b><s>晚上去哪看夜景</s></a>'
+      + f'<a class="ct" href="{U("/osaka/")}"><b>🏯 大阪機票</b><s>各出發地的票價</s></a></div>'
+      + f'<p class="disc">內容引自 Splash 官網與大樓首頁的營業日曆，查證於 {SP["checked"]}。'
+        f'價格、營業日與規定由店家隨時調整，請以官網為準。本頁為公開資訊整理，與店家無合作關係。</p>'
+      + foot())
+    pages.append(('/osaka/splash/', 0.6))
 
 # ---------- 六本木 SUPER SPARK TOKYO ----------
 # 跟 63 ANGEL 同一棟樓（63 在 B2F、這家在 B1），63 官網列在相關連結裡。
@@ -32588,10 +32777,13 @@ SEARCH_SYN = [
     ['柯南', '名偵探柯南', 'conan', 'コナン', '青山剛昌'],
     ['海遊館', 'kaiyukan'],
     ['jolijo', 'ジョリージョ', 'show museum jolijo', 'ショーミュージアム'],
+    ['splash', 'i splash', 'isplash', 'スプラッシュ', 'iスプラッシュ', 'i スプラッシュ', '大阪splash', 'splash osaka', 'splash大阪'],
+    ['櫻川', 'sakuragawa', 'さくらがわ'],
+    ['アポロ1ビル', 'アポロビル', 'apollo 1', 'apollo1', '阿波羅大樓'],
     ['薄野', 'すすきの', 'ススキノ', 'susukino'],
     ['六本木', 'roppongi'],
     ['63angel', '63 angel', 'rokusan angel', 'ロクサンエンジェル'],
-    ['夜秀', '表演秀', 'show', 'ショー'],
+    ['夜秀', '表演秀', 'show', 'ショー', '秀酒吧', '表演酒吧', 'show pub', 'showpub', 'ショーパブ'],
     ['美麗海', '美ら海', 'churaumi'],
     ['豪斯登堡', '荷蘭村', 'huis ten bosch', 'ハウステンボス'],
     ['富士急', '富士急樂園', 'fuji-q', 'fujiq', '富士急ハイランド'],
