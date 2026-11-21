@@ -444,16 +444,16 @@
    "title": "台中飛沖繩 NT$3,857 來回含稅｜台灣虎航 11/23 出發"
   },
   {
-   "slug": "deals-2026-11-22-kaohsiung-ishigaki",
-   "url": "/deals/2026-11-22-kaohsiung-ishigaki/",
-   "h1": "高雄飛石垣島 NT$4,917 來回含稅｜台灣虎航 11/29 出發",
-   "title": "高雄飛石垣島 NT$4,917 來回含稅｜台灣虎航 11/29 出發"
-  },
-  {
    "slug": "deals-2026-11-22-taipei-miyazaki",
    "url": "/deals/2026-11-22-taipei-miyazaki/",
    "h1": "台北飛宮崎 NT$4,936 來回含稅｜台灣虎航 12/14 出發",
    "title": "台北飛宮崎 NT$4,936 來回含稅｜台灣虎航 12/14 出發"
+  },
+  {
+   "slug": "deals-2026-11-22-kaohsiung-ishigaki",
+   "url": "/deals/2026-11-22-kaohsiung-ishigaki/",
+   "h1": "高雄飛石垣島 NT$5,136 來回含稅｜台灣虎航 11/29 出發",
+   "title": "高雄飛石垣島 NT$5,136 來回含稅｜台灣虎航 11/29 出發"
   },
   {
    "slug": "deals-2026-11-22-taipei-fukuoka",
@@ -570,6 +570,12 @@
    "title": "捷星刷哪張信用卡？刷卡優惠、付款方式、幣別與刷卡失敗"
   },
   {
+   "slug": "japan-airline-card-scoot",
+   "url": "/japan-airline-card/scoot/",
+   "h1": "酷航刷哪張信用卡",
+   "title": "酷航刷哪張信用卡？刷卡優惠、付款方式、幣別與刷卡失敗"
+  },
+  {
    "slug": "japan-airline-card-jal",
    "url": "/japan-airline-card/jal/",
    "h1": "日航刷哪張信用卡",
@@ -580,6 +586,12 @@
    "url": "/japan-airline-card/ana/",
    "h1": "全日空刷哪張信用卡",
    "title": "全日空刷哪張信用卡？刷卡優惠、付款方式、幣別與刷卡失敗"
+  },
+  {
+   "slug": "japan-airline-card-vietjet",
+   "url": "/japan-airline-card/vietjet/",
+   "h1": "越捷刷哪張信用卡",
+   "title": "越捷刷哪張信用卡？刷卡優惠、付款方式、幣別與刷卡失敗"
   },
   {
    "slug": "japan-airline-card-china-airlines",
