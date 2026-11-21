@@ -21278,6 +21278,9 @@ if os.path.exists('airline-card.json'):
                          + '可以再看下面「不限航空」那一段，名單裡有沒有這家。</p>')
         if al.get('fee'):
             _bd_html += f'<p class="disc">{html.escape(al["fee"])}</p>'
+        if al['anchor'] == 'tigerair' and AC.get('tigerair_page'):
+            _bd_html += (f'<p class="disc"><a href="{U("/japan-airline-card/tigerair/")}">虎航完整整理</a>：'
+                         '刷卡有沒有手續費、能不能分期、刷卡失敗怎麼辦、日本出發算國內還是國外。</p>')
     _cross = _live_deals(_BD['cross'])
     if _cross:
         _bd_html += ('<h2 id="any-airline">不限航空：買哪家都算的刷卡活動</h2>'
@@ -21335,7 +21338,7 @@ if os.path.exists('airline-card.json'):
         f'核對於 {_BD.get("checked", AC["checked"])}。過期的優惠會自動從頁面拿掉。'
         f'後半段是買機票那一筆算國內還是國外、會不會被收 1.5%。</p>'
       + _bd_html
-      + '<h2>買機票這一筆，算國內還是國外</h2>'
+      + '<h2 id="domestic-or-foreign">買機票這一筆，算國內還是國外</h2>'
       + '<div class="today">'
         '<div class="tday">海外交易手續費看的是</div>'
         '<div class="tans">收單行在哪，不是幣別</div>'
@@ -21418,6 +21421,172 @@ if os.path.exists('airline-card.json'):
         f'本頁為公開資訊整理，非理財建議。</p>'
       + foot())
     pages.append(('/japan-airline-card/', 0.8))
+
+    # ---------- 虎航刷哪張卡（/japan-airline-card/tigerair/）----------
+    # 2026-11-21：Google 自動完成有「虎航 信用卡優惠／推薦」「虎航刷卡手續費」「虎航刷卡分期」
+    # 「虎航刷卡失敗」，主頁的虎航段落只回答第一個。優惠沿用 bank_deals（過期自動拿掉），
+    # 付款規定在 airline-card.json 的 tigerair_page，全部是虎航官網原文。
+    _TP = AC.get('tigerair_page')
+    _tgal = next((a for a in _BD['airlines'] if a['anchor'] == 'tigerair'), None)
+    if _TP and _tgal:
+        _tgl = _live_deals(_tgal['deals'])
+        # 專屬購票頁的折扣 vs 直接在官網刷拿回饋：看來源是不是虎航的專屬購票頁或樂虎卡
+        _tg_disc = [x for x in _tgl if '/portal/' in x['src'] or '樂虎' in x['card']]
+        _tg_back = [x for x in _tgl if x not in _tg_disc]
+        _tg_cross = [x for x in _live_deals(_BD['cross']) if x.get('tigerair')]
+        _tf = _TP['fee']
+        _fee_ok = _tf['until'] >= TODAY
+
+        def _tsrc(u, n):
+            return f'<a href="{u}" rel="nofollow noopener" target="_blank">{html.escape(n)}</a>'
+
+        _tpay = ''.join(
+            f'<tr><td class="nm"><b>{html.escape(m)}</b></td><td>{html.escape(w)}</td>'
+            f'<td>{html.escape(n)}</td></tr>' for m, w, n in _TP['pay'])
+        _tpay += (f'<tr><td class="nm"><b>{html.escape(_TP["pay_none"])}</b></td>'
+                  '<td class="dimcell">官網沒寫</td><td class="dimcell">付款頁與常見問題都沒有列</td></tr>')
+
+        _tptt = ''.join(
+            f'<li>{p["date"][:4]}/{int(p["date"][5:7])}/{int(p["date"][8:10])}：{html.escape(p["said"])}'
+            f'（<a href="{p["url"]}" rel="nofollow noopener" target="_blank">PTT 信用卡板</a>）</li>'
+            for p in _TP['ptt'])
+
+        _tfee_txt = (f'官網新購票每人每航段 NT${_tf["twd"][0]}，旺季 NT${_tf["twd"][1]}；'
+                     f'日本出發是 ¥{_tf["jpy"][0]:,}，旺季 ¥{_tf["jpy"][1]:,}')
+        _tg_cnt = len(_tg_disc) + len(_tg_back) + len(_tg_cross)
+
+        _tfaq = [
+            ('虎航刷卡有手續費嗎？',
+             ('沒有另外的刷卡手續費。虎航收的是「訂位服務費」，' + _tfee_txt +
+              f'（{_tf["period"]}），費用表只分訂位管道，不分付款方式。'
+              if _fee_ok else '沒有另外的刷卡手續費，虎航收的是「訂位服務費」，金額以官網費用表為準。')
+             + f'不過虎航自己的常見問題也寫到「{_TP["fx"]["quote2"]}」，那是銀行收的，不是虎航。'),
+            ('虎航刷哪張信用卡比較好？',
+             f'想打折就從虎航的專屬購票頁買，本頁列了 {len(_tg_disc)} 種，大多只限 tigerlight 票價、'
+             '名額每月重開。直接在官網、App 買的話，看下面那些切換方案或登錄的卡，'
+             '虎航都在名單裡；大多只算航空公司官網、App 或櫃台，旅行社和訂票網站不算，每張的條件寫在各自那一筆。'),
+            ('虎航可以刷卡分期嗎？',
+             '官網沒有寫信用卡分期方案。付款方式裡有 AFTEE 先買後付，只收新台幣。'
+             '要用信用卡分期，只能刷完之後自己問發卡銀行。'),
+            ('虎航刷卡失敗怎麼辦？',
+             f'先確認手機收得到 OTP，虎航寫「{_TP["otp_quote"]}」；再確認當月額度。'
+             f'虎航說「{_TP["decline_quote"]}」，被拒的原因只有發卡銀行知道。'
+             f'結帳說明寫「{_TP["autocancel"]}」，所以重刷要重新訂。'),
+            ('不是持卡人本人搭機可以嗎？',
+             f'官網沒有要求持卡人本人搭機。只有交易被判定異常時，虎航「{_TP["holder_quote"]}」，'
+             f'{_TP["holder_note"]}。'),
+            ('日本出發的回程刷卡算國內還是國外？',
+             f'虎航寫「{_TP["fx"]["quote"]}」，日本出發就是日圓。虎航和銀行都沒有公開寫算國內還是國外；'
+             'PTT 有網友實測刷日圓的回程，帳單上的消費地是日本，也就是會被收國外交易手續費。'),
+        ]
+        _tfaq_ld = json.dumps({
+            '@context': 'https://schema.org', '@type': 'FAQPage',
+            'mainEntity': [{'@type': 'Question', 'name': q,
+                            'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                           for q, a in _tfaq]}, ensure_ascii=False)
+
+        _ttt = '虎航刷哪張信用卡？購票優惠、刷卡手續費、分期與刷卡失敗'
+        _ttd = (f'台灣虎航的信用卡優惠一次看：專屬購票頁折扣、官網刷卡回饋，共 {_tg_cnt} 筆。'
+                '另外整理刷卡有沒有手續費、能不能分期、刷卡失敗的原因、日本出發算國內還是國外。')
+
+        write('japan-airline-card/tigerair/index.html',
+          head(_ttt, _ttd, 'japan-airline-card/tigerair/',
+               '<script type="application/ld+json">' + _tfaq_ld + '</script>')
+          + topnav()
+          + crumbs([('首頁', '/'), ('買機票刷哪張卡', '/japan-airline-card/'), ('台灣虎航', None)])
+          + '<h1>虎航刷哪張信用卡</h1>'
+          + f'<p class="lede">銀行優惠取自虎航與發卡銀行官網，核對於 {_BD.get("checked", AC["checked"])}，'
+            f'過期的會自動拿掉。付款規定取自虎航官網，核對於 {_TP["checked"]}。</p>'
+          + '<div class="today"><div class="tday">刷卡另收手續費嗎</div>'
+            '<div class="tans">沒有，虎航收的是訂位服務費</div>'
+          + (f'<div class="tsub">{_tfee_txt}，客服或機場櫃台訂比較貴。不分付款方式。</div>'
+             if _fee_ok else '<div class="tsub">金額看虎航官網的費用表，不分付款方式。</div>')
+          + '<div class="tbuf">日本出發的那一段用日圓計價，刷日圓多半會被銀行收國外交易手續費，'
+            '見<a href="#japan-leg">日本出發那一段</a>。</div></div>'
+
+          + '<h2 id="discount">想打折：從專屬購票頁買</h2>'
+          + ('<p class="lede">這幾種都要從虎航的專屬購票頁進去買，直接在官網首頁訂不算。</p>'
+             '<ul class="xl">' + ''.join(_deal_li(x) for x in _tg_disc) + '</ul>'
+             if _tg_disc else '<p class="lede">目前沒查到進行中的專屬購票頁折扣。</p>')
+          + f'<p class="disc">結帳時出現「{_TP["pending"]["quote"]}」，虎航的說明是當月名額已經額滿'
+            f'（{_tsrc(_TP["pending"]["src"], _TP["pending"]["src_name"])}）。'
+            '專屬購票頁的折扣能不能再拿下面的刷卡回饋，虎航和銀行都沒寫。</p>'
+
+          + '<h2 id="cashback">直接在官網、App 買：拿回饋的卡</h2>'
+          + ('<ul class="xl">' + ''.join(_deal_li(dict(x, airlines=None)) for x in _tg_back + _tg_cross) + '</ul>'
+             if _tg_back or _tg_cross else '<p class="lede">目前沒查到進行中的刷卡回饋活動。</p>')
+          + '<p class="disc">上面每一張的名單都有台灣虎航。透過旅行社或訂票網站買，大多不算。</p>'
+
+          + '<h2 id="pay">虎航收哪些付款方式</h2>'
+          + f'<p class="lede">虎航寫「{html.escape(_TP["cards_quote"])}」'
+            f'（{_tsrc(_TP["cards_src"], _TP["cards_src_name"])}）。各管道能用什麼：</p>'
+          + '<div class="tw"><table class="tgp"><thead><tr><th>付款方式</th><th>哪裡能用</th>'
+            '<th>要注意</th></tr></thead><tbody>' + _tpay + '</tbody></table></div>'
+          + f'<p class="disc">取自{_tsrc(_TP["pay_src"], _TP["pay_src_name"])}。'
+            f'虎航也寫「{html.escape(_TP["card_only"])}」。</p>'
+
+          + '<h2 id="japan-leg">日本出發那一段</h2>'
+          + f'<p class="lede">虎航寫「{html.escape(_TP["fx"]["quote"])}」。'
+            f'官網可以改用其他幣別付，但「{html.escape(_TP["rate_quote"])}」，'
+            f'而美國運通「{html.escape(_TP["amex_quote"])}」（{_tsrc(_TP["pay_src"], _TP["pay_src_name"])}）。</p>'
+          + '<div class="tldr"><ul>'
+            f'<li><b>手續費是銀行收的。</b>虎航的常見問題寫「{html.escape(_TP["fx"]["quote2"])}」'
+            f'（{_tsrc(_TP["fx"]["src"], _TP["fx"]["src_name"])}）。</li>'
+            '<li><b>帳單上算國內還是國外，官方沒寫。</b>虎航和銀行都沒有公開。'
+            f'銀行判斷的方法見<a href="{U("/japan-airline-card/")}#domestic-or-foreign">主頁那一段</a>。</li>'
+            '</ul></div>'
+          + '<p class="lede">網友在 PTT 的回報（不是官方說法）：</p><ul class="tgptt">' + _tptt + '</ul>'
+          + f'<p class="disc">如果這一筆算國外，就要看卡片的海外回饋扣掉 1.5%，'
+            f'可以從<a href="{U("/japan-credit-card/")}">旅日信用卡比較</a>挑。</p>'
+
+          + '<h2 id="installment">可以刷卡分期嗎</h2>'
+          + '<p class="lede">虎航官網沒有寫信用卡分期方案。付款方式裡有 AFTEE 先買後付，只收新台幣。'
+            '要用信用卡分期，只能刷完之後自己問發卡銀行，分期那筆的回饋怎麼算也看各卡條款。</p>'
+
+          + '<h2 id="declined">刷卡失敗怎麼辦</h2>'
+          + '<div class="tldr"><ul>'
+            f'<li><b>手機要收得到 OTP。</b>「{html.escape(_TP["otp_quote"])}」，收不到就只能換付款方式'
+            f'（{_tsrc(_TP["pay_src"], _TP["pay_src_name"])}）。</li>'
+            f'<li><b>看當月額度、30 分鐘內刷完。</b>「{html.escape(_TP["tips"]["quote"])}」；'
+            f'「{html.escape(_TP["tips"]["quote2"])}」（{_tsrc(_TP["tips"]["src"], _TP["tips"]["src_name"])}）。</li>'
+            f'<li><b>被拒的原因要問銀行。</b>「{html.escape(_TP["decline_quote"])}」'
+            f'（{_tsrc(_TP["cards_src"], _TP["cards_src_name"])}）。</li>'
+            f'<li><b>失敗了訂位不會留著。</b>{html.escape(_TP["autocancel_src_name"])}寫'
+            f'「{html.escape(_TP["autocancel"])}」。</li>'
+            f'<li><b>出現「{html.escape(_TP["pending"]["quote"])}」。</b>如果是從專屬購票頁買，'
+            '表示當月名額已經用完，見上面的折扣那一段。</li>'
+            '</ul></div>'
+
+          + '<h2 id="holder">不是持卡人本人搭機、退款退到哪</h2>'
+          + '<div class="tldr"><ul>'
+            '<li><b>不用本人搭機。</b>官網沒有這個限制。只有交易被判定異常時，虎航'
+            f'「{html.escape(_TP["holder_quote"])}」，{html.escape(_TP["holder_note"])}'
+            f'（{_tsrc(_TP["cards_src"], _TP["cards_src_name"])}）。</li>'
+            f'<li><b>原則上不退款。</b>「{html.escape(_TP["refund"]["policy"])}」'
+            f'（{_tsrc(_TP["refund"]["policy_src"], _TP["refund"]["policy_src_name"])}）。</li>'
+            f'<li><b>沒搭機退機場稅。</b>「{html.escape(_TP["refund"]["tax"])}」，'
+            f'{html.escape(_TP["refund"]["tax_days"])}（{_tsrc(_TP["refund"]["tax_src"], _TP["refund"]["tax_src_name"])}）。</li>'
+            f'<li><b>虎航取消航班。</b>{html.escape(_TP["refund"]["cancel"])}'
+            f'（{_tsrc(_TP["refund"]["cancel_src"], _TP["refund"]["cancel_src_name"])}）。</li>'
+            '</ul></div>'
+
+          + fare_cta('tokyo', '看今天的便宜機票')
+          + '<h2>相關頁面</h2><div class="cities">'
+          + f'<a class="ct" href="{U("/japan-airline-card/")}"><b>✈️ 各航空刷哪張卡</b>'
+            f'<s>星宇、華航、長榮、樂桃等 11 家</s></a>'
+          + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
+            f'<s>虎航、樂桃、捷星逐家比</s></a>'
+          + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 旅日信用卡比較</b>'
+            f'<s>日本刷哪張回饋最高</s></a>'
+          + f'<a class="ct" href="{U("/deals/")}"><b>🔥 今日機票特價</b>'
+            f'<s>每天更新</s></a></div>'
+          + faq_visible(_tfaq)
+          + '<p class="disc">付款規定取自台灣虎航官網，銀行優惠取自各發卡銀行官網，'
+            '各卡條款請以銀行公告為準。本頁為公開資訊整理，非理財建議。</p>'
+          + '<style>.tgp td{vertical-align:top}.tgp td.nm{min-width:7.5em}'
+            '.tgptt{padding-left:1.2em;margin:4px 0 12px}.tgptt li{margin:4px 0}</style>'
+          + foot())
+        pages.append(('/japan-airline-card/tigerair/', 0.7))
 
 # ---------- 航空聯名卡：華航、星宇、長榮 ----------
 # 以航空公司為主角，一家一頁。聯名卡的回饋是哩程，不能跟旅日信用卡那 15 張
