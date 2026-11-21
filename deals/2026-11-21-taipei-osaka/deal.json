@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-21-taipei-osaka",
- "generated": "2026-11-21 19:57",
+ "generated": "2026-11-21 21:40",
  "kind": "fare",
  "origin": "taipei",
  "city": "osaka",
@@ -24,7 +24,7 @@
   "url": "https://www.aviasales.com/search/TPE2212KIX14011?t=MM17979654001797978000000150TPEKIX17999109001799919900000210KIXTPE_51b15f1d2307a5bfe2d681f7880e9fad_15763&search_date=20112026&expected_price_uuid=01a1fb2c-b0ee-8040-2e5c-7cb69037c1d3&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=gXirYugaF1LkNLKdChfePA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6338&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,750（11 天有紀錄），這張低 28%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,747（11 天有紀錄），這張低 28%"
  ],
  "med": 17492,
  "n_rt": 77,
