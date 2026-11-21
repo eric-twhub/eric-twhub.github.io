@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-21-taipei-nagoya",
- "generated": "2026-11-21 23:04",
+ "generated": "2026-11-21 23:31",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -25,10 +25,10 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$10,538（6 天有紀錄），這張低 23%"
+  "12 月出發的票，每天最便宜的平均要 NT$10,418（7 天有紀錄），這張低 22%"
  ],
  "med": 16888,
- "n_rt": 18,
+ "n_rt": 20,
  "others": [
   {
    "o": "TPE",
@@ -54,7 +54,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 8911,
+   "price": 9147,
    "dep": "2026-12-27",
    "ret": "2026-12-31",
    "dept": "02:55",
@@ -64,7 +64,7 @@
    "dur": 370,
    "dur_to": 150,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2712NGO31121?t=MM17983401001798352700000150TPENGO17987574001798767000000220NGOTPE_376242052560ba603bb3e5d44b4dbbde_22093&search_date=20112026&expected_price_uuid=01a1f9a0-7faf-8031-2264-622663c743de&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0xt-UazPO-XkhEKnMzoC_g&expected_price_source=share&expected_price_currency=twd&expected_price=8911&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2712NGO31121?t=MM17983401001798352700000150TPENGO17987574001798767000000220NGOTPE_376242052560ba603bb3e5d44b4dbbde_22772&search_date=21112026&expected_price_uuid=01a1fea5-1403-8040-6814-cfbd5d4fec50&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0xt-UazPO-XkhEKnMzoC_g&expected_price_source=share&expected_price_currency=twd&expected_price=9147&marker=775639"
   },
   {
    "o": "TPE",
