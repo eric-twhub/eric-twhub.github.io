@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-21-kaohsiung-okinawa",
- "generated": "2026-11-21 07:24",
+ "generated": "2026-11-21 11:18",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "okinawa",
@@ -28,8 +28,8 @@
   "廉航低於 NT$6,000",
   "12 月出發的票，每天最便宜的平均要 NT$6,101（10 天有紀錄），這張低 50%"
  ],
- "med": 5330,
- "n_rt": 12,
+ "med": 5314,
+ "n_rt": 13,
  "others": [
   {
    "o": "KHH",
@@ -56,7 +56,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4764,
+   "price": 4765,
    "dep": "2026-12-29",
    "ret": "2027-01-06",
    "dept": "17:30",
@@ -75,7 +75,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4764,
+   "price": 4765,
    "dep": "2026-12-10",
    "ret": "2027-01-06",
    "dept": "17:30",

@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-21-taipei-nagoya",
- "generated": "2026-11-21 07:24",
+ "generated": "2026-11-21 11:18",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 8111,
+  "price": 8112,
   "dep": "2026-12-15",
   "ret": "2026-12-19",
   "dept": "08:45",
