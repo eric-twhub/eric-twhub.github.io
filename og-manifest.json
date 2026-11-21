@@ -458,8 +458,8 @@
   {
    "slug": "deals-2026-11-22-taipei-fukuoka",
    "url": "/deals/2026-11-22-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$4,945 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$4,945 來回含稅｜台灣虎航 12/01 出發"
+   "h1": "台北飛福岡 NT$5,405 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$5,405 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-22-kaohsiung-fukuoka",
@@ -494,14 +494,14 @@
   {
    "slug": "deals-2026-11-22-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-22-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,553",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,553"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,093",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,093"
   },
   {
    "slug": "deals-2026-11-22-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-22-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,238",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,238"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,778",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,778"
   },
   {
    "slug": "deals-2026-11-22-transfer-tokyo-fukushima",
@@ -562,6 +562,12 @@
    "url": "/japan-airline-card/peach/",
    "h1": "樂桃刷哪張信用卡",
    "title": "樂桃刷哪張信用卡？手續費、付款幣別、付款失敗與信用卡優惠"
+  },
+  {
+   "slug": "japan-airline-card-jetstar",
+   "url": "/japan-airline-card/jetstar/",
+   "h1": "捷星刷哪張信用卡",
+   "title": "捷星刷哪張信用卡？刷卡優惠、付款方式、幣別與刷卡失敗"
   },
   {
    "slug": "japan-airline-card-jal",

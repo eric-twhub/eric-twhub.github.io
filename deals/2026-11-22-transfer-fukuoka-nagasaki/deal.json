@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-22-transfer-fukuoka-nagasaki",
- "generated": "2026-11-22 00:26",
+ "generated": "2026-11-22 00:33",
  "kind": "transfer",
  "city": "nagasaki",
  "via": "fukuoka",
@@ -12,7 +12,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4945,
+  "price": 5405,
   "dep": "2026-12-01",
   "ret": "2026-12-22",
   "dept": "06:45",
@@ -40,6 +40,6 @@
  "route": "博多 → 長崎",
  "mode": "特急接力海鷗＋西九州新幹線",
  "tm": "約 1 小時 20 分",
- "total": 7445,
- "save": 4238
+ "total": 7905,
+ "save": 3778
 }
