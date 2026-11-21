@@ -523,6 +523,26 @@
      "starlux",
      "china-airlines"
     ]
+   },
+   {
+    "card": "星展信用卡",
+    "benefit": "當月在指定航空、旅行社、訂房平台與海外實體商店累積滿 30 萬送 Samsonite 行李箱、滿 80 萬送 RIMOWA 登機箱；萬事達卡另有滿 3 萬送漫遊吧抵用券 300 元",
+    "how": "每月都要登錄，依登錄月份計算當月消費",
+    "airlines": "指定航空只有長榮、華航、星宇",
+    "notes": [
+     "航空只算臨櫃、官網或航空公司 App，第三方旅遊平台不算",
+     "行李箱每月限量：Samsonite 100 名、RIMOWA 15 名",
+     "萬事達卡滿 3 萬那一級每月限量 1,200 名，往上還有貴賓室、機場接送"
+    ],
+    "end": "2026-12-31",
+    "reg": true,
+    "src": "https://www.dbs.com.tw/personal-zh/cards/offers/20260912ovstravel/index.html",
+    "src_name": "星展銀行・摘星旅遊家",
+    "cover": [
+     "eva-air",
+     "china-airlines",
+     "starlux"
+    ]
    }
   ],
   "_cross_cover": "cross 每一筆的 cover：名單涵蓋哪幾家航空（填 airlines 的 anchor），各航空子頁只列名單有自己的。和 airlines 那段文字要一致，新增 cross 時要一起填。"
@@ -747,5 +767,51 @@
     "said": "高雄飛關西來回付台幣，帳單顯示國家 JP、幣別 TWD；那張卡沒收手續費，推文有人說每次都被收 1.5%"
    }
   ]
+ },
+ "starlux_page": {
+  "_說明": "/japan-airline-card/starlux/（聯名卡頁）補的付款規定。星宇 zh-TW 頁面內容在 window.__NUXT__，curl 讀得到。2026-11-21 逐句核對。訂位服務費金額改了要跟著改；每季回查。",
+  "checked": "2026-11-21",
+  "fee": {
+   "quote": "開立星宇航空189開頭之個人機票、團體機票、哩程酬賓機票(2026年7月1日(含)起)…均須收取USD 33之訂位服務費。此費用不適用任何折扣。",
+   "usd": 33,
+   "src": "https://www.starlux-airlines.com/zh-TW/booking/product/service-charge-ticket-policies",
+   "src_name": "星宇・訂位服務費與票務規定"
+  },
+  "faq_src": "https://www.starlux-airlines.com/zh-TW/support/faq/plan-a-trip",
+  "faq_src_name": "星宇・規劃行程常見問題",
+  "cards_quote": "JCB／萬事達卡／威士卡／美國運通卡／大來卡／UATP",
+  "pay": [
+   [
+    "信用卡",
+    "JCB、萬事達卡、威士卡、美國運通卡、大來卡、UATP",
+    "只收有 3D 驗證的卡"
+   ],
+   [
+    "LINE Pay",
+    "限綁定臺灣發行之信用卡",
+    "只適用台灣出發的行程"
+   ],
+   [
+    "Apple Pay",
+    "只能在星宇官方 App 用",
+    "官網不能用"
+   ],
+   [
+    "銀聯",
+    "只適用香港出發的行程",
+    "台灣出發不能用"
+   ]
+  ],
+  "pay_none": "街口、AFTEE、超商付款、分期",
+  "one_method": "每一筆訂單僅接受一種交易方式",
+  "tds_quote": "本網站及App僅接受具有3D驗證服務之信用卡",
+  "decline_quote": "被拒絕交易原因可能是刷卡額度不足或是未通過3D驗證功能等",
+  "holder_quote": "若交易已通過信用卡3D驗證，無需於機場再次出示原購票信用卡",
+  "ccy_quote": "應依開票地之幣別支付",
+  "ccy_src": "https://www.starlux-airlines.com/zh-TW/terms-conditions/conditions-of-carriage",
+  "ccy_src_name": "星宇・運送條款第 5.5 條",
+  "refund_quote": "於退票申請成功後的20個工作日內完成退款作業",
+  "refund_src": "https://www.starlux-airlines.com/zh-TW/support/faq/ticket-change-and-refund",
+  "refund_src_name": "星宇・改票與退票常見問題"
  }
 }

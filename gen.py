@@ -21318,6 +21318,9 @@ if os.path.exists('airline-card.json'):
         if al['anchor'] == 'tigerair' and AC.get('tigerair_page'):
             _bd_html += (f'<p class="disc"><a href="{U("/japan-airline-card/tigerair/")}">虎航完整整理</a>：'
                          '刷卡有沒有手續費、能不能分期、刷卡失敗怎麼辦、日本出發算國內還是國外。</p>')
+        if al['anchor'] == 'starlux' and AC.get('starlux_page'):
+            _bd_html += (f'<p class="disc"><a href="{U("/japan-airline-card/starlux/")}">星宇完整整理</a>：'
+                         '聯名卡比較、不辦聯名卡刷哪張、訂位服務費、3D 驗證與刷卡失敗。</p>')
         if al['anchor'] == 'peach' and AC.get('peach_page'):
             _bd_html += (f'<p class="disc"><a href="{U("/japan-airline-card/peach/")}">樂桃完整整理</a>：'
                          '票務手續費什麼時候收、日本出發只能付日圓、付款失敗、名單有樂桃的刷卡活動。</p>')
@@ -21940,11 +21943,80 @@ if os.path.exists('cobrand-cards.json'):
                             'acceptedAnswer': {'@type': 'Answer', 'text': a}}
                            for q, a in _faq]}, ensure_ascii=False)
 
+        # 2026-11-21 使用者選「接著做星宇」：自動完成除了聯名卡的年費、貴賓室，
+        # 還有「星宇 刷卡優惠／刷卡失敗／分期」。有 <slug>_page 的航空在這頁補上
+        # 不辦聯名卡時刷哪張、官網付款規定兩段，資料在 airline-card.json。
+        _XP = (AC.get(A['slug'].replace('-', '_') + '_page')
+               if os.path.exists('airline-card.json') else None)
+        _xp_html = ''
+        if _XP:
+            _xcross = [x for x in _live_deals(_BD['cross']) if A['slug'] in x.get('cover', ())]
+
+            def _xs(u, n):
+                return f'<a href="{u}" rel="nofollow noopener" target="_blank">{html.escape(n)}</a>'
+            _xpay = ''.join(f'<tr><td class="nm"><b>{html.escape(m)}</b></td><td>{html.escape(w)}</td>'
+                            f'<td>{html.escape(n)}</td></tr>' for m, w, n in _XP['pay'])
+            _xpay += (f'<tr><td class="nm"><b>{html.escape(_XP["pay_none"])}</b></td>'
+                      '<td class="dimcell">官網沒寫</td><td class="dimcell">付款說明沒有列</td></tr>')
+            _xf = _XP['fee']
+            _xp_html = (
+                f'<h2 id="other-cards">不辦聯名卡：刷{html.escape(A["short"])}用哪張卡</h2>'
+                + (f'<p class="lede">{html.escape(A["name"])}官網目前只有聯名卡的購票優惠。'
+                   f'下面是發卡銀行自己的活動，名單都有{html.escape(A["short"])}：</p>'
+                   '<ul class="xl">' + ''.join(_deal_li(dict(x, airlines=None)) for x in _xcross) + '</ul>'
+                   if _xcross else '<p class="lede">目前沒查到名單有這家航空的刷卡活動。</p>')
+                + '<p class="disc">大多只算航空公司官網、App 或櫃台，透過旅行社或訂票網站買不算。</p>'
+                + f'<h2 id="payment">{html.escape(A["short"])}官網的付款規定</h2>'
+                + '<div class="today"><div class="tday">刷卡另收手續費嗎</div>'
+                  '<div class="tans">沒有刷卡手續費，但有訂位服務費</div>'
+                  f'<div class="tsub">{html.escape(A["short"])}寫「{html.escape(_xf["quote"])}」'
+                  f'（{_xs(_xf["src"], _xf["src_name"])}）。</div></div>'
+                + '<div class="tw"><table class="tgp"><thead><tr><th>付款方式</th><th>能用什麼</th>'
+                  '<th>要注意</th></tr></thead><tbody>' + _xpay + '</tbody></table></div>'
+                + f'<p class="disc">取自{_xs(_XP["faq_src"], _XP["faq_src_name"])}。'
+                  f'同行旅客要分開刷就要分開訂：「{html.escape(_XP["one_method"])}」。</p>'
+                + '<div class="tldr"><ul>'
+                  f'<li><b>刷不過。</b>「{html.escape(_XP["decline_quote"])}」；'
+                  f'而且「{html.escape(_XP["tds_quote"])}」，要先跟銀行開好 3D 驗證。</li>'
+                  f'<li><b>分期。</b>官網沒寫有刷卡分期，要分期只能刷完自己問發卡銀行。</li>'
+                  f'<li><b>不是持卡人本人搭機。</b>「{html.escape(_XP["holder_quote"])}」；'
+                  '沒過 3D 驗證的，要到報到櫃台出示原卡，持卡人不能到場要先去市區服務據點驗證。</li>'
+                  f'<li><b>幣別。</b>運送條款寫「{html.escape(_XP["ccy_quote"])}」'
+                  f'（{_xs(_XP["ccy_src"], _XP["ccy_src_name"])}）；日本出發的航段在台灣官網能不能付台幣，官網沒寫。</li>'
+                  f'<li><b>退款。</b>退回原付款方式，「{html.escape(_XP["refund_quote"])}」，實際入帳看銀行'
+                  f'（{_xs(_XP["refund_src"], _XP["refund_src_name"])}）。</li>'
+                  '<li><b>算國內還是國外。</b>官方沒寫，網友也沒有人貼過帳單；'
+                  f'判斷方法見<a href="{U("/japan-airline-card/")}#domestic-or-foreign">主頁那一段</a>。</li>'
+                  '</ul></div>'
+                + f'<p class="disc">付款規定核對於 {_XP["checked"]}。</p>'
+                + '<style>.tgp td{vertical-align:top}.tgp td.nm{min-width:7.5em}</style>')
+            _faq += [
+                (f'{A["short"]}刷卡有手續費嗎？',
+                 f'沒有刷卡手續費，但{A["short"]}開的機票每張都要收 USD {_xf["usd"]} 訂位服務費，'
+                 '不分開票地與通路，也不適用任何折扣。'),
+                (f'{A["short"]}刷卡刷不過怎麼辦？',
+                 f'{A["short"]}寫「{_XP["decline_quote"]}」，官網與 App 只收有 3D 驗證的卡，'
+                 '被拒的原因要問發卡銀行。'),
+                (f'不辦聯名卡，買{A["short"]}機票刷哪張卡？',
+                 f'名單有{A["short"]}的刷卡活動，本頁列了 {len(_xcross)} 筆，'
+                 '大多要切換方案或每月登錄，而且只算官網、App 或櫃台。'),
+            ]
+            _faq_ld = json.dumps({
+                '@context': 'https://schema.org', '@type': 'FAQPage',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                               for q, a in _faq]}, ensure_ascii=False)
+
         _t = (f'{A["short"]}聯名卡怎麼選？買{A["short"]}日本機票、換台日來回要刷多少'
               f'（{A["issuer"]} {len(_T)} 張卡比較）')
         _d = (f'{A["card_family"]}各卡別的哩程費率、{A["short"]}官網購票折扣的實際適用範圍、'
               f'換一張台灣到日本經濟艙來回（{_M:,} 哩）要刷多少錢，以及在日本刷卡要注意的條件。'
               f'全部取自發卡行與{A["name"]}官網。')
+        if _XP:
+            _t = f'{A["short"]}刷哪張信用卡？聯名卡怎麼選、刷卡優惠與刷卡失敗'
+            _d = (f'{A["card_family"]}各卡別比較、{A["short"]}官網購票折扣的實際範圍、'
+                  f'不辦聯名卡時名單有{A["short"]}的刷卡活動，以及{A["short"]}官網的付款規定：'
+                  '訂位服務費、付款方式、3D 驗證、退款。全部取自發卡行與航空公司官網。')
         _p = f'japan-airline-card/{A["slug"]}/'
         _srcs = ''.join(
             f'<a href="{A[k]}" rel="nofollow noopener" target="_blank">{html.escape(A[k + "_name"])}</a>、'
@@ -21955,7 +22027,8 @@ if os.path.exists('cobrand-cards.json'):
           + topnav()
           + crumbs([('首頁', '/'), ('買機票刷哪張卡', '/japan-airline-card/'),
                     (A['short'] + '聯名卡', None)])
-          + f'<h1>{html.escape(A["short"])}聯名卡，飛日本的人實際拿到什麼</h1>'
+          + (f'<h1>{html.escape(A["short"])}刷哪張信用卡：聯名卡與一般卡</h1>' if _XP else
+             f'<h1>{html.escape(A["short"])}聯名卡，飛日本的人實際拿到什麼</h1>')
           + f'<p class="lede">卡片權益取自 {_srcs}，'
             f'哩程兌換取自 <a href="{A["award_src"]}" rel="nofollow noopener" target="_blank">'
             f'{html.escape(A["award_src_name"])}</a>　·　核對於 {CB["checked"]}</p>'
@@ -21979,6 +22052,7 @@ if os.path.exists('cobrand-cards.json'):
             f'（<a href="{A["src_fare"]}" rel="nofollow noopener" target="_blank">'
             f'{html.escape(A["src_fare_name"])}</a>）</li>'
             '</ul></div>'
+          + _xp_html
 
           + f'<h2>{len(_T)} 張卡比一比</h2>'
           + f'<p class="lede">{html.escape(A["earn_note"])}指定通路是：'
