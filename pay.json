@@ -238,5 +238,65 @@
    "honest": "本站這一輪沒有把各家的回饋率寫成表。那些數字多半是季度檔期，而且有幾家把條件放在活動頁的圖片裡而不是文字裡，本站還沒有逐項對過文字版。寫一張會過期又不確定的表，不如先給官方頁讓你自己看。",
    "key": "要比的話，看三件事：免手續費是寫成常態還是「優惠期間」、匯率用哪一種牌告與有沒有減碼、以及回饋的每月上限。這三項本站有逐條對過官網，就在上面那兩張表。"
   }
+ },
+ "linepay": {
+  "_說明": "台灣 LINE Pay 在日本能不能用。2026-11-21 查。LINE Pay 台灣支援中心那則 FAQ 沒有日期，每季回查有沒有改寫；cards 是各卡日本那一層的條款原文，卡片條款改版時一起看。",
+  "checked": "2026-11-21",
+  "faq_q": "可以在其他國家的LINE Pay合作商店透過LINE Pay付款嗎？",
+  "faq_quote": "日本的LINE Pay合作商店尚未提供海外用戶透過LINE Pay付款的服務",
+  "faq_src": "https://help2.line.me/linepay_tw/android/search/pc?country=TW&lang=zh-hant&q=%E6%97%A5%E6%9C%AC",
+  "faq_src_name": "LINE Pay Taiwan 支援中心",
+  "jp_end": "日本的 LINE Pay 已經結束，PayPay 給店家的公告寫「LINE Pay決済がおこなえるのは、2025年4月23日までです。」",
+  "jp_end_src": "https://paypay.ne.jp/notice-merchant/20240806/n-01/",
+  "jp_end_src_name": "PayPay 加盟店公告",
+  "paypay_note": "PayPay 官方的海外錢包清單裡也沒有 LINE Pay，所以掃 PayPay 收款碼這條路也走不通。",
+  "paypay_src": "https://about.paypay.ne.jp/en/pr/20260629/01/",
+  "paypay_src_name": "PayPay 新聞稿（2026/6/29）",
+  "online": "日本的網路商店能不能用台灣 LINE Pay，官方沒寫。",
+  "cards": [
+   [
+    "國泰世華 CUBE",
+    "不算",
+    "亦不含透過綁定其他型態支付工具之消費(如：LINE Pay、街口支付…)",
+    "https://www.cathaybk.com.tw/cathaybk/promo/event/credit-card/product/japanrewards/index.html"
+   ],
+   [
+    "玉山 Unicard",
+    "不算，改算行動支付類別",
+    "若透過第三方支付及電子支付錢包(例如：LINE Pay、街口支付…)將不認列為該特店之交易",
+    "https://event.esunbank.com.tw/credit/unicard/discount-channel.html"
+   ],
+   [
+    "中信 LINE Pay 卡",
+    "不算",
+    "網路交易、條碼支付或第三方支付不列入消費計算",
+    "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/page_travel.html"
+   ],
+   [
+    "台新 Richart",
+    "不算（日本算玩旅刷）",
+    "LINE Pay綁定消費限Chill刷、Pay著刷及假日刷",
+    "https://www.taishinbank.com.tw/TSB/personal/credit/intro/overview/future/ab46dfa7-5d88-11f1-b50f-0050568c09e3"
+   ],
+   [
+    "星展 eco 永續卡",
+    "不算（只列實體卡、Apple Pay、Samsung Pay）",
+    "以實體卡片或Apple Pay／Samsung Pay於當地實體門市等進行面對面刷卡消費",
+    "https://www.dbs.com.tw/personal-zh/cards/dbs_eco/index.html"
+   ],
+   [
+    "富邦 J 卡",
+    "官方沒寫",
+    "條款只寫商店國別碼與面對面交易，沒提到 LINE Pay",
+    "https://www.fubon.com/banking/Personal/credit_card/all_card/omiyage/omiyage.htm"
+   ],
+   [
+    "聯邦吉鶴卡",
+    "官方沒寫",
+    "日本那一層沒提到 LINE Pay；頁面上排除 LINE Pay 的句子屬於台灣的另一個活動",
+    "https://activity.ubot.com.tw/2026JiHoCard/index.htm"
+   ]
+  ],
+  "alt": "在日本要用手機付款，用 Apple Pay 或 Google Pay 綁台灣信用卡感應刷卡。CUBE、Unicard、中信 LINE Pay 卡、吉鶴卡的條款都寫明這樣算進日本回饋；星展 eco 的國外加碼只列 Apple Pay 與 Samsung Pay，沒有 Google Pay。"
  }
 }

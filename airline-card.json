@@ -417,7 +417,19 @@
     "end": "2026-12-31",
     "src": "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/cube-list",
     "src_name": "國泰世華・CUBE 權益方案",
-    "tigerair": true
+    "cover": [
+     "tigerair",
+     "starlux",
+     "china-airlines",
+     "eva-air",
+     "cathay-pacific",
+     "peach",
+     "jetstar",
+     "scoot",
+     "jal",
+     "ana",
+     "vietjet"
+    ]
    },
    {
     "card": "台新 Richart 卡",
@@ -432,7 +444,18 @@
     "end": "2027-12-31",
     "src": "https://mkp.taishinbank.com.tw/s/2025/RichartCard_2025/index.html",
     "src_name": "台新銀行・Richart 卡",
-    "tigerair": true
+    "cover": [
+     "tigerair",
+     "starlux",
+     "china-airlines",
+     "eva-air",
+     "cathay-pacific",
+     "peach",
+     "jetstar",
+     "scoot",
+     "jal",
+     "vietjet"
+    ]
    },
    {
     "card": "玉山 Unicard",
@@ -447,7 +470,14 @@
     "end": "2026-12-31",
     "src": "https://www.esunbank.com/zh-tw/personal/credit-card/intro/bank-card/unicard",
     "src_name": "玉山銀行・Unicard",
-    "tigerair": true
+    "cover": [
+     "china-airlines",
+     "eva-air",
+     "jal",
+     "tigerair",
+     "peach",
+     "scoot"
+    ]
    },
    {
     "card": "第一銀行信用卡",
@@ -463,7 +493,17 @@
     "reg": true,
     "src": "https://card.firstbank.com.tw/sites/Satellite?c=CreditCard&cid=1565709773007&d=Touch&pagename=FirstBankCard%2FCreditCard%2Fzh%2FCardActivityDetailView",
     "src_name": "第一銀行・FUN旅遊",
-    "tigerair": true
+    "cover": [
+     "china-airlines",
+     "eva-air",
+     "starlux",
+     "tigerair",
+     "cathay-pacific",
+     "jal",
+     "ana",
+     "vietjet",
+     "scoot"
+    ]
    },
    {
     "card": "玉山信用卡",
@@ -478,10 +518,14 @@
     "reg": true,
     "src": "https://event.esunbank.com.tw/credit/travel-campaign/index.html",
     "src_name": "玉山銀行・旅遊通路滿額活動",
-    "tigerair": true
+    "cover": [
+     "tigerair",
+     "starlux",
+     "china-airlines"
+    ]
    }
   ],
-  "_cross_tigerair": "cross 每一筆的 tigerair 欄位：名單有沒有台灣虎航（/japan-airline-card/tigerair/ 只列 true 的）。新增 cross 時要一起填。"
+  "_cross_cover": "cross 每一筆的 cover：名單涵蓋哪幾家航空（填 airlines 的 anchor），各航空子頁只列名單有自己的。和 airlines 那段文字要一致，新增 cross 時要一起填。"
  },
  "tigerair_page": {
   "_說明": "/japan-airline-card/tigerair/ 用。全部取自虎航官網（內容由前端載入，curl 讀不到，要用瀏覽器讀），2026-11-21 逐句核對。費用表要切「日本出發」下拉才看得到日圓那一欄。每季回查一次，費用表適用期間到了一定要重查。",

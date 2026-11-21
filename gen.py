@@ -4840,7 +4840,42 @@ if os.path.exists('pay.json'):
                '這頁整理哪幾個錢包在 PayPay 官方清單上、各家用哪一種匯率、'
                '交通系 IC 卡現在買不買得到，以及哪些鐵路可以直接刷感應信用卡。')
 
+    _LP = PY.get('linepay')
+    _py_lp = ''
+    if _LP:
+        _py_lp = ('<h2 id="linepay">台灣的 LINE Pay 在日本能用嗎</h2>'
+          '<div class="today"><div class="tday">實體店家</div>'
+          '<div class="tans">不能用</div>'
+          f'<div class="tsub">LINE Pay 台灣的官方問答寫「{html.escape(_LP["faq_quote"])}」'
+          f'（<a href="{_LP["faq_src"]}" rel="nofollow noopener" target="_blank">'
+          f'{html.escape(_LP["faq_src_name"])}</a>）。</div></div>'
+          '<div class="tldr"><ul>'
+          f'<li><b>日本那邊的 LINE Pay 也沒了。</b>{html.escape(_LP["jp_end"])}'
+          f'（<a href="{_LP["jp_end_src"]}" rel="nofollow noopener" target="_blank">'
+          f'{html.escape(_LP["jp_end_src_name"])}</a>）</li>'
+          f'<li><b>PayPay 那條路也不行。</b>{html.escape(_LP["paypay_note"])}'
+          f'（<a href="{_LP["paypay_src"]}" rel="nofollow noopener" target="_blank">'
+          f'{html.escape(_LP["paypay_src_name"])}</a>）</li>'
+          f'<li><b>網路商店。</b>{html.escape(_LP["online"])}</li>'
+          '</ul></div>'
+          '<h3>綁 LINE Pay 付款，算不算日本回饋</h3>'
+          '<p class="lede">就算在別的情境用 LINE Pay 綁卡付款，多數卡的日本回饋也不算：</p>'
+          '<div class="tw"><table class="lpt"><thead><tr><th>卡片</th><th>綁 LINE Pay 付款</th>'
+          '<th>條款怎麼寫</th></tr></thead><tbody>'
+          + ''.join(f'<tr><td class="nm"><b>{html.escape(n)}</b></td>'
+                    f'<td class="{"lose" if v.startswith("不算") else "dimcell"}">{html.escape(v)}</td>'
+                    f'<td>{"「" + html.escape(q) + "」" if v.startswith("不算") else html.escape(q)}'
+                    f'<br><small style="color:var(--dim)"><a href="{u}" rel="nofollow noopener" target="_blank">銀行官網</a></small></td></tr>'
+                    for n, v, q, u in _LP['cards'])
+          + '</tbody></table></div>'
+          f'<div class="tldr"><ul><li><b>改用 Apple Pay 或 Google Pay。</b>{html.escape(_LP["alt"])}</li></ul></div>'
+          f'<p class="disc">LINE Pay 的部分查證於 {_LP["checked"]}。</p>')
+
     py_faq = [
+     ('台灣的 LINE Pay 在日本可以用嗎？',
+      (f'實體店家不能用。LINE Pay 台灣的官方問答寫「{_LP["faq_quote"]}」。'
+       '日本的 LINE Pay 也已經結束，PayPay 的海外錢包清單裡也沒有 LINE Pay。'
+       '要用手機付款，改用 Apple Pay 或 Google Pay 綁台灣信用卡感應。') if _LP else None),
      ('台灣人可以註冊 PayPay 嗎？',
       '不行。PayPay 官方說明寫明海外手機號碼無法使用，而且在海外無法新規註冊、'
       '也無法完成本人確認。身分驗證只收個人編號卡、在留卡或特別永住者證明書，'
@@ -4865,6 +4900,7 @@ if os.path.exists('pay.json'):
       '但 JR 東日本查不到這項服務。要注意只收大人運賃，帶小孩的話兒童也收大人票價，'
       '所以帶小孩反而不划算，而且進出站必須用同一張卡。'),
     ]
+    py_faq = [x for x in py_faq if x[1]]
     py_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in py_faq)
     py_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
@@ -4899,6 +4935,7 @@ if os.path.exists('pay.json'):
       + f'<p class="lede">{html.escape(_pyw["okinawa"])}</p>'
       + f'<p class="disc">出處：<a href="{_pyw["okinawa_src"]}" rel="nofollow noopener" '
         f'target="_blank">悠遊卡公司官方問答</a>。</p>'
+      + _py_lp
       + f'<h2>{html.escape(PY["rates"]["title"])}</h2>'
       + f'<p class="lede">{html.escape(PY["rates"]["intro"])}</p>'
       + '<div class="tw"><table><thead><tr><th>業者</th><th>參考銀行</th><th>時點</th>'
@@ -21433,7 +21470,7 @@ if os.path.exists('airline-card.json'):
         # 專屬購票頁的折扣 vs 直接在官網刷拿回饋：看來源是不是虎航的專屬購票頁或樂虎卡
         _tg_disc = [x for x in _tgl if '/portal/' in x['src'] or '樂虎' in x['card']]
         _tg_back = [x for x in _tgl if x not in _tg_disc]
-        _tg_cross = [x for x in _live_deals(_BD['cross']) if x.get('tigerair')]
+        _tg_cross = [x for x in _live_deals(_BD['cross']) if 'tigerair' in x.get('cover', ())]
         _tf = _TP['fee']
         _fee_ok = _tf['until'] >= TODAY
 
@@ -24455,6 +24492,9 @@ if os.path.exists('cards.json'):
         '<li><b>要面對面刷。</b>多數海外加碼限定當地實體商店的面對面交易，'
         '海外訂房平台、網購、訂閱服務常被排除。</li>'
         '<li><b>把加碼額度留給貴的東西。</b>加碼上限換算下來通常是一萬多元。</li>'
+        f'<li><b>台灣的 LINE Pay 在日本不能用。</b>要用手機付，改用 Apple Pay 或 Google Pay '
+        f'綁卡感應；多數卡的日本回饋也明寫綁 LINE Pay 付款不算。'
+        f'逐張條款見<a href="{U("/japan-payment/")}#linepay">支付方式那一頁</a>。</li>'
         '</ul></div>'
       + ((f'<h2>出發前訂行程、訂房，這 {len(_cp_list)} 張也算加碼</h2>'
           '<p class="lede">上面說海外加碼多半不算訂房平台與網購，'
@@ -34097,6 +34137,7 @@ write('search-text.json', _sx)
 SEARCH_SYN = [
     # 返利平台
     ['shopback', 'shop back', '回饋網', '返利', '返利網', '現金回饋網', '回饋平台'],
+    ['line pay', 'linepay', 'line支付', 'line 支付'],
     ['line旅遊', 'line travel', 'linetravel', 'line購物', 'line shopping', 'line point', 'line points', 'linepoints', 'line點數'],
     # 交通卡
     ['西瓜卡', 'suica', 'スイカ'],
