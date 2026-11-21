@@ -3017,6 +3017,20 @@ _AD2_PAIR = {'esim': 'activity2', 'activity2': 'esim', 'car': 'esim',
 # 那霸的頁面配到 JR Pass 會讓人覺得是亂配的。
 _AD_ROTATE = ['esim', 'activity2', 'transfer', 'car', 'transport']
 
+# 秀場與夜店頁不放 Klook，也不載 Travelpayouts Drive。
+# Travelpayouts 上的 Klook 方案寫「Adult … sites are not allowed」，Klook 直營協議
+# 5.2(g) 也禁 obscene；Drive 會把頁面上的 Klook／KKday 連結改寫成 Travelpayouts 的，
+# 所以這幾頁連腳本都不載（代價：Travelpayouts 的 Content analytics 看不到這幾頁）。
+# eSIM 版位是 Klook，輪到它時改配下一個。新增同類頁面要加進來。
+_NO_KLOOK = ('tokyo/63angel', 'tokyo/superspark', 'okinawa/churasun6', 'sapporo/jolijo',
+             'osaka/splash', 'osaka/burlesque', 'nagoya/burlesque', 'tokyo/rockza',
+             'tokyo/samurai-restaurant')
+_KLOOK_KINDS = ('esim',)
+
+def _no_klook(path):
+    u = path[:-len('index.html')].strip('/') if path.endswith('index.html') else path.strip('/')
+    return u in _NO_KLOOK
+
 def _ad_other(used):
     for k in _AD_ROTATE:
         if k not in used:
@@ -3044,6 +3058,8 @@ def _ad_second(path, content, used):
     k2 = _AD2_PAIR.get(used[0]) or _ad_other(used)
     if not k2 or k2 in used:
         k2 = _ad_other(used)
+    if k2 in _KLOOK_KINDS and _no_klook(path):
+        k2 = _ad_other(used + list(_KLOOK_KINDS))
     if not k2:
         return content
     # 位置用實際讀到的字數算，不是 HTML 的字元位置：
@@ -3078,6 +3094,8 @@ def _ad_inject(path, content):
     if 'data-ad="auto"' in content:   # 已經插過了
         return content
     kind = _ad_kind_for(path)
+    if kind in _KLOOK_KINDS and _no_klook(path):
+        kind = 'activity2'
     if not kind:
         return content
     i = content.find('<p class="note">')
@@ -3336,6 +3354,8 @@ def write(path,content):
         content = _ad_inject(path, content)
         content = _trim_note(content)
         content = _ja_gloss(content)
+        if _no_klook(path):
+            content = content.replace(DRIVE, '', 1)
         # 內容雜湊不含頁尾的「最後更新」時間（建好 sitemap 後才回填成這頁
         # 真正變動的時間）與 <!--nh--> 包住的順帶機票按鈕，否則每次重建
         # 每一頁都會被判定有變，lastmod 永遠是今天。
@@ -15401,10 +15421,6 @@ if os.path.exists('angel63.json'):
       + f'<p class="disc">{html.escape(AG["lang"]["shop"])}</p>'
       + '<h2>線上訂票</h2>'
       + f'<p class="lede">{html.escape(AG["tickets"]["_說明"])}</p>'
-      + adbox_tickets(AG['tickets']['items'], 'tokyo',
-                      '六本木這兩家的門票',
-                      '名字很像，訂之前先確認是哪一家',
-                      AG['tickets']['_無售價'])
       # 最便宜的女子会プラン 與可以指定座位的迫力系列只有官網賣，
       # 這一段卻只給得出兩個有分潤的平台，等於把那些方案藏起來。
       + '<div class="cities">'
@@ -15412,9 +15428,21 @@ if os.path.exists('angel63.json'):
         f'rel="nofollow noopener" target="_blank">'
         f'<b>{html.escape(AG["name"])} 官網訂位</b>'
         f'<s>日文介面・要註冊會員　·　本站沒有分潤</s>'
-        f'<u>方案最齊</u></a></div>'
+        f'<u>方案最齊</u></a>'
+        f'<a class="ct" href="{html.escape(_agk["url"])}" '
+        f'rel="nofollow noopener" target="_blank">'
+        f'<b>{html.escape(AG["name"])} 在 Klook 的頁面</b>'
+        f'<s>中文介面・只有自由席與 VIP　·　本站沒有分潤</s>'
+        f'<u>附贈周邊</u></a></div>'
       + '<p class="disc">Klook 只賣自由席與 VIP 兩種，'
         '最便宜的女子会プラン 與可以指定座位的迫力系列只有官網有。</p>'
+      # 這頁不放 Klook 分潤（見 _NO_KLOOK），Klook 那張改成沒有分潤的一般連結，
+      # 放在官網訂位旁邊；廣告版位只剩名字很像的另一家（KKday）。
+      + adbox_tickets([it for it in AG['tickets']['items'] if it.get('provider') != 'klook'],
+                      'tokyo',
+                      '名字很像的另一家',
+                      '這家不是 63 ANGEL，搜「六本木舞孃秀」很容易訂到它',
+                      '價格要點進去才看得到，這裡不標價。')
       + f'<h3>{html.escape(AG["vs"]["t"])}</h3>' + _ag_vs
       + f'<p class="disc">{html.escape(AG["vs"]["note"])}</p>'
       + '<h3>從 Klook 訂 63 ANGEL 的差別</h3>'
@@ -15429,8 +15457,7 @@ if os.path.exists('angel63.json'):
           f'<p class="lede">{html.escape(_agk["compare"]["so"])}</p>'
           f'<p class="disc">{html.escape(_agk["compare"]["caveat"])}</p>')
          if _agk.get('compare') else '')
-      # 比價表是 9/28 的快照，圖卡是 Klook 即時價；放在快照說明之後，不讓兩個數字並排
-      + klook_card(re.search(r'/activity/(\d+)', _agk['url']).group(1))
+      # 原本這裡有 Klook 即時價圖卡（分潤 iframe），這頁不放 Klook 分潤後拿掉
       + _ag_voice + _ag_sim
       + '<h2>基本資料</h2>'
       + '<div class="tldr"><ul>'
