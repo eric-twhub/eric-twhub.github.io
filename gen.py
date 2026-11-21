@@ -15838,7 +15838,9 @@ if os.path.exists('jolijo.json'):
       + f'<div class="tldr"><ul>{_jl_rules}</ul></div>'
 
       + '<h2>地址與營業時間</h2><div class="tldr"><ul>'
-        f'<li><b>地址。</b>{html.escape(JL["addr"])}</li>'
+        f'<li><b>地址。</b>{html.escape(JL["addr"])}　'
+        f'<a href="https://www.google.com/maps/search/?api=1&query={urllib.parse.quote(JL["map_q"], safe="")}" '
+        f'target="_blank" rel="nofollow noopener">📍 在 Google 地圖開啟</a></li>'
         f'<li><b>營業。</b>{JL["hours"]}，{JL["closed"]}公休。</li>'
         f'<li><b>電話。</b>{JL["tel"]}；Email {html.escape(JL["mail"])}</li>'
         '</ul></div>'
@@ -16024,7 +16026,9 @@ if os.path.exists('splash.json'):
       + f'<div class="tldr"><ul>{_sp_rules}</ul></div>'
 
       + '<h2>地址與怎麼去</h2><div class="tldr"><ul>'
-        f'<li><b>地址。</b>{html.escape(SP["addr"])}，同一棟大樓其他樓層是別的店，Splash 在地下 1 樓。</li>'
+        f'<li><b>地址。</b>{html.escape(SP["addr"])}，同一棟大樓其他樓層是別的店，Splash 在地下 1 樓。'
+        f'<a href="https://www.google.com/maps/search/?api=1&query={urllib.parse.quote(SP["map_q"], safe="")}" '
+        f'target="_blank" rel="nofollow noopener">📍 在 Google 地圖開啟</a></li>'
         f'<li><b>交通。</b>{_sp_acc}。</li>'
         f'<li><b>電話。</b>{SP["tel"]}</li>'
         '</ul></div>'
