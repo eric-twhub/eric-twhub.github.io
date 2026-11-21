@@ -34635,7 +34635,9 @@ SEARCH_SYN = [
     ['日航', '日本航空', 'jal', 'japan airlines'],
     ['全日空', '全日本空輸', 'ana', 'all nippon airways'],
     ['樂桃', 'peach'],
-    ['捷星', 'jetstar'],
+    ['捷星', '捷星航空', '捷星日本', 'jetstar', 'jetstar japan'],
+    ['酷航', 'scoot', 'flyscoot'],
+    ['越捷', '越捷航空', 'vietjet', 'vietjet air', 'viet jet'],
     # 地名
     ['東京', 'tokyo'], ['大阪', 'osaka'], ['京都', 'kyoto'], ['北海道', 'hokkaido'],
     ['札幌', 'sapporo'], ['函館', 'hakodate'], ['沖繩', 'okinawa'], ['石垣', 'ishigaki'],
