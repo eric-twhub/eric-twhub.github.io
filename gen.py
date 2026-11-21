@@ -2001,7 +2001,8 @@ def topnav(cur=''):
             + link('/japan-airline-card/', '✈️ 買機票算國內還是國外')
             + link('/japan-airline-card/china-airlines/', '✈️ 華航聯名卡')
             + link('/japan-airline-card/starlux/', '✈️ 星宇聯名卡')
-            + link('/japan-airline-card/eva-air/', '✈️ 長榮聯名卡'))
+            + link('/japan-airline-card/eva-air/', '✈️ 長榮聯名卡')
+            + link('/japan-airline-card/cathay-pacific/', '✈️ 國泰聯名卡'))
     if _cd:
         card += '<hr><b>熱門卡片</b>' + ''.join(
             link(f'/japan-credit-card/{c["slug"]}/', c['name'])
@@ -21337,7 +21338,7 @@ if os.path.exists('airline-card.json'):
         if al['anchor'] == 'tigerair' and AC.get('tigerair_page'):
             _bd_html += (f'<p class="disc"><a href="{U("/japan-airline-card/tigerair/")}">虎航完整整理</a>：'
                          '刷卡有沒有手續費、能不能分期、刷卡失敗怎麼辦、日本出發算國內還是國外。</p>')
-        if al['anchor'] in ('starlux', 'eva-air', 'china-airlines') and AC.get(al['anchor'].replace('-', '_') + '_page'):
+        if al['anchor'] in ('starlux', 'eva-air', 'china-airlines', 'cathay-pacific') and AC.get(al['anchor'].replace('-', '_') + '_page'):
             _bd_html += (f'<p class="disc"><a href="{U("/japan-airline-card/" + al["anchor"] + "/")}">'
                          f'{html.escape(al["name"][:2])}完整整理</a>：'
                          '聯名卡比較、不辦聯名卡刷哪張、官網付款規定與刷卡失敗。</p>')
@@ -22017,7 +22018,7 @@ if os.path.exists('cobrand-cards.json'):
         for t in _T:
             if not t.get('renew') or t.get('fee') is None:
                 continue
-            m = re.search(r'續卡\s*([\d,]+)\s*哩', t['renew'])
+            m = re.search(r'續卡\s*([\d,]+)\s*[哩里]', t['renew'])
             if not m:
                 continue
             mi = int(m.group(1).replace(',', ''))
@@ -22064,7 +22065,7 @@ if os.path.exists('cobrand-cards.json'):
             # 這家航空自己那段裡不是聯名卡的優惠（例如華航的台新環球無限卡、國泰的 CUBE）。
             _xown = [x for b in _BD['airlines'] if b['anchor'] == A['slug']
                      for x in _live_deals(b['deals'])
-                     if '聯名' not in x['card'] and A['short'] not in x['card']]
+                     if '聯名' not in x['card'] and A['short'] not in x['card'].replace('國泰世華', '')]
 
             def _xs(u, n):
                 return f'<a href="{u}" rel="nofollow noopener" target="_blank">{html.escape(n)}</a>'
@@ -22134,7 +22135,7 @@ if os.path.exists('cobrand-cards.json'):
              f'<h1>{html.escape(A["short"])}聯名卡，飛日本的人實際拿到什麼</h1>')
           + f'<p class="lede">卡片權益取自 {_srcs}，'
             f'哩程兌換取自 <a href="{A["award_src"]}" rel="nofollow noopener" target="_blank">'
-            f'{html.escape(A["award_src_name"])}</a>　·　核對於 {CB["checked"]}</p>'
+            f'{html.escape(A["award_src_name"])}</a>　·　核對於 {A.get("checked", CB["checked"])}</p>'
           + '<div class="today">'
             f'<div class="tday">官網購票寫「{html.escape(_F["headline"])}」</div>'
             f'<div class="tans">坐經濟艙飛日本，多半拿不到</div>'
@@ -22212,7 +22213,7 @@ if os.path.exists('cobrand-cards.json'):
 
           + faq_visible(_faq)
           + f'<p class="disc">卡片權益取自發卡行官網，購票優惠與哩程兌換取自'
-            f'發卡行與{html.escape(A["name"])}官網，核對於 {CB["checked"]}。活動條件、年費與兌換標準'
+            f'發卡行與{html.escape(A["name"])}官網，核對於 {A.get("checked", CB["checked"])}。活動條件、年費與兌換標準'
             f'由發卡行與航空公司隨時調整，以官方公告為準。本頁為公開資訊整理，非理財建議。</p>'
           + foot())
         pages.append(('/' + _p, 0.8))
