@@ -27558,8 +27558,8 @@ if BH:
 # ---------- 返利平台回饋整理（ShopBack × LINE 旅遊）----------
 # 資料：scan_cashback.py 抓兩邊商家頁寫成 cashback.json（rows 已經正規化成「商家 × 類別」），
 # 加碼紀錄在 cashback-log.json；取消條件、領取方式、折扣碼是人工的 cashback-rules.json。
-# 加碼常常只有幾個小時，GitHub 排程又會延遲好幾個小時，所以「現在加碼」與比較表
-# 在瀏覽器端再讀一次 /cashback.json 重畫，過了結束時間的加碼自動當成平時。
+# 更新頻率：使用者說一天一次就夠（大檔期兩邊都會先公告），所以只在每日票價建置時順便抓，
+# 不另開排程。瀏覽器端仍會讀 /cashback.json 重畫，過了結束時間的加碼自動當成平時。
 # 兩個平台都和本站沒有合作，頁面上的連結都沒有分潤（讀者從這裡繞去返利平台，
 # Klook／KKday 的訂單就不算本站的，這是 2026-11-21 使用者決定接受的取捨）。
 if os.path.exists('cashback.json') and os.path.exists('cashback-rules.json'):
@@ -27707,11 +27707,48 @@ if os.path.exists('cashback.json') and os.path.exists('cashback-rules.json'):
     _cb_plus = datetime.date(NOW.year, NOW.month, _pd)
     if _cb_plus < NOW.date():
         _cb_plus = datetime.date(NOW.year + (NOW.month == 12), NOW.month % 12 + 1, _pd)
+    _cb_lk = lambda u, t: f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{html.escape(t)}</a>'
     _cb_codes = [c for c in CBR['codes'] if c['end'] >= TODAY]
+    if CBR.get('sb_fair'):
+        _f = CBR['sb_fair']
+        _nm = NOW.month % 12 + 1
+        if NOW.day < _f['from']:
+            _cb_fair = f'下一次 {NOW.month}/{_f["from"]}～{NOW.month}/{_f["to"]}'
+        elif NOW.day <= _f['to']:
+            _cb_fair = f'這個月的到 {NOW.month}/{_f["to"]}，下一次 {_nm}/{_f["from"]}～{_nm}/{_f["to"]}'
+        else:
+            _cb_fair = f'下一次 {_nm}/{_f["from"]}～{_nm}/{_f["to"]}'
+    _cb_fair_li = (f'<li><b>ShopBack 線上旅展：每月 {_f["from"]}～{_f["to"]} 日</b>（{_cb_fair}）。'
+                   f'{html.escape(_f["note"])}（{_cb_lk(_f["src"], "ShopBack IG")}）。</li>') if CBR.get('sb_fair') else ''
+    # 兩邊事先公告的大檔期（人工，cashback-rules.json 的 events）：dates 是個別日子、range 是連續期間，
+    # time 沒寫就是整天。剩下的日子都過了就不顯示（每日建置會更新）。
+    def _cb_ev_left(e):
+        if e.get('range'):
+            return [] if e['range'][1] < TODAY else [max(e['range'][0], TODAY), e['range'][1]]
+        return [d for d in e['dates'] if d >= TODAY]
+    _cb_ev = [(e, _cb_ev_left(e)) for e in CBR.get('events', [])]
+    _cb_ev = sorted([(e, l) for e, l in _cb_ev if l],
+                    key=lambda t: (t[1][0], -float(re.search(r'([\d.]+)%', t[0]['what']).group(1))))
+
+    def _cb_d(iso):
+        return _cb_md(datetime.date.fromisoformat(iso))
+
+    def _cb_ev_li(e, left):
+        if e.get('range'):
+            when = f'{_cb_d(left[0])}～{_cb_d(left[1])}' if left[0] != left[1] else _cb_d(left[0])
+        else:
+            when = '、'.join(_cb_d(d) for d in left)
+        live = left[0] <= TODAY
+        return (f'<li><div class="xh"><span class="xn">{html.escape(e["what"])}</span>'
+                f'<span class="xbadge{" on" if live else ""}">{"今天有" if live else _cb_d(left[0]) + " 起"}</span></div>'
+                f'<div class="xw">{html.escape(e["p"])}　·　{when}' + (f'，{html.escape(e["time"])}' if e.get('time') else '')
+                + (f'　·　{html.escape(e["note"])}' if e.get('note') else '')
+                + f'　·　{_cb_lk(e["src"], "預告圖")}</div></li>')
+    if CBR.get('events_checked') and (NOW.date() - datetime.date.fromisoformat(CBR['events_checked'])).days > 3:
+        print(f'   ⚠️ 返利大檔期 {CBR["events_checked"]} 之後沒回查（使用者要的頻率是三天一次）')
 
     def _cb_md(d):
         return f'{d.month}/{d.day}（{_WD[d.weekday()]}）'
-    _cb_lk = lambda u, t: f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{html.escape(t)}</a>'
 
     _cb_plat = ''.join(
         f'<div><h3>{html.escape(p["name"])}</h3><p class="disc" style="margin:0 0 8px">{html.escape(p["what"])}。</p>'
@@ -27732,7 +27769,7 @@ if os.path.exists('cashback.json') and os.path.exists('cashback-rules.json'):
          'LINE 旅遊的規則也寫中途開別的比價網或回饋網會失效。LINE購物上的 Klook、KKday 其實就是 LINE 旅遊的同一批商家，兩邊也不能疊加。'),
         ('加碼多久換一次？',
          f'很頻繁，常常只有幾個小時，例如 {_cb_t(_cb_top[3]["end"]) if _cb_top and _cb_top[3].get("end") else "晚上 18:00 到 23:59"} 就結束。'
-         '回饋比例看的是下單當下，所以看到加碼要在結束前付款。這頁每天自動抓好幾次，打開時會再讀一次最新資料，過了結束時間的加碼會自動拿掉。'),
+         '回饋比例看的是下單當下，所以看到加碼要在結束前付款。這頁每天自動更新一次，過了結束時間的加碼會自動拿掉。'),
         ('從返利平台點進去會不會比較貴？',
          '本站之前在 Booking.com 實測過：帶聯盟參數的連結會讓手機版失去 Genius 的 9.09% 價差，回饋要有 11% 以上才補得回來。'
          '下單前先在同一台手機直接開一次商家 App 或網站，比一下價格再決定。'),
@@ -27789,7 +27826,7 @@ var tp=document.getElementById("cbtop");if(tp)tp.innerHTML=top?"現在最高："
       + '<h1>訂 Klook、KKday、Trip.com 之前，先看 ShopBack 和 LINE 旅遊現在回饋多少</h1>'
       + '<p class="lede">同一筆日本住宿或行程，從 ShopBack 或 LINE 旅遊點進去再下單，可以拿回一部分現金或 LINE POINTS。'
         '平時大多只有 2～5%，加碼時會到 10～20%，但常常只有幾個小時。'
-        '這頁每天自動抓兩邊的商家頁好幾次，正在加碼的排在最前面，打開頁面時也會再讀一次最新資料。</p>'
+        '這頁每天自動抓一次兩邊的商家頁，正在加碼的排在最前面；兩邊事先公告的大檔期列在後面。</p>'
       + '<div class="today">'
         f'<div class="tday">資料抓取時間 <span id="cbat">{_cb_t(CB["checked"])}</span>　·　兩邊都不能疊加，只能選一個</div>'
         f'<div class="tans" id="cbtop">{_cb_tans}</div>'
@@ -27806,13 +27843,21 @@ var tp=document.getElementById("cbtop");if(tp)tp.innerHTML=top?"現在最高："
         'LINE購物上的 Klook、KKday 就是 LINE 旅遊的同一批商家，比例相同，所以這裡只列 LINE 旅遊。</p>'
       + '<div id="cbcat">' + _cb_cat_tables(_cb_rows) + '</div>'
       + '<h2>接下來已知的加碼時間</h2>'
+      + (('<p class="lede">LINE 旅遊每個月初會先公告當月的加碼；ShopBack 沒有事先公告，只有當天的限時加碼（列在最上面）。'
+          '下面是 LINE 旅遊已經公告的，'
+          f'本站 {CBR["events_checked"][5:7].lstrip("0")}/{CBR["events_checked"][8:].lstrip("0")} 查過一次。</p>'
+          '<ul class="xl">' + ''.join(_cb_ev_li(e, l) for e, l in _cb_ev) + '</ul>'
+          f'<p class="disc">{html.escape(CBR["events_note"].split("。")[0])}。沒寫時段的是整天。'
+          '實際比例以跳轉當下的頁面為準。</p>') if _cb_ev else '')
+      + '<h3>固定規則</h3>'
       + '<div class="tldr"><ul>'
       + (f'<li><b>ShopBack Klook Krazy：' + '、'.join(_cb_md(d) for d in _cb_kk) + '</b>。'
          f'ShopBack 的 Klook 頁首橫幅寫「每月最後一個星期二、三、六」是 Klook Krazy，日期是照這條規則算的，當天以商家頁為準'
          f'（{_cb_lk(CBR["klook_krazy"]["src"], "ShopBack Klook")}）。</li>' if _cb_kk else '')
       + f'<li><b>ShopBack Plus Day：{_cb_md(_cb_plus)}</b>。每月 {_pd} 號，{html.escape(CBR["sb_plus_day"]["note"])}'
         f'（{_cb_lk(CBR["sb_plus_day"]["src"], "說明")}）。</li>'
-      + '<li>LINE 旅遊沒有公布固定的加碼日，都是限時檔期。</li>'
+      + _cb_fair_li
+      + '<li>LINE 旅遊沒有固定的加碼日，每個月初在首頁「預告」公布當月檔期。</li>'
       + '</ul></div>'
       + ((f'<h3>LINE 旅遊折扣碼（日本相關）</h3><ul class="xl">'
           + ''.join(f'<li><div class="xh"><span class="xn">{html.escape(c["what"])}</span>'
@@ -27838,7 +27883,7 @@ var tp=document.getElementById("cbtop");if(tp)tp.innerHTML=top?"現在最高："
       + f'<a class="ct" href="{U("/deals/")}"><b>✈️ 要搶的便宜機票</b><s>各家航空與旅行社的限時活動</s></a>'
       + f'<a class="ct" href="{U("/hotel-price-check/")}"><b>🏨 訂房比價</b><s>手機、桌機、返利連結的價差實測</s></a>'
       + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🎟️ 日本購物折扣</b><s>藥妝、電器、百貨的優惠券</s></a></div>'
-      + '<p class="disc">回饋比例取自 ShopBack 台灣與 LINE 旅遊（buy.line.me）的公開商家頁，每天自動抓取數次；'
+      + '<p class="disc">回饋比例取自 ShopBack 台灣與 LINE 旅遊（buy.line.me）的公開商家頁，每天自動抓取一次；'
         f'取消條件、領取方式與折扣碼查證於 {CBR["checked"]}。各平台隨時調整，請以點進去當下的頁面為準。'
         '本站與 ShopBack、LINE 沒有合作，這頁的連結都沒有分潤。</p>'
       + _cb_js
