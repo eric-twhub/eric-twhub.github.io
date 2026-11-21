@@ -2017,7 +2017,7 @@ _AD_MAP = [
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
     ('okinawa/churasun6', 'activity2'), ('tokyo/worth-flying-for', 'activity2'),
-    ('sapporo/jolijo', 'activity2'), ('osaka/splash', 'activity2'),
+    ('sapporo/jolijo', 'activity2'), ('osaka/splash', 'activity2'), ('osaka/burlesque', 'activity2'),
     ('tokyo/street-fashion', 'activity2'), ('tokyo/hostel', 'transfer'),
     ('tokyo/budget-hotel', 'transfer'),
     ('japan-worth-buying', 'esim'),
@@ -3155,7 +3155,7 @@ _STK_PREFIX = sorted({
     '/japan-takayama-shirakawago-bus/': 'st/skgbus',
     '/japan-tokyo-tower/': 'xmas/tower', '/japan-skytree/': 'xmas/skytree', '/japan-chiikawa-park/': 'xmas/gift',
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
-    '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl',
+    '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
     '/japan-sumo/': 'st/sumo', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
@@ -3749,6 +3749,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">要上阿倍野 HARUKAS 展望台？'
                      f'<a href="{U("/osaka/abeno-harukas/")}">門票要不要先買、周遊卡怎麼用、Klook／KKday 要不要換票</a>'
                      f'（官網原文整理：前一天以前網路買便宜一成、官方沒有買一送一）。</p>')
+        if slug == 'osaka' and os.path.exists('burlesque-osaka.json'):
+            body += (f'<p class="lede">在找大阪的 63 ANGEL？'
+                     f'<a href="{U("/osaka/burlesque/")}">北新地 Burlesque 大阪的票價、場次與訂位</a>'
+                     f'（官網原文整理：前一天網路訂比當天便宜、每月 23 日優惠日）。</p>')
         if slug == 'osaka' and os.path.exists('splash.json'):
             body += (f'<p class="lede">晚上想看表演？'
                      f'<a href="{U("/osaka/splash/")}">櫻川 Splash 的入場費、哪天有開與規定</a>'
@@ -15202,6 +15206,14 @@ if os.path.exists('angel63.json'):
           f'營業時間 {_cs0["hours"]}，{_cs0["age"]}。'
           f'營運公司是{_cs0["operator"]}，跟六本木那家不同；兩家的表演者會互相客串，'
           f'但官方沒有說明公司之間的關係。方案、價格與取消規定都是各自的，不能拿六本木的套用。'))
+    if os.path.exists('burlesque-osaka.json'):
+        ag_faq.append(
+         ('大阪有 63 ANGEL 嗎？',
+          '63 ANGEL 的官網沒有列大阪的店。大阪北新地有一家同樣叫 Burlesque 的「バーレスク大阪」，'
+          '但兩家官網都沒有提到對方，價格、場次與訂位方式都是各自的。'
+          '這頁上方有連到本站整理的 Burlesque 大阪頁'
+          + ('，櫻川另有一家不限時間的 Splash' if os.path.exists('splash.json') else '')
+          + '。'))
     # 台灣公演：最後一場結束後整段不顯示。招待券的效期比公演長，但這段是在講「現在去買台灣場」。
     _agt = AG.get('taiwan')
     if _agt and TODAY > _agt['end']:
@@ -15267,6 +15279,10 @@ if os.path.exists('angel63.json'):
            f'<a href="{U("/okinawa/churasun6/")}">ちゅらさん6 的座位方案與取消規定</a>'
            f'（營運公司跟六本木不同，規定要分開看）。</div>'
            if os.path.exists('churasun6.json') else '')
+        + (f'<div class="tbuf">人在大阪的話，63 ANGEL 官網沒有列大阪的店；北新地有一家同樣掛 Burlesque 的'
+           f'<a href="{U("/osaka/burlesque/")}">Burlesque 大阪</a>（兩家官網都沒提到對方）'
+           + (f'，櫻川另有不限時間的<a href="{U("/osaka/splash/")}">Splash</a>' if os.path.exists('splash.json') else '')
+           + '。</div>' if os.path.exists('burlesque-osaka.json') else '')
         + '</div>'
       + _agt_html
       + '<h2>場次時間</h2>' + _ag_shows
@@ -16053,6 +16069,145 @@ if os.path.exists('splash.json'):
         f'價格、營業日與規定由店家隨時調整，請以官網為準。本頁為公開資訊整理，與店家無合作關係。</p>'
       + foot())
     pages.append(('/osaka/splash/', 0.6))
+
+# ---------- 大阪北新地 Burlesque 大阪（バーレスク大阪） ----------
+# 讀者搜「63 angel 大阪」找的就是這家。價格引官網 SYSTEM 頁的 HTML 文字（先去掉註解，裡面藏著舊的開幕價），
+# 場次引營業時間圖與網路訂位頁。63 ANGEL 與這家的官網互不提及，頁面只並列事實。KKday／Klook 查無商品。
+if os.path.exists('burlesque-osaka.json'):
+    BQ = json.load(open('burlesque-osaka.json', encoding='utf-8'))
+
+    def _bq_tw(y):
+        return f'NT${round(y * JPY):,}'
+
+    def _bq_y(y):
+        return f'¥{y:,}'
+
+    _bq_n, _bq_v = BQ['normal'], BQ['vip']
+    _bq_rows = (
+        f'<tr><td class="nm"><b>一般席</b></td><td class="nm">{_bq_y(_bq_n["adv"][0])}</td>'
+        f'<td class="nm">{_bq_y(_bq_n["day"][0])}</td><td class="nm">{_bq_y(_bq_n["adv"][1])}</td>'
+        f'<td class="nm">{_bq_y(_bq_n["day"][1])}</td></tr>'
+        f'<tr><td class="nm"><b>VIP 席</b></td><td class="nm">{_bq_y(_bq_v["adv"][0])}</td>'
+        f'<td class="nm">{_bq_y(_bq_v["day"][0])}</td><td class="nm">{_bq_y(_bq_v["adv"][1])}</td>'
+        f'<td class="nm">{_bq_y(_bq_v["day"][1])}</td></tr>')
+    _bq_save = _bq_n['day'][0] - _bq_n['adv'][0]
+    _bq_shows = ''.join(f'<tr><td class="nm"><b>{s["n"]}</b></td><td class="nm">{s["open"]}</td>'
+                        f'<td class="nm">{s["start"]}</td></tr>' for s in BQ['shows'])
+
+    def _bq_pp(p):
+        return '／'.join(_bq_y(x) for x in p) if isinstance(p, list) else _bq_y(p)
+    _bq_plans = ''.join(f'<li><b>{html.escape(p["n"])}，{_bq_pp(p["p"])}。</b>{html.escape(p["what"])}。</li>'
+                        for p in BQ['plans'])
+    _pm = BQ['premium']
+    _bq_t = datetime.date.fromisoformat(TODAY)
+    _bq_next = None
+    for k in range(3):
+        yy, mm = _bq_t.year + (_bq_t.month - 1 + k) // 12, (_bq_t.month - 1 + k) % 12 + 1
+        d = datetime.date(yy, mm, _pm['day'])
+        if d.weekday() == 6:
+            d += datetime.timedelta(days=1)
+        if d >= _bq_t:
+            _bq_next = d
+            break
+    _bq_wd = '一二三四五六日'
+    _bq_next_s = (f'{_bq_next.month}/{_bq_next.day}（週{_bq_wd[_bq_next.weekday()]}）' if _bq_next else '')
+    _bq_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>：{html.escape(u["why"])}</li>'
+                     for u in BQ['unverified'])
+
+    _bq_faq = [
+        ('大阪有 63 ANGEL 嗎？',
+         '63 ANGEL 的官網沒有列大阪的店。大阪北新地有一家同樣叫 Burlesque 的「バーレスク大阪」，'
+         '但兩家官網都沒有提到對方，是不是同一家公司官方沒說。'
+         + ('想找大阪的表演秀，也可以看櫻川的 Splash。' if os.path.exists('splash.json') else '')),
+        ('Burlesque 大阪多少錢？',
+         f'一般席看一場，前一天以前在網路訂 {_bq_y(_bq_n["adv"][0])}，當天 {_bq_y(_bq_n["day"][0])}（第 1、2 場，含稅、含 1 杯飲料）。'
+         f'第 3 場另含 15% 服務費，前一天訂 {_bq_y(_bq_n["adv"][1])}、當天 {_bq_y(_bq_n["day"][1])}。'),
+        ('幾點開演？',
+         '一晚三場：' + '、'.join(f'{s["n"]} {s["open"]} 開門、{s["start"]} 開演' for s in BQ['shows']) + '。'),
+        ('怎麼訂位？',
+         f'官網有網路訂位，選方案、場次、人數和日期。前一天以前訂比當天便宜 {_bq_y(_bq_save)}（第 1、2 場一般席）。'
+         f'也可以打電話 {BQ["tel"]}。KKday、Klook 查不到這家的商品。'),
+        ('可以刷卡嗎？',
+         f'可以，官網寫收 {BQ["cards"]}。'),
+        ('有沒有便宜的日子？',
+         f'每月 23 日是優惠日（遇到週日改 24 日），第 1、2 場 {_bq_y(_pm["p"][0])}、第 3 場 {_bq_y(_pm["p"][1])}。'
+         + (f'下一次是 {_bq_next_s}。' if _bq_next else '') + '官網寫有例外，要看官方社群公告。'),
+    ]
+    _bq_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                       for q, a in _bq_faq]}, ensure_ascii=False)
+
+    _bq_title = '大阪有 63 ANGEL 嗎？北新地 Burlesque 大阪的票價、場次與訂位'
+    _bq_desc = ('大阪北新地的 Burlesque 大阪（バーレスク大阪），一晚三場。一般席前一天網路訂 ¥5,500、當天 ¥6,600，'
+                '第 3 場另含服務費；每月 23 日優惠日、看兩場與女生方案、能不能刷卡，以及官網沒寫的部分。')
+
+    write('osaka/burlesque/index.html',
+      head(_bq_title, _bq_desc, 'osaka/burlesque/',
+           '<script type="application/ld+json">' + _bq_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('大阪', '/osaka/'), ('Burlesque 大阪', None)])
+      + '<h1>北新地 Burlesque 大阪，訂位前要知道的幾件事</h1>'
+      + f'<p class="lede">想在大阪找 63 ANGEL 的人，常會找到北新地這家 Burlesque 大阪（{html.escape(BQ["name_ja"])}）。'
+        f'它在大樓 4 樓，共 {BQ["seats"]} 個座位，一晚三場女孩舞蹈秀。'
+        f'兩家名字一樣掛 Burlesque，但官網都沒有提到對方。台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + '<div class="today">'
+        f'<div class="tday">官網價目，查證於 {BQ["checked"]}</div>'
+        f'<div class="tans">一般席看一場：前一天以前訂 <b>{_bq_y(_bq_n["adv"][0])}</b>'
+        f'（約 {_bq_tw(_bq_n["adv"][0])}），當天 {_bq_y(_bq_n["day"][0])}</div>'
+        f'<div class="tsub">第 1、2 場的價格，含稅、含 1 杯飲料。第 3 場較貴。'
+        + (f'下一個優惠日是 <b>{_bq_next_s}</b>，第 1、2 場 {_bq_y(_pm["p"][0])}。' if _bq_next else '')
+        + '</div></div>'
+
+      + '<h2>票價：前一天訂比較便宜</h2>'
+      + '<div class="tw"><table><tr><th>座位</th><th>第 1、2 場<br>前一天以前訂</th><th>第 1、2 場<br>當天</th>'
+        '<th>第 3 場<br>前一天以前訂</th><th>第 3 場<br>當天</th></tr>' + _bq_rows + '</table></div>'
+      + f'<p class="disc">{html.escape(BQ["price_note"])}</p>'
+      + f'<h3>其他方案</h3><div class="tldr"><ul>{_bq_plans}</ul></div>'
+      + f'<h3>每月 23 日優惠日</h3><p class="lede">{html.escape(_pm["what"])}'
+        + (f'下一次是 <b>{_bq_next_s}</b>。' if _bq_next else '') + '</p>'
+
+      + '<h2>一晚三場</h2>'
+      + '<div class="tw narrow"><table><tr><th>場次</th><th>開門</th><th>開演</th></tr>' + _bq_shows + '</table></div>'
+      + f'<p class="disc">場次引官網的營業時間圖與網路訂位頁。官網寫營業 {BQ["hours"]}，'
+        '會因為維修等原因休息；沒寫一場表演多長。</p>'
+
+      + '<h2>怎麼訂位</h2><div class="tldr"><ul>'
+        f'<li><b>官網網路訂位。</b>選方案、場次、人數和日期，前一天以前訂比當天便宜 {_bq_y(_bq_save)}（第 1、2 場一般席）。</li>'
+        f'<li><b>電話。</b>{BQ["tel"]}</li>'
+        '<li><b>平台。</b>KKday、Klook 都查不到這家的商品。</li>'
+        f'<li><b>付款。</b>官網寫可以刷 {BQ["cards"]}。</li>'
+        '</ul></div>'
+      + f'<p class="lede">官網：<a href="{BQ["site"]}" rel="nofollow noopener" target="_blank">burlesque-osaka.com</a>'
+        f'　·　<a href="{BQ["system"]}" rel="nofollow noopener" target="_blank">價目</a>'
+        f'　·　<a href="{BQ["resv"]}" rel="nofollow noopener" target="_blank">網路訂位</a>'
+        f'　·　<a href="{BQ["instagram"]}" rel="nofollow noopener" target="_blank">Instagram</a></p>'
+
+      + '<h2>地址</h2><div class="tldr"><ul>'
+        f'<li><b>地址。</b>{html.escape(BQ["addr"])}　'
+        f'<a href="https://www.google.com/maps/search/?api=1&query={urllib.parse.quote(BQ["map_q"], safe="")}" '
+        f'target="_blank" rel="nofollow noopener">📍 在 Google 地圖開啟</a></li>'
+        f'<li><b>營業。</b>{BQ["hours"]}</li>'
+        '</ul></div>'
+
+      + '<h2>這頁查不到的部分</h2><div class="tldr"><ul>' + _bq_un + '</ul></div>'
+
+      + '<h2>常見問題</h2>' + ''.join('<details class="faq"><summary>' + html.escape(q)
+                                     + '</summary><div>' + html.escape(a) + '</div></details>'
+                                     for q, a in _bq_faq)
+
+      + fare_cta('osaka', '飛大阪的機票多少')
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 六本木 63 ANGEL</b><s>東京那家怎麼訂</s></a>'
+      + (f'<a class="ct" href="{U("/osaka/splash/")}"><b>🎭 大阪櫻川 Splash</b><s>不限時間的秀酒吧</s></a>'
+         if os.path.exists('splash.json') else '')
+      + f'<a class="ct" href="{U("/osaka/observation-decks/")}"><b>🌃 大阪觀景台</b><s>晚上去哪看夜景</s></a>'
+      + f'<a class="ct" href="{U("/osaka/")}"><b>🏯 大阪機票</b><s>各出發地的票價</s></a></div>'
+      + f'<p class="disc">內容引自 Burlesque 大阪官網與網路訂位頁，查證於 {BQ["checked"]}。'
+        f'價格、場次與規定由店家隨時調整，請以官網為準。本頁為公開資訊整理，與店家無合作關係。</p>'
+      + foot())
+    pages.append(('/osaka/burlesque/', 0.6))
 
 # ---------- 六本木 SUPER SPARK TOKYO ----------
 # 跟 63 ANGEL 同一棟樓（63 在 B2F、這家在 B1），63 官網列在相關連結裡。
@@ -32786,7 +32941,9 @@ SEARCH_SYN = [
     ['アポロ1ビル', 'アポロビル', 'apollo 1', 'apollo1', '阿波羅大樓'],
     ['薄野', 'すすきの', 'ススキノ', 'susukino'],
     ['六本木', 'roppongi'],
-    ['63angel', '63 angel', 'rokusan angel', 'ロクサンエンジェル'],
+    ['63angel', '63 angel', 'rokusan angel', 'ロクサンエンジェル', '63天使', 'burlesque tokyo', 'burlesque東京', 'バーレスク東京'],
+    ['burlesque osaka', 'burlesque大阪', 'バーレスク大阪', 'バーレスクosaka'],
+    ['北新地', 'kitashinchi', '曽根崎新地'],
     ['夜秀', '表演秀', 'show', 'ショー', '秀酒吧', '表演酒吧', 'show pub', 'showpub', 'ショーパブ'],
     ['美麗海', '美ら海', 'churaumi'],
     ['豪斯登堡', '荷蘭村', 'huis ten bosch', 'ハウステンボス'],
