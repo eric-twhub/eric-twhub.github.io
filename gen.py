@@ -2017,7 +2017,7 @@ _AD_MAP = [
     ('tokyo/ginkgo', 'activity2'),
     ('tokyo/63angel', 'activity2'), ('tokyo/superspark', 'activity2'),
     ('okinawa/churasun6', 'activity2'), ('tokyo/worth-flying-for', 'activity2'),
-    ('sapporo/jolijo', 'activity2'), ('osaka/splash', 'activity2'), ('osaka/burlesque', 'activity2'),
+    ('sapporo/jolijo', 'activity2'), ('osaka/splash', 'activity2'), ('osaka/burlesque', 'activity2'), ('tokyo/samurai-restaurant', 'activity2'),
     ('tokyo/street-fashion', 'activity2'), ('tokyo/hostel', 'transfer'),
     ('tokyo/budget-hotel', 'transfer'),
     ('japan-worth-buying', 'esim'),
@@ -3155,7 +3155,7 @@ _STK_PREFIX = sorted({
     '/japan-takayama-shirakawago-bus/': 'st/skgbus',
     '/japan-tokyo-tower/': 'xmas/tower', '/japan-skytree/': 'xmas/skytree', '/japan-chiikawa-park/': 'xmas/gift',
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
-    '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl',
+    '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
     '/japan-sumo/': 'st/sumo', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
@@ -3790,6 +3790,10 @@ for slug,name,codes,reg,hotelcity in CITIES:
             body += (f'<p class="lede">晚上想找點事做？'
                      f'<a href="{U("/tokyo/63angel/")}">六本木 63 ANGEL 的座位方案與取消規定</a>'
                      f'（官網原文整理，取消規定官方兩頁寫得不一樣，未滿 20 歲不得入場）。</p>')
+        if slug == 'tokyo' and os.path.exists('samurai.json'):
+            body += (f'<p class="lede">白天想看表演？'
+                     f'<a href="{U("/tokyo/samurai-restaurant/")}">新宿武士餐廳 SAMURAI RESTAURANT 的場次與每天票價</a>'
+                     f'（官網原文整理：白天三場、含便當或兩杯飲料、未滿 18 歲不能進）。</p>')
     body+=faq_block(name,fs,codes)
     body+=klook_tours(slug,name)
     # 門票走 KKday 不走 Trip.com：Trip.com 的門票與演出只有 1.5%，
@@ -16208,6 +16212,243 @@ if os.path.exists('burlesque-osaka.json'):
         f'價格、場次與規定由店家隨時調整，請以官網為準。本頁為公開資訊整理，與店家無合作關係。</p>'
       + foot())
     pages.append(('/osaka/burlesque/', 0.6))
+
+# ---------- 新宿歌舞伎町 SAMURAI RESTAURANT ----------
+# 讀者搜「武士餐廳」「samurai restaurant 時間」。官網 samurai-restaurant.tokyo；逐日價格來自官網訂位系統
+# （samurai.json 的 periods，每月初重抓）。官網沒提到機器人餐廳，頁面不說兩者有關係。
+# KKday 533653 已對 kkday-1pct.json 驗過；舊商品 1655 在 1% 清單裡，不要換回去。
+if os.path.exists('samurai.json'):
+    SR = json.load(open('samurai.json', encoding='utf-8'))
+    _sr_wd = '一二三四五六日'
+
+    def _sr_y(y):
+        return f'¥{y:,}'
+
+    def _sr_tw(y):
+        return f'NT${round(y * JPY):,}'
+
+    def _sr_md(d):
+        return f'{d.month}/{d.day}（{_sr_wd[d.weekday()]}）'
+
+    _sr_t = datetime.date.fromisoformat(TODAY)
+    _sr_last = datetime.date.fromisoformat(SR['bookable_to'])
+
+    def _sr_day(d):
+        """這天的狀態：('price', [三場]) / ('closed', None) / ('tbd', None)"""
+        iso = d.isoformat()
+        for a, b in SR['closed']:
+            if a <= iso <= b:
+                return 'closed', None
+        if d > _sr_last:
+            return 'tbd', None
+        for pr in SR['periods']:
+            if pr['from'] <= iso <= pr['to']:
+                return 'price', pr['p']
+        return 'none', None
+
+    _SR_TBD = '官網訂位還沒開放到這天'
+    _sr_days = [_sr_t + datetime.timedelta(days=i) for i in range(91)]
+
+    def _sr_cells(d):
+        st, p = _sr_day(d)
+        if st == 'price':
+            return [[_sr_y(x), '約 ' + _sr_tw(x)] for x in p]
+        txt = {'closed': '不能訂', 'tbd': _SR_TBD, 'none': '官網沒寫'}[st]
+        return [[txt, ''] for _ in SR['shows']]
+
+    def _sr_note(d):
+        st, p = _sr_day(d)
+        if st == 'closed':
+            return '官網訂位系統這天不能訂（跨年期間）。'
+        if st == 'tbd':
+            return f'官網訂位目前只開放到 {_sr_md(_sr_last)}，這天的價格還沒公布。'
+        if st == 'none':
+            return '官網沒寫這天的價格。'
+        return f'官網訂位價：第 1 場 {_sr_y(p[0])}，第 2、3 場 {_sr_y(p[1])}。'
+
+    _sr_data = {d.isoformat(): [_sr_md(d), _sr_note(d), _sr_cells(d)] for d in _sr_days}
+    _sr_c0 = _sr_cells(_sr_t)
+    _sr_st0, _sr_p0 = _sr_day(_sr_t)
+
+    # 下一次降價：今天之後第一個價格比今天低的日子
+    _sr_drop = None
+    if _sr_st0 == 'price':
+        for d in _sr_days:
+            st, p = _sr_day(d)
+            if st == 'price' and p[0] < _sr_p0[0]:
+                _sr_drop = (d, p)
+                break
+    _sr_cl = [(datetime.date.fromisoformat(a), datetime.date.fromisoformat(b)) for a, b in SR['closed']
+              if b >= TODAY]
+
+    _sr_pk = (
+        '<div class="tdpk" id="srpk" hidden><b>你哪天去？</b><div class="tdch" id="srch"></div>'
+        '<label class="tdmore">更後面的日期<input type="date" id="srdt"></label>'
+        f'<p class="disc">可以選到 {_sr_md(_sr_days[-1])}。官網訂位目前開放到 {_sr_md(_sr_last)}，'
+        f'更後面的日子會照實寫「{_SR_TBD}」。</p></div>'
+        '<div class="tw" id="srtb"><table><thead><tr><th>場次</th><th>開門</th><th>開演～結束</th>'
+        '<th id="srth">今天的網路價</th></tr></thead><tbody>'
+        + ''.join(f'<tr><td><b>{n}</b></td><td>{o}</td><td>{s}～{e}</td>'
+                  f'<td>{html.escape(c[0])}<br><small>{html.escape(c[1])}</small></td></tr>'
+                  for (n, o, s, e), c in zip(SR['shows'], _sr_c0))
+        + '</tbody></table></div>'
+        + f'<p class="disc" id="srnote">日本時間今天 {_sr_md(_sr_t)}：{html.escape(_sr_note(_sr_t))}</p>')
+
+    _sr_js = ('<script>(function(){var D=' + json.dumps(_sr_data, ensure_ascii=False, separators=(',', ':'))
+      + ';var pk=document.getElementById("srpk");if(!pk)return;'
+      'var t=new Date(Date.now()+324e5).toISOString().slice(0,10);'
+      'var ks=Object.keys(D).sort().filter(function(k){return k>=t});if(!ks.length)return;'
+      'var ch=document.getElementById("srch"),inp=document.getElementById("srdt"),th=document.getElementById("srth"),'
+      'nt=document.getElementById("srnote"),rs=document.querySelectorAll("#srtb tbody tr"),bs=[];'
+      'function lab(k){return k===t?"今天":D[k][0]}'
+      'function show(k){var v=D[k];if(!v)return;'
+      'for(var i=0;i<rs.length&&i<v[2].length;i++){var c=rs[i].cells[3];c.innerHTML="";'
+      'c.appendChild(document.createTextNode(v[2][i][0]));if(v[2][i][1]){c.appendChild(document.createElement("br"));'
+      'var s=document.createElement("small");s.textContent=v[2][i][1];c.appendChild(s);}}'
+      'th.textContent=lab(k)+"的網路價";'
+      'nt.textContent=(k===t?"日本時間今天 "+v[0]:v[0])+"："+v[1];'
+      'bs.forEach(function(b){b.className=b.getAttribute("data-k")===k?"on":""});inp.value=k;}'
+      'ks.slice(0,14).forEach(function(k){var b=document.createElement("button");b.type="button";'
+      'b.setAttribute("data-k",k);b.textContent=k===t?"今天":D[k][0].replace("（"," ").replace("）","");'
+      'b.onclick=function(){show(k)};ch.appendChild(b);bs.push(b);});'
+      'inp.min=ks[0];inp.max=ks[ks.length-1];inp.onchange=function(){if(D[inp.value])show(inp.value)};'
+      'pk.hidden=false;show(ks[0]);})();</script>')
+
+    _sr_css = ('<style>'
+      '.tdpk{border:2px dashed var(--edge);border-radius:14px;padding:12px 14px;margin:10px 0 14px;background:var(--paper)}'
+      '.tdpk>b{color:var(--ink);font-size:1.02rem}'
+      '.tdch{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}'
+      '.tdch button{font:inherit;font-size:.88rem;padding:5px 10px;border:1.5px solid var(--edge);border-radius:999px;'
+      'background:var(--card);color:var(--ink);cursor:pointer}'
+      '.tdch button.on{background:#c2410c;border-color:#c2410c;color:#fff;font-weight:700}'
+      '.tdmore{display:flex;align-items:center;gap:8px;font-size:.9rem;flex-wrap:wrap}'
+      '.tdmore input{font:inherit;font-size:16px;padding:5px 8px;border:1.5px solid var(--edge);border-radius:8px;background:var(--card)}'
+      '.tdpk .disc{margin:8px 0 0}'
+      '#srtb small{color:var(--dim)}'
+      '@media(max-width:600px){#srtb thead{display:none}#srtb table,#srtb tbody,#srtb tr,#srtb td{display:block;width:auto}'
+      '#srtb tr{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:8px 12px;background:var(--card)}'
+      '#srtb td{border:0;padding:2px 0}#srtb td:first-child{font-size:1.02rem}'
+      '#srtb td:nth-child(2)::before{content:"開門：";color:var(--dim);font-size:.8rem}'
+      '#srtb td:nth-child(3)::before{content:"開演～結束：";color:var(--dim);font-size:.8rem}'
+      '#srtb td:nth-child(4)::before{content:"網路價：";color:var(--dim);font-size:.8rem}'
+      '#srtb td:nth-child(4) br{display:none}#srtb td:nth-child(4) small{margin-left:6px}}'
+      '</style>')
+
+    _kk = SR['kkday']
+    _sr_ad = adbox_tickets(
+        [{'provider': 'kkday', 'id': _kk['id'], 'url': _kk['url'],
+          'name': 'SAMURAI RESTAURANT 表演門票', 'area': '新宿歌舞伎町',
+          'note': '2 天前可免費取消'}],
+        'tokyo/samurai-restaurant', '想用中文先訂好',
+        '有附飲料、甜點、壽司或居酒屋餐的方案，取消規定比官網寬。',
+        '售價以 KKday 頁面為準，本站不另外標價。')
+
+    _sr_shows_txt = '、'.join(f'{n} {s} 開演（{o} 開門）' for n, o, s, e in SR['shows'])
+    _sr_rules = ''.join(f'<li>{html.escape(r)}。</li>' for r in SR['rules'])
+    _sr_terms = ''.join(f'<li>{html.escape(r)}。</li>' for r in SR['official_terms'])
+    _sr_kkp = ''.join(f'<li>{html.escape(x)}</li>' for x in _kk['plans'])
+    _sr_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>：{html.escape(u["why"])}</li>'
+                     for u in SR['unverified'])
+    _sr_drop_s = (f'{_sr_md(_sr_drop[0])} 起官網價格降到第 1 場 {_sr_y(_sr_drop[1][0])}、第 2、3 場 {_sr_y(_sr_drop[1][1])}。'
+                  if _sr_drop else '')
+    _sr_cl_s = ''.join(f'官網訂位系統 {_sr_md(a)}～{_sr_md(b)} 不能訂。' for a, b in _sr_cl)
+
+    _sr_faq = [
+        ('SAMURAI RESTAURANT 多少錢？',
+         (f'今天（{_sr_md(_sr_t)}）官網訂位價第 1 場 {_sr_y(_sr_p0[0])}、第 2、3 場 {_sr_y(_sr_p0[1])}，'
+          if _sr_st0 == 'price' else '')
+         + f'{SR["includes"]}。' + _sr_drop_s + '價格每天可能不同，這頁上方可以選日期看。'),
+        ('幾點開演？',
+         f'官網寫一天三場，都在白天：{_sr_shows_txt}。開演前至少 15 分鐘要到場報到。'),
+        ('幾歲可以進去？',
+         '官網寫未滿 18 歲不能入場，入場時會查年齡，要帶護照等看得出年齡的證件；未滿 20 歲不提供酒精飲料。'),
+        ('不訂位可以直接去嗎？',
+         '官網 FAQ 寫可以直接去，但客滿可能進不去。官網訂位要刷卡或銀行轉帳付款，個人原因不能退款也不能改期。'),
+        ('官網訂還是 KKday 訂？',
+         f'官網訂位個人原因不能退也不能改期；KKday 的商品寫{_kk["cancel"]}，方案也不一樣'
+         '（有附抹茶甜點、壽司或附近居酒屋餐的）。KKday 的售價要點進去看，本站不標價。'
+         + _kk['seat_note']),
+        ('這是以前的機器人餐廳嗎？',
+         '官網沒有提到機器人餐廳，兩者是什麼關係官方沒說。這頁只整理 SAMURAI RESTAURANT 官網寫的內容。'),
+    ]
+    _sr_ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{'@type': 'Question', 'name': q,
+                        'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                       for q, a in _sr_faq]}, ensure_ascii=False)
+
+    _sr_title = '新宿武士餐廳 SAMURAI RESTAURANT：場次時間、每天票價與訂位'
+    _sr_desc = ('新宿歌舞伎町的 SAMURAI RESTAURANT（武士餐廳），白天三場 10:50、14:00、16:30。'
+                '選日期看官網網路價、含便當或兩杯飲料、未滿 18 歲不能進、官網訂了不能退，以及 KKday 方案差在哪。')
+
+    write('tokyo/samurai-restaurant/index.html',
+      head(_sr_title, _sr_desc, 'tokyo/samurai-restaurant/',
+           '<script type="application/ld+json">' + _sr_ld + '</script>' + _sr_css)
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('SAMURAI RESTAURANT', None)])
+      + '<h1>新宿武士餐廳 SAMURAI RESTAURANT，去之前要知道的幾件事</h1>'
+      + '<p class="lede">SAMURAI RESTAURANT（武士餐廳）在新宿歌舞伎町的地下 1 樓，一天三場表演都在白天，'
+        f'票價含入場，再從便當或 2 杯飲料裡選一種。官網寫{html.escape(SR["entry"])}。'
+        f'台幣以中間匯率 {JPY} 換算，每日自動更新。</p>'
+      + ('<div class="today">'
+         f'<div class="tday">日本時間今天 {_sr_md(_sr_t)}，官網網路價</div>'
+         f'<div class="tans">第 1 場 <b>{_sr_y(_sr_p0[0])}</b>（約 {_sr_tw(_sr_p0[0])}），'
+         f'第 2、3 場 {_sr_y(_sr_p0[1])}</div>'
+         f'<div class="tsub">含入場和便當或 2 杯飲料。' + _sr_drop_s + _sr_cl_s + '</div></div>'
+         if _sr_st0 == 'price' else '')
+
+      + '<h2>選日期看票價</h2>'
+      + _sr_pk
+      + f'<p class="disc">價格引官網訂位系統（查證於 {SR["checked"]}），每人一張的網路價。'
+        f'{html.escape(SR["includes"])}。官網沒寫現場買票的價格。</p>'
+
+      + '<h2>怎麼訂</h2><div class="tldr"><ul>'
+        f'<li><b>官網網路訂位。</b>選日期、場次、人數，刷卡或銀行轉帳付款。</li>'
+        + _sr_terms
+        + f'<li><b>電話。</b>{SR["tel"]}（{SR["tel_hours"]}）</li>'
+        '</ul></div>'
+      + f'<p class="lede">官網：<a href="{SR["site"]}" rel="nofollow noopener" target="_blank">samurai-restaurant.tokyo</a>'
+        f'　·　<a href="{SR["showhours"]}" rel="nofollow noopener" target="_blank">場次</a>'
+        f'　·　<a href="{SR["resv"]}" rel="nofollow noopener" target="_blank">網路訂位</a>'
+        f'　·　<a href="{SR["food"]}" rel="nofollow noopener" target="_blank">餐點與飲料</a>'
+        f'　·　<a href="{SR["instagram"]}" rel="nofollow noopener" target="_blank">Instagram</a></p>'
+
+      + '<h3>KKday 的方案</h3>'
+      + f'<p class="lede">KKday 有賣這家的票（{html.escape(_kk["cancel"])}），方案跟官網不一樣：</p>'
+      + f'<div class="tldr"><ul>{_sr_kkp}</ul></div>'
+      + f'<p class="disc">{html.escape(_kk["seat_note"])}</p>'
+      + _sr_ad
+
+      + '<h2>入場規定</h2><div class="tldr"><ul>' + _sr_rules + '</ul></div>'
+      + '<h3>便當有哪幾種</h3>'
+      + '<p class="lede">官網餐點頁列的便當：' + '、'.join(html.escape(b) for b in SR['bento'])
+        + f'。每份附一瓶水，也可以改選 2 杯飲料。加點的價格看<a href="{SR["food"]}" rel="nofollow noopener" target="_blank">官網餐點頁</a>。</p>'
+
+      + '<h2>地址</h2><div class="tldr"><ul>'
+        f'<li><b>地址。</b>{html.escape(SR["addr"])}　'
+        f'<a href="https://www.google.com/maps/search/?api=1&query={urllib.parse.quote(SR["map_q"], safe="")}" '
+        'target="_blank" rel="nofollow noopener">📍 在 Google 地圖開啟</a></li>'
+        f'<li><b>入口。</b>官網寫{html.escape(SR["entry"])}。</li>'
+        f'<li><b>營業。</b>{SR["hours"]}</li>'
+        '</ul></div>'
+
+      + '<h2>這頁查不到的部分</h2><div class="tldr"><ul>' + _sr_un + '</ul></div>'
+
+      + '<h2>常見問題</h2>' + ''.join('<details class="faq"><summary>' + html.escape(q)
+                                     + '</summary><div>' + html.escape(a) + '</div></details>'
+                                     for q, a in _sr_faq)
+
+      + fare_cta('tokyo', '飛東京的機票多少')
+
+      + '<h2>順便看看</h2><div class="cities">'
+      + (f'<a class="ct" href="{U("/tokyo/63angel/")}"><b>🎭 六本木 63 ANGEL</b><s>晚上的女孩舞蹈秀</s></a>'
+         if os.path.exists('angel63.json') else '')
+      + f'<a class="ct" href="{U("/tokyo/observation-decks/")}"><b>🌃 東京觀景台</b><s>選日期看開放時間與票價</s></a>'
+      + f'<a class="ct" href="{U("/tokyo/")}"><b>🗼 東京機票</b><s>各出發地的票價</s></a></div>'
+      + f'<p class="disc">內容引自 SAMURAI RESTAURANT 官網與官網訂位系統，查證於 {SR["checked"]}。'
+        f'價格、場次與規定由店家隨時調整，請以官網為準。本頁為公開資訊整理，與店家無合作關係。</p>'
+      + _sr_js
+      + foot())
+    pages.append(('/tokyo/samurai-restaurant/', 0.6))
 
 # ---------- 六本木 SUPER SPARK TOKYO ----------
 # 跟 63 ANGEL 同一棟樓（63 在 B2F、這家在 B1），63 官網列在相關連結裡。
@@ -32943,6 +33184,9 @@ SEARCH_SYN = [
     ['六本木', 'roppongi'],
     ['63angel', '63 angel', 'rokusan angel', 'ロクサンエンジェル', '63天使', 'burlesque tokyo', 'burlesque東京', 'バーレスク東京'],
     ['burlesque osaka', 'burlesque大阪', 'バーレスク大阪', 'バーレスクosaka'],
+    ['samurai restaurant', 'samurairestaurant', 'samurai餐廳', '武士餐廳', '武士秀', '武士表演', 'サムライレストラン', '侍餐廳', '機器人餐廳', 'robot restaurant', 'ロボットレストラン', '新宿武士'],
+    ['gira gira girls', 'giragiragirls', 'ギラギラガールズ'],
+    ['歌舞伎町', 'kabukicho', 'kabukichō'],
     ['北新地', 'kitashinchi', '曽根崎新地'],
     ['夜秀', '表演秀', 'show', 'ショー', '秀酒吧', '表演酒吧', 'show pub', 'showpub', 'ショーパブ'],
     ['美麗海', '美ら海', 'churaumi'],

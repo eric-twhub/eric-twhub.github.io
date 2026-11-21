@@ -203,4 +203,22 @@ cn += f'<path d="M84,108 Q88,101 96,100" fill="none" stroke="{WHITE}" stroke-wid
 cn += sparkle(150, 40, 4) + star(98, 22, 5) + sparkle(160, 22, 3)
 add('conan', '手繪一支大放大鏡照著鄉下小車站前彎彎的路，路上有一串小腳印', cn, dots=False)
 
+# ---- samurai：新宿 SAMURAI RESTAURANT 頁（2026-11-21）。Q 版武士拿扇子站在太鼓旁，不畫真實表演者或 logo ----
+sm = (f'<path d="M14,112 L166,112 L166,128 Q166,140 154,140 L26,140 Q14,140 14,128 Z" fill="#c49a6c"/>'
+      f'<path d="M74,62 L106,62 L109,90 L71,90 Z" fill="{RED}"/>'
+      f'<path d="M84,62 L90,76 L96,62" fill="{WHITE}" stroke-width="1.2"/>'
+      f'<path d="M71,90 L109,90 L117,118 L63,118 Z" fill="{NAVY}"/><path d="M90,92 L90,118" stroke-width="1.4"/>'
+      f'<path d="M106,68 L122,54" stroke-width="3"/>'
+      f'<path d="M122,54 L112,36 Q130,28 142,42 Z" fill="{GOLD}" stroke-width="1.6"/>'
+      f'<path d="M74,68 L62,80" stroke-width="3"/>'
+      f'<circle cx="90" cy="42" r="17" fill="#f9e0cc"/>'
+      f'<path d="M73,40 Q73,25 90,25 Q107,25 107,40 Q99,33 90,34 Q81,33 73,40 Z" fill="{INK}"/>'
+      f'<path d="M86,26 L87,14 L98,12 L94,26 Z" fill="{INK}"/>'
+      + face(90, 45, .8)
+      + f'<ellipse cx="40" cy="122" rx="22" ry="7" fill="{DBROWN}"/><rect x="18" y="98" width="44" height="24" fill="{BRICK}"/>'
+      f'<ellipse cx="40" cy="98" rx="22" ry="7" fill="#f7e7cf"/>'
+      f'<path d="M30,86 L38,96 M52,84 L46,96" stroke="{BROWN}" stroke-width="3"/>'
+      + star(150, 30, 6) + sparkle(30, 40, 4) + sparkle(152, 84, 3))
+add('samurai', '手繪拿著金色扇子的可愛 Q 版武士，旁邊一個太鼓', sm, dots=False)
+
 print(save(FILES, OUT), 'stickers')

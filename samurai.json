@@ -1,0 +1,61 @@
+{
+ "_說明": "新宿歌舞伎町 SAMURAI RESTAURANT。官網沒有提到機器人餐廳（Robot Restaurant），兩者關係不要自己推。官網 samurai-restaurant.tokyo（samurai-restaurant.jp 是舞者招募、.com 是美國同名餐廳，別抓錯）。場次引 ShowHours 頁，逐日價格引官網訂位頁的 post_process.php（choose_date 逐日 POST，回傳 time1～3 與 creditprice1～3；schedule.id 為 null 或 stop1=1 是休息；get_latestDay 是可訂到的最後一天）。規定引首頁 FAQ 與訂位頁注意事項。KKday 533653 的條件引商品頁。每月初重抓一次 periods／closed／bookable_to。",
+ "checked": "2026-11-21",
+ "name": "SAMURAI RESTAURANT",
+ "site": "https://samurai-restaurant.tokyo/",
+ "showhours": "https://samurai-restaurant.tokyo/ShowHours",
+ "resv": "https://samurai-restaurant.tokyo/reservation/index.php",
+ "food": "https://samurai-restaurant.tokyo/FoodDrink",
+ "instagram": "https://www.instagram.com/samurairestaurant_official",
+ "map_q": "東京都新宿区歌舞伎町1-7-7",
+ "addr": "東京都新宿区歌舞伎町1-7-7 地下 1 樓",
+ "entry": "入口是 GIRA GIRA GIRLS 的店門",
+ "tel": "03-6205-6100",
+ "tel_hours": "9:00～21:00",
+ "hours": "10:30～18:10",
+ "shows": [
+  ["第 1 場", "10:30", "10:50", "12:30"],
+  ["第 2 場", "13:30", "14:00", "15:40"],
+  ["第 3 場", "16:00", "16:30", "18:10"]
+ ],
+ "periods": [
+  {"from": "2026-11-21", "to": "2026-11-30", "p": [8000, 10000, 10000]},
+  {"from": "2026-12-01", "to": "2027-01-31", "p": [7000, 9000, 9000]}
+ ],
+ "closed": [["2026-12-31", "2027-01-04"]],
+ "bookable_to": "2027-01-31",
+ "includes": "官網價格含入場，再從便當或 2 杯飲料裡選一種（每人只能選一種，便當附一瓶水）",
+ "bento": ["壽喜燒牛肉便當", "蔬食便當", "武士壽司", "武士拉麵", "蔬食拉麵", "武士烏龍麵", "武士 BBQ"],
+ "rules": [
+  "未滿 18 歲不能入場，入場時查年齡，要帶護照等看得出年齡的證件，沒帶可能不能進",
+  "未滿 20 歲不提供酒精飲料",
+  "官網寫表演沒有成人內容",
+  "喝醉的人可能被拒絕入場",
+  "開演前至少 15 分鐘到場報到",
+  "不能自帶食物飲料；現場加點只收現金",
+  "有免費置物櫃，大件行李可以寄在櫃台",
+  "有清真與蔬食餐點，坐輪椅要先通知"
+ ],
+ "official_terms": [
+  "官網訂位要刷卡或銀行轉帳付款",
+  "不能指定座位",
+  "個人原因不能退款也不能改期；只有天災或設備故障停演才退款",
+  "官網 FAQ 寫不訂位也可以直接去，但客滿可能進不去"
+ ],
+ "kkday": {
+  "id": 533653,
+  "url": "https://www.kkday.com/zh-tw/product/533653",
+  "cancel": "使用日 2 天前可免費取消",
+  "plans": ["表演＋2 張飲料券＋抹茶與日式甜點", "表演＋3 張飲料券", "表演＋壽司＋1 張飲料券", "表演＋2 杯飲料＋附近居酒屋午餐或晚餐（有些只限週末）"],
+  "seat_note": "KKday 商品頁寫「可提前預訂指定座位」，官網訂位頁寫不能指定座位，兩邊說法不同。",
+  "_kkday_guard": "prod_mid 533653 已對 kkday-1pct.json 驗過不在特殊商品清單上（2026-11-21）；舊商品 1655 在 1% 清單裡，不要用。"
+ },
+ "unverified": [
+  {"what": "哪幾天固定公休", "why": "官網沒寫公休日。訂位系統 11/21 查到 1/31 為止，只有 12/31～1/4 不能訂。"},
+  {"what": "2 月以後的價格與場次", "why": "官網訂位只開放到 1/31。"},
+  {"what": "現場直接買票多少錢", "why": "官網的場次頁只寫網路價格的「起」價，沒寫現場價。"},
+  {"what": "表演多長", "why": "官網 FAQ 寫約 90 分鐘含中場休息，場次頁的時間是 100 分鐘。"},
+  {"what": "能不能拍照", "why": "官網沒寫。"},
+  {"what": "跟以前的機器人餐廳是什麼關係", "why": "官網沒有提到機器人餐廳。"}
+ ]
+}
