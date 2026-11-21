@@ -24151,8 +24151,20 @@ if os.path.exists('cards.json'):
 
     # ── 比較表 ──
     _crows = ''
+
+    # 比較表這一欄跟左邊「老客戶」欄、也跟分享圖卡同一個基準：只算既有卡友拿得到的加碼。
+    # 2026-11-22 發現永豐幣倍卡表格寫 NT$10,000（新戶那層先滿），圖卡寫 NT$20,000，
+    # 而且「超過只剩基本回饋」在各層上限不同時不對，所以剩多少改成實際算。
+    def _oldhit(c):
+        ts = [t for t in _tiers(c, 'shop') if t['cap'] and not _is_newbie(t)]
+        if not ts:
+            return 0, c['base']
+        h = round(min(t['cap'] / (t['rate'] / 100) for t in ts))
+        rest = c['base'] + sum(t['rate'] for t in _tiers(c, 'shop') if not _is_newbie(t)
+                               and (not t['cap'] or round(t['cap'] / (t['rate'] / 100)) > h))
+        return h, round(rest, 2)
     for c in sorted(CD['cards'], key=lambda x: -x['total']):
-        hit = _hit(c, 'shop')
+        hit, _rest = _oldhit(c)
         tr = _maxrate(c, 'transit') if _tiers(c, 'transit') else 0
         _old = _oldrate(c)
         _nb = _newbie_tier(c)
@@ -24182,7 +24194,7 @@ if os.path.exists('cards.json'):
                    + (f'<td class="warn"><b>{_old:g}%</b>{SMALL}'
                       f'扣掉新戶加碼 {_nb["rate"]:g}%</small></td>'
                       if _nb else f'<td><b>{_old:g}%</b>{SMALL}與左欄相同</small></td>')
-                   + f'<td>{(money(hit) + SMALL + "超過只剩 " + str(c["base"]) + "%</small>") if hit else "無加碼上限"}</td>'
+                   + f'<td>{(money(hit) + SMALL + "超過只剩 " + f"{_rest:g}" + "%</small>") if hit else "無加碼上限"}</td>'
                    f'<td>{(str(tr) + "%") if tr else "—"}</td>'
                    f'<td>{html.escape(c["period"])}</td></tr>')
 
