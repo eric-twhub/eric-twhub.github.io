@@ -769,17 +769,12 @@
   ]
  },
  "starlux_page": {
-  "_說明": "/japan-airline-card/starlux/（聯名卡頁）補的付款規定。星宇 zh-TW 頁面內容在 window.__NUXT__，curl 讀得到。2026-11-21 逐句核對。訂位服務費金額改了要跟著改；每季回查。",
+  "_說明": "/japan-airline-card/starlux/（聯名卡頁）補的付款規定。星宇 zh-TW 頁面內容在 window.__NUXT__，curl 讀得到。2026-11-21 逐句核對。訂位服務費金額改了要跟著改；每季回查。 欄位：fee_tans／fee_sub 是付款規定那段的大字與說明；pay 是付款方式表（官網列的才放）；notes 每筆 [標題, 內文, 來源網址或 null, 來源名稱]；faq 會加進頁面 FAQ。",
   "checked": "2026-11-21",
-  "fee": {
-   "quote": "開立星宇航空189開頭之個人機票、團體機票、哩程酬賓機票(2026年7月1日(含)起)…均須收取USD 33之訂位服務費。此費用不適用任何折扣。",
-   "usd": 33,
-   "src": "https://www.starlux-airlines.com/zh-TW/booking/product/service-charge-ticket-policies",
-   "src_name": "星宇・訂位服務費與票務規定"
-  },
-  "faq_src": "https://www.starlux-airlines.com/zh-TW/support/faq/plan-a-trip",
-  "faq_src_name": "星宇・規劃行程常見問題",
-  "cards_quote": "JCB／萬事達卡／威士卡／美國運通卡／大來卡／UATP",
+  "fee_tans": "沒有刷卡手續費，但有訂位服務費",
+  "fee_sub": "星宇寫「開立星宇航空189開頭之個人機票、團體機票、哩程酬賓機票(2026年7月1日(含)起)…均須收取USD 33之訂位服務費。此費用不適用任何折扣。」",
+  "fee_src": "https://www.starlux-airlines.com/zh-TW/booking/product/service-charge-ticket-policies",
+  "fee_src_name": "星宇・訂位服務費與票務規定",
   "pay": [
    [
     "信用卡",
@@ -803,15 +798,133 @@
    ]
   ],
   "pay_none": "街口、AFTEE、超商付款、分期",
-  "one_method": "每一筆訂單僅接受一種交易方式",
-  "tds_quote": "本網站及App僅接受具有3D驗證服務之信用卡",
-  "decline_quote": "被拒絕交易原因可能是刷卡額度不足或是未通過3D驗證功能等",
-  "holder_quote": "若交易已通過信用卡3D驗證，無需於機場再次出示原購票信用卡",
-  "ccy_quote": "應依開票地之幣別支付",
-  "ccy_src": "https://www.starlux-airlines.com/zh-TW/terms-conditions/conditions-of-carriage",
-  "ccy_src_name": "星宇・運送條款第 5.5 條",
-  "refund_quote": "於退票申請成功後的20個工作日內完成退款作業",
-  "refund_src": "https://www.starlux-airlines.com/zh-TW/support/faq/ticket-change-and-refund",
-  "refund_src_name": "星宇・改票與退票常見問題"
+  "pay_src": "https://www.starlux-airlines.com/zh-TW/support/faq/plan-a-trip",
+  "pay_src_name": "星宇・規劃行程常見問題",
+  "pay_note": "同行旅客要分開刷就要分開訂：「每一筆訂單僅接受一種交易方式」。",
+  "notes": [
+   [
+    "刷不過",
+    "「被拒絕交易原因可能是刷卡額度不足或是未通過3D驗證功能等」；而且「本網站及App僅接受具有3D驗證服務之信用卡」，要先跟銀行開好 3D 驗證。",
+    "https://www.starlux-airlines.com/zh-TW/support/faq/plan-a-trip",
+    "星宇・規劃行程常見問題"
+   ],
+   [
+    "分期",
+    "官網沒寫有刷卡分期，要分期只能刷完自己問發卡銀行。",
+    null,
+    null
+   ],
+   [
+    "不是持卡人本人搭機",
+    "「若交易已通過信用卡3D驗證，無需於機場再次出示原購票信用卡」；沒過 3D 驗證的，要到報到櫃台出示原卡，持卡人不能到場要先去市區服務據點驗證。",
+    "https://www.starlux-airlines.com/zh-TW/support/faq/plan-a-trip",
+    "星宇・規劃行程常見問題"
+   ],
+   [
+    "幣別",
+    "運送條款寫「應依開票地之幣別支付」；日本出發的航段在台灣官網能不能付台幣，官網沒寫。",
+    "https://www.starlux-airlines.com/zh-TW/terms-conditions/conditions-of-carriage",
+    "星宇・運送條款第 5.5 條"
+   ],
+   [
+    "退款",
+    "退回原付款方式，「於退票申請成功後的20個工作日內完成退款作業」，實際入帳看銀行。",
+    "https://www.starlux-airlines.com/zh-TW/support/faq/ticket-change-and-refund",
+    "星宇・改票與退票常見問題"
+   ],
+   [
+    "算國內還是國外",
+    "官方沒寫，網友也沒有人貼過帳單。",
+    null,
+    null
+   ]
+  ],
+  "faq": [
+   [
+    "星宇刷卡有手續費嗎？",
+    "沒有刷卡手續費，但星宇開的機票每張都要收 USD 33 訂位服務費，不分開票地與通路，也不適用任何折扣。"
+   ],
+   [
+    "星宇刷卡刷不過怎麼辦？",
+    "星宇寫「被拒絕交易原因可能是刷卡額度不足或是未通過3D驗證功能等」，官網與 App 只收有 3D 驗證的卡，被拒的原因要問發卡銀行。"
+   ]
+  ]
+ },
+ "eva_air_page": {
+  "_說明": "/japan-airline-card/eva-air/ 補的付款規定。evaair.com curl 回 403，要用瀏覽器讀；站內搜尋有機器人驗證，別用。2026-11-21 核對。欄位同 starlux_page。每季回查。",
+  "checked": "2026-11-21",
+  "fee_tans": "沒有刷卡手續費，但機票隨票收訂位服務費",
+  "fee_sub": "長榮的常見問題寫，訂位服務費（YR）收取的通路包含「長榮航空所有銷售通路，包含旅行社、官網、Mobile Web/APP、及各地訂位票務中心」，而且「不予退費」。金額官網沒寫。",
+  "fee_src": "https://www.evaair.com/zh-tw/customer-services/faq/detail.html?FaqCategories=ticketing",
+  "fee_src_name": "長榮・票務常見問題",
+  "pay": [
+   [
+    "信用卡、借記卡",
+    "VISA、萬事達卡、美國運通、JCB、Discover、UATP",
+    "要有 3DS 驗證；不收商務卡、公司卡、不記名預付卡"
+   ],
+   [
+    "銀聯卡",
+    "官網有列",
+    "長榮寫不同出發地能用的付款方式不同"
+   ],
+   [
+    "PayPal",
+    "官網有列",
+    "帳號註冊地是台灣的不能用"
+   ]
+  ],
+  "pay_none": "Apple Pay、Google Pay、LINE Pay、街口、超商、分期",
+  "pay_src": "https://www.evaair.com/zh-tw/plan-and-book/book-online/information-for-ticketing-and-reservation/online-reservation/",
+  "pay_src_name": "長榮・網路訂位購票說明",
+  "pay_note": "長榮寫「不同出發地可使用的付款方式不同，詳細請依實際付款頁面為準。」",
+  "notes": [
+   [
+    "刷不過",
+    "付款的卡「必須具備\"VISA 驗證\"或\"MasterCard 安檢密碼認證\"或\"American Express SafeKey 認證\"或\"JCB J/Secure\"功能」，長榮建議「可於交易前聯繫您的信用卡發卡行事先確認，以避免交易失敗。」",
+    "https://www.evaair.com/zh-tw/plan-and-book/book-online/information-for-ticketing-and-reservation/online-reservation/",
+    "長榮・網路訂位購票說明"
+   ],
+   [
+    "分期",
+    "官網沒寫有刷卡分期，要分期只能刷完自己問發卡銀行。",
+    null,
+    null
+   ],
+   [
+    "不是持卡人本人搭機",
+    "「若交易已通過信用卡3DS驗證，您將無需於機場出示信用卡，信用卡持有人無須是同行旅客之一。」沒過 3DS 的，持卡人要同行；不同行就要在起飛 48 小時前到票務櫃台核卡並交同意書，或起飛前 1 小時到機場票務櫃台出示信用卡。用聯名卡優惠專區買的票不接受同意書。",
+    "https://www.evaair.com/zh-tw/plan-and-book/book-online/information-for-ticketing-and-reservation/online-reservation/",
+    "長榮・網路訂位購票說明"
+   ],
+   [
+    "幣別",
+    "運送條款只寫「票價及費用應以長榮航空接受的貨幣支付。」日本出發的航段在台灣官網能不能付台幣，官網沒寫。",
+    "https://www.evaair.com/zh-tw/website-disclaimer/conditions-of-carriage/",
+    "長榮・運送條款第 5.5 條"
+   ],
+   [
+    "退款",
+    "「我們會在7個工作日內將您的退款退回您當初付款之信用卡（應在1-2個結算週期內會顯示在您的對帳單上）。」",
+    "https://www.evaair.com/zh-tw/plan-and-book/book-online/information-for-ticketing-and-reservation/online-reservation/",
+    "長榮・網路訂位購票說明"
+   ],
+   [
+    "算國內還是國外",
+    "官方沒寫。",
+    null,
+    null
+   ]
+  ],
+  "faq": [
+   [
+    "長榮刷卡有手續費嗎？",
+    "官網沒有寫刷卡手續費。長榮的機票不分通路都會隨票收訂位服務費（YR），不予退費，金額官網沒寫。"
+   ],
+   [
+    "長榮刷卡失敗怎麼辦？",
+    "長榮官網只收有 3DS 驗證的卡（VISA 驗證、MasterCard 安檢密碼、AMEX SafeKey、JCB J/Secure），也不收商務卡、公司卡與不記名預付卡；建議交易前先跟發卡銀行確認。"
+   ]
+  ]
  }
 }
