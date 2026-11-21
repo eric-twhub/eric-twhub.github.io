@@ -41,10 +41,29 @@ def fingerprint(CD):
            + [[t['label'], t['rate'], t['cap'], t['scope'], t.get('cond', ''),
                t.get('no_base')]
               for t in c['tiers']]
+           + [[t['label'], t['rate'], t['cap'], t['over_ntd'], t.get('end')]
+              for t in c.get('over_tiers') or []]
            for c in CD['cards']]
     pay.append([CD['fx_fee']['typical'], CD['checked']])
     return hashlib.sha1(json.dumps(pay, ensure_ascii=False,
                                    sort_keys=True).encode('utf-8')).hexdigest()[:12]
+
+
+def over_back(c, b, scope='shop'):
+    """門檻式加碼（over_tiers）：單月台幣帳單超過 over_ntd 的那段才給。
+    和 gen.py 的 over_back 同一條公式，兩邊要一起改。"""
+    import datetime
+    today = datetime.date.today().isoformat()
+    v, capped = 0, False
+    for t in c.get('over_tiers') or []:
+        if (t['scope'] not in (scope, 'any') or t.get('sold_out')
+                or (t.get('end') and t['end'] < today)):
+            continue
+        x = t['rate'] / 100 * max(0, b - t['over_ntd'])
+        if t['cap'] and x > t['cap']:
+            x, capped = t['cap'], True
+        v += x
+    return v, capped
 
 
 def _chrome():
@@ -177,7 +196,8 @@ def make_math(CD, mid, fee):
                 x = t['cap']
                 capped = True
             v += x
-        return v, capped
+        ov, oc = over_back(c, b, scope)
+        return v + ov, capped or oc
 
     def maxrate(c, scope='shop', newbie=True):
         ts = tiers(c, scope, newbie)
@@ -234,7 +254,8 @@ def build(CD, mid, fee, rate_note):
             if t['cap'] and x > t['cap']:
                 x, capped = t['cap'], True
             v += x
-        return v, capped
+        ov, oc = over_back(c, b)
+        return v + ov, capped or oc
 
     def plain_hit(c):
         ts = [t for t in plain_ts(c) if t['cap']]

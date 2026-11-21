@@ -155,7 +155,10 @@ def build(d):
              '<h1>每月或每季<br><em>要重新登錄的</em></h1>'
              '<div class="sub">這幾個登錄一次不夠，時間到了要再登一次。</div>'
              f'<div class="list">{rows}</div>' + K.foot(3, n, note))
-    out.append(('reg-03.png', K.page(inner)))
+    # 每月要重登的檔數變多時（2026-11 聯邦海外加碼加進來變成 8 檔）列距收一點，
+    # 不然最後一列會壓到頁尾
+    out.append(('reg-03.png', K.page(
+        inner, extra_css='.row{padding:11px 0}' if len(recur) >= 8 else '')))
 
     # ── 4 登錄一次就好的，與限量提醒 ──
     once = [(c, e) for c, e in ev if (c, e) not in recur]

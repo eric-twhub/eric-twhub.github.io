@@ -208,7 +208,26 @@ def load_cards():
             if ch['date'] <= TODAY:
                 c.update(ch['set'])
         c['tiers'] = [t for t in c.get('tiers', []) if not t.get('end') or t['end'] >= TODAY]
+        c['over_tiers'] = [t for t in c.get('over_tiers', [])
+                           if not t.get('end') or t['end'] >= TODAY]
     return d
+
+def over_back(c, bill, mode='shop'):
+    """門檻式加碼：單月台幣帳單超過 over_ntd 的那一段才給加碼，不是整筆。
+
+    這種層另外放在 over_tiers，不放進 tiers，因為全站很多地方把 tiers 的
+    rate 直接加總成「最高 X%」，把它加進去會讓沒過門檻的人看到一個拿不到的
+    數字。只有用金額算的地方（試算、排行、圖卡）才呼叫這個函式把它加上。
+    回傳 (金額, 是否觸頂)。JS 端是 window.jover，兩邊要一致。"""
+    v, capped = 0, False
+    for t in c.get('over_tiers') or []:
+        if t['scope'] not in (mode, 'any') or t.get('sold_out'):
+            continue
+        x = t['rate'] / 100 * max(0, bill - t['over_ntd'])
+        if t['cap'] and x > t['cap']:
+            x, capped = t['cap'], True
+        v += x
+    return v, capped
 # 東京值得再飛一次那頁的家數。好幾頁的「順便看看」要標它，寫死過一次
 # 就對不上了：那個標籤卡在 45，資料早就是 46。
 _TP_N = (len(json.load(open('tokyo-picks.json', encoding='utf-8'))['stores'])
@@ -24030,6 +24049,8 @@ if os.path.exists('cards.json'):
                 if t['cap'] and x > t['cap']:
                     x = t['cap']; capped = True
                 v += x
+            ov, oc = over_back(c, b, mode)
+            v += ov; capped = capped or oc
         return v, capped
 
     def _maxrate(c, mode):
@@ -24087,7 +24108,16 @@ if os.path.exists('cards.json'):
             'v=jnb(c,sc||mode)?0:c.base/100*b;'
             'ts.forEach(function(t){var x=t.rate/100*b;'
             'if(t.cap&&x>t.cap){x=t.cap;cap=true;}v+=x;});'
+            'if(mode!=="base"){var o=jover(c,b,mode);v+=o.v;cap=cap||o.cap;}'
             'return {v:v,cap:cap,bill:b};};'
+            # 門檻式加碼（over_tiers）：只有超過 over_ntd 的那段才給，
+            # 和 Python 的 over_back 同一條公式
+            'window.jover=function(c,b,mode){var v=0,cap=false;'
+            '(c.over||[]).forEach(function(t){'
+            'if((t.scope===mode||t.scope==="any")&&!t.sold_out){'
+            'var x=t.rate/100*Math.max(0,b-t.over_ntd);'
+            'if(t.cap&&x>t.cap){x=t.cap;cap=true;}v+=x;}});'
+            'return {v:v,cap:cap};};'
             'window.jhas=function(c,mode){return mode==="base"||'
             'c.tiers.some(function(t){return jok(t,mode);});};'
             # 第一個上限在哪個台幣帳單金額卡住；沒有上限回 0。
@@ -24097,7 +24127,8 @@ if os.path.exists('cards.json'):
             '.forEach(function(t){var x=t.cap/(t.rate/100);if(!m||x<m)m=x;});return m;};</script>') % (
         _MIDC, _fx['typical'],
         json.dumps([{'n': c['name'], 's': c['slug'], 'base': c['base'],
-                     'tiers': c['tiers'], 'race': c.get('reg_race', False),
+                     'tiers': c['tiers'], 'over': c.get('over_tiers', []),
+                     'race': c.get('reg_race', False),
                      'reg': c.get('reg_short', ''), 'lv': c.get('reg_level', ''),
                      'levels': c.get('levels'),
                      'areas': c.get('areas', ''), 'period': c.get('period', ''),
@@ -24178,6 +24209,10 @@ if os.path.exists('cards.json'):
                       + '、'.join(html.escape(o['what']) for o in c['other_perks'])
                       + '），不計入本表數字'
                       if c.get('other_perks') else '')
+                   + ''.join(f'<br>單月超過 {money(t["over_ntd"])} 的部分另加 {t["rate"]:g}%'
+                             f'（{html.escape(t.get("quota_short", ""))}），本表百分比不含、'
+                             f'金額試算有算'
+                             for t in c.get('over_tiers') or [])
                    + (f'<br>🅿️ 機場停車 {html.escape(c["parking"]["free"])}'
                       if (c.get('parking') or {}).get('has') else '')
                    + (f'<br><b class="warn">⚠ 現在只拿得到 {nowmax(c)}%</b>，'
@@ -25318,6 +25353,19 @@ if os.path.exists('cards.json'):
             + (f'<tr><td colspan="4" class="nm"><small>❓ {html.escape(t["base_unknown"])}'
                f'</small></td></tr>' if t.get('base_unknown') else '')
             for t in c['tiers'])
+        # 門檻式加碼：只有單月超過門檻的那段才給，所以加碼欄寫明「超過的部分」，
+        # 並把名額的實際狀況（過去幾個月是否都額滿）列在下一行
+        trows += ''.join(
+            f'<tr><td><b>{html.escape(t["label"])}</b>'
+            + ('<b class="warn">（名額已滿，現在登錄不到）</b>' if t.get('sold_out') else '')
+            + f'{SMALL}{html.escape(t["cond"])}</small></td>'
+            f'<td>+{t["rate"]}%{SMALL}只算超過 {money(t["over_ntd"])} 的部分</small></td>'
+            f'<td>{(t["cap_unit"] + " " + capv(t)) if t["cap"] else "未標示"}</td>'
+            f'<td>{SCOPE_NAME[t["scope"]]}</td></tr>'
+            + (f'<tr><td colspan="4" class="nm"><small><b class="warn">⚠ '
+               f'{html.escape(t["quota_note"])}</b></small></td></tr>'
+               if t.get('quota_note') else '')
+            for t in c.get('over_tiers') or [])
 
         others = ''.join(
             f'<tr><td><a href="{U("/japan-credit-card/"+o["slug"]+"/")}">{html.escape(o["name"])}</a></td>'
@@ -25529,6 +25577,8 @@ if os.path.exists('cards.json'):
                     if _t['cap'] and _x > _t['cap']:
                         _x, capped = _t['cap'], True
                     val += _x
+                _ov, _oc = over_back(c, bill_t)
+                val += _ov; capped = capped or _oc
                 _sb += (f'<tr><td><a href="{U("/japan-coupon/"+s["slug"]+"/")}">'
                         f'{html.escape(s["name"])}</a>{SMALL}{html.escape(s["cat"])}</small></td>'
                         f'<td>{html.escape(s["rate"])}</td>'
@@ -25756,6 +25806,12 @@ if os.path.exists('cards.json'):
       var r=jnb(c,mode)?0:c.base, full=[];
       ts.forEach(function(t){
         if(t.cap&&t.rate/100*bill>=t.cap){full.push(t.label);}
+        else r+=t.rate;
+      });
+      // 門檻式加碼：過了門檻、還沒觸頂，下一塊錢才多這幾趴
+      (c.over||[]).forEach(function(t){
+        if(!jok(t,mode)||bill<t.over_ntd) return;
+        if(t.cap&&t.rate/100*(bill-t.over_ntd)>=t.cap){full.push(t.label);}
         else r+=t.rate;
       });
       return {rate:Math.round(r*100)/100,full:full};
@@ -27016,7 +27072,7 @@ if os.path.exists('cards.json'):
         def _store_cards(st):
             """這家店可用的卡，去掉新戶限定與不適用這家店的加碼之後的費率"""
             return [{'n': c['name'], 's': c['slug'], 'base': c['base'],
-                     'tiers': _shop_tiers(c, st),
+                     'tiers': _shop_tiers(c, st), 'over': c.get('over_tiers', []),
                      'reg': c.get('reg_short_shop') or c.get('reg_short', '')}
                     for c in CD['cards']]
 
@@ -27042,6 +27098,8 @@ if os.path.exists('cards.json'):
                     if t['cap'] and x > t['cap']:
                         x, capped = t['cap'], True
                     v += x
+                _ov, _oc = over_back(c, b)
+                v += _ov; capped = capped or _oc
                 out.append({
                     'c': c, 'v': v, 'capped': capped,
                     'rate': round((0 if nb else c['base']) + sum(t['rate'] for t in ts), 2),
@@ -27216,6 +27274,7 @@ if os.path.exists('cards.json'):
    var bill=jbill(after), v=(jnb(c,'shop')?0:c.base)/100*bill, cap=false;
    c.tiers.forEach(function(t){var x=t.rate/100*bill;
      if(t.cap&&x>t.cap){x=t.cap;cap=true;} v+=x;});
+   var o=jover(c,bill,'shop'); v+=o.v; cap=cap||o.cap;
    return {n:c.n,s:c.s,bill:bill,v:v,net:bill-v,cap:cap,reg:c.reg};
   }).sort(function(a,b){return a.net-b.net;});
   var h='<table><thead><tr><th>卡片</th><th>刷卡回饋</th><th>實際負擔</th>'+

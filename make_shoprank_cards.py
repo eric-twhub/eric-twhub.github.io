@@ -14,7 +14,7 @@
 import json, os, re, sys, subprocess, tempfile, hashlib
 import html as htm
 
-from make_creditcard_cards import (W, H, E, CSS, page, foot, _chrome)
+from make_creditcard_cards import (W, H, E, CSS, page, foot, _chrome, over_back)
 
 # 自己一個資料夾：gen.py 的圖卡過期檢查是逐資料夾讀 stamp.txt，
 # 和 make_coupon_cards 共用 japan-coupon/cards 會把對方的指紋蓋掉。
@@ -93,6 +93,8 @@ def rank_at(CD, st, jpy, mid, fee, catmap):
             if t['cap'] and x > t['cap']:
                 x, capped = t['cap'], True
             v += x
+        ov, oc = over_back(c, b)
+        v += ov; capped = capped or oc
         out.append({'c': c, 'v': v, 'capped': capped,
                     'rate': round((0 if nb else c['base'])
                                   + sum(t['rate'] for t in ts), 2)})
