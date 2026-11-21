@@ -21952,21 +21952,28 @@ if os.path.exists('cobrand-cards.json'):
         _xp_html = ''
         if _XP:
             _xcross = [x for x in _live_deals(_BD['cross']) if A['slug'] in x.get('cover', ())]
+            # 這家航空自己那段裡不是聯名卡的優惠（例如華航的台新環球無限卡、國泰的 CUBE）。
+            _xown = [x for b in _BD['airlines'] if b['anchor'] == A['slug']
+                     for x in _live_deals(b['deals'])
+                     if '聯名' not in x['card'] and A['short'] not in x['card']]
 
             def _xs(u, n):
                 return f'<a href="{u}" rel="nofollow noopener" target="_blank">{html.escape(n)}</a>'
             _xpay = ''.join(f'<tr><td class="nm"><b>{html.escape(m)}</b></td><td>{html.escape(w)}</td>'
                             f'<td>{html.escape(n)}</td></tr>' for m, w, n in _XP['pay'])
-            _xpay += (f'<tr><td class="nm"><b>{html.escape(_XP["pay_none"])}</b></td>'
-                      '<td class="dimcell">官網沒寫</td><td class="dimcell">付款說明沒有列</td></tr>')
+            if _XP.get('pay_none'):
+                _xpay += (f'<tr><td class="nm"><b>{html.escape(_XP["pay_none"])}</b></td>'
+                          '<td class="dimcell">官網沒寫</td><td class="dimcell">付款說明沒有列</td></tr>')
             _xnotes = ''.join(
                 f'<li><b>{html.escape(t)}。</b>{html.escape(b)}'
                 + (f'（{_xs(u, n)}）' if u else '') + '</li>'
                 for t, b, u, n in _XP['notes'])
             _xp_html = (
                 f'<h2 id="other-cards">不辦聯名卡：刷{html.escape(A["short"])}用哪張卡</h2>'
-                + (f'<p class="lede">{html.escape(A["name"])}官網目前只有聯名卡的購票優惠。'
-                   f'下面是發卡銀行自己的活動，名單都有{html.escape(A["short"])}：</p>'
+                + (f'<p class="lede">不是聯名卡、只限{html.escape(A["short"])}的優惠：</p>'
+                   '<ul class="xl">' + ''.join(_deal_li(dict(x, airlines=None)) for x in _xown) + '</ul>'
+                   if _xown else '')
+                + (f'<p class="lede">{"另外" if _xown else ""}發卡銀行自己的活動，名單都有{html.escape(A["short"])}：</p>'
                    '<ul class="xl">' + ''.join(_deal_li(dict(x, airlines=None)) for x in _xcross) + '</ul>'
                    if _xcross else '<p class="lede">目前沒查到名單有這家航空的刷卡活動。</p>')
                 + '<p class="disc">大多只算航空公司官網、App 或櫃台，透過旅行社或訂票網站買不算。</p>'
@@ -21985,8 +21992,8 @@ if os.path.exists('cobrand-cards.json'):
                 + '<style>.tgp td{vertical-align:top}.tgp td.nm{min-width:7.5em}</style>')
             _faq += [tuple(x) for x in _XP.get('faq', [])] + [
                 (f'不辦聯名卡，買{A["short"]}機票刷哪張卡？',
-                 f'名單有{A["short"]}的刷卡活動，本頁列了 {len(_xcross)} 筆，'
-                 '大多要切換方案或每月登錄，而且只算官網、App 或櫃台。'),
+                 f'名單有{A["short"]}的刷卡活動，本頁列了 {len(_xown) + len(_xcross)} 筆，'
+                 '每一筆的通路與登錄條件不同，寫在各自那一筆。'),
             ]
             _faq_ld = json.dumps({
                 '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -34462,6 +34469,8 @@ SEARCH_SYN = [
     ['長榮', '長榮航空', 'eva air'],
     ['星宇', '星宇航空', 'starlux'],
     ['虎航', '台灣虎航', 'tigerair', 'tiger air'],
+    ['國泰航空', 'cathay pacific', 'cathay', 'cathaypacific'],
+    ['亞洲萬里通', 'asia miles', 'asiamiles', '亞萬'],
     ['樂桃', 'peach'],
     ['捷星', 'jetstar'],
     # 地名

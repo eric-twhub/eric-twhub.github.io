@@ -1007,5 +1007,96 @@
     "可以，但運送條款寫報到時要出示購票的那張信用卡；持卡人不是旅客本人時，持卡人要先辦信用卡認證手續，沒辦的話要在機場另外買票。"
    ]
   ]
+ },
+ "cathay_pacific_page": {
+  "_說明": "（未上線：2026-11-21 使用者選「先不做國泰」，因為亞洲萬里通兌換台日來回要登入才看得到，cobrand-cards.json 沒有國泰。）/japan-airline-card/cathay-pacific/ 的官網付款規定。cathaypacific.com 要用瀏覽器讀；付款選項頁是全球清單（「選項或會因市場及產品而不同」），台灣付款頁實際出現哪幾種沒有逐市場列，所以不寫「不能用」那一列（pay_none 留空）。2026-11-21 核對。欄位同 starlux_page。每季回查。",
+  "checked": "2026-11-21",
+  "fee_tans": "刷卡附加費只收紐西蘭出發的訂單",
+  "fee_sub": "國泰的付款選項頁寫「信用卡付款費適用於由新西蘭出發的預訂，例外情況適用者除外。」常見問題也寫附加費適用於「由新西蘭出發的航班」。",
+  "fee_src": "https://www.cathaypacific.com/cx/zh_TW/payment-options.html",
+  "fee_src_name": "國泰航空・付款選項",
+  "pay": [
+   [
+    "信用卡、扣賬卡",
+    "VISA、萬事達卡、美國運通、JCB、大來、Discover、銀聯、UATP",
+    "VISA、萬事達、美國運通、JCB、大來、Discover 可能要輸入 3DS 密碼"
+   ],
+   [
+    "電子錢包",
+    "Apple Pay、Google Pay",
+    "只能綁 Visa、萬事達、美國運通"
+   ],
+   [
+    "其他",
+    "PayPal、支付寶、微信支付等",
+    "清單是全球通用，台灣付款頁會出現哪幾種官網沒寫"
+   ]
+  ],
+  "pay_none": null,
+  "pay_src": "https://www.cathaypacific.com/cx/zh_TW/payment-options.html",
+  "pay_src_name": "國泰航空・付款選項",
+  "pay_note": "國泰寫「選項或會因市場及產品而不同。」會員最多可以存 5 張卡，用存好的卡要再輸入 CVV。",
+  "notes": [
+   [
+    "刷不過",
+    "國泰寫用 VISA、萬事達、美國運通、JCB、大來或 Discover 付款時「你可能需要在保安頁面輸入個人密碼以進行認證，才能完成網上購票。」額度、發卡國的限制官網沒寫，被拒要問發卡銀行。",
+    "https://www.cathaypacific.com/cx/zh_TW/faqs/flight-booking/online-booking/how-do-i-pay-for-tickets-purchased-online.html",
+    "國泰航空・我如何支付在網上購買的機票"
+   ],
+   [
+    "分期",
+    "官網沒寫有刷卡分期，要分期只能刷完自己問發卡銀行。",
+    null,
+    null
+   ],
+   [
+    "不是持卡人本人搭機",
+    "「你可以為乘客預訂支付費用，但所用之付款信用卡為通過「Visa 驗證」或「MasterCard®SecureCodeTM」進行驗證，否則持卡者將須出示實體信用卡以作驗證。」",
+    "https://www.cathaypacific.com/cx/zh_TW/faqs/flight-booking/online-booking/can-i-pay-for-another-passengers-booking.html",
+    "國泰航空・我可否為其他乘客的預訂支付費用"
+   ],
+   [
+    "幣別",
+    "付款頁可以改用其他貨幣付款（多貨幣價格），但支援的 20 種貨幣沒有新台幣，有日圓、港元、美元等。國泰也寫改用的價格「或會納入成本、費用及／或溢價」，兩個價格都會列出，付款前可以比。日本出發的航段原本用什麼貨幣報價，官網沒寫。",
+    "https://www.cathaypacific.com/cx/zh_TW/payment-options.html",
+    "國泰航空・付款選項（多貨幣價格）"
+   ],
+   [
+    "扣款時間",
+    "「當你確認網上預訂之後，我們將即時向你的信用卡公司發出支賬通知書。」之後改行程也一樣。",
+    "https://www.cathaypacific.com/cx/zh_TW/faqs/flight-booking/online-booking/when-will-you-charge-my-credit-card-after-i-have-made-a-booking-online.html",
+    "國泰航空・信用卡何時會被收取款項"
+   ],
+   [
+    "退款",
+    "「處理退款要求通常需要最多 7 個曆日。」購票的卡已經過期的話，要另外提供銀行帳戶，時間會更久；服務費不退。",
+    "https://www.cathaypacific.com/cx/zh_TW/our-commitment-to-you.html",
+    "國泰航空・我們對你的承諾"
+   ],
+   [
+    "算國內還是國外",
+    "官方沒寫。",
+    null,
+    null
+   ]
+  ],
+  "faq": [
+   [
+    "國泰航空刷卡有手續費嗎？",
+    "官網寫的刷卡附加費只適用於紐西蘭出發的訂單，台灣、日本出發不在裡面。國外交易手續費要看發卡銀行，國泰官網沒寫。"
+   ],
+   [
+    "國泰航空刷卡失敗怎麼辦？",
+    "國泰官網刷 VISA、萬事達、美國運通、JCB、大來、Discover 時，可能要在保安頁面輸入 3DS 密碼，先確認卡片有開通；額度或發卡國的限制官網沒寫，被拒的原因要問發卡銀行。"
+   ],
+   [
+    "國泰航空可以用別人的信用卡買票嗎？",
+    "可以。付款的卡有通過 3DS 驗證就好，沒通過的話持卡人要出示實體卡驗證。"
+   ],
+   [
+    "國泰航空官網可以付台幣嗎？",
+    "付款頁的多貨幣價格支援 20 種貨幣，沒有新台幣；改用其他貨幣的價格可能含額外成本，兩個價格都會列出。日本出發的航段原本用什麼貨幣報價，官網沒寫。"
+   ]
+  ]
  }
 }
