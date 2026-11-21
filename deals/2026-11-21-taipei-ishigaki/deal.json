@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-21-taipei-ishigaki",
- "generated": "2026-11-21 21:40",
+ "generated": "2026-11-21 22:02",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -26,7 +26,7 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$5,586（6 天有紀錄），這張低 39%"
+  "12 月出發的票，每天最便宜的平均要 NT$5,546（6 天有紀錄），這張低 38%"
  ],
  "med": 16458,
  "n_rt": 22,
@@ -37,7 +37,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 3857,
+   "price": 3616,
    "dep": "2026-12-15",
    "ret": "2026-12-19",
    "dept": "06:35",
@@ -75,8 +75,8 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4517,
-   "dep": "2026-11-27",
+   "price": 4276,
+   "dep": "2026-11-28",
    "ret": "2026-12-04",
    "dept": "06:35",
    "rett": "09:25",
@@ -85,7 +85,7 @@
    "dur": 130,
    "dur_to": 60,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-27&inbound=ISG-TPE&returnDate=2026-12-04&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-11-28&inbound=ISG-TPE&returnDate=2026-12-04&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
