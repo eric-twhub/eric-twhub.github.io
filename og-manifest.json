@@ -422,14 +422,8 @@
   {
    "slug": "deals-2026-11-22-taipei-okinawa",
    "url": "/deals/2026-11-22-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,538 來回含稅｜台灣虎航 12/17 出發",
-   "title": "台北飛沖繩 NT$2,538 來回含稅｜台灣虎航 12/17 出發"
-  },
-  {
-   "slug": "deals-2026-11-22-kaohsiung-okinawa",
-   "url": "/deals/2026-11-22-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$3,057 來回含稅｜台灣虎航 12/17 出發",
-   "title": "高雄飛沖繩 NT$3,057 來回含稅｜台灣虎航 12/17 出發"
+   "h1": "台北飛沖繩 NT$2,997 來回含稅｜台灣虎航 12/17 出發",
+   "title": "台北飛沖繩 NT$2,997 來回含稅｜台灣虎航 12/17 出發"
   },
   {
    "slug": "deals-2026-11-22-taipei-ishigaki",
@@ -440,26 +434,32 @@
   {
    "slug": "deals-2026-11-22-taichung-okinawa",
    "url": "/deals/2026-11-22-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$3,897 來回含稅｜台灣虎航 11/30 出發",
-   "title": "台中飛沖繩 NT$3,897 來回含稅｜台灣虎航 11/30 出發"
+   "h1": "台中飛沖繩 NT$4,397 來回含稅｜台灣虎航 11/30 出發",
+   "title": "台中飛沖繩 NT$4,397 來回含稅｜台灣虎航 11/30 出發"
   },
   {
-   "slug": "deals-2026-11-22-taipei-miyazaki",
-   "url": "/deals/2026-11-22-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$4,936 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台北飛宮崎 NT$4,936 來回含稅｜台灣虎航 12/14 出發"
-  },
-  {
-   "slug": "deals-2026-11-22-taipei-fukuoka",
-   "url": "/deals/2026-11-22-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$4,945 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$4,945 來回含稅｜台灣虎航 12/01 出發"
+   "slug": "deals-2026-11-22-kaohsiung-okinawa",
+   "url": "/deals/2026-11-22-kaohsiung-okinawa/",
+   "h1": "高雄飛沖繩 NT$4,765 來回含稅｜台灣虎航 12/10 出發",
+   "title": "高雄飛沖繩 NT$4,765 來回含稅｜台灣虎航 12/10 出發"
   },
   {
    "slug": "deals-2026-11-22-kaohsiung-ishigaki",
    "url": "/deals/2026-11-22-kaohsiung-ishigaki/",
-   "h1": "高雄飛石垣島 NT$5,136 來回含稅｜台灣虎航 11/29 出發",
-   "title": "高雄飛石垣島 NT$5,136 來回含稅｜台灣虎航 11/29 出發"
+   "h1": "高雄飛石垣島 NT$4,917 來回含稅｜台灣虎航 11/29 出發",
+   "title": "高雄飛石垣島 NT$4,917 來回含稅｜台灣虎航 11/29 出發"
+  },
+  {
+   "slug": "deals-2026-11-22-taipei-miyazaki",
+   "url": "/deals/2026-11-22-taipei-miyazaki/",
+   "h1": "台北飛宮崎 NT$5,264 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台北飛宮崎 NT$5,264 來回含稅｜台灣虎航 12/14 出發"
+  },
+  {
+   "slug": "deals-2026-11-22-taipei-fukuoka",
+   "url": "/deals/2026-11-22-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$5,745 來回含稅｜台灣虎航 12/27 出發",
+   "title": "台北飛福岡 NT$5,745 來回含稅｜台灣虎航 12/27 出發"
   },
   {
    "slug": "deals-2026-11-22-kaohsiung-fukuoka",
@@ -468,16 +468,16 @@
    "title": "高雄飛福岡 NT$5,865 來回含稅｜台灣虎航 12/29 出發"
   },
   {
+   "slug": "deals-2026-11-22-taipei-okayama",
+   "url": "/deals/2026-11-22-taipei-okayama/",
+   "h1": "台北飛岡山 NT$6,145 來回含稅｜台灣虎航 12/17 出發",
+   "title": "台北飛岡山 NT$6,145 來回含稅｜台灣虎航 12/17 出發"
+  },
+  {
    "slug": "deals-2026-11-22-taipei-osaka",
    "url": "/deals/2026-11-22-taipei-osaka/",
    "h1": "台北飛大阪 NT$6,332 來回含稅｜樂桃航空 12/23 出發",
    "title": "台北飛大阪 NT$6,332 來回含稅｜樂桃航空 12/23 出發"
-  },
-  {
-   "slug": "deals-2026-11-22-taipei-okayama",
-   "url": "/deals/2026-11-22-taipei-okayama/",
-   "h1": "台北飛岡山 NT$6,605 來回含稅｜台灣虎航 12/17 出發",
-   "title": "台北飛岡山 NT$6,605 來回含稅｜台灣虎航 12/17 出發"
   },
   {
    "slug": "deals-2026-11-22-kaohsiung-osaka",
@@ -488,26 +488,26 @@
   {
    "slug": "deals-2026-11-22-taipei-nagoya",
    "url": "/deals/2026-11-22-taipei-nagoya/",
-   "h1": "台北飛名古屋 NT$8,112 來回含稅｜台灣虎航 12/15 出發",
-   "title": "台北飛名古屋 NT$8,112 來回含稅｜台灣虎航 12/15 出發"
+   "h1": "台北飛名古屋 NT$8,682 來回含稅｜台灣虎航 12/15 出發",
+   "title": "台北飛名古屋 NT$8,682 來回含稅｜台灣虎航 12/15 出發"
   },
   {
    "slug": "deals-2026-11-22-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-22-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,553",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,553"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,753",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,753"
   },
   {
    "slug": "deals-2026-11-22-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-22-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,238",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,238"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,438",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,438"
   },
   {
    "slug": "deals-2026-11-22-transfer-tokyo-fukushima",
    "url": "/deals/2026-11-22-transfer-tokyo-fukushima/",
-   "h1": "飛東京轉乘去福島，比直飛省 NT$2,569",
-   "title": "飛東京轉乘去福島，比直飛省 NT$2,569"
+   "h1": "飛東京轉乘去福島，比直飛省 NT$1,786",
+   "title": "飛東京轉乘去福島，比直飛省 NT$1,786"
   },
   {
    "slug": "apple-japan-price",
@@ -1424,8 +1424,8 @@
   {
    "slug": "japan-night-observation-decks",
    "url": "/japan-night-observation-decks/",
-   "h1": "晚上開到 21 點以後的觀景台：116 處",
-   "title": "晚上開到 21 點以後的觀景台：東京、首都圈、北關東、東北、仙台、新潟、富士五湖・甲信、靜岡、名古屋、金澤、關西、山陰、廣島、山口、四國・岡山、九州、沖繩、石垣・宮古、北海道 116 處看夜景（可以選日期）"
+   "h1": "晚上開到 21 點以後的觀景台：117 處",
+   "title": "晚上開到 21 點以後的觀景台：東京、首都圈、北關東、東北、仙台、新潟、富士五湖・甲信、靜岡、名古屋、金澤、關西、山陰、廣島、山口、四國・岡山、九州、沖繩、石垣・宮古、北海道 117 處看夜景（可以選日期）"
   },
   {
    "slug": "japan-takayama-shirakawago-bus",
