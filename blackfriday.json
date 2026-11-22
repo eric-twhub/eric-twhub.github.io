@@ -3,13 +3,13 @@
  "checked": "2026-11-19",
  "stale_days": 7,
  "_回查": [
-  "三井ショッピングパークアプリ 11/18 起因遭不正存取暫停服務（營運公司 11/19 公告），恢復時間未定；恢復前 App 優惠券與「アプリde支払い」都用不了，11/22 前回查 https://www.mf-shogyo.co.jp/ 看是否恢復",
+  "三井ショッピングパークアプリ 11/18 起因遭不正存取暫停服務（營運公司 11/19 公告），恢復時間未定；恢復前 App 優惠券與「アプリde支払い」都用不了。11/22 回查 https://www.mf-shogyo.co.jp/ 與 https://mitsui-shopping-park.com/msppoint/ 仍只有 11/19 的暫停公告，恢復後改 items.lalaport、items.mitsui-outlet 的 note",
   "Premium Outlets 佐野、ふかや花園兩館的 Black Friday 頁沒有寫最大折扣，若之後補上再加",
   "博多運河城參加店家官網註明「参加店舗は予告なく変更になる場合がございます」，上線前再開一次頁面確認 Gap、Dr.Martens、RAGEBLUE 還在",
   "AEON MALL 各館活動與 WAON POINT 10 倍日期依地區不同，北海道、東北的 AEON MALL 不在 10 倍名單內",
   "2026-11-30 後整區下架（最晚的 AEON MALL 到 11/30）",
   "松本清 BLACK FRIDAY 券 11/24 上 App 後看券面說明，有變更就改 chains.matsukiyo",
-  "EDION 網路商店 11/21 恢復後看官網有沒有實體店 Black Friday；Cosmos 藥品官網恢復後重查；山田電機官網連得上時重查傳單",
+  "Cosmos 藥品官網恢復後重查；山田電機官網連得上時重查傳單",
   "AEON 11/24 之後的下一期傳單特價（chains.aeon 只寫到 11/23 的例子）",
   "Bic 其他分店傳單是否同一檔；chains 結束日最晚 11/30"
  ],
@@ -362,7 +362,7 @@
   "Cosmos 藥品（コスモス薬品）：官網 11/19 維護中，沒辦法查",
   "友都八喜（ヨドバシカメラ）、上新電機（Joshin）：官網查不到 2026 年的 Black Friday",
   "山田電機（ヤマダデンキ）：官網連不上，新聞稿查不到；有傳單 11/14～11/20 的說法，沒辦法用官網確認",
-  "EDION（エディオン）：官網查不到實體店活動，網路商店停站中，預定 11/21 恢復",
+  "EDION（エディオン）：網路商店 11/21 已恢復，官網查不到 2026 年實體店的 Black Friday",
   "UNIQLO、GU：同一時間辦的是「感謝祭」（UNIQLO 11/20～11/26），不叫 Black Friday",
   "無印良品：官網查不到 2026 年的 Black Friday，網路商店停站中",
   "3COINS：營運公司沒有公布 Black Friday；AEON Mall 館內的 300 日圓折價券是商場自己的活動"
