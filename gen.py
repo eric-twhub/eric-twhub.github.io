@@ -26915,16 +26915,38 @@ if os.path.exists('cards.json'):
             def _bf_unv(title, lst):
                 return ((f'<details class="faq"><summary>{title}</summary><div><ul>'
                          + ''.join(f'<li>{html.escape(u)}</li>' for u in lst) + '</ul></div></details>') if lst else '')
-            if _bf_live or _bf_chain:
+            # 出發前在台灣訂的線上券（blackfriday.json 的 online）。日期以台灣時間算，過了那天就不列。
+            _bf_on = _BF.get('online') or {}
+            _bf_tw = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=8))).date()
+            _bf_on_days = [x for x in _bf_on.get('days', []) if datetime.date.fromisoformat(x['date']) >= _bf_tw]
+            _bf_online = ''
+            if _bf_on_days:
+                _cap = _bf_on['cap']
+                _bf_online = ('<h3 id="black-friday-kkday">出發前先訂：' + html.escape(_bf_on['name']) + '</h3>'
+                    '<p class="lede">KKday 官方黑五活動頁每天兩個時段放出 1 折券，數量有限，開搶時間是台灣時間。'
+                    f'每張折抵上限 {_cap:,} 元，所以商品大約 {_cap / 0.9:,.0f} 元以下才是真的打 1 折，'
+                    f'更貴的商品就是折 {_cap:,} 元。</p>'
+                    '<ul class="xl">' + ''.join(
+                        f'<li><div class="xh"><span class="xn">{_bf_md(x["date"])}</span>'
+                        f'<span class="xbadge{" on" if datetime.date.fromisoformat(x["date"]) == _bf_tw else ""}">'
+                        f'{"今天" if datetime.date.fromisoformat(x["date"]) == _bf_tw else "還沒開始"}</span></div>'
+                        + ''.join(f'<div class="xt"><b>{s["time"]}　{html.escape(s["cat"])}：</b>'
+                                  f'<code>{html.escape(s["code"])}</code></div>' for s in x['slots'])
+                        + '</li>' for x in _bf_on_days) + '</ul>'
+                    '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(r)}</li>' for r in _bf_on['rules']) + '</ul></div>'
+                    f'<p class="xo">出處：<a href="{html.escape(kkday(_bf_on["src"], "coupon", "blackfriday"))}" rel="nofollow noopener sponsored" target="_blank">'
+                    f'KKday 黑五活動頁（每張券的條款在券的說明裡）→</a>　查證於 {html.escape(_bf_on["checked"])}</p>')
+            if _bf_live or _bf_chain or _bf_online:
                 _bf_block = ('<h2 id="black-friday">這幾週的 Black Friday 檔期</h2>'
                              '<p class="lede">日本的大型商場、Outlet 與連鎖店每年 11 月下旬辦 Black Friday。下面只列官網公布、'
-                             f'還沒結束的實體店檔期，期間過了會自動拿掉。參加的店家與折扣各店不同，官網沒寫的折扣幅度這裡不寫。</p>'
+                             f'還沒結束的檔期，期間過了會自動拿掉。參加的店家與折扣各店不同，官網沒寫的折扣幅度這裡不寫。</p>'
                              + (('<h3>商場與 Outlet</h3><ul class="xl">' + ''.join(_bf_li(x) for x in _bf_live) + '</ul>'
                                  + _bf_unv('查過、沒列進來的商場', _BF.get('unverified'))) if _bf_live else '')
                              + (('<h3 id="black-friday-chains">連鎖店</h3><ul class="xl">' + ''.join(_bf_li(x) for x in _bf_chain) + '</ul>'
                                  + _bf_unv('查過、沒列進來的連鎖店', _BF.get('chains_unverified'))) if _bf_chain else '')
-                             + f'<p class="disc">查證於 {html.escape(_BF["checked"])}。Black Friday 的折扣和上面的觀光客折價券、'
-                             '免稅能不能一起用，各店規定不同，結帳前問店員。</p>')
+                             + ((f'<p class="disc">查證於 {html.escape(_BF["checked"])}。Black Friday 的折扣和上面的觀光客折價券、'
+                                 '免稅能不能一起用，各店規定不同，結帳前問店員。</p>') if (_bf_live or _bf_chain) else '')
+                             + _bf_online)
 
         write('japan-coupon/index.html',
           head('日本購物折扣怎麼疊？折價券 × 免稅 × 刷卡回饋實付價計算機',
@@ -34611,6 +34633,7 @@ SEARCH_SYN = [
     ['優惠券', '折價券', '折扣券', '折扣碼', '優惠碼', 'coupon', 'クーポン'],
     ['退稅', '免稅', 'tax free', 'taxfree'],
     ['black friday', '黑色星期五', '黑五', 'ブラックフライデー'],
+    ['1折', '一折', '1 折', '90% off'],
     ['福袋', 'lucky bag'],
     ['買一送一', 'bogo', '1+1'],
     ['日圓', '日幣', '日元'],
