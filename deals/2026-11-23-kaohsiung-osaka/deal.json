@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-23-kaohsiung-osaka",
- "generated": "2026-11-23 00:19",
+ "generated": "2026-11-23 05:11",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "osaka",
@@ -45,7 +45,7 @@
    "dur": 375,
    "dur_to": 165,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH2012KIX13011?t=IT17977764001797789900000165KHHKIX17998398001799848800000210KIXKHH_b742cd23519c1436df413f8042887e6b_19863&search_date=22112026&expected_price_uuid=01a203b0-2a0d-8040-6a9e-f28b7d030b4a&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=n7-qKUUKLENeVsYjEU25CQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8038&marker=775639"
+   "url": "https://www.aviasales.com/search/KHH2012KIX13011?t=IT17977764001797789900000165KHHKIX17998398001799848800000210KIXKHH_b742cd23519c1436df413f8042887e6b_19884&search_date=22112026&expected_price_uuid=01a204f9-79fe-8040-20f6-0fba1ba350c9&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=n7-qKUUKLENeVsYjEU25CQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8038&marker=775639"
   },
   {
    "o": "KHH",
