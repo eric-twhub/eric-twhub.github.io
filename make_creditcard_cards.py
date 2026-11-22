@@ -244,8 +244,8 @@ def build(CD, mid, fee, rate_note):
         b = 0 if any(t.get('no_base') for t in ts) else c['base']
         return round(b + sum(t['rate'] for t in ts), 2)
 
-    def plain_back(c):
-        b = bill(DEMO_JPY)
+    def plain_back(c, jpy=DEMO_JPY):
+        b = bill(jpy)
         ts = plain_ts(c)
         v = 0 if any(t.get('no_base') for t in ts) else c['base'] / 100 * b
         capped = False
@@ -379,9 +379,13 @@ def build(CD, mid, fee, rate_note):
     # ── 5 刷多少決定用哪張 ──
     rows = ('<div class="hd"><div class="num"></div><div class="nm">日幣消費</div>'
             '<div class="c2">回饋最高的卡</div><div class="c3">有效回饋率</div></div>')
+    # 2026-11-22 改用 plain_back：原本用 back() 會把挑店家的層（吉鶴「11 大人氣
+    # 通路」3%）算進去，第一名變成只有在那 11 家刷才成立的數字，和第 2、3 張
+    # 「挑店家的加碼不算」的排法互相矛盾。同額並列的卡一起列出。
     for y in LADDER:
-        best = max(cards, key=lambda c: back(c, y, 'shop', False)[0])
-        v = back(best, y, 'shop', False)[0]
+        v = max(plain_back(c, y)[0] for c in cards)
+        tops = [c for c in cards if round(plain_back(c, y)[0]) == round(v)]
+        best = tops[0]
         b = bill(y)
         # 第一名常常帶條件，不標出來會看起來像人人有獎。
         # 「含新戶加碼」這個標籤拿掉了，因為這一張現在整個以既有卡友計算。
@@ -390,11 +394,14 @@ def build(CD, mid, fee, rate_note):
         # 第 6 張標的就是「只有◯◯那層」。這一張算的是日幣實體消費，
         # 吉鶴要搶的是交通卡儲值，不在這個數字裡面，標上去會讓人以為
         # 那 11% 也要去搶登錄。
-        if best.get('reg_level') == 'race' and not best.get('reg_monthly'):
-            tag.append('要搶登錄')
+        _race = [c for c in tops if c.get('reg_level') == 'race' and not c.get('reg_monthly')]
+        if _race:
+            # 並列時要講清楚是哪一張要搶，不然像兩張都要
+            tag.append('要搶登錄' if len(tops) == 1 else
+                       '、'.join(re.sub(r'^\S+\s+', '', c['name']) for c in _race) + '要搶登錄')
         rows += ('<div class="row"><div class="num"></div>'
                  f'<div class="nm">¥{y:,}<s>帳單約 NT${b:,.0f}</s></div>'
-                 f'<div class="c2" style="flex-basis:330px">{E(best["name"])}'
+                 f'<div class="c2" style="flex-basis:330px">{"／".join(E(c["name"]) for c in tops)}'
                  + (f'<s class="warn">{E("、".join(tag))}</s>' if tag else '')
                  + '</div>'
                  f'<div class="c3">{v / b * 100:.1f}%<small> NT${v:,.0f}</small></div></div>')
@@ -402,8 +409,9 @@ def build(CD, mid, fee, rate_note):
              '<h1>刷多少，<em>決定該用哪張</em></h1>'
              '<div class="sub">加碼有上限，所以「最划算的卡」會隨金額換人，'
              '有效回饋率也一路往下掉。</div>'
-             '<div class="legend">有效回饋率＝實拿回饋 ÷ 台幣帳單。'
-             '同樣是全部加碼成立，金額越大越接近基本回饋。</div>'
+             '<div class="legend">有效回饋率＝實拿回饋 ÷ 台幣帳單，以既有卡友、'
+             '走進任何一家店計算：只在指定店家或指定消費類別成立的加碼不算進來。'
+             '金額越大越接近基本回饋。</div>'
              f'<div class="list">{rows}</div>' + foot(5, n))
     out.append(('jp-card-05.png', page(inner)))
 
