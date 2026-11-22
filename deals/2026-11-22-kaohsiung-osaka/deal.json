@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-22-kaohsiung-osaka",
- "generated": "2026-11-22 10:40",
+ "generated": "2026-11-22 11:52",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "osaka",
@@ -24,7 +24,7 @@
   "url": "https://www.aviasales.com/search/KHH1612KIX14011?t=IT17974308001797444300000165KHHKIX17999262001799935200000210KIXKHH_714e4c00c8d99136f0cf61fd183f6483_18470&search_date=19112026&expected_price_uuid=01a1f5bd-da68-8040-24a0-fa71f06fa3ee&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Vs4DVZj-s0QmIWOkx35L_Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7420&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,561（9 天有紀錄），這張低 13%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,559（9 天有紀錄），這張低 13%"
  ],
  "med": 10495,
  "n_rt": 30,
@@ -35,17 +35,17 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 8038,
+   "price": 8016,
    "dep": "2026-12-20",
    "ret": "2027-01-13",
    "dept": "14:20",
-   "rett": "11:30",
+   "rett": "10:35",
    "rt": true,
    "tr": 0,
-   "dur": 375,
+   "dur": 390,
    "dur_to": 165,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH2012KIX13011?t=IT17977764001797789900000165KHHKIX17998398001799848800000210KIXKHH_b742cd23519c1436df413f8042887e6b_20009&search_date=22112026&expected_price_uuid=01a200e5-f411-8040-26b0-da34f452e560&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=n7-qKUUKLENeVsYjEU25CQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8038&marker=775639"
+   "gate": "Trip.com",
+   "url": "https://www.aviasales.com/search/KHH2012KIX13011?t=MM17977764001797789900000165KHHKIX17998365001799846400000225KIXKHH_5df1fe5683f8851355f0e13602dba0fb_19956&search_date=22112026&expected_price_uuid=01a20154-2086-8040-2e94-34b56c17100c&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=f48qUGYQFyb3XGiluDUbKQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8016&marker=775639"
   },
   {
    "o": "KHH",
