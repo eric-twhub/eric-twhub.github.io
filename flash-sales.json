@@ -37,6 +37,24 @@
    ],
    "src": "https://files.jetstar.com/api/public/content/20261113",
    "src_name": "捷星日本新聞稿（日文）"
+  },
+  {
+   "who": "Trip.com 日本站",
+   "name": "Super Flight Day 定額機票",
+   "start": "2026-11-25 09:00",
+   "end": "2026-11-25 22:59",
+   "price": "東京飛台北、大阪飛台北，單程經濟艙定額 8,900 日圓",
+   "what": "日本出發飛台北的單程票，適合買回程；搭乘日 2026/11/25～2027/2/28，只有部分出發日適用",
+   "notes": [
+    "定額機票只能用日本版 Trip.com App（8.1.0 以上）購買",
+    "開賣時間是日本時間 11/25 10:00～23:59，也就是台灣時間 09:00～22:59",
+    "限 18 歲以上會員，每人限買一次，一筆訂單只能 1 位乘客",
+    "稅金、機場使用費、燃油附加費在訂位畫面另外顯示，活動頁沒寫 8,900 日圓含不含",
+    "先搶先贏，預算用完提前結束；不可轉讓，行李依航空公司規定，活動頁沒寫是哪家航空",
+    "退票時退款額會先扣掉活動折扣的金額"
+   ],
+   "src": "https://jp.trip.com/sale/w/14940/super-flight-day.html",
+   "src_name": "Trip.com 日本站 Super Flight Day 活動頁（日文）"
   }
  ],
  "patterns": [
@@ -63,6 +81,14 @@
    "evidence": "Visa、星展、國泰世華 CUBE、玉山 Wallet、街口支付都辦過；要用指定的卡或錢包付款",
    "src": "https://tw.trip.com/sale/w/4497/mega-sale.html",
    "src_name": "Trip.com 旅展活動頁"
+  },
+  {
+   "who": "Trip.com 日本站",
+   "what": "Super Flight Day：日本出發的定額單程機票",
+   "when": "每月 25 日，日本時間 10:00 開賣（台灣時間 09:00），只限日本版 App",
+   "evidence": "活動頁標題寫「每月 25 日舉辦」；飛台北的場次本站只查到 2026 年 11 月（東京、大阪 8,900 日圓）",
+   "src": "https://jp.trip.com/sale/w/14940/super-flight-day.html",
+   "src_name": "Trip.com 日本站活動頁（日文）"
   },
   {
    "who": "易遊網",

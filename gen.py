@@ -34634,6 +34634,7 @@ SEARCH_SYN = [
     ['退稅', '免稅', 'tax free', 'taxfree'],
     ['black friday', '黑色星期五', '黑五', 'ブラックフライデー'],
     ['1折', '一折', '1 折', '90% off'],
+    ['super flight day', 'スーパーフライトデー', 'superflightday'],
     ['福袋', 'lucky bag'],
     ['買一送一', 'bogo', '1+1'],
     ['日圓', '日幣', '日元'],
