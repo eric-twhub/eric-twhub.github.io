@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$4,825（14 天有紀錄），這張低 38%"
+   "12 月出發的票，每天最便宜的平均要 NT$4,768（14 天有紀錄），這張低 37%"
   ],
   "med": 11078,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-28&inbound=OKA-TPE&returnDate=2027-01-05&type=return&adult=1&language=zh-TW",
@@ -26,7 +26,7 @@
    "days": 16
   },
   "mbase": {
-   "avg": 4825,
+   "avg": 4768,
    "days": 14,
    "month": 12
   },
@@ -82,19 +82,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$6,396（10 天有紀錄），這張低 43%"
+   "12 月出發的票，每天最便宜的平均要 NT$6,290（10 天有紀錄），這張低 42%"
   ],
   "med": 5330,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-17&inbound=OKA-KHH&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 4771,
-   "hi": 6500,
+   "lo": 4430,
+   "hi": 6403,
    "days": 10
   },
   "mbase": {
-   "avg": 6396,
+   "avg": 6290,
    "days": 10,
    "month": 12
   },
@@ -262,23 +262,23 @@
   "price": 6271,
   "air": "台灣虎航",
   "dep": "2026-12-29",
-  "ret": "2027-01-08",
+  "ret": "2027-01-06",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "12 月出發的票，每天最便宜的平均要 NT$9,098（8 天有紀錄），這張低 31%"
+   "12 月出發的票，每天最便宜的平均要 NT$9,002（8 天有紀錄），這張低 30%"
   ],
-  "med": 8359,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-29&inbound=FUK-KHH&returnDate=2027-01-08&type=return&adult=1&language=zh-TW",
+  "med": 7877,
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-29&inbound=FUK-KHH&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
    "lo": 7789,
-   "hi": 9759,
+   "hi": 9189,
    "days": 8
   },
   "mbase": {
-   "avg": 9098,
+   "avg": 9002,
    "days": 8,
    "month": 12
   },
@@ -299,9 +299,9 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "12 月出發的票，每天最便宜的平均要 NT$8,034（10 天有紀錄），這張低 21%"
+   "12 月出發的票，每天最便宜的平均要 NT$8,031（10 天有紀錄），這張低 21%"
   ],
-  "med": 17013,
+  "med": 16535,
   "url": "https://www.aviasales.com/search/TPE2312KIX20011?t=MM17980518001798064400000150TPEKIX18004293001800438300000210KIXTPE_5a799303b43c11eec13c3edd1106711e_15763&search_date=21112026&expected_price_uuid=01a1ff04-30ea-8040-2e40-22d51b0f5a28&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=DzsKREnQOjDAAzM6TeK8jA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6332&marker=775639",
   "hotelcity": "大阪",
   "cslug": "osaka",
@@ -311,12 +311,12 @@
    "days": 14
   },
   "mbase": {
-   "avg": 8034,
+   "avg": 8031,
    "days": 10,
    "month": 12
   },
   "rank": 1,
-  "n": 74
+  "n": 73
  },
  {
   "slug": "2026-11-23-kaohsiung-osaka",
