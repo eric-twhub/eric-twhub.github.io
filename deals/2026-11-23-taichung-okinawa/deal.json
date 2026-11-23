@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-23-taichung-okinawa",
- "generated": "2026-11-23 10:00",
+ "generated": "2026-11-23 11:03",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -28,7 +28,7 @@
   "廉航低於 NT$6,000",
   "11 月出發的票，每天最便宜的平均要 NT$7,535（7 天有紀錄），這張低 42%"
  ],
- "med": 10360,
+ "med": 10533,
  "n_rt": 80,
  "others": [
   {
@@ -37,7 +37,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4860,
+   "price": 4400,
    "dep": "2026-12-21",
    "ret": "2026-12-31",
    "dept": "07:10",
@@ -75,7 +75,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4860,
+   "price": 5360,
    "dep": "2026-12-07",
    "ret": "2026-12-10",
    "dept": "07:10",
