@@ -60,11 +60,16 @@ def fetch():
     atm_best = '多數人最划算的一條' in _txt(atm)
     counter_worst = bool(re.search(r'臨櫃直接換.*?最貴', _txt(ways)))
     reward = '真正的差距在回饋' in tl and '現金沒有回饋' in tl
-    if not (len(rows) == 3 and m and card_assume and cash_m and atm_best and counter_worst and reward):
+    # 為什麼現鈔比較貴：頁上「先搞懂現金匯率和即期匯率」那段的原因
+    why = re.search(r'因為銀行要承擔(.+?成本)', _txt(_section(s, '先搞懂現金匯率和即期匯率')))
+    if not (len(rows) == 3 and m and card_assume and cash_m and atm_best and counter_worst and reward and why):
         sys.exit('線上頁面的格式或說法和預期不同，請先看頁面再改解析')
     mid = float(m.group(4))
     for r in rows:
         r['extra'] = round(10000 * mid * r['pct'] / 100)
+        b = r['basis']
+        r['why'] = ('用銀行的即期賣出匯率' if b == '即期賣出' else
+                    f'用現金賣出匯率，含{why.group(1)}' if b == '現金賣出' else b)
     items = [x for x in re.split(r'、|與', cash_m.group(1)) if x]
     return {'rows': rows, 'mid': m.group(4), 'date': f'{int(m.group(2))}/{int(m.group(3))}',
             'date_full': f'{m.group(1)}-{m.group(2)}-{m.group(3)}', 'cash_items': items}
@@ -78,13 +83,14 @@ EXTRA_CSS = r"""
 .nm{font-size:56px;top:0}
 .br{top:82px;height:66px;border-radius:33px}
 .vl{top:76px;font-size:66px}
-.amt{position:absolute;left:122px;top:160px;font-size:38px;font-weight:700;color:#8a6a55;white-space:nowrap}
+.amt{position:absolute;left:122px;top:158px;font-size:32px;line-height:1.45;font-weight:700;color:#8a6a55;white-space:nowrap}
+.amt .w{color:#5a3d2b}
 .amt b{color:#5a3d2b}
 .rw.g .amt b{color:#e8553e}
 #crown{width:auto}
 #crown span{display:inline-block;background:#e8553e;color:#fff;border:5px solid #5a3d2b;border-radius:18px;
  padding:4px 18px;font-size:44px;transform:rotate(8deg)}
-#base{top:1190px;font-size:46px;color:#5a3d2b;line-height:1.45;border-top:4px dashed #ead9c4;padding-top:26px}
+#base{font-size:46px;color:#5a3d2b;line-height:1.45;border-top:4px dashed #ead9c4;padding-top:26px}
 #base em{font-style:normal;color:#e8553e}
 .cp{padding:22px 36px}
 .cp b{font-size:60px;font-weight:400}
@@ -113,7 +119,7 @@ def build_html(d):
                         'f': rnd.uniform(6, 16), 'c': rnd.choice(cols)})
         return out
 
-    y0, rh = 470, 230
+    y0, rh = 450, 270
     mx = max(r['pct'] for r in rows)
     wrow = [{'save': r['pct'], 'w': max(80, round(r['pct'] / mx * 480))} for r in rows]
     n = len(rows)
@@ -146,12 +152,13 @@ def build_html(d):
                f'<div class="rk hn">{i + 1}</div><div class="nm">{e(r["name"])}</div>'
                f'<div class="br" style="width:{wrow[i]["w"]}px"></div>'
                f'<div class="vl hn"><small>＋</small><i>0</i><small>%</small></div>'
-               f'<div class="amt">花 ¥10,000 比中價多付約 <b>NT${r["extra"]}</b></div></div>')
+               f'<div class="amt"><div class="w">{e(r["why"])}</div>'
+               f'<div>花 ¥10,000 比中價多付約 <b>NT${r["extra"]}</b></div></div></div>')
     s2 = (f'<div id="s2" class="sc">'
           f'<div id="t2" class="ab hn">付日圓的成本<br><em>哪種最貴</em></div>{rw}'
           f'<div id="crown" class="ab"><span class="hn">最貴</span></div>'
-          f'<div id="base" class="ab hn">差距只有零點幾個百分點<br><em>真正的差距在刷卡回饋</em><br>'
-          f'現金沒有回饋</div>'
+          f'<div id="base" class="ab hn" style="top:{y0 + n * rh + 10}px">'
+          f'<em>真正的差距在刷卡回饋</em><br>現金沒有回饋</div>'
           f'{cfdivs(cf2, "b")}</div>')
     cp = ''.join(f'<div id="cp{i}" class="ab cp" style="top:{430 + i * 175}px"><b class="hn">{e(x)}</b></div>'
                  for i, x in enumerate(items))
