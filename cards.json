@@ -1567,11 +1567,11 @@
  "mpay": {
   "checked": "2026-09-14",
   "bot": {
-   "date": "2026-10-16",
-   "spot_buy": 0.2037,
-   "spot_sell": 0.2077,
-   "cash_buy": 0.1964,
-   "cash_sell": 0.2092,
+   "date": "2026-11-23",
+   "spot_buy": 0.2044,
+   "spot_sell": 0.2094,
+   "cash_buy": 0.1976,
+   "cash_sell": 0.2104,
    "src": "https://rate.bot.com.tw/xrt?Lang=zh-TW",
    "src_name": "臺灣銀行牌告匯率"
   },
