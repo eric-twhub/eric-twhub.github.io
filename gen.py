@@ -29473,6 +29473,31 @@ if os.path.exists('teamlab.json'):
       f'{html.escape(TL["late"]["planets"])} 麻布台那一館{html.escape(TL["late"]["borderless"])} '
       f'{html.escape(TL["late"]["so"])}'),
     ]
+    # 購票按鈕跟著官方說法走：無界官方把 KLOOK 列為正式通路，所以放官方與 Klook；
+    # Planets 官方把 KLOOK 歸在「其他門票」、改期只受理官方票，所以只放官方售票站。
+    _tl_kl = TL.get('klook') or {}
+    _tl_kl_h = html.escape(klook(_tl_kl['url'], 'ticket')) if _tl_kl.get('url') else ''
+    _tl_bo_h = html.escape(_tlb['ticket_src'])
+    _tl_pl_h = html.escape(_tlp['ticket_src'])
+    _tl_buy = (
+        f'<div class="card"><h3>{html.escape(_tlb["name"])}（{html.escape(_tlb["area"])}）</h3>'
+        f'<a class="cta" href="{_tl_bo_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎟️</span><span class="ct"><b>到官方頁買無界門票</b>'
+        '<s>官方票務網站，買了可以改期最多 3 次</s></span><span class="ca">→</span></a>'
+        + (f'<a class="cta" href="{_tl_kl_h}" target="_blank" rel="{_rel(_tl_kl_h)}">'
+           '<span class="ci">🎫</span><span class="ct"><b>到 Klook 買無界門票</b>'
+           '<s>官方列為正式通路，用台幣付款；改期要找 Klook，價格以 Klook 頁面為準</s></span>'
+           '<span class="ca">→</span></a>' if _tl_kl_h else '')
+        + '</div>'
+        f'<div class="card"><h3>{html.escape(_tlp["name"])}（{html.escape(_tlp["area"])}）</h3>'
+        f'<a class="cta" href="{_tl_pl_h}" target="_blank" rel="nofollow noopener">'
+        '<span class="ci">🎟️</span><span class="ct"><b>到官方售票站買 Planets 門票</b>'
+        '<s>DMM 經營的官方票務網站；現場不賣票，改期只受理這裡買的票</s></span>'
+        '<span class="ca">→</span></a></div>'
+        '<p class="disc">兩個官方售票頁不是本站的合作平台，本站沒有分潤；'
+        + ('Klook 連結會前往合作訂票平台完成預訂，本站可能獲得分潤，不影響你的價格。</p>'
+           if _tl_kl_h and _AFF_RE.search(html.unescape(_tl_kl_h)) else '</p>'))
+
     _tl_faq_html = ''.join('<details class="faq"><summary>' + html.escape(q)
                            + '</summary><div>' + html.escape(a) + '</div></details>'
                            for q, a in _tl_faq)
@@ -29531,6 +29556,7 @@ if os.path.exists('teamlab.json'):
         f'<li><b>{html.escape(_tlp["parking_note"])}</b></li>'
         f'<li>{html.escape(_tlp["change_quote"])}'
         f'　在別處買的票，官方不受理改期。</li></ul></div>'
+      + _tl_buy
 
       + f'<h2 id="{_hid("改期與退票")}">改期與退票</h2>'
       + '<p class="lede">兩館的規則一樣：原則上不退票，但官方票務網站買的電子票'

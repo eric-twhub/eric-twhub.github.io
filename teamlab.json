@@ -123,5 +123,6 @@
    "why": "平台價格是前端算繪的，而且依日期浮動，這一輪沒有逐一比對。麻布台那一館的成人票本身就是浮動價，拿單一天的平台價去比會誤導。"},
   {"what": "麻布台那一館延長到 22:00 的日期，10 月之後還有沒有",
    "why": "官方只逐日列出 10 月到 12 月的部分日期，沒有說明規則，無法推算其他月份。"}
- ]
+ ],
+ "klook": {"id": 20707, "url": "https://www.klook.com/zh-TW/activity/20707-teamlab-borderless-admission-ticket-tokyo/", "name": "東京 teamLab 無界美術館門票：MORI Building DIGITAL ART MUSEUM", "checked": "2026-11-23", "_說明": "只放無界（麻布台）：官方寫「正式門票僅在官方票務網站和 KLOOK 上出售」。Planets 官方把 KLOOK 歸在其他門票、改期只受理官方票，不放。"}
 }
