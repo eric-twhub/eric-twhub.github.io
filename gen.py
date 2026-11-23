@@ -2025,7 +2025,10 @@ def topnav(cur=''):
     burger = ('<details class="burger"><summary>☰ 選單</summary><div class="dd">'
               + ''.join(sub(l, i) for l, i in SEC) + '</div></details>')
 
-    return ('<nav class="top">'
+    # 整段導覽選單用 <!--nh--> 包起來，不算進 lastmod 的內容雜湊（見 write()）。
+    # 選單每一頁都一樣，每加一個新頁就多一個連結；不排除的話，加一頁就讓全站
+    # 三百多頁的 sitemap lastmod 一起變成今天（2026-11-23 量到，一天好幾次）。
+    return ('<!--nh--><nav class="top">'
             + link('/', '首頁', not cur)
             + link('/deals/', '🔥 機票特價')
             + ''.join(menu(l, i, end=(k == len(SEC) - 1))
@@ -2037,7 +2040,7 @@ def topnav(cur=''):
             + f'<a href="{U("/search/")}" class="srch{" cur" if cur == "search" else ""}"'
               ' aria-label="站內搜尋">🔍<span> 搜尋</span></a>'
             + burger
-            + '</nav>')
+            + '</nav><!--/nh-->')
 
 def _partner_line():
     """頁尾的合作平台宣告，直接從 partners.json 產生。
