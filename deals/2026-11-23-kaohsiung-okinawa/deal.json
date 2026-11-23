@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-23-kaohsiung-okinawa",
- "generated": "2026-11-23 12:38",
+ "generated": "2026-11-23 13:00",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "okinawa",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4200,
-  "dep": "2026-12-29",
-  "ret": "2027-01-01",
+  "price": 3630,
+  "dep": "2026-12-17",
+  "ret": "2026-12-25",
   "dept": "17:30",
   "rett": "10:30",
   "rt": true,
@@ -21,16 +21,35 @@
   "dur": 195,
   "dur_to": 85,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-29&inbound=OKA-KHH&returnDate=2027-01-01&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-17&inbound=OKA-KHH&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$6,463（10 天有紀錄），這張低 35%"
+  "12 月出發的票，每天最便宜的平均要 NT$6,381（10 天有紀錄），這張低 43%"
  ],
- "med": 5388,
+ "med": 5042,
  "n_rt": 14,
  "others": [
+  {
+   "o": "KHH",
+   "d": "OKA",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 4200,
+   "dep": "2026-12-29",
+   "ret": "2027-01-01",
+   "dept": "17:30",
+   "rett": "10:30",
+   "rt": true,
+   "tr": 0,
+   "dur": 195,
+   "dur_to": 85,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-29&inbound=OKA-KHH&returnDate=2027-01-01&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
   {
    "o": "KHH",
    "d": "OKA",
@@ -57,7 +76,7 @@
    "airname": "台灣虎航",
    "cls": "lcc",
    "price": 4771,
-   "dep": "2026-12-10",
+   "dep": "2026-12-17",
    "ret": "2027-01-06",
    "dept": "17:30",
    "rett": "12:40",
@@ -66,26 +85,7 @@
    "dur": 200,
    "dur_to": 85,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-10&inbound=OKA-KHH&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
-  {
-   "o": "KHH",
-   "d": "OKA",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 4771,
-   "dep": "2026-12-29",
-   "ret": "2027-01-05",
-   "dept": "17:30",
-   "rett": "14:50",
-   "rt": true,
-   "tr": 0,
-   "dur": 195,
-   "dur_to": 85,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-29&inbound=OKA-KHH&returnDate=2027-01-05&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-17&inbound=OKA-KHH&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
