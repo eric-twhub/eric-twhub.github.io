@@ -328,6 +328,13 @@
    "price": "$11",
    "what": "東京、大阪、沖繩",
    "src": "https://web.archive.org/web/20251127083626/https://tw.trip.com/sale/w/4497/mega-sale.html?locale=zh-TW"
+  },
+  {
+   "d": "2026-11-20",
+   "who": "台灣虎航",
+   "price": "$999",
+   "what": "南虎祭：台南、高雄出發的石垣島、沖繩（單程未稅）",
+   "src": "https://static.tigerairtw.com/www/events/2611TTF/"
   }
  ]
 }
