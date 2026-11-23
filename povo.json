@@ -1,0 +1,82 @@
+{
+ "_說明": "povo（KDDI）賣給旅客的 Japan SIM 三種買法。價格在官網是圖片，逐張看過才填。MyJapan+ 優惠價有期限，sale_end 過了頁面自動只列原價。回查：每季、以及 sale_end 前一週。",
+ "checked": "2026-11-23",
+ "thesis": "povo 是日本 au（KDDI）的線上品牌，網路就是 au 的。台灣旅客常聽到的 povo2.0 本體要日本門號才辦得了，旅客能買的是另一個產品「Japan SIM」，有三種買法：官網線上買、在日本 LAWSON 買卡、在 JCB 的 MyJapan+ App 裡買。三種的價格差很多，規則也不完全一樣。",
+ "routes": [
+  {
+   "id": "online",
+   "name": "官網線上買",
+   "short": "線上版",
+   "who": "大部分人。有信用卡、台灣門號收得到簡訊就能辦，出發前在台灣就能申請。",
+   "pay": "信用卡",
+   "where": "povo 官網，出發前或到日本後都可以",
+   "phone": "台灣門號收簡訊驗證碼，另加 Email 驗證",
+   "src": "https://povo.jp/japan-sim/online/tai/",
+   "src_name": "povo Japan SIM 官網（繁中）",
+   "plans": [
+    {"kind": "unl", "hours": 6, "jpy": 260},
+    {"kind": "unl", "days": 3, "jpy": 1540},
+    {"kind": "unl", "days": 5, "jpy": 2510},
+    {"kind": "unl", "days": 7, "jpy": 3390},
+    {"kind": "gb", "gb": 3, "days": 3, "jpy": 600},
+    {"kind": "gb", "gb": 5, "days": 5, "jpy": 900},
+    {"kind": "gb", "gb": 10, "days": 7, "jpy": 1430},
+    {"kind": "gb", "gb": 20, "days": 30, "jpy": 2700}
+   ],
+   "extra": "買吃到飽會先送 0.5GB（60 天）立即可用，吃到飽本體是兌換碼，寄到 Email。官網另有新用戶優惠碼 JAPANSIM24H，可換 24 小時吃到飽。"
+  },
+  {
+   "id": "myjapan",
+   "name": "MyJapan+ App 裡買",
+   "short": "MyJapan+",
+   "who": "有台灣發行的 JCB 信用卡的人。吃到飽 3 到 7 天的優惠價是三種買法裡最便宜的。",
+   "pay": "只收台灣發行的 JCB 信用卡",
+   "where": "JCB 的 MyJapan+ by JCB App",
+   "phone": "只限台灣門號，收簡訊驗證碼",
+   "src": "https://povo.jp/lp/myjapan-esim/tai/",
+   "src_name": "Japan SIM for MyJapan+ 官網（繁中）",
+   "sale_start": "2026-10-01",
+   "sale_end": "2027-07-31",
+   "plans": [
+    {"kind": "unl", "hours": 24, "jpy": 660, "orig": 660},
+    {"kind": "unl", "days": 3, "jpy": 990, "orig": 1540},
+    {"kind": "unl", "days": 5, "jpy": 1310, "orig": 2510},
+    {"kind": "unl", "days": 7, "jpy": 1830, "orig": 3390}
+   ],
+   "extra": "只有吃到飽，沒有固定流量的方案。購買後寄兌換碼到 Email，兌換碼 60 天內有效，輸入當下就開始計時。第一次購買後 90 天內再買，不需要兌換碼，買完立刻開始計時。"
+  },
+  {
+   "id": "lawson",
+   "name": "日本 LAWSON 買卡",
+   "short": "LAWSON 卡",
+   "who": "沒有信用卡、或想到了日本再決定的人。價格是三種裡最高的。",
+   "pay": "只收現金",
+   "where": "日本的 LAWSON（含 NATURAL LAWSON）、LAWSON STORE 100",
+   "phone": "台灣門號收簡訊驗證碼，人在日本收",
+   "src": "https://povo.jp/japan-sim/gift-card/",
+   "src_name": "povo Japan SIM 卡片版官網",
+   "plans": [
+    {"kind": "gb", "gb": 3, "days": 7, "jpy": 2200},
+    {"kind": "gb", "gb": 10, "days": 30, "jpy": 3280},
+    {"kind": "gb", "gb": 25, "days": 30, "jpy": 4580},
+    {"kind": "unl", "days": 7, "jpy": 4500}
+   ],
+   "extra": "買到的是一張印有 PIN 碼的卡，PIN 碼從購買日起 150 天內有效。註冊不需要證件，也不需要信用卡。"
+  }
+ ],
+ "common": [
+  {"t": "只有上網，沒有電話號碼", "b": "不能打電話、不能收簡訊，也不能攜碼。驗證碼還是發到你的台灣門號。", "src": "https://povo.jp/japan-sim/online/tai/", "src_name": "Japan SIM 注意事項"},
+  {"t": "帳號在 eSIM 啟用後 90 天自動失效", "b": "不管有沒有加購方案都一樣，時間到就停用。povo2.0 本體那個「180 天沒加購才停用」的規則，不適用在 Japan SIM。", "src": "https://povo.jp/japan-sim/online/tai/", "src_name": "Japan SIM 注意事項"},
+  {"t": "沒有方案時只有 128 kbps", "b": "eSIM 裝好但沒買方案（或流量用完），速度上限是 128 kbps，大概只夠收文字訊息。", "src": "https://povo.jp/japan-sim/online/tai/", "src_name": "Japan SIM 注意事項"},
+  {"t": "不退款、不補發", "b": "三種買法都寫明不接受退貨、退款或補發，MyJapan+ 頁面另外寫「請勿刪除 eSIM，刪除後將無法重新發行」。換手機前要先想好。", "src": "https://povo.jp/lp/myjapan-esim/tai/", "src_name": "MyJapan+ 官網"},
+  {"t": "一個門號只能註冊一個帳號", "b": "線上版與 LAWSON 卡的注意事項都寫了。同行的人要各自用自己的門號註冊。", "src": "https://povo.jp/japan-sim/gift-card/", "src_name": "Japan SIM 卡片版注意事項"},
+  {"t": "年滿 18 歲", "b": "三種買法都寫了年齡限制。", "src": "https://povo.jp/japan-sim/online/tai/", "src_name": "Japan SIM 注意事項"}
+ ],
+ "unverified": [
+  {"what": "吃到飽超量或壅塞時降到多少", "why": "三種買法都只寫「網路壅塞時段或影片串流、雲端遊戲時速度可能受限」，沒寫數字。"},
+  {"what": "90 天到期後，同一個台灣門號能不能再註冊新帳號", "why": "官網只寫一個門號只能有一個帳號、90 天自動失效，沒寫失效之後能不能重來。"},
+  {"what": "線上版的新用戶優惠碼，MyJapan+ 和 LAWSON 卡能不能用", "why": "優惠碼只寫在線上版的頁面，另外兩種的頁面沒提。"},
+  {"what": "MyJapan+ 買的吃到飽有沒有附 0.5GB", "why": "線上版的價目圖寫了買吃到飽附 0.5GB（60 天），MyJapan+ 的頁面沒寫。"},
+  {"what": "客服用什麼語言", "why": "MyJapan+ 頁面寫客服僅限英文；線上版只寫全部手續與客服都在線上進行、服務時間日本 9:00 到 19:00，沒寫語言。"}
+ ]
+}

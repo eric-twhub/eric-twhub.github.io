@@ -1956,6 +1956,7 @@ def topnav(cur=''):
             + link('/japan-esim/', '📱 日本 eSIM 比較')
             + link('/japan-esim-native-roaming/', '📱 原生還是漫遊')
             + link('/japan-sms-roaming/', '✉️ 台灣門號收簡訊')
+            + link('/japan-povo-esim/', '📶 povo 旅客 eSIM')
             + '<hr><b>錢的事</b>'
             + link('/japan-yen-exchange/', '💴 換日幣怎麼換')
             + link('/japan-payment/', '📲 日本怎麼付錢')
@@ -2084,7 +2085,7 @@ _AD_KIND = {
 _AD_MAP = [
     ('japan-driving', 'car'), ('japan-rentacar', 'car'),
     ('japan-airport-last-train', 'transfer'),
-    ('japan-esim', 'esim'), ('japan-sms', 'esim'),
+    ('japan-esim', 'esim'), ('japan-sms', 'esim'), ('japan-povo-esim', 'esim'),
     ('japan-pokemon-cafe', 'esim'),
     ('japan-fujiko-museum', 'esim'),
     ('japan-nintendo-museum', 'activity2'),
@@ -3285,7 +3286,7 @@ _STK_PREFIX = sorted({
     '/japan-shop-card/': 'st/card',
     '/japan-fukubukuro/': 'st/fukubukuro',
     '/japan-coupon/': 'st/coupon', '/japan-cashback/': 'st/coupon', '/japan-bogo/': 'st/coupon', '/japan-store-points/': 'st/coupon', '/japan-bic-points/': 'st/coupon',
-    '/japan-tax-free-2026/': 'st/receipt', '/japan-esim': 'st/phone', '/japan-sms-roaming/': 'st/phone',
+    '/japan-tax-free-2026/': 'st/receipt', '/japan-esim': 'st/phone', '/japan-sms-roaming/': 'st/phone', '/japan-povo-esim/': 'st/phone',
     '/japan-yen-exchange/': 'st/yen', '/japan-payment/': 'st/yen', '/japan-transit-card/': 'st/iccard',
     '/tokyo/subway-ticket/': 'st/subway',
     '/apple-japan-price/': 'st/phoneprice', '/iphone-cost/': 'st/phoneprice', '/iphone-duo/': 'st/phoneprice',
@@ -7731,6 +7732,8 @@ if RS2:
         f'<s>232 個方案的每日單價</s></a>'
       + f'<a class="ct" href="{U("/japan-esim-native-roaming/")}"><b>📱 原生還是漫遊</b>'
         f'<s>會不會變成香港的網路</s></a>'
+      + f'<a class="ct" href="{U("/japan-povo-esim/")}"><b>📶 povo 旅客 eSIM</b>'
+        f'<s>同一個吃到飽，三種買法價差很大</s></a>'
       + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
         f'<s>落地之後還回得去市區嗎</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a></div>'
@@ -7739,6 +7742,192 @@ if RS2:
         f'VoLTE 與 Wi-Fi Calling 的設定位置也會不一樣。</p>'
       + foot())
     pages.append(('/japan-sms-roaming/', 0.7))
+
+# ---------- povo 的旅客 eSIM（Japan SIM）----------
+# povo2.0 本體要日本門號，旅客能買的是 Japan SIM，三種買法價差很大。
+# 價格在官網都是圖片，povo.json 逐張看過才填；MyJapan+ 優惠過期自動改列原價。
+PV = json.load(open('povo.json', encoding='utf-8')) if os.path.exists('povo.json') else None
+
+if PV:
+    _pv_today = NOW.date().isoformat()
+    _pv_R = {r['id']: r for r in PV['routes']}
+    _pv_mj = _pv_R['myjapan']
+    _pv_sale = _pv_mj.get('sale_start', '') <= _pv_today <= _pv_mj.get('sale_end', '')
+    if not _pv_sale:
+        for p in _pv_mj['plans']:
+            p['jpy'] = p.get('orig', p['jpy'])
+
+    def _pv_key(p):
+        if p['kind'] == 'unl':
+            return (0, p.get('hours', 0) or p['days'] * 24, 0)
+        return (1, p['gb'], p['days'])
+
+    def _pv_label(p):
+        if p['kind'] == 'unl':
+            return f'吃到飽 {p["hours"]} 小時' if p.get('hours') else f'吃到飽 {p["days"]} 天'
+        return f'{p["gb"]}GB／{p["days"]} 天'
+
+    def _pv_yen(j):
+        return f'¥{j:,}<br><small style="color:var(--dim)">約 NT${round(j * JPY):,}</small>'
+
+    _pv_order = ['online', 'myjapan', 'lawson']
+    _pv_keys = sorted({_pv_key(p) for r in PV['routes'] for p in r['plans']})
+    _pv_rows = ''
+    for k in _pv_keys:
+        cells, lab = '', ''
+        for rid in _pv_order:
+            hit = [p for p in _pv_R[rid]['plans'] if _pv_key(p) == k]
+            if hit:
+                lab = _pv_label(hit[0])
+                cells += f'<td>{_pv_yen(hit[0]["jpy"])}</td>'
+            else:
+                cells += '<td style="color:var(--dim)">—</td>'
+        _pv_rows += f'<tr><td><b>{lab}</b></td>{cells}</tr>'
+
+    def _pv_find(rid, days):
+        for p in _pv_R[rid]['plans']:
+            if p['kind'] == 'unl' and p.get('days') == days:
+                return p['jpy']
+        return None
+    _pv7 = {rid: _pv_find(rid, 7) for rid in _pv_order}
+    _pv_off = [round((1 - p['jpy'] / p['orig']) * 100) for p in _pv_mj['plans']
+               if p.get('orig') and p['orig'] > p['jpy']]
+
+    _pv_cards = '<div class="xv">' + ''.join(
+        f'<div><h3>{html.escape(r["name"])}</h3><dl>'
+        f'<dt>適合誰</dt><dd>{html.escape(r["who"])}</dd>'
+        f'<dt>付款</dt><dd>{html.escape(r["pay"])}</dd>'
+        f'<dt>在哪買</dt><dd>{html.escape(r["where"])}</dd>'
+        f'<dt>門號驗證</dt><dd>{html.escape(r["phone"])}</dd>'
+        f'<dt>另外要知道</dt><dd>{html.escape(r["extra"])}</dd>'
+        f'<dt>出處</dt><dd><a href="{r["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(r["src_name"])}</a></dd></dl></div>'
+        for r in (_pv_R[x] for x in _pv_order)) + '</div>'
+
+    _pv_common = ''.join(
+        f'<h3>{html.escape(c["t"])}</h3><p class="lede">{html.escape(c["b"])}</p>'
+        f'<p class="disc">出處：<a href="{c["src"]}" rel="nofollow noopener" target="_blank">'
+        f'{html.escape(c["src_name"])}</a>，查證於 {PV["checked"]}。</p>' for c in PV['common'])
+    _pv_un = ''.join(f'<li><b>{html.escape(u["what"])}</b>'
+                     f'<br><small style="color:var(--dim)">{html.escape(u["why"])}</small></li>'
+                     for u in PV['unverified'])
+
+    _pv_sale_txt = (f'MyJapan+ 的價格是優惠價，官網寫的優惠期間到 '
+                    f'{_pv_mj["sale_end"].replace("-", "/")} 23:59（日本時間），過了之後本頁會自動改列原價。'
+                    if _pv_sale else 'MyJapan+ 的優惠期間已經結束，表上列的是官網的原價。')
+
+    pv_faq = [
+     ('台灣人可以辦 povo2.0 嗎？',
+      '旅客能買的是 povo 另外做的「Japan SIM」，不是 povo2.0 本體。povo2.0 的純數據方案在申辦時要用日本門號收簡訊驗證碼，'
+      '有通話的方案還要日本的身分證件。Japan SIM 用台灣門號驗證就可以，三種買法都不需要證件。'),
+     ('兌換碼什麼時候輸入？',
+      '到了日本再輸入。官網和 MyJapan+ 買的吃到飽都是寄一組兌換碼到 Email，輸入的當下方案就啟用、開始計時，'
+      '在台灣先輸入等於白白燒掉天數。MyJapan+ 的兌換碼從寄出日起 60 天內要用掉。'),
+     ('固定流量的方案也是到日本才開始算嗎？',
+      '不是。官網線上版寫明，購買數據方案後有效期限立刻開始計算。所以 3GB、5GB 這類方案要到了日本、需要時再買。'
+      '另外，MyJapan+ 第一次購買後 90 天內再買，不會再給兌換碼，買完立刻開始倒數，也要在日本當場買。'),
+     ('可以先買兩個吃到飽接著用嗎？',
+      '不行。Japan SIM 的官方常見問題寫明，買了任何吃到飽之後，要等它到期才能再買下一個。'
+      '固定流量的方案可以重複買，但每個方案各算各的效期，有多個方案時先用最早到期的那個，效期不會延長。'),
+     ('eSIM 不小心刪掉，還能重新安裝嗎？',
+      '不能。三種買法都寫明不補發，MyJapan+ 的頁面直接寫「請勿刪除 eSIM，刪除後將無法重新發行」。'
+      '旅途中要換手機或重設手機的話，就等於要重新買一個。'),
+     ('可以開熱點分享給同行的人嗎？',
+      'Japan SIM 的官方常見問題寫，eSIM 支援熱點分享，但要看你用的手機。官網沒寫分享是否另外收費，也沒寫吃到飽的分享有沒有另外限制。'),
+     ('聽說晚上 8 點以後不能開通？',
+      'Japan SIM 的官網上，申辦 eSIM 只有一個時段限制：日本時間 23:50 到隔天 00:05 之間申請的，會延到 00:05 之後依序發行。'
+      '20:00 到 9:30 這個時段出現在 Japan SIM 頁面的地方，是「提前解約」的申請會延到 9:30 之後處理，和開通無關。'),
+     ('有中文客服嗎？',
+      'MyJapan+ 的頁面寫客服僅限英文。官網線上版有繁體中文的網頁，寫了客服時間是日本時間 9:00 到 19:00、全部在線上進行，但沒寫客服用什麼語言。'),
+     ('信用卡帳單上會顯示什麼？',
+      '官網寫帳單上可能顯示「POVO CHARGES」，那就是 Japan SIM 的扣款。用日圓計價，刷台灣的卡要另外算國外交易手續費，依你的卡片條款。'),
+    ]
+    pv_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in pv_faq)
+    pv_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in pv_faq]}, ensure_ascii=False)
+
+    pv_title = 'povo 日本 eSIM 台灣人怎麼買？官網、MyJapan+、LAWSON 三種買法比價與兌換碼陷阱'
+    pv_desc = (f'povo2.0 本體要日本門號，台灣旅客能買的是 KDDI 的 Japan SIM。吃到飽 7 天：'
+               f'MyJapan+ ¥{_pv7["myjapan"]:,}、官網 ¥{_pv7["online"]:,}、LAWSON 卡 ¥{_pv7["lawson"]:,}。'
+               '整理三種買法的價格、兌換碼什麼時候輸入、不能疊買吃到飽、刪了 eSIM 不補發等官方規則。')
+
+    write('japan-povo-esim/index.html',
+      head(pv_title, pv_desc, 'japan-povo-esim/',
+           '<script type="application/ld+json">' + pv_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('povo 旅客 eSIM', None)])
+      + '<h1>povo 的日本 eSIM，台灣旅客怎麼買？</h1>'
+      + f'<p class="lede">{html.escape(PV["thesis"])}</p>'
+      + f'<div class="today"><div class="tday">三種買法的官網條款與價目，查證於 {PV["checked"]}</div>'
+        f'<div class="tans">同樣是吃到飽 7 天，<b>MyJapan+ ¥{_pv7["myjapan"]:,}</b>、'
+        f'官網 ¥{_pv7["online"]:,}、LAWSON 卡 ¥{_pv7["lawson"]:,}</div>'
+        + (f'<div class="tsub">MyJapan+ 的吃到飽比官網原價便宜 {min(_pv_off)}% 到 {max(_pv_off)}%，'
+           f'但只收台灣發行的 JCB 信用卡。沒有 JCB 卡就從官網買，LAWSON 卡是給沒有信用卡的人的。</div>'
+           if _pv_off else
+           '<div class="tsub">MyJapan+ 只收台灣發行的 JCB 信用卡。沒有 JCB 卡就從官網買，LAWSON 卡是給沒有信用卡的人的。</div>')
+      + '<div class="tbuf">最容易踩的一件事：<b>吃到飽的兌換碼一輸入就開始計時</b>，'
+        '固定流量的方案更是一買就開始算，所以都要到了日本再操作。</div></div>'
+      + '<h2>三種買法</h2>' + _pv_cards
+      + '<h2>價格對照</h2>'
+      + '<div class="tw"><table><thead><tr><th>方案</th><th>官網線上買</th><th>MyJapan+</th>'
+        '<th>LAWSON 卡</th></tr></thead><tbody>' + _pv_rows + '</tbody></table></div>'
+      + f'<p class="disc">價格是官網的含稅日圓價，台幣是用 1 日圓 = {JPY} 元換算的約數'
+        + (f'（{JPY_AT}）' if JPY_AT else '')
+        + f'，刷卡另有國外交易手續費。{_pv_sale_txt}'
+        '「—」是官網價目上沒有這個方案，不是缺資料。</p>'
+      + '<h2>什麼時候開始計時</h2>'
+      + '<div class="tldr"><ul>'
+        '<li><b>吃到飽（官網、MyJapan+）：</b>買完會寄兌換碼到 Email，輸入當下開始計時。到了日本再輸入。</li>'
+        '<li><b>固定流量（官網）：</b>買完立刻開始計時。到了日本、需要時再買。</li>'
+        '<li><b>MyJapan+ 第二次買：</b>第一次購買後 90 天內再買，不給兌換碼，買完立刻開始。</li>'
+        '<li><b>LAWSON 卡：</b>卡上的 PIN 碼從購買日起 150 天內要註冊。</li>'
+        '<li><b>吃到飽不能疊買：</b>前一個吃到飽到期之前，不能再買下一個。</li>'
+        '<li><b>帳號本身：</b>eSIM 啟用後 90 天自動失效，裡面沒用完的也一起沒了。</li>'
+        '</ul></div>'
+      + '<p class="disc">出處：<a href="https://povo.jp/japan-sim/online/tai/" rel="nofollow noopener" target="_blank">'
+        'Japan SIM 官網</a>、<a href="https://povo.jp/lp/myjapan-esim/tai/" rel="nofollow noopener" target="_blank">'
+        'MyJapan+ 官網</a>、<a href="https://kdlsupporten.zendesk.com/hc/en-jp/articles/46142497664025" '
+        'rel="nofollow noopener" target="_blank">Japan SIM 常見問題（加購）</a>，'
+        f'查證於 {PV["checked"]}。</p>'
+      + '<h2>註冊要收台灣的簡訊</h2>'
+      + '<p class="lede">三種買法註冊時都要用台灣門號收簡訊驗證碼。官網和 MyJapan+ 可以出發前在台灣辦好，'
+        '但官網也提醒，要確認你的台灣門號<b>在日本</b>收得到驗證簡訊。'
+        'LAWSON 卡一定是人到了日本才買得到，註冊當下台灣門號就得在日本收簡訊。</p>'
+      + '<blockquote class="q">If you cannot receive SMS, please turn on ‘Mobile Roaming’ enable.'
+        '<cite>LAWSON 卡註冊步驟：收不到簡訊的話，請打開漫遊</cite></blockquote>'
+      + f'<p class="lede">台灣門號在日本收不收得到簡訊，三家電信的答案不一樣，台灣大哥大不買漫遊方案就收不到。'
+        f'<a href="{U("/japan-sms-roaming/")}">三家的官方寫法整理在這一頁</a>，'
+        f'不確定的話，最穩的是出發前在台灣用官網或 MyJapan+ 辦好。</p>'
+      + '<h2>安裝與開通</h2>'
+      + '<ol class="lede">'
+        '<li>註冊：Email 驗證、台灣門號簡訊驗證、同意條款、填姓名與生日、綁付款方式。</li>'
+        '<li>安裝 eSIM：登入帳號後在「eSIM 設定」拿到 SM-DP+ 位址與啟用碼，手機的行動服務裡「加入 eSIM」，'
+        '掃不到 QR Code 就選手動輸入。安裝時手機要有網路（Wi-Fi 或漫遊）。</li>'
+        '<li>MyJapan+ 安裝時選「只限數據」，再選「旅遊 eSIM 和目前的 eSIM」，台灣門號才會留著。</li>'
+        '<li>到日本後打開 povo 那條線，行動數據指定給它，再輸入兌換碼或購買方案。</li>'
+        '</ol>'
+      + '<p class="disc">日本時間 23:50 到隔天 00:05 之間申請的 eSIM，會延到 00:05 之後依序發行。'
+        '各家手機的選單名稱不一樣，以官網的圖文步驟為準。</p>'
+      + '<h2>三種買法共通的規則</h2>' + _pv_common
+      + cta('esim', '日本', '東京', '不想自己註冊、沒有 JCB 卡的話',
+            '旅遊平台的日本 eSIM，232 個方案比過單價')
+      + '<h2>這頁查不到的部分</h2>'
+      + f'<ul class="lede">{_pv_un}</ul>'
+      + '<h2>常見問題</h2>' + pv_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-sms-roaming/")}"><b>✉️ 台灣門號收簡訊</b>'
+        f'<s>註冊 Japan SIM 也要收得到</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📱 日本 eSIM 比較</b>'
+        f'<s>232 個方案的每日單價</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim-native-roaming/")}"><b>📱 原生還是漫遊</b>'
+        f'<s>會不會變成香港的網路</s></a>'
+      + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 日本刷哪張卡</b>'
+        f'<s>國外交易手續費與回饋</s></a></div>'
+      + f'<p class="disc">本頁沒有 povo 的分潤連結，povo 與 MyJapan+ 的連結都是官網。'
+        f'價格與條款由 KDDI 與 JCB 隨時調整，本頁查證於 {PV["checked"]}，購買前請以官網為準。</p>'
+      + foot())
+    pages.append(('/japan-povo-esim/', 0.7))
 
 # ---------- 台灣駕照在日本開車 ----------
 # 日本不承認台灣的國際駕照，要的是「日文譯本」。
@@ -19232,6 +19421,8 @@ document.addEventListener('DOMContentLoaded',function(){
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-esim-native-roaming/")}"><b>📱 原生還是漫遊</b>'
         f'<s>會不會變成香港的網路</s></a>'
+      + f'<a class="ct" href="{U("/japan-povo-esim/")}"><b>📶 povo 旅客 eSIM</b>'
+        f'<s>同一個吃到飽，三種買法價差很大</s></a>'
       + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
         f'<s>落地之後還回得去市區嗎</s></a>'
       + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
@@ -34716,6 +34907,11 @@ SEARCH_SYN = [
     ['日圓', '日幣', '日元'],
     ['換匯', '換日幣', '換日圓', '換錢', '換外幣'],
     ['網卡', '上網卡', 'esim', 'sim卡'],
+    ['povo', 'japan sim', 'japansim', 'ポヴォ'],
+    ['myjapan', 'myjapan+', 'my japan+', 'myjapan plus'],
+    ['兌換碼', 'promo code', 'プロモコード'],
+    ['lawson', '羅森', 'ローソン'],
+    ['kddi', 'au電信', 'au 電信'],
     ['日本網卡', '日本上網', '日本esim', '日本 esim'],
     ['簡訊', 'sms', '短信', 'ショートメッセージ'],
     ['驗證碼', 'otp', '認證碼', '簡訊驗證碼', '一次性密碼'],
