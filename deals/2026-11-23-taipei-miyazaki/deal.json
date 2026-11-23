@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-23-taipei-miyazaki",
- "generated": "2026-11-23 11:40",
+ "generated": "2026-11-23 12:38",
  "kind": "fare",
  "origin": "taipei",
  "city": "miyazaki",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5269,
+  "price": 4940,
   "dep": "2026-12-14",
   "ret": "2026-12-21",
   "dept": "06:20",
@@ -27,28 +27,9 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11390,
+ "med": 11456,
  "n_rt": 6,
  "others": [
-  {
-   "o": "TPE",
-   "d": "KMI",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 6171,
-   "dep": "2026-12-28",
-   "ret": "2027-01-01",
-   "dept": "06:20",
-   "rett": "10:30",
-   "rt": true,
-   "tr": 0,
-   "dur": 270,
-   "dur_to": 120,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-28&inbound=KMI-TPE&returnDate=2027-01-01&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
   {
    "o": "TPE",
    "d": "KMI",
@@ -66,6 +47,25 @@
    "dur_to": 120,
    "gate": "Tigerair Taiwan",
    "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-07&inbound=KMI-TPE&returnDate=2026-12-14&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "KMI",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 6500,
+   "dep": "2026-12-28",
+   "ret": "2027-01-01",
+   "dept": "06:20",
+   "rett": "10:30",
+   "rt": true,
+   "tr": 0,
+   "dur": 270,
+   "dur_to": 120,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-28&inbound=KMI-TPE&returnDate=2027-01-01&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {

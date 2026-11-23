@@ -93,7 +93,7 @@
    "slug": "japan-sms-roaming",
    "url": "/japan-sms-roaming/",
    "h1": "在日本，收得到台灣的簡訊驗證碼嗎？",
-   "title": "在日本收得到台灣的簡訊驗證碼嗎？2026 年 3 月之後答案變了"
+   "title": "在日本收得到台灣的簡訊驗證碼嗎？不買漫遊方案，中華、台哥大、遠傳答案不一樣"
   },
   {
    "slug": "japan-driving-licence",
@@ -434,8 +434,8 @@
   {
    "slug": "deals-2026-11-23-kaohsiung-okinawa",
    "url": "/deals/2026-11-23-kaohsiung-okinawa/",
-   "h1": "高雄飛沖繩 NT$3,630 來回含稅｜台灣虎航 12/17 出發",
-   "title": "高雄飛沖繩 NT$3,630 來回含稅｜台灣虎航 12/17 出發"
+   "h1": "高雄飛沖繩 NT$4,200 來回含稅｜台灣虎航 12/29 出發",
+   "title": "高雄飛沖繩 NT$4,200 來回含稅｜台灣虎航 12/29 出發"
   },
   {
    "slug": "deals-2026-11-23-taichung-okinawa",
@@ -450,22 +450,16 @@
    "title": "高雄飛石垣島 NT$4,921 來回含稅｜台灣虎航 11/29 出發"
   },
   {
-   "slug": "deals-2026-11-23-taipei-fukuoka",
-   "url": "/deals/2026-11-23-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$4,950 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$4,950 來回含稅｜台灣虎航 12/01 出發"
-  },
-  {
    "slug": "deals-2026-11-23-taipei-miyazaki",
    "url": "/deals/2026-11-23-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$5,269 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台北飛宮崎 NT$5,269 來回含稅｜台灣虎航 12/14 出發"
+   "h1": "台北飛宮崎 NT$4,940 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台北飛宮崎 NT$4,940 來回含稅｜台灣虎航 12/14 出發"
   },
   {
-   "slug": "deals-2026-11-23-taipei-okayama",
-   "url": "/deals/2026-11-23-taipei-okayama/",
-   "h1": "台北飛岡山 NT$6,150 來回含稅｜台灣虎航 12/17 出發",
-   "title": "台北飛岡山 NT$6,150 來回含稅｜台灣虎航 12/17 出發"
+   "slug": "deals-2026-11-23-taipei-fukuoka",
+   "url": "/deals/2026-11-23-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$5,410 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$5,410 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-23-kaohsiung-fukuoka",
@@ -478,6 +472,12 @@
    "url": "/deals/2026-11-23-taipei-osaka/",
    "h1": "台北飛大阪 NT$6,332 來回含稅｜樂桃航空 12/23 出發",
    "title": "台北飛大阪 NT$6,332 來回含稅｜樂桃航空 12/23 出發"
+  },
+  {
+   "slug": "deals-2026-11-23-taipei-okayama",
+   "url": "/deals/2026-11-23-taipei-okayama/",
+   "h1": "台北飛岡山 NT$6,610 來回含稅｜台灣虎航 12/17 出發",
+   "title": "台北飛岡山 NT$6,610 來回含稅｜台灣虎航 12/17 出發"
   },
   {
    "slug": "deals-2026-11-23-kaohsiung-osaka",
@@ -494,20 +494,20 @@
   {
    "slug": "deals-2026-11-23-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-23-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,542",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,542"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,082",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,082"
   },
   {
    "slug": "deals-2026-11-23-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-23-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,225",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,225"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,765",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,765"
   },
   {
    "slug": "deals-2026-11-23-transfer-tokyo-fukushima",
    "url": "/deals/2026-11-23-transfer-tokyo-fukushima/",
-   "h1": "飛東京轉乘去福島，比直飛省 NT$2,557",
-   "title": "飛東京轉乘去福島，比直飛省 NT$2,557"
+   "h1": "飛東京轉乘去福島，比直飛省 NT$1,784",
+   "title": "飛東京轉乘去福島，比直飛省 NT$1,784"
   },
   {
    "slug": "apple-japan-price",

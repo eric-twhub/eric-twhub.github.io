@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-23-taipei-okayama",
- "generated": "2026-11-23 11:40",
+ "generated": "2026-11-23 12:38",
  "kind": "fare",
  "origin": "taipei",
  "city": "okayama",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 6150,
+  "price": 6610,
   "dep": "2026-12-17",
   "ret": "2027-01-06",
   "dept": "13:05",
@@ -25,7 +25,7 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$7,411（6 天有紀錄），這張低 17%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,488（6 天有紀錄），這張低 12%"
  ],
  "med": 12491,
  "n_rt": 12,
