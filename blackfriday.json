@@ -1,6 +1,6 @@
 {
  "_說明": "購物折扣總覽 /japan-coupon/ 的「這幾週的 Black Friday 檔期」區塊。只收商場官網公布的期間與內容；end（日本時間）過了自動不列，checked 超過 stale_days 天沒重查整區不列。facilities 是各館最大折扣與各館官網，what 裡不重複寫各館百分比。",
- "checked": "2026-11-19",
+ "checked": "2026-11-23",
  "stale_days": 7,
  "_回查": [
   "三井ショッピングパークアプリ 11/18 起因遭不正存取暫停服務（營運公司 11/19 公告），恢復時間未定；恢復前 App 優惠券與「アプリde支払い」都用不了。11/22 回查 https://www.mf-shogyo.co.jp/ 與 https://mitsui-shopping-park.com/msppoint/ 仍只有 11/19 的暫停公告，恢復後改 items.lalaport、items.mitsui-outlet 的 note",
