@@ -1352,6 +1352,9 @@ padding:12px 13px;text-decoration:none;color:var(--fg)}
 .plink{flex:1 1 190px;text-align:center;border:1px solid var(--line);background:var(--card);
 color:var(--fg);text-decoration:none;padding:11px 13px;border-radius:9px;font-size:.88rem;font-weight:600}
 .plink:hover{border-color:var(--acc);color:var(--acc)}
+.hfl{display:flex;flex-wrap:wrap;gap:6px 8px;margin-top:6px}
+.hfl a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:700;font-size:.88rem;padding:6px 13px;border-radius:999px;white-space:nowrap}
+.hfl a::after{content:' →'}
 table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.95rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--dim);font-weight:600;font-size:.79rem}
@@ -18051,6 +18054,44 @@ if HOL:
                 '是不是也在放假。</p>' + lg + '<div class="cal">' + out + '</div>'
                 + note + _mg_block)
 
+    # 每段連假直接查那幾天的機票。用的是全站同一種 Trip.com 機票查詢連結
+    # （2026-11-21 第一筆 Trip.com 訂單就是從這種按鈕進去的）。
+    # 日期：請 1 天能拉長就用拉長後的區間，否則用原本的連休。
+    _HOL_DEST = [('tyo', '東京'), ('osa', '大阪'), ('fuk', '福岡'), ('oka', '沖繩')]
+
+    def _hol_fly(lp, ys):
+        _up = [p for p in lp if p['to'] >= TODAY and p['base'] >= 3]
+        if not _up:
+            return ''
+        items, hrefs = '', []
+        for p in _up:
+            o = p['opts'].get(1)
+            ext = bool(o and o['tot'] > p['base'])
+            a, b = (o['from'], o['to']) if ext else (p['from'], p['to'])
+            if a < TODAY:
+                continue
+            ls = ''
+            for code, nm in _HOL_DEST:
+                h = plink('flight', o='tpe', d=code, dep=a, ret=b, tt='rt',
+                          sub='twhol_' + code)
+                hrefs.append(h)
+                ls += (f'<a href="{html.escape(h)}" target="_blank" '
+                       f'rel="{_rel(h)}">{nm}</a>')
+            items += (f'<li><div class="xh"><span class="xn">{html.escape(p["name"])}</span>'
+                      f'<span class="xw">{_dm(a, b)}，'
+                      + (f'請 {"、".join(_dm(x) for x in o["lv"])}，共休 {o["tot"]} 天'
+                         if ext else f'不用請假，連休 {p["base"]} 天')
+                      + f'</span></div><div class="hfl">{ls}</div></li>')
+        if not items:
+            return ''
+        return ('<h2>這幾天飛日本的機票</h2>'
+                '<p class="lede">每段連假直接帶好出發與回程日期，從台北出發。'
+                '能請 1 天拉長的，用拉長後的日期。</p>'
+                '<ul class="xl">' + items + '</ul>'
+                '<p class="disc">連結會開 Trip.com 的來回機票查詢，價格以 Trip.com 當下顯示為準。'
+                '航空公司還沒開賣的日期會查不到班次。</p>'
+                + _links_disc(hrefs))
+
     def _tw_year_page(Y):
         ys = str(Y)
         twr = [r for r in HOL['runs']['tw']
@@ -18438,6 +18479,7 @@ if HOL:
                 '在假期前後各九天的範圍內，找出「請 N 個上班日就能連起來」的最長區間。'
                 '官方行事曆只到 2027-12-31，跨年被截斷的那幾段不列，'
                 '因為算出來的連休會是假的。</p>')
+              + _hol_fly(lp, ys)
              if lp else '')
           + _calendar(ys, lp)
           + '<h2>日本重要祭典與花火</h2>'
