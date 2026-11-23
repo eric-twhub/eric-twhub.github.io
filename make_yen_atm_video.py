@@ -3,7 +3,7 @@
 數字不在這裡寫死：直接讀線上 /japan-yen-exchange/ 的
 「四種管道，怎麼挑」表（臨櫃手續費範圍）、「用台幣帳戶在外幣 ATM 領日圓」減碼表（元／日圓、出鈔面額、備註）、
 「換現金真的比較省嗎」表（現鈔相對中價的成本）與「出國前要先開通」那段；
-「¥10,000 少付多少」用頁上的減碼與中價當場算。官網沒寫的銀行照實標「官網沒寫」，不當成 0、不從表裡拿掉。
+「¥10,000 少付多少」「要領到多少才超過最低收費」用頁上的減碼、百分比與中價當場算。官網沒寫的銀行照實標「官網沒寫」，不當成 0、不從表裡拿掉。
 畫面、動畫、配樂沿用 make_transit_video_v2。
 用法：python3 make_yen_atm_video.py [輸出資料夾]
 """
@@ -54,8 +54,12 @@ def fetch():
     pre = '要另外申請跨國提款功能' in _txt(go)
     known = [b for b in banks if b['cut'] is not None]
     cash = [r for r in base['rows'] if r['basis'] == '現金賣出']
+    spot = [r for r in base['rows'] if r['basis'] == '即期賣出']
+    # 外幣帳戶領鈔的匯差手續費最低收費（「最低收費會咬人」那段＋四種管道表）
+    mn = re.search(r'匯差手續費多數銀行最低收 (\d+) 元', _txt(ways))
+    mn_row = re.search(r'線上換匯進外幣帳戶，再用外幣 ATM 領鈔</b></td><td[^>]*>[^<]*</td><td[^>]*>匯差手續費，最低 (\d+) 元', ways)
     if not (len(banks) >= 5 and known and lim and not24 and cf and airport and atm_free and pre
-            and '四層' in _txt(four) and cash):
+            and '四層' in _txt(four) and cash and spot and mn and mn_row and mn.group(1) == mn_row.group(1)):
         sys.exit('線上頁面的格式或說法和預期不同，請先看頁面再改解析')
     mid = float(base['mid'])
     top = max(b['cut'] for b in known)
@@ -63,21 +67,29 @@ def fetch():
     for b in banks:
         b['save'] = round(10000 * b['cut']) if b['cut'] is not None else None
     dens = sorted({int(b['den'].replace(',', '')) for b in banks if b['den']})
+    min_fee = int(mn.group(1))
+    # 全額收匯差的銀行：價差 × 金額 超過最低收費才不吃虧。價差＝現金賣出－即期賣出，
+    # 用頁上兩個百分比（各自四捨五入到 0.01%）和中價估算；誤差範圍算出來的「萬」不一致就不放
+    gap = lambda dp: 10000 * mid * (cash[0]['pct'] - spot[0]['pct'] + dp) / 100  # 每 ¥10,000 的價差
+    be = [min_fee / gap(dp) * 10000 for dp in (-.01, 0, .01)]
+    be_man = round(be[1] / 10000) if len({round(x / 10000) for x in be}) == 1 else None
     return {'date': base['date'], 'date_full': base['date_full'], 'mid': base['mid'], 'banks': banks,
             'top_cut': top, 'top_save': round(10000 * top),
             'cash_extra': round(cash_extra), 'atm_extra': round(cash_extra - 10000 * top),
             'counter_fee': (int(cf.group(1)), int(cf.group(2))),
             'gap_max': round(10000 * top) + int(cf.group(2)),
-            'limit': lim.group(1), 'dens': dens}
+            'limit': lim.group(1), 'dens': dens, 'min_fee': min_fee, 'be_man': be_man,
+            'gap10k': round(gap(0))}
 
 
 EXTRA_CSS = r"""
 #num{font-size:260px;top:880px}
 #num small{font-size:110px;margin-right:6px}
 #h1{font-size:88px;top:730px}
-#sub1{font-size:44px;top:1180px;line-height:1.45}
+#sub1{font-size:40px;top:1175px;line-height:1.5}
 #t2{font-size:64px}
-#q1{top:1345px}
+#q1{top:1330px}
+#q1 span{font-size:50px;line-height:1.3;padding:12px 36px}
 .rw{height:120px}
 .rk{top:10px;width:84px;height:84px;line-height:72px;font-size:48px}
 .rw.u .rk{border-style:dashed;color:#b9a48f}
@@ -93,9 +105,9 @@ EXTRA_CSS = r"""
 #crown{display:none}
 #base{font-size:40px;line-height:1.5;border-top:4px dashed #ead9c4;padding-top:20px}
 #base em{font-style:normal;color:#e8553e}
-.cp{padding:20px 34px}
-.cp b{font-size:50px;font-weight:400;line-height:1.3}
-.cp s{font-size:34px}
+.cp{padding:14px 32px}
+.cp b{font-size:46px;font-weight:400;line-height:1.3}
+.cp s{font-size:32px;margin-top:2px}
 #reg{top:1240px}
 #reg div.t{font-size:44px;line-height:1.35}
 #srch{font-size:48px}
@@ -144,8 +156,9 @@ def build_html(d):
         ('出鈔面額固定', '／'.join(f'{x:,}' for x in d['dens']) + ' 日圓為單位'),
         ('部分機台不是 24 小時', '設在分行營業廳內'),
         ('臨櫃換最貴', f'沒有減碼，還收 {d["counter_fee"][0]}～{d["counter_fee"][1]} 元'),
+        (f'外幣帳戶領鈔最低收 {d["min_fee"]} 元', '小額最吃虧'),
     ]
-    D = {'L': V.T_LAND, 'R': V.T_RANK, 'C': V.T_CAP, 'E': V.T_END, 'top': d['gap_max'], 'rows': wrow,
+    D = {'L': V.T_LAND, 'R': V.T_RANK, 'C': V.T_CAP, 'E': V.T_END, 'top': d['min_fee'], 'rows': wrow,
          'rowT': rowT, 'rowY0': y0, 'caps': items, 'cf1': cf1, 'cf2': cf2}
 
     def cfdivs(g, tag):
@@ -156,10 +169,11 @@ def build_html(d):
           f'<div id="st1c" class="ab stk sh">{V._svg("receipt")}</div>'
           f'<div id="st1" class="ab stk sh">{V._svg("yen")}</div>'
           f'<div id="st1b" class="ab stk sh">{V._svg("shop")}</div>'
-          f'<div id="h1" class="ab hn">換 ¥10,000 選錯管道</div>'
+          f'<div id="h1" class="ab hn">外幣帳戶領 ¥10,000</div>'
           f'<div id="num" class="ab hn"><small>NT$</small><span id="nv">0</span></div>'
-          f'<div id="sub1" class="ab">多付可達這麼多<br>臨櫃沒有減碼，還收 {d["counter_fee"][0]}～{d["counter_fee"][1]} 元手續費</div>'
-          f'<div id="q1" class="ab"><span class="hn">外幣 ATM 免手續費</span></div>'
+          f'<div id="sub1" class="ab">手續費最低就收這麼多（價差只有約 NT${d["gap10k"]}）<br>'
+          + (f'要領到約 ¥{d["be_man"]} 萬才超過最低收費' if d['be_man'] else '小額領最吃虧') + '</div>'
+          f'<div id="q1" class="ab"><span class="hn">台幣帳戶直接在外幣 ATM 領<br>免手續費還有減碼</span></div>'
           f'{cfdivs(cf1, "a")}</div>')
     rw = ''
     for i, b in enumerate(rows):
@@ -178,7 +192,7 @@ def build_html(d):
           f'<div id="base" class="ab" style="top:{y0 + n * rh + 6}px">台幣帳戶扣款、免手續費，以減碼最多的算<br>'
           f'<em>現鈔比中價多付約 NT${d["cash_extra"]} → NT${d["atm_extra"]}</em></div>'
           f'{cfdivs(cf2, "b")}</div>')
-    cp = ''.join(f'<div id="cp{i}" class="ab cp" style="top:{430 + i * 190}px"><b class="hn">{e(a)}</b>'
+    cp = ''.join(f'<div id="cp{i}" class="ab cp" style="top:{420 + i * 160}px"><b class="hn">{e(a)}</b>'
                  f'<s>{e(b)}</s></div>' for i, (a, b) in enumerate(items))
     s3 = (f'<div id="s3" class="sc"><div id="stamp" class="ab"><span class="hn">但要注意</span></div>{cp}'
           f'<div id="reg" class="ab"><div class="stk sh">{V._svg("plane")}</div>'
@@ -188,7 +202,9 @@ def build_html(d):
           f'<div id="url" class="ab"><span class="hn">jptripcard.com</span></div>'
           f'<div id="srch" class="ab">各銀行減碼、臨櫃手續費比較</div>'
           f'<div id="tiny" class="ab">減碼與面額依各行官網整理，「官網沒寫」不代表沒有或不收費<br>'
-          f'{e(d["date"])} 臺灣銀行牌告試算（即期中價 {e(d["mid"])}）<br>以各銀行公告為準</div></div>')
+          f'{e(d["date"])} 臺灣銀行牌告試算（即期中價 {e(d["mid"])}）'
+          + ('；「約 ¥' + str(d['be_man']) + ' 萬」以全額收匯差估算，各行自己的牌告不同' if d['be_man'] else '')
+          + '<br>以各銀行公告為準</div></div>')
     js_cf = 'for(const [g,p] of [["cf1","a"],["cf2","b"]]) D[g].forEach((c,i)=>c.el=document.getElementById(p+i));'
     return ('<!doctype html><html><head><meta charset="utf-8">'
             '<link rel="preconnect" href="https://fonts.googleapis.com">'
@@ -239,7 +255,7 @@ def main():
         if ff.wait() != 0:
             sys.exit('ffmpeg 合成失敗')
     print(mp4)
-    print(f'最多差 NT${d["gap_max"]}；現鈔 NT${d["cash_extra"]} → ATM NT${d["atm_extra"]}；' +
+    print(f'外幣帳戶領鈔最低收 NT${d["min_fee"]}（¥10,000 價差約 NT${d["gap10k"]}，約 ¥{d["be_man"]} 萬才超過）；現鈔 NT${d["cash_extra"]} → ATM NT${d["atm_extra"]}；' +
           '、'.join(f'{b["name"]} {b["cut"] if b["cut"] is not None else "官網沒寫"}' for b in d['banks']))
 
 
