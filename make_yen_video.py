@@ -62,14 +62,26 @@ def fetch():
     reward = '真正的差距在回饋' in tl and '現金沒有回饋' in tl
     # 為什麼現鈔比較貴：頁上「先搞懂現金匯率和即期匯率」那段的原因
     why = re.search(r'因為銀行要承擔(.+?成本)', _txt(_section(s, '先搞懂現金匯率和即期匯率')))
-    if not (len(rows) == 3 and m and card_assume and cash_m and atm_best and counter_worst and reward and why):
+    # 臨櫃換的固定手續費範圍（四種管道表的「臨櫃直接換」那列）
+    cf = re.search(r'臨櫃直接換</b></td><td[^>]*>[^<]*</td><td[^>]*>[^<]*?(\d+) 到 (\d+) 元', ways)
+    fee = [re.search(r'([\d.]+)% 手續費', r['basis']) for r in rows if '卡組織' in r['basis']]
+    if not (len(rows) == 3 and m and card_assume and cash_m and atm_best and counter_worst and reward and why
+            and cf and fee and fee[0]):
         sys.exit('線上頁面的格式或說法和預期不同，請先看頁面再改解析')
     mid = float(m.group(4))
     for r in rows:
         r['extra'] = round(10000 * mid * r['pct'] / 100)
         b = r['basis']
-        r['why'] = ('用銀行的即期賣出匯率' if b == '即期賣出' else
-                    f'用現金賣出匯率，含{why.group(1)}' if b == '現金賣出' else b)
+        # 多付的原因用「費用」講：換匯價差、手續費（頁上「成本只有三個來源」的框架）
+        if b == '即期賣出':
+            r['why'] = ['成本是即期的換匯價差']
+        elif '卡組織' in b:
+            r['why'] = [f'成本是 {fee[0].group(1)}% 國外交易手續費']
+        elif b == '現金賣出':
+            r['why'] = [f'現鈔換匯價差最大，含{why.group(1)}',
+                        f'臨櫃換還可能另收 {cf.group(1)}～{cf.group(2)} 元手續費']
+        else:
+            r['why'] = [b]
     items = [x for x in re.split(r'、|與', cash_m.group(1)) if x]
     return {'rows': rows, 'mid': m.group(4), 'date': f'{int(m.group(2))}/{int(m.group(3))}',
             'date_full': f'{m.group(1)}-{m.group(2)}-{m.group(3)}', 'cash_items': items}
@@ -119,7 +131,7 @@ def build_html(d):
                         'f': rnd.uniform(6, 16), 'c': rnd.choice(cols)})
         return out
 
-    y0, rh = 450, 270
+    y0, rh = 450, 290
     mx = max(r['pct'] for r in rows)
     wrow = [{'save': r['pct'], 'w': max(80, round(r['pct'] / mx * 480))} for r in rows]
     n = len(rows)
@@ -152,7 +164,7 @@ def build_html(d):
                f'<div class="rk hn">{i + 1}</div><div class="nm">{e(r["name"])}</div>'
                f'<div class="br" style="width:{wrow[i]["w"]}px"></div>'
                f'<div class="vl hn"><small>＋</small><i>0</i><small>%</small></div>'
-               f'<div class="amt"><div class="w">{e(r["why"])}</div>'
+               f'<div class="amt">{"".join(f"<div class=w>{e(x)}</div>" for x in r["why"])}'
                f'<div>花 ¥10,000 比中價多付約 <b>NT${r["extra"]}</b></div></div></div>')
     s2 = (f'<div id="s2" class="sc">'
           f'<div id="t2" class="ab hn">付日圓的成本<br><em>哪種最貴</em></div>{rw}'
