@@ -1,0 +1,64 @@
+{
+ "_說明": "台灣三家電信在日本的漫遊上網方案（月租型），給 /japan-roaming-vs-esim/ 比價用。只收日本可用、一般月租用戶可申請的方案。end 過了該方案自動不列；多數到 2026-12-31，12 月底要整份重查。kind：day＝計日（每天固定價、有最少天數）、fixed＝固定天數包、daily_metered＝日租計量（每天最高收費）、gb＝定量包。",
+ "checked": "2026-11-23",
+ "carriers": [
+  {
+   "name": "中華電信",
+   "src": "https://www.cht.com.tw/home/campaign/roamingplan/index/plan?itemid=655DA448F0DC44199F00CE26138CF294",
+   "src_name": "中華電信 國際漫遊上網方案（日本）",
+   "gb_out": "用完暫停，可加購",
+   "day_cap": "每日 2GB 後降至 256kbps",
+   "start": "自申請成功時間起算（以台灣時間計）",
+   "plans": [
+    {"name": "限時日本5日型", "kind": "fixed", "days": 5, "price": 588, "end": "2027-01-03", "note": "只限網路門市、APP 申請；用了就收全額"},
+    {"name": "日本日租型", "kind": "daily_metered", "price": 149, "end": "2026-12-31", "note": "每 KB 0.02 元，每天最高 149 元"},
+    {"name": "日本定量型 1GB", "kind": "gb", "gb": 1, "valid": 15, "price": 149, "end": "2026-12-31"},
+    {"name": "日本定量型 2GB", "kind": "gb", "gb": 2, "valid": 15, "price": 249, "end": "2026-12-31"},
+    {"name": "日本定量型 5GB", "kind": "gb", "gb": 5, "valid": 15, "price": 488, "end": "2026-12-31"},
+    {"name": "日本定量型 8GB", "kind": "gb", "gb": 8, "valid": 15, "price": 688, "end": "2026-12-31"},
+    {"name": "日本定量型 12GB", "kind": "gb", "gb": 12, "valid": 15, "price": 988, "end": "2026-12-31"}
+   ]
+  },
+  {
+   "name": "台灣大哥大",
+   "src": "https://www.taiwanmobile.com/travel/postpaid-roaming-jp.html",
+   "src_name": "台灣大哥大 日本漫遊上網",
+   "gb_out": "用完降至 64kbps，可加購",
+   "day_cap": "官網沒寫降速條件",
+   "start": "服務生效開始連續 24 小時為一日（以台灣時間計）",
+   "plans": [
+    {"name": "4~30日型（日本）", "kind": "day", "per_day": 129, "min": 4, "max": 30, "end": "2026-11-30", "note": "官網限定"},
+    {"name": "4~30日型（日本）", "kind": "day", "per_day": 149, "min": 4, "max": 30, "end": "2026-12-31", "note": "官網限定"},
+    {"name": "計量型 1GB", "kind": "gb", "gb": 1, "valid": 15, "price": 149},
+    {"name": "計量型 2GB", "kind": "gb", "gb": 2, "valid": 15, "price": 249},
+    {"name": "計量型 5GB", "kind": "gb", "gb": 5, "valid": 15, "price": 499},
+    {"name": "計量型 10GB（日本）", "kind": "gb", "gb": 10, "valid": 15, "price": 899},
+    {"name": "計量型 12GB（日本）", "kind": "gb", "gb": 12, "valid": 30, "price": 899, "end": "2026-11-30", "note": "官網限定"},
+    {"name": "計量型 15GB（日本）", "kind": "gb", "gb": 15, "valid": 30, "price": 1099}
+   ]
+  },
+  {
+   "name": "遠傳",
+   "src": "https://www.fetnet.net/content/cbu/tw/roaming/country/Asia-Pacific/JPN.html",
+   "src_name": "遠傳 日本漫遊",
+   "gb_out": "用完就不能再上網",
+   "day_cap": "每日 2GB 後降至 512kbps",
+   "start": "依申請的起訖時間",
+   "plans": [
+    {"name": "日本計日型數據漫遊（4~30天）", "kind": "day", "per_day": 129, "min": 4, "max": 30, "end": "2026-12-31", "note": "生效後全程沒有用量就不收費"},
+    {"name": "日本計日型數據漫遊（單日）", "kind": "daily_metered", "price": 299, "end": "2026-12-31", "note": "依用量分段計費，每天最高 299 元"},
+    {"name": "日本定量包 1GB", "kind": "gb", "gb": 1, "valid": 15, "price": 149, "end": "2026-12-31"},
+    {"name": "日本定量包 2GB", "kind": "gb", "gb": 2, "valid": 15, "price": 249, "end": "2026-12-31"},
+    {"name": "日本定量包 5GB", "kind": "gb", "gb": 5, "valid": 15, "price": 488, "end": "2026-12-31"},
+    {"name": "日本定量包 7GB", "kind": "gb", "gb": 7, "valid": 15, "price": 599, "end": "2026-12-31"},
+    {"name": "日本定量包 15GB", "kind": "gb", "gb": 15, "valid": 15, "price": 888, "end": "2026-12-31", "note": "限時優惠"},
+    {"name": "日本定量包 20GB", "kind": "gb", "gb": 20, "valid": 15, "price": 999, "end": "2026-12-31", "note": "限時優惠"}
+   ]
+  }
+ ],
+ "no_plan": [
+  {"name": "中華電信", "t": "官網寫明沒有方案時依原價收費、沒有收費上限，傳一張約 1MB 的照片約 40 元。"},
+  {"name": "台灣大哥大", "t": "日本頁寫明沒開 VoLTE 並申請漫遊上網方案，在日本連簡訊都收不到、也不能上網。原價每 KB 多少要用官網的國家費率查詢表單查，本頁沒有列。"},
+  {"name": "遠傳", "t": "日本頁的漫遊上網費率表只寫「優惠費率」，官網沒寫不買方案時每 KB 多少錢。"}
+ ]
+}

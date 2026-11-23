@@ -1957,6 +1957,7 @@ def topnav(cur=''):
             + link('/japan-esim-native-roaming/', '📱 原生還是漫遊')
             + link('/japan-sms-roaming/', '✉️ 台灣門號收簡訊')
             + link('/japan-povo-esim/', '📶 povo 旅客 eSIM')
+            + link('/japan-roaming-vs-esim/', '📡 漫遊 vs eSIM 比價')
             + '<hr><b>錢的事</b>'
             + link('/japan-yen-exchange/', '💴 換日幣怎麼換')
             + link('/japan-payment/', '📲 日本怎麼付錢')
@@ -2085,7 +2086,7 @@ _AD_KIND = {
 _AD_MAP = [
     ('japan-driving', 'car'), ('japan-rentacar', 'car'),
     ('japan-airport-last-train', 'transfer'),
-    ('japan-esim', 'esim'), ('japan-sms', 'esim'), ('japan-povo-esim', 'esim'),
+    ('japan-esim', 'esim'), ('japan-sms', 'esim'), ('japan-povo-esim', 'esim'), ('japan-roaming-vs-esim', 'esim'),
     ('japan-pokemon-cafe', 'esim'),
     ('japan-fujiko-museum', 'esim'),
     ('japan-nintendo-museum', 'activity2'),
@@ -3286,7 +3287,7 @@ _STK_PREFIX = sorted({
     '/japan-shop-card/': 'st/card',
     '/japan-fukubukuro/': 'st/fukubukuro',
     '/japan-coupon/': 'st/coupon', '/japan-cashback/': 'st/coupon', '/japan-bogo/': 'st/coupon', '/japan-store-points/': 'st/coupon', '/japan-bic-points/': 'st/coupon',
-    '/japan-tax-free-2026/': 'st/receipt', '/japan-esim': 'st/phone', '/japan-sms-roaming/': 'st/phone', '/japan-povo-esim/': 'st/phone',
+    '/japan-tax-free-2026/': 'st/receipt', '/japan-esim': 'st/phone', '/japan-sms-roaming/': 'st/phone', '/japan-povo-esim/': 'st/phone', '/japan-roaming-vs-esim/': 'st/phone',
     '/japan-yen-exchange/': 'st/yen', '/japan-payment/': 'st/yen', '/japan-transit-card/': 'st/iccard',
     '/tokyo/subway-ticket/': 'st/subway',
     '/apple-japan-price/': 'st/phoneprice', '/iphone-cost/': 'st/phoneprice', '/iphone-duo/': 'st/phoneprice',
@@ -7732,6 +7733,8 @@ if RS2:
         f'<s>232 個方案的每日單價</s></a>'
       + f'<a class="ct" href="{U("/japan-esim-native-roaming/")}"><b>📱 原生還是漫遊</b>'
         f'<s>會不會變成香港的網路</s></a>'
+      + f'<a class="ct" href="{U("/japan-roaming-vs-esim/")}"><b>📡 漫遊 vs eSIM 比價</b>'
+        f'<s>三家電信和 eSIM 逐天算</s></a>'
       + f'<a class="ct" href="{U("/japan-povo-esim/")}"><b>📶 povo 旅客 eSIM</b>'
         f'<s>同一個吃到飽，三種買法價差很大</s></a>'
       + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
@@ -7916,6 +7919,8 @@ if PV:
       + f'<ul class="lede">{_pv_un}</ul>'
       + '<h2>常見問題</h2>' + pv_html
       + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-roaming-vs-esim/")}"><b>📡 漫遊 vs eSIM 比價</b>'
+        f'<s>三家電信和 eSIM 逐天算</s></a>'
       + f'<a class="ct" href="{U("/japan-sms-roaming/")}"><b>✉️ 台灣門號收簡訊</b>'
         f'<s>註冊 Japan SIM 也要收得到</s></a>'
       + f'<a class="ct" href="{U("/japan-esim/")}"><b>📱 日本 eSIM 比較</b>'
@@ -19437,6 +19442,8 @@ document.addEventListener('DOMContentLoaded',function(){
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-esim-native-roaming/")}"><b>📱 原生還是漫遊</b>'
         f'<s>會不會變成香港的網路</s></a>'
+      + f'<a class="ct" href="{U("/japan-roaming-vs-esim/")}"><b>📡 漫遊 vs eSIM 比價</b>'
+        f'<s>三家電信和 eSIM 逐天算</s></a>'
       + f'<a class="ct" href="{U("/japan-povo-esim/")}"><b>📶 povo 旅客 eSIM</b>'
         f'<s>同一個吃到飽，三種買法價差很大</s></a>'
       + f'<a class="ct" href="{U("/japan-airport-last-train/")}"><b>🚉 機場末班車</b>'
@@ -19449,6 +19456,225 @@ document.addEventListener('DOMContentLoaded',function(){
         '下單前請以商品頁顯示的為準。</p>'
       + _EJS + foot())
     pages.append(('/japan-esim/', 0.8))
+
+# ---------- 原號漫遊 vs 日本 eSIM 比價 ----------
+# 三家漫遊方案在 roam-plans.json（end 過了自動不列），eSIM 用 esim.json（Klook）與 povo.json。
+# 每個情境都在建置時算，不寫死「誰比較便宜」。
+RP = json.load(open('roam-plans.json', encoding='utf-8')) if os.path.exists('roam-plans.json') else None
+
+if RP and _ES.get('products') and PV:
+    _rv_today = NOW.date().isoformat()
+    _rv_car = [dict(c, plans=[p for p in c['plans'] if p.get('end', '9999') >= _rv_today])
+               for c in RP['carriers']]
+    _RV_SHORT = {'109393': '吃到飽，不穩就退', '124754': 'Softbank 小資專業型', '79682': 'Sakura Mobile',
+                 '124251': '電子郵件寄送・限時優惠', '104976': 'Xplori'}
+
+    def _rv_roam(c, D, U):
+        best = None
+        for p in c['plans']:
+            k = p['kind']
+            if k == 'day' and D <= p['max']:
+                n = max(D, p['min'])
+                cand = (p['per_day'] * n, f'{p["name"]}，${p["per_day"]}／天 × {n} 天'
+                        + (f'（最少 {p["min"]} 天）' if n > D else ''))
+            elif k == 'fixed' and D <= p['days']:
+                cand = (p['price'], p['name'])
+            elif k == 'daily_metered':
+                cand = (p['price'] * D, f'{p["name"]}，每天最高 ${p["price"]} × {D} 天')
+            elif k == 'gb' and D <= p['valid'] and p['gb'] >= U * D:
+                cand = (p['price'], f'{p["name"]}（{p["valid"]} 天內）')
+            else:
+                continue
+            if best is None or cand[0] < best[0]:
+                best = cand
+        return best
+
+    def _rv_klook(D, U):
+        best = None
+        for p in _ES['products']:
+            for q in p['plans']:
+                if q['days'] < D:
+                    continue
+                if q['mode'] == 'total' and (q['gb'] or 0) < U * D:
+                    continue
+                if q['mode'] == 'daily' and (q['gb'] or 0) < U:
+                    continue
+                lab = {'total': '總流量', 'daily': '每日', 'unlimited': '吃到飽'}[q['mode']]
+                cand = (q['price'], f'「{_RV_SHORT.get(p["id"], p["name"][:12])}」{q["days"]} 天'
+                        f'{"" if q["mode"] == "unlimited" else " " + q["label"]}（{lab}）')
+                if best is None or cand[0] < best[0]:
+                    best = cand
+        return best
+
+    def _rv_povo(rid, D, U):
+        best = None
+        for p in _pv_R[rid]['plans']:
+            days = p.get('days') or (p.get('hours', 0) / 24)
+            if days < D:
+                continue
+            if p['kind'] == 'gb' and p['gb'] < U * D:
+                continue
+            cand = (round(p['jpy'] * JPY), f'{_pv_label(p)}，¥{p["jpy"]:,}')
+            if best is None or cand[0] < best[0]:
+                best = cand
+        return best
+
+    _rv_cols = ([(c['name'], (lambda D, U, c=c: _rv_roam(c, D, U))) for c in _rv_car]
+                + [('Klook eSIM', _rv_klook),
+                   ('povo 官網', lambda D, U: _rv_povo('online', D, U)),
+                   ('MyJapan+', lambda D, U: _rv_povo('myjapan', D, U))])
+    # 500MB 在 esim.json 存成 0.488GB（1024 進位），比對用這個門檻
+    _RV_NEED = {0.5: 500 / 1024, 1: 1, 2: 2}
+    _rv_sc = [(D, U) for D in (3, 5, 7, 10) for U in (0.5, 1, 2)]
+    _rv_res = {sc: [f(sc[0], _RV_NEED[sc[1]]) for _, f in _rv_cols] for sc in _rv_sc}
+
+    def _rv_cell(r, lo):
+        if not r:
+            return '<td style="color:var(--dim)">—</td>'
+        return (f'<td class="{"win" if r[0] == lo else ""}"><b>NT${r[0]:,}</b>'
+                f'<br><small style="color:var(--dim)">{html.escape(r[1])}</small></td>')
+
+    def _rv_u(U):
+        return '500MB' if U == 0.5 else f'{U:g}GB'
+
+    _rv_rows = ''
+    for sc in _rv_sc:
+        rs = _rv_res[sc]
+        lo = min(r[0] for r in rs if r)
+        _rv_rows += (f'<tr><td><b>{sc[0]} 天・每天 {_rv_u(sc[1])}</b></td>'
+                     + ''.join(_rv_cell(r, lo) for r in rs) + '</tr>')
+
+    # 頭條：5 天每天 1GB
+    _rv5 = _rv_res[(5, 1)]
+    _rv_nroam = len(_rv_car)
+    _rv_roam_lo = min((r[0], _rv_cols[i][0]) for i, r in enumerate(_rv5[:_rv_nroam]) if r)
+    _rv_roam_hi = max((r[0], _rv_cols[i][0]) for i, r in enumerate(_rv5[:_rv_nroam]) if r)
+    _rv_es_lo = min((r[0], _rv_cols[i][0] + ('' if r[1].startswith('「') else ' ') + r[1]) for i, r in enumerate(_rv5) if r and i >= _rv_nroam)
+
+    def _rv_gap(D):
+        # 這個天數的各用量情境，漫遊最便宜與 eSIM 最便宜的差額
+        out = []
+        for U in (0.5, 1, 2):
+            rs = _rv_res[(D, U)]
+            ro = min(r[0] for r in rs[:_rv_nroam] if r)
+            es = min(r[0] for r in rs[_rv_nroam:] if r)
+            out.append(ro - es)
+        return min(out), max(out)
+
+    _rv_g3 = _rv_gap(3)
+    _rv_g5 = [_rv_gap(D) for D in (5, 7, 10)]
+    _rv_g5lo, _rv_g5hi = min(x[0] for x in _rv_g5), max(x[1] for x in _rv_g5)
+    _rv_clk = [p for p in _ES['products'] if p.get('clock_starts')]
+    _rv_clk_txt = (f'eSIM 這邊，本站比較的 {len(_ES["products"])} 個 Klook 商品裡有 {len(_rv_clk)} 個寫明人到日本、'
+                   f'連上當地網路才開始算，其他 {len(_ES["products"]) - len(_rv_clk)} 個商品頁沒寫；'
+                   'MyJapan+ 是輸入兌換碼的當下開始算。')
+    _pv_on7 = next(p for p in _pv_R['online']['plans'] if p['kind'] == 'unl' and p.get('days') == 7)
+    _pv_mj7 = next(p for p in _pv_R['myjapan']['plans'] if p.get('days') == 7)
+
+    _rv_ends = sorted({p['end'] for c in _rv_car for p in c['plans'] if p.get('end')})
+    _rv_end_txt = (f'三家的漫遊方案很多是限時優惠，最早一批 {_rv_ends[0].replace("-", "/")} 到期，'
+                   f'本頁過了到期日就自動不列。' if _rv_ends else '')
+
+    _rv_cmp = ''.join(
+        f'<tr><td><b>{html.escape(c["name"])}</b></td><td>{html.escape(c["day_cap"])}</td>'
+        f'<td>{html.escape(c["gb_out"])}</td><td>{html.escape(c["start"])}</td></tr>' for c in _rv_car)
+    _rv_src = '、'.join(f'<a href="{c["src"]}" rel="nofollow noopener" target="_blank">{html.escape(c["src_name"])}</a>'
+                        for c in _rv_car)
+    _rv_np = ''.join(f'<li><b>{html.escape(x["name"])}：</b>{html.escape(x["t"])}</li>' for x in RP['no_plan'])
+
+    rv_faq = [
+     ('原號漫遊和日本 eSIM 差多少？',
+      f'看天數與用量。以 5 天、每天 1GB 為例，三家漫遊最便宜的是{_rv_roam_lo[1]} NT${_rv_roam_lo[0]:,}，'
+      f'eSIM 最便宜的是{_rv_es_lo[1]}，NT${_rv_es_lo[0]:,}。上面的表列了 12 種情境，每一格都依官網與商品頁的價格計算。'),
+     ('漫遊的計日型用不到幾天，可以退嗎？',
+      '不行。三家都寫了方案一經使用就收全額，天數沒用完不會依比例退。遠傳另外寫明，生效後全程沒有產生傳輸量就不收費。'
+      '中華電信的 5 日型與遠傳的計日型都是每天 2GB 後降速，台灣大哥大的計日型官網沒寫降速條件。'),
+     ('定量包用完會怎樣？',
+      '三家不一樣。中華電信寫用完暫停、可以加購；台灣大哥大寫用完降到 64kbps、可以加購；遠傳寫用完就不能在該國繼續上網。'),
+     ('沒買漫遊方案，直接開數據漫遊會怎樣？',
+      '中華電信寫明會依原價收費而且沒有上限，傳一張約 1MB 的照片約 40 元。'
+      '台灣大哥大寫明沒開 VoLTE 並申請方案，在日本連簡訊都收不到。遠傳官網沒寫不買方案的每 KB 價格。'),
+     ('漫遊方案什麼時候開始計時？',
+      '中華電信的方案從申請成功的時間起算，遠傳的計日型依你申請的起訖時間，台灣大哥大從服務生效開始算。'
+      '所以漫遊方案要抓好申請的時間，太早申請會在飛機上就開始燒天數。' + _rv_clk_txt),
+     ('改用 eSIM，台灣門號還收得到簡訊驗證碼嗎？',
+      '要看電信與設定。雙卡都開著，台灣門號開 VoLTE、行動數據指定給 eSIM。三家的條件不一樣，整理在台灣門號收簡訊那一頁。'),
+     ('povo 和 MyJapan+ 是什麼？',
+      'KDDI（au）賣給旅客的 Japan SIM，價格是日圓。MyJapan+ 要用台灣發行的 JCB 卡在 JCB 的 App 裡買，吃到飽比官網便宜。'
+      '兩種的買法、兌換碼什麼時候輸入，整理在 povo 那一頁。'),
+    ]
+    rv_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
+                      + html.escape(a) + '</div></details>' for q, a in rv_faq)
+    rv_ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in rv_faq]}, ensure_ascii=False)
+
+    rv_title = '日本上網：原號漫遊還是 eSIM 便宜？中華、台哥大、遠傳漫遊方案和 eSIM 逐天比價'
+    rv_desc = (f'5 天每天 1GB：三家漫遊最便宜 NT${_rv_roam_lo[0]:,}（{_rv_roam_lo[1]}），'
+               f'eSIM 最便宜 NT${_rv_es_lo[0]:,}。3 到 10 天、每天 0.5 到 2GB 共 12 種情境，'
+               '中華電信、台灣大哥大、遠傳的漫遊方案與 Klook、povo、MyJapan+ 的 eSIM 並排比價，另整理計時方式與用完之後的差別。')
+
+    write('japan-roaming-vs-esim/index.html',
+      head(rv_title, rv_desc, 'japan-roaming-vs-esim/',
+           '<script type="application/ld+json">' + rv_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('原號漫遊 vs eSIM', None)])
+      + '<h1>去日本上網，原號漫遊和 eSIM 差多少？</h1>'
+      + '<p class="lede">三家電信現在都有每天一百多元的日本漫遊方案，也有 15 天內用完的定量包。'
+        '和 eSIM 差多少，要看你待幾天、每天用多少。'
+        '下面把三家電信的日本漫遊方案和 eSIM 放在同一張表，每一格都是依官網與商品頁的價格算出來的。</p>'
+      + f'<div class="today"><div class="tday">漫遊方案查證於 {RP["checked"]}，eSIM 價格查證於 {_EP_AT}</div>'
+        f'<div class="tans">5 天、每天 1GB：漫遊最便宜 <b>NT${_rv_roam_lo[0]:,}</b>（{html.escape(_rv_roam_lo[1])}），'
+        f'eSIM 最便宜 <b>NT${_rv_es_lo[0]:,}</b>，{html.escape(_rv_es_lo[1])}</div>'
+        f'<div class="tsub">三家漫遊裡最貴的是{html.escape(_rv_roam_hi[1])} NT${_rv_roam_hi[0]:,}。'
+        '同一個情境，你是哪家的用戶，差距就不一樣。</div>'
+        '<div class="tbuf">漫遊的好處是不用裝任何東西，台灣門號照常收簡訊；'
+        '代價是比較貴，而且<b>方案從申請或生效就開始計時</b>，出發前就申請會先燒掉天數。</div></div>'
+      + '<h2>12 種情境比價</h2>'
+      + '<div class="tw"><table><thead><tr><th>情境</th>'
+        + ''.join(f'<th>{html.escape(n)}</th>' for n, _ in _rv_cols)
+        + '</tr></thead><tbody>' + _rv_rows + '</tbody></table></div>'
+      + f'<p class="disc">每一格是那家（或那個通路）在這個情境下最便宜的方案，綠色是同一列最便宜的。'
+        f'漫遊只算月租型門號、單買一個方案；定量包要在效期內、總量夠用。'
+        f'povo 與 MyJapan+ 是日圓價，用 1 日圓 = {JPY} 元換算，刷卡另有國外交易手續費。'
+        f'「—」是沒有符合這個情境的單一方案。{_rv_end_txt}</p>'
+      + '<h2>三家漫遊方案的差別</h2>'
+      + '<div class="tw"><table><thead><tr><th>電信</th><th>計日型的降速</th><th>定量包用完</th>'
+        '<th>從什麼時候開始算</th></tr></thead><tbody>' + _rv_cmp + '</tbody></table></div>'
+      + f'<p class="disc">出處：{_rv_src}，查證於 {RP["checked"]}。三家都寫明方案一經使用就收全額，'
+        '天數沒用完不退。中華電信的「計日型的降速」是 5 日型的條件。</p>'
+      + '<h2>沒買方案就開漫遊</h2>'
+      + f'<ul class="lede">{_rv_np}</ul>'
+      + '<p class="lede">買了 eSIM 的人也要注意：台灣門號那條線如果開著數據漫遊又沒指定給 eSIM，'
+        '流量會從台灣門號走，照原價計費。</p>'
+      + '<h2>選哪個</h2>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>只去三天、不想設定：</b>漫遊。表上 3 天的三種用量，漫遊比 eSIM 貴 NT${_rv_g3[0]:,} 到 NT${_rv_g3[1]:,}，'
+        '換到的是不用裝、不用切換設定。</li>'
+        f'<li><b>五天以上：</b>表上 5 到 10 天的情境，漫遊比 eSIM 貴 NT${_rv_g5lo:,} 到 NT${_rv_g5hi:,}，'
+        '差多少要看你的電信那一欄。</li>'
+        '<li><b>要收台灣的簡訊驗證碼：</b>兩條路都可以，但 eSIM 這條路要開對設定，'
+        f'<a href="{U("/japan-sms-roaming/")}">三家的條件不一樣</a>。</li>'
+        f'<li><b>有台灣發行的 JCB 卡、想要吃到飽：</b>MyJapan+ 的 7 天吃到飽 ¥{_pv_mj7["jpy"]:,}，'
+        f'povo 官網同樣 7 天要 ¥{_pv_on7["jpy"]:,}。表上它不是最便宜的，但不用算流量，'
+        f'<a href="{U("/japan-povo-esim/")}">買法與兌換碼的規則在這裡</a>。</li>'
+        '</ul></div>'
+      + cta('esim', '日本', '東京', '走 eSIM 這條路的話',
+            '五個 Klook 商品、232 個方案的每日單價')
+      + '<h2>常見問題</h2>' + rv_html
+      + '<h2>順便看看</h2><div class="cities">'
+      + f'<a class="ct" href="{U("/japan-esim/")}"><b>📱 日本 eSIM 比較</b>'
+        f'<s>232 個方案的每日單價</s></a>'
+      + f'<a class="ct" href="{U("/japan-povo-esim/")}"><b>📶 povo 旅客 eSIM</b>'
+        f'<s>三種買法價差很大</s></a>'
+      + f'<a class="ct" href="{U("/japan-sms-roaming/")}"><b>✉️ 台灣門號收簡訊</b>'
+        f'<s>不買漫遊方案，三家答案不一樣</s></a>'
+      + f'<a class="ct" href="{U("/japan-esim-native-roaming/")}"><b>📱 原生還是漫遊</b>'
+        f'<s>會不會變成香港的網路</s></a></div>'
+      + f'<p class="disc">本頁的 eSIM 商品連結為 Klook 分潤連結，你的價格不會因此改變；電信漫遊與 povo 沒有分潤。'
+        f'漫遊資費由各電信隨時調整，本頁查證於 {RP["checked"]}，申請前請以你的電信官網為準。</p>'
+      + foot())
+    pages.append(('/japan-roaming-vs-esim/', 0.7))
+
 
 
 
@@ -34931,7 +35157,7 @@ SEARCH_SYN = [
     ['日本網卡', '日本上網', '日本esim', '日本 esim'],
     ['簡訊', 'sms', '短信', 'ショートメッセージ'],
     ['驗證碼', 'otp', '認證碼', '簡訊驗證碼', '一次性密碼'],
-    ['漫遊', '國際漫遊', '原號漫遊', 'roaming', 'ローミング'],
+    ['漫遊', '國際漫遊', '原號漫遊', 'roaming', 'ローミング', '漫遊方案', '漫遊比價'],
     ['volte', '4g語音', '4g 語音', 'hd語音'],
     ['wi-fi通話', 'wifi通話', 'wifi calling', 'wi-fi calling', 'vowifi'],
     ['中華電信', '中華電', 'cht', 'chunghwa'],
