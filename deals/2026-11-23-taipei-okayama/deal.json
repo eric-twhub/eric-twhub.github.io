@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-23-taipei-okayama",
- "generated": "2026-11-23 11:10",
+ "generated": "2026-11-23 11:28",
  "kind": "fare",
  "origin": "taipei",
  "city": "okayama",
@@ -25,9 +25,9 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$7,506（6 天有紀錄），這張低 18%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,411（6 天有紀錄），這張低 17%"
  ],
- "med": 12741,
+ "med": 12491,
  "n_rt": 12,
  "others": [
   {
