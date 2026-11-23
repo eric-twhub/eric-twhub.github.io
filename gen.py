@@ -7589,7 +7589,7 @@ if EG:
       + f'<a class="ct" href="{U("/japan-flight-baggage/")}"><b>🧳 廉航行李費</b>'
         f'<s>加購時機差一倍</s></a>'
       + f'<a class="ct" href="{U("/japan-sms-roaming/")}"><b>✉️ 台灣門號收簡訊</b>'
-        f'<s>關掉漫遊就收不到驗證碼</s></a>'
+        f'<s>不買漫遊方案，三家答案不一樣</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a></div>'
       + '<p class="disc">本頁的主體是規格層面的機制。上面那兩個商品的判定，'
         '依據限於各該業者自己的官方文件與法人登記，並非實機測試，也不適用於其他商品。'
@@ -7625,9 +7625,9 @@ if RS2:
 
     _rs_rows = ''.join(
         f'<tr><td><b>{html.escape(c["name"])}</b></td>'
-        f'<td>{html.escape(c["sms_in_short"])}</td>'
-        f'<td class="lose"><b>{html.escape(c["jp_volte"])}</b></td>'
-        f'<td>{html.escape(c["sms_in"])}</td></tr>' for c in RS2['carriers'])
+        f'<td class="{c.get("no_plan_cls", "")}"><b>{html.escape(c["no_plan"])}</b></td>'
+        f'<td>{html.escape(c["setting"])}</td>'
+        f'<td>{html.escape(c["sms_in_short"])}</td></tr>' for c in RS2['carriers'])
 
     _rs_cards = ''.join(
         f'<h3>{html.escape(c["name"])}</h3>'
@@ -7638,7 +7638,8 @@ if RS2:
 
     _rs_routes = ''.join(
         f'<h3>做法 {html.escape(r["id"])}：{html.escape(r["title"])}</h3>'
-        f'<p class="lede">{html.escape(r["how"])}</p>'
+        + (f'<p class="lede"><b>哪家適用：</b>{html.escape(r["who"])}</p>' if r.get('who') else '')
+        + f'<p class="lede">{html.escape(r["how"])}</p>'
         '<div class="tw narrow"><table class="cmp"><tbody>'
         f'<tr><th>好處</th><td>{html.escape(r["good"])}</td></tr>'
         f'<tr><th>代價</th><td>{html.escape(r["bad"])}</td></tr>'
@@ -7657,27 +7658,30 @@ if RS2:
                      for u in RS2['unverified'])
 
     rs_faq = [
-     ('去日本，台灣門號關掉數據漫遊就能只收簡訊嗎？',
-      '不行。日本三大電信的 3G 已經全部關閉，最後一家 docomo 是 2026 年 3 月 31 日。'
-      '手機要靠 4G/5G 才註冊得上日本的網路，而三家台灣電信都寫明：沒有開通漫遊上網與 VoLTE，'
-      '就「無訊號亦無法使用漫遊語音、簡訊及上網」。關掉數據漫遊確實不會被收費，但你也收不到驗證碼。'),
-     ('那要怎麼收到銀行或 Google 的驗證碼？',
-      '兩條路。一是申請漫遊上網方案並開啟數據漫遊與 VoLTE，最穩但要多付一份網路錢。'
-      '二是開 VoLTE 與 Wi-Fi Calling，到日本後開飛航模式再單獨打開 Wi-Fi，'
-      '透過飯店或店家的 Wi-Fi 收簡訊。台灣大哥大官方寫這樣「計費方式同國內語音電話費率」，'
-      '遠傳寫「不會收取國際語音漫遊費用」。'),
+     ('不買漫遊上網方案，台灣門號在日本收得到簡訊嗎？',
+      '看電信。遠傳官方寫明不用買：開 VoLTE，就算沒有另外購買漫遊上網方案也能收簡訊。'
+      '中華電信列的 VoLTE 漫遊條件沒有方案，但要開數據漫遊，沒買方案時數據依原價計費、沒有上限。'
+      '台灣大哥大寫明沒開 VoLTE 並申請漫遊上網方案，就連接收簡訊都不行，不買方案只能走 Wi-Fi 通話。'),
+     ('只買日本 eSIM，台灣門號留著收驗證碼，要怎麼設定？',
+      '雙卡都開著，行動數據指定給 eSIM，台灣門號開 VoLTE。遠傳的官方文章就是這樣寫的。'
+      '中華電信的門號另外要開數據漫遊，所以「行動數據指定給 eSIM」這一步一定要做對，否則台灣門號上網會照原價計費。'
+      '台灣大哥大官方寫明要買方案，不買的話改走 Wi-Fi 通話加飛航模式。'),
+     ('雙卡要兩張都開，還是只開要收簡訊的那張？',
+      '兩張都要開。eSIM 那張負責上網，台灣門號那張要開著才收得到簡訊，只是不讓它上網。'
+      '遠傳的官方文章寫的就是「保留原本的遠傳門號待機」、行動數據指定給旅遊 eSIM。'),
      ('在國外收簡訊要錢嗎？',
-      '一般簡訊不用。台灣大哥大官方寫「漫遊時收一般簡訊免費」。'
+      '一般簡訊不用，三家官方都寫收簡訊免費。'
       '會收錢的是接聽電話（漫遊費加國際電話費）、發送簡訊，以及多媒體簡訊。'),
-     ('為什麼一定要開飛航模式？只開 Wi-Fi Calling 不行嗎？',
+     ('為什麼走 Wi-Fi 通話一定要開飛航模式？',
       '遠傳的官方頁面說明了原因：Wi-Fi 訊號不好的時候，通話會自動切回當地漫遊業者，'
       '然後就產生國際漫遊話費。飛航模式是把這條退路封死。'),
      ('我買了日本的 eSIM，它能收我台灣的簡訊嗎？',
       '不能。日本的 eSIM 幾乎都是純數據，沒有電話號碼，也不能收台灣發來的簡訊。'
-      '驗證碼還是會發到你原本的台灣門號，所以這兩件事要分開處理。'),
-     ('開飛航模式的話，我的 eSIM 不是也一起關掉了嗎？',
-      '對，這是做法 B 最實際的限制。單人出遊的話，等於要在「用 eSIM 上網」跟「收簡訊」之間切換。'
-      '同行有兩支手機就好辦：一支用 eSIM 開熱點，另一支開飛航模式連那個熱點的 Wi-Fi 收簡訊。'),
+      '驗證碼還是會發到你原本的台灣門號，所以台灣門號那條線要開著，或者走 Wi-Fi 通話。'),
+     ('台灣門號的 Wi-Fi 通話，能不能直接用 eSIM 的網路？',
+      '官方沒有寫清楚。Apple 的雙 SIM 說明有一張圖例，寫一條線可以用另一條線的行動數據跑 Wi-Fi 通話，'
+      '但同一頁也寫，正在使用數據漫遊時這個切換功能不會有作用，而且沒提到簡訊。三家台灣電信的說明都只寫連 Wi-Fi。'
+      '台灣大哥大另外寫明，連其他裝置分享的熱點可以用，所以同行有第二支手機開熱點是確定可行的做法。'),
     ]
     rs_html = ''.join('<details class="faq"><summary>' + html.escape(q) + '</summary><div>'
                       + html.escape(a) + '</div></details>' for q, a in rs_faq)
@@ -7685,10 +7689,10 @@ if RS2:
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
         for q, a in rs_faq]}, ensure_ascii=False)
 
-    rs_title = '在日本收得到台灣的簡訊驗證碼嗎？2026 年 3 月之後答案變了'
-    rs_desc = ('日本三大電信的 3G 已全部關閉，最後一家 docomo 是 2026 年 3 月 31 日。'
-               '台灣門號要在日本收得到簡訊，手機一定要開 VoLTE。關掉數據漫遊就收不到。'
-               '這頁整理中華電信、台灣大哥大、遠傳的官方說法，以及不用付漫遊費的做法。')
+    rs_title = '在日本收得到台灣的簡訊驗證碼嗎？不買漫遊方案，中華、台哥大、遠傳答案不一樣'
+    rs_desc = ('日本 3G 已全部關閉，台灣門號在日本要開 VoLTE 才收得到簡訊驗證碼。'
+               '不買漫遊上網方案：遠傳官方寫明可以，中華電信要開數據漫遊，台灣大哥大寫明要買方案。'
+               '整理三家官方原文、雙卡搭配日本 eSIM 的設定，以及不用付漫遊費的 Wi-Fi 通話做法。')
 
     write('japan-sms-roaming/index.html',
       head(rs_title, rs_desc, 'japan-sms-roaming/',
@@ -7698,22 +7702,21 @@ if RS2:
       + f'<p class="lede">{html.escape(RS2["thesis"])}</p>'
       + f'<div class="today"><div class="tday">三家電信與 docomo 的官方說法，'
         f'查證於 {RS2["checked"]}</div>'
-        f'<div class="tans">關掉數據漫遊，在日本就<b>收不到簡訊</b>了</div>'
-        f'<div class="tsub">日本三大電信的 3G 已經全部關閉，最後一家 docomo 是 2026 年 3 月 31 日。'
-        f'手機要靠 4G/5G 才註冊得上日本的網路，而 4G 語音要 VoLTE。'
-        f'中華電信的原文是：沒有開通漫遊上網與 VoLTE，就「無訊號亦無法使用漫遊語音、簡訊及上網」。</div>'
-        f'<div class="tbuf">好消息是<b>收一般簡訊本來就免費</b>，'
-        f'而且有一條幾乎不用錢的路：開 VoLTE 與 Wi-Fi Calling，到日本開飛航模式再連 Wi-Fi。'
-        f'台灣大哥大官方寫這樣「計費方式同國內語音電話費率」。</div></div>'
+        f'<div class="tans">不買漫遊方案收不收得到簡訊，<b>三家電信答案不一樣</b></div>'
+        f'<div class="tsub">日本三大電信的 3G 已經全部關閉，最後一家 docomo 是 2026 年 3 月 31 日，'
+        f'手機一定要開 VoLTE 才註冊得上日本的網路。遠傳官方寫明不用買方案；'
+        f'中華電信的條件沒列方案，但要開數據漫遊；台灣大哥大寫明要買方案。</div>'
+        f'<div class="tbuf"><b>收一般簡訊三家都免費</b>。不想買方案的話，三家官方都寫了同一條路：'
+        f'開 VoLTE 與 Wi-Fi Calling，到日本開飛航模式再連 Wi-Fi。</div></div>'
       + _rs_why
       + '<h2>三家電信怎麼說</h2>'
-      + '<div class="tw"><table><thead><tr><th>電信商</th><th>收一般簡訊</th>'
-        '<th>日本需要 VoLTE</th><th>說明</th></tr></thead><tbody>'
+      + '<div class="tw"><table><thead><tr><th>電信商</th><th>不買漫遊方案收得到嗎</th>'
+        '<th>手機要開的設定</th><th>收一般簡訊</th></tr></thead><tbody>'
         + _rs_rows + '</tbody></table></div>'
-      + '<p class="disc">「日本需要 VoLTE」三家都是「要」，所以整欄標紅，'
-        '這不是選配，是沒開就沒訊號。以下是各家的原文。</p>'
+      + '<p class="disc">三家都要開 VoLTE，這不是選配，是沒開就沒訊號。'
+        '「不買漫遊方案收得到嗎」是各家官網的寫法，以下是原文。</p>'
       + _rs_cards
-      + '<h2>兩條路，看你願意付什麼</h2>' + _rs_routes
+      + '<h2>三條路，看你是哪家電信</h2>' + _rs_routes
       + cta('esim', '日本', '東京', '走 eSIM 這條路的話',
             '232 個方案比過單價，台灣門號留著收簡訊、上網另外買')
       + _rs_am
@@ -34713,6 +34716,16 @@ SEARCH_SYN = [
     ['日圓', '日幣', '日元'],
     ['換匯', '換日幣', '換日圓', '換錢', '換外幣'],
     ['網卡', '上網卡', 'esim', 'sim卡'],
+    ['日本網卡', '日本上網', '日本esim', '日本 esim'],
+    ['簡訊', 'sms', '短信', 'ショートメッセージ'],
+    ['驗證碼', 'otp', '認證碼', '簡訊驗證碼', '一次性密碼'],
+    ['漫遊', '國際漫遊', '原號漫遊', 'roaming', 'ローミング'],
+    ['volte', '4g語音', '4g 語音', 'hd語音'],
+    ['wi-fi通話', 'wifi通話', 'wifi calling', 'wi-fi calling', 'vowifi'],
+    ['中華電信', '中華電', 'cht', 'chunghwa'],
+    ['台灣大哥大', '台哥大', '台灣大', 'taiwan mobile'],
+    ['遠傳', '遠傳電信', 'fetnet', 'far eastone'],
+    ['雙卡', '雙sim', '雙 sim', 'dual sim'],
     ['旅平險', '旅遊平安險', '旅遊險', 'travel insurance'],
     ['國際駕照', '國際駕駛執照'],
     ['駕照譯本', '駕照日文譯本', '日文譯本'],
