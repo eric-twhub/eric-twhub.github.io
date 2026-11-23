@@ -137,7 +137,9 @@ def short(name):
 def build(d):
     n = 9
     ps = d['products']
-    fnote = f'五個商品逐頁查證於 {d["checked"]}'
+    fnote = (f'價格 {d["prices_checked"]}，條款逐頁查證於 {d["checked"]}'
+             if d.get('prices_checked') and d['prices_checked'] != d['checked']
+             else f'五個商品逐頁查證於 {d["checked"]}')
     out = []
 
     def cheapest(p):
@@ -251,7 +253,7 @@ def build(d):
                     else '<div class="v z">未寫明</div>')
                  + '</div>')
     inner = ('<div class="kick">五個商品的基本資料</div>'
-             '<h1>吃到飽<em>降速到多少</em>，<br>只有一家寫</h1>'
+             f'<h1>吃到飽<em>降速到多少</em>，<br>{len(ps)} 個裡 {sum(1 for p in ps if p.get("throttle"))} 個有寫</h1>'
              '<div class="sub">「未寫明」是商品頁上真的找不到，'
              '不是沒有這個限制。</div>'
              '<div class="legend">128kbps 大概是什麼概念：文字訊息可以，'
@@ -299,13 +301,14 @@ def build(d):
 
     # ── 8 沒有一個全贏 ──
     noprof = sum(1 for p in ps if p.get('profile') is None)
-    rows = ''.join(f'<div class="blk"><b>{E(c[:18])}</b><s>{E(c)}</s></div>'
+    rows = ''.join(f'<div class="blk"><b>{E(c.split("。")[0].split("，")[0][:18])}</b><s>{E(c)}</s></div>'
                    for c in d['_評價分析']['_結論'][:2])
     inner = ('<div class="kick">這頁的範圍</div>'
              '<h1>沒有一個商品<br><em>在所有項目都贏</em></h1>'
              f'<div class="list">{rows}'
              f'<div class="blk"><b>這五個商品的原生／漫遊仍未查證</b>'
-             f'<s>這 {noprof} 個商品的商品頁都沒寫是原生還是漫遊。'
+             f'<s>這 {noprof} 個商品都還沒有實機查證。商品頁的寫法不能當結論，'
+             '有一個商品名寫「原生網路」，同一頁卻要你到當地開數據漫遊。'
              '那要實機插卡、查 IP 出口才知道，光看商品頁判斷不了。'
              '寫「未查證」，不寫「漫遊」。另外兩個查得到官方文件的案例見下一張。</s></div>'
              '</div>' + foot(8, n, fnote))

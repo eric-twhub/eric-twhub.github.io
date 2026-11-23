@@ -18994,10 +18994,11 @@ if os.path.exists('card-insurance.json'):
 
 # ---------- eSIM：方案比較與每日單價計算 ----------
 # 「NT$X 起」的起字是 1 天最小流量的價格。實際要用的天數與流量，價差 10 倍起跳。
-# 232 個方案的價格是 2026-09-23 從 Klook 商品 API 取的台幣價，會變動，頁面上要講清楚。
+# 232 個方案的價格是從 Klook 商品 API 取的台幣價（日期在 esim.json 的 prices_checked），會變動，頁面上要講清楚。
 if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
     EP = _ES['products']
     _ESM = '<br><small style="color:var(--dim)">'
+    _EP_AT = _ES.get('prices_checked') or _ES.get('checked', '')
     _MODE = {'total': 0, 'daily': 1, 'unlimited': 2}
     _pjs = []
     for _i, _p in enumerate(EP):
@@ -19030,6 +19031,20 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
             if q['mode'] == 'total' and q['label'] == '5GB']
     _tot.sort(key=lambda x: x['days'])
     _tot_line = '、'.join(f'{q["days"]} 天 NT${q["price"]}' for q in _tot[:6]) if _tot else ''
+    _tot_note = ''
+    if len(_tot) >= 2:
+        _t6 = _tot[:6]
+        _tot_note = (f'天數差 {round(_t6[-1]["days"] / _t6[0]["days"])} 倍，'
+                     f'價格只差 {round((_t6[-1]["price"] / _t6[0]["price"] - 1) * 100)}%。')
+    _ep5 = {m: min((q['price'] for p in EP for q in p['plans'] if q['mode'] == m and q['days'] == 5),
+                   default=None) for m in ('total', 'unlimited')}
+    _ep_thr = [p for p in EP if p.get('throttle')]
+    _EP_SHORT = {'109393': '吃到飽，不穩就退', '124754': 'Softbank 小資專業型', '79682': 'Sakura Mobile'}
+    _ep_native_name = [p for p in EP if '原生' in p['name']]
+    _ep_nat_txt = (f'只有 {len(_ep_native_name)} 個商品在名稱寫了「原生網路」，但同一頁的安裝步驟要你到當地開啟數據漫遊，'
+                   '說法對不起來；其餘的都沒有明寫' if _ep_native_name else '五個商品的頁面都沒有明寫')
+    _ep_rv = sorted(p['reviews'] for p in EP if p.get('reviews'))
+    _ep_rt = sorted(p['rating'] for p in EP if p.get('rating'))
 
     _NA = '<span style="color:var(--dim)">未載</span>'
 
@@ -19056,7 +19071,7 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
         for i, o in enumerate(_ES['_觀察_條款差異']['items'], 1))
 
     ep_faq = [
-     ('商品頁寫「NT$11 起」，為什麼我結帳時貴那麼多？',
+     (f'商品頁寫「NT${_ep_lo[0]} 起」，為什麼我結帳時貴那麼多？',
       f'因為那個「起」字是最短天數、最小流量的價格。本站查到的最低價是 {_ep_lo[2]} 天 {_ep_lo[3]}，'
       f'NT${_ep_lo[0]}；同一個商品的 5 天吃到飽是 NT${_ep_un5[0] if _ep_un5 else 0}，'
       f'差了 {_ep_mult} 倍。上面的計算機輸入你實際的天數與每日用量，看到的才是你要付的錢。'),
@@ -19068,10 +19083,11 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
       '因為它本質上是按天計價。本站查到的資料裡，吃到飽的每日單價從 1 天到 30 天幾乎是一條平線，'
       '長天期只便宜一點點。總流量型才有明顯的規模效應。'),
      ('「吃到飽」超量之後會降速到多少？',
-      '五個商品裡只有「Softbank 小資專業型」寫了數字：「不斷線，降速至 128kbps」。'
-      '其餘四家的頁面都找不到。'
+      f'五個商品裡有 {len(_ep_thr)} 個寫了數字：'
+      + '；'.join(f'「{_EP_SHORT.get(p["id"], p["name"][:16])}」{p["throttle"]}' for p in _ep_thr) + '。'
+      f'其餘 {len(EP) - len(_ep_thr)} 個的頁面找不到。'
       '128kbps 是文字訊息可以、地圖很吃力、影片不用想的等級。'
-      '這是「吃到飽」最常被忽略的地方，查不到的那四家，下單前值得問客服。'),
+      '這是「吃到飽」最常被忽略的地方，查不到的那幾個，下單前值得問客服。'),
      ('幾個人一起去，買一張開熱點划算嗎？',
       '上面的計算機把人數填進去就會同時算兩種做法：每人各買一張，跟買一張開熱點共用。'
       '共用那一欄只列出商品頁明確寫可以開熱點的商品。'
@@ -19081,7 +19097,7 @@ if EG and _ES.get('products') and any(p.get('plans') for p in _ES['products']):
       '不是，是從你的裝置第一次連上當地網路才開始計算。所以提前買不會浪費天數，'
       '但也不要以為買了就能放著慢慢用。'),
      ('這頁的價格多久會過期？',
-      'Klook 的 eSIM 價格天天在動，這頁的 232 筆是 2026-09-23 那天的價格。'
+      f'Klook 的 eSIM 價格天天在動，這頁的 {sum(len(p["plans"]) for p in EP)} 筆是 {_EP_AT} 那天的價格。'
       '拿它看「哪種計價方式划算」是可以的，'
       '要看今天實際多少錢，請點商品連結。'),
     ]
@@ -19205,17 +19221,17 @@ document.addEventListener('DOMContentLoaded',function(){
     _ra_concl = ''.join('<li>' + html.escape(x) + '</li>' for x in (_RA.get('_結論') or []))
 
     ep_title = '日本 eSIM 怎麼選：232 個方案的每日單價比較（含吃到飽的真相）'
-    ep_desc = ('「NT$11 起」的起字是 1 天最小流量的價格，跟你實際要用的差三十幾倍。'
+    ep_desc = (f'「NT${_ep_lo[0]} 起」的起字是 1 天最小流量的價格，跟 5 天吃到飽差 {_ep_mult} 倍。'
                '這頁把 Klook 上五個日本 eSIM 商品、232 個方案的價格拆成每日單價，'
                '輸入天數與每日用量就排序。另外說明總流量型為什麼天數幾乎不加價。')
 
     # 分享圖卡。和本頁同一份 esim.json，由 make_esim_cards.py 產生。
     _ES_CARD = [
-     ('01', '「NT$11 起」，起的是什麼', '五個商品與關鍵數字'),
+     ('01', f'「NT${_ep_lo[0]} 起」，起的是什麼', '五個商品與關鍵數字'),
      ('02', '5 天吃到飽，價差多少', '同樣需求才比得出來'),
      ('03', '評價要連樣本數一起看', '95% 信賴區間'),
-     ('04', '逐頁查完才知道的三件事', '降速、退款、相容性'),
-     ('05', '降速到多少只有一家寫', '五個商品的基本資料'),
+     ('04', '逐頁查完才知道的三件事', '降速、原生、相容性'),
+     ('05', f'降速到多少，{len(_ep_thr)} 個有寫', '五個商品的基本資料'),
      ('06', '原生還是漫遊是兩個問題', 'HR 漫遊與 MVNO'),
      ('07', '啟用之後自己驗一次', '三十秒查 IP 出口'),
      ('08', '沒有一個商品全贏', '這頁的範圍'),
@@ -19342,18 +19358,18 @@ document.addEventListener('DOMContentLoaded',function(){
            '<script type="application/ld+json">' + ep_ld + '</script>' + CUTE)
       + topnav() + crumbs([('首頁', '/'), ('日本 eSIM 比較', None)])
       + ESHERO
-      + '<h1>日本 eSIM 的「NT$11 起」，起的是什麼？</h1>'
+      + f'<h1>日本 eSIM 的「NT${_ep_lo[0]} 起」，起的是什麼？</h1>'
       + f'<p class="lede">{html.escape(_ES["_頁面設計"]["主張"])}</p>'
       + f'<div class="today"><div class="tday">五個商品、232 個方案的台幣價，'
-        f'2026-09-23 一次抓下來</div>'
+        f'{_EP_AT} 一次抓下來</div>'
         f'<div class="tans">最低價 NT${_ep_lo[0]} 是 <b>{_ep_lo[2]} 天 {html.escape(_ep_lo[3])}</b>'
         + (f'，同商品的 5 天吃到飽 NT${_ep_un5[0]}，差 <b>{_ep_mult} 倍</b>' if _ep_un5 else '')
         + '</div>'
         f'<div class="tsub">三種計價方式的每日單價差距很大：同樣是 5 天，'
-        f'總流量型可以低到每天 NT$4，吃到飽要每天 NT$100 以上。'
+        f'總流量型最低每天約 NT${round(_ep5["total"] / 5)}，吃到飽最低每天約 NT${round(_ep5["unlimited"] / 5)}。'
         f'下面輸入你的天數與每日用量，算的是你真正要付的錢。</div>'
         f'<div class="tbuf">另外一件幾乎沒人講的事：<b>總流量型的天數只是效期，幾乎不影響價格</b>。'
-        + (f'同一個商品的總流量 5GB，{_tot_line}。天數差 15 倍，價格只差兩成多。' if _tot_line else '')
+        + (f'同一個商品的總流量 5GB，{_tot_line}。{_tot_note}' if _tot_line else '')
         + '用量小的人買長天期反而安心。</div></div>'
       + '<h2>輸入你的行程</h2>'
       + '<div class="calc"><div class="sf">'
@@ -19364,12 +19380,12 @@ document.addEventListener('DOMContentLoaded',function(){
       + '<p class="disc">計算方式：每個商品挑出「天數夠、流量夠」之中最便宜的一個方案，'
         '再除以天數得到每日單價。總流量型是用「每日用量 × 天數」判斷夠不夠，'
         '每日流量型是看單日額度夠不夠，吃到飽不看流量。'
-        '價格查證於 2026-09-23，會變動，實際金額以商品頁為準。</p>'
+        f'價格查證於 {_EP_AT}，會變動，實際金額以商品頁為準。</p>'
       + '<h2>五個商品的基本資料</h2>'
       + '<div class="tw"><table><thead><tr><th>商品</th><th>原生還是漫遊</th>'
         '<th>線索</th></tr></thead><tbody>' + _ep_rows + '</tbody></table></div>'
       + f'<p class="disc">「原生還是漫遊」這一欄<b>不是結論，是線索</b>：'
-        f'五個商品的頁面都沒有明寫，本站只記下商品頁上可查證的寫法。'
+        f'{_ep_nat_txt}，本站只記下商品頁上可查證的寫法。'
         f'為什麼這件事重要、以及怎麼在啟用後三十秒自己驗，'
         f'寫在<a href="{U("/japan-esim-native-roaming/")}">原生還是漫遊那一頁</a>。</p>'
       + '<h2>條款對照：純數據、熱點、降速、退款</h2>'
@@ -19385,11 +19401,11 @@ document.addEventListener('DOMContentLoaded',function(){
       + '<h2>三個容易誤解的地方</h2>'
       + f'<h3>1. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][0])}</h3>'
         f'<p class="lede">這是唯一一件買之前查不到、但影響整趟網路體驗的事。'
-        f'這五個商品的商品頁都沒寫是原生還是漫遊，所以表上那一欄是空的。'
+        f'商品頁的寫法不能當結論：{_ep_nat_txt}。'
         f'<a href="{U("/japan-esim-native-roaming/")}">判斷方法在這裡</a>。</p>'
       + f'<h3>2. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][1])}</h3>'
-        f'<p class="lede">五個商品裡只有一家把降速後的數字寫出來，上面的條款對照表有。'
-        f'其餘四家沒寫。那不代表「沒有降速」，是頁面上找不到。'
+        f'<p class="lede">五個商品裡有 {len(_ep_thr)} 個把降速後的數字寫出來，上面的條款對照表有。'
+        f'其餘 {len(EP) - len(_ep_thr)} 個沒寫。那不代表「沒有降速」，是頁面上找不到。'
         f'買吃到飽之前，這是最該問客服的一題。</p>'
       + f'<h3>3. {html.escape(_ES["_頁面設計"]["要凸顯的三件事"][2])}</h3>'
         f'<p class="lede">效期從裝置第一次連上當地網路才起算，不是購買日，'
@@ -19397,7 +19413,7 @@ document.addEventListener('DOMContentLoaded',function(){
         f'「Softbank 小資專業型」寫明收到 QR Code 後要在 29 天內完成安裝。'
         f'也就是說可以提早買，但不能提早太久。</p>'
       + '<h2>評價要連樣本數一起看</h2>'
-      + '<p class="lede">五個商品的星等從 4.2 到 4.7，但則數從 255 到 47,750 差了 187 倍。'
+      + f'<p class="lede">五個商品的星等從 {_ep_rt[0]} 到 {_ep_rt[-1]}，但則數從 {_ep_rv[0]:,} 到 {_ep_rv[-1]:,} 差了 {round(_ep_rv[-1] / _ep_rv[0])} 倍。'
         '把平均星等換算成信賴區間之後，有些差距是真的，有些完全是雜訊。'
         '最後一欄是同一個需求（五天、每天 1GB）下各自最便宜的方案，'
         '把「評價好不好」和「要付多少」擺在一起看。</p>'
@@ -19429,7 +19445,7 @@ document.addEventListener('DOMContentLoaded',function(){
         f'<s>加購時機差一倍</s></a>'
       + f'<a class="ct" href="{U("/tokyo/")}"><b>東京機票</b><s>今天查到的價格</s></a></div>'
       + '<p class="disc">本頁的商品連結為 Klook 分潤連結，你的價格不會因此改變。'
-        '價格與方案內容由 Klook 與各供應商隨時調整，本頁數字查證於 2026-09-23，'
+        f'價格與方案內容由 Klook 與各供應商隨時調整，本頁數字查證於 {_EP_AT}，'
         '下單前請以商品頁顯示的為準。</p>'
       + _EJS + foot())
     pages.append(('/japan-esim/', 0.8))
