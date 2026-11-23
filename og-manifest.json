@@ -426,6 +426,12 @@
    "title": "日本 eSIM 怎麼選：232 個方案的每日單價比較（含吃到飽的真相）"
   },
   {
+   "slug": "japan-roaming-vs-esim",
+   "url": "/japan-roaming-vs-esim/",
+   "h1": "去日本上網，原號漫遊和 eSIM 差多少？",
+   "title": "日本上網：原號漫遊還是 eSIM 便宜？中華、台哥大、遠傳漫遊方案和 eSIM 逐天比價"
+  },
+  {
    "slug": "deals-2026-11-23-taipei-okinawa",
    "url": "/deals/2026-11-23-taipei-okinawa/",
    "h1": "台北飛沖繩 NT$3,000 來回含稅｜台灣虎航 12/28 出發",
@@ -464,8 +470,14 @@
   {
    "slug": "deals-2026-11-23-taipei-fukuoka",
    "url": "/deals/2026-11-23-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$5,750 來回含稅｜台灣虎航 12/27 出發",
-   "title": "台北飛福岡 NT$5,750 來回含稅｜台灣虎航 12/27 出發"
+   "h1": "台北飛福岡 NT$5,350 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$5,350 來回含稅｜台灣虎航 12/01 出發"
+  },
+  {
+   "slug": "deals-2026-11-23-kaohsiung-fukuoka",
+   "url": "/deals/2026-11-23-kaohsiung-fukuoka/",
+   "h1": "高雄飛福岡 NT$5,871 來回含稅｜台灣虎航 12/29 出發",
+   "title": "高雄飛福岡 NT$5,871 來回含稅｜台灣虎航 12/29 出發"
   },
   {
    "slug": "deals-2026-11-23-taipei-osaka",
@@ -478,12 +490,6 @@
    "url": "/deals/2026-11-23-taipei-okayama/",
    "h1": "台北飛岡山 NT$6,610 來回含稅｜台灣虎航 12/17 出發",
    "title": "台北飛岡山 NT$6,610 來回含稅｜台灣虎航 12/17 出發"
-  },
-  {
-   "slug": "deals-2026-11-23-kaohsiung-fukuoka",
-   "url": "/deals/2026-11-23-kaohsiung-fukuoka/",
-   "h1": "高雄飛福岡 NT$6,671 來回含稅｜台灣虎航 12/29 出發",
-   "title": "高雄飛福岡 NT$6,671 來回含稅｜台灣虎航 12/29 出發"
   },
   {
    "slug": "deals-2026-11-23-kaohsiung-osaka",
@@ -500,14 +506,14 @@
   {
    "slug": "deals-2026-11-23-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-23-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$2,742",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$2,742"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,142",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,142"
   },
   {
    "slug": "deals-2026-11-23-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-23-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,425",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,425"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$3,825",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$3,825"
   },
   {
    "slug": "deals-2026-11-23-transfer-tokyo-fukushima",
