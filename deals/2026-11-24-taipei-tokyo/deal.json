@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-24-taipei-tokyo",
- "generated": "2026-11-24 12:45",
+ "generated": "2026-11-24 15:21",
  "kind": "fare",
  "origin": "taipei",
  "city": "tokyo",
@@ -24,10 +24,10 @@
   "url": "https://www.aviasales.com/search/TPE2812NRT11011?t=GK17984682001798482600000180TPENRT17996562001799668200000260NRTTPE_3bc17244e81355db713647f4b9e8d7ca_19733&search_date=23112026&expected_price_uuid=01a208b1-d898-8031-2990-36ac07feaa32&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=7Idkzqb8yS8OOWFGtpoeFA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7920&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,997（14 天有紀錄），這張低 12%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,996（15 天有紀錄），這張低 12%"
  ],
- "med": 13125,
- "n_rt": 86,
+ "med": 12804,
+ "n_rt": 88,
  "others": [
   {
    "o": "TPE",
