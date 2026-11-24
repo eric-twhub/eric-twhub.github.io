@@ -1479,9 +1479,21 @@
     "why": "產品頁完整列出的權益裡沒有機場停車，也沒有機場接送。反過來停車費還被列在基本回饋的排除項目裡。",
     "src": "https://www.dbs.com.tw/personal-zh/cards/dbs-aov/index.html"
    },
-   "checked": "2026-10-22",
+   "checked": "2026-11-24",
    "areas": "日本、韓國、泰國、新加坡、美洲、歐洲",
-   "areas_note": "須於當地實體商店消費"
+   "areas_note": "須於當地實體商店消費",
+   "other_perks": [
+    {
+     "what": "生活玩家精選通路加碼 9%",
+     "rate": "最高 10%",
+     "where": "指定商家名單（App Store、Google Play、Nintendo、PlayStation、Steam、Netflix、Disney+、Spotify、蝦皮、淘寶、Uber Eats、foodpanda、麥當勞、肯德基、摩斯漢堡、Animate、POPMART 等），不是整筆日本消費",
+     "how": "官方原文：帳單明細「有明確顯示符合下述列舉之交易名稱始享回饋」，系統無法辨識交易通路的「恕無法提供加碼回饋」。1% 無上限＋加碼 9%，加碼每人每月上限 500 點，要先以指定星展帳戶設定自動轉帳付款。",
+     "reg": "不用登錄，但要設定星展帳戶自動轉帳付款",
+     "period": "2026/7/1 – 2026/12/31",
+     "why_out": "在日本的門市（例如日本麥當勞、Animate）刷卡算不算，官網沒寫，而且同一頁兩處寫法不一致：權益標題寫「國內/生活玩家精選通路」，計算公式寫「生活玩家精選通路新增國內外合格消費」。名單上的麥當勞只寫中文名稱，日本門市帳單上的英文或日文店名認不認得也沒寫。就算算，能不能和日本實體加碼 4% 疊加，官網也沒寫。所以不列入上面的數字，要確定請問星展客服或看實刷帳單。",
+     "src": "https://www.dbs.com.tw/personal-zh/cards/dbs-aov/index.html"
+    }
+   ]
   },
   {
    "name": "滙豐 Live+ 現金回饋卡",

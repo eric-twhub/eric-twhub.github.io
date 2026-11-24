@@ -24697,9 +24697,8 @@ if os.path.exists('cards.json'):
                       if c.get('reg_level') not in (None, '', 'none')
                       else '　· ' + html.escape(c.get('reg_short', ''))
                       )
-                   + ('<br>另有非日本加碼（'
+                   + ('<br>另有不計入本表數字的權益：'
                       + '、'.join(html.escape(o['what']) for o in c['other_perks'])
-                      + '），不計入本表數字'
                       if c.get('other_perks') else '')
                    + ''.join(f'<br>單月超過 {money(t["over_ntd"])} 的部分另加 {t["rate"]:g}%'
                              f'（{html.escape(t.get("quota_short", ""))}），本表百分比不含、'
