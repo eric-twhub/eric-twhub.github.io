@@ -4622,8 +4622,16 @@ if os.path.exists('fx.json'):
         f'<p class="lede"><b class="{"win" if "成立" in s["verdict"] and "不成立" not in s["verdict"] else ""}">'
         f'{html.escape(s["verdict"])}。</b>{html.escape(s["body"])}</p>'
         f'<p class="lede">{html.escape(s["fix"])}</p>'
-        f'<p class="disc">出處：<a href="{s["src"]}" rel="nofollow noopener" target="_blank">'
-        f'官方頁面</a>，查證於 {FX["checked"]}。</p>'
+        # extra：有期限的活動，extra_until 過了就不出現（官網原文與日期在 extra_src）
+        + (f'<p class="lede">{html.escape(s["extra"])}'
+           f'（<a href="{s["extra_src"]}" rel="nofollow noopener" target="_blank">活動公告</a>）</p>'
+           if s.get('extra') and TODAY <= s.get('extra_until', '0000') else '')
+        + f'<p class="disc">出處：<a href="{s["src"]}" rel="nofollow noopener" target="_blank">'
+        f'官方頁面</a>，查證於 {s.get("checked", FX["checked"])}。'
+        + ('社群原文：' + '、'.join(
+            f'<a href="{u}" rel="nofollow noopener" target="_blank">{i}</a>'
+            for i, u in enumerate(s['seen'], 1)) + '。' if s.get('seen') else '')
+        + '</p>'
         for s in FX['social']['items'])
 
     _AB = FX['abroad']

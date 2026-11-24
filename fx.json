@@ -20,6 +20,21 @@
         "src": "https://www.taishinbank.com.tw/TSB/personal/digital/Digital-Platform/atm/atm/"
       },
       {
+        "claim": "台新 ATM 領日幣，不管領多少手續費都只收 100 元",
+        "verdict": "已經不成立",
+        "body": "這是舊的優惠，2025 年 6 月底社群上就有人發現已經結束。現在用台新金融卡從「外幣帳戶」在台新外幣 ATM 領外幣，手續費是當日台新牌告的即期與現鈔匯率差額乘以 0.5，每筆最低 100 元，所以領得越多收得越多。官網自己的範例：匯差 0.0022 時領 ¥100,000，ATM 收 110 元，同樣金額到分行臨櫃領要收 220 元。",
+        "fix": "從「台幣帳戶」換匯提領仍然免手續費，匯率用現鈔賣出牌告再減碼，這條路沒有變。外幣帳戶這條路因為按筆收而且有最低 100 元，小額分好幾次領最吃虧。",
+        "extra": "另外有一個活動可以退掉一筆：Richart 外幣活存帳戶月底美元餘額達 500 美元，當月第一筆台新外幣 ATM 提領的手續費會退回，每人每月一次，不限幣別。提領當下照收，之後在公告的回饋日退到 Richart 台幣帳戶。公告寫這個優惠延續到 2027 年 3 月。",
+        "extra_until": "2027-03-31",
+        "extra_src": "https://www.taishinbank.com.tw/TSB/personal/common/news/TSBankNews-008392/",
+        "src": "https://www.taishinbank.com.tw/TSB/personal/digital/Digital-Platform/atm/atm/",
+        "checked": "2026-11-24",
+        "seen": [
+          "https://www.threads.com/@kateho.zi/post/DLhAx8iRF9Q",
+          "https://www.threads.com/@richardking0606/post/DTOuGstE0km"
+        ]
+      },
+      {
         "claim": "網銀晚上不給換匯",
         "verdict": "現象是真的，但原因有好幾種",
         "body": "各行普遍有服務時段、優惠時段、大額門檻時段三層限制，再加上有些銀行另有一組「營業時間外牌告」。所以可能是真的不受理，也可能是受理但拿不到優惠價，也可能是金額超過非營業時間的上限。",
