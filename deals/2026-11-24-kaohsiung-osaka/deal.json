@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-24-kaohsiung-osaka",
- "generated": "2026-11-24 16:07",
+ "generated": "2026-11-24 19:06",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "osaka",
@@ -24,7 +24,7 @@
   "url": "https://www.aviasales.com/search/KHH1612KIX14011?t=IT17974308001797444300000165KHHKIX17999262001799935200000210KIXKHH_714e4c00c8d99136f0cf61fd183f6483_18470&search_date=19112026&expected_price_uuid=01a1f5bd-da68-8040-24a0-fa71f06fa3ee&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Vs4DVZj-s0QmIWOkx35L_Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7420&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$9,042（12 天有紀錄），這張低 18%"
+  "12 月出發的票，每天最便宜的平均要 NT$9,032（12 天有紀錄），這張低 18%"
  ],
  "med": 15397,
  "n_rt": 60,
@@ -32,20 +32,20 @@
   {
    "o": "KHH",
    "d": "OSA",
-   "air": "AK",
-   "airname": "馬來西亞亞航",
+   "air": "MM",
+   "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 7977,
+   "price": 7856,
    "dep": "2026-12-20",
    "ret": "2027-01-13",
-   "dept": "09:00",
+   "dept": "14:20",
    "rett": "11:30",
    "rt": true,
    "tr": 0,
-   "dur": 400,
-   "dur_to": 190,
+   "dur": 375,
+   "dur_to": 165,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH2012KIX13011?t=IT17977572001797772200000190KHHKIX17998398001799848800000210KIXKHH_03ce609f29525ff06ebe069971f382f6_19858&search_date=24112026&expected_price_uuid=01a20c0e-ffbb-8040-2e34-538e8dcb6b5c&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GwNqh4AEtExqS-WVCqs3OA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7977&marker=775639"
+   "url": "https://www.aviasales.com/search/KHH2012KIX13011?t=IT17977764001797789900000165KHHKIX17998398001799848800000210KIXKHH_b742cd23519c1436df413f8042887e6b_19536&search_date=24112026&expected_price_uuid=01a20cec-5c08-8040-2f28-d53499c302ec&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=n7-qKUUKLENeVsYjEU25CQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7856&marker=775639"
   },
   {
    "o": "KHH",

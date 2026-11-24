@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-24-taipei-ishigaki",
- "generated": "2026-11-24 16:07",
+ "generated": "2026-11-24 19:06",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -28,7 +28,7 @@
   "廉航低於 NT$6,000",
   "12 月出發的票，每天最便宜的平均要 NT$5,730（5 天有紀錄），這張低 40%"
  ],
- "med": 13783,
+ "med": 13803,
  "n_rt": 18,
  "others": [
   {
