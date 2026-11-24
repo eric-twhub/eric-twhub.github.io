@@ -73,22 +73,37 @@ def fetch():
     gap = lambda dp: 10000 * mid * (cash[0]['pct'] - spot[0]['pct'] + dp) / 100  # 每 ¥10,000 的價差
     be = [min_fee / gap(dp) * 10000 for dp in (-.01, 0, .01)]
     be_man = round(be[1] / 10000) if len({round(x / 10000) for x in be}) == 1 else None
+    # 上面用的是臺銀牌告、全額收匯差；各行匯差與收費比例不同（台新五成、玉山九成），
+    # 所以只有頁上寫明臺銀是全額收時才放，而且畫面上要寫「以臺銀算」
+    full = re.search(r'([^；。]+?)是全額收', _txt(s))
+    if not (full and re.search(r'台銀|臺銀|臺灣銀行', full.group(1))):
+        be_man = None
+    zh = '一二三四五六七八九'
+    disc = [(n, zh.index(c) + 1) for n, c in re.findall(r'(台新|玉山)收([一二三四五六七八九])成', _txt(s))]
+    disc = list(dict.fromkeys(disc))
+    # Richart 退一筆（頁上有 extra_until，到期就不出現；這裡也跟著不出現）
+    rc = re.search(r'Richart 外幣活存帳戶月底美元餘額達 (\d+) 美元，當月第一筆台新外幣 ATM 提領的手續費會退回，'
+                   r'每人每月一次.*?延續到 (\d{4}) 年 (\d+) 月', _txt(s))
+    # 社群在傳的「台新不限金額只收 100 元」頁上要判定為不成立；說法變了就停下來重看
+    if '不管領多少手續費都只收' in _txt(s) and '已經不成立' not in _txt(s):
+        sys.exit('台新 ATM 手續費那題的判定和預期不同，請先看頁面')
     return {'date': base['date'], 'date_full': base['date_full'], 'mid': base['mid'], 'banks': banks,
             'top_cut': top, 'top_save': round(10000 * top),
             'cash_extra': round(cash_extra), 'atm_extra': round(cash_extra - 10000 * top),
             'counter_fee': (int(cf.group(1)), int(cf.group(2))),
             'gap_max': round(10000 * top) + int(cf.group(2)),
             'limit': lim.group(1), 'dens': dens, 'min_fee': min_fee, 'be_man': be_man,
-            'gap10k': round(gap(0))}
+            'gap10k': round(gap(0)), 'disc': disc,
+            'richart': {'usd': rc.group(1), 'until': f'{rc.group(2)}/{int(rc.group(3))}'} if rc else None}
 
 
 EXTRA_CSS = r"""
 #num{font-size:260px;top:880px}
 #num small{font-size:110px;margin-right:6px}
 #h1{font-size:88px;top:730px}
-#sub1{font-size:40px;top:1175px;line-height:1.5}
+#sub1{font-size:40px;top:1160px;line-height:1.5}
 #t2{font-size:64px}
-#q1{top:1330px}
+#q1{top:1358px}
 #q1 span{font-size:50px;line-height:1.3;padding:12px 36px}
 .rw{height:120px}
 .rk{top:10px;width:84px;height:84px;line-height:72px;font-size:48px}
@@ -111,7 +126,7 @@ EXTRA_CSS = r"""
 #reg{top:1240px}
 #reg div.t{font-size:44px;line-height:1.35}
 #srch{font-size:48px}
-#tiny{font-size:30px}
+#tiny{font-size:28px;top:1150px;line-height:1.55}
 """
 
 
@@ -156,7 +171,9 @@ def build_html(d):
         ('出鈔面額固定', '／'.join(f'{x:,}' for x in d['dens']) + ' 日圓為單位'),
         ('部分機台不是 24 小時', '設在分行營業廳內'),
         ('臨櫃換最貴', f'沒有減碼，還收 {d["counter_fee"][0]}～{d["counter_fee"][1]} 元'),
-        (f'外幣帳戶領鈔最低收 {d["min_fee"]} 元', '小額最吃虧'),
+        (f'外幣帳戶領鈔最低收 {d["min_fee"]} 元',
+         '小額最吃虧' + ('（' + '、'.join(f'{n}收{"一二三四五六七八九"[k - 1]}成' for n, k in d['disc']) + '匯差）'
+                       if d['disc'] else '')),
     ]
     D = {'L': V.T_LAND, 'R': V.T_RANK, 'C': V.T_CAP, 'E': V.T_END, 'top': d['min_fee'], 'rows': wrow,
          'rowT': rowT, 'rowY0': y0, 'caps': items, 'cf1': cf1, 'cf2': cf2}
@@ -171,9 +188,11 @@ def build_html(d):
           f'<div id="st1b" class="ab stk sh">{V._svg("shop")}</div>'
           f'<div id="h1" class="ab hn">外幣帳戶領 ¥10,000</div>'
           f'<div id="num" class="ab hn"><small>NT$</small><span id="nv">0</span></div>'
-          f'<div id="sub1" class="ab">手續費最低就收這麼多（價差只有約 NT${d["gap10k"]}）<br>'
-          + (f'要領到約 ¥{d["be_man"]} 萬才超過最低收費' if d['be_man'] else '小額領最吃虧') + '</div>'
-          f'<div id="q1" class="ab"><span class="hn">台幣帳戶直接在外幣 ATM 領<br>免手續費還有減碼</span></div>'
+          + (f'<div id="sub1" class="ab">手續費最低就收這麼多<br>'
+             f'臺銀每萬日圓價差只有約 NT${d["gap10k"]}<br>要領到約 ¥{d["be_man"]} 萬才超過最低收費</div>'
+             if d['be_man'] else
+             f'<div id="sub1" class="ab">手續費最低就收這麼多<br>小額領最吃虧</div>')
+          + f'<div id="q1" class="ab"><span class="hn">台幣帳戶直接在外幣 ATM 領<br>免手續費還有減碼</span></div>'
           f'{cfdivs(cf1, "a")}</div>')
     rw = ''
     for i, b in enumerate(rows):
@@ -203,7 +222,9 @@ def build_html(d):
           f'<div id="srch" class="ab">各銀行減碼、臨櫃手續費比較</div>'
           f'<div id="tiny" class="ab">減碼與面額依各行官網整理，「官網沒寫」不代表沒有或不收費<br>'
           f'{e(d["date"])} 臺灣銀行牌告試算（即期中價 {e(d["mid"])}）'
-          + ('；「約 ¥' + str(d['be_man']) + ' 萬」以全額收匯差估算，各行自己的牌告不同' if d['be_man'] else '')
+          + ('<br>「約 ¥' + str(d['be_man']) + ' 萬」以臺銀全額收匯差估算，各行匯差與收費比例不同' if d['be_man'] else '')
+          + (f'<br>Richart 外幣活存月底達 {d["richart"]["usd"]} 美元，當月第一筆台新外幣 ATM'
+             f'<br>手續費事後退回（公告到 {d["richart"]["until"]}）' if d['richart'] else '')
           + '<br>以各銀行公告為準</div></div>')
     js_cf = 'for(const [g,p] of [["cf1","a"],["cf2","b"]]) D[g].forEach((c,i)=>c.el=document.getElementById(p+i));'
     return ('<!doctype html><html><head><meta charset="utf-8">'
@@ -255,7 +276,7 @@ def main():
         if ff.wait() != 0:
             sys.exit('ffmpeg 合成失敗')
     print(mp4)
-    print(f'外幣帳戶領鈔最低收 NT${d["min_fee"]}（¥10,000 價差約 NT${d["gap10k"]}，約 ¥{d["be_man"]} 萬才超過）；現鈔 NT${d["cash_extra"]} → ATM NT${d["atm_extra"]}；' +
+    print(f'外幣帳戶領鈔最低收 NT${d["min_fee"]}（臺銀 ¥10,000 價差約 NT${d["gap10k"]}，約 ¥{d["be_man"]} 萬才超過；{d["disc"]}；Richart {d["richart"]}）；現鈔 NT${d["cash_extra"]} → ATM NT${d["atm_extra"]}；' +
           '、'.join(f'{b["name"]} {b["cut"] if b["cut"] is not None else "官網沒寫"}' for b in d['banks']))
 
 
