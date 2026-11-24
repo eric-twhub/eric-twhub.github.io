@@ -1,11 +1,11 @@
 {
  "schema": 1,
  "slug": "2026-11-24-transfer-tokyo-fukushima",
- "generated": "2026-11-24 10:29",
+ "generated": "2026-11-24 11:33",
  "kind": "transfer",
  "city": "fukushima",
  "via": "tokyo",
- "own": 13172,
+ "own": 12376,
  "fare": {
   "o": "KHH",
   "d": "TYO",
@@ -40,5 +40,5 @@
  "mode": "東北新幹線",
  "tm": "約 1.5 小時",
  "total": 10607,
- "save": 2565
+ "save": 1769
 }
