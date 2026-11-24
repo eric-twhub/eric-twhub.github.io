@@ -28105,6 +28105,8 @@ if os.path.exists('cards.json'):
           + '<div class="cities">'
           + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🏷️ 折價券怎麼疊</b>'
             f'<s>券、免稅、回饋的順序</s></a>'
+          + f'<a class="ct" href="{U("/japan-konbini-card/")}"><b>🏪 日本超商刷哪張卡</b>'
+            f'<s>很多卡的超商排除沒寫只限台灣</s></a>'
           + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張卡比較</b>'
             f'<s>上限、登錄與適用範圍</s></a>'
           + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
@@ -28118,6 +28120,173 @@ if os.path.exists('cards.json'):
           + foot())
         pages.append(('/japan-shop-card/', 0.8))
         print(f'   各店刷哪張卡總表：{len(CP["stores"])} 家')
+
+        # ---------- 日本超商刷哪張卡 ----------
+        # 很多卡的一般消費定義排除「便利商店」卻沒寫只限台灣（富邦 J 同一句把 Costco 寫成
+        # 「台灣 Costco」，超商沒寫），而日本回饋又套用那份定義。逐卡判定與原文在
+        # cvs-cards.json。費率用店家頁同一套 _shop_tiers 算：超商不在任何 store_scope 名單裡、
+        # cat_scope 查不到的也不算，只有官方明寫超商也成立的 sure 層另外加回來。
+        if os.path.exists('cvs-cards.json'):
+            KV = json.load(open('cvs-cards.json', encoding='utf-8'))
+            for _k in KV['cards'].values():
+                for ch in sorted(_k.pop('_from', []), key=lambda x: x['date']):
+                    if ch['date'] <= TODAY:
+                        _k.update(ch['set'])
+            _kv_miss = [c['slug'] for c in CD['cards'] if c['slug'] not in KV['cards']]
+            if _kv_miss:
+                raise SystemExit('cvs-cards.json 少了這幾張卡的超商判定：' + '、'.join(_kv_miss))
+            _KV_ST = {'explicit': ('官方明寫算', 'on'), 'no_excl': ('排除清單沒有超商', 'on'),
+                      'system': ('看系統怎麼判', ''), 'unread': ('排除清單讀不到', ''),
+                      'excluded': ('可能沒有回饋', '')}
+            _KV_ORD = ['explicit', 'no_excl', 'system', 'unread', 'excluded']
+            _kv_store = {'slug': '__konbini__'}
+
+            def _kv_calc(c, k):
+                """(條件做滿、超商也算的話的費率, 官方明寫超商成立的那幾層費率)"""
+                ts = _shop_tiers(c, _kv_store)
+                ids = {id(t) for t in ts}
+                sure = [t for t in c['tiers'] if t['label'] in k.get('sure', [])
+                        and not t.get('sold_out') and t['scope'] in ('shop', 'any')]
+                ts = ts + [t for t in sure if id(t) not in ids]
+                nb = any(t.get('no_base') for t in ts)
+                return (round((0 if nb else c['base']) + sum(t['rate'] for t in ts), 2),
+                        round(sum(t['rate'] for t in sure), 2))
+
+            _kv_rows = []
+            for c in CD['cards']:
+                k = KV['cards'][c['slug']]
+                full, sure = _kv_calc(c, k)
+                _kv_rows.append({'c': c, 'k': k, 'full': full, 'sure': sure})
+            # 有 sure 的卡（只有部分層確定算）用確定的那個數字排，不要拿「其他層也算的話」去排
+            _kv_rows.sort(key=lambda r: (_KV_ORD.index(r['k']['state']), -(r['sure'] or r['full'])))
+            _kv_by = {s: [r for r in _kv_rows if r['k']['state'] == s] for s in _KV_ORD}
+            _kv_ok = _kv_by['explicit'] + _kv_by['no_excl']
+            _kv_n_ex = len(_kv_by['excluded'])
+
+            def _kv_p(v):
+                return f'{v:g}%'
+
+            def _kv_rate_cell(r):
+                st = r['k']['state']
+                if st == 'excluded':
+                    return (f'<td class="dimcell">被排除就沒有'
+                            + (f'；確定有的 <b>{_kv_p(r["sure"])}</b>' if r['sure'] else '')
+                            + f'<span class="qz">算的話最高 {_kv_p(r["full"])}</span></td>')
+                if r['sure'] and r['sure'] < r['full']:
+                    return (f'<td>確定 <b>{_kv_p(r["sure"])}</b>'
+                            f'<span class="qz">其他層也算的話最高 {_kv_p(r["full"])}</span></td>')
+                return f'<td><b>{_kv_p(r["full"])}</b></td>'
+
+            def _kv_card(r):
+                c = r['c']
+                return f'<a href="{U("/japan-credit-card/" + c["slug"] + "/")}">{html.escape(c["name"])}</a>'
+
+            _kv_table = ('<div class="tw narrow"><table class="wrapt"><thead><tr><th>卡</th>'
+                         '<th>日本超商</th><th>條件做滿的費率</th></tr></thead><tbody>'
+                         + ''.join(
+                             f'<tr><td class="nm"><b>{_kv_card(r)}</b></td>'
+                             f'<td><span class="xbadge {_KV_ST[r["k"]["state"]][1]}">'
+                             f'{_KV_ST[r["k"]["state"]][0]}</span></td>'
+                             + _kv_rate_cell(r) + '</tr>'
+                             for r in _kv_rows)
+                         + '</tbody></table></div>')
+
+            def _kv_li(r):
+                k = r['k']
+                return ('<li><div class="xh"><span class="xn">' + _kv_card(r) + '</span>'
+                        f'<span class="xbadge {_KV_ST[k["state"]][1]}">{_KV_ST[k["state"]][0]}</span></div>'
+                        + (f'<div class="xt">官方原文：「{html.escape(k["quote"])}」</div>' if k.get('quote') else '')
+                        + f'<div class="xo">{html.escape(k["note"])}。'
+                        f'<a href="{k["src"]}" rel="nofollow noopener" target="_blank">官方頁</a></div></li>')
+
+            _KV_H = {
+                'explicit': ('官方明寫日本超商算',
+                             '條文或官方範例點名了日本的便利商店。'),
+                'no_excl': ('日本那一層的排除清單沒有超商',
+                            '沒有點名超商算，但日本／海外回饋那一層列出的排除項目裡沒有便利商店。'),
+                'system': ('要看系統怎麼判',
+                           '排除的是「小額支付平台」，便利商店只是括號裡的舉例。'),
+                'unread': ('排除清單讀不到',
+                           '條款寫「不含不回饋交易項目」，但那份清單本站讀不到，不知道有沒有超商。'),
+                'excluded': ('一般消費排除便利商店，而且沒寫只限台灣',
+                             '日本的回饋要「一般消費」才給，而一般消費的定義把便利商店排除了。'
+                             '條文沒有寫只排除台灣的超商，同一份條文要限地區時卻會寫出來。'
+                             '所以日本的 7-ELEVEN、FamilyMart、LAWSON 有可能整筆沒有回饋，官網沒有另外說明。'),
+            }
+            _kv_sections = ''.join(
+                f'<h3>{_KV_H[s][0]}（{len(_kv_by[s])} 張）</h3>'
+                f'<p class="lede">{_KV_H[s][1]}</p>'
+                '<ul class="xl">' + ''.join(_kv_li(r) for r in _kv_by[s]) + '</ul>'
+                for s in _KV_ORD if _kv_by[s])
+
+            _kv_names = '、'.join(r['c']['name'] for r in _kv_ok)
+            _kv_names_r = '、'.join(
+                r['c']['name'] + ' ' + ('確定 ' + _kv_p(r['sure']) if r['sure'] else _kv_p(r['full']))
+                for r in _kv_ok)
+            _kv_faq = [
+                ('在日本 7-11、全家、LAWSON 刷台灣信用卡有回饋嗎？',
+                 f'要看卡。本站逐張讀了 {len(CD["cards"])} 張旅日信用卡的官方條款：'
+                 f'官方寫明算、或日本那一層排除清單沒有超商的是{_kv_names}；'
+                 f'另有 {_kv_n_ex} 張卡的一般消費定義排除便利商店、沒寫只限台灣，在日本超商可能整筆沒有回饋。'),
+                ('台灣卡排除超商，為什麼會影響日本？',
+                 '日本的回饋大多寫「日本地區之一般消費」，而一般消費的定義是另一份全卡共用的公告，'
+                 '裡面把便利商店排除了。那句沒寫「台灣」或「國內」，字面上日本的超商也包含在內。'
+                 '富邦 J 卡同一句把 Costco 寫成「台灣 Costco 消費」，便利商店卻沒寫，'
+                 '可見要限地區時銀行會寫出來。'),
+                ('被排除是不是就不能刷？',
+                 '不是。排除的意思是這一筆不給回饋，刷卡本身照常。'
+                 '要確定某一筆有沒有回饋，看帳單上的回饋明細，或打給發卡銀行客服問。'),
+                ('哪張卡在日本超商確定有回饋？',
+                 (f'官方明寫的只有：' + '、'.join(r['c']['name'] for r in _kv_by['explicit'])
+                  + '。各自的條件與期間寫在上面的逐張說明。' if _kv_by['explicit']
+                  else '目前沒有一張卡的官方條款明寫日本超商算，上面有排除清單沒有超商的卡。')),
+            ]
+            _kv_ld = json.dumps({
+                '@context': 'https://schema.org', '@type': 'FAQPage',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                               for q, a in _kv_faq]}, ensure_ascii=False)
+            write('japan-konbini-card/index.html',
+              head('日本超商刷哪張卡？7-11、全家、LAWSON 刷台灣信用卡算不算回饋',
+                   f'很多台灣信用卡的一般消費排除便利商店，而且沒寫只限台灣。'
+                   f'本站逐張讀 {len(CD["cards"])} 張旅日信用卡的官方條款，'
+                   f'整理在日本 7-ELEVEN、FamilyMart、LAWSON 刷卡哪些確定算、哪些可能沒有回饋，附原文與出處。',
+                   'japan-konbini-card/',
+                   '<script type="application/ld+json">' + _kv_ld + '</script>')
+              + topnav()
+              + crumbs([('首頁', '/'), ('旅日信用卡', '/japan-credit-card/'), ('日本超商刷哪張卡', None)])
+              + '<h1>日本超商刷哪張卡？7-11、全家、LAWSON 算不算回饋</h1>'
+              + '<p class="lede">在台灣，很多信用卡的超商消費本來就不給回饋。'
+                '麻煩的是，這條排除規則多半寫在全卡共用的「一般消費定義」裡，沒寫只限台灣；'
+                '而日本的回饋又要「一般消費」才給。所以同一張卡在日本藥妝店有 3%，'
+                '走進 7-ELEVEN 可能整筆沒有。下面逐張整理官方怎麼寫。</p>'
+              + f'<div class="today"><div class="tday">{len(CD["cards"])} 張卡逐張讀官方條款'
+                f'　·　查證於 {KV["checked"]}</div>'
+                f'<div class="tans">寫明算或沒排除的：{html.escape(_kv_names_r)}</div>'
+                f'<div class="tsub">另有 {_kv_n_ex} 張卡的一般消費排除便利商店、沒寫只限台灣，'
+                '在日本超商可能整筆沒有回饋。</div>'
+                '<div class="tbuf">被排除不代表刷不過，只是那一筆不給回饋。'
+                '官網沒寫清楚的，要確定就看帳單上的回饋明細或問銀行客服。</div></div>'
+              + '<h2>總表</h2>'
+              + '<p class="lede">費率是把登錄、自動扣繳、切方案這些條件都做完、而且超商也算的情況，'
+                '以既有卡友計算，新戶加碼和名額已滿的加碼不算；只限指定店家或指定消費類別的加碼，'
+                '除非官方點名超商，否則也不算。點卡名可以看那張卡的條件。</p>'
+              + _kv_table
+              + '<h2>每張卡的官方原文</h2>'
+              + _kv_sections
+              + '<div class="cities">'
+              + f'<a class="ct" href="{U("/japan-shop-card/")}"><b>🏪 各店刷哪張卡</b>'
+                f'<s>藥妝、電器、百貨逐家排名</s></a>'
+              + f'<a class="ct" href="{U("/japan-credit-card/")}"><b>💳 {len(CD["cards"])} 張卡比較</b>'
+                f'<s>上限、登錄與適用範圍</s></a>'
+              + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
+                f'<s>輸入日幣金額看每張卡實拿</s></a></div>'
+              + faq_visible(_kv_faq)
+              + f'<p class="disc">本頁為公開資訊整理，非理財建議。逐張的判定依各發卡行官網條款，'
+                f'查證於 {KV["checked"]}；發卡行隨時會調整，刷卡前請以發卡行公告為準。</p>'
+              + foot())
+            pages.append(('/japan-konbini-card/', 0.7))
+            print(f'   日本超商刷哪張卡：{len(_kv_ok)} 張寫明算或沒排除、{_kv_n_ex} 張可能被排除')
 
         print(f'   日本購物折扣頁：{len(CP["stores"])} 家店')
 
@@ -35160,6 +35329,9 @@ SEARCH_SYN = [
     ['myjapan', 'myjapan+', 'my japan+', 'myjapan plus'],
     ['兌換碼', 'promo code', 'プロモコード'],
     ['lawson', '羅森', 'ローソン'],
+    ['超商', '便利商店', '便利店', 'コンビニ', 'konbini', 'convenience store'],
+    ['7-11', '7-eleven', '711', '小七', 'セブンイレブン', 'セブン'],
+    ['全家', 'familymart', 'family mart', 'ファミリーマート', 'ファミマ'],
     ['kddi', 'au電信', 'au 電信'],
     ['日本網卡', '日本上網', '日本esim', '日本 esim'],
     ['簡訊', 'sms', '短信', 'ショートメッセージ'],

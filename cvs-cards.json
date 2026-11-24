@@ -1,0 +1,107 @@
+{
+ "checked": "2026-11-24",
+ "_note": "日本便利商店（7-ELEVEN、FamilyMart、LAWSON）刷各張卡算不算回饋。state 五態：explicit 官方明寫日本超商算；no_excl 日本／海外回饋那一層的排除清單沒有便利商店；system 排除的是小額支付平台、便利商店只是舉例，要看系統判定；excluded 一般消費定義或不回饋項目排除便利商店、沒寫只限台灣，而日本回饋套用這份定義；unread 排除清單讀不到。sure 是官方明寫日本超商也成立的加碼層 label，這幾層一定算進去。_from 同 cards.json，到那天起用 set 覆蓋。卡片頁的 exclude 也有寫同一件事，改這裡要一起改 cards.json。",
+ "cards": {
+  "cathay-cube": {
+   "state": "explicit",
+   "quote": "不適用4%回饋之商家如AirBicCamera、UNIQLO、7-Eleven…切換秋日遊刷CUBE信用卡仍適用日本實體消費3.5%回饋",
+   "note": "這句寫在福岡機場免稅店那一段，點名機場裡的 7-Eleven 照樣算秋日遊的日本實體消費。秋日遊的排除清單是醫療、販賣機、飯店、電信、租車、交通、賭博、機上消費等，沒有便利商店。CUBE 的一般消費 0.3% 那一層另外排除「便利超商消費」，不影響秋日遊",
+   "src": "https://www.cathay-cube.com.tw/cathaybk/personal/product/credit-card/cards/cube-list",
+   "_from": [
+    {
+     "date": "2026-12-01",
+     "set": {
+      "state": "no_excl",
+      "quote": "排除項目：醫療事業…、博奕類交易…、飛機/郵輪上之消費…、其他經本行公告排除之項目(包括但不限於保費)",
+      "note": "這是趣旅行海外實體消費的排除清單，沒有便利商店。但 CUBE 的一般消費 0.3% 那一層排除「便利超商消費」，趣旅行最後一句「其他經本行公告排除之項目」包不包括它，官網沒寫。12/1 凌晨系統會自動切成集精選，日本消費要自己切回趣旅行"
+     }
+    }
+   ]
+  },
+  "ubot-jiho": {
+   "state": "explicit",
+   "sure": ["11 大人氣通路加碼"],
+   "quote": "便利商店：7-ELEVEN、FamilyMart、LAWSON",
+   "note": "11 大人氣通路 3% 點名日本三大超商，這一層確定算。但日幣一般消費 2.5% 與滿額加碼要「新增一般消費」，聯邦的一般消費定義排除「便利超商(7-11、全家、萊爾富、OK超商)」，沒寫只限台灣；LAWSON 不在括號裡。行動支付加碼的條文沒提一般消費。兩處怎麼對得起來官網沒寫",
+   "src": "https://activity.ubot.com.tw/2026JiHoCard/index.htm"
+  },
+  "hsbc-liveplus": {
+   "state": "no_excl",
+   "quote": "便利商店自有支付，如 OPEN PAY、FAMI PAY、全盈+PAY 綁定本行信用卡於便利商店(如統一超商及全家便利商店)或線上商城內消費無提供卡片權益回饋",
+   "note": "符合資格消費的排除清單裡沒有便利商店，排除的是綁超商自有支付付款，直接刷卡不受影響。餐飲加碼看行業代碼，日本超商登記成哪個代碼查不到，所以不算進去",
+   "src": "https://www.hsbc.com.tw/content/dam/hsbc/tw/docs/credit-cards/live-plus/cashback-cash-points-method.pdf"
+  },
+  "dbs-eco": {
+   "state": "system",
+   "quote": "聯合信用卡處理中心或其他收單銀行提供之信用卡小額支付平台之消費〈如便利商店、連鎖速食店等〉",
+   "note": "排除的是小額支付平台，便利商店只是括號裡的舉例，沒有「凡便利商店都排除」的字句，也沒寫地區。日本超商刷卡會不會被判成小額支付，官網沒寫",
+   "src": "https://www.dbs.com.tw/personal-zh/cards/dbs_eco/index.html"
+  },
+  "dbs-aov": {
+   "state": "system",
+   "quote": "聯合信用卡處理中心或其他收單銀行提供之信用卡 小額支付平台 之消費<如便利商店、連鎖速食店等>",
+   "note": "和星展 eco 同一句。官網另寫「若經系統判斷為小額支付特店，則不屬於一般消費」，日本超商會不會被判成小額支付，官網沒寫",
+   "src": "https://www.dbs.com.tw/personal-zh/cards/dbs-aov/index.html"
+  },
+  "fubon-j": {
+   "state": "excluded",
+   "quote": "便利商店消費 ( 含綁定該便利商店各行動支付，如 icash Pay 、全盈 +Pay 及 LINE PAY 等 )",
+   "note": "日韓泰最高 3% 是「新增之一般消費」，一般消費排除便利商店。同一句裡的 Costco 寫的是「台灣 Costco 消費」，便利商店沒寫台灣。日韓泰加碼 3% 用的是另一個定義（商店國別碼加面對面），但要單筆滿 NT$1,000",
+   "src": "https://www.fubon.com/banking/Personal/credit_card/all_card/omiyage/omiyage.htm"
+  },
+  "taishin-richart": {
+   "state": "excluded",
+   "quote": "便利商店(7-11/全家/萊爾富/OK超商等) 消費，包含線上購物和各種支付方式",
+   "note": "玩旅刷寫明「海外消費如屬不回饋項目…將不提供回饋」。例外只有在 7-11、全家用台新Pay 並切 Pay著刷或天天刷。另一方面，Pay著刷又寫台新Pay+ 日韓交易「含日本LAWSON」，兩處怎麼對得起來官網沒寫",
+   "src": "https://www.taishinbank.com.tw/TSB/personal/credit/intro/rights/notice/restricteditems/"
+  },
+  "esun-kumamon": {
+   "state": "excluded",
+   "quote": "便利商店 (含7-ELEVEN、全家、萊爾富及OK超商) 之交易",
+   "note": "日本一般消費 2.5% 與指定商店加碼都寫「活動門檻限新增一般消費」，引用的就是這份公告。同一份公告的歐洲那一項有寫國別，便利商店這一項沒寫",
+   "src": "https://event.esunbank.com.tw/credit/notice/index.html"
+  },
+  "esun-unicard": {
+   "state": "excluded",
+   "quote": "超商、各項稅費等屬非一般消費皆不列入回饋計算",
+   "note": "活動頁另寫「本活動一般消費不包含…四大超商、全聯交易」，百大指定消費「須同時符合一般消費資格」。同一句的「歐盟實體交易」有寫地區，超商沒寫",
+   "src": "https://event.esunbank.com.tw/credit/unicard/index.html"
+  },
+  "sinopac-jcb": {
+   "state": "excluded",
+   "quote": "連鎖便利商店（含儲值、繳費、便利商店 APP、網站等）之實體門市或線上消費",
+   "note": "永豐官網公告的一般消費定義（2026 下半年與 2027 上半年兩份文字相同）。同一份公告要限地區時會寫出來（「排除英國及歐盟商店實體交易」），超商這一項沒寫。這張卡的國外 2% 與日本加碼都要一般消費",
+   "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/news/20260421090303483000000000000890.html"
+  },
+  "sinopac-dual": {
+   "state": "excluded",
+   "quote": "連鎖便利商店（含儲值、繳費、便利商店 APP、網站等）之實體門市或線上消費",
+   "note": "和永豐其他卡同一份公告。精選通路的國外實體寫「交易地區非臺灣，且非新臺幣之實體商店一般消費」",
+   "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/news/20260421090303483000000000000890.html"
+  },
+  "sinopac-dawho": {
+   "state": "excluded",
+   "quote": "連鎖便利商店（含儲值、繳費、便利商店 APP、網站等）之實體門市或線上消費",
+   "note": "和永豐其他卡同一份公告。國外 2% 與任務加碼都限一般消費",
+   "src": "https://bank.sinopac.com/sinopacBT/personal/credit-card/news/20260421090303483000000000000890.html"
+  },
+  "ctbc-linepay": {
+   "state": "unread",
+   "quote": "國內外一般刷卡交易，不含本行不回饋交易項目",
+   "note": "不回饋交易項目另外公告在中國信託官網，那一頁有機器人驗證，本站讀不到，所以不知道有沒有排除便利商店",
+   "src": "https://www.ctbcbank.com/content/dam/minisite/long/creditcard/LINEPay/notice.html"
+  },
+  "ctbc-uniopen": {
+   "state": "unread",
+   "quote": "不含本行不回饋交易項目，不回饋交易項目請依 uniopen 聯名卡回饋計劃辦理",
+   "note": "回饋計劃那一頁有機器人驗證，本站讀不到，所以不知道有沒有排除便利商店",
+   "src": "https://mkt.ctbcbank.com/long/creditcard/N2025052600033_01/index.html"
+  },
+  "firstbank-ileo": {
+   "state": "unread",
+   "quote": "",
+   "note": "第一銀行信用卡官網擋下本站的讀取，排除清單讀不到",
+   "src": "https://card.firstbank.com.tw/sites/card/zh_TW/1565698492326"
+  }
+ }
+}
