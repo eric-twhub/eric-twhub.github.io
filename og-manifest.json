@@ -450,16 +450,16 @@
    "title": "台中飛沖繩 NT$3,935 來回含稅｜台灣虎航 11/30 出發"
   },
   {
-   "slug": "deals-2026-11-24-taipei-fukuoka",
-   "url": "/deals/2026-11-24-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$4,640 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$4,640 來回含稅｜台灣虎航 12/01 出發"
-  },
-  {
    "slug": "deals-2026-11-24-taipei-miyazaki",
    "url": "/deals/2026-11-24-taipei-miyazaki/",
    "h1": "台北飛宮崎 NT$4,730 來回含稅｜台灣虎航 12/14 出發",
    "title": "台北飛宮崎 NT$4,730 來回含稅｜台灣虎航 12/14 出發"
+  },
+  {
+   "slug": "deals-2026-11-24-taipei-fukuoka",
+   "url": "/deals/2026-11-24-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$4,940 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$4,940 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-24-kaohsiung-okinawa",
@@ -518,14 +518,14 @@
   {
    "slug": "deals-2026-11-24-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-24-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,858",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,858"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,558",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,558"
   },
   {
    "slug": "deals-2026-11-24-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-24-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,539",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,539"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,239",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,239"
   },
   {
    "slug": "deals-2026-11-24-transfer-tokyo-fukushima",
@@ -1156,6 +1156,12 @@
    "url": "/japan-shop-card/",
    "h1": "日本 28 家店，各自刷哪張卡？",
    "title": "日本 28 家店各自刷哪張卡？三個金額的前三名一次看"
+  },
+  {
+   "slug": "japan-konbini-card",
+   "url": "/japan-konbini-card/",
+   "h1": "日本超商刷哪張卡？7-11、全家、LAWSON 算不算回饋",
+   "title": "日本超商刷哪張卡？7-11、全家、LAWSON 刷台灣信用卡算不算回饋"
   },
   {
    "slug": "tokyo-hostel",

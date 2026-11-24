@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-24-taichung-okinawa",
- "generated": "2026-11-24 15:28",
+ "generated": "2026-11-24 15:35",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -75,9 +75,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5353,
-   "dep": "2026-12-07",
-   "ret": "2026-12-10",
+   "price": 5421,
+   "dep": "2026-12-14",
+   "ret": "2026-12-17",
    "dept": "07:10",
    "rett": "21:05",
    "rt": true,
@@ -85,7 +85,7 @@
    "dur": 180,
    "dur_to": 90,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-12-07&inbound=OKA-RMQ&returnDate=2026-12-10&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-12-14&inbound=OKA-RMQ&returnDate=2026-12-17&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
