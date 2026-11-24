@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-24-taipei-osaka",
- "generated": "2026-11-24 10:07",
+ "generated": "2026-11-24 10:29",
  "kind": "fare",
  "origin": "taipei",
  "city": "osaka",
@@ -24,7 +24,7 @@
   "url": "https://www.aviasales.com/search/TPE2312KIX20011?t=MM17980518001798064400000150TPEKIX18004293001800438300000210KIXTPE_5a799303b43c11eec13c3edd1106711e_15763&search_date=21112026&expected_price_uuid=01a1ff04-30ea-8040-2e40-22d51b0f5a28&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=DzsKREnQOjDAAzM6TeK8jA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6332&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,038（10 天有紀錄），這張低 21%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,062（10 天有紀錄），這張低 21%"
  ],
  "med": 17013,
  "n_rt": 78,
@@ -71,9 +71,9 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 7162,
-   "dep": "2026-12-10",
-   "ret": "2026-12-15",
+   "price": 7195,
+   "dep": "2026-12-01",
+   "ret": "2026-12-03",
    "dept": "18:50",
    "rett": "07:15",
    "rt": true,
@@ -81,7 +81,7 @@
    "dur": 360,
    "dur_to": 150,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE1012KIX15121?t=MM17969286001796941200000150TPEKIX17973189001797327900000210KIXTPE_4c3f107a807ed868ce4734ba497c85ad_17811&search_date=20112026&expected_price_uuid=01a1fab7-da9a-8030-2b5f-d59c19f50175&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=2iSYi3xMiaG3GDYTVSU3UA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7162&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE0112KIX03121?t=MM17961510001796163600000150TPEKIX17962821001796291100000210KIXTPE_6070008f252ec612459252101abd0c13_17896&search_date=20112026&expected_price_uuid=01a1f93d-65fb-8040-2857-ef1eb689fff9&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=9Ynf-qoESIRBQ257yPXV3w&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7195&marker=775639"
   }
  ]
 }
