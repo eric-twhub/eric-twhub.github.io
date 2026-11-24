@@ -2937,6 +2937,10 @@ def _trim_note(content):
         msg = ('這一頁的內文沒有分潤連結，只有標示為廣告的版位是；'
                '透過那個版位完成訂購時本站可獲得分潤，不影響你的價格。<br>\n'
                if 'class="adbox"' in body else '這一頁沒有分潤連結。<br>\n')
+        # ShopBack 推薦好友連結不是聯盟連結，但本站拿得到獎勵金，要講清楚
+        if 'app.shopback.com/' in body_wo_ad:
+            msg = ('這一頁只有 ShopBack 的註冊連結是本站的推薦連結，用它註冊並達到條件時本站會拿到推薦獎勵金，'
+                   '不影響你的回饋；其他連結都沒有分潤。<br>\n')
         content = content[:a] + msg + content[b:]
     return (content.replace('<!--f-->', '').replace('<!--/f-->', '')
                    .replace('<!--a-->', '').replace('<!--/a-->', ''))
@@ -28838,6 +28842,22 @@ if BH:
 # 不另開排程。瀏覽器端仍會讀 /cashback.json 重畫，過了結束時間的加碼自動當成平時。
 # 兩個平台都和本站沒有合作，頁面上的連結都沒有分潤（讀者從這裡繞去返利平台，
 # Klook／KKday 的訂單就不算本站的，這是 2026-11-21 使用者決定接受的取捨）。
+# ShopBack 推薦好友連結（使用者本人的，cashback-rules.json 的 sb_ref）。
+# 條款只允許放在自己的網站或平台；放的地方要同時講清楚本站拿得到推薦獎勵金。
+_SB_REF = (json.load(open('cashback-rules.json', encoding='utf-8')).get('sb_ref')
+           if os.path.exists('cashback-rules.json') else None)
+
+def sb_ref_box(lead):
+    if not _SB_REF:
+        return ''
+    return ('<div class="tldr"><ul><li>'
+            f'<b>{lead}</b>'
+            f'用<a href="{html.escape(_SB_REF["url"])}" rel="sponsored nofollow noopener" target="_blank">本站的 ShopBack 推薦連結</a>註冊，'
+            '之後透過 ShopBack 下單累積滿 NT$800、回饋狀態變成「已確認」，再補好銀行資料、可提領的回饋滿 NT$200，'
+            '你會拿到新會員註冊獎勵金，本站也會拿到推薦獎勵金。兩邊各多少，以註冊頁顯示的為準'
+            f'（<a href="{html.escape(_SB_REF["friend_src"])}" rel="nofollow noopener" target="_blank">ShopBack 說明</a>）。'
+            '已經有帳號的不用重新註冊，照常從商家頁點進去就好。</li></ul></div>')
+
 if os.path.exists('cashback.json') and os.path.exists('cashback-rules.json'):
     CB = json.load(open('cashback.json', encoding='utf-8'))
     CBS = json.load(open('cashback-src.json', encoding='utf-8'))
@@ -29056,6 +29076,9 @@ if os.path.exists('cashback.json') and os.path.exists('cashback-rules.json'):
          '多半沒有。ShopBack 寫明用了不是 ShopBack 給的優惠碼整筆不給，KKday 只認 ShopBack 專屬碼；'
          'LINE 旅遊的 Klook 也只認 LINE 旅遊給的碼。優惠碼和回饋二選一時，先算哪個比較多。'),
         ('這頁的連結有分潤嗎？',
+         ('商家連結沒有。本站和 ShopBack、LINE 都沒有合作，點去商家頁的都是一般連結。'
+          '只有「還沒有 ShopBack 帳號」那個註冊連結是本站的推薦連結，用它註冊並達到條件，本站會拿到推薦獎勵金，你的回饋不會變少。')
+         if _SB_REF else
          '沒有。本站和 ShopBack、LINE 都沒有合作，這頁的連結都是一般連結。'),
     ]
     _cb_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
@@ -29114,6 +29137,7 @@ var tp=document.getElementById("cbtop");if(tp)tp.innerHTML=top?"現在最高："
       + '<ul class="xl" id="cbnow">' + (_cb_boost or '<li><div class="xt">現在兩邊都沒有 3% 以上的加碼，下面的比較表是平時的回饋。</div></li>') + '</ul>'
       + '<p class="disc">去看兩邊今天的加碼：' + '、'.join(_cb_lk(p['daily'], p['name']) for p in CBR['platforms'])
       + '。ShopBack 的平時值是本站在沒有加碼時抓到的數字，還沒抓到過的商家寫「平時值還沒抓到」。</p>'
+      + sb_ref_box('還沒有 ShopBack 帳號？')
       + '<h2>依類別比較：住宿、行程門票、機票、網卡</h2>'
       + '<p class="lede">每一格是那個類別裡最高的那一層。各商家怎麼分層不一樣，細項請點進商家頁看。'
         'LINE購物上的 Klook、KKday 就是 LINE 旅遊的同一批商家，比例相同，所以這裡只列 LINE 旅遊。</p>'
@@ -29161,7 +29185,8 @@ var tp=document.getElementById("cbtop");if(tp)tp.innerHTML=top?"現在最高："
       + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🎟️ 日本購物折扣</b><s>藥妝、電器、百貨的優惠券</s></a></div>'
       + '<p class="disc">回饋比例取自 ShopBack 台灣與 LINE 旅遊（buy.line.me）的公開商家頁，每天自動抓取一次；'
         f'取消條件、領取方式與折扣碼查證於 {CBR["checked"]}。各平台隨時調整，請以點進去當下的頁面為準。'
-        '本站與 ShopBack、LINE 沒有合作，這頁的連結都沒有分潤。</p>'
+        + ('本站與 ShopBack、LINE 沒有合作，商家連結都沒有分潤；ShopBack 的註冊連結是本站的推薦連結。</p>'
+           if _SB_REF else '本站與 ShopBack、LINE 沒有合作，這頁的連結都沒有分潤。</p>')
       + _cb_js
       + foot())
     pages.append(('/japan-cashback/', 0.7))
@@ -29406,6 +29431,7 @@ if PC:
       + '<p class="lede">還要扣掉三個隱性成本：</p>'
       + '<div class="tldr"><ul>' + _pc_hid + '</ul></div>'
       + f'<p class="disc">{html.escape(_pc_r["practical"])}</p>'
+      + sb_ref_box('算過值得繞、還沒有 ShopBack 帳號？')
       + _pcg_cards
       + '<h2>怎麼比才不會白花錢</h2>' + _pc_chk
       + cta('hotel', '東京', '東京', '知道怎麼比了，去查你的房價',
