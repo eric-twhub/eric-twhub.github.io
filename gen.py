@@ -25359,6 +25359,9 @@ if os.path.exists('cards.json'):
       + '<h2>順便看看</h2><div class="cities">'
       + f'<a class="ct" href="{U("/japan-card-calculator/")}"><b>🧮 回饋計算機</b>'
         f'<s>輸入日幣金額，換算回饋</s></a>'
+      + (f'<a class="ct" href="{U("/japan-konbini-card/")}"><b>🏪 日本超商刷哪張卡</b>'
+         f'<s>很多卡的超商排除沒寫只限台灣</s></a>'
+         if os.path.exists('cvs-cards.json') else '')
       + f'<a class="ct" href="{U("/japan-card-tracker/")}"><b>📊 信用卡回饋記錄</b>'
         f'<s>記已刷金額，算下一筆該刷哪張</s></a>'
       + f'<a class="ct" href="{U("/japan-card-labels/")}"><b>🏷️ 可列印小抄</b>'
