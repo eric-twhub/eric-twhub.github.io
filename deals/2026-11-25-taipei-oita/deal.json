@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-25-taipei-oita",
- "generated": "2026-11-25 22:00",
+ "generated": "2026-11-25 22:07",
  "kind": "fare",
  "origin": "taipei",
  "city": "oita",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5462,
+  "price": 5762,
   "dep": "2026-12-19",
   "ret": "2027-01-16",
   "dept": "12:00",
