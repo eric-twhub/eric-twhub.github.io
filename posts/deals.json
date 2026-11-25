@@ -14,7 +14,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$5,101（15 天有紀錄），這張低 41%"
+   "12 月出發的票，每天最便宜的平均要 NT$5,210（15 天有紀錄），這張低 42%"
   ],
   "med": 11078,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-17&inbound=OKA-TPE&returnDate=2026-12-24&type=return&adult=1&language=zh-TW",
@@ -26,7 +26,7 @@
    "days": 16
   },
   "mbase": {
-   "avg": 5101,
+   "avg": 5210,
    "days": 15,
    "month": 12
   },
@@ -48,24 +48,20 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$5,731（5 天有紀錄），這張低 40%"
+   "這條航線平常最低落在 NT$3,615–NT$7,129，這張是近期 16 筆紀錄中第 1 低"
   ],
-  "med": 13809,
+  "med": 12975,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-09&inbound=ISG-TPE&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
   "hotelcity": "石垣島",
   "cslug": "ishigaki",
   "usual": {
    "lo": 3615,
-   "hi": 8713,
-   "days": 8
+   "hi": 7129,
+   "days": 7
   },
-  "mbase": {
-   "avg": 5731,
-   "days": 5,
-   "month": 12
-  },
+  "mbase": null,
   "rank": 1,
-  "n": 18
+  "n": 16
  },
  {
   "slug": "2026-11-26-taichung-okinawa",
@@ -82,92 +78,58 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "11 月出發的票，每天最便宜的平均要 NT$7,291（5 天有紀錄），這張低 47%"
+   "11 月出發的票，每天最便宜的平均要 NT$7,288（5 天有紀錄），這張低 47%"
   ],
-  "med": 10237,
+  "med": 10226,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-OKA&departureDate=2026-11-30&inbound=OKA-RMQ&returnDate=2026-12-03&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
    "lo": 5355,
-   "hi": 10804,
+   "hi": 10815,
    "days": 29
   },
   "mbase": {
-   "avg": 7291,
+   "avg": 7288,
    "days": 5,
    "month": 11
   },
   "rank": 1,
-  "n": 80
- },
- {
-  "slug": "2026-11-26-taipei-fukuoka",
-  "title": "台北飛福岡 NT$4,883 來回含稅｜台灣虎航 12/29 出發",
-  "o": "台北",
-  "c": "福岡",
-  "_oiata": "TPE",
-  "_diata": "FUK",
-  "price": 4883,
-  "air": "台灣虎航",
-  "dep": "2026-12-29",
-  "ret": "2027-01-05",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$7,345（11 天有紀錄），這張低 34%"
-  ],
-  "med": 14180,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-29&inbound=FUK-TPE&returnDate=2027-01-05&type=return&adult=1&language=zh-TW",
-  "hotelcity": "福岡",
-  "cslug": "fukuoka",
-  "usual": {
-   "lo": 5283,
-   "hi": 9109,
-   "days": 12
-  },
-  "mbase": {
-   "avg": 7345,
-   "days": 11,
-   "month": 12
-  },
-  "rank": 1,
-  "n": 32
+  "n": 79
  },
  {
   "slug": "2026-11-26-kaohsiung-okinawa",
-  "title": "高雄飛沖繩 NT$4,993 來回含稅｜台灣虎航 12/29 出發",
+  "title": "高雄飛沖繩 NT$4,396 來回含稅｜台灣虎航 12/17 出發",
   "o": "高雄",
   "c": "沖繩",
   "_oiata": "KHH",
   "_diata": "OKA",
-  "price": 4993,
+  "price": 4396,
   "air": "台灣虎航",
-  "dep": "2026-12-29",
-  "ret": "2027-01-01",
+  "dep": "2026-12-17",
+  "ret": "2027-01-15",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$5,718（9 天有紀錄），這張低 13%"
+   "12 月出發的票，每天最便宜的平均要 NT$5,557（9 天有紀錄），這張低 21%"
   ],
   "med": 5424,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-29&inbound=OKA-KHH&returnDate=2027-01-01&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-17&inbound=OKA-KHH&returnDate=2027-01-15&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
-   "lo": 4944,
-   "hi": 6493,
+   "lo": 4852,
+   "hi": 6403,
    "days": 9
   },
   "mbase": {
-   "avg": 5718,
+   "avg": 5557,
    "days": 9,
    "month": 12
   },
-  "rank": 3,
-  "n": 14
+  "rank": 1,
+  "n": 15
  },
  {
   "slug": "2026-11-26-taipei-saga",
@@ -220,23 +182,48 @@
   "n": 1
  },
  {
+  "slug": "2026-11-26-taichung-nagoya",
+  "title": "台中飛名古屋 NT$5,202 來回含稅｜台灣虎航 12/28 出發",
+  "o": "台中",
+  "c": "名古屋",
+  "_oiata": "RMQ",
+  "_diata": "NGO",
+  "price": 5202,
+  "air": "台灣虎航",
+  "dep": "2026-12-28",
+  "ret": "2027-01-06",
+  "stops": "直飛",
+  "cls": "lcc",
+  "reasons": [
+   "廉航低於 NT$6,000"
+  ],
+  "med": 5962,
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-28&inbound=NGO-RMQ&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
+  "hotelcity": "名古屋",
+  "cslug": "nagoya",
+  "usual": null,
+  "mbase": null,
+  "rank": 1,
+  "n": 3
+ },
+ {
   "slug": "2026-11-26-taipei-miyazaki",
-  "title": "台北飛宮崎 NT$5,274 來回含稅｜台灣虎航 12/07 出發",
+  "title": "台北飛宮崎 NT$5,212 來回含稅｜台灣虎航 12/14 出發",
   "o": "台北",
   "c": "宮崎",
   "_oiata": "TPE",
   "_diata": "KMI",
-  "price": 5274,
+  "price": 5212,
   "air": "台灣虎航",
-  "dep": "2026-12-07",
-  "ret": "2026-12-14",
+  "dep": "2026-12-14",
+  "ret": "2026-12-21",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000"
   ],
   "med": 11262,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-07&inbound=KMI-TPE&returnDate=2026-12-14&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-14&inbound=KMI-TPE&returnDate=2026-12-21&type=return&adult=1&language=zh-TW",
   "hotelcity": "宮崎",
   "cslug": "miyazaki",
   "usual": null,
@@ -245,38 +232,38 @@
   "n": 6
  },
  {
-  "slug": "2026-11-26-kaohsiung-fukuoka",
-  "title": "高雄飛福岡 NT$5,343 來回含稅｜台灣虎航 12/29 出發",
-  "o": "高雄",
+  "slug": "2026-11-26-taipei-fukuoka",
+  "title": "台北飛福岡 NT$5,343 來回含稅｜台灣虎航 12/01 出發",
+  "o": "台北",
   "c": "福岡",
-  "_oiata": "KHH",
+  "_oiata": "TPE",
   "_diata": "FUK",
   "price": 5343,
   "air": "台灣虎航",
-  "dep": "2026-12-29",
-  "ret": "2027-01-08",
+  "dep": "2026-12-01",
+  "ret": "2026-12-22",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$7,290（7 天有紀錄），這張低 27%"
+   "12 月出發的票，每天最便宜的平均要 NT$7,465（11 天有紀錄），這張低 28%"
   ],
-  "med": 7577,
-  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-29&inbound=FUK-KHH&returnDate=2027-01-08&type=return&adult=1&language=zh-TW",
+  "med": 14380,
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 6662,
-   "hi": 7877,
-   "days": 7
+   "lo": 5343,
+   "hi": 9177,
+   "days": 12
   },
   "mbase": {
-   "avg": 7290,
-   "days": 7,
+   "avg": 7465,
+   "days": 11,
    "month": 12
   },
   "rank": 1,
-  "n": 14
+  "n": 30
  },
  {
   "slug": "2026-11-26-taipei-oita",
@@ -304,29 +291,37 @@
   "n": 6
  },
  {
-  "slug": "2026-11-26-taichung-nagoya",
-  "title": "台中飛名古屋 NT$5,962 來回含稅｜台灣虎航 12/30 出發",
-  "o": "台中",
-  "c": "名古屋",
-  "_oiata": "RMQ",
-  "_diata": "NGO",
-  "price": 5962,
+  "slug": "2026-11-26-kaohsiung-fukuoka",
+  "title": "高雄飛福岡 NT$6,202 來回含稅｜台灣虎航 12/29 出發",
+  "o": "高雄",
+  "c": "福岡",
+  "_oiata": "KHH",
+  "_diata": "FUK",
+  "price": 6202,
   "air": "台灣虎航",
-  "dep": "2026-12-30",
-  "ret": "2027-01-04",
+  "dep": "2026-12-29",
+  "ret": "2027-01-08",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "廉航低於 NT$6,000"
+   "12 月出發的票，每天最便宜的平均要 NT$7,581（7 天有紀錄），這張低 18%"
   ],
-  "med": 5962,
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-30&inbound=NGO-RMQ&returnDate=2027-01-04&type=return&adult=1&language=zh-TW",
-  "hotelcity": "名古屋",
-  "cslug": "nagoya",
-  "usual": null,
-  "mbase": null,
+  "med": 7827,
+  "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-29&inbound=FUK-KHH&returnDate=2027-01-08&type=return&adult=1&language=zh-TW",
+  "hotelcity": "福岡",
+  "cslug": "fukuoka",
+  "usual": {
+   "lo": 7062,
+   "hi": 8177,
+   "days": 7
+  },
+  "mbase": {
+   "avg": 7581,
+   "days": 7,
+   "month": 12
+  },
   "rank": 1,
-  "n": 3
+  "n": 14
  },
  {
   "slug": "2026-11-26-taipei-osaka",
@@ -344,13 +339,13 @@
   "reasons": [
    "12 月出發的票，每天最便宜的平均要 NT$7,930（10 天有紀錄），這張低 20%"
   ],
-  "med": 17385,
+  "med": 17435,
   "url": "https://www.aviasales.com/search/TPE2312KIX20011?t=MM17980518001798064400000150TPEKIX18004293001800438300000210KIXTPE_5a799303b43c11eec13c3edd1106711e_15763&search_date=21112026&expected_price_uuid=01a1ff04-30ea-8040-2e40-22d51b0f5a28&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=DzsKREnQOjDAAzM6TeK8jA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6332&marker=775639",
   "hotelcity": "大阪",
   "cslug": "osaka",
   "usual": {
    "lo": 6338,
-   "hi": 10551,
+   "hi": 12740,
    "days": 13
   },
   "mbase": {
@@ -359,7 +354,7 @@
    "month": 12
   },
   "rank": 1,
-  "n": 76
+  "n": 71
  },
  {
   "slug": "2026-11-26-taipei-okayama",
@@ -408,19 +403,19 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "12 月出發的票，每天最便宜的平均要 NT$8,870（12 天有紀錄），這張低 16%"
+   "12 月出發的票，每天最便宜的平均要 NT$8,893（12 天有紀錄），這張低 17%"
   ],
   "med": 15397,
   "url": "https://www.aviasales.com/search/KHH1612KIX14011?t=IT17974308001797444300000165KHHKIX17999262001799935200000210KIXKHH_714e4c00c8d99136f0cf61fd183f6483_18470&search_date=19112026&expected_price_uuid=01a1f5bd-da68-8040-24a0-fa71f06fa3ee&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Vs4DVZj-s0QmIWOkx35L_Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7420&marker=775639",
   "hotelcity": "大阪",
   "cslug": "osaka",
   "usual": {
-   "lo": 7366,
+   "lo": 7350,
    "hi": 11386,
    "days": 15
   },
   "mbase": {
-   "avg": 8870,
+   "avg": 8893,
    "days": 12,
    "month": 12
   },
@@ -428,85 +423,52 @@
   "n": 60
  },
  {
-  "slug": "2026-11-26-taipei-tokyo",
-  "title": "台北飛東京 NT$7,920 來回含稅｜酷航 12/28 出發",
-  "o": "台北",
-  "c": "東京",
-  "_oiata": "TPE",
-  "_diata": "TYO",
-  "price": 7920,
-  "air": "酷航",
-  "dep": "2026-12-28",
-  "ret": "2027-01-11",
-  "stops": "直飛",
-  "cls": "lcc",
-  "reasons": [
-   "12 月出發的票，每天最便宜的平均要 NT$8,943（15 天有紀錄），這張低 11%"
-  ],
-  "med": 11548,
-  "url": "https://www.aviasales.com/search/TPE2812NRT11011?t=GK17984682001798482600000180TPENRT17996562001799668200000260NRTTPE_3bc17244e81355db713647f4b9e8d7ca_19733&search_date=23112026&expected_price_uuid=01a208b1-d898-8031-2990-36ac07feaa32&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=7Idkzqb8yS8OOWFGtpoeFA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7920&marker=775639",
-  "hotelcity": "東京",
-  "cslug": "tokyo",
-  "usual": {
-   "lo": 7920,
-   "hi": 11195,
-   "days": 18
-  },
-  "mbase": {
-   "avg": 8943,
-   "days": 15,
-   "month": 12
-  },
-  "rank": 2,
-  "n": 71
- },
- {
   "slug": "2026-11-26-transfer-fukuoka-kumamoto",
-  "title": "飛福岡轉乘去熊本，比直飛省 NT$3,613",
+  "title": "飛福岡轉乘去熊本，比直飛省 NT$3,153",
   "o": "台灣",
   "c": "熊本",
   "via": "福岡",
-  "price": 7115,
+  "price": 7575,
   "air": "飛福岡再轉乘",
-  "fl_price": 4883,
+  "fl_price": 5343,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1116,
   "tr_mode": "九州新幹線",
-  "dep": "2026-12-29",
+  "dep": "2026-12-01",
   "ret": "",
   "stops": "九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$3,613"
+   "比直飛省 NT$3,153"
   ],
   "med": 10728,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-29&inbound=FUK-TPE&returnDate=2027-01-05&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
   "hotelcity": "熊本",
   "cslug": "kumamoto"
  },
  {
   "slug": "2026-11-26-transfer-fukuoka-nagasaki",
-  "title": "飛福岡轉乘去長崎，比直飛省 NT$4,296",
+  "title": "飛福岡轉乘去長崎，比直飛省 NT$3,836",
   "o": "台灣",
   "c": "長崎",
   "via": "福岡",
-  "price": 7387,
+  "price": 7847,
   "air": "飛福岡再轉乘",
-  "fl_price": 4883,
+  "fl_price": 5343,
   "fl_rt": true,
   "fl_to": "福岡",
   "tr_twd": 1252,
   "tr_mode": "特急接力海鷗＋西九州新幹線",
-  "dep": "2026-12-29",
+  "dep": "2026-12-01",
   "ret": "",
   "stops": "特急接力海鷗＋西九州新幹線",
   "cls": "transfer",
   "reasons": [
-   "比直飛省 NT$4,296"
+   "比直飛省 NT$3,836"
   ],
   "med": 11683,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-29&inbound=FUK-TPE&returnDate=2027-01-05&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
   "hotelcity": "長崎",
   "cslug": "nagasaki"
  },
