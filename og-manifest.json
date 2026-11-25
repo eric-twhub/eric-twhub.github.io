@@ -444,34 +444,28 @@
    "title": "台北飛石垣島 NT$3,415 來回含稅｜台灣虎航 12/09 出發"
   },
   {
-   "slug": "deals-2026-11-25-taichung-okinawa",
-   "url": "/deals/2026-11-25-taichung-okinawa/",
-   "h1": "台中飛沖繩 NT$3,896 來回含稅｜台灣虎航 11/30 出發",
-   "title": "台中飛沖繩 NT$3,896 來回含稅｜台灣虎航 11/30 出發"
-  },
-  {
    "slug": "deals-2026-11-25-taipei-fukuoka",
    "url": "/deals/2026-11-25-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$4,555 來回含稅｜台灣虎航 12/29 出發",
-   "title": "台北飛福岡 NT$4,555 來回含稅｜台灣虎航 12/29 出發"
+   "h1": "台北飛福岡 NT$4,483 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$4,483 來回含稅｜台灣虎航 12/01 出發"
+  },
+  {
+   "slug": "deals-2026-11-25-taichung-okinawa",
+   "url": "/deals/2026-11-25-taichung-okinawa/",
+   "h1": "台中飛沖繩 NT$4,855 來回含稅｜台灣虎航 11/30 出發",
+   "title": "台中飛沖繩 NT$4,855 來回含稅｜台灣虎航 11/30 出發"
+  },
+  {
+   "slug": "deals-2026-11-25-taipei-miyazaki",
+   "url": "/deals/2026-11-25-taipei-miyazaki/",
+   "h1": "台北飛宮崎 NT$4,862 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台北飛宮崎 NT$4,862 來回含稅｜台灣虎航 12/14 出發"
   },
   {
    "slug": "deals-2026-11-25-kaohsiung-okinawa",
    "url": "/deals/2026-11-25-kaohsiung-okinawa/",
    "h1": "高雄飛沖繩 NT$4,993 來回含稅｜台灣虎航 12/29 出發",
    "title": "高雄飛沖繩 NT$4,993 來回含稅｜台灣虎航 12/29 出發"
-  },
-  {
-   "slug": "deals-2026-11-25-taipei-saga",
-   "url": "/deals/2026-11-25-taipei-saga/",
-   "h1": "台北飛佐賀 NT$5,055 來回含稅｜台灣虎航 12/03 出發",
-   "title": "台北飛佐賀 NT$5,055 來回含稅｜台灣虎航 12/03 出發"
-  },
-  {
-   "slug": "deals-2026-11-25-taipei-miyazaki",
-   "url": "/deals/2026-11-25-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$5,062 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台北飛宮崎 NT$5,062 來回含稅｜台灣虎航 12/14 出發"
   },
   {
    "slug": "deals-2026-11-25-kaohsiung-ishigaki",
@@ -484,6 +478,12 @@
    "url": "/deals/2026-11-25-taichung-nagoya/",
    "h1": "台中飛名古屋 NT$5,202 來回含稅｜台灣虎航 12/28 出發",
    "title": "台中飛名古屋 NT$5,202 來回含稅｜台灣虎航 12/28 出發"
+  },
+  {
+   "slug": "deals-2026-11-25-taipei-saga",
+   "url": "/deals/2026-11-25-taipei-saga/",
+   "h1": "台北飛佐賀 NT$5,274 來回含稅｜台灣虎航 12/03 出發",
+   "title": "台北飛佐賀 NT$5,274 來回含稅｜台灣虎航 12/03 出發"
   },
   {
    "slug": "deals-2026-11-25-kaohsiung-fukuoka",
@@ -530,14 +530,14 @@
   {
    "slug": "deals-2026-11-25-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-25-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,943",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,943"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$4,015",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$4,015"
   },
   {
    "slug": "deals-2026-11-25-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-25-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,624",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,624"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,696",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,696"
   },
   {
    "slug": "deals-2026-11-25-transfer-tokyo-fukushima",
@@ -1552,6 +1552,12 @@
    "url": "/japan-pachinko/",
    "h1": "日本柏青哥：規定、換錢與店內規矩",
    "title": "日本柏青哥是什麼：18 歲限制、為什麼不能直接換現金、店內規矩（法規原文整理）"
+  },
+  {
+   "slug": "japan-game-center",
+   "url": "/japan-game-center/",
+   "h1": "日本遊戲中心：夾娃娃、集點與規定",
+   "title": "日本夾娃娃機與遊戲中心：有沒有保夾、景品約 1,000 円、集點 App、18 歲限制（官方整理）"
   },
   {
    "slug": "japan-takayama-shirakawago-bus",

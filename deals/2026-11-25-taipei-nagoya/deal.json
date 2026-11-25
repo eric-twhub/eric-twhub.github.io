@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-25-taipei-nagoya",
- "generated": "2026-11-25 14:58",
+ "generated": "2026-11-25 15:40",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -28,7 +28,7 @@
   "12 月出發的票，每天最便宜的平均要 NT$9,480（6 天有紀錄），這張低 14%"
  ],
  "med": 14456,
- "n_rt": 18,
+ "n_rt": 16,
  "others": [
   {
    "o": "TPE",
