@@ -3059,7 +3059,9 @@ _AD_ROTATE = ['esim', 'activity2', 'transfer', 'car', 'transport']
 # eSIM 版位是 Klook，輪到它時改配下一個。新增同類頁面要加進來。
 _NO_KLOOK = ('tokyo/63angel', 'tokyo/superspark', 'okinawa/churasun6', 'sapporo/jolijo',
              'osaka/splash', 'osaka/burlesque', 'nagoya/burlesque', 'tokyo/rockza',
-             'tokyo/samurai-restaurant')
+             'tokyo/samurai-restaurant',
+             'osaka/nightlife', 'kyoto/nightlife', 'nagoya/nightlife', 'fukuoka/nightlife',
+             'sapporo/nightlife', 'okinawa/nightlife')
 _KLOOK_KINDS = ('esim',)
 
 def _no_klook(path):
@@ -33864,6 +33866,124 @@ if OBS:
               + ([('/hokkaido/observation-decks/', '❄️ 北海道觀景台懶人包', '札幌電視塔、藻岩山、函館山')] if '北海道' in _ob_regions else []),
           f'更新於 {_ob_today.isoformat()}・資料來自各觀景台官網', show_region=True)
 
+# ---------- 城市夜生活懶人包（nightlife.json）----------
+# 2026-11-25：GSC 顯示 Splash 頁一頁就有 119 次點擊，自動完成裡反覆出現的是「城市＋夜生活」
+# （推薦、攻略、表演、有夜生活嗎），所以做成城市層級的懶人包：大部分是夜景、橫丁、屋台、
+# 表演與夜間行程，秀場只是一段、連到既有的店家頁。資料全部來自觀光局、市府、警察與設施官網。
+# 季節限定的項目有 from／until，過了自動不出現；夜景那段直接從觀景台資料算「開到幾點」。
+# 這幾頁也列在 _NO_KLOOK：秀場那段連到的頁面不能放 Klook，整頁一起不放比較單純。
+if os.path.exists('nightlife.json'):
+    NL = json.load(open('nightlife.json', encoding='utf-8'))
+    _nl_ok = lambda x: (not x.get('from') or x['from'] <= TODAY) and (not x.get('until') or TODAY <= x['until'])
+    _nl_lk = lambda u, t='出處': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+    _nl_md = lambda s: f'{int(s[5:7])}/{int(s[8:10])}'
+    if _KK1 is None:
+        _KK1 = {str(x) for x in json.load(open('kkday-1pct.json', encoding='utf-8'))['ids']}
+    _nl_all = [c for c in NL['cities']]
+
+    def _nl_items(xs, kind):
+        out = ''
+        for x in xs:
+            if not _nl_ok(x):
+                continue
+            meta = []
+            for k, lab in (('time', '時間'), ('hours', '營業'), ('price', '價格'), ('book', '怎麼訂'), ('station', '怎麼去')):
+                if x.get(k):
+                    meta.append(f'<b>{lab}</b> {html.escape(x[k])}')
+            badge = ''
+            # 有 season 就用 season 的說法（例如換班表、只有幾天），until 只拿來自動下架
+            if x.get('season'):
+                badge = f'<span class="xbadge">{html.escape(x["season"])}</span>'
+            elif x.get('until'):
+                badge = f'<span class="xbadge on">到 {_nl_md(x["until"])}</span>'
+            out += (f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}'
+                    + (f'<small>（{html.escape(x["ja"])}）</small>' if x.get('ja') and x['ja'] != x['name'] else '')
+                    + f'</span>{badge}</div>'
+                    f'<div class="xt">{html.escape(x["text"])}</div>'
+                    + (f'<div class="xw">{"　·　".join(meta)}</div>' if meta else '')
+                    + f'<div class="xw">{_nl_lk(x["src"])}'
+                    + (f'・{_nl_lk(x["src2"], "官網")}' if x.get('src2') else '') + '</div></li>')
+        return f'<ul class="xl">{out}</ul>' if out else ''
+
+    for C in _nl_all:
+        _k, _nm = C['key'], C['name']
+        _path = f'{_k}/nightlife/'
+        # 夜景：觀景台資料裡這個城市、未來 90 天大部分日子開到 21:00 以後的
+        _nd = []
+        if OBS and '_ob_late' in globals():
+            _nd = [r for r in OBS if r.get('city') in C['deck_cities'] and not r.get('cafe') and (_ob_late(r) or 0) >= 21 * 60]
+            _nd.sort(key=lambda r: -_ob_late(r))
+        _nd_html = ''
+        if _nd:
+            _nd_html = ('<h2>看夜景：晚上還開著的展望台</h2>'
+                        f'<p class="lede">{_nm}的觀景台裡，未來 90 天大部分日子開到 21:00 以後的有 {len(_nd)} 處，'
+                        '括號是關門時間，最後入場通常更早 30 分鐘左右。點名稱看當天的時間與怎麼去。</p>'
+                        '<ul class="xl">'
+                        + ''.join(f'<li><div class="xh"><span class="xn"><a href="{U(r["page"])}#{r["key"]}">{html.escape(r["name"])}</a></span>'
+                                  f'<span class="xbadge">{_ob_cl(_ob_late(r))}</span></div>'
+                                  f'<div class="xw">{html.escape(r.get("near") or "")}</div></li>' for r in _nd)
+                        + '</ul>')
+        _shows = [x for x in C['shows'] if _nl_ok(x)]
+        # 寫了 season 的（換班表、只有幾天）until 不是「活動到哪天」，不算期間限定
+        _season = [x for x in _shows if x.get('until') and not x.get('season')]
+        _venues = C.get('venues') or []
+        _kk = []
+        for it in C.get('kkday') or []:
+            if str(it['id']) in _KK1:
+                raise SystemExit(f'夜生活頁：{_k} 的 KKday 商品 {it["id"]} 在 1% 清單裡')
+            _kk.append({'provider': 'kkday', 'id': it['id'], 'url': f'https://www.kkday.com/zh-tw/product/{it["id"]}',
+                        'name': it['name'], 'area': it['area'], 'note': ''})
+        # 答案框：算出來的，不寫死
+        _ans = []
+        if _nd:
+            _ans.append(f'展望台開最晚的是 {html.escape(_nd[0]["name"])}（{_ob_cl(_ob_late(_nd[0]))}）')
+        if _season:
+            _ans.append('期間限定：' + '、'.join(f'{html.escape(x["name"])}到 {_nl_md(x["until"])}' for x in _season[:3]))
+        _faq = [tuple(q) for q in C['faq']]
+        if _nd:
+            _faq.append((f'{_nm}晚上哪裡可以看夜景？',
+                         '開到 21:00 以後的觀景台有：' + '、'.join(f'{r["name"]}（{_ob_cl(_ob_late(r))}）' for r in _nd) + '。最後入場通常更早。'))
+        _ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                          'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _faq]},
+                         ensure_ascii=False)
+        _others = [o for o in _nl_all if o['key'] != _k]
+        write(f'{_path}index.html',
+          head(C['title'], C['desc'], _path, '<script type="application/ld+json">' + _ld + '</script>')
+          + topnav() + crumbs([('首頁', '/')] + ([(_nm, f'/{_k}/')] if os.path.exists(f'{_k}/index.html') else []) + [(f'{_nm}夜生活', None)])
+          + f'<h1>{html.escape(C["h1"])}</h1>'
+          + f'<p class="lede">{html.escape(C["lede"])}</p>'
+          + ('<div class="today"><div class="tday">晚上出門前先看</div>'
+             f'<div class="tans">{"；".join(_ans)}</div>'
+             f'<div class="tsub">{html.escape(C["tip"])}</div></div>' if _ans else
+             # 沒有算得出來的答案（例如沒有開到晚上的展望台）就只放提醒，不讓整格消失
+             '<div class="today"><div class="tday">晚上出門前先看</div>'
+             f'<div class="tans">{html.escape(C["tip"])}</div></div>')
+          + '<h2>晚上去哪一區</h2>'
+          + f'<p class="lede">{html.escape(C["areas_lede"])}</p>' + _nl_items(C['areas'], 'area')
+          + '<h2>吃宵夜、續攤：橫丁、屋台與美食街</h2>'
+          + f'<p class="lede">{html.escape(C["food_lede"])}</p>' + _nl_items(C['food'], 'food')
+          + ('<h2>表演與夜間活動</h2>' + f'<p class="lede">{html.escape(C["shows_lede"])}</p>' + _nl_items(_shows, 'show') if _shows else '')
+          + _nd_html
+          + (adbox_tickets(_kk, f'night_{_k}', f'{_nm}可以先訂的夜間行程', '用中文、台幣先訂好，現場不用再找', '售價以 KKday 頁面為準，本站不另外標價。') if _kk else '')
+          + ('<h2>尺度較大的秀場</h2>'
+             '<p class="lede">下面幾家的表演尺度比較大，未滿 20 歲不能入場。每一頁都整理了官網寫的價格、營業日與去過的人怎麼說。</p>'
+             '<div class="cities">' + ''.join(f'<a class="ct" href="{U(v["path"])}"><b>{html.escape(v["name"])}</b><s>{html.escape(v["text"])}</s></a>' for v in _venues) + '</div>'
+             if _venues else '')
+          + '<h2>小心路上拉客</h2>'
+          + '<div class="tldr"><ul>' + ''.join(f'<li>{html.escape(s["text"])}（{_nl_lk(s["src"])}）</li>' for s in C['safety']) + '</ul></div>'
+          + '<h2>末班車</h2>'
+          + f'<p class="lede">{html.escape(C["transit_lede"])}</p>'
+          + '<ul class="xl">' + ''.join(f'<li><div class="xh"><span class="xn">{_nl_lk(t["src"], html.escape(t["name"]))}</span></div></li>' for t in C['transit']) + '</ul>'
+          + faq_visible(_faq)
+          + '<h2>其他城市的夜生活</h2><div class="cities">'
+          + ''.join(f'<a class="ct" href="{U("/" + o["key"] + "/nightlife/")}"><b>🌙 {html.escape(o["name"])}夜生活</b><s>{html.escape(o["card"])}</s></a>' for o in _others)
+          + '</div>'
+          + f'<p class="disc">區域、橫丁與表演的資料來自各地觀光局、市府與設施官網，查證於 {NL["checked"]}；'
+            '各店營業時間多半以店家為準，出發前請再看一次官網。季節限定的活動過了期間會自動從這頁拿掉。</p>'
+          + foot())
+        pages.append((f'/{_k}/nightlife/', 0.6))
+    print(f'   夜生活頁：{len(_nl_all)} 個城市')
+
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
 # 12/1 前後會變的在這裡算：票價（2,800 → 2,900）、9:50 那班 12/1 起才有、班次數。
@@ -35304,6 +35424,13 @@ SEARCH_SYN = [
     ['nagoya de show', 'nagoyadeshow', 'ナゴヤデショー', 'ナゴヤ・デ・ショー', 'バーレスクts', 'burlesque ts', 'burlesquets', 'バーレスクTS'],
     ['barlesque', 'barlesque nagoya', 'burlesque nagoya', 'burlesque名古屋', 'バーレスク名古屋', '名古屋バーレスク', '名古屋burlesque', '名古屋 burlesque'],
     ['名古屋夜生活', '名古屋 夜生活', '名古屋夜店', '名古屋秀場', '名古屋 秀'],
+    ['夜生活', '夜遊', '夜店', '夜晚', '晚上去哪', '晚上去哪裡', '晚上去哪玩', '晚上做什麼', '晚上可以做什麼', '晚上能做什麼', '晚上好玩', 'nightlife', 'night life', 'ナイトライフ', '夜の街', '夜遊び'],
+    ['宵夜', '消夜', '續攤', '续摊', '居酒屋街', 'はしご酒', '飲み屋街'],
+    ['屋台', 'yatai', '路邊攤', '福岡屋台', '中洲屋台', '長濱屋台', '長浜屋台'],
+    ['中洲', 'nakasu'],
+    ['道頓堀', '道頓崛', 'dotonbori', 'dotombori'],
+    ['國際通', '国際通り', '國際通り', 'kokusai street', 'kokusaidori'],
+    ['先斗町', 'pontocho', 'ぽんと町'],
     ['samurai restaurant', 'samurairestaurant', 'samurai餐廳', '武士餐廳', '武士秀', '武士表演', 'サムライレストラン', '侍餐廳', '機器人餐廳', 'robot restaurant', 'ロボットレストラン', '新宿武士'],
     ['gira gira girls', 'giragiragirls', 'ギラギラガールズ'],
     ['歌舞伎町', 'kabukicho', 'kabukichō'],
