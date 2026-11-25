@@ -18,7 +18,7 @@ for n in 'skier snowman juhyo gassho penguin rotenburo skgbus'.split():
     THEME[n] = 'snow'
 for n in 'whaleshark icebreaker ferry'.split():
     THEME[n] = 'sea'
-for n in 'plane plane-fuji seat rooftop harukas castle hakone fujicoaster ferris windmill tower skytree gorge conan baseball'.split():
+for n in 'plane plane-fuji seat rooftop harukas castle hakone fujicoaster ferris windmill tower skytree gorge conan baseball horse'.split():
     THEME[n] = 'sky'
 
 BG = {'night': NAVY, 'snow': '#e4eefa', 'sea': '#d6edf8', 'sky': '#dff0fd', 'warm': '#fff0dc'}

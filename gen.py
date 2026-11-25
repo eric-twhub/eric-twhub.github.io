@@ -1885,6 +1885,7 @@ def topnav(cur=''):
             + link('/japan-concert-ticket/', '🎤 去日本看演唱會門票怎麼買')
             + link('/japan-npb-ticket/', '⚾ 去日本看職棒門票怎麼買')
             + link('/japan-tattoo-onsen/', '♨️ 有刺青能泡溫泉、錢湯嗎')
+            + link('/japan-keiba/', '🏇 去日本看賽馬、有馬記念怎麼進場')
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
             + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
@@ -3065,7 +3066,8 @@ _NO_KLOOK = ('tokyo/63angel', 'tokyo/superspark', 'okinawa/churasun6', 'sapporo/
              'osaka/splash', 'osaka/burlesque', 'nagoya/burlesque', 'tokyo/rockza',
              'tokyo/samurai-restaurant',
              'osaka/nightlife', 'kyoto/nightlife', 'nagoya/nightlife', 'fukuoka/nightlife',
-             'sapporo/nightlife', 'okinawa/nightlife')
+             'sapporo/nightlife', 'okinawa/nightlife',
+             'japan-keiba', 'japan-pachinko')
 _KLOOK_KINDS = ('esim',)
 
 def _no_klook(path):
@@ -3277,7 +3279,7 @@ _STK_PREFIX = sorted({
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
-    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
     '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
     '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
@@ -34515,6 +34517,136 @@ if os.path.exists('tattoo.json'):
     pages.append(('/japan-tattoo-onsen/', 0.6))
     print('   刺青頁：可以', len(_tt_ok), '處（貼紙', _tt_n['cover'], '、條件', _tt_n['cond'], '）、不行', len(_tt_ng), '處')
 
+# ---------- 去日本看賽馬 ----------
+# 資料在 keiba.json，只收 JRA 官網、JRA 英文站（japanracing.jp，JRA 首頁英文連結指過去）與法規原文。
+# 只寫規定和買法，不寫預測、不寫怎麼贏；外國人能不能買只寫官方原話（只有 20 歲限制），官方沒寫的另列。
+# G1 過了自動下架；有馬記念過後改顯示明年的日程。本頁在 _NO_KLOOK（博彩內容）。
+if os.path.exists('keiba.json'):
+    KB = json.load(open('keiba.json', encoding='utf-8'))
+    _kb_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _kb_lk = lambda u, t='官網': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+    _kb_d = lambda s: datetime.date.fromisoformat(s)
+    _kb_md = lambda s: f'{int(s[5:7])}/{int(s[8:10])}（{"一二三四五六日"[_kb_d(s).weekday()]}）'
+    _kb_live = lambda xs: [x for x in xs if not x.get('until') or _kb_d(x['until']) >= _kb_today]
+
+    def _kb_list(xs):
+        return '<ul class="xl">' + ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+            f'<div class="xt">{html.escape(x["text"])}</div>'
+            + (f'<div class="xw">{_kb_lk(x["src"], x.get("src_t", "官網"))}'
+               + (f'・{_kb_lk(x["src2"], x.get("src2_t", "出處 2"))}' if x.get('src2') else '') + '</div>' if x.get('src') else '')
+            + '</li>' for x in xs) + '</ul>'
+
+    _kb_up = [g for g in KB['g1'] if _kb_d(g['date']) >= _kb_today]
+    _kb_nx = _kb_up[0] if _kb_up else None
+    _kb_ar = next(g for g in KB['g1'] if g['ja'] == '有馬記念')
+    _kb_ar_up = _kb_d(_kb_ar['date']) >= _kb_today
+    _kb_jc_show = _kb_d(KB['jc']['date']) >= _kb_today
+    _kb_free = _kb_live(KB.get('free_days') or [])
+    _kb_ar_show = _kb_d(KB['arima']['date']) >= _kb_today
+    _kb_online = [g for g in _kb_up if g.get('online_only')]
+    _NX = KB['next']
+
+    if _kb_nx:
+        _n = (_kb_d(_kb_nx['date']) - _kb_today).days
+        _kb_tans = f'{_kb_nx["name"]}{"就是今天" if _n == 0 else f"還有 {_n} 天"}'
+        _kb_tsub = (f'{_kb_md(_kb_nx["date"])}{_kb_nx["venue"]}。'
+                    + ('當天只有事先在網路買到指定席或入場券的人能進場，現場不賣票。' if _kb_nx.get('online_only')
+                       else (_kb_nx['fee_note'] + '。') if _kb_nx.get('fee_note')
+                       else '不在 JRA 公布的「只限網路購票入場」名單裡，入場方式看該競馬場的公告。'))
+    elif _kb_today < _kb_d(_NX['season_from']):
+        _kb_tans = f'今年的 G1 都結束了'
+        _kb_tsub = (f'JRA 公布的 {_NX["season_from"][:4]} 年日程 {_kb_md(_NX["season_from"])} 開幕，'
+                    f'{_NX["name"]}預定 {_NX["date"][:4]} 年 {_kb_md(_NX["date"])}（{_NX["note"]}）。')
+    else:
+        print('   ⚠️ 賽馬頁：keiba.json 的 g1 清單已過期，要補新年度')
+        _kb_tans = '各場 G1 日期看 JRA 官網'
+        _kb_tsub = f'JRA 的年度日程在{_kb_lk(_NX["src"], "開催日割表")}。'
+
+    _kb_g1_tbl = ('<div class="tw"><table><thead><tr><th>日期</th><th>賽事</th><th>競馬場</th><th>當天入場</th></tr></thead><tbody>'
+                  + ''.join(f'<tr><td>{_kb_md(g["date"])}</td><td>{html.escape(g["name"])}<br><small>{html.escape(g["ja"])}・{html.escape(g["course"])}</small></td>'
+                            f'<td>{html.escape(g["venue"])}</td>'
+                            f'<td>{"只能網路買，" if g.get("online_only") else ""}'
+                            + (f'{g["fee"]:,} 円' if g.get('fee') else '官方另外公布')
+                            + (f'<br><small>{html.escape(g["fee_note"])}</small>' if g.get('fee_note') else '') + '</td></tr>'
+                            for g in _kb_up)
+                  + '</tbody></table></div>') if _kb_up else ''
+
+    _kb_fee_tbl = ('<div class="tw"><table><thead><tr><th>競馬場／對象</th><th>入場費</th><th>備註</th></tr></thead><tbody>'
+                   + ''.join(f'<tr><td>{html.escape(f["place"])}</td><td>{html.escape(f["fee"])}</td><td>{html.escape(f["note"]) or "－"}</td></tr>' for f in KB['fees'])
+                   + '</tbody></table></div>')
+    _kb_bet_tbl = ('<div class="tw"><table><thead><tr><th>券種</th><th>猜什麼</th></tr></thead><tbody>'
+                   + ''.join(f'<tr><td>{html.escape(a)}</td><td>{html.escape(b)}</td></tr>' for a, b in KB['bets'])
+                   + '</tbody></table></div>')
+
+    _kb_ar_ans = (f'{_kb_ar["date"][:4]} 年有馬記念在 {_kb_md(_kb_ar["date"])} 中山競馬場，當天只有事先在網路買到指定席或入場券的人能進場，'
+                  f'現場不賣票。入場券一人 {_kb_ar["fee"]:,} 円、共 50,000 名，分 15 個時段入場，最早 7:30。'
+                  '網路預約要登錄 JRA 一般會員和本人名義信用卡，官方沒寫海外發行的卡能不能用。') if _kb_ar_up else (
+                  f'JRA 公布的下一屆有馬記念預定 {_NX["date"][:4]} 年 {_kb_md(_NX["date"])}（{_NX["note"]}）。'
+                  '近年有馬記念當天都只讓網路買到票的人進場，開賣前要先登錄 JRA 一般會員。')
+    _kb_faq = [
+        ('觀光客可以在日本買馬券嗎？',
+         '競馬法只規定未滿 20 歲不能買，沒有國籍限制；JRA 的英文說明寫「現在年滿 20 歲的人都可以買」。'
+         '但官方也沒有一句明寫外國人可以。現場用現金在自動售票機買，最低 100 円。'),
+        ('有馬記念怎麼進場？', _kb_ar_ans),
+        ('日本賽馬入場費多少？',
+         '東京、中山、京都、阪神、中京 200 円，札幌、函館、福島、新潟、小倉 100 円，未滿 15 歲免費。'
+         'G1 當天價格可能不同，日本盃和有馬記念是 1,000 円，而且只能網路買。'),
+        ('馬券怎麼買？',
+         '在競馬場或 WINS 的自動售票機，放現金和畫好的馬克卡，或用 JRA 英文介面的 QR 投票產生 QR 碼去掃。'
+         '每場出發前 2 分鐘截止，中獎要在 60 天內兌換。網路投票要日本的銀行帳戶。'),
+        ('台灣人在日本賭馬會違法嗎？',
+         '台灣主管機關沒有公開說明國人在國外合法場所買馬券的問題，本站不做法律判斷。相關條文原文：刑法第 7 條「'
+         + KB['tw_law'][0]['text'] + '」第 266 條第 1 項「' + KB['tw_law'][1]['text'] + '」'),
+        ('晚上也有賽馬嗎？',
+         'JRA 的比賽在白天。東京的大井競馬場（地方競馬）有夜間賽「Twinkle Race」，入場 100 円，東京單軌電車大井競馬場前站走 2 分鐘。'),
+    ]
+    _kb_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _kb_faq]},
+                        ensure_ascii=False)
+    _kb_title_ev = (f'有馬記念 {_kb_md(_kb_ar["date"])}入場規定、' if _kb_ar_up else '有馬記念、')
+    write('japan-keiba/index.html',
+      head(f'去日本看賽馬：{_kb_title_ev}入場費、馬券怎麼買、20 歲限制',
+           '日本賽馬（JRA 競馬）觀光客怎麼看：日本盃、有馬記念當天只限網路購票入場，入場費 200 円、15 歲以下免費，'
+           '馬券 20 歲才能買、最低 100 円、10 種券種中文說明，大井夜間賽。全部引 JRA 官網，不提供預測。',
+           'japan-keiba/',
+           '<script type="application/ld+json">' + _kb_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('去日本看賽馬', None)])
+      + '<h1>去日本看賽馬：入場、馬券與有馬記念</h1>'
+      + '<p class="lede">日本的賽馬（競馬）由 JRA 舉辦，假日的競馬場像大型公園，入場只要 100～200 円。'
+        '但日本盃、有馬記念這種大賽當天只讓事先網路買到票的人進場，現場不賣票。'
+        f'下面整理 JRA 官網寫的入場規定、馬券買法和年齡限制，查證於 {KB["checked"]}；本頁不提供任何預測。</p>'
+      + f'<div class="today"><div class="tday">下一場 G1</div><div class="tans">{_kb_tans}</div><div class="tsub">{_kb_tsub}</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>20 歲才能買馬券</b>：競馬法第 28 條。未滿 15 歲可以免費入場，要家長陪同。</li>'
+        '<li><b>大賽當天要先網路買票</b>：要登錄 JRA 一般會員、用本人名義信用卡，全部抽選。</li>'
+        '<li><b>現場買馬券用現金</b>：最低 100 円，服務台有免費英文出馬表。</li>'
+        '</ul></div>'
+      + (f'<h2>接下來的 G1</h2>{_kb_g1_tbl}<p class="disc">日期與場地出自 JRA 各 G1 頁面；「只能網路買」出自'
+         f'{_kb_lk(KB["online_only_src"], "JRA 公告")}。</p>' if _kb_up else '')
+      + (f'<h2>日本盃 {_kb_md(KB["jc"]["date"])}怎麼進場</h2>' + _kb_list(_kb_live(KB['jc']['items']))
+         + f'<p class="disc">出自{_kb_lk(KB["jc"]["src"], "JRA 日本盃當天入場公告")}。</p>' if _kb_jc_show else '')
+      + (f'<h2>有馬記念 {_kb_md(KB["arima"]["date"])}怎麼進場</h2>' + _kb_list(_kb_live(KB['arima']['items']))
+         + f'<p>{html.escape(KB["arima"]["unknown"])}</p>'
+         + f'<p class="disc">出自{_kb_lk(KB["arima"]["src"], "JRA 中山競馬場入場說明")}。</p>' if _kb_ar_show else
+         f'<h2>{_NX["date"][:4]} 年的有馬記念</h2><p>JRA 公布的 {_NX["season_from"][:4]} 年開催日程 {_kb_md(_NX["season_from"])} 開始，'
+         f'{_NX["name"]}預定 {_kb_md(_NX["date"])}（{_NX["note"]}）。（{_kb_lk(_NX["src"], "JRA 開催日割表")}）</p>')
+      + '<h2>入場費</h2>' + _kb_fee_tbl + f'<p class="disc">出自{_kb_lk(KB["fees_src"], "JRA 入場料")}。</p>'
+      + ('<h3>最近的免費入場日</h3>' + _kb_list(_kb_free) if _kb_free else '')
+      + '<h2>觀光客要知道的規定</h2>' + _kb_list(KB['rules'])
+      + '<h2>馬券有哪幾種</h2><p>機器和馬克卡上寫的是日文券種名，對照如下。</p>' + _kb_bet_tbl
+      + f'<p class="disc">出自{_kb_lk(KB["bets_src"], "JRA 馬券種類")}。</p>'
+      + '<h2>怎麼買、怎麼兌獎</h2>' + _kb_list(KB['buy'])
+      + '<h2>晚上也能看：夜間賽馬</h2>' + _kb_list(KB['night'])
+      + '<h2>官方沒寫的事</h2><p>下面這些 JRA 官網和英文站都沒寫，沒辦法確認可以或不行，現場以服務台說明為準。</p>'
+      + '<ul class="pick">' + ''.join(f'<li>{html.escape(x)}</li>' for x in KB['unknown']) + '</ul>'
+      + '<h2>買太多停不下來</h2>' + _kb_list(KB['help'])
+      + faq_visible(_kb_faq)
+      + f'<p class="disc">規定以 JRA 官網與現場公告為準，查證於 {KB["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-keiba/', 0.6))
+    print('   賽馬頁：接下來的 G1', len(_kb_up), '場、只能網路買', len(_kb_online), '場')
+
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
 # 12/1 前後會變的在這裡算：票價（2,800 → 2,900）、9:50 那班 12/1 起才有、班次數。
@@ -35957,6 +36089,7 @@ SEARCH_SYN = [
     ['名古屋夜生活', '名古屋 夜生活', '名古屋夜店', '名古屋秀場', '名古屋 秀'],
     ['歌舞伎', 'kabuki', 'かぶき', '歌舞伎座', 'kabukiza', '一幕見', '一幕見席', '幕見席', '幕見', '南座', '顔見世', '顏見世', '新橋演舞場'],
     ['刺青', '紋身', '纹身', 'タトゥー', 'tattoo', '入れ墨', '刺青泡湯', '刺青溫泉', '紋身泡溫泉', '刺青貼紙', '錢湯', '銭湯', 'sento', '公共澡堂', '大眾澡堂'],
+    ['賽馬', '赛马', '競馬', '竞马', '賭馬', '馬券', '马券', '買馬券', '有馬記念', '有馬紀念', '有马记念', '日本盃', '日本杯', 'ジャパンカップ', 'japan cup', 'JRA', 'keiba', '大井競馬', '中山競馬場', '東京競馬場', '夜間賽馬', '看賽馬'],
     ['日本職棒', '日本职棒', '職棒', '日職', 'NPB', 'npb', 'プロ野球', '看棒球', '棒球門票', '棒球票', '野球', '甲子園', '東京巨蛋', '東京ドーム', '讀賣巨人', '巨人隊', '阪神虎', '軟銀鷹', '火腿鬥士', '日本火腿', '樂天金鷲', '西武獅', '歐力士', '養樂多', '中日龍', '廣島鯉魚', '鯉魚隊', '羅德海洋', '海灣之星', '應援席', '外野席'],
     ['演唱會', '演唱会', 'concert', 'コンサート', 'ライブ', '巡演', '日巡', '日本巡演', '當落', '当落', '門票代購', '代購門票', '實名制', '實名入場', 'ぴあ', 'チケットぴあ', 'ローチケ', 'イープラス', 'eplus', 'e+', 'lawson ticket', 'ticket pia'],
     ['夜生活', '夜遊', '夜店', '夜晚', '晚上去哪', '晚上去哪裡', '晚上去哪玩', '晚上做什麼', '晚上可以做什麼', '晚上能做什麼', '晚上好玩', 'nightlife', 'night life', 'ナイトライフ', '夜の街', '夜遊び'],

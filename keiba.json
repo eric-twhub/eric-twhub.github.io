@@ -1,0 +1,366 @@
+{
+  "checked": "2026-11-25",
+  "g1": [
+    {
+      "name": "日本盃",
+      "ja": "ジャパンカップ",
+      "date": "2026-11-29",
+      "venue": "東京競馬場",
+      "course": "芝 2,400m",
+      "src": "https://www.jra.go.jp/keiba/g1/jc.html",
+      "online_only": true,
+      "fee": 1000
+    },
+    {
+      "name": "冠軍盃",
+      "ja": "チャンピオンズカップ",
+      "date": "2026-12-06",
+      "venue": "中京競馬場",
+      "course": "泥地 1,800m",
+      "src": "https://www.jra.go.jp/keiba/g1/cc.html"
+    },
+    {
+      "name": "阪神少女錦標",
+      "ja": "阪神ジュベナイルフィリーズ",
+      "date": "2026-12-13",
+      "venue": "阪神競馬場",
+      "course": "芝 1,600m（外）",
+      "src": "https://www.jra.go.jp/keiba/g1/hjf.html"
+    },
+    {
+      "name": "朝日杯未來錦標",
+      "ja": "朝日杯フューチュリティステークス",
+      "date": "2026-12-20",
+      "venue": "阪神競馬場",
+      "course": "芝 1,600m（外）",
+      "src": "https://www.jra.go.jp/keiba/g1/afs.html"
+    },
+    {
+      "name": "中山大障礙、希望錦標",
+      "ja": "中山大障害・ホープフルステークス",
+      "date": "2026-12-26",
+      "venue": "中山競馬場",
+      "course": "ホープフルS 芝 2,000m",
+      "src": "https://www.jra.go.jp/keiba/g1/hopeful.html",
+      "fee": 500,
+      "fee_note": "當天現場也能買入場券"
+    },
+    {
+      "name": "有馬記念",
+      "ja": "有馬記念",
+      "date": "2026-12-27",
+      "venue": "中山競馬場",
+      "course": "芝 2,500m",
+      "src": "https://www.jra.go.jp/keiba/g1/arima.html",
+      "online_only": true,
+      "fee": 1000
+    }
+  ],
+  "online_only_src": "https://www.jra.go.jp/news/202608/082001.html",
+  "jc": {
+    "date": "2026-11-29",
+    "src": "https://www.jra.go.jp/news/202611/111301.html",
+    "items": [
+      {
+        "name": "只有網路買到票的人能進場",
+        "text": "日本盃當天只限網路購買指定席或入場券的人入場，競馬場不賣當日入場券。"
+      },
+      {
+        "name": "入場券 1,000 円、80,000 張",
+        "text": "一人 1,000 円，只在網路賣，入場時段有人數上限。"
+      },
+      {
+        "name": "剩下的票 11/25 18:00 起賣到當天 15:00",
+        "text": "指定席或入場券有剩，就能在網路買到當天 15:00。",
+        "until": "2026-11-29"
+      },
+      {
+        "name": "回數券不能用",
+        "text": "JRA 競馬場共通入場回數券、2026 年 2 月 7 日停賽時發的非常用入場券，當天都不能用。"
+      }
+    ]
+  },
+  "arima": {
+    "date": "2026-12-27",
+    "src": "https://www.jra.go.jp/facilities/race/nakayama/news/nyujou.html",
+    "items": [
+      {
+        "name": "只有網路買到票的人能進場",
+        "text": "有馬記念當天只限網路購買指定席或入場券的人入場，當天不賣現場入場券（第 5 回中山其他日子都有賣）。"
+      },
+      {
+        "name": "入場券 1,000 円、50,000 名",
+        "text": "分 15 個入場時段，最早第 1 班 7:30 起 1,000 名，最後第 15 班 10:00 起 6,000 名。",
+        "src": "https://www.jra.go.jp/facilities/race/nakayama/news/pdf/20261119_nyujou_jikan.pdf"
+      },
+      {
+        "name": "指定席一人最多 2 席",
+        "text": "12/26、12/27 兩天指定席一人限買 2 席；入場券一位會員最多買 4 人份，同行者 15 歲以上也要入場券。"
+      },
+      {
+        "name": "指定席價格",
+        "text": "有馬記念當天（含入場費）：スマートシート 1,500 円、K-Seatライト・B-Seat 5,000 円、A・V・K-Seat 8,000 円、G-Seat 10,000 円、4 人包廂一桌 16,000 円。平常開催日 A-Seat 是 3,000 円。",
+        "src": "https://www.jra.go.jp/ticket/seat/priceandmap/pdf/20261119_nakayama_pricelist.pdf"
+      },
+      {
+        "name": "入場門",
+        "text": "想在網路預約的入場時間進場，走中央門或法典門；南門當天 10:00 以後才能進，正門只開放網路預約者 10:00 起進場。"
+      },
+      {
+        "name": "QR 票當天 0 點出現",
+        "text": "入場用的 QR 票當天 0 點起可以顯示，截圖也能進場；同行者的票要先用「チケット分配」傳過去。"
+      },
+      {
+        "name": "前一天 12/26 現場能買票",
+        "text": "12/26（六）中山大障害、ホープフルS 也是 G1，但當天現場有賣入場券，一人 500 円。",
+        "until": "2026-12-26"
+      }
+    ],
+    "unknown": "有馬記念指定席、入場券的抽選申請日期，JRA 還沒有發專文（排程表是圖片）。"
+  },
+  "next": {
+    "name": "有馬記念",
+    "date": "2027-12-26",
+    "src": "https://www.jra.go.jp/keiba/program/2027/pdf/nittei.pdf",
+    "season_from": "2027-01-04",
+    "season_src": "https://www.jra.go.jp/news/202611/111701.html",
+    "note": "JRA 2027 年開催日割表，要經農林水產大臣認可才正式確定"
+  },
+  "fees": [
+    {
+      "place": "東京、中山、京都、阪神、中京",
+      "fee": "200 円",
+      "note": "2026 年一般開催日網路預約半價，G1 當天不適用"
+    },
+    {
+      "place": "札幌、函館、福島、新潟、小倉",
+      "fee": "100 円",
+      "note": ""
+    },
+    {
+      "place": "未滿 15 歲",
+      "fee": "免費",
+      "note": "要家長陪同"
+    },
+    {
+      "place": "G1 當天",
+      "fee": "可能不同",
+      "note": "日本盃、有馬記念 1,000 円，只能網路買"
+    },
+    {
+      "place": "沒有比賽的日子",
+      "fee": "免費",
+      "note": "競馬場當場外投注站（Park WINS）營業"
+    }
+  ],
+  "fees_src": "https://www.jra.go.jp/ticket/fee.html",
+  "rules": [
+    {
+      "name": "20 歲才能買馬券",
+      "text": "競馬法第 28 條：未滿 20 歲不能購買或受讓馬券。",
+      "src": "https://www.jra.go.jp/kouza/baken/index.html",
+      "src_t": "JRA 馬券規則"
+    },
+    {
+      "name": "外國觀光客可以買嗎",
+      "text": "法律和 JRA 都只寫年齡限制，沒有國籍限制；JRA 的英文說明寫「現在年滿 20 歲的人都可以買」。但也沒有一句明寫「外國人可以」。",
+      "src": "https://japanracing.jp/en/racing/go_racing/guide/faq.html",
+      "src_t": "JRA 英文 FAQ"
+    },
+    {
+      "name": "現場買馬券用現金",
+      "text": "競馬場和 WINS（場外投注站）可以用現金買；自動售票機放現金和畫好的馬克卡（マークカード）或 QR 碼。官方沒寫交通 IC 卡、信用卡能不能直接買。",
+      "src": "https://www.jra.go.jp/kouza/beginner/buy/",
+      "src_t": "JRA 購買方式"
+    },
+    {
+      "name": "當日入場券只收現金",
+      "text": "一般開催日在入口售票機買，只收現金；G1 等很擠的日子可能不賣當日券。",
+      "src": "https://www.jra.go.jp/ticket/fee.html",
+      "src_t": "JRA 入場料"
+    },
+    {
+      "name": "網路預約要會員和本人名義信用卡",
+      "text": "指定席、入場券的網路預約要登錄 JRA 一般會員：email、個人資料、本人名義信用卡，年費免費，未滿 20 歲不能登錄。頁面列的卡別是 JCB、MASTER、VISA、Diners；有國際品牌的簽帳金融卡（部分除外）也能用。刷卡失敗可能是沒開 3D 驗證。",
+      "src": "https://www.jra.go.jp/ticket/member/ippan/",
+      "src_t": "JRA 一般會員",
+      "src2": "https://www.jra.go.jp/ticket/faq/",
+      "src2_t": "JRA 網路預約 FAQ"
+    },
+    {
+      "name": "指定席全部抽選",
+      "text": "開催中競馬場的指定席、入場券全部用抽選；抽中後要在期限內選位付款，不然當作取消。有剩的話先到先得，賣到當天 15:00。取消期間取消要付指定席費 20%。",
+      "src": "https://www.jra.go.jp/ticket/schedule/schedule.html",
+      "src_t": "JRA 發售排程"
+    },
+    {
+      "name": "入場時可能核對證件",
+      "text": "網路預約的票，入場時可能核對票上姓名和身分證件，對不上可以拒絕入場。官方例示是駕照、個人編號卡，沒寫護照。",
+      "src": "https://www.jra.go.jp/ticket/kiyaku/",
+      "src_t": "JRA 會員約定"
+    },
+    {
+      "name": "免費英文出馬表",
+      "text": "服務台可以免費拿英文出馬表和「How To Bet」說明。",
+      "src": "https://japanracing.jp/en/racing/go_racing/guide/goracing.html",
+      "src_t": "JRA 英文指南"
+    }
+  ],
+  "bets": [
+    [
+      "単勝",
+      "猜第 1 名"
+    ],
+    [
+      "複勝",
+      "猜進前 3 名的一匹（7 匹以下是前 2 名）"
+    ],
+    [
+      "応援馬券",
+      "同一匹的単勝和複勝一起買"
+    ],
+    [
+      "枠連",
+      "第 1、2 名的「枠」號組合"
+    ],
+    [
+      "馬連",
+      "第 1、2 名的馬號組合，不分順序"
+    ],
+    [
+      "馬単",
+      "第 1、2 名的馬號，要照順序"
+    ],
+    [
+      "ワイド",
+      "前 3 名裡的任 2 匹"
+    ],
+    [
+      "3連複",
+      "前 3 名的組合，不分順序"
+    ],
+    [
+      "3連単",
+      "前 3 名，要照順序"
+    ],
+    [
+      "WIN5",
+      "JRA 指定的 5 場全部猜第 1 名（只能網路或 UMACA 買）"
+    ]
+  ],
+  "bets_src": "https://www.jra.go.jp/kouza/beginner/baken/",
+  "buy": [
+    {
+      "name": "最低 100 円",
+      "text": "除了少數 WINS，所有種類最低都是 100 円。",
+      "src": "https://japanracing.jp/en/racing/go_racing/guide/faq.html",
+      "src_t": "JRA 英文 FAQ"
+    },
+    {
+      "name": "發走前 2 分鐘截止",
+      "text": "現場窗口在每場出發前 2 分鐘停止販售。",
+      "src": "https://www.jra.go.jp/kouza/baken/index.html",
+      "src_t": "JRA 馬券規則"
+    },
+    {
+      "name": "中獎要在 60 天內兌換",
+      "text": "中獎券和退款券的兌換期限是 60 天。2027 年 6 月 21 日起，JRA 全部據點停止平日兌獎。",
+      "src": "https://www.jra.go.jp/kouza/baken/index.html",
+      "src_t": "JRA 馬券規則",
+      "src2": "https://www.jra.go.jp/news/202609/092803.html",
+      "src2_t": "平日兌獎結束公告"
+    },
+    {
+      "name": "英文 QR 投票",
+      "text": "JRA 的手機 QR 投票（スマッピー）有英文介面，填好後產生 QR 碼，到售票機掃描付現。",
+      "src": "https://japanracing.jp/en/racing/go_racing/jra_howtobet.html",
+      "src_t": "JRA 英文買法"
+    },
+    {
+      "name": "UMACA 卡",
+      "text": "JRA 的無現金投票 IC 卡，20 歲以上一人一張，登錄時要用身分證件確認年齡，還要登錄手掌靜脈和 4 位數密碼。儲值的錢只能拿來買馬券、不能領出，獎金可以領。官方例示證件是駕照、個人編號卡，沒寫護照。",
+      "src": "https://www.jra.go.jp/kouza/umaca/pdf/jra_umaca_registration.pdf",
+      "src_t": "UMACA 登錄說明",
+      "src2": "https://www.jra.go.jp/kouza/beginner/cashless/",
+      "src2_t": "JRA 無現金投票"
+    },
+    {
+      "name": "網路投票要日本銀行帳戶",
+      "text": "即PAT 網路投票要 JRA 指定的日本銀行帳戶（PayPay銀行、樂天銀行、三井住友、三菱UFJ、郵局等）或完成本人確認的 PayPay。官方沒寫外國人或非居民能不能開。",
+      "src": "https://www.jra.go.jp/dento/soku/about.html",
+      "src_t": "即PAT 說明"
+    },
+    {
+      "name": "獎金可能要報稅",
+      "text": "JRA 寫獎金依日本稅法可能要課稅、需要確定申告。",
+      "src": "https://www.jra.go.jp/kouza/baken/index.html",
+      "src_t": "JRA 馬券規則"
+    }
+  ],
+  "night": [
+    {
+      "name": "大井競馬場（TCK）夜間賽",
+      "text": "東京的地方競馬，1986 年開始的夜間賽「Twinkle Race」很有名。入場 100 円，東京單軌電車大井競馬場前站走 2 分鐘，比賽日有免費接駁巴士到 JR 大森、大井町站，夜間賽季也有到錦糸町。",
+      "src": "https://japanracing.jp/en/racing/go_racing/local_racecourses/n11.html",
+      "src_t": "JRA 英文頁"
+    }
+  ],
+  "unknown": [
+    "外國人能不能買馬券：只寫 20 歲，沒寫國籍，也沒寫外國人可以",
+    "海外發行的信用卡能不能用在網路預約",
+    "護照能不能當入場核對、UMACA 登錄的證件",
+    "外國人能不能開網路投票帳戶",
+    "交通 IC 卡、信用卡能不能直接買馬券",
+    "一般開催日當日現金入場要不要出示證件"
+  ],
+  "help": [
+    {
+      "name": "JRA 依存症對策",
+      "text": "本人或家人可以申請禁止進入競馬場和 WINS、停用網路投票、設定購買上限。",
+      "src": "https://www.jra.go.jp/company/social/society/disorder/",
+      "src_t": "JRA 依存症對策"
+    },
+    {
+      "name": "JRA 諮詢電話",
+      "text": "JRA インフォメーションデスク 050-3536-0066，週一到週五 10:00～17:00（國定假日、年末年始除外）。",
+      "src": "https://www.jra.go.jp/kouza/baken/index.html",
+      "src_t": "JRA 馬券規則"
+    },
+    {
+      "name": "小心代購與預測業者",
+      "text": "JRA 提醒有惡質的預測情報業者、投資詐騙、違法代購馬券與網路賭博業者，都和 JRA 無關。",
+      "src": "https://www.jra.go.jp/facilities/informations/",
+      "src_t": "JRA 提醒"
+    }
+  ],
+  "tw_law": [
+    {
+      "name": "中華民國刑法第 7 條",
+      "text": "本法於中華民國人民在中華民國領域外犯前二條以外之罪，而其最輕本刑為三年以上有期徒刑者，適用之。但依犯罪地之法律不罰者，不在此限。",
+      "src": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=7",
+      "src_t": "全國法規資料庫"
+    },
+    {
+      "name": "中華民國刑法第 266 條第 1 項",
+      "text": "在公共場所或公眾得出入之場所賭博財物者，處五萬元以下罰金。",
+      "src": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=266",
+      "src_t": "全國法規資料庫"
+    }
+  ],
+  "free_days": [
+    {
+      "name": "11/30（一）東京競馬場免費入場",
+      "text": "日本盃隔天東京加開一天，是「フリーパスの日」，入場免費，9:00 開門。",
+      "src": "https://www.jra.go.jp/news/202611/110501.html",
+      "src_t": "JRA 公告",
+      "until": "2026-11-30"
+    },
+    {
+      "name": "12/5（六）中山競馬場免費入場",
+      "text": "第 5 回中山第一天是「フリーパスの日」，入場免費，指定席也比平常便宜（A-Seat 2,000 円）。",
+      "src": "https://www.jra.go.jp/ticket/seat/priceandmap/pdf/20261119_nakayama_pricelist.pdf",
+      "src_t": "中山指定席價目表",
+      "until": "2026-12-05"
+    }
+  ]
+}
