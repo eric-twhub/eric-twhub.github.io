@@ -1,7 +1,7 @@
 {
  "page": "/japan-shibuya-sky/",
  "dir": "japan-shibuya-sky",
- "_說明": "插圖參考官網施設介紹（shibuya-scramble-square.com/sky/ 前端算繪的「空間構成」與「SHIBUYA SKYで出来ること」）畫的可愛版，不畫商標；提醒卡依據官網票券頁、FAQ（頁面資料 shibuya-sky.json 已查證）與空間構成（14～45 樓 SKY GATE）；2026-11-13 查",
+ "_說明": "插圖參考官網施設介紹（shibuya-scramble-square.com/sky/ 前端算繪的「空間構成」與「SHIBUYA SKYで出来ること」）畫的可愛版，不畫商標；提醒卡依據官網票券頁、FAQ（頁面資料 shibuya-sky.json 已查證）與空間構成（14～45 樓 SKY GATE）；2026-11-13 查。2026-11-25 封面改用 Gemini 畫的點陣圖：不畫大樓商標；插圖牆四張改用 jpg；SKY EDGE 與電梯兩張 Gemini 畫錯（十字路口畫在地板正下方像透明地板、電梯畫成看得到外面的玻璃電梯），維持 SVG，之後重畫：SKY EDGE 是木地板＋齊胸玻璃圍欄、地板不透明，SKY GATE 是封閉式電梯、影像投在牆面與天花板",
  "blocks": [
   {
    "before": "票價",

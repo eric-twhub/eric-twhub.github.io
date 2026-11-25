@@ -1,7 +1,7 @@
 {
  "page": "/japan-shirakawago-lightup/",
  "dir": "japan-shirakawago-lightup",
- "_說明": "插圖參考白川郷観光協会官網（shirakawa-go.gr.jp/highlights/、events/441/、events/460/）的介紹畫的可愛版；說明與提醒卡依據這幾頁與 shirakawago.json，2026-11-13 查",
+ "_說明": "插圖參考白川郷観光協会官網（shirakawa-go.gr.jp/highlights/、events/441/、events/460/）的介紹畫的可愛版；說明與提醒卡依據這幾頁與 shirakawago.json，2026-11-13 查。2026-11-25 插圖牆四張與封面改用 Gemini 畫的點陣圖（同名 .jpg）；和田家那張是示意大型合掌造與後方步道，溫泉只畫外觀",
  "blocks": [
   {
    "before": "五種參加方法",
