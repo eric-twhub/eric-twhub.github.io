@@ -1,5 +1,5 @@
 {
- "checked": "2026-11-25T22:58+08:00",
+ "checked": "2026-11-26T01:46+08:00",
  "rows": [
   {
    "m": "klook",
@@ -7,24 +7,24 @@
    "cat": "住宿",
    "sb": {
     "st": "ok",
-    "now": 20,
+    "now": 6,
     "base": 6,
     "bmax": null,
-    "boost": true,
-    "end": "2026-11-25T22:59+08:00",
+    "boost": false,
+    "end": null,
     "label": "飯店住宿",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/klook"
    },
    "line": {
     "st": "ok",
-    "now": 20,
+    "now": 2.5,
     "base": 2.5,
-    "boost": true,
-    "start": "2026-11-25T18:00+08:00",
-    "end": "2026-11-25T23:59+08:00",
-    "cap": 1600,
-    "at": "2026-11-25T22:58+08:00",
+    "boost": false,
+    "start": null,
+    "end": null,
+    "cap": null,
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880048631385"
    }
   },
@@ -34,24 +34,24 @@
    "cat": "行程門票",
    "sb": {
     "st": "ok",
-    "now": 8,
+    "now": 3,
     "base": 3,
     "bmax": null,
-    "boost": true,
-    "end": "2026-11-25T22:59+08:00",
+    "boost": false,
+    "end": null,
     "label": "景點門票&表演",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/klook"
    },
    "line": {
     "st": "ok",
-    "now": 11,
+    "now": 2,
     "base": 2,
-    "boost": true,
-    "start": "2026-11-25T22:00+08:00",
-    "end": "2026-11-25T22:59+08:00",
-    "cap": 500,
-    "at": "2026-11-25T22:58+08:00",
+    "boost": false,
+    "start": null,
+    "end": null,
+    "cap": 100,
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880044225097"
    }
   },
@@ -67,7 +67,7 @@
     "boost": false,
     "end": null,
     "label": "限定Klook eSIM(詳見條款)",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/klook"
    },
    "line": {
@@ -80,13 +80,13 @@
    "cat": "交通 JR",
    "sb": {
     "st": "ok",
-    "now": 8,
+    "now": 3,
     "base": 3,
     "bmax": null,
-    "boost": true,
-    "end": "2026-11-25T22:59+08:00",
+    "boost": false,
+    "end": null,
     "label": "火車車票（日本、韓國、中國、歐洲）",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/klook"
    },
    "line": {
@@ -99,13 +99,13 @@
    "cat": "租車",
    "sb": {
     "st": "ok",
-    "now": 15,
+    "now": 5.5,
     "base": 5.5,
     "bmax": null,
-    "boost": true,
-    "end": "2026-11-25T22:59+08:00",
+    "boost": false,
+    "end": null,
     "label": "租車",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/klook"
    },
    "line": {
@@ -124,7 +124,7 @@
     "boost": false,
     "end": null,
     "label": "住宿",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/kkday"
    },
    "line": {
@@ -141,20 +141,20 @@
     "base": null,
     "bmax": 2.5,
     "boost": true,
-    "end": "2026-11-25T23:59+08:00",
+    "end": "2026-11-26T23:59+08:00",
     "label": "體驗活動",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/kkday"
    },
    "line": {
     "st": "ok",
-    "now": 11,
+    "now": 8,
     "base": 2,
     "boost": true,
-    "start": "2026-11-25T22:00+08:00",
-    "end": "2026-11-25T22:59+08:00",
-    "cap": 500,
-    "at": "2026-11-25T22:58+08:00",
+    "start": "2026-11-25T23:00+08:00",
+    "end": "2026-11-26T21:59+08:00",
+    "cap": 200,
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/4747522"
    }
   },
@@ -170,7 +170,7 @@
     "boost": false,
     "end": null,
     "label": "機票",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/kkday"
    },
    "line": {
@@ -187,9 +187,9 @@
     "base": null,
     "bmax": 2.5,
     "boost": true,
-    "end": "2026-11-25T23:59+08:00",
+    "end": "2026-11-26T23:59+08:00",
     "label": "Wi-Fi & SIM 卡",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/kkday"
    },
    "line": {
@@ -206,9 +206,9 @@
     "base": null,
     "bmax": 2.5,
     "boost": true,
-    "end": "2026-11-25T23:59+08:00",
+    "end": "2026-11-26T23:59+08:00",
     "label": "JR 日本鐵路, 請看明細列表",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/kkday"
    },
    "line": {
@@ -227,7 +227,7 @@
     "boost": false,
     "end": null,
     "label": "住宿",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/tripcom"
    },
    "line": {
@@ -238,7 +238,7 @@
     "start": null,
     "end": null,
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880045456637"
    }
   },
@@ -254,7 +254,7 @@
     "boost": false,
     "end": null,
     "label": "景點門票・玩樂景點",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/tripcom"
    },
    "line": {
@@ -265,7 +265,7 @@
     "start": null,
     "end": null,
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880048631569"
    }
   },
@@ -281,18 +281,18 @@
     "boost": false,
     "end": null,
     "label": "機票(除中國境內外)",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/tripcom"
    },
    "line": {
     "st": "ok",
-    "now": 0.5,
+    "now": 2,
     "base": 0.5,
-    "boost": false,
-    "start": null,
-    "end": null,
+    "boost": true,
+    "start": "2026-11-26T00:00+08:00",
+    "end": "2026-11-27T23:59+08:00",
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880048631559"
    }
   },
@@ -308,7 +308,7 @@
     "boost": false,
     "end": null,
     "label": "eSIM",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/tripcom"
    },
    "line": {
@@ -327,7 +327,7 @@
     "boost": false,
     "end": null,
     "label": "火車票(除中國境內外)",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/tripcom"
    },
    "line": {
@@ -346,7 +346,7 @@
     "boost": false,
     "end": null,
     "label": "租車",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/tripcom"
    },
    "line": {
@@ -365,7 +365,7 @@
     "boost": false,
     "end": null,
     "label": "機場接駁",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/tripcom"
    },
    "line": {
@@ -384,18 +384,18 @@
     "boost": false,
     "end": null,
     "label": "訂房",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/agoda"
    },
    "line": {
     "st": "ok",
-    "now": 11,
+    "now": 3,
     "base": 3,
-    "boost": true,
-    "start": "2026-11-25T00:00+08:00",
-    "end": "2026-11-25T23:59+08:00",
-    "cap": 1100,
-    "at": "2026-11-25T22:58+08:00",
+    "boost": false,
+    "start": null,
+    "end": null,
+    "cap": null,
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/4747497"
    }
   },
@@ -409,9 +409,9 @@
     "base": 3.5,
     "bmax": null,
     "boost": true,
-    "end": "2026-11-26T00:59+08:00",
+    "end": "2026-12-01T00:59+08:00",
     "label": "活動（含機場接送）",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/agoda"
    },
    "line": {
@@ -424,13 +424,13 @@
    "cat": "機票",
    "sb": {
     "st": "ok",
-    "now": 2,
+    "now": 1,
     "base": 1,
     "bmax": null,
-    "boost": true,
-    "end": "2026-11-26T00:59+08:00",
+    "boost": false,
+    "end": null,
     "label": "機票",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/agoda"
    },
    "line": {
@@ -447,9 +447,9 @@
     "base": null,
     "bmax": null,
     "boost": true,
-    "end": "2026-11-26T00:59+08:00",
+    "end": "2026-12-01T00:59+08:00",
     "label": "eSIM",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/agoda"
    },
    "line": {
@@ -462,24 +462,24 @@
    "cat": "住宿",
    "sb": {
     "st": "ok",
-    "now": 5.5,
+    "now": 11,
     "base": 5.5,
     "bmax": null,
-    "boost": false,
-    "end": null,
+    "boost": true,
+    "end": "2026-11-26T23:59+08:00",
     "label": "住宿",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/booking-com"
    },
    "line": {
     "st": "ok",
-    "now": 5,
+    "now": 10,
     "base": 5,
-    "boost": false,
-    "start": null,
-    "end": null,
-    "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "boost": true,
+    "start": "2026-11-26T00:00+08:00",
+    "end": "2026-11-26T17:59+08:00",
+    "cap": 1000,
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880044220676"
    }
   },
@@ -489,13 +489,13 @@
    "cat": "行程門票",
    "sb": {
     "st": "ok",
-    "now": 5,
+    "now": 4.5,
     "base": 5,
     "bmax": null,
     "boost": false,
     "end": null,
     "label": "景點／活動",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/booking-com"
    },
    "line": {
@@ -514,7 +514,7 @@
     "boost": false,
     "end": null,
     "label": "機票",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/booking-com"
    },
    "line": {
@@ -527,13 +527,13 @@
    "cat": "租車",
    "sb": {
     "st": "ok",
-    "now": 5,
+    "now": 8,
     "base": 5,
     "bmax": null,
-    "boost": false,
-    "end": null,
+    "boost": true,
+    "end": "2026-11-26T23:59+08:00",
     "label": "租車",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/booking-com"
    },
    "line": {
@@ -546,24 +546,24 @@
    "cat": "住宿",
    "sb": {
     "st": "ok",
-    "now": 5,
+    "now": 9,
     "base": 5,
     "bmax": null,
-    "boost": false,
-    "end": null,
+    "boost": true,
+    "end": "2026-11-26T23:59+08:00",
     "label": "全館 (可與 Hotels.com Rewards 併用)",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/hotels-com"
    },
    "line": {
     "st": "ok",
-    "now": 3,
+    "now": 7,
     "base": 3,
-    "boost": false,
-    "start": null,
-    "end": null,
-    "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "boost": true,
+    "start": "2026-11-26T00:00+08:00",
+    "end": "2026-11-26T23:59+08:00",
+    "cap": 1000,
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880049493154"
    }
   },
@@ -579,7 +579,7 @@
     "boost": true,
     "end": "2026-11-30T23:59+08:00",
     "label": "日本飯店訂房",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/rakuten-travel"
    },
    "line": {
@@ -590,7 +590,7 @@
     "start": "2026-11-19T00:00+08:00",
     "end": "2026-11-30T23:59+08:00",
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880050249453"
    }
   },
@@ -606,7 +606,7 @@
     "boost": true,
     "end": "2026-11-30T23:59+08:00",
     "label": "租車",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/rakuten-travel"
    },
    "line": {
@@ -619,13 +619,13 @@
    "cat": "住宿",
    "sb": {
     "st": "ok",
-    "now": 12,
+    "now": 4,
     "base": 4,
     "bmax": null,
-    "boost": true,
-    "end": "2026-11-25T23:59+08:00",
+    "boost": false,
+    "end": null,
     "label": "飯店",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/expedia"
    },
    "line": {
@@ -644,7 +644,7 @@
     "boost": false,
     "end": null,
     "label": "當地玩樂",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/expedia"
    },
    "line": {
@@ -663,7 +663,7 @@
     "boost": false,
     "end": null,
     "label": "訂房 (未使用折扣碼)",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/eztravel"
    },
    "line": {
@@ -674,7 +674,7 @@
     "start": null,
     "end": null,
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880045456647"
    }
   },
@@ -693,7 +693,7 @@
     "start": null,
     "end": null,
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880048631517"
    }
   },
@@ -712,7 +712,7 @@
     "start": null,
     "end": null,
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880048631531"
    }
   },
@@ -728,7 +728,7 @@
     "boost": false,
     "end": null,
     "label": "國際訂房(短線)",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/liontravel"
    },
    "line": {
@@ -739,7 +739,7 @@
     "start": null,
     "end": null,
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880048631357"
    }
   },
@@ -758,7 +758,7 @@
     "start": null,
     "end": null,
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880048631315"
    }
   },
@@ -774,7 +774,7 @@
     "boost": false,
     "end": null,
     "label": "國際機票",
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://www.shopback.com.tw/liontravel"
    },
    "line": {
@@ -785,7 +785,7 @@
     "start": null,
     "end": null,
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/4747541"
    }
   },
@@ -804,7 +804,7 @@
     "start": null,
     "end": null,
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880048888420"
    }
   },
@@ -823,7 +823,7 @@
     "start": null,
     "end": null,
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880048890075"
    }
   },
@@ -842,46 +842,46 @@
     "start": null,
     "end": null,
     "cap": null,
-    "at": "2026-11-25T22:58+08:00",
+    "at": "2026-11-26T01:46+08:00",
     "url": "https://buy.line.me/u/partner/880048890059"
    }
   }
  ],
  "sb": {
   "klook": {
-   "type": "UPSIZE",
-   "end": "2026-11-25T22:59+08:00",
+   "type": "BASELINE",
+   "end": null,
    "tiers": [
-    [
-     "飯店住宿",
-     20
-    ],
     [
      "限定Klook eSIM(詳見條款)",
      20
     ],
     [
+     "飯店住宿",
+     6
+    ],
+    [
      "租車",
-     15
-    ],
-    [
-     "行程 體驗 郵輪",
-     13
-    ],
-    [
-     "火車車票（日本、韓國、中國、歐洲）",
-     8
-    ],
-    [
-     "景點門票&表演",
-     8
-    ],
-    [
-     "當地交通,WiFi & SIM Cards",
-     8
+     5.5
     ],
     [
      "Klook景點通行證",
+     3
+    ],
+    [
+     "當地交通,WiFi & SIM Cards",
+     3
+    ],
+    [
+     "行程 體驗 郵輪",
+     3
+    ],
+    [
+     "景點門票&表演",
+     3
+    ],
+    [
+     "火車車票（日本、韓國、中國、歐洲）",
      3
     ],
     [
@@ -893,11 +893,11 @@
      1
     ]
    ],
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "kkday": {
    "type": "UPSIZE",
-   "end": "2026-11-25T23:59+08:00",
+   "end": "2026-11-26T23:59+08:00",
    "tiers": [
     [
      "Wi-Fi & SIM 卡",
@@ -908,7 +908,7 @@
      20
     ],
     [
-     "體驗活動",
+     "全球體驗&行程（不包含郵輪、機加酒、客製化包車、機票套裝行程）\\t",
      6
     ],
     [
@@ -916,15 +916,15 @@
      6
     ],
     [
-     "全球體驗&行程（不包含郵輪、機加酒、客製化包車、機票套裝行程）\\t",
+     "體驗活動",
      6
     ],
     [
-     "交通",
-     5
+     "景點門票",
+     4
     ],
     [
-     "景點門票",
+     "交通",
      4
     ],
     [
@@ -932,7 +932,7 @@
      4
     ],
     [
-     "其他",
+     "活動展覽",
      2.5
     ],
     [
@@ -940,11 +940,11 @@
      2.5
     ],
     [
-     "活動展覽",
+     "機票",
      2.5
     ],
     [
-     "機票",
+     "其他",
      2.5
     ],
     [
@@ -960,7 +960,7 @@
      0
     ]
    ],
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "tripcom": {
    "type": "BASELINE",
@@ -1019,11 +1019,11 @@
      0
     ]
    ],
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "agoda": {
    "type": "UPSIZE",
-   "end": "2026-11-26T00:59+08:00",
+   "end": "2026-12-01T00:59+08:00",
    "tiers": [
     [
      "eSIM",
@@ -1039,48 +1039,48 @@
     ],
     [
      "機票",
-     2
+     1
     ]
    ],
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "booking-com": {
-   "type": "BASELINE",
-   "end": "2026-11-26T00:00+08:00",
+   "type": "UPSIZE",
+   "end": "2026-11-26T23:59+08:00",
    "tiers": [
     [
      "住宿",
-     5.5
+     11
     ],
     [
      "租車",
-     5
+     8
     ],
     [
      "景點／活動",
-     5
+     4.5
     ],
     [
      "機票",
      0.5
     ]
    ],
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "hotels-com": {
-   "type": "BASELINE",
-   "end": null,
+   "type": "UPSIZE",
+   "end": "2026-11-26T23:59+08:00",
    "tiers": [
+    [
+     "全館 (可與 Hotels.com Rewards 併用)",
+     9
+    ],
     [
      "租車",
      5.5
-    ],
-    [
-     "全館 (可與 Hotels.com Rewards 併用)",
-     5
     ]
    ],
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "rakuten-travel": {
    "type": "UPSIZE",
@@ -1103,15 +1103,15 @@
      0.75
     ]
    ],
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "expedia": {
-   "type": "UPSIZE",
-   "end": "2026-11-25T23:59+08:00",
+   "type": "BASELINE",
+   "end": null,
    "tiers": [
     [
      "飯店",
-     12
+     4
     ],
     [
      "當地玩樂",
@@ -1122,7 +1122,7 @@
      1
     ]
    ],
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "eztravel": {
    "type": "BASELINE",
@@ -1141,7 +1141,7 @@
      0
     ]
    ],
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "liontravel": {
    "type": "BASELINE",
@@ -1172,39 +1172,39 @@
      0
     ]
    ],
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   }
  },
  "line": {
   "880048631385": {
    "name": "Klook (住宿) - LINE旅遊",
-   "now": 20,
-   "prev": 2.5,
-   "start": "2026-11-25T18:00+08:00",
-   "end": "2026-11-25T23:59+08:00",
-   "cap": 1600,
+   "now": 2.5,
+   "prev": null,
+   "start": null,
+   "end": null,
+   "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880044225097": {
    "name": "Klook (體驗與票券) - LINE旅遊",
-   "now": 11,
-   "prev": 2,
-   "start": "2026-11-25T22:00+08:00",
-   "end": "2026-11-25T22:59+08:00",
-   "cap": 500,
+   "now": 2,
+   "prev": null,
+   "start": null,
+   "end": null,
+   "cap": 100,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "4747522": {
    "name": "KKday (體驗與票券) - LINE旅遊",
-   "now": 11,
+   "now": 8,
    "prev": 2,
-   "start": "2026-11-25T22:00+08:00",
-   "end": "2026-11-25T22:59+08:00",
-   "cap": 500,
+   "start": "2026-11-25T23:00+08:00",
+   "end": "2026-11-26T21:59+08:00",
+   "cap": 200,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880045456637": {
    "name": "Trip.com (住宿) - LINE旅遊",
@@ -1214,17 +1214,17 @@
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880048631559": {
    "name": "Trip.com (機票) - LINE旅遊",
-   "now": 0.5,
-   "prev": null,
-   "start": null,
-   "end": null,
+   "now": 2,
+   "prev": 0.5,
+   "start": "2026-11-26T00:00+08:00",
+   "end": "2026-11-27T23:59+08:00",
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880048631569": {
    "name": "Trip.com (體驗與票券) - LINE旅遊",
@@ -1234,37 +1234,37 @@
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "4747497": {
    "name": "agoda (住宿) - LINE旅遊",
-   "now": 11,
-   "prev": 3,
-   "start": "2026-11-25T00:00+08:00",
-   "end": "2026-11-25T23:59+08:00",
-   "cap": 1100,
-   "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
-  },
-  "880044220676": {
-   "name": "Booking.com (住宿) - LINE旅遊",
-   "now": 5,
-   "prev": null,
-   "start": null,
-   "end": null,
-   "cap": null,
-   "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
-  },
-  "880049493154": {
-   "name": "Hotels.com(住宿)-LINE旅遊",
    "now": 3,
    "prev": null,
    "start": null,
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
+  },
+  "880044220676": {
+   "name": "Booking.com (住宿) - LINE旅遊",
+   "now": 10,
+   "prev": 5,
+   "start": "2026-11-26T00:00+08:00",
+   "end": "2026-11-26T17:59+08:00",
+   "cap": 1000,
+   "disabled": false,
+   "at": "2026-11-26T01:46+08:00"
+  },
+  "880049493154": {
+   "name": "Hotels.com(住宿)-LINE旅遊",
+   "now": 7,
+   "prev": 3,
+   "start": "2026-11-26T00:00+08:00",
+   "end": "2026-11-26T23:59+08:00",
+   "cap": 1000,
+   "disabled": false,
+   "at": "2026-11-26T01:46+08:00"
   },
   "880050249453": {
    "name": "樂天旅遊(住宿)-LINE旅遊",
@@ -1274,7 +1274,7 @@
    "end": "2026-11-30T23:59+08:00",
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880045456647": {
    "name": "ezTravel易遊網 (住宿) - LINE旅遊",
@@ -1284,7 +1284,7 @@
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880048631531": {
    "name": "ezTravel易遊網 (機票) - LINE旅遊",
@@ -1294,7 +1294,7 @@
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880048631517": {
    "name": "ezTravel易遊網 (體驗與票券) - LINE旅遊",
@@ -1304,7 +1304,7 @@
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880048631357": {
    "name": "雄獅旅遊 (住宿) - LINE旅遊",
@@ -1314,7 +1314,7 @@
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "4747541": {
    "name": "雄獅旅遊 (機票) - LINE旅遊",
@@ -1324,7 +1324,7 @@
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880048631315": {
    "name": "雄獅旅遊 (體驗與票券) - LINE旅遊",
@@ -1334,7 +1334,7 @@
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880048888420": {
    "name": "可樂旅遊 (住宿) - LINE旅遊",
@@ -1344,7 +1344,7 @@
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880048890059": {
    "name": "可樂旅遊 (機票) - LINE旅遊",
@@ -1354,7 +1354,7 @@
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   },
   "880048890075": {
    "name": "可樂旅遊 (體驗與票券) - LINE旅遊",
@@ -1364,12 +1364,12 @@
    "end": null,
    "cap": null,
    "disabled": false,
-   "at": "2026-11-25T22:58+08:00"
+   "at": "2026-11-26T01:46+08:00"
   }
  },
  "base_sb": {
   "klook": {
-   "at": "2026-11-22",
+   "at": "2026-11-26",
    "src": "scan",
    "tiers": [
     [
@@ -1415,7 +1415,7 @@
    ]
   },
   "tripcom": {
-   "at": "2026-11-25",
+   "at": "2026-11-26",
    "src": "scan",
    "tiers": [
     [
@@ -1534,7 +1534,7 @@
    ]
   },
   "eztravel": {
-   "at": "2026-11-25",
+   "at": "2026-11-26",
    "src": "scan",
    "tiers": [
     [
@@ -1552,7 +1552,7 @@
    ]
   },
   "expedia": {
-   "at": "2026-11-25",
+   "at": "2026-11-26",
    "src": "scan",
    "tiers": [
     [
@@ -1570,7 +1570,7 @@
    ]
   },
   "liontravel": {
-   "at": "2026-11-25",
+   "at": "2026-11-26",
    "src": "scan",
    "tiers": [
     [
