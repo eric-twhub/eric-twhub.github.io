@@ -482,8 +482,14 @@
   {
    "slug": "deals-2026-11-25-taipei-miyazaki",
    "url": "/deals/2026-11-25-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$5,562 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台北飛宮崎 NT$5,562 來回含稅｜台灣虎航 12/14 出發"
+   "h1": "台北飛宮崎 NT$5,212 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台北飛宮崎 NT$5,212 來回含稅｜台灣虎航 12/14 出發"
+  },
+  {
+   "slug": "deals-2026-11-25-taipei-oita",
+   "url": "/deals/2026-11-25-taipei-oita/",
+   "h1": "台北飛大分・別府 NT$5,462 來回含稅｜台灣虎航 12/19 出發",
+   "title": "台北飛大分・別府 NT$5,462 來回含稅｜台灣虎航 12/19 出發"
   },
   {
    "slug": "deals-2026-11-25-kaohsiung-fukuoka",
@@ -500,8 +506,8 @@
   {
    "slug": "deals-2026-11-25-taipei-okayama",
    "url": "/deals/2026-11-25-taipei-okayama/",
-   "h1": "台北飛岡山 NT$7,062 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台北飛岡山 NT$7,062 來回含稅｜台灣虎航 12/14 出發"
+   "h1": "台北飛岡山 NT$6,602 來回含稅｜台灣虎航 12/17 出發",
+   "title": "台北飛岡山 NT$6,602 來回含稅｜台灣虎航 12/17 出發"
   },
   {
    "slug": "deals-2026-11-25-kaohsiung-osaka",
@@ -514,6 +520,12 @@
    "url": "/deals/2026-11-25-taipei-tokyo/",
    "h1": "台北飛東京 NT$7,920 來回含稅｜酷航 12/28 出發",
    "title": "台北飛東京 NT$7,920 來回含稅｜酷航 12/28 出發"
+  },
+  {
+   "slug": "deals-2026-11-25-taipei-nagoya",
+   "url": "/deals/2026-11-25-taipei-nagoya/",
+   "h1": "台北飛名古屋 NT$8,108 來回含稅｜台灣虎航 12/15 出發",
+   "title": "台北飛名古屋 NT$8,108 來回含稅｜台灣虎航 12/15 出發"
   },
   {
    "slug": "deals-2026-11-25-transfer-fukuoka-kumamoto",
@@ -530,8 +542,8 @@
   {
    "slug": "deals-2026-11-25-transfer-tokyo-fukushima",
    "url": "/deals/2026-11-25-transfer-tokyo-fukushima/",
-   "h1": "飛東京轉乘去福島，比直飛省 NT$1,776",
-   "title": "飛東京轉乘去福島，比直飛省 NT$1,776"
+   "h1": "飛東京轉乘去福島，比直飛省 NT$2,565",
+   "title": "飛東京轉乘去福島，比直飛省 NT$2,565"
   },
   {
    "slug": "apple-japan-price",
@@ -1544,14 +1556,26 @@
   {
    "slug": "japan-jr-pass",
    "url": "/japan-jr-pass/",
-   "h1": "JR Pass 劃位教學：怎麼劃、取消與のぞみ",
-   "title": "JR Pass 劃位教學：售票機、窗口、線上怎麼劃，取消、沒搭到與のぞみ怎麼辦（官網整理）"
+   "h1": "JR Pass 劃位教學：怎麼劃、取消與搭希望號",
+   "title": "JR Pass 劃位教學：售票機、窗口、線上怎麼劃，取消、沒搭到與希望號怎麼辦（官網整理）"
   },
   {
    "slug": "japan-shinkansen-luggage",
    "url": "/japan-shinkansen-luggage/",
    "h1": "新幹線帶大行李箱：要不要預約、怎麼訂",
    "title": "新幹線帶大行李箱要預約嗎？三邊超過 160 公分要訂座位、不用加錢（官網整理）"
+  },
+  {
+   "slug": "japan-tateyama-kurobe",
+   "url": "/japan-tateyama-kurobe/",
+   "h1": "立山黑部：開放時間、雪牆與交通",
+   "title": "立山黑部開放時間 2027：雪牆、票價、能不能開車與外國人周遊券（官網整理）"
+  },
+  {
+   "slug": "japan-kamikochi",
+   "url": "/japan-kamikochi/",
+   "h1": "上高地：開放時間與怎麼去",
+   "title": "上高地開放時間與交通：2026 年 4/17～11/15、冬季封閉、不能開車怎麼去（官網整理）"
   },
   {
    "slug": "japan-game-center",

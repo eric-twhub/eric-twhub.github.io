@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-25-taipei-nagoya",
- "generated": "2026-11-25 15:40",
+ "generated": "2026-11-25 17:32",
  "kind": "fare",
  "origin": "taipei",
  "city": "nagoya",
@@ -25,11 +25,29 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$9,480（6 天有紀錄），這張低 14%"
+  "12 月出發的票，每天最便宜的平均要 NT$9,302（7 天有紀錄），這張低 13%"
  ],
  "med": 14456,
- "n_rt": 16,
+ "n_rt": 18,
  "others": [
+  {
+   "o": "TPE",
+   "d": "NGO",
+   "air": "MM",
+   "airname": "樂桃航空",
+   "cls": "lcc",
+   "price": 8232,
+   "dep": "2026-12-29",
+   "ret": "2027-01-05",
+   "dept": "02:55",
+   "rett": "22:50",
+   "rt": true,
+   "tr": 0,
+   "dur": 370,
+   "dur_to": 150,
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/TPE2912NGO05011?t=MM17985129001798525500000150TPENGO17991894001799199000000220NGOTPE_a44db8a4c09ddb8e2446f355c4a81b97_20471&search_date=25112026&expected_price_uuid=01a211f5-8ac0-8040-6537-470b529d0275&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=PK-bIB9B8vyhpgtniLTzOg&expected_price_source=share&expected_price_currency=twd&expected_price=8232&marker=775639"
+  },
   {
    "o": "TPE",
    "d": "NGO",
@@ -65,24 +83,6 @@
    "dur_to": 150,
    "gate": "Farera",
    "url": "https://www.aviasales.com/search/TPE2712NGO31121?t=MM17983401001798352700000150TPENGO17987574001798767000000220NGOTPE_376242052560ba603bb3e5d44b4dbbde_23818&search_date=23112026&expected_price_uuid=01a208de-53cc-8040-649f-0c35c293e383&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0xt-UazPO-XkhEKnMzoC_g&expected_price_source=share&expected_price_currency=twd&expected_price=9544&marker=775639"
-  },
-  {
-   "o": "TPE",
-   "d": "NGO",
-   "air": "MM",
-   "airname": "樂桃航空",
-   "cls": "lcc",
-   "price": 9584,
-   "dep": "2026-12-08",
-   "ret": "2026-12-12",
-   "dept": "18:20",
-   "rett": "13:15",
-   "rt": true,
-   "tr": 1,
-   "dur": 1855,
-   "dur_to": 205,
-   "gate": "Trip.com",
-   "url": "https://www.aviasales.com/search/TPE0812NGO12121?t=IT17967540001796856000001640TPEOKANGO17970813001797090600000215NGOTPE_7d3db5862668f58afa6b05f45f64a4f9_23685&search_date=22112026&expected_price_uuid=01a203cf-cc60-8040-668d-f07916eb6b8a&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=e4cjO1mzKSGlWv318lBGaQ&expected_price_source=share&expected_price_currency=twd&expected_price=9584&marker=775639"
   }
  ]
 }
