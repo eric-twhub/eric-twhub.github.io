@@ -2925,7 +2925,8 @@ def _trim_note(content):
     if i < 0 or '<!--f-->' not in content:
         return content
     body = content[:i]
-    if 'NT$' not in body:                      # 這頁沒有任何票價
+    # 這頁沒有任何票價；<!--nofare--> 給有 NT$ 金額但不是票價的頁面（例如返利頁的 NT$200 提領門檻）
+    if 'NT$' not in body or '<!--nofare-->' in body:
         a, b = content.index('<!--f-->'), content.index('<!--/f-->') + 9
         content = content[:a] + content[b:]
     # 廣告版位自己就有分潤連結，但那不代表內文的官方連結也是。
@@ -29121,7 +29122,7 @@ var tp=document.getElementById("cbtop");if(tp)tp.innerHTML=top?"現在最高："
            '<script type="application/ld+json">' + _cb_ld + '</script>'
            '<style>.cbt td.nm{min-width:0;width:24%}.cbt td{vertical-align:top}'
            '.cbt td .pw{white-space:nowrap;margin-left:4px}.cbt th:not(:first-child),.cbt td:not(:first-child){width:38%}</style>')
-      + topnav() + crumbs([('首頁', '/'), ('ShopBack、LINE 旅遊回饋整理', None)])
+      + '<!--nofare-->' + topnav() + crumbs([('首頁', '/'), ('ShopBack、LINE 旅遊回饋整理', None)])
       + '<h1>訂 Klook、KKday、Trip.com 之前，先看 ShopBack 和 LINE 旅遊現在回饋多少</h1>'
       + '<p class="lede">同一筆日本住宿或行程，從 ShopBack 或 LINE 旅遊點進去再下單，可以拿回一部分現金或 LINE POINTS。'
         '平時大多只有 2～5%，加碼時會到 10～20%，但常常只有幾個小時。'
