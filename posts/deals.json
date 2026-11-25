@@ -48,19 +48,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$5,731（5 天有紀錄），這張低 40%"
+   "12 月出發的票，每天最便宜的平均要 NT$5,779（5 天有紀錄），這張低 41%"
   ],
   "med": 13809,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-09&inbound=ISG-TPE&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
   "hotelcity": "石垣島",
   "cslug": "ishigaki",
   "usual": {
-   "lo": 3615,
+   "lo": 3855,
    "hi": 8713,
    "days": 8
   },
   "mbase": {
-   "avg": 5731,
+   "avg": 5779,
    "days": 5,
    "month": 12
   },
@@ -116,14 +116,14 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$7,161（11 天有紀錄），這張低 37%"
+   "12 月出發的票，每天最便宜的平均要 NT$7,161（11 天有紀錄），這張低 36%"
   ],
   "med": 14380,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 4555,
+   "lo": 4883,
    "hi": 9245,
    "days": 12
   },
@@ -150,7 +150,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$6,640（10 天有紀錄），這張低 25%"
+   "12 月出發的票，每天最便宜的平均要 NT$5,674（9 天有紀錄），這張低 12%"
   ],
   "med": 5424,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-29&inbound=OKA-KHH&returnDate=2027-01-01&type=return&adult=1&language=zh-TW",
@@ -158,16 +158,16 @@
   "cslug": "okinawa",
   "usual": {
    "lo": 4944,
-   "hi": 6893,
-   "days": 10
+   "hi": 6493,
+   "days": 9
   },
   "mbase": {
-   "avg": 6640,
-   "days": 10,
+   "avg": 5674,
+   "days": 9,
    "month": 12
   },
   "rank": 3,
-  "n": 15
+  "n": 14
  },
  {
   "slug": "2026-11-25-taipei-saga",
