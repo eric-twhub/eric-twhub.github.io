@@ -1883,6 +1883,7 @@ def topnav(cur=''):
             + link('/japan-sumo/', '🤼 大相撲門票怎麼買')
             + link('/japan-kabuki/', '🎭 歌舞伎座一幕見席怎麼買')
             + link('/japan-concert-ticket/', '🎤 去日本看演唱會門票怎麼買')
+            + link('/japan-npb-ticket/', '⚾ 去日本看職棒門票怎麼買')
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
             + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
@@ -3275,7 +3276,7 @@ _STK_PREFIX = sorted({
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
-    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
     '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
     '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
@@ -34247,6 +34248,162 @@ if os.path.exists('concert.json'):
     pages.append(('/japan-concert-ticket/', 0.6))
     print('   演唱會頁：官方沒寫', _ct_nosay, '格')
 
+# ---------- 去日本看職棒：12 球團門票怎麼買 ----------
+# 資料在 npb.json，全部引各球團官網、NPB 官網與文化庁、e-Gov。
+# 票價寫的是 2026 球季（官網標示的年度），2027 單場開賣日大多還沒公布：表格標「上一季」，不推算今年。
+# 阪神官網查證當天連不上，票價與開賣日只放連結，不寫數字。
+if os.path.exists('npb.json'):
+    NB = json.load(open('npb.json', encoding='utf-8'))
+    if _KK1 is None:
+        _KK1 = {str(x) for x in json.load(open('kkday-1pct.json', encoding='utf-8'))['ids']}
+    _nb_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _nb_lk = lambda u, t='出處': (f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>' if u else '')
+    _nb_md = lambda s: f'{int(s[5:7])}/{int(s[8:10])}'
+    _nb_dim = lambda s: (f'<small style="color:var(--dim)">{html.escape(s)}</small>' if s == '官方沒寫' else html.escape(s))
+    _T = NB['teams']
+    _nb_open = datetime.date.fromisoformat(NB['season']['opening'])
+    _nb_days = (_nb_open - _nb_today).days
+    _nb_intl = [t for t in _T if t['intl_yes']]
+    _nb_dyn = [t for t in _T if t['dyn']]
+    _nb_tw = [t for t in _T if t['tw']]
+    _nb_twn = sum(len(t['tw']) for t in _T)
+
+    # 已公布的 2027 開賣：過了 end（或 until）就不出現
+    _nb_sales = []
+    for s in NB['sales_2027']:
+        stop = s.get('end') or s.get('until')
+        if stop and _nb_today > datetime.date.fromisoformat(stop):
+            continue
+        d = datetime.date.fromisoformat(s['date'])
+        st = f'{(d - _nb_today).days} 天後' if d > _nb_today else ('今天' if d == _nb_today else '已開始')
+        _nb_sales.append((s, d, st))
+    _nb_next = next((x for x in sorted(_nb_sales, key=lambda x: x[1]) if x[1] >= _nb_today), None)
+
+    _nb_season = ('<div class="tw"><table><tr><th>項目</th><th>日期</th></tr>'
+                  + ''.join(f'<tr><td class="nm"><b>{html.escape(x["name"])}</b></td><td>{html.escape(x["text"])}</td></tr>'
+                            for x in NB['season']['items'])
+                  + '</table></div>')
+
+    _nb_t1 = ('<div class="tw"><table><tr><th>球團</th><th>主場</th><th>官方售票網</th><th>外國人購票入口</th></tr>'
+              + ''.join(f'<tr><td class="nm"><b>{html.escape(t["zh"])}</b><br><small>{html.escape(t["ja"])}</small></td>'
+                        f'<td>{html.escape(t["stadium"])}<br><small>{html.escape(t["city"])}</small></td>'
+                        f'<td>{_nb_lk(t["site_url"], html.escape(t["site"]))}</td>'
+                        f'<td>{_nb_dim(t["intl"])}' + (f'（{_nb_lk(t["intl_url"])}）' if t['intl_url'] else '') + '</td></tr>'
+                        for t in _T)
+              + '</table></div>')
+
+    _nb_t2 = ('<div class="tw"><table><tr><th>球團</th><th>外野票價（2026 球季）</th><th>2026 首批開賣（上一季參考）</th></tr>'
+              + ''.join(f'<tr><td class="nm"><b>{html.escape(t["zh"])}</b>'
+                        + ('<br><small class="xbadge">浮動價</small>' if t['dyn'] else '') + '</td>'
+                        f'<td>{_nb_lk(t["price_src"], html.escape(t["outfield"])) if t["outfield"].startswith("看") else html.escape(t["outfield"]) + "（" + _nb_lk(t["price_src"]) + "）"}</td>'
+                        f'<td>{_nb_lk(t["sale_src"], html.escape(t["sale2026"])) if t["sale2026"].startswith("看") else html.escape(t["sale2026"]) + "（" + _nb_lk(t["sale_src"]) + "）"}</td></tr>'
+                        for t in _T)
+              + '</table></div>')
+
+    _nb_cards = '<ul class="xl">' + ''.join(
+        f'<li><div class="xh"><span class="xn">{html.escape(t["zh"])}</span>'
+        f'<span class="xbadge">{"中央聯盟" if t["lg"] == "セ" else "太平洋聯盟"}</span></div>'
+        f'<div class="xt"><b>怎麼去</b>：{html.escape(t["station"])}<br>'
+        f'<b>付款</b>：{html.escape(t["pay"])}<br>'
+        f'<b>取票</b>：{html.escape(t["pickup"])}<br>'
+        f'<b>官方轉售</b>：{_nb_dim(t["resale"])}</div>'
+        f'<div class="xw">{_nb_lk(t["pay_src"], "付款與取票出處")}'
+        + (f'・{_nb_lk(t["resale_src"], "轉售出處")}' if t['resale_src'] else '') + '</div></li>'
+        for t in _T) + '</ul>'
+
+    _nb_twl = '<ul class="xl">' + ''.join(
+        f'<li><div class="xh"><span class="xn">{html.escape(t["zh"])}</span><span class="xbadge">{html.escape(t["stadium"])}</span></div>'
+        f'<div class="xt">{"、".join(html.escape(p) for p in t["tw"])}</div>'
+        f'<div class="xw">{_nb_lk(t["tw_src"], "球員名單出處")}</div></li>' for t in _nb_tw) + '</ul>'
+
+    _nb_law = '<ul class="xl">' + ''.join(
+        f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+        f'<div class="xt">{html.escape(x["text"])}</div>'
+        f'<div class="xw">{_nb_lk(x["src"])}' + (f'・{_nb_lk(x["src2"], "法條")}' if x.get('src2') else '') + '</div></li>'
+        for x in NB['law']) + '</ul>'
+
+    _nb_salel = ('<ul class="xl">' + ''.join(
+        f'<li><div class="xh"><span class="xn">{html.escape(s["team"])}</span><span class="xbadge">{html.escape(st)}</span></div>'
+        f'<div class="xt">{html.escape(s["text"])}</div><div class="xw">{_nb_lk(s["src"])}</div></li>'
+        for s, d, st in _nb_sales) + '</ul>') if _nb_sales else ''
+
+    _nb_kk = []
+    for it in NB.get('kkday') or []:
+        if str(it['id']) in _KK1:
+            raise SystemExit(f'職棒頁：KKday 商品 {it["id"]} 在 1% 清單裡')
+        _nb_kk.append({'provider': 'kkday', 'id': it['id'], 'url': f'https://www.kkday.com/zh-tw/product/{it["id"]}',
+                       'name': it['name'], 'area': it['area'], 'note': it['note']})
+
+    _nb_intl_names = '、'.join(t['zh'] for t in _nb_intl)
+    _nb_qp = '、'.join(t['zh'] for t in _T if 'Apple Pay' in t['intl'])
+    _nb_open_txt = (f'{_nb_md(NB["season"]["opening"])}，還有 {_nb_days} 天' if _nb_days > 0 else _nb_md(NB['season']['opening']))
+    _nb_faq = [
+        ('外國人可以自己在日本職棒官網買票嗎？',
+         f'可以。12 隊裡有 {len(_nb_intl)} 隊官方有英文或繁中的購票入口：{_nb_intl_names}。'
+         '巨人官方寫海外用戶用日文購票頁可能無法正常購買，請用英文頁。'
+         f'{_nb_qp}的英文購票頁是 QUICKぴあ，只收 Apple Pay、Google Pay。其他隊官方沒寫外國人專用的入口。'),
+        ('2027 球季什麼時候開幕？票什麼時候開賣？',
+         f'NPB 公布 2027 年 {_nb_open_txt}，セ・パ同一天開幕。單場票大多數球團還沒公布開賣日；'
+         '2026 球季各隊首批大多在 2 月中旬到 3 月初開賣，每隊分批，不是整季一次開賣。'
+         + ('已經公布的有：' + '；'.join(f'{s["team"]} {html.unescape(s["text"])}' for s, d, st in _nb_sales) + '。' if _nb_sales else '')),
+        ('外野票大概多少錢？',
+         f'看球團與日期。2026 球季巨人外野指定席 2,300～2,900 円、廣島 2,500 円、中日 1,800～2,600 円；'
+         f'12 隊有 {len(_nb_dyn)} 隊用浮動價，價格依日期、對手與賣況變動，要以購票畫面為準。'),
+        ('想看台灣球員要看哪一隊？',
+         f'依各球團官網與 NPB 的球員名單（{NB["checked"]}），台灣球員有 {_nb_twn} 位，在'
+         + '、'.join(f'{t["zh"]}（{"、".join(p.split("（")[0] for p in t["tw"])}）' for t in _nb_tw)
+         + '。季後名單會變動，出發前看那一隊的官網名單。'),
+        ('在轉售網站買職棒票違法嗎？',
+         '日本的チケット不正転売禁止法也適用運動賽事：未經主辦同意、以營業方式用高於售價轉賣，或為了轉賣而買進，都違法，'
+         '可處 1 年以下拘禁刑或 100 萬日圓以下罰金。文化庁寫，在轉賣網站買的票可能被拒絕入場。多數球團有官方轉售，用那個比較安全。'),
+    ]
+    _nb_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _nb_faq]},
+                        ensure_ascii=False)
+    _nb_tsub = f'2027 球季 {_nb_open_txt}開幕。'
+    if _nb_next:
+        _nb_tsub += f'最近一個開賣：{_nb_next[0]["team"]} {_nb_md(_nb_next[0]["date"])}（{_nb_next[2]}）。'
+    write('japan-npb-ticket/index.html',
+      head('去日本看職棒：12 球團門票怎麼買、外國人購票入口、外野票價、2027 開幕與台灣球員',
+           f'日本職棒 12 球團的官方售票網、英文與繁中購票入口、付款與取票方式、外野票價（2026 球季）、'
+           f'2027 年 {_nb_md(NB["season"]["opening"])} 開幕與已公布的開賣日、台灣球員在哪一隊，以及轉售票的法律風險。全部引球團官網。',
+           'japan-npb-ticket/',
+           '<script type="application/ld+json">' + _nb_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('去日本看職棒', None)])
+      + '<h1>去日本看職棒：12 球團門票怎麼買</h1>'
+      + '<p class="lede">日本職棒（NPB）分中央聯盟、太平洋聯盟各 6 隊，每隊都有自己的官方售票網，規則各不相同。'
+        '對住在台灣的人，要先看那一隊有沒有外國人能用的購票入口、收什麼付款方式、票怎麼拿。'
+        f'下面全部引各球團官網與 NPB 官網，查證於 {NB["checked"]}；官方沒寫的就寫「官方沒寫」。</p>'
+      + '<div class="today"><div class="tday">先看這一條</div>'
+        f'<div class="tans">12 隊有 {len(_nb_intl)} 隊官方有英文或繁中購票入口</div>'
+        f'<div class="tsub">{html.escape(_nb_tsub)}票價大多依日期分級或浮動，下面寫的是 2026 球季的價格。</div></div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>直接在官網買</b>：巨人官方寫海外用戶請用英文購票頁；{_nb_qp}的英文頁只收 Apple Pay、Google Pay。</li>'
+        f'<li><b>價格會變</b>：{len(_nb_dyn)} 隊用浮動價，同一個座位不同日期價格不同。</li>'
+        '<li><b>不要買轉售票</b>：日本法律禁止高價轉賣，球團有官方轉售的就用官方的。</li>'
+        '</ul></div>'
+      + '<h2>2027 球季時程</h2>' + _nb_season
+      + f'<p class="disc">{_nb_lk(NB["season"]["src"], "NPB 2027 行事日程")}・{_nb_lk(NB["season"]["pdf_src"], "全試合日程 PDF")}</p>'
+      + ('<h2>2027 已公布的開賣</h2>' + _nb_salel
+         + '<p class="disc">其他球團的 2027 單場開賣日還沒公布，通常會在球季開始前公告。</p>' if _nb_sales else '')
+      + '<h2>12 球團怎麼買</h2>' + _nb_t1
+      + '<h2>外野票價與開賣時間</h2>'
+      + '<p>外野多半分主隊、客隊兩邊的應援席，廣島的官方英文頁就寫，客隊應援席不能穿戴鯉魚隊的周邊。'
+        '下面的價格與開賣日是 2026 球季的，2027 球季官方公布後可能不同。</p>'
+      + _nb_t2
+      + '<h2>付款、取票與官方轉售</h2>' + _nb_cards
+      + '<h2>台灣球員在哪一隊</h2>'
+      + f'<p>依各球團官網與 NPB 的球員名單（{NB["checked"]}），共 {_nb_twn} 位。季後簽約與釋出會改變名單，出發前再看一次。</p>'
+      + _nb_twl
+      + '<h2>轉售票：日本法律怎麼寫</h2>' + _nb_law
+      + adbox_tickets(_nb_kk, 'npb', '球場旁的棒球博物館', '比賽日前後可以順便去',
+                      '售價與方案以 KKday 頁面為準，本站不另外標價。')
+      + faq_visible(_nb_faq)
+      + f'<p class="disc">售票規定以各球團官網公告為準，查證於 {NB["checked"]}。本站不是售票網，也不提供代購。</p>'
+      + foot())
+    pages.append(('/japan-npb-ticket/', 0.6))
+    print('   職棒頁：外國人入口', len(_nb_intl), '隊、浮動價', len(_nb_dyn), '隊、台灣球員', _nb_twn, '位、已公布開賣', len(_nb_sales), '則')
+
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
 # 12/1 前後會變的在這裡算：票價（2,800 → 2,900）、9:50 那班 12/1 起才有、班次數。
@@ -35688,6 +35845,7 @@ SEARCH_SYN = [
     ['barlesque', 'barlesque nagoya', 'burlesque nagoya', 'burlesque名古屋', 'バーレスク名古屋', '名古屋バーレスク', '名古屋burlesque', '名古屋 burlesque'],
     ['名古屋夜生活', '名古屋 夜生活', '名古屋夜店', '名古屋秀場', '名古屋 秀'],
     ['歌舞伎', 'kabuki', 'かぶき', '歌舞伎座', 'kabukiza', '一幕見', '一幕見席', '幕見席', '幕見', '南座', '顔見世', '顏見世', '新橋演舞場'],
+    ['日本職棒', '日本职棒', '職棒', '日職', 'NPB', 'npb', 'プロ野球', '看棒球', '棒球門票', '棒球票', '野球', '甲子園', '東京巨蛋', '東京ドーム', '讀賣巨人', '巨人隊', '阪神虎', '軟銀鷹', '火腿鬥士', '日本火腿', '樂天金鷲', '西武獅', '歐力士', '養樂多', '中日龍', '廣島鯉魚', '鯉魚隊', '羅德海洋', '海灣之星', '應援席', '外野席'],
     ['演唱會', '演唱会', 'concert', 'コンサート', 'ライブ', '巡演', '日巡', '日本巡演', '當落', '当落', '門票代購', '代購門票', '實名制', '實名入場', 'ぴあ', 'チケットぴあ', 'ローチケ', 'イープラス', 'eplus', 'e+', 'lawson ticket', 'ticket pia'],
     ['夜生活', '夜遊', '夜店', '夜晚', '晚上去哪', '晚上去哪裡', '晚上去哪玩', '晚上做什麼', '晚上可以做什麼', '晚上能做什麼', '晚上好玩', 'nightlife', 'night life', 'ナイトライフ', '夜の街', '夜遊び'],
     ['宵夜', '消夜', '續攤', '续摊', '居酒屋街', 'はしご酒', '飲み屋街'],
