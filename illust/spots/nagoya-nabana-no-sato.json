@@ -1,7 +1,7 @@
 {
  "page": "/nagoya/nabana-no-sato/",
  "dir": "nagoya-nabana-no-sato",
- "_說明": "插圖參考名花之里官網燈飾頁（nagashima-onsen.co.jp/nabana/illumination/）與官網首頁的介紹畫成可愛版；說明文字來自 nabana.json 與官網，2026-11-13 查",
+ "_說明": "插圖參考名花之里官網燈飾頁（nagashima-onsen.co.jp/nabana/illumination/）與官網首頁的介紹畫成可愛版；說明文字來自 nabana.json 與官網，2026-11-13 查。2026-11-25 插圖牆五張與封面改用 Gemini 畫的點陣圖（同名 .jpg，原 SVG 保留給沒有 jpg 時用）：只畫燈飾與花園的樣子，不描官網照片、不畫園區商標或年度燈海主題的角色",
  "blocks": [
   {
    "before": "票價",

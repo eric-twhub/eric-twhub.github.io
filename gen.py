@@ -3324,6 +3324,28 @@ _STK_PREFIX = sorted({
 }.items(), key=lambda kv: -len(kv[0]))
 _H1_RE = re.compile(r'<h1\b[^>]*>.*?</h1>', re.S)
 
+def _jpeg_size(fn):
+    """讀 JPEG 的 SOF 區段拿寬高；讀不到回傳 None。"""
+    try:
+        with open(fn, 'rb') as f:
+            d = f.read()
+    except OSError:
+        return None
+    i = 2
+    while i + 9 < len(d):
+        if d[i] != 0xFF:
+            i += 1
+            continue
+        mk = d[i + 1]
+        if mk in (0xC0, 0xC1, 0xC2):
+            return (d[i + 7] << 8 | d[i + 8], d[i + 5] << 8 | d[i + 6])
+        if mk in (0xD8, 0x01) or 0xD0 <= mk <= 0xD7:
+            i += 2
+            continue
+        i += 2 + (d[i + 2] << 8 | d[i + 3])
+    return None
+
+
 def _sticker(path, content):
     url = '/' + path[:-len('index.html')] if path.endswith('index.html') else None
     if not url or 'class="bnr"' in content:
@@ -3338,11 +3360,13 @@ def _sticker(path, content):
         return content
     # 2026-11-25 起封面可以改用 Gemini 畫的點陣圖：illust/cover/<網址>.jpg（1440×420）
     # 與 <網址>-720.jpg（720×210）都在就用它們，手機下載小張。
+    # Gemini 不一定照 24:7 出圖（裁掉會切到圖框），高度照 720 那張的實際比例算。
     slug = url.strip('/').replace('/', '-')
     if slug and os.path.exists(f'illust/cover/{slug}.jpg') and os.path.exists(f'illust/cover/{slug}-720.jpg'):
+        cw, ch = _jpeg_size(f'illust/cover/{slug}-720.jpg') or (720, 210)
         img = (f'<div class="bnr"><img src="{U("/illust/cover/" + slug + "-720.jpg")}" '
                f'srcset="{U("/illust/cover/" + slug + "-720.jpg")} 720w, {U("/illust/cover/" + slug + ".jpg")} 1440w" '
-               'sizes="(max-width: 760px) 100vw, 720px" alt="" width="720" height="210" decoding="async"></div>')
+               f'sizes="(max-width: 760px) 100vw, 720px" alt="" width="{cw}" height="{ch}" decoding="async"></div>')
         return content[:m.end()] + img + content[m.end():]
     # 2026-11-13 第二版：使用者說聖誕頁「比較活潑可愛，全站都需要這樣」，
     # 從標題旁的小貼紙改成標題下面一張寬版手繪封面（illust/make_banners.py 把同一張貼紙放進場景）。
