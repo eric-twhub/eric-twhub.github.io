@@ -1,0 +1,161 @@
+{
+  "checked": "2026-11-25",
+  "law": [
+    {
+      "name": "法律上是「風俗營業」",
+      "text": "風營法第 2 條把麻將館、柏青哥店（ぱちんこ屋）列為「設置設備讓客人進行可能引起射倖心的遊技」的風俗營業，要向公安委員會申請許可。",
+      "src": "https://laws.e-gov.go.jp/law/323AC0000000122",
+      "src_t": "風營法"
+    },
+    {
+      "name": "未滿 18 歲不能進店",
+      "text": "風營法第 22 條：風俗營業者不能讓未滿 18 歲的人以客人身分進入營業場所。",
+      "src": "https://laws.e-gov.go.jp/law/323AC0000000122",
+      "src_t": "風營法第 22 條"
+    },
+    {
+      "name": "半夜 0 點到 6 點不能營業",
+      "text": "風營法第 13 條：風俗營業在 0 點到 6 點的深夜不能營業；各都道府縣還可以用條例再限制營業時間。",
+      "src": "https://laws.e-gov.go.jp/law/323AC0000000122",
+      "src_t": "風營法第 13 條"
+    },
+    {
+      "name": "店家不能給現金、不能買回景品",
+      "text": "風營法第 23 條：柏青哥店不能用現金或有價證券當獎品、不能買回給客人的獎品、不能讓客人把鋼珠帶出店外、不能發「代為保管鋼珠」的書面給客人。",
+      "src": "https://laws.e-gov.go.jp/law/323AC0000000122",
+      "src_t": "風營法第 23 條"
+    },
+    {
+      "name": "一顆鋼珠最多 4 円",
+      "text": "風營法施行規則第 36 條：柏青哥機台一顆鋼珠最多 4 円、拉霸機（パチスロ）一枚代幣最多 20 円（另加消費稅）；獎品要和鋼珠數量對應的金額等值，一件獎品最多 9,600 円（另加消費稅）。",
+      "src": "https://laws.e-gov.go.jp/law/360M50400000001",
+      "src_t": "風營法施行規則"
+    }
+  ],
+  "exchange": [
+    {
+      "name": "第三者買回獎品「不直接」違法",
+      "text": "2015 年政府答辯書：柏青哥業者以外的第三者買回客人拿到的獎品，「不直接」構成第 23 條第 1 項第 2 號違反；但第三者和業者實質上是同一個的話，可能違反。",
+      "src": "https://www.sangiin.go.jp/japanese/joho1/kousei/syuisyo/189/touh/t189152.htm",
+      "src_t": "參議院答辯書第 152 號"
+    },
+    {
+      "name": "由偵查機關個別判斷",
+      "text": "同年補充答辯：為什麼這樣回答，是因為犯罪成不成立要由偵查機關依證據個別判斷。2017 年眾議院答辯也重申，第三者和業者實質同一的話可能違反。",
+      "src": "https://www.sangiin.go.jp/japanese/joho1/kousei/syuisyo/189/touh/t189168.htm",
+      "src_t": "參議院答辯書第 168 號",
+      "src2": "https://www.shugiin.go.jp/internet/itdb_shitsumon.nsf/html/shitsumon/b193398.htm",
+      "src2_t": "眾議院答辯第 398 號"
+    },
+    {
+      "name": "政府沒寫「三店方式」，也沒說合法或違法",
+      "text": "這幾份答辯書裡沒有出現「三店方式」這個詞，也沒有寫合法或違法的結論。",
+      "src": "https://www.shugiin.go.jp/internet/itdb_shitsumon.nsf/html/shitsumon/b193398.htm",
+      "src_t": "眾議院答辯第 398 號"
+    }
+  ],
+  "manners": [
+    {
+      "name": "鋼珠是借的，不能帶出店",
+      "text": "鋼珠和代幣是店家借給你的，要歸還，帶出店外是禁止的；也不能把別家店的帶進來。",
+      "src": "https://www.dynam.jp/howto/glossary.html",
+      "src_t": "ダイナム用語集",
+      "src2": "https://www.hajimete-pachinko.jp/pc/jp/howto/manner.php",
+      "src2_t": "業界新手站禮儀"
+    },
+    {
+      "name": "不能邊喝酒邊玩、不能同時佔兩台",
+      "text": "業界新手站列的禮儀：不能一邊喝酒一邊玩，不能同時佔兩台機器。",
+      "src": "https://www.hajimete-pachinko.jp/pc/jp/howto/manner.php",
+      "src_t": "業界新手站禮儀"
+    },
+    {
+      "name": "1 円柏青哥",
+      "text": "一顆大約 1 円的「低貸玉」機台，另外也有 2 円、0.5 円的。業界新手站寫 1,000 円就能玩。",
+      "src": "https://www.dynam.jp/howto/glossary.html",
+      "src_t": "ダイナム用語集",
+      "src2": "https://www.hajimete-pachinko.jp/pc/jp/profile/index.php",
+      "src2_t": "業界新手站"
+    },
+    {
+      "name": "沒換完的鋼珠",
+      "text": "結算後拿到的收據或卡，當天才能換獎品；想改天再換要用「貯玉」存在店裡，這要先成為那家店的會員。",
+      "src": "https://www.hajimete-pachinko.jp/pc/jp/faq/index.php",
+      "src_t": "業界新手站 FAQ",
+      "src2": "https://www.hajimete-pachinko.jp/pc/en/faq/index.php",
+      "src2_t": "英文 FAQ"
+    }
+  ],
+  "foreign": [
+    {
+      "name": "ダイナム有繁中介紹站",
+      "text": "連鎖店ダイナム有給外國人的繁體中文頁，寫明未滿 18 歲禁止遊玩，店內有洗手間、Wi-Fi 和指定吸菸區。",
+      "src": "https://discover-dynam.com/cn/information/",
+      "src_t": "ダイナム繁中站"
+    },
+    {
+      "name": "東京金町有新手體驗團",
+      "text": "ダイナム的體驗團在金町站南口集合，講解基本知識後到ダイナム金町店現場試玩並指導 20 分鐘，透過 Tripadvisor 預約。",
+      "src": "https://discover-dynam.com/cn/information/",
+      "src_t": "ダイナム繁中站"
+    },
+    {
+      "name": "英文說明寫的年齡不一樣",
+      "text": "業界新手站的英文版寫「under 17」禁止入店，但日文版和法律都是未滿 18 歲，以法律為準。",
+      "src": "https://www.hajimete-pachinko.jp/pc/en/howto/manner.php",
+      "src_t": "業界新手站英文版",
+      "src2": "https://www.hajimete-pachinko.jp/pc/jp/howto/manner.php",
+      "src2_t": "日文版"
+    }
+  ],
+  "smoke": [
+    {
+      "name": "原則室內禁菸",
+      "text": "日本健康增進法：各種設施原則室內禁菸，符合要件可以設吸菸室；未滿 20 歲就算不抽菸也不能進吸菸區。",
+      "src": "https://jyudokitsuen.mhlw.go.jp/people",
+      "src_t": "厚生勞動省"
+    },
+    {
+      "name": "ダイナム幾乎全席禁菸",
+      "text": "ダイナム 2020 年 4 月起分菸，除了一部分店以外幾乎全部座位禁菸，有些店設加熱式菸專用吸菸室。厚生勞動省的說明沒有點名柏青哥店，其他連鎖店看各店公告。",
+      "src": "https://www.dynam.jp/activity/sustainability/smoke.html",
+      "src_t": "ダイナム分菸說明"
+    }
+  ],
+  "unknown": [
+    "入店時要不要出示證件、店家怎麼確認年齡",
+    "各都道府縣條例另外限制的營業時間"
+  ],
+  "help": [
+    {
+      "name": "RSN 免費電話諮詢",
+      "text": "リカバリーサポート・ネットワーク，給本人或家人的柏青哥依存免費電話諮詢（只付通話費），週一到週五 10:00～22:00（21:30 前受理），050-5846-3952。",
+      "src": "https://rsn-sakura.jp/",
+      "src_t": "RSN"
+    },
+    {
+      "name": "自己申告、家族申告",
+      "text": "本人可以向加盟店設定每天金額上限、每月來店次數、每天遊玩時間，或宣告不進那家店；配偶或二等親內的成年家人也可以申請。",
+      "src": "https://jikoshinkoku.jp/",
+      "src_t": "自己申告プログラム"
+    },
+    {
+      "name": "線上柏青哥是違法的",
+      "text": "RSN 提醒，線上柏青哥是違法的，參加的人也可能被問賭博罪。",
+      "src": "https://rsn-sakura.jp/",
+      "src_t": "RSN"
+    }
+  ],
+  "tw_law": [
+    {
+      "name": "中華民國刑法第 7 條",
+      "text": "本法於中華民國人民在中華民國領域外犯前二條以外之罪，而其最輕本刑為三年以上有期徒刑者，適用之。但依犯罪地之法律不罰者，不在此限。",
+      "src": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=7"
+    },
+    {
+      "name": "中華民國刑法第 266 條第 1 項",
+      "text": "在公共場所或公眾得出入之場所賭博財物者，處五萬元以下罰金。",
+      "src": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=266"
+    }
+  ]
+}

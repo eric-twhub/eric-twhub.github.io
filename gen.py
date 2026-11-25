@@ -1888,6 +1888,7 @@ def topnav(cur=''):
             + link('/japan-keiba/', '🏇 去日本看賽馬、有馬記念怎麼進場')
             + link('/japan-maid-cafe/', '🎀 女僕咖啡廳怎麼玩')
             + link('/tokyo/yakatabune/', '🏮 東京屋形船怎麼訂')
+            + link('/japan-pachinko/', '🎰 柏青哥的規定與規矩')
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
             + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
@@ -3281,7 +3282,7 @@ _STK_PREFIX = sorted({
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
-    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-maid-cafe/': 'st/omurice', '/tokyo/yakatabune/': 'st/yakata', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-maid-cafe/': 'st/omurice', '/tokyo/yakatabune/': 'st/yakata', '/japan-pachinko/': 'st/pachinko', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
     '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
     '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
@@ -34831,6 +34832,73 @@ if os.path.exists('yakatabune.json'):
     pages.append(('/tokyo/yakatabune/', 0.6))
     print('   屋形船頁：併船', len(_SH), '家、花火剩', len(_yk_fw), '場、KKday', len(_yk_kk), '個')
 
+# ---------- 柏青哥 ----------
+# 資料在 pachinko.json，只收法規原文、政府答辯書與業界團體、連鎖店官網。
+# 只寫法律和規矩，不寫怎麼贏、不推薦機台；換錢（三店方式）只引答辯書原話，不下合法或違法的結論。
+# 本頁在 _NO_KLOOK（博彩內容），也不放任何商品。
+if os.path.exists('pachinko.json'):
+    PK = json.load(open('pachinko.json', encoding='utf-8'))
+    _pk_lk = lambda u, t='官網': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+
+    def _pk_list(xs):
+        return '<ul class="xl">' + ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+            f'<div class="xt">{html.escape(x["text"])}</div>'
+            + (f'<div class="xw">{_pk_lk(x["src"], x.get("src_t", "出處"))}'
+               + (f'・{_pk_lk(x["src2"], x.get("src2_t", "出處 2"))}' if x.get('src2') else '') + '</div>' if x.get('src') else '')
+            + '</li>' for x in xs) + '</ul>'
+
+    _pk_faq = [
+        ('觀光客可以玩柏青哥嗎？',
+         '法律只規定未滿 18 歲不能進店，沒有國籍限制。連鎖店ダイナム有給外國人的繁體中文介紹站，東京金町也有新手體驗團。'
+         '官方沒寫入店要不要出示證件。'),
+        ('幾歲可以進柏青哥店？',
+         '18 歲。風營法第 22 條禁止讓未滿 18 歲的人以客人身分進入。業界新手站的英文版寫「under 17」，和日文版、法律不一致，以法律為準。'),
+        ('柏青哥贏了可以換現金嗎？',
+         '風營法第 23 條禁止店家用現金當獎品，也禁止店家買回獎品。政府答辯書寫，業者以外的第三者買回獎品「不直接」違法，'
+         '但第三者和業者實質同一的話可能違反，犯罪成不成立由偵查機關個別判斷；答辯書沒有寫合法或違法的結論。'),
+        ('玩柏青哥要多少錢？',
+         '法律規定一顆鋼珠最多 4 円（另加消費稅），也有一顆大約 1 円的「1 円柏青哥」。業界新手站寫 1,000 円就能玩。'),
+        ('台灣人在日本玩柏青哥會違法嗎？',
+         '台灣主管機關沒有公開說明國人在國外合法場所遊玩的問題，本站不做法律判斷。相關條文原文：刑法第 7 條「'
+         + PK['tw_law'][0]['text'] + '」第 266 條第 1 項「' + PK['tw_law'][1]['text'] + '」'),
+        ('網路上的線上柏青哥可以玩嗎？',
+         '日本的柏青哥依存諮詢機構 RSN 提醒，線上柏青哥是違法的，參加的人也可能被問賭博罪。'),
+    ]
+    _pk_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _pk_faq]},
+                        ensure_ascii=False)
+    write('japan-pachinko/index.html',
+      head('日本柏青哥是什麼：18 歲限制、為什麼不能直接換現金、店內規矩（法規原文整理）',
+           '日本柏青哥（パチンコ）觀光客要知道的規定：風營法未滿 18 歲不能進店、半夜不能營業、店家不能給現金與買回獎品、一顆鋼珠最多 4 円，'
+           '政府答辯書對換錢的說法，鋼珠不能帶出店等規矩，以及禁菸與依存諮詢。不教怎麼贏。',
+           'japan-pachinko/',
+           '<script type="application/ld+json">' + _pk_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('柏青哥是什麼', None)])
+      + '<h1>日本柏青哥：規定、換錢與店內規矩</h1>'
+      + '<p class="lede">柏青哥（パチンコ）是把小鋼珠打進機台的遊戲，在日本法律上屬於「風俗營業」。'
+        '它和一般遊樂場不一樣：有年齡限制、營業時間限制，獎品怎麼換也有法律規定。'
+        f'下面只整理法規原文、政府答辯書和業界官網寫的規定，查證於 {PK["checked"]}；本頁不教怎麼贏，也不推薦機台。</p>'
+      + '<div class="today"><div class="tday">先看這一條</div><div class="tans">未滿 18 歲不能進店</div>'
+        '<div class="tsub">風營法第 22 條。官方沒寫入店要不要出示證件，被問的話照店員說的做。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>鋼珠是借的</b>：不能帶出店，也不能把別家的帶進來。</li>'
+        '<li><b>店裡不會給現金</b>：法律禁止店家用現金當獎品、也禁止店家買回獎品。</li>'
+        '<li><b>一顆最多 4 円</b>：也有 1 円的低價機台。</li>'
+        '</ul></div>'
+      + '<h2>法律怎麼規定</h2>' + _pk_list(PK['law'])
+      + '<h2>贏了能不能換錢</h2><p>這是觀光客最常問的。下面只放政府答辯書的原話，本站不做合法或違法的判斷。</p>' + _pk_list(PK['exchange'])
+      + '<h2>店內規矩</h2>' + _pk_list(PK['manners'])
+      + '<h2>外國觀光客</h2>' + _pk_list(PK['foreign'])
+      + '<h2>抽菸</h2>' + _pk_list(PK['smoke'])
+      + '<h2>官方沒寫的事</h2><ul class="pick">' + ''.join(f'<li>{html.escape(x)}</li>' for x in PK['unknown']) + '</ul>'
+      + '<h2>停不下來怎麼辦</h2>' + _pk_list(PK['help'])
+      + faq_visible(_pk_faq)
+      + f'<p class="disc">法規以 e-Gov 法令檢索的現行條文為準，查證於 {PK["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-pachinko/', 0.6))
+    print('   柏青哥頁：法規', len(PK['law']), '則、答辯書', len(PK['exchange']), '則')
+
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
 # 12/1 前後會變的在這裡算：票價（2,800 → 2,900）、9:50 那班 12/1 起才有、班次數。
@@ -36274,6 +36342,7 @@ SEARCH_SYN = [
     ['歌舞伎', 'kabuki', 'かぶき', '歌舞伎座', 'kabukiza', '一幕見', '一幕見席', '幕見席', '幕見', '南座', '顔見世', '顏見世', '新橋演舞場'],
     ['刺青', '紋身', '纹身', 'タトゥー', 'tattoo', '入れ墨', '刺青泡湯', '刺青溫泉', '紋身泡溫泉', '刺青貼紙', '錢湯', '銭湯', 'sento', '公共澡堂', '大眾澡堂'],
     ['女僕', '女僕咖啡', '女僕咖啡廳', '女仆咖啡', '女仆咖啡厅', '女僕餐廳', 'メイドカフェ', 'メイド喫茶', 'maid cafe', 'maidcafe', 'maidreamin', 'めいどりーみん', 'at-home cafe', 'あっとほぉーむカフェ', '萌え萌えキュン', '萌萌揪', '秋葉原女僕'],
+    ['柏青哥', '小鋼珠', '小钢珠', 'パチンコ', 'ぱちんこ', 'pachinko', '柏青嫂', '柏青哥店', '日本柏青哥', 'パチスロ', '柏青斯洛', '彈珠機', '弹珠机', '三店方式'],
     ['屋形船', 'やかたぶね', 'yakatabune', '屋型船', '東京灣遊船', '東京灣晚餐', '隅田川遊船', '隅田川屋形船', '晚餐遊船', '東京遊船晚餐'],
     ['賽馬', '赛马', '競馬', '竞马', '賭馬', '馬券', '马券', '買馬券', '有馬記念', '有馬紀念', '有马记念', '日本盃', '日本杯', 'ジャパンカップ', 'japan cup', 'JRA', 'keiba', '大井競馬', '中山競馬場', '東京競馬場', '夜間賽馬', '看賽馬'],
     ['日本職棒', '日本职棒', '職棒', '日職', 'NPB', 'npb', 'プロ野球', '看棒球', '棒球門票', '棒球票', '野球', '甲子園', '東京巨蛋', '東京ドーム', '讀賣巨人', '巨人隊', '阪神虎', '軟銀鷹', '火腿鬥士', '日本火腿', '樂天金鷲', '西武獅', '歐力士', '養樂多', '中日龍', '廣島鯉魚', '鯉魚隊', '羅德海洋', '海灣之星', '應援席', '外野席'],
