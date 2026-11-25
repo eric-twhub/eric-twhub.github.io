@@ -19793,9 +19793,45 @@ for (oslug,cslug),fs in by_route.items():
         + f'<p class="upd">更新於 {NOWS}　·　共 {len(fs)} 筆票價</p>' + body + foot())
     pages.append((f'/{oslug}/{cslug}/',0.9)); NOINDEX.add(f'/{oslug}/{cslug}/')
 
+# 這次沒產生的航線頁（票價筆數掉到 ROUTE_MIN 以下、或這幾天抓不到），
+# 舊 HTML 會一直留在磁碟上、掛著過期的「最低 NT$…」。2026-11-25 發現 9 頁停在 11/17。
+# 改寫成「這次沒有票價資料」，網址不壞，有資料的那天自動換回正常頁。
+def _no_fare_page(path, title, desc, crumb, h1, msg, links):
+    write(f'{path}index.html', head(title, desc, path)
+        + topnav() + crumbs(crumb) + f'<h1>{h1}</h1>'
+        + f'<p class="lede">{msg}</p><p class="upd">更新於 {NOWS}</p>'
+        + '<div class="cities">' + ''.join(
+            f'<a class="ct" href="{U(h)}"><b>{t}</b><s>{st}</s></a>' for h, t, st in links)
+        + '</div>' + foot())
+    pages.append((f'/{path}', 0.3)); NOINDEX.add(f'/{path}')
+
+for oslug,oname,codes in ORIGINS:
+    for _f in sorted(glob.glob(f'{oslug}/*/index.html')):
+        cslug = _f.split('/')[1]
+        if cslug not in CITY or (oslug, cslug) in route_pages:
+            continue
+        cname = CITY[cslug][1]
+        _no_fare_page(f'{oslug}/{cslug}/',
+            f'{oname}飛{cname}機票｜目前沒有票價資料',
+            f'這次更新沒有抓到{oname}出發飛{cname}的票價，可以看其他出發地飛{cname}的價格。',
+            [('首頁','/'),(f'{oname}出發',f'/{oslug}/'),(f'{oname}飛{cname}機票',None)],
+            f'{oname}飛{cname}機票',
+            f'這次更新沒有抓到{oname}出發飛{cname}的票價。沒抓到不代表沒有航班，'
+            f'可能是這段期間班次少，或剛好沒有查到。',
+            [(f'/{cslug}/', f'{cname}機票總覽', '比較所有出發地'),
+             (f'/{oslug}/', f'{oname}飛日本', '看有票價的目的地')])
+
 for oslug,oname,codes in ORIGINS:
     fs=by_origin.get(oslug,[])
-    if not fs: continue
+    if not fs:
+        _no_fare_page(f'{oslug}/', f'{oname}飛日本機票｜目前沒有票價資料',
+            f'這次更新沒有抓到{oname}出發飛日本的票價，可以看其他出發地的價格。',
+            [('首頁','/'),(f'{oname}飛日本機票',None)], f'{oname}飛日本機票',
+            f'這次更新沒有抓到{oname}出發飛日本的票價。沒抓到不代表沒有航班，'
+            f'可能是這段期間班次少，或剛好沒有查到。',
+            [(f'/{o}/', f'{n}飛日本', '看這個出發地的票價')
+             for o, n, _c in ORIGINS if by_origin.get(o)])
+        continue
     b=best(fs,True) or best(fs,False)
     dests=sorted({CITY_OF[x['d']][0] for x in fs},
                  key=lambda c: sort_key([y for y in fs if CITY_OF[y['d']][0]==c]))
@@ -35887,7 +35923,9 @@ if os.path.exists('hakodate-xmas.json'):
         f'<li>函館山纜車：{_hx_a(_RW["src"], "營業時間與票價")}、{_hx_a(_RW["src_access"], "交通")}</li>'
         f'<li>五稜郭塔：{_hx_a(_TW["src"], "票價與營業時間")}</li></ul></details>'
       + '<h2>延伸閱讀</h2><div class="cities">'
-      + f'<a class="ct" href="{U("/taipei/hakodate/")}"><b>✈️ 台北飛函館機票</b><s>哪天出發比較便宜</s></a>'
+      + (f'<a class="ct" href="{U("/taipei/hakodate/")}"><b>✈️ 台北飛函館機票</b><s>哪天出發比較便宜</s></a>'
+         if ('taipei', 'hakodate') in route_pages else
+         f'<a class="ct" href="{U("/hakodate/")}"><b>✈️ 函館機票</b><s>各出發地的票價</s></a>')
       + f'<a class="ct" href="{U("/tokyo/christmas-market/")}"><b>🎄 東京聖誕市集</b><s>哪些要門票、哪天開</s></a>'
       + f'<a class="ct" href="{U("/sapporo/snow-festival/")}"><b>⛄ 札幌雪祭 2027</b><s>日期與連假怎麼排</s></a>'
       + (f'<a class="ct" href="{U("/hakodate/ropeway/")}"><b>🚡 函館山纜車</b><s>這兩週幾點日落、冬天怎麼上山</s></a>' if os.path.exists('hakodate-ropeway.json') else '') + '</div>'
