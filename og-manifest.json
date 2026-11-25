@@ -456,6 +456,12 @@
    "title": "台北飛福岡 NT$4,483 來回含稅｜台灣虎航 12/01 出發"
   },
   {
+   "slug": "deals-2026-11-25-kaohsiung-fukuoka",
+   "url": "/deals/2026-11-25-kaohsiung-fukuoka/",
+   "h1": "高雄飛福岡 NT$4,943 來回含稅｜台灣虎航 12/29 出發",
+   "title": "高雄飛福岡 NT$4,943 來回含稅｜台灣虎航 12/29 出發"
+  },
+  {
    "slug": "deals-2026-11-25-kaohsiung-okinawa",
    "url": "/deals/2026-11-25-kaohsiung-okinawa/",
    "h1": "高雄飛沖繩 NT$4,993 來回含稅｜台灣虎航 12/29 出發",
@@ -468,22 +474,16 @@
    "title": "台北飛佐賀 NT$5,055 來回含稅｜台灣虎航 12/03 出發"
   },
   {
-   "slug": "deals-2026-11-25-taipei-miyazaki",
-   "url": "/deals/2026-11-25-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$5,062 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台北飛宮崎 NT$5,062 來回含稅｜台灣虎航 12/14 出發"
-  },
-  {
    "slug": "deals-2026-11-25-kaohsiung-ishigaki",
    "url": "/deals/2026-11-25-kaohsiung-ishigaki/",
    "h1": "高雄飛石垣島 NT$5,133 來回含稅｜台灣虎航 11/29 出發",
    "title": "高雄飛石垣島 NT$5,133 來回含稅｜台灣虎航 11/29 出發"
   },
   {
-   "slug": "deals-2026-11-25-kaohsiung-fukuoka",
-   "url": "/deals/2026-11-25-kaohsiung-fukuoka/",
-   "h1": "高雄飛福岡 NT$5,862 來回含稅｜台灣虎航 12/29 出發",
-   "title": "高雄飛福岡 NT$5,862 來回含稅｜台灣虎航 12/29 出發"
+   "slug": "deals-2026-11-25-taipei-miyazaki",
+   "url": "/deals/2026-11-25-taipei-miyazaki/",
+   "h1": "台北飛宮崎 NT$5,212 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台北飛宮崎 NT$5,212 來回含稅｜台灣虎航 12/14 出發"
   },
   {
    "slug": "deals-2026-11-25-taipei-osaka",
@@ -1492,6 +1492,12 @@
    "url": "/okinawa/nightlife/",
    "h1": "沖繩晚上去哪：國際通、榮町市場、民謠酒場與琉球舞踊",
    "title": "沖繩夜生活推薦：那霸國際通、榮町市場、美國村晚上去哪，民謠酒場與琉球舞踊"
+  },
+  {
+   "slug": "japan-kabuki",
+   "url": "/japan-kabuki/",
+   "h1": "歌舞伎座怎麼看：一幕見席、門票與中文字幕",
+   "title": "歌舞伎座怎麼看：一幕見席怎麼買、門票價格、中文字幕與本月演目"
   },
   {
    "slug": "japan-takayama-shirakawago-bus",

@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-25-kaohsiung-osaka",
- "generated": "2026-11-25 11:08",
+ "generated": "2026-11-25 12:03",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "osaka",
@@ -24,7 +24,7 @@
   "url": "https://www.aviasales.com/search/KHH1612KIX14011?t=IT17974308001797444300000165KHHKIX17999262001799935200000210KIXKHH_714e4c00c8d99136f0cf61fd183f6483_18470&search_date=19112026&expected_price_uuid=01a1f5bd-da68-8040-24a0-fa71f06fa3ee&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Vs4DVZj-s0QmIWOkx35L_Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7420&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,987（12 天有紀錄），這張低 17%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,985（12 天有紀錄），這張低 17%"
  ],
  "med": 15397,
  "n_rt": 60,
@@ -35,7 +35,7 @@
    "air": "MM",
    "airname": "樂桃航空",
    "cls": "lcc",
-   "price": 7324,
+   "price": 7290,
    "dep": "2026-12-20",
    "ret": "2027-01-13",
    "dept": "14:20",
@@ -45,7 +45,7 @@
    "dur": 390,
    "dur_to": 165,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH2012KIX13011?t=MM17977764001797789900000165KHHKIX17998365001799846400000225KIXKHH_5df1fe5683f8851355f0e13602dba0fb_18246&search_date=25112026&expected_price_uuid=01a2105a-0e97-8040-6c6f-817901cae716&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=f48qUGYQFyb3XGiluDUbKQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7324&marker=775639"
+   "url": "https://www.aviasales.com/search/KHH2012KIX13011?t=MM17977764001797789900000165KHHKIX17998365001799846400000225KIXKHH_5df1fe5683f8851355f0e13602dba0fb_18161&search_date=25112026&expected_price_uuid=01a210c6-b880-8040-20b6-c612efd8cfc3&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=f48qUGYQFyb3XGiluDUbKQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7290&marker=775639"
   },
   {
    "o": "KHH",
