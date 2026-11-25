@@ -1879,6 +1879,7 @@ def topnav(cur=''):
     # 訂完票之後才會看的東西。同一層放太多會找不到，所以分兩組小標。
     trip = ('<b>挑日期</b>'
             + link('/japan-park-ticket/', '🎢 樂園門票哪天便宜')
+            + link('/japan-disney-dpa/', '🏰 迪士尼尊享卡（DPA）')
             + link('/japan-bogo/', '🎁 行程與網卡買一送一')
             + link('/japan-sumo/', '🤼 大相撲門票怎麼買')
             + link('/japan-kabuki/', '🎭 歌舞伎座一幕見席怎麼買')
@@ -1965,6 +1966,7 @@ def topnav(cur=''):
             + link('/japan-airport-last-train/', '🚉 機場末班車')
             + link('/japan-jr-pass/', '🚄 JR Pass 劃位與希望號')
             + link('/japan-shinkansen-luggage/', '🧳 新幹線帶大行李箱')
+            + link('/japan-smart-ex/', '🎫 smart EX 網路訂新幹線')
             + '<hr><b>上網與門號</b>'
             + link('/japan-esim/', '📱 日本 eSIM 比較')
             + link('/japan-esim-native-roaming/', '📱 原生還是漫遊')
@@ -2195,7 +2197,7 @@ _AD_MAP = [
     ('japan-yen-exchange', 'esim'),
     ('japan-payment', 'esim'),
     ('japan-transit-card', 'transport'),
-    ('japan-jr-pass', 'transport'), ('japan-shinkansen-luggage', 'transport'),
+    ('japan-jr-pass', 'transport'), ('japan-shinkansen-luggage', 'transport'), ('japan-smart-ex', 'transport'), ('japan-disney-dpa', 'activity'),
     ('japan-tateyama-kurobe', 'activity'), ('japan-kamikochi', 'activity'),
     ('taiwan-airport-parking', 'transfer'),
     ('japan-flight-fuji', 'activity2'),
@@ -3289,7 +3291,7 @@ _STK_PREFIX = sorted({
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
-    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-maid-cafe/': 'st/omurice', '/tokyo/yakatabune/': 'st/yakata', '/japan-pachinko/': 'st/pachinko', '/japan-game-center/': 'st/claw', '/japan-jr-pass/': 'st/shinkansen', '/japan-shinkansen-luggage/': 'st/shinkansen', '/japan-tateyama-kurobe/': 'st/alps', '/japan-kamikochi/': 'st/alps', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-maid-cafe/': 'st/omurice', '/tokyo/yakatabune/': 'st/yakata', '/japan-pachinko/': 'st/pachinko', '/japan-game-center/': 'st/claw', '/japan-jr-pass/': 'st/shinkansen', '/japan-shinkansen-luggage/': 'st/shinkansen', '/japan-smart-ex/': 'st/shinkansen', '/japan-disney-dpa/': 'st/ferris', '/japan-tateyama-kurobe/': 'st/alps', '/japan-kamikochi/': 'st/alps', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
     '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
     '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
@@ -24038,16 +24040,17 @@ if os.path.exists('park-ticket.json'):
             for x in _pxc['items'])
         _px_html = (
           '<h2>快速通關要多少錢</h2>'
-          '<p class="lede">兩個樂園的官網都沒有公開價目表。這一段先講查得到的規則，'
-          '價格只能給通路的標價。</p>'
+          '<p class="lede">迪士尼尊享卡官網有逐項價格，整理在'
+          '<a href="/japan-disney-dpa/">迪士尼尊享卡（DPA）</a>；USJ 官網沒有公開價目表，'
+          '這一段先講查得到的規則，價格只能給通路的標價。</p>'
           '<div class="tw"><table><thead><tr><th>　</th>'
           '<th>東京迪士尼</th><th>USJ</th></tr></thead><tbody>'
           f'<tr><td><b>名稱</b></td><td class="nm">{html.escape(_pxt["name"])}</td>'
           f'<td class="nm">{html.escape(_pxu["name"])}</td></tr>'
           f'<tr><td><b>官方價目表</b></td>'
-          f'<td class="nm lose">{html.escape(_pxt["price_status"])}</td>'
+          f'<td class="nm"><a href="/japan-disney-dpa/">{html.escape(_pxt["price_status"])}</a></td>'
           f'<td class="nm lose">{html.escape(_pxu["price_status"])}</td></tr>'
-          f'<tr><td><b>為什麼查不到</b></td>'
+          f'<tr><td><b>說明</b></td>'
           f'<td class="nm">{html.escape(_pxt["why"])}</td>'
           f'<td class="nm">{html.escape(_pxu["why"])}</td></tr>'
           f'<tr><td><b>在哪裡買</b></td><td class="nm">{html.escape(_pxt["where"])}</td>'
@@ -24140,8 +24143,8 @@ if os.path.exists('park-ticket.json'):
        '月底才通知中籤者。海外旅客要走官方授權的英文購票網站，'
        '日本居民那條要用日本手機號碼做簡訊認證，台灣人過不了。'),
       ('快速通關多少錢？',
-       '兩個樂園的官網都沒有公開價目表。迪士尼的尊享卡是入園後在官方 App 內買，'
-       '價格依設施與當下狀況變動；USJ 的快速通關要先選入場日期才看得到可買的商品與價格。'
+       '迪士尼尊享卡官網有逐項價格，依設施與表演不同，入園後才能在官方 App 或園內販售點買；'
+       'USJ 的快速通關官網沒有公開價目表，要先選入場日期才看得到可買的商品與價格。'
        '通路上買得到「門票＋快速通關」的組合，但那是通路價，不是樂園官方價。'),
       ('官網買的門檻是什麼？',
        '東京迪士尼的線上購票只有英文，要先註冊 MyDisney Account，'
@@ -35278,6 +35281,178 @@ if os.path.exists('kamikochi.json'):
     pages.append(('/japan-kamikochi/', 0.6))
     print('   上高地頁：', _kk_tday, _kk_tans)
 
+# ---------- 東京迪士尼尊享卡（DPA） ----------
+# 資料在 dpa.json，只收東京迪士尼官網與官方 FAQ。價格逐項列，有 to 的項目過期自動不顯示，
+# from 在未來的標「X 起」。頂部的價格範圍從目前顯示的項目算，不寫死。
+if os.path.exists('dpa.json'):
+    DPA = json.load(open('dpa.json', encoding='utf-8'))
+    _dp_lk = lambda u, t='官網': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{html.escape(t)}</a>'
+
+    def _dp_list(xs):
+        return '<ul class="xl">' + ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+            f'<div class="xt">{html.escape(x["text"])}</div>'
+            + (f'<div class="xw">{_dp_lk(x["src"], x.get("src_t", "出處"))}'
+               + (f'・{_dp_lk(x["src2"], x.get("src2_t", "出處 2"))}' if x.get('src2') else '') + '</div>' if x.get('src') else '')
+            + '</li>' for x in xs) + '</ul>'
+
+    _dp_items = [x for x in DPA['items'] if not (x.get('to') and _alp_d(x['to']) < _alp_today)]
+
+    def _dp_when(x):
+        f = _alp_d(x['from']) if x.get('from') else None
+        t = _alp_d(x['to']) if x.get('to') else None
+        if f and f > _alp_today:
+            return f'{_alp_ymd(f)} 起' + (f'，到 {_alp_ymd(t)}' if t else '')
+        if t:
+            return f'到 {_alp_ymd(t)}'
+        return '常態'
+
+    def _dp_tbl(park):
+        out = ''
+        for kind, lab in (('設施', '遊樂設施'), ('表演', '遊行、表演')):
+            rows = sorted((x for x in _dp_items if x['park'] == park and x['kind'] == kind), key=lambda x: -x['price'])
+            if not rows:
+                continue
+            out += ('<div class="tw"><table class="wrapt"><thead><tr>'
+                    f'<th>{lab}</th><th>每次</th></tr></thead><tbody>'
+                    + ''.join(f'<tr><td>{html.escape(x["zh"])}'
+                              + (f'<br><small class="disc">{_dp_when(x)}</small>' if _dp_when(x) != '常態' else '')
+                              + f'</td><td style="white-space:nowrap"><b>{x["price"]:,} 円</b></td></tr>' for x in rows)
+                    + '</tbody></table></div>')
+        return out
+
+    _dp_now = [x for x in _dp_items if not (x.get('from') and _alp_d(x['from']) > _alp_today)]
+    _dp_lo = min(x['price'] for x in _dp_now)
+    _dp_hi = max(x['price'] for x in _dp_now)
+    _dp_n = {p: sum(1 for x in _dp_now if x['park'] == p) for p in ('樂園', '海洋')}
+    _dp_rng = f'{_dp_lo:,}～{_dp_hi:,} 円'
+    _dp_faq = [
+        ('東京迪士尼尊享卡多少錢？',
+         f'每項每次 {_dp_rng}，依設施和表演不同，門票另外買。目前樂園 {_dp_n["樂園"]} 項、海洋 {_dp_n["海洋"]} 項可以買。'),
+        ('迪士尼尊享卡（DPA）可以先在台灣買嗎？',
+         '不行。官方 FAQ 寫入園後才能在官方 App 裡買，在園外、開園前都不能用。'),
+        ('迪士尼尊享卡一次可以買幾張？',
+         '每張門票買 1 人份。買完 60 分鐘後，或那張的使用時間開始（取比較早的），才能買下一張；設施和表演分開算。'),
+        ('台灣的信用卡可以買迪士尼尊享卡嗎？',
+         '官方英文 FAQ 寫日本以外發行的 JCB、VISA、Mastercard、AMEX 可以用，但沒有特別寫台灣的卡，也寫有部分卡不能用。沒有卡可以到園內販售點付現金。'),
+        ('迪士尼尊享卡可以退嗎？',
+         '自己的原因不能取消、不能改，錯過時間也不退。設施停止運轉才退；同一筆只退部分人的話要退到日本銀行帳戶，沒有日本帳戶要當天問工作人員。'),
+        ('迪士尼還有免費的快速通關嗎？',
+         '40 週年優先卡 2026/8/31 結束了。現在免費的是預約等候卡（多用在商店）和報名體驗（表演、迎賓會抽選），都是入園後在 App 拿。'),
+    ]
+    _dp_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _dp_faq]},
+                        ensure_ascii=False)
+    write('japan-disney-dpa/index.html',
+      head(f'東京迪士尼尊享卡（DPA）多少錢、怎麼買：每次 {_dp_rng}，入園後才能買（官網整理）',
+           f'東京迪士尼尊享卡（Disney Premier Access）每項 {_dp_rng}，入園後用官方 App 或園內販售點買；'
+           '一張門票一人份、60 分鐘後才能買下一張；外國卡別、退款要日本帳戶、免費的預約等候卡與報名體驗。',
+           'japan-disney-dpa/',
+           '<script type="application/ld+json">' + _dp_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('日本樂園門票', '/japan-park-ticket/'), ('迪士尼尊享卡', None)])
+      + '<h1>東京迪士尼尊享卡（DPA）：多少錢、怎麼買、能不能退</h1>'
+      + '<p class="lede">迪士尼尊享卡（ディズニー・プレミアアクセス，Disney Premier Access）是付費指定時段的服務，'
+        '買了可以在指定時間用比較短的隊伍玩設施，或坐指定區看表演。下面整理東京迪士尼官網和官方 FAQ 寫的規定，'
+        f'查證於 {DPA["checked"]}。</p>'
+      + f'<div class="today"><div class="tday">每項每次</div><div class="tans">{_dp_rng}</div>'
+        f'<div class="tsub">入園後才能買，門票另外算。目前樂園 {_dp_n["樂園"]} 項、海洋 {_dp_n["海洋"]} 項。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>不能在台灣先買</b>：入園後才能在官方 App（英文版）或園內販售點買。</li>'
+        '<li><b>一張門票一人份</b>：買完 60 分鐘後才能買下一張，會賣完。</li>'
+        '<li><b>退款可能要日本帳戶</b>：只有設施停止運轉才退，部分退款退到日本的銀行帳戶。</li>'
+        '</ul></div>'
+      + '<h2>東京迪士尼樂園</h2>' + _dp_tbl('樂園')
+      + '<h2>東京迪士尼海洋</h2>' + _dp_tbl('海洋')
+      + f'<p class="disc">價格和期間取自{_dp_lk(DPA["src"]["dpa"], "官網日文頁")}，名稱用{_dp_lk(DPA["src"]["dpa_tc"], "官方繁中頁")}。'
+        '營運狀況不同，有些日子或時段不賣，當天以 App 為準。</p>'
+      + '<h2>怎麼買</h2>' + _dp_list(DPA['buy'])
+      + '<h2>付款與卡別</h2>' + _dp_list(DPA['pay'])
+      + '<h2>App 和帳號</h2>' + _dp_list(DPA['account'])
+      + '<h2>取消、退款</h2>' + _dp_list(DPA['refund'])
+      + '<h2>免費的時段服務</h2>' + _dp_list(DPA['free'])
+      + '<h2>容易搞混的另外兩種</h2>' + _dp_list(DPA['other'])
+      + '<p>門票哪天便宜看<a href="/japan-park-ticket/">日本樂園門票</a>。</p>'
+      + '<h2>官方沒寫的事</h2><ul class="pick">' + ''.join(f'<li>{html.escape(x)}</li>' for x in DPA['unknown']) + '</ul>'
+      + faq_visible(_dp_faq)
+      + f'<p class="disc">規定以東京迪士尼度假區官網與 App 為準，查證於 {DPA["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-disney-dpa/', 0.6))
+    print('   迪士尼尊享卡頁：項目', len(_dp_items))
+
+# ---------- smart EX（外國人訂新幹線） ----------
+# 資料在 smartex.json，只收 smart-ex.jp 英文、日文與官方 FAQ。官網自己前後不一致的寫法放 conflict 一起列。
+if os.path.exists('smartex.json'):
+    SX = json.load(open('smartex.json', encoding='utf-8'))
+    _sx_lk = lambda u, t='官網': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{html.escape(t)}</a>'
+
+    def _sx_list(xs):
+        return '<ul class="xl">' + ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+            f'<div class="xt">{html.escape(x["text"])}</div>'
+            + (f'<div class="xw">{_sx_lk(x["src"], x.get("src_t", "出處"))}'
+               + (f'・{_sx_lk(x["src2"], x.get("src2_t", "出處 2"))}' if x.get('src2') else '') + '</div>' if x.get('src') else '')
+            + '</li>' for x in xs) + '</ul>'
+
+    _sx_fare_tbl = ('<div class="tw"><table class="wrapt"><thead><tr><th>區間</th><th>希望號（のぞみ）</th></tr></thead><tbody>'
+                    + ''.join(f'<tr><td>{html.escape(a)}</td><td style="white-space:nowrap"><b>{b:,} 円</b></td></tr>'
+                              for a, b, c in SX['fares'])
+                    + '</tbody></table></div>')
+    _sx_hk = [(a, c) for a, b, c in SX['fares'] if c]
+    _sx_hk_txt = ('全程搭光號、回聲號比較便宜：' + '、'.join(f'{html.escape(a)} {c:,} 円' for a, c in _sx_hk) + '。') if _sx_hk else ''
+    _sx_tko = next(x for x in SX['fares'] if x[0] == '東京 → 新大阪')
+    _sx_faq = [
+        ('外國人可以用 smart EX 嗎？',
+         '可以。英文版註冊不用填電話，填姓名、生日、密碼、信用卡、電子郵件就好，來日本前就能訂。卡要能過 3D 驗證。'),
+        ('smart EX 註冊要日本電話嗎？',
+         '英文版不用。日文版 2022/5/21 以後註冊，一次性密碼只能用電話（簡訊或語音）收。'),
+        ('smart EX 東京到大阪多少錢？',
+         f'東京到新大阪普通車指定席、通常期，希望號 {_sx_tko[1]:,} 円、光號 {_sx_tko[2]:,} 円（官網 PDF 標 {SX["fare_date"]} 時點），淡旺季另外加減。'),
+        ('smart EX 可以搭配 JR Pass 嗎？',
+         '不行。英文 FAQ 寫不能和 JR Pass 等其他票合併使用；JR Pass 搭希望號的利用券也不能在網路買。'),
+        ('smart EX 沒搭到車怎麼辦？',
+         '同一天、同區間後面班次的自由席可以坐，早特不行（EX早特1 例外）。發車前可以免費改班次，不限次數。'),
+        ('smart EX 可以用 Welcome Suica 搭嗎？',
+         '可以登錄，但在國外買的卡要先在 Suica 或 PASMO 區的車站閘門用過一次，才能直接刷新幹線。也可以用 QR 票或取紙本票。'),
+    ]
+    _sx_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _sx_faq]},
+                        ensure_ascii=False)
+    write('japan-smart-ex/index.html',
+      head('smart EX 外國人怎麼註冊、訂新幹線：英文版不用電話、QR 票、改票退票（官網整理）',
+           'smart EX 是東海道、山陽、九州新幹線的網路訂票，外國人用英文版註冊不用日本電話；'
+           '最早一年前申請、一個月前 10:00 開賣，發車前免費改班次、退票 320 円；IC 卡、QR 票、紙本票怎麼搭，不能和 JR Pass 一起用。',
+           'japan-smart-ex/',
+           '<script type="application/ld+json">' + _sx_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('smart EX', None)])
+      + '<h1>smart EX 外國人怎麼用：註冊、訂票、搭車</h1>'
+      + '<p class="lede">smart EX（スマートEX）是 JR 東海、JR 西日本、JR 九州的新幹線網路訂票，'
+        '只能訂東海道、山陽、九州新幹線（東京到鹿兒島中央）。年費免費。外國旅客用的是英文版，'
+        f'下面整理官網和官方 FAQ 寫的規定，查證於 {SX["checked"]}。</p>'
+      + '<div class="today"><div class="tday">外國旅客</div><div class="tans">用英文版，不用日本電話</div>'
+        '<div class="tsub">要能過 3D 驗證的信用卡、卡面英文姓名。來日本前就能訂。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>只有東海道、山陽、九州新幹線</b>：東北、北陸等其他新幹線不能用。</li>'
+        '<li><b>發車前免費改班次</b>：不限次數；退票每人 320 円。</li>'
+        '<li><b>不能和 JR Pass 一起用</b>：有 JR Pass 的人劃位看<a href="/japan-jr-pass/">JR Pass 劃位教學</a>。</li>'
+        '</ul></div>'
+      + '<h2>註冊</h2>' + _sx_list(SX['register'])
+      + '<h2>主要區間多少錢</h2>' + _sx_fare_tbl
+      + f'<p>{_sx_hk_txt}{html.escape(SX["fare_note"])}</p>'
+      + f'<p class="disc">取自{_sx_lk(SX["src"]["fare_pdf"], "smart EX 普通車指定席票價 PDF")}（標 {SX["fare_date"]} 時點）與'
+        f'{_sx_lk(SX["src"]["product_jp"], "商品說明")}。綠色車、自由席另有價格。</p>'
+      + '<h2>什麼時候能訂</h2>' + _sx_list(SX['book'])
+      + '<p>帶三邊超過 160 公分的行李，規定看<a href="/japan-shinkansen-luggage/">新幹線帶大行李箱</a>。</p>'
+      + '<h2>改票、退票、沒搭到</h2>' + _sx_list(SX['change'])
+      + '<h2>怎麼搭車</h2>' + _sx_list(SX['ride'])
+      + '<h2>和 JR Pass 的關係</h2>' + _sx_list(SX['jrp'])
+      + '<h2>官網寫法不一致的地方</h2><ul class="pick">' + ''.join(f'<li>{html.escape(x)}</li>' for x in SX['conflict']) + '</ul>'
+      + '<h2>官方沒寫的事</h2><ul class="pick">' + ''.join(f'<li>{html.escape(x)}</li>' for x in SX['unknown']) + '</ul>'
+      + faq_visible(_sx_faq)
+      + f'<p class="disc">規定以 smart EX 官網為準，查證於 {SX["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-smart-ex/', 0.6))
+    print('   smart EX 頁：區間', len(SX['fares']))
+
 # ---------- 遊戲中心與夾娃娃 ----------
 # 資料在 game-center.json，只收風營法原文、警察廳解釋運用基準、JAIA 指引、各縣條例與連鎖店官網。
 # 只寫規則、集點與付款，不教怎麼夾；「保夾」只寫官方原文，法規沒寫機率就寫沒規定。
@@ -36803,6 +36978,8 @@ SEARCH_SYN = [
     ['阿倍野展望台', '阿倍野harukas', 'abeno harukas', 'harukas', 'あべのハルカス', 'ハルカス'],
     ['環球影城', '日本環球影城', '大阪環球影城', 'usj', 'universal studios', 'ユニバーサル'],
     ['迪士尼', 'disney', 'ディズニー'],
+    ['迪士尼尊享卡', '尊享卡', 'dpa', 'disney premier access', 'premier access', 'ディズニー・プレミアアクセス', 'ディズニープレミアアクセス', 'プレミアアクセス', '迪士尼快速通關', '迪士尼快速通行', '迪士尼快速通行證', '迪士尼fastpass', '迪士尼 fast pass', '迪士尼付費快速通關', '迪士尼快速通关', '迪士尼尊享卡价格', '預約等候卡', '预约等候卡', 'スタンバイパス', 'standby pass', '報名體驗', '报名体验', 'エントリー受付', 'entry request', '40周年プライオリティパス'],
+    ['smart ex', 'smartex', 'smart-ex', 'スマートex', 'スマートＥＸ', 'スマートEX', 'expressride', 'express ride', 'エクスプレス予約', 'ex予約', '新幹線網路訂票', '新干线网路订票', '新幹線線上訂票', '新干线线上订票', '新幹線訂票', '新干线订票', '新幹線網路購票', '新幹線 app', '新幹線app', 'ex早特', 'ex早特21', '早特', 'tokaido sanyo kyushu shinkansen internet reservation service'],
     ['吉卜力', 'ghibli', 'ジブリ'],
     ['吉伊卡哇', 'chiikawa', 'ちいかわ'],
     ['寶可夢', '神奇寶貝', '精靈寶可夢', 'pokemon', 'pokémon', 'ポケモン'],

@@ -1,0 +1,89 @@
+{
+  "_說明": "東京迪士尼尊享卡（ディズニー・プレミアアクセス）頁 /japan-disney-dpa/。只收 tokyodisneyresort.jp（日文、繁中、英文）與官方 FAQ。2026-11-25 查證。價格與適用期間從日文 DPA 頁逐項抄，繁中名稱用官方繁中頁；有 to 的項目過期自動不顯示、from 在未來的標「X 起」。每月初回查 DPA 頁有沒有新增或下架的設施、表演（季節表演最常換）。迪士尼官網 curl 會逾時，要用瀏覽器讀。",
+  "checked": "2026-11-25",
+  "src": {
+    "dpa": "https://www.tokyodisneyresort.jp/tdr/guide/app_service/disneypremieraccess.html",
+    "dpa_tc": "https://www.tokyodisneyresort.jp/tc/tdr/guide/app_service/disneypremieraccess.html",
+    "buy": "https://faq.tokyodisneyresort.jp/answer/67eaa6597605a4cb7775c039",
+    "buy_en": "https://faq-en.tokyodisneyresort.jp/answer/680ba05401fdf7431bafb773",
+    "shop": "https://faq.tokyodisneyresort.jp/answer/67eaa65938a1ebab2162dca6",
+    "card": "https://faq.tokyodisneyresort.jp/answer/67eaa65838a1ebab2162dc6e",
+    "card_en": "https://faq-en.tokyodisneyresort.jp/answer/680ba04fd7820362f46c7d06",
+    "card_reg": "https://faq.tokyodisneyresort.jp/answer/67eaa66038a1ebab2162dd1e",
+    "refund": "https://faq.tokyodisneyresort.jp/answer/67eaa65a2ec77ec2e9f48639",
+    "both": "https://faq.tokyodisneyresort.jp/answer/67eaa65b7605a4cb7775c099",
+    "outside": "https://faq.tokyodisneyresort.jp/answer/67eaa6552ec77ec2e9f48609",
+    "gps": "https://faq.tokyodisneyresort.jp/answer/67eaa65657951a27c885666c",
+    "account": "https://faq.tokyodisneyresort.jp/answer/6912b4104c2f21c5dfba0f0b",
+    "free": "https://faq.tokyodisneyresort.jp/answer/67eaa65938a1ebab2162dc9e",
+    "sbp": "https://www.tokyodisneyresort.jp/tc/tdr/guide/app_service/standbypass.html",
+    "entry": "https://www.tokyodisneyresort.jp/tc/tdr/guide/app_service/entry.html",
+    "vp": "https://www.tokyodisneyresort.jp/vp/guide/attraction.html",
+    "vip": "https://www.tokyodisneyresort.jp/attention/vip_tour/"
+  },
+  "items": [
+    {"park": "樂園", "kind": "設施", "zh": "美女與野獸「城堡奇緣」", "price": 2500},
+    {"park": "樂園", "kind": "設施", "zh": "杯麵歡樂之旅", "price": 1500},
+    {"park": "樂園", "kind": "設施", "zh": "飛濺山", "price": 1500},
+    {"park": "樂園", "kind": "設施", "zh": "巨雷山", "price": 1500},
+    {"park": "樂園", "kind": "設施", "zh": "小熊維尼獵蜜記", "price": 1500},
+    {"park": "樂園", "kind": "設施", "zh": "怪獸電力公司「迷藏巡遊車」", "price": 1000},
+    {"park": "樂園", "kind": "設施", "zh": "幽靈公館", "price": 1000, "from": "2026-09-15", "to": "2027-01-07"},
+    {"park": "樂園", "kind": "設施", "zh": "甜蜜衝刺：絕蜜大救援", "price": 3000, "from": "2027-04-15"},
+    {"park": "樂園", "kind": "表演", "zh": "玩具奇妙聖誕！", "price": 3500, "from": "2026-11-11", "to": "2026-12-25"},
+    {"park": "樂園", "kind": "表演", "zh": "米妮＠幻彩世界", "price": 3500, "from": "2027-01-13", "to": "2027-03-31"},
+    {"park": "樂園", "kind": "表演", "zh": "迪士尼眾彩交融", "price": 2500},
+    {"park": "樂園", "kind": "表演", "zh": "東京迪士尼樂園電子大遊行～夢之光", "price": 2500},
+    {"park": "樂園", "kind": "表演", "zh": "米奇魔法音樂世界", "price": 2500},
+    {"park": "樂園", "kind": "表演", "zh": "The D-Groovationz4 Live: Happy! Funky! Groovy! Tour", "price": 2500, "from": "2026-09-30"},
+    {"park": "海洋", "kind": "設施", "zh": "安娜與艾莎的冰雪之旅", "price": 2500},
+    {"park": "海洋", "kind": "設施", "zh": "翱翔：夢幻奇航", "price": 2500},
+    {"park": "海洋", "kind": "設施", "zh": "樂佩公主天燈盛會", "price": 2000},
+    {"park": "海洋", "kind": "設施", "zh": "小飛俠夢幻島歷險記", "price": 2000},
+    {"park": "海洋", "kind": "設施", "zh": "玩具總動員瘋狂遊戲屋", "price": 2000},
+    {"park": "海洋", "kind": "設施", "zh": "地心探險之旅", "price": 2000},
+    {"park": "海洋", "kind": "設施", "zh": "驚魂古塔", "price": 1500},
+    {"park": "海洋", "kind": "設施", "zh": "忿怒雙神", "price": 1500},
+    {"park": "海洋", "kind": "設施", "zh": "印第安納瓊斯冒險旅程：水晶骷髏頭魔宮", "price": 1500, "from": "2026-11-30"},
+    {"park": "海洋", "kind": "表演", "zh": "舞動全球！", "price": 2500, "from": "2026-01-14", "to": "2027-03-31"},
+    {"park": "海洋", "kind": "表演", "zh": "堅信！～夢想之海～", "price": 2500},
+    {"park": "海洋", "kind": "表演", "zh": "夢想起飛", "price": 2500}
+  ],
+  "buy": [
+    {"name": "入園後才能買", "text": "官方 FAQ 寫入園後才能在 App 裡買，在園外、開園前都不能用；英文 FAQ 也寫入園前不能買。App 要打開定位，不然有些功能用不了。", "src": "https://faq.tokyodisneyresort.jp/answer/67eaa6597605a4cb7775c039", "src_t": "官方 FAQ", "src2": "https://faq.tokyodisneyresort.jp/answer/67eaa65657951a27c885666c", "src2_t": "定位設定"},
+    {"name": "一張門票買一人份", "text": "每張園區票券只能買 1 人份，不能多人共用。同行的人可以在 App 建群組，一次幫全部人的票買。3 歲以下的孩子，同行者有買就免費。", "src": "https://www.tokyodisneyresort.jp/tc/tdr/guide/app_service/disneypremieraccess.html", "src_t": "官方繁中頁"},
+    {"name": "下一張什麼時候能買", "text": "買完 60 分鐘後，或那張的使用時間開始，兩個取比較早的，就能買其他設施的下一張。同一項設施要等用完或時間結束才能再買。設施和表演分開算，可以同時各有一張。", "src": "https://www.tokyodisneyresort.jp/tdr/guide/app_service/disneypremieraccess.html", "src_t": "官方日文頁", "src2": "https://faq.tokyodisneyresort.jp/answer/67eaa65b7605a4cb7775c099", "src2_t": "官方 FAQ"},
+    {"name": "沒有 App 或沒有卡", "text": "可以到園內販售點買，收現金、電子錢包、信用卡（含簽帳金融卡、儲值卡）、迪士尼禮品卡。PayPay、Alipay 等條碼支付不能用。", "src": "https://faq.tokyodisneyresort.jp/answer/67eaa65938a1ebab2162dca6", "src_t": "官方 FAQ"},
+    {"name": "會賣完", "text": "發行數量有限，賣完就沒有，有沒有剩要在 App 裡看。", "src": "https://www.tokyodisneyresort.jp/tc/tdr/guide/app_service/disneypremieraccess.html", "src_t": "官方繁中頁"}
+  ],
+  "pay": [
+    {"name": "App 收哪些卡", "text": "日文 FAQ 列 JCB、VISA、Mastercard、AMEX、Diners 五種，另寫有這些標誌也有部分卡不能用。英文 FAQ 寫日本以外發行的卡收 JCB、VISA、Mastercard、AMEX 四種，沒有列 Diners。", "src": "https://faq.tokyodisneyresort.jp/answer/67eaa65838a1ebab2162dc6e", "src_t": "日文 FAQ", "src2": "https://faq-en.tokyodisneyresort.jp/answer/680ba04fd7820362f46c7d06", "src2_t": "英文 FAQ"},
+    {"name": "卡要入園後才能綁", "text": "App 服務用的信用卡資料只能入園後、結帳時登錄或更換，入園前不能先設定。", "src": "https://faq.tokyodisneyresort.jp/answer/67eaa66038a1ebab2162dd1e", "src_t": "官方 FAQ"}
+  ],
+  "account": [
+    {"name": "App 和帳號都是英文", "text": "繁中官網寫 App 是「英文版」，購買要先註冊 MyDisney Account（註冊頁只有英文）。註冊時居住地選「海外」，購買畫面就會是英文網站。", "src": "https://faq.tokyodisneyresort.jp/answer/6912b4104c2f21c5dfba0f0b", "src_t": "官方 FAQ"},
+    {"name": "沒有手機的人", "text": "同行者的 App 可以掃你的園區票券二維條碼，幫你一起買；用的時候出示你自己的票券就好。", "src": "https://faq.tokyodisneyresort.jp/answer/67eaa656f939746b30956868", "src_t": "官方 FAQ"}
+  ],
+  "refund": [
+    {"name": "買了不能取消", "text": "按「確定」後不能取消、不能改。錯過指定時間就不能用，也不退錢。不能轉讓。", "src": "https://www.tokyodisneyresort.jp/tdr/guide/app_service/disneypremieraccess.html", "src_t": "官方日文頁"},
+    {"name": "設施停止運轉：全部退", "text": "用 App 買、同一筆全部要退的，自動退回付款的卡，要 1～2 個月。", "src": "https://faq.tokyodisneyresort.jp/answer/67eaa65a2ec77ec2e9f48639", "src_t": "官方 FAQ"},
+    {"name": "設施停止運轉：只退一部分", "text": "同一筆只有部分人要退，要在使用日隔天以後填 App 裡的申請表，退到日本國內的銀行帳戶，期限是使用日起 90 天。沒有日本帳戶的人，要在使用當天問那項設施的工作人員。", "src": "https://faq.tokyodisneyresort.jp/answer/67eaa65a2ec77ec2e9f48639", "src_t": "官方 FAQ"},
+    {"name": "表演取消", "text": "遊行、表演取消會退款；天候或營運造成內容、時間變更不退。買了花車定點演出的區域，那一區沒有定點演出也會退。", "src": "https://www.tokyodisneyresort.jp/tc/tdr/guide/app_service/disneypremieraccess.html", "src_t": "官方繁中頁"}
+  ],
+  "free": [
+    {"name": "預約等候卡（スタンバイパス）", "text": "免費，入園後在 App 拿。現在用在兩園共 22 家商店（指定商品），遊樂設施只有甜蜜衝刺，2027/4/15 起。拿到的那個時段才能去排隊。", "src": "https://www.tokyodisneyresort.jp/tc/tdr/guide/app_service/standbypass.html", "src_t": "官方繁中頁"},
+    {"name": "報名體驗（エントリー受付）", "text": "免費，入園後在 App 報名特定的表演和迪士尼明星迎賓會，抽中才有時段。同一項每天只能報名一次。", "src": "https://www.tokyodisneyresort.jp/tc/tdr/guide/app_service/entry.html", "src_t": "官方繁中頁"},
+    {"name": "40 週年優先卡已結束", "text": "以前免費的「40周年記念プライオリティパス」，官方 FAQ 寫 2026/8/31 結束。", "src": "https://faq.tokyodisneyresort.jp/answer/67eaa65938a1ebab2162dc9e", "src_t": "官方 FAQ"}
+  ],
+  "other": [
+    {"name": "度假套票的遊樂設施券", "text": "東京迪士尼度假區的度假套票（バケーションパッケージ）裡附的設施券是另一種東西，張數依方案不同，不是尊享卡。", "src": "https://www.tokyodisneyresort.jp/vp/guide/attraction.html", "src_t": "官網"},
+    {"name": "私人 VIP 導覽", "text": "限指定套房住客，6 小時 660,000 円，不含門票。", "src": "https://www.tokyodisneyresort.jp/attention/vip_tour/", "src_t": "官網"}
+  ],
+  "unknown": [
+    "台灣發行的信用卡能不能在 App 刷：官方只分「日本發行」和「日本以外發行」。",
+    "App 買尊享卡要不要過 3D 驗證：官方只寫線上買門票要。",
+    "App 在哪些國家的商店下載得到。",
+    "部分退款 90 天怎麼算：日文寫從使用日起，英文寫從當天起。",
+    "Diners 卡：日文 FAQ 有列，英文 FAQ 的海外發行卡沒有列。"
+  ]
+}

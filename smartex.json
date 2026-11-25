@@ -1,0 +1,86 @@
+{
+  "_說明": "smart EX 外國人怎麼用頁 /japan-smart-ex/。只收 smart-ex.jp（英文、日文）、faq.expy.jp、JR 東海英文站。2026-11-25 查證。票價表出自 smart-ex.jp 普通車指定席 PDF（標「2025年4月1日時点」），JR 東海改價時要整份重抄。英文版服務名是 Tokaido Sanyo Kyushu Shinkansen Internet Reservation Service（logo 寫 smartEX）。官網自己寫法不一致的地方放 conflict，不要只挑一種。每季回查卡別、App 下載國家與羅馬拼音姓名公告。",
+  "checked": "2026-11-25",
+  "src": {
+    "en": "https://smart-ex.jp/en/beginner/",
+    "en_entry": "https://smart-ex.jp/en/beginner/entry/sp/",
+    "jp_entry": "https://smart-ex.jp/beginner/entry/sp/",
+    "otp": "https://faq.expy.jp/faq/show/323?site_domain=smart-ex",
+    "card": "https://smart-ex.jp/en/faq/detail/?id=449",
+    "3ds": "https://smart-ex.jp/en/faq/detail/?id=538",
+    "age": "https://smart-ex.jp/en/faq/detail/?id=444",
+    "roman": "https://smart-ex.jp/en/topics/detail/?id=852",
+    "app": "https://smart-ex.jp/en/faq/detail/?id=582",
+    "ios": "https://smart-ex.jp/en/topics/detail/?id=806",
+    "product": "https://smart-ex.jp/en/product/plan/service/",
+    "product_jp": "https://smart-ex.jp/product/plan/service/",
+    "fare_pdf": "https://smart-ex.jp/product/plan/service/pdf/service_fares_reserved.pdf",
+    "time": "https://smart-ex.jp/en/reservation/useful/accept_time/",
+    "pre_jp": "https://smart-ex.jp/reservation/useful/pre_time/",
+    "f459": "https://smart-ex.jp/en/faq/detail/?id=459",
+    "miss": "https://smart-ex.jp/en/faq/detail/?id=474",
+    "miss_jp": "https://faq.expy.jp/faq/show/264?site_domain=smart-ex",
+    "haya_jp": "https://faq.expy.jp/faq/show/265?site_domain=smart-ex",
+    "jrp": "https://smart-ex.jp/en/faq/detail/?id=462",
+    "nozomi": "https://global.jr-central.co.jp/en/onlinebooking/contents/jrp_nozomi/",
+    "ic": "https://smart-ex.jp/en/entraining/iccard/",
+    "ic_foreign": "https://smart-ex.jp/en/faq/detail/?id=484",
+    "qr": "https://smart-ex.jp/en/entraining/qr/",
+    "pick": "https://smart-ex.jp/en/entraining/ticket/place/",
+    "f486": "https://smart-ex.jp/en/faq/detail/?id=486",
+    "bag": "https://smart-ex.jp/en/entraining/oversized-baggage/"
+  },
+  "fare_date": "2025/4/1",
+  "fares": [
+    ["東京 → 名古屋", 11100, 10890],
+    ["東京 → 京都", 13970, 13650],
+    ["東京 → 新大阪", 14520, 14200],
+    ["東京 → 廣島", 19560, null],
+    ["東京 → 博多", 23610, null],
+    ["新大阪 → 廣島", 10750, null],
+    ["新大阪 → 博多", 15820, null]
+  ],
+  "fare_note": "普通車指定席、大人單程、通常期。淡季（閑散期）少 200 円，旺季（繁忙期）多 200 円，最旺季（最繁忙期）多 400 円；跨東海道、山陽、九州新幹線的區間，這三個數字都變兩倍。",
+  "register": [
+    {"name": "英文版不用填電話", "text": "英文版註冊要填姓名、生日、登入密碼、信用卡、電子郵件，交通 IC 卡可以不填，沒有電話欄位。英文首頁寫來日本前就能在自己國家訂票劃位。", "src": "https://smart-ex.jp/en/beginner/entry/sp/", "src_t": "英文註冊流程"},
+    {"name": "日文版要日本能收的電話", "text": "日文版 2022/5/21 以後註冊，一次性密碼只能用電話（簡訊或語音）收。海外號碼能不能收，日文版沒寫。外國旅客走英文版比較單純。", "src": "https://faq.expy.jp/faq/show/323?site_domain=smart-ex", "src_t": "日文 FAQ", "src2": "https://smart-ex.jp/beginner/entry/sp/", "src2_t": "日文註冊流程"},
+    {"name": "收哪些卡", "text": "Visa、Mastercard、JCB、AMEX、Diners、Discover。官網寫發卡公司可能限制海外刷卡，簽帳金融卡、儲值卡也可能被拒。", "src": "https://smart-ex.jp/en/faq/detail/?id=449", "src_t": "英文 FAQ"},
+    {"name": "要過 3D 驗證", "text": "沒開 3D 驗證（3D Secure）或不支援的卡，可能註冊不了。", "src": "https://smart-ex.jp/en/faq/detail/?id=538", "src_t": "英文 FAQ"},
+    {"name": "要登錄卡面的英文姓名", "text": "2025/9/27 起要登錄信用卡卡面的羅馬拼音姓名，2026/5/24 前沒登錄的帳號就不能新訂票。在會員資料的信用卡那一欄改。", "src": "https://smart-ex.jp/en/topics/detail/?id=852", "src_t": "英文公告"},
+    {"name": "年齡", "text": "18 歲以上、有信用卡才能申請。", "src": "https://smart-ex.jp/en/faq/detail/?id=444", "src_t": "英文 FAQ"},
+    {"name": "在台灣下載的 App 名字不一樣", "text": "英文 FAQ 寫台灣的 App Store 和 Google Play 要下載「ExpressRide App」，在日本下載的是「smartEX App」。另外 iOS 18.1 以上不能用 App 註冊新會員，要改用網站。", "src": "https://smart-ex.jp/en/faq/detail/?id=582", "src_t": "英文 FAQ", "src2": "https://smart-ex.jp/en/topics/detail/?id=806", "src2_t": "英文公告"}
+  ],
+  "book": [
+    {"name": "最早一年前", "text": "乘車日一年前同一天 5:30 起可以申請，但這時只選得到暫定班表，車次、時間、座位要到一個月前才確定，用 email 通知。可以提早申請的座位數有限。", "src": "https://smart-ex.jp/en/reservation/useful/accept_time/", "src_t": "受理時間", "src2": "https://smart-ex.jp/reservation/useful/pre_time/", "src2_t": "日文一年前預約"},
+    {"name": "一個月前 10:00 正式開賣", "text": "一年前搶不到的，一個月前 10:00（日本時間）起照樣可以訂；前一個月沒有同一天的，日文版列了對照（例如 3/30、3/31 是 3/1）。", "src": "https://smart-ex.jp/reservation/useful/pre_time/", "src_t": "日文一年前預約", "src2": "https://smart-ex.jp/en/faq/detail/?id=459", "src2_t": "英文 FAQ"},
+    {"name": "一年前不能訂的", "text": "早特、S Work 座位、輪椅座位、附大型行李空間的座位不能一年前申請。", "src": "https://smart-ex.jp/en/reservation/useful/accept_time/", "src_t": "受理時間"},
+    {"name": "一次幾人", "text": "一筆 1～6 人，23:30～隔天 5:30 之間一筆最多 3 人，也看不到座位圖。", "src": "https://smart-ex.jp/en/product/plan/service/", "src_t": "商品說明"},
+    {"name": "附大型行李空間的座位", "text": "可以用 smart EX 訂，要等一個月前開賣那天訂；一筆最多 5 人（綠色車 4 人）。轉乘的話每一段都要訂這種座位。", "src": "https://smart-ex.jp/en/entraining/oversized-baggage/", "src_t": "英文說明"}
+  ],
+  "change": [
+    {"name": "改班次免費、不限次數", "text": "還沒進閘門、還沒取票、預約的車還沒開之前，可以免費改，發車前 4 分鐘都能改到其他班次。", "src": "https://smart-ex.jp/en/product/plan/service/", "src_t": "商品說明"},
+    {"name": "退票", "text": "發車前退，每人 320 円手續費。已經取了紙本票就不能自己在網路上退，要帶票和付款的信用卡去主要車站窗口。", "src": "https://smart-ex.jp/en/product/plan/service/", "src_t": "商品說明"},
+    {"name": "沒搭到", "text": "同一天、同區間後面班次的自由席可以坐（早特不行）。綠色車或 Supreme Class 沒搭到，上了後面的車要跟工作人員說。", "src": "https://smart-ex.jp/en/faq/detail/?id=474", "src_t": "英文 FAQ", "src2": "https://faq.expy.jp/faq/show/264?site_domain=smart-ex", "src2_t": "日文 FAQ"},
+    {"name": "早特沒搭到", "text": "連自由席都不能坐，要重新買票；只有 EX早特1 例外，當天任一班的自由席可以坐。", "src": "https://faq.expy.jp/faq/show/265?site_domain=smart-ex", "src_t": "日文 FAQ"}
+  ],
+  "ride": [
+    {"name": "交通 IC 卡", "text": "先在帳號裡登錄 IC 卡，直接刷卡進新幹線閘門，票錢從信用卡扣，不扣 IC 卡餘額。Welcome Suica、PASMO PASSPORT 可以登錄，但在國外買的卡要先在 Suica 或 PASMO 區的車站閘門用過一次，才能刷新幹線。", "src": "https://smart-ex.jp/en/entraining/iccard/", "src_t": "IC 卡搭車", "src2": "https://smart-ex.jp/en/faq/detail/?id=484", "src2_t": "外國人 IC 卡"},
+    {"name": "QR 票", "text": "英文版在 App 或網站顯示 QR 票（iPhone 可加進 Apple Wallet），只能走有「QR」標誌的新幹線閘門，出站也要用。進閘門時要拿「座位資訊（Seat Information）」那張紙。日文版的 QR 票只限旅行套裝（EX旅パック）。", "src": "https://smart-ex.jp/en/entraining/qr/", "src_t": "英文 QR 票說明"},
+    {"name": "紙本票", "text": "用取票碼（QR 或 16 碼）加登入密碼，在 JR 東海、JR 西日本、JR 九州主要車站的售票機或窗口取；JR 東日本只有東京 23 區、橫濱市內、川崎、小田原、熱海的售票機可以取。站員可能要看付款的信用卡。", "src": "https://smart-ex.jp/en/entraining/ticket/place/", "src_t": "取票說明"}
+  ],
+  "jrp": [
+    {"name": "不能和 JR Pass 一起用", "text": "英文 FAQ 寫不能和 JR Pass 等其他票合併使用，用 smart EX 訂的指定席也不能拿來當 JR Pass 的座位。", "src": "https://smart-ex.jp/en/faq/detail/?id=462", "src_t": "英文 FAQ"},
+    {"name": "JR Pass 搭希望號的利用券也不能在網路買", "text": "JR 東海寫 JR Pass 專用的希望號、瑞穗號利用券，入境前不能線上訂，要在售票機或窗口買。", "src": "https://global.jr-central.co.jp/en/onlinebooking/contents/jrp_nozomi/", "src_t": "JR 東海"}
+  ],
+  "conflict": [
+    "一年前申請的座位幾點確定：英文商品頁和日文頁寫一個月前 8:00 以後，英文受理時間頁寫 14:00 以後。",
+    "售票機最早幾天前能取票：英文取票頁寫乘車 3 天前起，英文 FAQ 寫 7 天前起；窗口一個月前就能取。",
+    "免費改票的期限怎麼算：英文受理時間頁和日文頁寫原本乘車日起 3 個月內，英文商品頁寫原本購買日起 3 個月內。",
+    "最早幾點能訂：英文 FAQ 寫一個月前 10:00，英文商品頁寫一年前 5:30。兩種都對，一年前那種是先申請、一個月前才確定。"
+  ],
+  "unknown": [
+    "台灣發行的卡能不能註冊成功：官網只寫發卡公司可能限制海外刷卡。",
+    "日文版能不能用台灣手機號碼收簡訊。",
+    "smart EX 票價跟車站買的差多少：官網商品頁沒寫。"
+  ]
+}
