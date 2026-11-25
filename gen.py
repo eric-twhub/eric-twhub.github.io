@@ -3336,6 +3336,14 @@ def _sticker(path, content):
     m = _H1_RE.search(content)
     if not m:
         return content
+    # 2026-11-25 起封面可以改用 Gemini 畫的點陣圖：illust/cover/<網址>.jpg（1440×420）
+    # 與 <網址>-720.jpg（720×210）都在就用它們，手機下載小張。
+    slug = url.strip('/').replace('/', '-')
+    if slug and os.path.exists(f'illust/cover/{slug}.jpg') and os.path.exists(f'illust/cover/{slug}-720.jpg'):
+        img = (f'<div class="bnr"><img src="{U("/illust/cover/" + slug + "-720.jpg")}" '
+               f'srcset="{U("/illust/cover/" + slug + "-720.jpg")} 720w, {U("/illust/cover/" + slug + ".jpg")} 1440w" '
+               'sizes="(max-width: 760px) 100vw, 720px" alt="" width="720" height="210" decoding="async"></div>')
+        return content[:m.end()] + img + content[m.end():]
     # 2026-11-13 第二版：使用者說聖誕頁「比較活潑可愛，全站都需要這樣」，
     # 從標題旁的小貼紙改成標題下面一張寬版手繪封面（illust/make_banners.py 把同一張貼紙放進場景）。
     bn = 'banner/' + name.split('/')[-1]
@@ -3368,7 +3376,12 @@ def _spots(path, content):
     if not sd:
         return content
     base = '/illust/sp/' + sd['dir'] + '/'
-    def img(n, w, h):
+    # 2026-11-25 起插圖牆可以改用 Gemini 畫的點陣圖：同名 .jpg（480×360，兩倍解析度）存在就用它，
+    # 沒有就用原本的 SVG。提醒卡的小圖示維持 SVG。
+    def img(n, w, h, raster=False):
+        if raster and os.path.exists('illust/sp/' + sd['dir'] + '/' + n + '.jpg'):
+            return (f'<img src="{U(base + n + ".jpg")}" alt="" width="{w}" height="{h}" '
+                    'loading="lazy" decoding="async">')
         if not os.path.exists('illust/sp/' + sd['dir'] + '/' + n + '.svg'):
             raise SystemExit(f'spots：缺圖 {sd["dir"]}/{n}.svg')
         return (f'<img src="{U(base + n + ".svg")}" alt="" width="{w}" height="{h}" '
@@ -3378,7 +3391,7 @@ def _spots(path, content):
         return len(it) <= n or it[n] >= TODAY
     for b in sd['blocks']:
         if 'gallery' in b and any(live(it, 2) for it in b['gallery']):
-            figs = ''.join(f'<figure class="spf">{img(it[0], 240, 180)}<figcaption>{html.escape(it[1])}</figcaption></figure>'
+            figs = ''.join(f'<figure class="spf">{img(it[0], 240, 180, raster=True)}<figcaption>{html.escape(it[1])}</figcaption></figure>'
                            for it in b['gallery'] if live(it, 2))
             sec = (f'<h2>{html.escape(b["h2"])}</h2>'
                    + (f'<p>{html.escape(b["intro"])}</p>' if b.get('intro') else '')
