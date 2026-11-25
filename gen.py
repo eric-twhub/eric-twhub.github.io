@@ -1884,6 +1884,7 @@ def topnav(cur=''):
             + link('/japan-kabuki/', '🎭 歌舞伎座一幕見席怎麼買')
             + link('/japan-concert-ticket/', '🎤 去日本看演唱會門票怎麼買')
             + link('/japan-npb-ticket/', '⚾ 去日本看職棒門票怎麼買')
+            + link('/japan-tattoo-onsen/', '♨️ 有刺青能泡溫泉、錢湯嗎')
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
             + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
@@ -3276,7 +3277,7 @@ _STK_PREFIX = sorted({
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
-    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
     '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
     '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
@@ -34404,6 +34405,116 @@ if os.path.exists('npb.json'):
     pages.append(('/japan-npb-ticket/', 0.6))
     print('   職棒頁：外國人入口', len(_nb_intl), '隊、浮動價', len(_nb_dyn), '隊、台灣球員', _nb_twn, '位、已公布開賣', len(_nb_sales), '則')
 
+# ---------- 有刺青能泡溫泉、錢湯嗎 ----------
+# 資料在 tattoo.json，每一家都只收官網（或市町村、縣的官方觀光網站）寫明的；比價網、部落格的說法不收。
+# 「官方沒寫」的設施另列一段，不寫成可以或不行（沒查到不等於不行）。
+# KKday 商品頁的刺青說明有些比官網舊，商品備註寫明以官網為準。
+if os.path.exists('tattoo.json'):
+    TT = json.load(open('tattoo.json', encoding='utf-8'))
+    if _KK1 is None:
+        _KK1 = {str(x) for x in json.load(open('kkday-1pct.json', encoding='utf-8'))['ids']}
+    _tt_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _tt_lk = lambda u, t='官網': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+    _TT_BADGE = {'ok': '可以進', 'cover': '要貼貼紙', 'cond': '有條件'}
+
+    def _tt_list(xs, badge=None):
+        return '<ul class="xl">' + ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span>'
+            + (f'<span class="xbadge">{html.escape(badge(x))}</span>' if badge else '')
+            + (f'<span class="xbadge">{html.escape(x["area"])}</span>' if x.get('area') else '') + '</div>'
+            f'<div class="xt">{html.escape(x["text"])}</div>'
+            + (f'<div class="xw">{_tt_lk(x["src"], x.get("src_t", "官網"))}'
+               + (f'・{_tt_lk(x["src2"], x.get("src2_t", "出處 2"))}' if x.get('src2') else '') + '</div>' if x.get('src') else '')
+            + '</li>' for x in xs) + '</ul>'
+
+    _tt_ok = TT['ok']
+    _tt_n = {k: sum(1 for x in _tt_ok if x['kind'] == k) for k in _TT_BADGE}
+    _tt_ng = TT['ng']
+    _S = TT['sento']
+    _tt_new = _tt_today >= datetime.date.fromisoformat(_S['from'])
+    _tt_adult = _S['adult'] if _tt_new else _S['prev_adult']
+    _tt_from = f'{int(_S["from"][5:7])}/{int(_S["from"][8:10])}'
+
+    _tt_kk = []
+    for it in TT.get('kkday') or []:
+        if str(it['id']) in _KK1:
+            raise SystemExit(f'刺青頁：KKday 商品 {it["id"]} 在 1% 清單裡')
+        _tt_kk.append({'provider': 'kkday', 'id': it['id'], 'url': f'https://www.kkday.com/zh-tw/product/{it["id"]}',
+                       'name': it['name'], 'area': it['area'], 'note': it['note']})
+
+    _tt_okn = '、'.join(x['name'].split('（')[0] for x in _tt_ok if x['kind'] == 'ok')
+    _tt_faq = [
+        ('有刺青可以泡日本溫泉嗎？',
+         '看設施。日本法律沒有禁止有刺青的人入浴，觀光廳也在 2016 年通知業者，只因為有刺青就拒絕外國旅客是不適當的；'
+         f'但設施可以自己訂規則。本頁收的官網寫明可以進的有 {len(_tt_ok)} 處（其中 {_tt_n["cover"]} 處要貼館方貼紙、'
+         f'{_tt_n["cond"]} 處有其他條件），寫明不行的有 {len(_tt_ng)} 處。'),
+        ('錢湯可以進嗎？',
+         '多數錢湯沒有官網或沒寫刺青規定，東京都浴場組合的網站也沒寫。日本政府觀光局（JNTO）的說法是錢湯通常接受，但最好先確認。'
+         '有官網寫明可以的，例如錦糸町的黄金湯。'),
+        ('自己帶貼紙可以嗎？',
+         '要看設施。很多地方只認館方指定、在櫃台賣的貼紙，還限張數，例如ユネッサン森の湯是指定貼紙兩張、utatane 是一張；'
+         '也有連刺青貼紙都禁止的，例如橫濱港未來萬葉俱樂部、Spa LaQua。'),
+        ('哪裡最確定可以泡？',
+         f'官網寫明不用遮就能進的有：{_tt_okn}。另外別府市、大分縣、豐岡市（城崎）的官方觀光網站都有刺青友善溫泉的說明。'),
+        ('大浴場不行的話怎麼辦？',
+         '找有貸切風呂（包場溫泉）或房內浴池的旅館。觀光廳的旅館問答寫，一部分旅館除了大浴場還有包場溫泉和房內浴池，有刺青也能泡；'
+         '共立リゾート、伊東園的旅館就是請客人改用客房浴池或貸切風呂。'),
+        ('東京錢湯多少錢？',
+         f'東京都錢湯大人 {_tt_adult} 円、小學生 {_S["child"]} 円、未就學 {_S["infant"]} 円'
+         + (f'（{_tt_from} 起，原本大人 {_S["prev_adult"]} 円）' if _tt_new else f'（{_tt_from} 起大人 {_S["adult"]} 円）')
+         + f'，由東京都決定統一價格。三溫暖有些要另外付錢。'),
+    ]
+    _tt_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _tt_faq]},
+                        ensure_ascii=False)
+    write('japan-tattoo-onsen/index.html',
+      head(f'有刺青能泡日本溫泉、錢湯嗎：官網寫明可以的 {len(_tt_ok)} 處、不行的 {len(_tt_ng)} 處與貼紙規定',
+           f'日本法律沒有禁止有刺青的人入浴，但每家設施自己訂規則。整理官網寫明可以進的 {len(_tt_ok)} 處（草津、城崎、別府、成田大和の湯等）、'
+           f'要貼館方貼紙的條件、寫明不行的 {len(_tt_ng)} 處，觀光廳的通知原文，以及大浴場不行時的貸切風呂。全部引官網。',
+           'japan-tattoo-onsen/',
+           '<script type="application/ld+json">' + _tt_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('有刺青能泡溫泉嗎', None)])
+      + '<h1>有刺青能泡日本溫泉、錢湯嗎</h1>'
+      + '<p class="lede">日本法律沒有禁止有刺青的人泡湯，觀光廳也請業者不要只因為刺青就拒絕外國旅客，'
+        '但每家設施還是自己訂規則：有的完全不限制，有的要貼館方指定的貼紙，有的連貼紙都不行。'
+        f'下面只收官網（或市、縣的官方觀光網站）寫明的，查證於 {TT["checked"]}；官網沒寫的另外列出，不當成可以或不行。</p>'
+      + '<div class="today"><div class="tday">先看這一條</div>'
+        '<div class="tans">法律沒禁止，每家自己決定</div>'
+        f'<div class="tsub">本頁收的官網寫明可以進的有 {len(_tt_ok)} 處，其中 {_tt_n["cover"]} 處要貼館方貼紙、{_tt_n["cond"]} 處有其他條件；'
+        f'寫明不行的有 {len(_tt_ng)} 處。去之前先看那一家的官網。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>貼紙要用館方的</b>：很多地方只認櫃台賣的指定貼紙，還限張數，自己帶的不一定算。</li>'
+        '<li><b>對外國人和日本人規定可能不同</b>：觀光廳的建議是針對外國旅客，有的設施只讓外國觀光客貼貼紙進去，要看護照。</li>'
+        '<li><b>大浴場不行就找貸切風呂</b>：包場溫泉或房內浴池，有刺青也能泡。</li>'
+        '</ul></div>'
+      + '<h2>法律與觀光廳怎麼說</h2>' + _tt_list(TT['rules'])
+      + '<h2>官網寫明可以進的</h2>'
+      + '<p>「要貼貼紙」是指用館方指定的貼紙蓋住才能進；「有條件」是有人數、身分或申告書等其他限制。</p>'
+      + _tt_list(_tt_ok, lambda x: _TT_BADGE[x['kind']])
+      + '<h2>官網寫明不行的</h2>'
+      + '<p>這些地方大多連刺青貼紙、身體彩繪也不行，貼了也進不去。</p>'
+      + _tt_list(_tt_ng)
+      + '<h2>大浴場不行，改用貸切風呂或客房浴池</h2>' + _tt_list(TT['private'])
+      + '<h2>網路上說可以，官網卻沒寫</h2>'
+      + '<p>下面這些常被列進「刺青 OK」清單，但官網現在沒寫。沒寫不代表不行，只是沒辦法確認，去之前先問。'
+        f'（{_tt_lk(TT["unknown_src"], "JNTO 的刺青友善溫泉介紹")}）</p>'
+      + _tt_list(TT['unknown'])
+      + '<h2>錢湯怎麼泡</h2>'
+      + f'<p>東京都的錢湯價格由東京都決定，全都一樣：大人 {_tt_adult} 円、小學生 {_S["child"]} 円、未就學 {_S["infant"]} 円'
+        + (f'（{_tt_from} 起，之前大人 {_S["prev_adult"]} 円；浴場組合的英文頁還寫舊價格）' if _tt_new else f'（{_tt_from} 起大人 {_S["adult"]} 円）')
+        + f'。十張一組的都內共通入浴券 {_S["ticket10"]:,} 円。（{_tt_lk(_S["src"], "東京都浴場組合")}）</p>'
+      + '<ul class="pick">' + ''.join(f'<li>{html.escape(x)}</li>' for x in _S['steps']) + '</ul>'
+      + f'<p class="disc">泡法整理自{_tt_lk(_S["howto_src"], "東京都浴場組合的錢湯入浴方式")}與觀光廳旅館問答。</p>'
+      + '<h2>官方查詢入口</h2>'
+      + '<ul class="pick">' + ''.join(f'<li>{_tt_lk(x["src"], html.escape(x["name"]))}</li>' for x in TT['portals']) + '</ul>'
+      + adbox_tickets(_tt_kk, 'tattoo', '溫泉設施門票', '先看上面的刺青規定再訂',
+                      '商品頁的刺青說明可能比官網舊，以設施官網為準；售價以 KKday 頁面為準，本站不另外標價。')
+      + faq_visible(_tt_faq)
+      + f'<p class="disc">各設施規定以官網與現場公告為準，查證於 {TT["checked"]}，規定隨時可能改變。</p>'
+      + foot())
+    pages.append(('/japan-tattoo-onsen/', 0.6))
+    print('   刺青頁：可以', len(_tt_ok), '處（貼紙', _tt_n['cover'], '、條件', _tt_n['cond'], '）、不行', len(_tt_ng), '處')
+
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
 # 12/1 前後會變的在這裡算：票價（2,800 → 2,900）、9:50 那班 12/1 起才有、班次數。
@@ -35845,6 +35956,7 @@ SEARCH_SYN = [
     ['barlesque', 'barlesque nagoya', 'burlesque nagoya', 'burlesque名古屋', 'バーレスク名古屋', '名古屋バーレスク', '名古屋burlesque', '名古屋 burlesque'],
     ['名古屋夜生活', '名古屋 夜生活', '名古屋夜店', '名古屋秀場', '名古屋 秀'],
     ['歌舞伎', 'kabuki', 'かぶき', '歌舞伎座', 'kabukiza', '一幕見', '一幕見席', '幕見席', '幕見', '南座', '顔見世', '顏見世', '新橋演舞場'],
+    ['刺青', '紋身', '纹身', 'タトゥー', 'tattoo', '入れ墨', '刺青泡湯', '刺青溫泉', '紋身泡溫泉', '刺青貼紙', '錢湯', '銭湯', 'sento', '公共澡堂', '大眾澡堂'],
     ['日本職棒', '日本职棒', '職棒', '日職', 'NPB', 'npb', 'プロ野球', '看棒球', '棒球門票', '棒球票', '野球', '甲子園', '東京巨蛋', '東京ドーム', '讀賣巨人', '巨人隊', '阪神虎', '軟銀鷹', '火腿鬥士', '日本火腿', '樂天金鷲', '西武獅', '歐力士', '養樂多', '中日龍', '廣島鯉魚', '鯉魚隊', '羅德海洋', '海灣之星', '應援席', '外野席'],
     ['演唱會', '演唱会', 'concert', 'コンサート', 'ライブ', '巡演', '日巡', '日本巡演', '當落', '当落', '門票代購', '代購門票', '實名制', '實名入場', 'ぴあ', 'チケットぴあ', 'ローチケ', 'イープラス', 'eplus', 'e+', 'lawson ticket', 'ticket pia'],
     ['夜生活', '夜遊', '夜店', '夜晚', '晚上去哪', '晚上去哪裡', '晚上去哪玩', '晚上做什麼', '晚上可以做什麼', '晚上能做什麼', '晚上好玩', 'nightlife', 'night life', 'ナイトライフ', '夜の街', '夜遊び'],

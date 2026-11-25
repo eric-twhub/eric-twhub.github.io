@@ -1,0 +1,86 @@
+{
+  "checked": "2026-11-25",
+  "rules": [
+    {"name": "觀光廳：只因為有刺青就拒絕，不適當", "text": "觀光廳 2016 年 3 月發給日本飯店、旅館、溫泉協會的通知寫：只因為有刺青就拒絕入浴是不適當的，請各設施參考對應事例，自己決定做法。這是建議，不是強制規定。", "src": "https://www.pref.fukushima.lg.jp/uploaded/attachment/157098.pdf", "src_t": "通知原文（福島縣轉載）"},
+    {"name": "觀光廳建議的四種做法", "text": "用貼紙把刺青蓋住，讓其他人看不到；刺青小到手掌大小、不會讓人有壓迫感的，不特別要求處理；引導到家庭客人比較少的時段；有貸切風呂的引導去貸切，住宿設施介紹附專用浴池的客房。", "src": "https://www.pref.fukushima.lg.jp/uploaded/attachment/157099.pdf", "src_t": "對應事例原文"},
+    {"name": "這套做法是給外國旅客的", "text": "日本政府 2016 年的答辯書寫，這些對應事例是針對外國旅客，日本人有刺青的不適用同樣做法。所以有些設施對外國觀光客和日本人規定不同（例如新宿テルマー湯）。", "src": "https://www.shugiin.go.jp/internet/itdb_shitsumon.nsf/html/shitsumon/b190298.htm", "src_t": "答辯書"},
+    {"name": "法律沒有禁止，但設施可以自己訂規則", "text": "公衆浴場法規定業者必須拒絕的只有傳染病患者，條文裡沒有「刺青」。政府 2017 年答辯書寫，只因為有刺青，不算法律上要拒絕的對象。答辯書沒有說設施不能自己訂規則拒絕，所以每家設施的規定還是要各自看。", "src": "https://www.shugiin.go.jp/internet/itdb_shitsumon.nsf/html/shitsumon/b193069.htm", "src_t": "答辯書", "src2": "https://laws.e-gov.go.jp/law/323AC0000000139", "src2_t": "公衆浴場法"},
+    {"name": "旅館怎麼處理：差很多", "text": "觀光廳的旅館問答（有官方繁中版）寫，各旅館對刺青的做法差很多，有完全不限制的，也有看情況的；一部分旅館除了大浴場還有包場溫泉和房內浴池，有刺青也能泡。擔心的話先問旅館。", "src": "https://www.mlit.go.jp/kankocho/ryokan/list_tw-6.html", "src_t": "觀光廳旅館問答繁中版"}
+  ],
+  "ok": [
+    {"name": "草津溫泉 町營三湯（大滝乃湯、御座之湯、西の河原露天風呂）", "area": "群馬草津", "kind": "ok", "text": "官網寫三湯不特別拒絕有刺青的人入館、入浴。", "src": "https://onsen-kusatsu.com/ohtakinoyu/faq/"},
+    {"name": "成田の名泉 大和の湯", "area": "千葉成田", "kind": "ok", "text": "官網寫刺青、時尚刺青都可以使用，開業以來都沒有拒絕。就在成田機場附近。", "src": "https://yamatonoyu.com/question"},
+    {"name": "黄金湯（錦糸町）", "area": "東京墨田", "kind": "ok", "text": "官網常見問題寫有刺青可以入浴。這是錢湯。", "src": "https://koganeyu.com/faq"},
+    {"name": "SAUNA METSÄ OIMACHI", "area": "東京品川", "kind": "cover", "text": "用館方指定貼紙（9.5×14 公分）兩張蓋得住的刺青，貼上就可以使用。16 歲以上、只收無現金付款。", "src": "https://ryusenjinoyu.com/saunametsaoimachi/"},
+    {"name": "テルマー湯 新宿店", "area": "東京新宿", "kind": "cond", "text": "男性：只限外國觀光客，貼一張館方指定貼紙並出示護照或機票，入境超過 90 天的不行；日本人與住在日本的人不能進。女性規定不同，看官網。", "src": "https://thermae-yu.jp/user-guide/"},
+    {"name": "スパメッツァおおたか 竜泉寺の湯", "area": "千葉流山", "kind": "cover", "text": "櫃台賣的指定貼紙（9.5×14 公分）兩張蓋得住，貼上就可以使用。同一個連鎖的八王子店不行。", "src": "https://www.ryusenjinoyu.com/spametsaotaka/faq/"},
+    {"name": "おふろcafé utatane", "area": "埼玉さいたま", "kind": "cover", "text": "入館時買一張指定貼紙（220 円，12.8×18.2 公分），一張蓋不住就不能進。", "src": "https://ofurocafe-utatane.com/faq"},
+    {"name": "箱根湯寮", "area": "神奈川箱根湯本", "kind": "ok", "text": "官網寫 2025 年 4 月 1 日起解除刺青的入浴限制。", "src": "https://www.hakoneyuryo.jp/"},
+    {"name": "箱根 天山湯治郷", "area": "神奈川箱根", "kind": "cond", "text": "只限一個人去：官網寫一個人的話有刺青也不拒絕，兩個以上有刺青的人一起來就不行。", "src": "https://tenzan.jp/qa/"},
+    {"name": "箱根小涌園ユネッサン／森の湯", "area": "神奈川箱根", "kind": "cover", "text": "2025 年 10 月 1 日起，用館方指定的付費貼紙兩張能完全蓋住，就可以用森の湯（大浴場）。穿泳衣的ユネッサン區用防曬衣等遮住就可以。", "src": "https://www.yunessun.com/news/detail/?CN=413712"},
+    {"name": "ほったらかし温泉", "area": "山梨", "kind": "ok", "text": "官網寫有刺青的人可以入浴。", "src": "https://www.hottarakashi-onsen.com/"},
+    {"name": "富士レークホテル", "area": "山梨河口湖", "kind": "cover", "text": "住宿客的大浴場：照館方指定的方式用貼紙蓋住就可以。張數與尺寸官方沒寫。", "src": "https://www.fujilake.co.jp/datas/files/2025/05/10/64aad83383448607fcb32949274fd6b1153f24c1.pdf"},
+    {"name": "城崎溫泉 外湯", "area": "兵庫豐岡", "kind": "ok", "text": "豐岡市的官方觀光網站寫，城崎的外湯不論刺青大小都可以進、不用遮。旅館裡的浴池看各旅館規定。外湯之一的さとの湯 2024 年 3 月底起休館。", "src": "https://visitkinosaki.com/plan/visitor-info/guides/tattoos-in-kinosaki-onsen/"},
+    {"name": "空庭温泉 OSAKA BAY TOWER", "area": "大阪", "kind": "cover", "text": "用館內賣的貼紙能完全蓋住才可以進，2023 年 12 月起不限張數（試行中）。", "src": "https://solaniwa.com/faq/"},
+    {"name": "別府市營溫泉（竹瓦溫泉、鐵輪むし湯等）", "area": "大分別府", "kind": "ok", "text": "別府市經營的 Enjoy Onsen 網站列為歡迎刺青；大分縣官方觀光網站也逐家寫明柴石溫泉、田の湯等可以。", "src": "https://enjoyonsen.city.beppu-jp.com/onsen/100tattoo-friendly_beppuonsen_japan/", "src2": "https://oita-tourism.com/en/onsenStories/detail_67.html"},
+    {"name": "指宿 砂むし会館 砂楽", "area": "鹿兒島指宿", "kind": "cond", "text": "可以入浴。砂蒸要用浴衣蓋住，室內浴池請盡量遮住、短時間泡。", "src": "https://www.ibusuki-saraku.jp/ja/faq"},
+    {"name": "琉球溫泉 波之上の湯（HOTEL SANSUI NAHA）", "area": "沖繩那霸", "kind": "cond", "text": "填寫申告書就可以使用溫泉與泳池。", "src": "https://www.resorts.co.jp/sansuinaha/faq/"},
+    {"name": "沖繩かりゆしビーチリゾート オーシャンスパ", "area": "沖繩恩納", "kind": "ok", "text": "官網寫現在有刺青也可以使用。", "src": "https://kariyushi-oceanspa.jp/faq/"},
+    {"name": "星野リゾート（界、OMO、リゾナーレ等）", "area": "全國連鎖", "kind": "cond", "text": "官網寫不限制有刺青的客人；但判斷其他客人可能會害怕時，可能拒絕使用大浴場。", "src": "https://hoshinoresorts.com/ja/sp/tattoo/"},
+    {"name": "ドーミーイン", "area": "全國連鎖", "kind": "cover", "text": "原則不行；有些分館準備遮蓋貼紙，貼紙蓋得住就可以入浴，原則兩張以內。貼紙數量有限，可能沒有。", "src": "https://dormy-hotels.com/dormyinn/faq/"}
+  ],
+  "ng": [
+    {"name": "東京ドーム天然温泉 Spa LaQua", "area": "東京文京", "text": "刺青、彩繪、刺青貼紙都不能入館。", "src": "https://www.tokyo-dome.co.jp/spa/first"},
+    {"name": "おふろの王様", "area": "東京、神奈川等連鎖", "text": "刺青（含貼紙）一律不能入館。", "src": "https://www.ousama2603.com/faq/"},
+    {"name": "極楽湯", "area": "全國連鎖", "text": "刺青、時尚刺青、刺青貼紙都不能入館。", "src": "https://www.gokurakuyu.ne.jp/tempo/faq.html"},
+    {"name": "竜泉寺の湯 八王子みなみ野店", "area": "東京八王子", "text": "刺青（含貼紙）不行。同連鎖的サウナメッツァ兩家可以貼貼紙。", "src": "https://hachioji.ryusenjinoyu.com/fee/"},
+    {"name": "横浜みなとみらい 万葉倶楽部", "area": "神奈川橫濱", "text": "刺青、刺青貼紙、彩繪都不能入館。網路上有「可以貼兩張」的說法，官網不是這樣寫。", "src": "https://manyo.co.jp/mm21/"},
+    {"name": "スカイスパYOKOHAMA", "area": "神奈川橫濱", "text": "刺青（含貼紙）原則上不能使用。", "src": "https://www.skyspa.co.jp/qa/"},
+    {"name": "箱根湯本温泉 天成園", "area": "神奈川箱根", "text": "刺青與刺青貼紙都不能入館，當日來回與住宿都一樣。", "src": "https://www.tenseien.co.jp/"},
+    {"name": "あかん遊久の里 鶴雅", "area": "北海道阿寒湖", "text": "有刺青不能用大浴場。", "src": "https://www.tsuruga.com/faq/"},
+    {"name": "スパワールド 世界の大温泉", "area": "大阪", "text": "刺青（含貼紙）不能入館。", "src": "https://www.spaworld.co.jp/info/tebiki.pdf"},
+    {"name": "天然温泉 なにわの湯", "area": "大阪", "text": "有刺青不能入浴。", "src": "https://naniwanoyu.com/"},
+    {"name": "神戸ハーバーランド温泉 万葉倶楽部", "area": "兵庫神戶", "text": "刺青、刺青貼紙、彩繪都不能入館。", "src": "https://www.manyo.co.jp/kobe/"},
+    {"name": "琉球溫泉 龍神の湯（瀬長島ホテル）", "area": "沖繩豐見城", "text": "有刺青不能入浴，也沒有貸切風呂。", "src": "https://www.resorts.co.jp/senaga/ryujinhotspring"}
+  ],
+  "private": [
+    {"name": "共立リゾート的溫泉旅館", "area": "全國連鎖", "text": "大浴場不論刺青大小都不行，請用客房浴池或貸切風呂。", "src": "https://dormy-hotels.com/resort/faq/"},
+    {"name": "伊東園ホテルズ", "area": "關東、伊豆、東北等", "text": "大浴場與露天風呂原則不行，請用房間浴池或貸切風呂。", "src": "https://www.itoenhotel.com/faq/"},
+    {"name": "ユインチホテル南城", "area": "沖繩南城", "text": "大浴場不論大小都不行，別館有貸切湯。網路上有標成「可以」的，官網不是這樣寫。", "src": "https://www.yuinchi.jp/faq/"},
+    {"name": "黑川溫泉", "area": "熊本", "text": "旅館組合寫各旅館做法不同，會個別說明；可以用問合表單先問，或用貸切風呂。", "src": "https://www.kurokawaonsen.or.jp/faq/"}
+  ],
+  "unknown": [
+    {"name": "道後溫泉（本館、飛鳥乃湯泉、椿の湯）", "text": "有些介紹寫可以，但道後溫泉官網的日文與英文頁面現在都沒寫刺青規定。"},
+    {"name": "白浜 崎の湯", "text": "有些介紹寫可以，白浜町的頁面沒寫。"},
+    {"name": "東京、京都、大阪的個別錢湯", "text": "多數錢湯沒有官網或官網沒寫。東京都浴場組合的網站也沒有寫刺青規定；日本政府觀光局（JNTO）的說法是錢湯通常接受，但最好先確認。"}
+  ],
+  "unknown_src": "https://www.japan.travel/en/au/story/7-tattoo-friendly-onsen-japan",
+  "sento": {
+    "adult": 600, "child": 200, "infant": 100, "from": "2026-08-01", "prev_adult": 550,
+    "ticket10": 5400,
+    "src": "https://www.1010.or.jp/guide/%e5%85%a5%e6%b5%b4%e6%96%99%e9%87%91%e3%81%ae%e3%81%8a%e7%9f%a5%e3%82%89%e3%81%9b/",
+    "howto_src": "https://www.1010.or.jp/guide/howto/",
+    "steps": [
+      "毛巾、肥皂沒帶也沒關係，多數錢湯櫃台有賣小包肥皂、洗髮精和毛巾。",
+      "鞋櫃的木牌（鑰匙）抽起來帶著，不要弄丟；置物櫃鑰匙套在手腕上。",
+      "衣服全部脫掉，不能穿內衣或泳衣。",
+      "先用熱水沖身體（掛け湯），最好洗完身體再進浴池。",
+      "毛巾不要放進浴池，長頭髮綁起來。",
+      "不要自己加冷水，熱的湯泡 5～10 分鐘、溫的大約 20 分鐘。",
+      "沖澡時小心不要噴到隔壁；回更衣室前先把身體擦乾。",
+      "更衣室和浴室不能用手機、不能拍照。",
+      "東京都 7 歲以上的孩子不能進異性浴室。",
+      "三溫暖有些要另外付錢，在櫃台問。"
+    ]
+  },
+  "portals": [
+    {"name": "別府 Enjoy Onsen 刺青友善溫泉地圖（別府市經營，英文）", "src": "https://enjoyonsen.city.beppu-jp.com/onsen/100tattoo-friendly_beppuonsen_japan/"},
+    {"name": "Visit Oita 大分縣官方觀光網站：刺青友善溫泉（英文，逐家寫條件）", "src": "https://oita-tourism.com/en/onsenStories/detail_67.html"},
+    {"name": "Visit Kinosaki 城崎溫泉刺青說明（豐岡市官方觀光網站，英文）", "src": "https://visitkinosaki.com/plan/visitor-info/guides/tattoos-in-kinosaki-onsen/"},
+    {"name": "觀光廳 旅館問答（官方繁中版）", "src": "https://www.mlit.go.jp/kankocho/ryokan/list_tw-6.html"}
+  ],
+  "kkday": [
+    {"id": 27383, "name": "箱根小涌園ユネッサン一日券", "area": "神奈川箱根", "note": "商品頁寫有刺青不能進森の湯，但官網 2025 年 10 月起改成貼兩張館方貼紙就可以，以官網為準"},
+    {"id": 32103, "name": "空庭温泉 OSAKA BAY TOWER 門票", "area": "大阪", "note": "商品頁的刺青說明前後不一致，官網寫用館內賣的貼紙完全蓋住就可以，以官網為準"}
+  ]
+}
