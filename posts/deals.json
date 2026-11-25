@@ -1,23 +1,23 @@
 [
  {
   "slug": "2026-11-25-taipei-okinawa",
-  "title": "台北飛沖繩 NT$2,996 來回含稅｜台灣虎航 12/10 出發",
+  "title": "台北飛沖繩 NT$2,996 來回含稅｜台灣虎航 12/14 出發",
   "o": "台北",
   "c": "沖繩",
   "_oiata": "TPE",
   "_diata": "OKA",
   "price": 2996,
   "air": "台灣虎航",
-  "dep": "2026-12-10",
-  "ret": "2026-12-17",
+  "dep": "2026-12-14",
+  "ret": "2026-12-18",
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$5,074（15 天有紀錄），這張低 41%"
+   "12 月出發的票，每天最便宜的平均要 NT$5,101（15 天有紀錄），這張低 41%"
   ],
   "med": 11078,
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-10&inbound=OKA-TPE&returnDate=2026-12-17&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-OKA&departureDate=2026-12-14&inbound=OKA-TPE&returnDate=2026-12-18&type=return&adult=1&language=zh-TW",
   "hotelcity": "那霸",
   "cslug": "okinawa",
   "usual": {
@@ -26,7 +26,7 @@
    "days": 16
   },
   "mbase": {
-   "avg": 5074,
+   "avg": 5101,
    "days": 15,
    "month": 12
   },
@@ -48,19 +48,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$5,731（5 天有紀錄），這張低 40%"
+   "12 月出發的票，每天最便宜的平均要 NT$5,779（5 天有紀錄），這張低 41%"
   ],
   "med": 13809,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-ISG&departureDate=2026-12-09&inbound=ISG-TPE&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
   "hotelcity": "石垣島",
   "cslug": "ishigaki",
   "usual": {
-   "lo": 3615,
+   "lo": 3855,
    "hi": 8713,
    "days": 8
   },
   "mbase": {
-   "avg": 5731,
+   "avg": 5779,
    "days": 5,
    "month": 12
   },
@@ -116,19 +116,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$7,053（11 天有紀錄），這張低 31%"
+   "12 月出發的票，每天最便宜的平均要 NT$7,291（11 天有紀錄），這張低 33%"
   ],
-  "med": 14180,
+  "med": 14380,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
-   "lo": 4883,
-   "hi": 9109,
+   "lo": 5283,
+   "hi": 9245,
    "days": 12
   },
   "mbase": {
-   "avg": 7053,
+   "avg": 7291,
    "days": 11,
    "month": 12
   },
@@ -150,7 +150,7 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$5,618（9 天有紀錄），這張低 11%"
+   "12 月出發的票，每天最便宜的平均要 NT$5,674（9 天有紀錄），這張低 12%"
   ],
   "med": 5424,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-OKA&departureDate=2026-12-29&inbound=OKA-KHH&returnDate=2027-01-01&type=return&adult=1&language=zh-TW",
@@ -158,11 +158,11 @@
   "cslug": "okinawa",
   "usual": {
    "lo": 4944,
-   "hi": 6403,
+   "hi": 6493,
    "days": 9
   },
   "mbase": {
-   "avg": 5618,
+   "avg": 5674,
    "days": 9,
    "month": 12
   },
@@ -235,7 +235,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 11437,
+  "med": 11523,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-07&inbound=KMI-TPE&returnDate=2026-12-14&type=return&adult=1&language=zh-TW",
   "hotelcity": "宮崎",
   "cslug": "miyazaki",
@@ -284,19 +284,19 @@
   "cls": "lcc",
   "reasons": [
    "廉航低於 NT$6,000",
-   "12 月出發的票，每天最便宜的平均要 NT$7,512（7 天有紀錄），這張低 23%"
+   "12 月出發的票，每天最便宜的平均要 NT$7,485（7 天有紀錄），這張低 22%"
   ],
-  "med": 7692,
+  "med": 7742,
   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-29&inbound=FUK-KHH&returnDate=2027-01-08&type=return&adult=1&language=zh-TW",
   "hotelcity": "福岡",
   "cslug": "fukuoka",
   "usual": {
    "lo": 7062,
-   "hi": 8177,
+   "hi": 8115,
    "days": 7
   },
   "mbase": {
-   "avg": 7512,
+   "avg": 7485,
    "days": 7,
    "month": 12
   },
@@ -375,19 +375,19 @@
   "stops": "直飛",
   "cls": "lcc",
   "reasons": [
-   "12 月出發的票，每天最便宜的平均要 NT$7,478（6 天有紀錄），這張低 12%"
+   "12 月出發的票，每天最便宜的平均要 NT$7,639（6 天有紀錄），這張低 14%"
   ],
-  "med": 12485,
+  "med": 12735,
   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKJ&departureDate=2026-12-17&inbound=OKJ-TPE&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
   "hotelcity": "岡山",
   "cslug": "okayama",
   "usual": {
    "lo": 6662,
-   "hi": 8108,
+   "hi": 8177,
    "days": 6
   },
   "mbase": {
-   "avg": 7478,
+   "avg": 7639,
    "days": 6,
    "month": 12
   },
