@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-25-taipei-ishigaki",
- "generated": "2026-11-25 10:33",
+ "generated": "2026-11-25 11:08",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -75,7 +75,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4515,
+   "price": 4274,
    "dep": "2026-11-28",
    "ret": "2026-12-04",
    "dept": "06:35",
