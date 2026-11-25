@@ -1,0 +1,240 @@
+{
+  "_說明": "JR Pass（全國版）劃位頁 /japan-jr-pass/。只收 japanrailpass.net 與 JR 東海外國人頁原文。2026-11-25 查證；線上預約站 japanrailpass-reservation.net 回 403（Akamai），沒讀到它自己的說明。官網線上價『一定期間据え置き』結束日未公布，要回查 purchase/price。窗口營業時間三語不一致，規則頁寫日文為正文，採日文。",
+  "checked": "2026-11-25",
+  "src": {
+    "seat": "https://japanrailpass.net/use/reserved-seat-reservation/",
+    "rule": "https://japanrailpass.net/use/conditions-for-use/",
+    "nozomi": "https://japanrailpass.net/use/special-ticket/",
+    "riyou": "https://japanrailpass.net/about_jrp/riyou/",
+    "price": "https://japanrailpass.net/purchase/price/",
+    "price_pdf": "https://japanrailpass.net/assets/pdf/JRP_Price_Changes_Ja.pdf",
+    "overseas": "https://japanrailpass.net/purchase/overseas/",
+    "online": "https://japanrailpass.net/purchase/online/",
+    "exchange_en": "https://japanrailpass.net/en/exchange/",
+    "vehicle": "https://japanrailpass.net/about_jrp/vehicle/",
+    "jrc": "https://global.jr-central.co.jp/en/nozomi/",
+    "jrc_ob": "https://global.jr-central.co.jp/en/info/oversized-baggage/"
+  },
+  "seat_cap": 110,
+  "open_hint": "乘車日前一個月的同一天 10:00",
+  "methods": [
+    {
+      "name": "車站的指定席售票機",
+      "text": "掃 JR Pass 上的 QR 碼（或輸入識別號碼），再輸入護照號碼，選車次和座位就會出票。有些車站沒有這種售票機。",
+      "src": "https://japanrailpass.net/use/reserved-seat-reservation/",
+      "src_t": "JR Pass 官網・指定席予約"
+    },
+    {
+      "name": "みどりの窓口（綠色窗口）、旅行中心",
+      "text": "拿 JR Pass 給站員劃位，JR 指定旅行社的店面也可以。無人車站不能出劃位票。",
+      "src": "https://japanrailpass.net/use/reserved-seat-reservation/",
+      "src_t": "JR Pass 官網・指定席予約"
+    },
+    {
+      "name": "JR Pass 官方線上預約站",
+      "text": "只限在官網線上買 JR Pass 的人，抵達日本前就能先訂新幹線和特急的座位。上車前一定要先到售票機或窗口把劃位票領出來。在海外代理店買兌換券的人用不了，要兌換成 JR Pass 以後才能劃位。",
+      "src": "https://japanrailpass.net/purchase/online/",
+      "src_t": "JR Pass 官網・Web で購入",
+      "src2": "https://japanrailpass.net/purchase/overseas/",
+      "src2_t": "海外代理店購入"
+    }
+  ],
+  "hours": "日文版寫窗口 4:30～23:30、售票機 4:30～23:20（日本時間），而且是系統上最長的時間，各站營業時間不一樣。",
+  "hours_note": "官網英文版和中文版寫的時間和日文版不一樣；官網規則寫日文是正文，這裡照日文寫。",
+  "limits": [
+    {
+      "name": "劃位不用加錢",
+      "text": "官網原文：「指定席予約に追加料金は必要ありません。」",
+      "src": "https://japanrailpass.net/use/reserved-seat-reservation/",
+      "src_t": "JR Pass 官網"
+    },
+    {
+      "name": "一張最多 110 班",
+      "text": "在線上預約站和售票機，一張 JR Pass 劃超過 110 班車就不能再劃。窗口有沒有上限，官網沒寫。",
+      "src": "https://japanrailpass.net/use/conditions-for-use/",
+      "src_t": "利用規則"
+    },
+    {
+      "name": "時間重疊不能劃",
+      "text": "同一天，新劃的車次和已經出票的車次時間重疊，就不能再出票。",
+      "src": "https://japanrailpass.net/use/conditions-for-use/",
+      "src_t": "利用規則"
+    },
+    {
+      "name": "同一天同起訖站不能重複",
+      "text": "在線上預約站和售票機，同一天、上下車站和已經預約的一樣，就不能再訂。",
+      "src": "https://japanrailpass.net/use/conditions-for-use/",
+      "src_t": "利用規則"
+    },
+    {
+      "name": "有空位也可能訂不到",
+      "text": "有些列車或區間有座位數上限，就算有空位也可能劃不到。",
+      "src": "https://japanrailpass.net/use/conditions-for-use/",
+      "src_t": "利用規則"
+    },
+    {
+      "name": "不能劃的車廂",
+      "text": "新幹線的 TRAIN DESK 車廂、親子車廂、S Work 車廂不能用 JR Pass；Supreme Class 不能預約，想坐要上車問乘務員。",
+      "src": "https://japanrailpass.net/en/use/conditions-for-use/",
+      "src_t": "Conditions for use",
+      "src2": "https://japanrailpass.net/about_jrp/vehicle/",
+      "src2_t": "可搭乘的車廂"
+    }
+  ],
+  "change": [
+    {
+      "name": "改班次、取消",
+      "text": "要在預約那班車發車前辦。已經把劃位票印出來的，要改或取消要去車站窗口。官網沒寫改幾次的上限。",
+      "src": "https://japanrailpass.net/use/conditions-for-use/",
+      "src_t": "利用規則",
+      "src2": "https://japanrailpass.net/use/reserved-seat-reservation/",
+      "src2_t": "指定席予約"
+    },
+    {
+      "name": "沒搭到劃好的那班",
+      "text": "官網沒有寫 JR Pass 錯過劃位車次要怎麼處理。官網寫得到的是：JR Pass 本來就能坐自由席（のぞみ、みずほ除外），上車以後不能改坐指定席。要重新劃位，直接問窗口。",
+      "src": "https://japanrailpass.net/en/use/conditions-for-use/",
+      "src_t": "Conditions for use"
+    },
+    {
+      "name": "沒先出劃位票就進站",
+      "text": "JR 東海寫：上車前要先把劃位票出好；沒出就進站的話，請站在普通車的車廂連接處，或改坐ひかり、こだま、さくら、つばめ的自由席。",
+      "src": "https://global.jr-central.co.jp/en/nozomi/",
+      "src_t": "JR 東海"
+    }
+  ],
+  "nozomi_rule": "JR Pass 本身不能搭のぞみ和みずほ，連自由席也不行。要搭的話，每搭一次在乘車前另外買一張「【ジャパン・レール・パス専用】のぞみ・みずほ利用券」，綠色車、普通車指定席、普通車自由席同價（含稅）。",
+  "nozomi_prices": [
+    [
+      "東京～名古屋",
+      4180
+    ],
+    [
+      "東京～京都",
+      4960
+    ],
+    [
+      "東京～新大阪",
+      4960
+    ],
+    [
+      "東京～広島",
+      6500
+    ],
+    [
+      "新大阪～博多",
+      4960
+    ],
+    [
+      "博多～鹿児島中央",
+      5150
+    ]
+  ],
+  "nozomi": [
+    {
+      "name": "什麼時候買",
+      "text": "乘車日前一個月到當天。不能在抵達日本前線上買，要在售票機或窗口買。",
+      "src": "https://japanrailpass.net/use/special-ticket/",
+      "src_t": "JR Pass 官網・のぞみ・みずほ利用券",
+      "src2": "https://global.jr-central.co.jp/en/onlinebooking/contents/jrp_nozomi/index.html",
+      "src2_t": "JR 東海"
+    },
+    {
+      "name": "在哪裡買",
+      "text": "JR 車站的指定席售票機、みどりの窓口、旅行中心和一部分旅行社。",
+      "src": "https://japanrailpass.net/use/special-ticket/",
+      "src_t": "JR Pass 官網"
+    },
+    {
+      "name": "改班次",
+      "text": "綠色車和指定席用的，發車前可以改一次，只能改同一種座位；自由席用的可以改一次乘車日。",
+      "src": "https://japanrailpass.net/use/special-ticket/",
+      "src_t": "JR Pass 官網"
+    },
+    {
+      "name": "普通車 JR Pass",
+      "text": "拿普通車版 JR Pass 的人不能買綠色車用的利用券。",
+      "src": "https://japanrailpass.net/use/special-ticket/",
+      "src_t": "JR Pass 官網"
+    },
+    {
+      "name": "過站時",
+      "text": "只拿利用券過不了自動改札，要和 JR Pass 一起用。",
+      "src": "https://japanrailpass.net/en/use/automatic-ticket-gate/",
+      "src_t": "Automatic ticket gates"
+    }
+  ],
+  "exchange": [
+    {
+      "name": "護照要有「短期滞在」的章或貼紙",
+      "text": "官網原文：「パスポートに「短期滞在」のスタンプ/シールを受けた方だけが引換・利用することができます。」",
+      "src": "https://japanrailpass.net/about_jrp/riyou/",
+      "src_t": "利用資格"
+    },
+    {
+      "name": "走自動化通關不會蓋章",
+      "text": "官網寫要走有人員的自動化閘門，或向人員申請蓋章、貼貼紙。拿日本「特定登録者カード」的人出示卡片就可以。",
+      "src": "https://japanrailpass.net/about_jrp/riyou/",
+      "src_t": "利用資格"
+    },
+    {
+      "name": "兌換券（海外代理店買的）",
+      "text": "要在購買日起 3 個月內換成 JR Pass，最早在開始使用日的 1 個月前可以換。官網的例子：4/15 發行的兌換券可以換到 7/14。",
+      "src": "https://japanrailpass.net/purchase/overseas/",
+      "src_t": "海外代理店購入"
+    },
+    {
+      "name": "官網線上買的",
+      "text": "只能在有護照讀取器的指定席售票機領 JR Pass，領的時候同行的人護照全部都要出示。",
+      "src": "https://japanrailpass.net/en/exchange/",
+      "src_t": "Exchange / Pick up",
+      "src2": "https://japanrailpass.net/purchase/online/",
+      "src2_t": "Web で購入"
+    }
+  ],
+  "price_from": "2026-10-01",
+  "price_rows": [
+    [
+      "7 日",
+      50000,
+      25000,
+      53000,
+      27000,
+      70000,
+      35000,
+      74000,
+      37000
+    ],
+    [
+      "14 日",
+      80000,
+      40000,
+      84000,
+      42000,
+      110000,
+      55000,
+      116000,
+      58000
+    ],
+    [
+      "21 日",
+      100000,
+      50000,
+      105000,
+      53000,
+      140000,
+      70000,
+      147000,
+      74000
+    ]
+  ],
+  "price_note": "2026/10/1 起，海外代理店的價格調漲，官網線上買的價格不變。官網寫線上價格只「一定期間」維持不變，什麼時候結束還沒公布。",
+  "child": "兒童是使用時 6 歲以上、未滿 12 歲；12 歲以上的小學生算大人。官網線上買的，付款那天 11 歲，使用時滿 12 歲也算兒童；海外代理店買的，看兌換券的發行日。",
+  "unknown": [
+    "官方線上預約站本身的說明頁（開放時間、線上改票規則）本站讀不到。",
+    "窗口劃位有沒有次數上限。",
+    "錯過已劃位的車次，JR Pass 有沒有專門規定。",
+    "用售票機能不能幫 JR Pass 劃「附大型行李空間的座位」：JR 東海只寫窗口和線上預約站可以。",
+    "官網線上價維持到什麼時候。"
+  ]
+}

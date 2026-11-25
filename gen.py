@@ -1961,6 +1961,8 @@ def topnav(cur=''):
             + '<hr><b>訂房與交通</b>'
             + link('/hotel-price-check/', '🏨 訂房比價')
             + link('/japan-airport-last-train/', '🚉 機場末班車')
+            + link('/japan-jr-pass/', '🚄 JR Pass 劃位與のぞみ')
+            + link('/japan-shinkansen-luggage/', '🧳 新幹線帶大行李箱')
             + '<hr><b>上網與門號</b>'
             + link('/japan-esim/', '📱 日本 eSIM 比較')
             + link('/japan-esim-native-roaming/', '📱 原生還是漫遊')
@@ -2191,6 +2193,7 @@ _AD_MAP = [
     ('japan-yen-exchange', 'esim'),
     ('japan-payment', 'esim'),
     ('japan-transit-card', 'transport'),
+    ('japan-jr-pass', 'transport'), ('japan-shinkansen-luggage', 'transport'),
     ('taiwan-airport-parking', 'transfer'),
     ('japan-flight-fuji', 'activity2'),
     ('hotel-price-check', 'transfer'), ('threads-japan', 'activity2'),
@@ -3283,7 +3286,7 @@ _STK_PREFIX = sorted({
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
-    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-maid-cafe/': 'st/omurice', '/tokyo/yakatabune/': 'st/yakata', '/japan-pachinko/': 'st/pachinko', '/japan-game-center/': 'st/claw', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-maid-cafe/': 'st/omurice', '/tokyo/yakatabune/': 'st/yakata', '/japan-pachinko/': 'st/pachinko', '/japan-game-center/': 'st/claw', '/japan-jr-pass/': 'st/shinkansen', '/japan-shinkansen-luggage/': 'st/shinkansen', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
     '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
     '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
@@ -34900,6 +34903,216 @@ if os.path.exists('pachinko.json'):
     pages.append(('/japan-pachinko/', 0.6))
     print('   柏青哥頁：法規', len(PK['law']), '則、答辯書', len(PK['exchange']), '則')
 
+# ---------- JR Pass 劃位 ----------
+# 資料在 jrpass.json，只收 japanrailpass.net 與 JR 東海外國人頁原文。
+# 開放劃位日由讀者在瀏覽器裡選日期算（乘車日前一個月的同一天），前一個月沒有那一天就照實寫官網沒寫。
+# 價格表兩欄並列：官網線上買 vs 海外代理店，差額當場算。
+if os.path.exists('jrpass.json'):
+    JRP = json.load(open('jrpass.json', encoding='utf-8'))
+    _jp_lk = lambda u, t='官網': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{html.escape(t)}</a>'
+
+    def _jp_list(xs):
+        return '<ul class="xl">' + ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+            f'<div class="xt">{html.escape(x["text"])}</div>'
+            + (f'<div class="xw">{_jp_lk(x["src"], x.get("src_t", "出處"))}'
+               + (f'・{_jp_lk(x["src2"], x.get("src2_t", "出處 2"))}' if x.get('src2') else '') + '</div>' if x.get('src') else '')
+            + '</li>' for x in xs) + '</ul>'
+
+    _jp_y = lambda n: f'{n:,} 円'
+    _jp_r7 = JRP['price_rows'][0]
+    _jp_gap7 = _jp_r7[3] - _jp_r7[1]
+    _jp_tokyo_osaka = dict(JRP['nozomi_prices'])['東京～新大阪']
+    _jp_price_tbl = ('<div class="tw"><table><thead><tr><th>天數</th><th>普通車 官網線上</th><th>普通車 海外代理店</th>'
+                     '<th>綠色車 官網線上</th><th>綠色車 海外代理店</th></tr></thead><tbody>'
+                     + ''.join(f'<tr><td>{r[0]}</td>'
+                               f'<td>大人 {_jp_y(r[1])}<br><small>兒童 {_jp_y(r[2])}</small></td>'
+                               f'<td>大人 {_jp_y(r[3])}<br><small>兒童 {_jp_y(r[4])}</small></td>'
+                               f'<td>大人 {_jp_y(r[5])}<br><small>兒童 {_jp_y(r[6])}</small></td>'
+                               f'<td>大人 {_jp_y(r[7])}<br><small>兒童 {_jp_y(r[8])}</small></td></tr>'
+                               for r in JRP['price_rows'])
+                     + '</tbody></table></div>')
+    _jp_noz_tbl = ('<div class="tw"><table><thead><tr><th>區間</th><th>のぞみ・みずほ利用券（含稅）</th></tr></thead><tbody>'
+                   + ''.join(f'<tr><td>{html.escape(a)}</td><td>{_jp_y(b)}</td></tr>' for a, b in JRP['nozomi_prices'])
+                   + '</tbody></table></div>')
+    _jp_pick = ('<div class="tdpk" id="jpk"><b>哪一天可以劃位？選你的乘車日</b>'
+                '<label class="tdmore">乘車日<input type="date" id="jpdt"></label>'
+                '<p id="jpout" class="xt">選了日期，這裡會顯示開放劃位的日子。</p>'
+                '<p class="disc">規則是「乘車日前一個月的同一天 10:00」（日本時間），出自 JR 東海的 JR Pass 問答；のぞみ・みずほ利用券也是一個月前開賣。</p></div>'
+                '<script>(function(){var i=document.getElementById("jpdt"),o=document.getElementById("jpout");if(!i)return;'
+                'function p(n){return n<10?"0"+n:""+n}'
+                'var t=new Date();i.min=t.getFullYear()+"-"+p(t.getMonth()+1)+"-"+p(t.getDate());'
+                'i.onchange=function(){var v=i.value.split("-");if(v.length<3)return;'
+                'var y=+v[0],m=+v[1],d=+v[2],py=m==1?y-1:y,pm=m==1?12:m-1,last=new Date(py,pm,0).getDate();'
+                'if(d>last){o.textContent=m+"/"+d+" 出發：前一個月沒有 "+d+" 號，JR Pass 官網和 JR 東海都沒寫這種日子從哪天開放，出發前問車站窗口。";return}'
+                'var od=new Date(Date.UTC(py,pm-1,d,1,0)),now=new Date(),wk="日一二三四五六".charAt(new Date(py,pm-1,d).getDay());'
+                'o.textContent=m+"/"+d+" 出發："+pm+"/"+d+"（星期"+wk+"）日本時間 10:00 開放劃位"+(od<=now?"，現在已經可以劃了。":"。")}'
+                '})();</script>')
+    _jp_css = ('<style>'
+               '.tdpk{border:2px dashed var(--edge);border-radius:14px;padding:12px 14px;margin:10px 0 14px;background:var(--paper)}'
+               '.tdpk>b{color:var(--ink);font-size:1.02rem}'
+               '.tdmore{display:flex;align-items:center;gap:8px;font-size:.9rem;flex-wrap:wrap;margin:8px 0}'
+               '.tdmore input{font:inherit;font-size:16px;padding:5px 8px;border:1.5px solid var(--edge);border-radius:8px;background:var(--card)}'
+               '.tdpk .disc{margin:8px 0 0}'
+               '</style>')
+    _jp_faq = [
+        ('JR Pass 劃位要錢嗎？',
+         f'不用。JR Pass 官網寫劃位不用追加費用。在線上預約站和售票機，一張 JR Pass 最多劃 {JRP["seat_cap"]} 班車。'),
+        ('JR Pass 可以用售票機劃位嗎？',
+         '可以。在指定席售票機掃 JR Pass 上的 QR 碼或輸入識別號碼，再輸入護照號碼就能劃位出票；有些車站沒有這種售票機，也可以去みどりの窓口。'),
+        ('JR Pass 最早什麼時候可以劃位？',
+         f'{JRP["open_hint"]}（日本時間）。官網線上買 JR Pass 的人，抵達日本前就能在官方線上預約站先劃位，上車前再到車站領票。'),
+        ('JR Pass 可以搭のぞみ嗎？',
+         f'JR Pass 本身不能搭のぞみ和みずほ，連自由席也不行。要搭的話每次另買「のぞみ・みずほ利用券」，例如東京到新大阪 {_jp_y(_jp_tokyo_osaka)}，只能在日本的售票機或窗口買。'),
+        ('JR Pass 劃位後沒搭到怎麼辦？',
+         'JR Pass 官網沒有寫錯過劃位車次的專門規定。JR Pass 本來就能坐自由席（のぞみ、みずほ除外），上車以後不能改坐指定席；要重新劃位，直接問窗口。改班次或取消要在發車前辦，已經出票的要去窗口。'),
+        ('走自動化通關沒蓋章，還能換 JR Pass 嗎？',
+         'JR Pass 只給護照有「短期滞在」章或貼紙的人換。官網寫走自動化閘門時要走有人員的那一道，或向人員申請蓋章或貼紙；拿日本「特定登録者カード」的人出示卡片就可以。'),
+    ]
+    _jp_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _jp_faq]},
+                        ensure_ascii=False)
+    write('japan-jr-pass/index.html',
+      head('JR Pass 劃位教學：售票機、窗口、線上怎麼劃，取消、沒搭到與のぞみ怎麼辦（官網整理）',
+           f'JR Pass（全國版）劃位不用加錢、一張最多 {JRP["seat_cap"]} 班；售票機掃 QR 加護照號碼、みどりの窓口、官網線上預約站三種方法，'
+           f'乘車日前一個月 10:00 開放。のぞみ・みずほ要另買利用券（東京到新大阪 {_jp_y(_jp_tokyo_osaka)}），自動化通關要補「短期滞在」章，'
+           f'2026/10/1 起海外代理店比官網貴 {_jp_gap7:,} 円。',
+           'japan-jr-pass/',
+           '<script type="application/ld+json">' + _jp_ld + '</script>' + _jp_css)
+      + topnav() + crumbs([('首頁', '/'), ('JR Pass 劃位', None)])
+      + '<h1>JR Pass 劃位教學：怎麼劃、取消與のぞみ</h1>'
+      + '<p class="lede">JR Pass（ジャパン・レール・パス，全國版）可以免費劃新幹線和特急的指定席，'
+        '劃位有售票機、窗口、官方線上預約站三種方法，各有限制。下面整理 JR Pass 官網和 JR 東海寫的規則，'
+        f'查證於 {JRP["checked"]}。</p>'
+      + f'<div class="today"><div class="tday">劃位要多少錢</div><div class="tans">不用加錢，一張最多 {JRP["seat_cap"]} 班</div>'
+        f'<div class="tsub">のぞみ和みずほ例外：每次要另買利用券，東京到新大阪 {_jp_y(_jp_tokyo_osaka)}。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>售票機最快</b>：掃 JR Pass 的 QR 碼，再輸入護照號碼。</li>'
+        '<li><b>官網線上買的才能先在網路劃位</b>：在海外代理店買兌換券的，要換成 JR Pass 才能劃。</li>'
+        f'<li><b>2026/10/1 起海外代理店比較貴</b>：普通車 7 日 {_jp_y(_jp_r7[3])}，官網線上 {_jp_y(_jp_r7[1])}。</li>'
+        '</ul></div>'
+      + _jp_pick
+      + '<h2>三種劃位方法</h2>' + _jp_list(JRP['methods'])
+      + f'<p>{html.escape(JRP["hours"])}{html.escape(JRP["hours_note"])}（{_jp_lk(JRP["src"]["seat"], "JR Pass 官網・指定席予約")}）</p>'
+      + '<h2>次數上限與劃不到的情況</h2>' + _jp_list(JRP['limits'])
+      + '<h2>改班次、取消、沒搭到</h2>' + _jp_list(JRP['change'])
+      + '<h2>のぞみ・みずほ要另買利用券</h2><p>' + html.escape(JRP['nozomi_rule']) + '</p>' + _jp_noz_tbl
+      + f'<p class="disc">只列官網的主要區間，全部區間看 {_jp_lk(JRP["src"]["nozomi"], "JR Pass 官網")}。</p>'
+      + _jp_list(JRP['nozomi'])
+      + '<h2>帶大行李箱要劃特別的座位</h2>'
+        '<p>東海道、山陽、九州、西九州新幹線帶三邊合計超過 160 公分的行李，要預約「附大型行李空間的座位」。'
+        f'JR 東海寫 JR Pass 可以在窗口跟站員說，或在官方線上預約站訂，不用加錢（{_jp_lk(JRP["src"]["jrc_ob"], "JR 東海")}）。'
+        '詳細規定看<a href="/japan-shinkansen-luggage/">新幹線大型行李</a>。</p>'
+      + '<h2>兌換與入境章</h2>' + _jp_list(JRP['exchange'])
+      + '<h2>JR Pass 多少錢</h2>' + _jp_price_tbl
+      + f'<p>{html.escape(JRP["price_note"])}{html.escape(JRP["child"])}'
+        f'（{_jp_lk(JRP["src"]["price"], "價格頁")}・{_jp_lk(JRP["src"]["price_pdf"], "價格改定公告")}）</p>'
+      + '<h2>官方沒寫的事</h2><ul class="pick">' + ''.join(f'<li>{html.escape(x)}</li>' for x in JRP['unknown']) + '</ul>'
+      + faq_visible(_jp_faq)
+      + f'<p class="disc">規定以 JR Pass 官網與車站公告為準，查證於 {JRP["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-jr-pass/', 0.6))
+    print('   JR Pass 劃位頁：のぞみ區間', len(JRP['nozomi_prices']), '個')
+
+# ---------- 新幹線大型行李 ----------
+# 資料在 shinkansen-luggage.json，只收 JR 東海、JR 西日本官網與新聞稿。
+# 尺寸試算在瀏覽器裡算（三邊相加），分界 160／250 公分從資料檔帶進 JS，不寫死在兩個地方。
+# 沒預約的後果兩家寫法不同（東海：收 1,000 円；西日本：不能帶），兩種原文並列。
+if os.path.exists('shinkansen-luggage.json'):
+    SKL = json.load(open('shinkansen-luggage.json', encoding='utf-8'))
+    _sl_lk = lambda u, t='官網': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{html.escape(t)}</a>'
+
+    def _sl_list(xs):
+        return '<ul class="xl">' + ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+            f'<div class="xt">{html.escape(x["text"])}</div>'
+            + (f'<div class="xw">{_sl_lk(x["src"], x.get("src_t", "出處"))}'
+               + (f'・{_sl_lk(x["src2"], x.get("src2_t", "出處 2"))}' if x.get('src2') else '') + '</div>' if x.get('src') else '')
+            + '</li>' for x in xs) + '</ul>'
+
+    _sl_fee = f'{SKL["fee"]:,} 円'
+    _sl_size_tbl = ('<div class="tw"><table><thead><tr><th>三邊合計</th><th>規定</th><th>放哪裡</th></tr></thead><tbody>'
+                    + ''.join(f'<tr><td>{html.escape(a)}</td><td><b>{html.escape(b)}</b></td><td>{html.escape(c)}</td></tr>' for a, b, c in SKL['sizes'])
+                    + '</tbody></table></div>')
+    _sl_seat_tbl = ('<div class="tw"><table><thead><tr><th>列車</th><th>座位數</th><th>在哪幾節</th></tr></thead><tbody>'
+                    + ''.join(f'<tr><td>{html.escape(a)}</td><td>{html.escape(b)}</td><td>{html.escape(c)}</td></tr>' for a, b, c in SKL['seats'])
+                    + '</tbody></table></div>')
+    _sl_calc = ('<div class="tdpk" id="slk"><b>你的行李要不要預約？輸入長、寬、高（公分）</b>'
+                '<div class="slin"><label>長<input type="number" inputmode="numeric" min="1" id="sla"></label>'
+                '<label>寬<input type="number" inputmode="numeric" min="1" id="slb"></label>'
+                '<label>高<input type="number" inputmode="numeric" min="1" id="slc"></label></div>'
+                '<p id="slout" class="xt">三個數字都填了，這裡會顯示結果。量的時候輪子和把手要算進去。</p>'
+                '<p class="disc">只適用東海道、山陽、九州、西九州新幹線。嬰兒車、運動用品、樂器、輪椅不管多大都不用預約。</p></div>'
+                f'<script>(function(){{var S={SKL["small"]},M={SKL["max"]},F="{_sl_fee}";'
+                'var a=document.getElementById("sla"),b=document.getElementById("slb"),c=document.getElementById("slc"),o=document.getElementById("slout");if(!a)return;'
+                'function g(){var x=+a.value,y=+b.value,z=+c.value;if(!(x>0&&y>0&&z>0))return;var s=Math.round((x+y+z)*10)/10,L=Math.max(x,y,z);'
+                'if(s>M||L>200){o.textContent="三邊合計 "+s+" 公分"+(L>200?"、最長邊超過 2 公尺":"")+"：不能帶上新幹線。";return}'
+                'if(s>S){o.textContent="三邊合計 "+s+" 公分：要預約「附大型行李空間的座位」，不用加錢。沒預約，JR 東海寫收 "+F+"，JR 西日本寫不能帶上車。";return}'
+                'o.textContent="三邊合計 "+s+" 公分：不用預約，放行李架、腳邊或車廂連接處的行李放置處。"}'
+                'a.oninput=b.oninput=c.oninput=g})();</script>')
+    _sl_css = ('<style>'
+               '.tdpk{border:2px dashed var(--edge);border-radius:14px;padding:12px 14px;margin:10px 0 14px;background:var(--paper)}'
+               '.tdpk>b{color:var(--ink);font-size:1.02rem}'
+               '.slin{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}'
+               '.slin label{display:flex;align-items:center;gap:6px;font-size:.9rem}'
+               '.slin input{font:inherit;font-size:16px;width:5.5em;padding:5px 8px;border:1.5px solid var(--edge);border-radius:8px;background:var(--card)}'
+               '.tdpk .disc{margin:8px 0 0}'
+               '</style>')
+    _sl_faq = [
+        ('新幹線帶大行李箱要預約嗎？',
+         f'東海道、山陽、九州、西九州新幹線，行李三邊合計超過 {SKL["small"]} 公分、{SKL["max"]} 公分以內，要預約「附大型行李空間的座位」；'
+         f'{SKL["small"]} 公分以下不用預約，超過 {SKL["max"]} 公分不能帶上車。'),
+        ('新幹線大型行李座位要加錢嗎？',
+         '不用。價格和一般普通車指定席或綠色車指定席一樣，網路、售票機、窗口都能訂。'),
+        ('新幹線沒預約大型行李會怎樣？',
+         f'JR 東海寫會收 {_sl_fee}（含稅）手續費；JR 西日本的問答寫，沒預約的列車不能帶特大荷物上車。自由席不能放特大荷物。'),
+        ('JR Pass 可以訂新幹線大型行李座位嗎？',
+         'JR 東海寫可以，在窗口跟站員說，或在 JR Pass 官方線上預約站訂，不用加錢。JR Pass 不能搭のぞみ和みずほ。'),
+        ('東北新幹線、北陸新幹線帶大行李要預約嗎？',
+         'JR 西日本寫只有東海道、山陽、九州、西九州新幹線要預約。JR 東日本自己的說明本站讀不到。'),
+        ('新幹線預約大型行李座位後沒搭到怎麼辦？',
+         '特大荷物不能放自由席，要重新買一張附大型行李空間座位的指定席特急券；行程改了要在上車前改預約。'),
+    ]
+    _sl_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _sl_faq]},
+                        ensure_ascii=False)
+    write('japan-shinkansen-luggage/index.html',
+      head(f'新幹線帶大行李箱要預約嗎？三邊超過 {SKL["small"]} 公分要訂座位、不用加錢（官網整理）',
+           f'東海道、山陽、九州、西九州新幹線帶三邊合計超過 {SKL["small"]} 公分的行李要預約「特大荷物スペースつき座席」，不用加錢；'
+           f'超過 {SKL["max"]} 公分不能帶。沒預約 JR 東海收 {_sl_fee}、自由席不能放；尺寸試算、各列車座位數、JR Pass 怎麼訂、行李當天寄送服務。',
+           'japan-shinkansen-luggage/',
+           '<script type="application/ld+json">' + _sl_ld + '</script>' + _sl_css)
+      + topnav() + crumbs([('首頁', '/'), ('新幹線大型行李', None)])
+      + '<h1>新幹線帶大行李箱：要不要預約、怎麼訂</h1>'
+      + '<p class="lede">東海道、山陽、九州、西九州新幹線，行李三邊合計超過 '
+        f'{SKL["small"]} 公分就要預約「特大荷物スペースつき座席」（附大型行李空間的座位）。下面整理 JR 東海和 JR 西日本官網寫的規定，'
+        f'查證於 {SKL["checked"]}。</p>'
+      + f'<div class="today"><div class="tday">三邊合計超過 {SKL["small"]} 公分</div><div class="tans">要預約座位，不用加錢</div>'
+        f'<div class="tsub">超過 {SKL["max"]} 公分不能帶上車。沒預約，JR 東海寫收 {_sl_fee}。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>只有四條線要預約</b>：東海道、山陽、九州、西九州新幹線。</li>'
+        '<li><b>自由席不能放大行李</b>：沒搭到預約的那班，要重買一張這種座位的票。</li>'
+        '<li><b>嬰兒車、運動用品、樂器不算</b>：不管多大都不用預約。</li>'
+        '</ul></div>'
+      + _sl_calc
+      + '<h2>多大要預約</h2>' + _sl_size_tbl + f'<p>{html.escape(SKL["size_note"])}（{_sl_lk(SKL["src"]["west"], "JR 西日本")}・{_sl_lk(SKL["src"]["jrc"], "JR 東海")}）</p>'
+      + '<h2>哪些路線要預約</h2>' + _sl_list(SKL['lines'])
+      + '<h2>怎麼訂</h2>' + _sl_list(SKL['book'])
+      + '<p>JR Pass 劃位的其他規定看<a href="/japan-jr-pass/">JR Pass 劃位教學</a>。</p>'
+      + '<h2>每班車有幾個這種座位</h2>' + _sl_seat_tbl
+      + f'<p class="disc">{html.escape(SKL["seats_note"])}（{_sl_lk(SKL["src"]["west"], "JR 西日本")}）</p>'
+      + '<h2>沒預約、沒搭到、改行程</h2>' + _sl_list(SKL['noresv'])
+      + '<h2>不算特大荷物的東西</h2>' + _sl_list(SKL['exempt'])
+      + f'<h2>{SKL["small"]} 公分以下的行李放哪裡</h2><p>{html.escape(SKL["rack"])}（{_sl_lk(SKL["src"]["west"], "JR 西日本")}）</p>'
+      + _sl_list(SKL['deck'])
+      + '<h2>不想自己拖：當天寄到下一站的服務</h2>' + _sl_list(SKL['send'])
+      + '<h2>官方沒寫的事</h2><ul class="pick">' + ''.join(f'<li>{html.escape(x)}</li>' for x in SKL['unknown']) + '</ul>'
+      + faq_visible(_sl_faq)
+      + f'<p class="disc">規定以 JR 各公司官網與車站公告為準，查證於 {SKL["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-shinkansen-luggage/', 0.6))
+    print('   新幹線大型行李頁：列車', len(SKL['seats']), '種')
+
 # ---------- 遊戲中心與夾娃娃 ----------
 # 資料在 game-center.json，只收風營法原文、警察廳解釋運用基準、JAIA 指引、各縣條例與連鎖店官網。
 # 只寫規則、集點與付款，不教怎麼夾；「保夾」只寫官方原文，法規沒寫機率就寫沒規定。
@@ -36498,7 +36711,8 @@ SEARCH_SYN = [
     ['箱根周遊券', 'hakone freepass', 'hakone free pass', '箱根フリーパス'],
     ['地鐵', '地下鐵', '捷運', 'metro', 'subway', 'メトロ'],
     ['新幹線', 'shinkansen'],
-    ['jr pass', 'jr周遊券', '鐵路周遊券'],
+    ['jr pass', 'jr周遊券', '鐵路周遊券', 'jrpass', 'jr pass 劃位', 'jrpass劃位', 'jr pass劃位', 'ジャパン・レール・パス', 'ジャパンレールパス', 'japan rail pass', 'japanrailpass', '日本鐵路通票', '日本铁路通票', 'jr全國周遊券', 'jr全国周游券', 'jr 全國版', 'jr全國版', '劃位', '划位', '對號座', '指定席', '指定席券売機', 'みどりの窓口', '綠色窗口', '绿色窗口', 'のぞみ・みずほ利用券', 'のぞみ利用券', 'nozomi', 'のぞみ', '希望號', '瑞穗號'],
+    ['大型行李', '特大荷物', '特大行李', '大行李', '大件行李', '大行李箱', '行李箱', '新幹線行李', '新干线行李', 'oversized baggage', '特大荷物スペースつき座席', '大型行李座位', '行李預約', '行李预约', '新幹線大型行李', '新干线大型行李', '28吋', '29吋', '30吋'],
     ['末班車', '最後一班車', '終電'],
     ['機場', '空港', 'airport'],
     ['纜車', 'ropeway'],

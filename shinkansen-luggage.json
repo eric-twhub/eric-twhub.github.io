@@ -1,0 +1,70 @@
+{
+  "_說明": "新幹線大型行李頁 /japan-shinkansen-luggage/。只收 JR 東海、JR 西日本官網與新聞稿。2026-11-25 查證；JR 東日本、JR 九州、えきねっと、JR Pass 線上預約站回 403，沒讀到。デッキ荷物置場試行『当面の間（終了時期は別途お知らせ）』要回查 JR 東海頁；LUGGAGE EXPRESS 價格出自 2025-10-30 新聞稿，官網是 JS 算繪讀不到。",
+  "checked": "2026-11-25",
+  "fee": 1000,
+  "small": 160,
+  "max": 250,
+  "src": {
+    "jrc": "https://railway.jr-central.co.jp/oversized-baggage/",
+    "west": "https://www.jr-odekake.net/railroad/service/baggage/",
+    "jrc_en": "https://global.jr-central.co.jp/en/info/oversized-baggage/",
+    "trial": "https://jr-central.co.jp/news/release/_pdf/000044215.pdf",
+    "west_opt": "https://www.westjr.co.jp/global/en/ticket/baggage_option/",
+    "lx": "https://jr-central.co.jp/news/release/_pdf/000044734.pdf",
+    "lx_site": "https://www.luggage-express-service.com/ja",
+    "sdd": "https://www.westjr.co.jp/travel-information/tc/services-offers/same-day-delivery/"
+  },
+  "lines": [
+    {"name": "要預約的路線", "text": "東海道、山陽、九州、西九州新幹線。JR 西日本原文：「東海道・山陽・九州・西九州新幹線のみ、ご予約が必要となります。」", "src": "https://www.jr-odekake.net/railroad/service/baggage/", "src_t": "JR 西日本"},
+    {"name": "在來線（一般 JR 列車）", "text": "不適用，不用預約。", "src": "https://www.jr-odekake.net/railroad/service/baggage/", "src_t": "JR 西日本"},
+    {"name": "例外：新大阪～博多的全車自由席列車", "text": "山陽新幹線新大阪～博多之間，全車自由席或普通車全車自由席的列車沒有這種座位，不用預約就能帶。", "src": "https://www.jr-odekake.net/railroad/service/baggage/", "src_t": "JR 西日本"}
+  ],
+  "sizes": [
+    ["160 公分以下", "可以帶，不用預約", "行李架、腳邊，或車廂連接處的行李放置處。"],
+    ["超過 160、250 公分以內", "要預約「附大型行李空間的座位」", "放在那排座位後面的空間。"],
+    ["超過 250 公分", "不能帶上車", "長度也不能超過 2 公尺。"]
+  ],
+  "size_note": "尺寸是長＋寬＋高三邊加起來。可以帶的行李每人最多 2 件、每件 30 公斤以內。",
+  "book": [
+    {"name": "不用加錢", "text": "價格和一般普通車指定席或綠色車指定席一樣。", "src": "https://railway.jr-central.co.jp/oversized-baggage/", "src_t": "JR 東海"},
+    {"name": "網路", "text": "エクスプレス予約、スマートEX、LINEからEX、e5489、JR九州インターネット列車予約都能訂。", "src": "https://railway.jr-central.co.jp/oversized-baggage/", "src_t": "JR 東海"},
+    {"name": "車站售票機", "text": "選好列車後，選「特大荷物スペースつき座席」，再從座位圖挑位子。", "src": "https://railway.jr-central.co.jp/oversized-baggage/", "src_t": "JR 東海"},
+    {"name": "窗口", "text": "買票時跟站員說要帶特大荷物。", "src": "https://railway.jr-central.co.jp/oversized-baggage/", "src_t": "JR 東海"},
+    {"name": "拿 JR Pass", "text": "JR 東海寫可以在窗口跟站員說，或在 JR Pass 官方線上預約站訂（2020/6/1 起），一樣不用加錢。JR Pass 不能搭のぞみ和みずほ。", "src": "https://global.jr-central.co.jp/en/info/oversized-baggage/", "src_t": "JR 東海（英文）"},
+    {"name": "只能坐自由席的周遊券", "text": "JR 西日本另外賣山陽新幹線（新大阪～博多）用的大型行李空間預約券，單程大人 1,000 円、兒童 500 円，要出示周遊券才能買。", "src": "https://www.westjr.co.jp/global/en/ticket/baggage_option/", "src_t": "JR 西日本（英文）"}
+  ],
+  "seats": [
+    ["のぞみ（16 節）", "57 席", "普通車 45 席：3～6、12～16 號車（每節 5 席）；綠色車 12 席：8～10 號車"],
+    ["ひかり（16 節）", "42 席", "綠色車 12 席、普通車 30 席"],
+    ["こだま（16 節）", "17 席", "綠色車 12 席、普通車 5 席"],
+    ["みずほ・さくら（8 節）", "20 席", "普通車 16 席：4、5、6、8 號車（每節 4 席）；綠色車 4 席：6 號車"]
+  ],
+  "seats_note": "JR 西日本列的主要列車，九州新幹線、西九州新幹線各列車要看 JR 九州官網。",
+  "noresv": [
+    {"name": "沒預約就帶上車", "text": "JR 東海寫會收 1,000 円（含稅）的手續費；JR 西日本的問答寫，沒預約的列車不能帶特大荷物上車。", "src": "https://railway.jr-central.co.jp/oversized-baggage/", "src_t": "JR 東海", "src2": "https://www.jr-odekake.net/railroad/service/baggage/", "src2_t": "JR 西日本"},
+    {"name": "自由席不能放", "text": "沒有這種座位的自由席和部分指定席車廂，不能帶特大荷物。", "src": "https://www.jr-odekake.net/railroad/service/baggage/", "src_t": "JR 西日本"},
+    {"name": "沒搭到預約的那班", "text": "有些車票錯過後可以改坐後面班次的自由席，但特大荷物不能放自由席，要重新買一張附大型行李空間座位的指定席特急券。", "src": "https://www.jr-odekake.net/railroad/service/baggage/", "src_t": "JR 西日本"},
+    {"name": "行程改了", "text": "要在上車前改預約。", "src": "https://www.jr-odekake.net/railroad/service/baggage/", "src_t": "JR 西日本"}
+  ],
+  "exempt": [
+    {"name": "嬰兒車、運動用品、樂器、輪椅", "text": "不管多大都不用預約。想放在那排座位後面的空間，就要訂那種座位。", "src": "https://railway.jr-central.co.jp/oversized-baggage/", "src_t": "JR 東海", "src2": "https://www.jr-odekake.net/railroad/service/baggage/", "src2_t": "JR 西日本"}
+  ],
+  "deck": [
+    {"name": "車廂連接處的行李放置處（不用預約）", "text": "2025/7/1 起，東海道、山陽新幹線 16 節的全部列車試辦，原本的「特大荷物コーナー」改成不用預約的行李放置處，試辦期間不再賣附這個位置的座位。結束日期 JR 東海寫會另外公告。", "src": "https://jr-central.co.jp/news/release/_pdf/000044215.pdf", "src_t": "JR 東海・JR 西日本新聞稿"},
+    {"name": "在哪幾節", "text": "3、5、7、9、13、15 號車的車廂連接處。", "src": "https://www.jr-odekake.net/railroad/service/baggage/", "src_t": "JR 西日本"},
+    {"name": "特大荷物不能放這裡", "text": "超過 160 公分的行李還是要預約座位，不能放在車廂連接處。", "src": "https://jr-central.co.jp/news/release/_pdf/000044215.pdf", "src_t": "新聞稿"},
+    {"name": "可以上鎖", "text": "上鎖要用自己的交通 IC 卡；有些 IC 卡或手機不能用。", "src": "https://www.jr-odekake.net/railroad/service/baggage/", "src_t": "JR 西日本"}
+  ],
+  "rack": "JR 西日本寫行李架深約 42 公分，三邊合計 160 公分左右（例如 30×50×80 公分）大致放得上去；普通車腳邊大約放得下三邊合計 120 公分（例如 25×40×55 公分）；綠色車腳邊有腳踏，要放行李架。",
+  "send": [
+    {"name": "LUGGAGE EXPRESS（JR 東海與 JTB）", "text": "東京都內部分住宿 ⇔ 京都市內部分住宿，東京站和京都站也有窗口。早上 9 點前寄，當天 18 點或 21 點前收到；新聞稿寫 21 點到每件 13,200 円、18 點到每件 16,500 円（含稅），現在的價格看專用網站。", "src": "https://jr-central.co.jp/news/release/_pdf/000044734.pdf", "src_t": "2025/10/30 新聞稿", "src2": "https://www.luggage-express-service.com/ja", "src2_t": "專用網站"},
+    {"name": "Same-day Delivery WEST（JR 西日本）", "text": "京都、大阪、新大阪 ⇔ 廣島每件 11,000 日圓，⇔ 博多每件 12,000 日圓（含稅），寄到車站或市內飯店。截止時間依車站不同，例如新大阪下午 2 點。三邊 200 公分以內、單件未滿 30 公斤；寄到飯店的只限有訂房的人，前一天 23:59 以後取消收全額。", "src": "https://www.westjr.co.jp/travel-information/tc/services-offers/same-day-delivery/", "src_t": "JR 西日本"}
+  ],
+  "unknown": [
+    "東北、北海道、上越、北陸、山形、秋田新幹線：JR 西日本寫只有東海道、山陽、九州、西九州要預約，JR 東日本自己的說明本站讀不到。",
+    "沒預約被收 1,000 円的時候，在哪裡付、可以用什麼付。",
+    "JR Pass 用車站售票機能不能訂附大型行李空間的座位。",
+    "九州、西九州新幹線各列車的座位數和號車。",
+    "車廂連接處行李放置處的試辦什麼時候結束。"
+  ]
+}
