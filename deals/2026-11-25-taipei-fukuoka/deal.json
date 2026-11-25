@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-25-taipei-fukuoka",
- "generated": "2026-11-25 17:32",
+ "generated": "2026-11-25 17:48",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,24 +11,24 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4555,
-  "dep": "2026-12-29",
-  "ret": "2027-01-05",
-  "dept": "13:40",
+  "price": 4483,
+  "dep": "2026-12-01",
+  "ret": "2026-12-22",
+  "dept": "06:45",
   "rett": "10:55",
   "rt": true,
   "tr": 0,
   "dur": 300,
   "dur_to": 135,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-29&inbound=FUK-TPE&returnDate=2027-01-05&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$7,109（11 天有紀錄），這張低 36%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,161（11 天有紀錄），這張低 37%"
  ],
- "med": 14180,
+ "med": 14380,
  "n_rt": 32,
  "others": [
   {
@@ -37,17 +37,17 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 4883,
-   "dep": "2026-12-01",
-   "ret": "2026-12-22",
-   "dept": "06:45",
+   "price": 4555,
+   "dep": "2026-12-29",
+   "ret": "2027-01-05",
+   "dept": "13:40",
    "rett": "10:55",
    "rt": true,
    "tr": 0,
    "dur": 300,
    "dur_to": 135,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-29&inbound=FUK-TPE&returnDate=2027-01-05&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
