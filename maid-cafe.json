@@ -1,0 +1,257 @@
+{
+  "checked": "2026-11-25",
+  "shops": [
+    {
+      "name": "at-home cafe",
+      "ja": "あっとほぉーむカフェ",
+      "area": "秋葉原（本館等）、大阪日本橋、名古屋大須",
+      "fee": 850,
+      "fee_t": "850 円",
+      "time": "1 小時",
+      "photo": "可以，不能拍到女僕和其他客人",
+      "points": [
+        {
+          "name": "收費方式",
+          "text": "入場費加一杯飲料或一份套餐，1 小時制，價格含稅。入場費大人 850 円、60 歲以上與大學生 600 円、國高中生 400 円、小學生以下免費。不能延長，人少時可以「loop」重新計 1 小時，入場費也重新算。",
+          "src": "https://www.maidcafe-athome.com/menu",
+          "src_t": "官方價目"
+        },
+        {
+          "name": "套餐",
+          "text": "DRINK SET 1,750 円（飲料、和女僕合照的拍立得、相框）、DESSERT SET 2,700 円、FOOD SET 2,900 円、FULL SET 3,930 円；飲料改酒加 200 円。日文官網和國際站寫的套餐價不一樣，以店頭為準。",
+          "src": "https://www.maidcafe-athome.com/menu",
+          "src_t": "官方價目"
+        },
+        {
+          "name": "拍照",
+          "text": "自己的手機可以拍，但不能拍到女僕和其他客人，也不能錄影錄音。和女僕合照的拍立得（チェキ）一般尺寸 900 円、大尺寸 1,100 円，拍的時候不能自拍、不能有肢體接觸。",
+          "src": "https://www.maidcafe-athome.com/faq",
+          "src_t": "官方 FAQ"
+        },
+        {
+          "name": "要不要預約",
+          "text": "一般是現場排隊。秋葉原三家有網路預付的優先入場票（含餐點套餐，不能退款，Cosplay 日與活動不適用），其他分店只能現場排。",
+          "src": "https://www.maidcafe-athome.com/tickets",
+          "src_t": "官方訂票頁"
+        },
+        {
+          "name": "付款與語言",
+          "text": "可刷 VISA、Master、JCB、AMEX、銀聯，也收 PayPay、支付寶、微信支付。女僕入職時會上英語課，官方國際站有繁體中文。營業平日 11:00～22:00、週末假日 10:00～22:00。",
+          "src": "https://www.maidcafe-athome.com/faq",
+          "src_t": "官方 FAQ",
+          "src2": "https://www.maidcafe-athome.com/tw/faq",
+          "src2_t": "官方繁中版"
+        }
+      ]
+    },
+    {
+      "name": "Maidreamin",
+      "ja": "めいどりーみん",
+      "area": "秋葉原、新宿、渋谷、池袋、大阪、名古屋、札幌、福岡等",
+      "fee": 880,
+      "fee_t": "880 円",
+      "time": "每 1 小時收一次",
+      "photo": "可以，不能拍到女僕、店員和其他客人",
+      "points": [
+        {
+          "name": "收費方式",
+          "text": "每 1 小時收一次入國料加餐飲費，含稅。入國料大人 880 円、60 歲以上 440 円、大學與專門學生 660 円、國高中生 550 円、小學生 330 円、未上小學免費，學生價要出示學生證。官方寫預算每人大約 1,650～5,000 円。",
+          "src": "https://maidreamin.com/first/charge.html",
+          "src_t": "官方料金"
+        },
+        {
+          "name": "晚上和長假",
+          "text": "22 點以後入店是附一杯飲料的「ラスト入国」2,600 円；黃金週、盂蘭盆、年末年始等期間入國料可能調整。官方寫沒有小費和服務費。",
+          "src": "https://maidreamin.com/faq/",
+          "src_t": "官方 FAQ"
+        },
+        {
+          "name": "拍照",
+          "text": "沒有拍到女僕、廚房人員和其他客人的話，照片影片都可以。拍立得（チェキ）900 円、大張的デカチェキ 1,150 円。",
+          "src": "https://maidreamin.com/faq/",
+          "src_t": "官方 FAQ",
+          "src2": "https://maidreamin.com/joy/amusement.html",
+          "src2_t": "官方娛樂價目"
+        },
+        {
+          "name": "規矩",
+          "text": "不能碰女僕（握手也不行），女僕不會坐在旁邊或倒酒，禮物不能直接交給女僕，原則上不能換位子。全店禁菸，電子菸也不行。",
+          "src": "https://maidreamin.com/faq/",
+          "src_t": "官方 FAQ"
+        },
+        {
+          "name": "預約、付款與語言",
+          "text": "不預約也能進，官網可以預約全部分店。可刷 VISA、MASTER、JCB、AMEX、Diners、Discover、銀聯，也收 PayPay、微信支付、支付寶。官網寫海外客人英語 OK，國際站有繁體中文。小學 6 年級以下送冰淇淋。",
+          "src": "https://maidreamin.com/faq/",
+          "src_t": "官方 FAQ"
+        }
+      ]
+    },
+    {
+      "name": "CURE MAID CAFÉ",
+      "ja": "キュアメイドカフェ",
+      "area": "秋葉原",
+      "fee_t": "官方沒寫",
+      "time": "混雜時 90 分鐘",
+      "photo": "可以，不能拍到客人和店員，不能錄影",
+      "points": [
+        {
+          "name": "日本第一家女僕咖啡廳",
+          "text": "2001 年開業，官網自稱是日本第一家女僕咖啡廳，主打「療癒空間」，店員穿古典女僕制服，是日本紅茶協會認定的紅茶店；官網沒有咒語之類的互動。",
+          "src": "https://www.curemaid.jp/",
+          "src_t": "官網"
+        },
+        {
+          "name": "收費與時間",
+          "text": "官網沒寫入場費或座位費。原創紅茶 770 円（含稅）；混雜時 90 分鐘制。營業 11:00～20:00。",
+          "src": "https://www.curemaid.jp/menu/",
+          "src_t": "官方菜單",
+          "src2": "https://www.curemaid.jp/news/240603__02/",
+          "src2_t": "整理券說明"
+        },
+        {
+          "name": "排隊與預約",
+          "text": "不預約也能進，混雜時發「matoca」整理券，線上取號只能在店所在的大樓附近，一張最多 4 人。訂位只限持有效「サポーターカード」的人。",
+          "src": "https://www.curemaid.jp/information/reservation/",
+          "src_t": "官方預約說明"
+        },
+        {
+          "name": "拍照與付款",
+          "text": "可以拍、可以上傳社群，但不要拍到其他客人和店員，不能錄影。可刷卡、交通 IC 卡、PayPay、支付寶、微信支付。全時段禁菸。",
+          "src": "https://www.curemaid.jp/information/",
+          "src_t": "官方店內說明"
+        }
+      ]
+    },
+    {
+      "name": "Cafe Mai:lish",
+      "ja": "カフェ メイリッシュ",
+      "area": "秋葉原（末広町站）",
+      "fee_t": "不收桌費",
+      "time": "90 分鐘一份點餐",
+      "photo": "只能拍點的餐點",
+      "points": [
+        {
+          "name": "收費與時間",
+          "text": "90 分鐘一份點餐，不收桌費（テーブルチャージ）；混雜時 90 分鐘讓位。菜單價格是圖片，以店頭為準。",
+          "src": "https://www.mailish.jp/about.html",
+          "src_t": "官網"
+        },
+        {
+          "name": "拍照",
+          "text": "店內和店員都不能拍照、錄影、錄音；點的料理可以拍，先跟店員說。",
+          "src": "https://www.mailish.jp/about.html",
+          "src_t": "官網"
+        },
+        {
+          "name": "預約",
+          "text": "週一、二、四 14:00～20:00 與週五 12:00～20:00 可以電話訂位；週三公休，週末假日與活動期間不收預約，遲到 15 分鐘以上當作取消。",
+          "src": "https://www.mailish.jp/access.html",
+          "src_t": "官方預約說明"
+        }
+      ]
+    },
+    {
+      "name": "CCOちゃ",
+      "ja": "めいどかふぇこっちゃ",
+      "area": "大阪日本橋",
+      "fee_t": "一天 500 円（未稅）",
+      "time": "1 小時 1 點餐",
+      "photo": "只能拍餐點",
+      "points": [
+        {
+          "name": "收費方式",
+          "text": "入館料一天 500 円，當天可以重複進出；1 小時 1 點餐，菜單價格都是未稅（例：畫畫蛋包飯 1,500 円），結帳另加消費稅。",
+          "src": "https://ccocha.com/visit/",
+          "src_t": "官方來店說明"
+        },
+        {
+          "name": "拍照",
+          "text": "店內只能拍飲食，拍之前先告訴女僕。拍立得 1,000 円（未稅），拍的時候不能有接觸。",
+          "src": "https://ccocha.com/menu/",
+          "src_t": "官方菜單"
+        },
+        {
+          "name": "預約與公休",
+          "text": "活動日以外可以訂位，訂位的話每人 1 小時要點 2 份。每月第 2、4 個週二公休。",
+          "src": "https://ccocha.com/blog/detail/20220224214245/",
+          "src_t": "官方注意事項",
+          "src2": "https://ccocha.com/access/",
+          "src2_t": "官方交通"
+        }
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "name": "不能碰女僕",
+      "text": "at-home cafe、Maidreamin、CCOちゃ 的官網都寫不能碰女僕，Maidreamin 連握手都不行，拍拍立得時也不能有接觸。",
+      "src": "https://www.maidcafe-athome.com/faq",
+      "src_t": "at-home cafe FAQ"
+    },
+    {
+      "name": "不能拍女僕",
+      "text": "自己手機拍照的規定各家不同，但都不能拍到女僕本人；有的店只能拍餐點。想和女僕合照就買拍立得（チェキ）。",
+      "src": "https://maidreamin.com/faq/",
+      "src_t": "Maidreamin FAQ"
+    },
+    {
+      "name": "不能問個資、不能在店外等",
+      "text": "at-home cafe 和 CCOちゃ 都寫不能問本名和聯絡方式、不能在店外等女僕或跟著搭話；at-home cafe 寫違反可能被立刻請出去並永久禁止入店。",
+      "src": "https://www.maidcafe-athome.com/faq",
+      "src_t": "at-home cafe FAQ",
+      "src2": "https://ccocha.com/blog/detail/20220224214245/",
+      "src2_t": "CCOちゃ 注意事項"
+    },
+    {
+      "name": "時間到要再付一次",
+      "text": "多數店是 1 小時或 90 分鐘一個單位，要續就再付入場費和點餐。",
+      "src": "https://maidreamin.com/first/charge.html",
+      "src_t": "Maidreamin 料金"
+    }
+  ],
+  "touting": [
+    {
+      "name": "秋葉原是拉客重點取締區",
+      "text": "千代田區條例禁止在區內公共場所拉客，2020 年 7 月把外神田（秋葉原）指定為「客引き行為等防止重點地區」。2021 年區公所新聞稿寫，正常店家之間混著觸犯風營法的店，穿著暴露服裝拉客的人也變多。",
+      "src": "https://www.city.chiyoda.lg.jp/koho/kuse/koho/pressrelease/r2/r207/20200713.html",
+      "src_t": "千代田區新聞稿",
+      "src2": "https://www.city.chiyoda.lg.jp/koho/kuse/koho/pressrelease/r3/r306/20210618.html",
+      "src2_t": "2021 新聞稿"
+    },
+    {
+      "name": "警視廳：不要跟拉客走",
+      "text": "警視廳給外國觀光客的提醒：有拉客的人會帶你到合作的店，趁酒醉請高額費用或擅自刷卡，絕對不要跟。",
+      "src": "https://www.keishicho.metro.tokyo.lg.jp/multilingual/japanese/safe_society/avoid_victim/ninpo.html",
+      "src_t": "警視廳提醒"
+    },
+    {
+      "name": "店家自己說不拉客",
+      "text": "at-home cafe 官網寫自己不拉客、沒有隱藏費用；Maidreamin 寫收費透明、沒有小費和服務費。想去哪一家就直接查官網地址走過去。",
+      "src": "https://www.maidcafe-athome.com/faq",
+      "src_t": "at-home cafe FAQ",
+      "src2": "https://maidreamin.com/first-time_maidreamin/first_visit_entrance.html",
+      "src2_t": "Maidreamin 第一次來店"
+    }
+  ],
+  "kkday": [
+    {
+      "id": 556973,
+      "name": "Maidreamin 秋葉原 一杯飲品套餐",
+      "area": "東京秋葉原",
+      "note": "Maidreamin 秋葉原電器街口站店"
+    },
+    {
+      "id": 556584,
+      "name": "Maidreamin 新宿 一杯飲品套餐",
+      "area": "東京新宿",
+      "note": "Maidreamin 新宿東口店"
+    },
+    {
+      "id": 530711,
+      "name": "Maidreamin 大阪 一杯飲料套餐",
+      "area": "大阪日本橋",
+      "note": "Maidreamin 大阪日本橋太田路店"
+    }
+  ]
+}

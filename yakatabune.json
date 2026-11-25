@@ -1,0 +1,233 @@
+{
+  "checked": "2026-11-25",
+  "assoc_src": "https://www.yakatabune-kumiai.jp/guide/guide.html",
+  "assoc_home": "https://www.yakatabune-kumiai.jp/",
+  "base_price": 13000,
+  "basics": [
+    {
+      "name": "價格含吃喝",
+      "text": "東京屋形船組合寫的基本價格是每人 13,000 円（含稅）起，包船和併船都一樣，含天婦羅等料理和喝到飽。船上現炸天婦羅是招牌。",
+      "src": "https://www.yakatabune-kumiai.jp/guide/guide.html",
+      "src_t": "組合利用說明"
+    },
+    {
+      "name": "繞 2～2.5 小時",
+      "text": "一般航程約 2 小時到 2 小時 30 分，路線有台場、晴空塔、台場加晴空塔、舞濱與葛西臨海公園等。",
+      "src": "https://www.yakatabune-kumiai.jp/",
+      "src_t": "組合首頁",
+      "src2": "https://www.yakatabune-kumiai.jp/course/course.html",
+      "src2_t": "路線與乘船場"
+    },
+    {
+      "name": "併船（乘合）2 人就能訂",
+      "text": "組合 33 家船宿裡約 10 家有併船，2 人起，但季節不定期，而且包船優先，包船訂滿那天就不開併船。出船時間大約平日 18:30 或 19:00、週末 17:30～18:00，白天有併船的大約 3 家。",
+      "src": "https://www.yakatabune-kumiai.jp/",
+      "src_t": "組合首頁"
+    },
+    {
+      "name": "包船（貸切）人數",
+      "text": "組合利用說明寫週一到週四大人 15 名起、週五到週日 20 名起，最多 100 名，11:00～20:00 自選出船時間；組合首頁另寫 10～120 名，以預約時船宿說的為準。包船可以自由唱卡拉 OK。",
+      "src": "https://www.yakatabune-kumiai.jp/guide/guide.html",
+      "src_t": "組合利用說明"
+    },
+    {
+      "name": "小孩怎麼算",
+      "text": "組合寫小學生大約是大人價 50% 起，國中以上算大人，未上學的另外談；各船宿不同，例如晴海屋 19 歲以下是料理價 80%。",
+      "src": "https://www.yakatabune-kumiai.jp/guide/guide.html",
+      "src_t": "組合利用說明",
+      "src2": "https://www.harumiya.co.jp/yakatafune/price/",
+      "src2_t": "晴海屋料金"
+    }
+  ],
+  "shared": [
+    {
+      "name": "晴海屋",
+      "where": "両國乘船場（JR 両國站走 3 分）",
+      "price": "13,200 円起",
+      "time": "約 2.5 小時",
+      "when": "平日 19:00；週末假日午餐 11:30、晚餐 18:00",
+      "book": "官網線上預約（有英文）",
+      "src": "https://www.harumiya.co.jp/yakatafune/passenger/"
+    },
+    {
+      "name": "あみ達",
+      "where": "吾妻橋（淺草）或晴海，依日期",
+      "price": "13,800 円",
+      "time": "2.5～3 小時",
+      "when": "依出船日程；3 個月前開放預約",
+      "book": "官網線上預約並刷卡；最少 15 人成行",
+      "src": "https://www.amitatsu.jp/noriai/"
+    },
+    {
+      "name": "三浦屋",
+      "where": "淺草橋（JR 淺草橋站東口走 2 分）",
+      "price": "13,200 円",
+      "time": "約 2.5 小時",
+      "when": "週五 19:00、週六 18:00、週日假日 17:30",
+      "book": "當天上午前預約；官網沒寫網路付款",
+      "src": "https://www.funayado-miuraya.co.jp/noriai/noriai.php"
+    },
+    {
+      "name": "あみ清",
+      "where": "淺草雷門附近",
+      "price": "12,000 円（含生魚片 13,000 円）",
+      "time": "官方沒寫",
+      "when": "湊滿 10 人才出船；沒滿可預約到 3 小時前",
+      "book": "官網線上預約；一週前匯款或刷卡",
+      "src": "https://amisei.com/together/"
+    },
+    {
+      "name": "船清",
+      "where": "品川（京急北品川站走 10 分）",
+      "price": "14,000～23,900 円（依船）",
+      "time": "2 小時 45 分",
+      "when": "不定期，大約一個月前視空船分批開放（2027 年 2 月的船 12/6 15:00 左右開放）",
+      "book": "官網",
+      "src": "https://www.funasei.com/shared/",
+      "src2": "https://www.funasei.com/info/%e4%b9%97%e5%90%88%e8%88%b9%e5%8b%9f%e9%9b%86%e9%96%8b%e5%a7%8b%e3%82%b9%e3%82%b1%e3%82%b8%e3%83%a5%e3%83%bc%e3%83%ab/"
+    }
+  ],
+  "shared_note": "價格是大人一人含稅，含料理和喝到飽。",
+  "fireworks": {
+    "name": "台場彩虹花火",
+    "dates": [
+      "2026-12-05",
+      "2026-12-12",
+      "2026-12-19",
+      "2026-12-26"
+    ],
+    "items": [
+      {
+        "name": "12 月每週六 19:00",
+        "text": "屋形船組合寫 2026 年 12 月每週六（預定）19:00 起放約 10 分鐘，屋形船照一般價格；あみ達 寫在台場看約 5 分鐘。兩邊寫的長度不同，以當天為準。",
+        "src": "https://www.yakatabune-kumiai.jp/event/hanabi.html",
+        "src_t": "組合花火頁",
+        "src2": "https://www.amitatsu.jp/noriai/",
+        "src2_t": "あみ達 併船"
+      },
+      {
+        "name": "あみ達 花火併船",
+        "text": "12/5、12/12、12/19、12/26 的併船會到台場看花火，大人 14,800 円、10～12 歲 11,300 円、4～9 歲 9,300 円（含稅）；12/19 是配音樂的「ミュージック花火」。",
+        "src": "https://www.amitatsu.jp/noriai/",
+        "src_t": "あみ達 併船",
+        "until": "2026-12-26"
+      },
+      {
+        "name": "船清 12/26 花火特別併船",
+        "text": "12/26（六）17:30 出船、19:00 起看花火，不另外加價；船清 12 月只有這天有週六併船，其他週六都被包船訂滿。",
+        "src": "https://www.funasei.com/info/%e3%80%9012%e6%9c%8826%e6%97%a5%e9%99%90%e5%ae%9a%e3%80%91%e3%81%8a%e5%8f%b0%e5%a0%b4%e3%83%ac%e3%82%a4%e3%83%b3%e3%83%9c%e3%83%bc%e8%8a%b1%e7%81%ab-%e7%89%b9%e5%88%a5%e4%b9%97%e5%90%88%e8%88%b9/",
+        "src_t": "船清公告",
+        "until": "2026-12-26"
+      }
+    ]
+  },
+  "seasons": [
+    {
+      "name": "賞櫻（お花見）",
+      "text": "每年 3 月下旬到 4 月上旬，白天和傍晚都有船；組合寫包船 13,000 円起、大人 20 名起。三浦屋賞櫻期間週末加開 12:00 併船，あみ清 賞櫻季也照一般價。",
+      "src": "https://www.yakatabune-kumiai.jp/event/ohanami.html",
+      "src_t": "組合賞櫻頁"
+    },
+    {
+      "name": "夏天的花火大會",
+      "text": "隅田川、江東區、東京灣大華火祭等花火大會的船，組合寫每人 33,000～100,000 円，包船另有入場旗、登錄費 5～10 萬円；包船 4 個月前起取消就收 30%，併船一訂就開始收。整趟可能將近 6 小時，不建議帶小小孩；隅田川花火那天會場禁火，船上不能炸天婦羅。",
+      "src": "https://www.yakatabune-kumiai.jp/event/hanabi.html",
+      "src_t": "組合花火頁"
+    }
+  ],
+  "rules": [
+    {
+      "name": "上船要脫鞋",
+      "text": "船艙是榻榻米，進去要脫鞋，有些船有椅子。",
+      "src": "https://www.yakatabune-kumiai.jp/en/guide/guide.html",
+      "src_t": "組合英文說明"
+    },
+    {
+      "name": "航行中不能走出座敷",
+      "text": "有落水危險，航行中不要走出座位區；屋頂甲板只有停船時能上去，甲板上不能吃喝。",
+      "src": "https://www.yakatabune-kumiai.jp/guide/guide.html",
+      "src_t": "組合利用說明"
+    },
+    {
+      "name": "不能開車來",
+      "text": "為了防止酒駕，除了有專屬司機在車上等（巴士、包車）以外，一律不接受開車來。",
+      "src": "https://www.yakatabune-kumiai.jp/guide/guide.html",
+      "src_t": "組合利用說明"
+    },
+    {
+      "name": "只有天婦羅能打包",
+      "text": "天婦羅以外（飲料、生魚片等）不能帶走。",
+      "src": "https://www.yakatabune-kumiai.jp/guide/guide.html",
+      "src_t": "組合利用說明"
+    },
+    {
+      "name": "公共碼頭可能另收費",
+      "text": "從船宿自己的碼頭上船免費；從公共碼頭上船，可能另收單程約 5,500 円的碼頭費。",
+      "src": "https://www.yakatabune-kumiai.jp/",
+      "src_t": "組合首頁"
+    },
+    {
+      "name": "不是無障礙",
+      "text": "船的構造窄，不是無障礙空間，部分船可以對應輪椅，預約時先問。",
+      "src": "https://www.yakatabune-kumiai.jp/",
+      "src_t": "組合首頁"
+    },
+    {
+      "name": "取消費很早就開始收",
+      "text": "組合規定：30 天前取消 10%、29～15 天前 30%、14～7 天前 50%、6～2 天前 70%、前一天和當天 100%；各船宿規定略有不同。天候不佳由業者取消的話全額退款（組合英文頁）。",
+      "src": "https://www.yakatabune-kumiai.jp/guide/guide.html",
+      "src_t": "組合利用說明",
+      "src2": "https://www.yakatabune-kumiai.jp/en/cancellations/cancellations.html",
+      "src2_t": "組合英文取消說明"
+    }
+  ],
+  "foreign": [
+    {
+      "name": "組合可以代找船",
+      "text": "屋形船組合網站有英文和中文頁，外國客人可以請組合代選船，確認後用連結付款。",
+      "src": "https://www.yakatabune-kumiai.jp/en/faqs/faqs.html",
+      "src_t": "組合英文 FAQ"
+    },
+    {
+      "name": "晴海屋有繁中網站",
+      "text": "晴海屋有英、簡中、繁中、韓文網站，可以安排會外語的船員；可以做素食，不能做清真。",
+      "src": "http://yakatabune-tokyo.com/index_t.html",
+      "src_t": "晴海屋繁中站",
+      "src2": "http://yakatabune-tokyo.com/faq_e.html",
+      "src2_t": "晴海屋英文 FAQ"
+    },
+    {
+      "name": "あみ達 英文預約要等確認信",
+      "text": "英文頁用表單預約，不是即時成立，收到確認信才算訂好。英文頁寫的兒童價和日文頁不同，以日文頁為準。",
+      "src": "https://www.amitatsu.jp/english/",
+      "src_t": "あみ達 英文頁"
+    }
+  ],
+  "unknown": "跨年夜和元旦看日出的特別航班：組合和晴海屋、あみ達、三浦屋、船清、あみ清 的官網都沒寫。",
+  "kkday": [
+    {
+      "id": 2890,
+      "name": "淺草屋形船 船宿釣新（含餐點、喝到飽）",
+      "area": "淺草・本所",
+      "note": "釣新是東京屋形船組合加盟的船宿"
+    },
+    {
+      "id": 589649,
+      "name": "東京灣屋形船晚餐（壽喜燒、三味線表演）",
+      "area": "越中島碼頭",
+      "note": "併船，喝到飽是軟性飲料"
+    },
+    {
+      "id": 135732,
+      "name": "江戶前屋形船 東京灣夜遊（文字燒吃到飽）",
+      "area": "新木場碼頭",
+      "note": "併船"
+    },
+    {
+      "id": 569896,
+      "name": "高本屋形船 東京灣包船",
+      "area": "東京灣",
+      "note": "包船 15～48 人；高本是東京屋形船組合加盟的船宿"
+    }
+  ]
+}

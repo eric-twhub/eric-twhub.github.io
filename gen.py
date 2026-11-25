@@ -1886,6 +1886,8 @@ def topnav(cur=''):
             + link('/japan-npb-ticket/', '⚾ 去日本看職棒門票怎麼買')
             + link('/japan-tattoo-onsen/', '♨️ 有刺青能泡溫泉、錢湯嗎')
             + link('/japan-keiba/', '🏇 去日本看賽馬、有馬記念怎麼進場')
+            + link('/japan-maid-cafe/', '🎀 女僕咖啡廳怎麼玩')
+            + link('/tokyo/yakatabune/', '🏮 東京屋形船怎麼訂')
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
             + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
@@ -3279,7 +3281,7 @@ _STK_PREFIX = sorted({
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
-    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-maid-cafe/': 'st/omurice', '/tokyo/yakatabune/': 'st/yakata', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
     '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
     '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
@@ -34647,6 +34649,188 @@ if os.path.exists('keiba.json'):
     pages.append(('/japan-keiba/', 0.6))
     print('   賽馬頁：接下來的 G1', len(_kb_up), '場、只能網路買', len(_kb_online), '場')
 
+# ---------- 女僕咖啡廳 ----------
+# 資料在 maid-cafe.json，只收各店官網寫的（價格、拍照、規矩）；官網沒寫的格子寫「官方沒寫」。
+# 拉客那段只引千代田區、警視廳、大阪的官方頁，官方頁沒點名女僕店，所以不寫成「女僕店都在拉客」。
+if os.path.exists('maid-cafe.json'):
+    MC = json.load(open('maid-cafe.json', encoding='utf-8'))
+    if _KK1 is None:
+        _KK1 = {str(x) for x in json.load(open('kkday-1pct.json', encoding='utf-8'))['ids']}
+    _mc_lk = lambda u, t='官網': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+
+    def _mc_list(xs):
+        return '<ul class="xl">' + ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+            f'<div class="xt">{html.escape(x["text"])}</div>'
+            + (f'<div class="xw">{_mc_lk(x["src"], x.get("src_t", "官網"))}'
+               + (f'・{_mc_lk(x["src2"], x.get("src2_t", "出處 2"))}' if x.get('src2') else '') + '</div>' if x.get('src') else '')
+            + '</li>' for x in xs) + '</ul>'
+
+    _mc_shops = MC['shops']
+    _mc_fees = [s['fee'] for s in _mc_shops if s.get('fee')]
+    _mc_lo, _mc_hi = min(_mc_fees), max(_mc_fees)
+    _mc_feej = '、'.join(f'{s["name"]} {s["fee_t"]}' for s in _mc_shops if s['fee_t'] != '官方沒寫')
+    _mc_kk = []
+    for it in MC.get('kkday') or []:
+        if str(it['id']) in _KK1:
+            raise SystemExit(f'女僕咖啡頁：KKday 商品 {it["id"]} 在 1% 清單裡')
+        _mc_kk.append({'provider': 'kkday', 'id': it['id'], 'url': f'https://www.kkday.com/zh-tw/product/{it["id"]}',
+                       'name': it['name'], 'area': it['area'], 'note': it['note']})
+    _mc_tbl = ('<div class="tw"><table><thead><tr><th>店</th><th>地點</th><th>入場費（大人）</th><th>時間</th><th>自己拍照</th></tr></thead><tbody>'
+               + ''.join(f'<tr><td>{html.escape(s["name"])}<br><small>{html.escape(s["ja"])}</small></td><td>{html.escape(s["area"])}</td>'
+                         f'<td>{html.escape(s["fee_t"])}</td><td>{html.escape(s["time"])}</td><td>{html.escape(s["photo"])}</td></tr>' for s in _mc_shops)
+               + '</tbody></table></div>')
+    _mc_faq = [
+        ('女僕咖啡廳要花多少錢？',
+         f'大多是「入場費＋每人至少點一份」，以 1 小時或 90 分鐘為單位。官網寫的大人入場費：{_mc_feej}。'
+         'Maidreamin 官網寫每人預算大約 1,650～5,000 円，at-home cafe 最便宜的飲料套餐（含拍立得）1,750 円加入場費。'),
+        ('可以拍照嗎？',
+         '各家不同，但都不能拍到女僕本人和其他客人；at-home cafe、Maidreamin 可以拍自己和餐點，Cafe Mai:lish、CCOちゃ 只能拍餐點。'
+         '想和女僕合照要買拍立得（チェキ），大約 900～1,000 円。'),
+        ('不會日文可以去嗎？',
+         'at-home cafe 的女僕入職時會上英語課，官方國際站有繁體中文；Maidreamin 官網寫海外客人英語 OK，也有繁中網站。'
+         'CURE MAID CAFÉ、Cafe Mai:lish、CCOちゃ 官網沒寫外語服務。'),
+        ('要預約嗎？',
+         '多數店不預約也能進，熱門時段要排隊。Maidreamin 官網可以預約；at-home cafe 秋葉原三家有網路預付的優先入場票；'
+         'Cafe Mai:lish 只有平日可以電話訂位。'),
+        ('可以帶小孩去嗎？',
+         'at-home cafe 小學生以下、Maidreamin 未上小學的入場費免費，Maidreamin 還送小學生冰淇淋；兩家官網都寫歡迎家庭。'),
+        ('秋葉原街上發傳單的女僕可以跟去嗎？',
+         '千代田區把秋葉原所在的外神田列為拉客防止重點地區，警視廳也提醒觀光客不要跟拉客的人走。'
+         '想去哪一家，直接查官網地址自己走過去比較保險。'),
+    ]
+    _mc_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _mc_faq]},
+                        ensure_ascii=False)
+    write('japan-maid-cafe/index.html',
+      head(f'日本女僕咖啡廳怎麼玩：入場費、拍照規定、不能做的事，秋葉原與大阪 {len(_mc_shops)} 家官網整理',
+           '女僕咖啡廳（メイドカフェ）第一次去看這篇：at-home cafe、Maidreamin、CURE MAID CAFÉ 等店的入場費、1 小時制、'
+           '拍照與拍立得規定、不能碰女僕等規矩、要不要預約、英文中文對應，以及秋葉原拉客要注意的事。全部引官網。',
+           'japan-maid-cafe/',
+           '<script type="application/ld+json">' + _mc_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('女僕咖啡廳怎麼玩', None)])
+      + '<h1>日本女僕咖啡廳怎麼玩：價格、拍照與規矩</h1>'
+      + '<p class="lede">女僕咖啡廳（メイドカフェ）是店員穿女僕裝、把客人當「主人」「大小姐」迎接的咖啡廳，'
+        '送餐時會一起唸「萌え萌えキュン」的咒語、在蛋包飯上用番茄醬畫圖。收費和一般咖啡廳不一樣，有入場費和時間限制，拍照規定也很嚴。'
+        f'下面整理 {len(_mc_shops)} 家店官網寫的價格和規矩，查證於 {MC["checked"]}。</p>'
+      + f'<div class="today"><div class="tday">第一次去先知道</div><div class="tans">入場費另計，每人至少點一份</div>'
+        f'<div class="tsub">官網寫的大人入場費：{_mc_feej}。多數店 1 小時或 90 分鐘一個單位，時間到要續就再付一次；想和女僕合照要另外買拍立得。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>不能拍女僕</b>：自己的手機只能拍自己和餐點，有的店只能拍餐點。</li>'
+        '<li><b>不能碰、不能問個資</b>：握手也不行，也不能在店外等女僕。</li>'
+        '<li><b>不要跟街上拉客的走</b>：直接查官網地址自己去。</li>'
+        '</ul></div>'
+      + f'<h2>{len(_mc_shops)} 家店比一比</h2>' + _mc_tbl
+      + '<p class="disc">「官方沒寫」是官網找不到，不代表不收。價格以店頭為準。</p>'
+      + ''.join(f'<h2>{html.escape(s["name"])}（{html.escape(s["ja"])}）</h2><p>{html.escape(s["area"])}</p>' + _mc_list(s['points']) for s in _mc_shops)
+      + '<h2>每家都有的規矩</h2>' + _mc_list(MC['rules'])
+      + '<h2>街上拉客要注意</h2>' + _mc_list(MC['touting'])
+      + adbox_tickets(_mc_kk, 'maidcafe', '女僕咖啡廳體驗套餐', 'Maidreamin 的一杯飲品套餐',
+                      '內容和價格以 KKday 商品頁為準，本站不另外標價。')
+      + faq_visible(_mc_faq)
+      + f'<p class="disc">各店規定以官網與店內說明為準，查證於 {MC["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-maid-cafe/', 0.6))
+    print('   女僕咖啡頁：', len(_mc_shops), '家、入場費', _mc_lo, '～', _mc_hi, '円、KKday', len(_mc_kk), '個')
+
+# ---------- 東京屋形船 ----------
+# 資料在 yakatabune.json，只收屋形船東京都協同組合與各船宿官網。
+# 12 月台場彩虹花火的日期逐日算倒數、過了自動下架；組合與船宿寫的花火長度不同就兩個都寫。
+if os.path.exists('yakatabune.json'):
+    YK = json.load(open('yakatabune.json', encoding='utf-8'))
+    if _KK1 is None:
+        _KK1 = {str(x) for x in json.load(open('kkday-1pct.json', encoding='utf-8'))['ids']}
+    _yk_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _yk_lk = lambda u, t='官網': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+    _yk_d = lambda s: datetime.date.fromisoformat(s)
+    _yk_md = lambda s: f'{int(s[5:7])}/{int(s[8:10])}（{"一二三四五六日"[_yk_d(s).weekday()]}）'
+    _yk_live = lambda xs: [x for x in xs if not x.get('until') or _yk_d(x['until']) >= _yk_today]
+
+    def _yk_list(xs):
+        return '<ul class="xl">' + ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+            f'<div class="xt">{html.escape(x["text"])}</div>'
+            + (f'<div class="xw">{_yk_lk(x["src"], x.get("src_t", "官網"))}'
+               + (f'・{_yk_lk(x["src2"], x.get("src2_t", "出處 2"))}' if x.get('src2') else '') + '</div>' if x.get('src') else '')
+            + '</li>' for x in xs) + '</ul>'
+
+    _FW = YK['fireworks']
+    _yk_fw = [d for d in _FW['dates'] if _yk_d(d) >= _yk_today]
+    _yk_kk = []
+    for it in YK.get('kkday') or []:
+        if str(it['id']) in _KK1:
+            raise SystemExit(f'屋形船頁：KKday 商品 {it["id"]} 在 1% 清單裡')
+        _yk_kk.append({'provider': 'kkday', 'id': it['id'], 'url': f'https://www.kkday.com/zh-tw/product/{it["id"]}',
+                       'name': it['name'], 'area': it['area'], 'note': it['note']})
+    _yk_base = f'{YK["base_price"]:,}'
+    if _yk_fw:
+        _n = (_yk_d(_yk_fw[0]) - _yk_today).days
+        _yk_tday = f'{_FW["name"]}'
+        _yk_tans = f'下一場 {_yk_md(_yk_fw[0])}' + ('，就是今天' if _n == 0 else f'，還有 {_n} 天')
+        _yk_tsub = (f'剩下 {len(_yk_fw)} 場：' + '、'.join(_yk_md(d) for d in _yk_fw)
+                    + '。19:00 起在台場上空放，坐屋形船可以從海上看。')
+    else:
+        _yk_tday = '第一次坐'
+        _yk_tans = f'併船 2 人就能訂，每人 {_yk_base} 円起'
+        _yk_tsub = '含天婦羅等料理和喝到飽，繞東京灣或隅田川 2～2.5 小時。'
+    _SH = YK['shared']
+    _yk_tbl = ('<div class="tw"><table><thead><tr><th>船宿</th><th>上船地點</th><th>大人價格</th><th>時間</th><th>出船</th><th>預約</th></tr></thead><tbody>'
+               + ''.join(f'<tr><td>{_yk_lk(s["src"], html.escape(s["name"]))}</td><td>{html.escape(s["where"])}</td><td>{html.escape(s["price"])}</td>'
+                         f'<td>{html.escape(s["time"])}</td><td>{html.escape(s["when"])}</td><td>{html.escape(s["book"])}</td></tr>' for s in _SH)
+               + '</tbody></table></div>')
+    _yk_faq = [
+        ('東京屋形船多少錢？',
+         f'屋形船東京都協同組合寫的基本價格是每人 {_yk_base} 円（含稅）起，含天婦羅等料理和喝到飽；'
+         '各船宿併船大人大約 12,000～14,000 円，船清的高等級船到 23,900 円。花火大會當天的船每人 33,000～100,000 円。'),
+        ('兩個人可以坐屋形船嗎？',
+         '可以坐「乘合」（併船），2 人起，跟其他客人同一艘船。組合 33 家船宿裡約 10 家有併船，不是每天開，包船訂滿那天就不開。'),
+        ('屋形船要坐多久？',
+         '一般 2 小時到 2 小時 30 分，各家併船寫 2.5～3 小時不等。出船大多在傍晚，平日 18:30 或 19:00、週末 17:30～18:00 左右。'),
+        ('12 月可以在屋形船上看花火嗎？',
+         ('組合寫 2026 年 12 月每週六 19:00 起台場有彩虹花火，' + ('剩下 ' + '、'.join(_yk_md(d) for d in _yk_fw) + '。' if _yk_fw else '今年的場次已經結束。')
+          + 'あみ達 有看花火的併船（大人 14,800 円），船清 12/26 有花火特別併船。')),
+        ('取消要錢嗎？',
+         '組合規定 30 天前取消就收 10%，前一天和當天 100%，各船宿略有不同；花火大會的船更嚴，包船 4 個月前起就收 30%。'
+         '天候不佳由業者取消的話全額退款。'),
+        ('不會日文怎麼訂？',
+         '屋形船組合網站有英文和中文頁，可以請組合代選船；晴海屋有繁中網站、併船可以線上預約；あみ達 英文頁用表單，要等確認信。'),
+    ]
+    _yk_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _yk_faq]},
+                        ensure_ascii=False)
+    write('tokyo/yakatabune/index.html',
+      head(f'東京屋形船怎麼訂：2 人就能坐的併船 {len(_SH)} 家比較、每人 {_yk_base} 円起'
+           + ('、12 月台場花火' if _yk_fw else ''),
+           f'東京屋形船（隅田川、東京灣晚餐遊船）：組合基本價每人 {_yk_base} 円起含天婦羅與喝到飽，2 人起的併船（乘合）{len(_SH)} 家比價、出船時間、'
+           '上船地點，12 月台場彩虹花火、取消費、脫鞋等規定。全部引屋形船組合與船宿官網。',
+           'tokyo/yakatabune/',
+           '<script type="application/ld+json">' + _yk_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('東京', '/tokyo/'), ('屋形船', None)])
+      + '<h1>東京屋形船：2 個人也能坐的晚餐遊船</h1>'
+      + '<p class="lede">屋形船是船艙鋪榻榻米的日式遊船，邊吃現炸天婦羅、喝到飽，邊繞東京灣、隅田川看夜景，坐完大約 2～2.5 小時。'
+        '本來多是公司包船聚餐，但有些船宿有 2 人就能訂的「乘合」（併船）。'
+        f'下面整理屋形船東京都協同組合與船宿官網寫的價格和規定，查證於 {YK["checked"]}。</p>'
+      + f'<div class="today"><div class="tday">{_yk_tday}</div><div class="tans">{_yk_tans}</div><div class="tsub">{_yk_tsub}</div></div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>每人 {_yk_base} 円起</b>：含料理和喝到飽，船上不用另外付。</li>'
+        '<li><b>2 人就坐併船</b>：包船要 15～20 人起。</li>'
+        '<li><b>取消費很早就開始收</b>：組合規定 30 天前就收 10%。</li>'
+        '</ul></div>'
+      + '<h2>屋形船是怎樣的</h2>' + _yk_list(YK['basics'])
+      + '<h2>2 人可訂的併船比較</h2>' + _yk_tbl + f'<p class="disc">{html.escape(YK["shared_note"])}點船宿名稱看官網。</p>'
+      + (f'<h2>12 月{_FW["name"]}</h2>' + _yk_list(_yk_live(_FW['items'])) if _yk_fw else '')
+      + '<h2>賞櫻和花火大會</h2>' + _yk_list(YK['seasons'])
+      + '<h2>上船前要知道的規定</h2>' + _yk_list(YK['rules'])
+      + '<h2>不會日文怎麼訂</h2>' + _yk_list(YK['foreign'])
+      + f'<h2>官方沒寫的事</h2><p>{html.escape(YK["unknown"])}</p>'
+      + adbox_tickets(_yk_kk, 'yakatabune', '屋形船行程', '併船和包船都有',
+                      '內容、出船日和價格以 KKday 商品頁為準，本站不另外標價。')
+      + faq_visible(_yk_faq)
+      + f'<p class="disc">價格與規定以屋形船組合、各船宿官網為準，查證於 {YK["checked"]}。</p>'
+      + foot())
+    pages.append(('/tokyo/yakatabune/', 0.6))
+    print('   屋形船頁：併船', len(_SH), '家、花火剩', len(_yk_fw), '場、KKday', len(_yk_kk), '個')
+
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
 # 12/1 前後會變的在這裡算：票價（2,800 → 2,900）、9:50 那班 12/1 起才有、班次數。
@@ -36089,6 +36273,8 @@ SEARCH_SYN = [
     ['名古屋夜生活', '名古屋 夜生活', '名古屋夜店', '名古屋秀場', '名古屋 秀'],
     ['歌舞伎', 'kabuki', 'かぶき', '歌舞伎座', 'kabukiza', '一幕見', '一幕見席', '幕見席', '幕見', '南座', '顔見世', '顏見世', '新橋演舞場'],
     ['刺青', '紋身', '纹身', 'タトゥー', 'tattoo', '入れ墨', '刺青泡湯', '刺青溫泉', '紋身泡溫泉', '刺青貼紙', '錢湯', '銭湯', 'sento', '公共澡堂', '大眾澡堂'],
+    ['女僕', '女僕咖啡', '女僕咖啡廳', '女仆咖啡', '女仆咖啡厅', '女僕餐廳', 'メイドカフェ', 'メイド喫茶', 'maid cafe', 'maidcafe', 'maidreamin', 'めいどりーみん', 'at-home cafe', 'あっとほぉーむカフェ', '萌え萌えキュン', '萌萌揪', '秋葉原女僕'],
+    ['屋形船', 'やかたぶね', 'yakatabune', '屋型船', '東京灣遊船', '東京灣晚餐', '隅田川遊船', '隅田川屋形船', '晚餐遊船', '東京遊船晚餐'],
     ['賽馬', '赛马', '競馬', '竞马', '賭馬', '馬券', '马券', '買馬券', '有馬記念', '有馬紀念', '有马记念', '日本盃', '日本杯', 'ジャパンカップ', 'japan cup', 'JRA', 'keiba', '大井競馬', '中山競馬場', '東京競馬場', '夜間賽馬', '看賽馬'],
     ['日本職棒', '日本职棒', '職棒', '日職', 'NPB', 'npb', 'プロ野球', '看棒球', '棒球門票', '棒球票', '野球', '甲子園', '東京巨蛋', '東京ドーム', '讀賣巨人', '巨人隊', '阪神虎', '軟銀鷹', '火腿鬥士', '日本火腿', '樂天金鷲', '西武獅', '歐力士', '養樂多', '中日龍', '廣島鯉魚', '鯉魚隊', '羅德海洋', '海灣之星', '應援席', '外野席'],
     ['演唱會', '演唱会', 'concert', 'コンサート', 'ライブ', '巡演', '日巡', '日本巡演', '當落', '当落', '門票代購', '代購門票', '實名制', '實名入場', 'ぴあ', 'チケットぴあ', 'ローチケ', 'イープラス', 'eplus', 'e+', 'lawson ticket', 'ticket pia'],
