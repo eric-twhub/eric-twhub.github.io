@@ -434,8 +434,8 @@
   {
    "slug": "deals-2026-11-25-taipei-okinawa",
    "url": "/deals/2026-11-25-taipei-okinawa/",
-   "h1": "台北飛沖繩 NT$2,996 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台北飛沖繩 NT$2,996 來回含稅｜台灣虎航 12/14 出發"
+   "h1": "台北飛沖繩 NT$2,996 來回含稅｜台灣虎航 12/10 出發",
+   "title": "台北飛沖繩 NT$2,996 來回含稅｜台灣虎航 12/10 出發"
   },
   {
    "slug": "deals-2026-11-25-taipei-ishigaki",
@@ -450,10 +450,16 @@
    "title": "台中飛沖繩 NT$4,396 來回含稅｜台灣虎航 11/30 出發"
   },
   {
+   "slug": "deals-2026-11-25-taipei-miyazaki",
+   "url": "/deals/2026-11-25-taipei-miyazaki/",
+   "h1": "台北飛宮崎 NT$4,862 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台北飛宮崎 NT$4,862 來回含稅｜台灣虎航 12/14 出發"
+  },
+  {
    "slug": "deals-2026-11-25-taipei-fukuoka",
    "url": "/deals/2026-11-25-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$4,483 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$4,483 來回含稅｜台灣虎航 12/01 出發"
+   "h1": "台北飛福岡 NT$4,883 來回含稅｜台灣虎航 12/01 出發",
+   "title": "台北飛福岡 NT$4,883 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-25-kaohsiung-fukuoka",
@@ -468,22 +474,16 @@
    "title": "高雄飛沖繩 NT$4,993 來回含稅｜台灣虎航 12/29 出發"
   },
   {
-   "slug": "deals-2026-11-25-taipei-saga",
-   "url": "/deals/2026-11-25-taipei-saga/",
-   "h1": "台北飛佐賀 NT$5,055 來回含稅｜台灣虎航 12/03 出發",
-   "title": "台北飛佐賀 NT$5,055 來回含稅｜台灣虎航 12/03 出發"
-  },
-  {
    "slug": "deals-2026-11-25-kaohsiung-ishigaki",
    "url": "/deals/2026-11-25-kaohsiung-ishigaki/",
    "h1": "高雄飛石垣島 NT$5,133 來回含稅｜台灣虎航 11/29 出發",
    "title": "高雄飛石垣島 NT$5,133 來回含稅｜台灣虎航 11/29 出發"
   },
   {
-   "slug": "deals-2026-11-25-taipei-miyazaki",
-   "url": "/deals/2026-11-25-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$5,212 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台北飛宮崎 NT$5,212 來回含稅｜台灣虎航 12/14 出發"
+   "slug": "deals-2026-11-25-taipei-saga",
+   "url": "/deals/2026-11-25-taipei-saga/",
+   "h1": "台北飛佐賀 NT$5,515 來回含稅｜台灣虎航 12/03 出發",
+   "title": "台北飛佐賀 NT$5,515 來回含稅｜台灣虎航 12/03 出發"
   },
   {
    "slug": "deals-2026-11-25-taipei-osaka",
@@ -518,14 +518,14 @@
   {
    "slug": "deals-2026-11-25-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-25-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$4,015",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$4,015"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,615",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,615"
   },
   {
    "slug": "deals-2026-11-25-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-25-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,696",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,696"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,296",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,296"
   },
   {
    "slug": "deals-2026-11-25-transfer-tokyo-fukushima",
@@ -1504,6 +1504,12 @@
    "url": "/japan-concert-ticket/",
    "h1": "去日本看演唱會：門票怎麼買、要不要日本門號",
    "title": "去日本看演唱會：門票怎麼買、要不要日本門號、抽選、實名入場與代購風險"
+  },
+  {
+   "slug": "japan-npb-ticket",
+   "url": "/japan-npb-ticket/",
+   "h1": "去日本看職棒：12 球團門票怎麼買",
+   "title": "去日本看職棒：12 球團門票怎麼買、外國人購票入口、外野票價、2027 開幕與台灣球員"
   },
   {
    "slug": "japan-takayama-shirakawago-bus",
