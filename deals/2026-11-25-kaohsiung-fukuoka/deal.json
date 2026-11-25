@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-25-kaohsiung-fukuoka",
- "generated": "2026-11-25 10:15",
+ "generated": "2026-11-25 10:33",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "fukuoka",
@@ -25,30 +25,11 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$7,740（7 天有紀錄），這張低 14%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,840（7 天有紀錄），這張低 15%"
  ],
- "med": 8166,
+ "med": 8430,
  "n_rt": 14,
  "others": [
-  {
-   "o": "KHH",
-   "d": "FUK",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 7246,
-   "dep": "2026-12-09",
-   "ret": "2026-12-25",
-   "dept": "14:25",
-   "rett": "19:55",
-   "rt": true,
-   "tr": 0,
-   "dur": 330,
-   "dur_to": 150,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-09&inbound=FUK-KHH&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
   {
    "o": "KHH",
    "d": "FUK",
@@ -74,17 +55,36 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7777,
-   "dep": "2026-12-29",
-   "ret": "2027-01-06",
-   "dept": "15:25",
-   "rett": "08:00",
+   "price": 7546,
+   "dep": "2026-12-09",
+   "ret": "2026-12-25",
+   "dept": "14:25",
+   "rett": "19:55",
    "rt": true,
-   "tr": 1,
-   "dur": 545,
+   "tr": 0,
+   "dur": 330,
    "dur_to": 150,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-29&inbound=FUK-KHH&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-09&inbound=FUK-KHH&returnDate=2026-12-25&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "KHH",
+   "d": "FUK",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 7946,
+   "dep": "2026-12-16",
+   "ret": "2026-12-23",
+   "dept": "14:25",
+   "rett": "18:45",
+   "rt": true,
+   "tr": 0,
+   "dur": 330,
+   "dur_to": 150,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-16&inbound=FUK-KHH&returnDate=2026-12-23&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
