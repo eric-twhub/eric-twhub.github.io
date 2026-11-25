@@ -1,0 +1,65 @@
+{
+ "checked": "2026-11-25",
+ "_說明": "歌舞伎座＋其他劇場。programs／venues 的 until 過了自動不出現；每月初補下一個月的演目、票價與幕見票價（e-tix.jp/shochiku_makumi/ 只上架當月）。",
+ "kabukiza": {
+  "addr": "東京都中央區銀座 4-12-15",
+  "station": "東京 Metro 日比谷線、都營淺草線東銀座站 3 號出口直通；銀座站 A7 出口走 5 分",
+  "station_src": "https://www.kabuki-bito.jp/theaters/kabukiza/"
+ },
+ "programs": [
+  {"name": "十二月大歌舞伎", "from": "2026-12-02", "until": "2026-12-25", "sale": "2026-11-14",
+   "parts": [
+    {"part": "第一部", "start": "11:00", "end": "約 13:30", "acts": ["お国山三 春霞歌舞伎草紙", "刺青奇偶"]},
+    {"part": "第二部", "start": "14:30", "end": "約 17:05", "acts": ["忠僕元助（新作）", "身替座禅"]},
+    {"part": "第三部", "start": "18:00", "end": "約 20:30", "acts": ["与話情浮名横櫛 見染め・源氏店", "櫓のお七"]}],
+   "off": ["2026-12-09", "2026-12-17"],
+   "price": [["特等席", 17000], ["1 等席", 16000], ["2 等 A 席", 13000], ["2 等 B 席", 12000], ["2 等 C 席", 8000], ["3 階 A 席", 6000], ["3 階 B 席", 4500], ["1 樓桟敷席", 17000]],
+   "src": "https://www.kabuki-bito.jp/theaters/kabukiza/play/987"},
+  {"name": "壽 初春大歌舞伎", "from": "2027-01-02", "until": "2027-01-26", "sale": "2026-12-14",
+   "parts": [
+    {"part": "晝之部", "start": "11:00", "end": "官網還沒寫", "acts": ["阿蘭陀萬歳・お祭り・鶴亀", "一本刀土俵入", "土蜘"]},
+    {"part": "夜之部", "start": "16:30", "end": "官網還沒寫", "acts": ["奥州安達原 袖萩祭文", "京鹿子娘道成寺", "大富豪同心"]}],
+   "off": ["2027-01-08", "2027-01-18"],
+   "note": "1/24 是和服日。窗口 12/16 起開賣。",
+   "price": [["特等席", 20000], ["1 等席", 18000], ["2 等 A 席", 15000], ["2 等 B 席", 14000], ["2 等 C 席", 9000], ["3 階 A 席", 6500], ["3 階 B 席", 5000], ["1 樓桟敷席", 20000]],
+   "src": "https://www.kabuki-bito.jp/theaters/kabukiza/play/997"}
+ ],
+ "makumi": {
+  "where": "4 樓，入口在劇場正面左側的一幕見席專用入口；1～3 樓不能進，4 樓沒有商店與餐廳，只有飲料販賣機",
+  "web": {"seats": "約 70 席", "open": "看戲前一天中午 12:00 起，賣到各幕開演", "site": "https://www.e-tix.jp/shochiku_makumi/", "site_en": "https://www.e-tix.jp/shochiku_makumi/en/",
+          "pay": "只收信用卡（VISA、MASTER、JCB、AMEX），卡片要先開通 3D 驗證（3D Secure 2）", "fee": 110, "max": 4,
+          "ticket": "入場時給 4 樓工作人員看手機上的 QR code，或印出來", "refund": "買了不能改也不能退",
+          "not": "這個專用網站之外都買不到網路票：チケットWeb松竹、電話、地下 2 樓售票處都不賣，也不能用チケットWeb松竹的帳號"},
+  "door": {"seats": "約 20 席", "open": "看戲當天 10:00～18:00（依公演可能提早結束）", "where": "1 樓一幕見席專用窗口", "pay": "現金或信用卡（交通 IC 卡、QR 支付不行）", "max": "每人每幕 1 張", "pick": "在窗口自己選座位"},
+  "price_range": "官方英文頁寫 4 樓單幕 500～3,500 円，每個月、每一幕不同；11 月實際是每幕 1,600～3,000 円",
+  "price_src": "https://www.kabukiweb.net/about/ticket/single-act-tickets/",
+  "rules": ["每一幕完全換場，看完要先出到 4 樓大廳，再拿下一幕的票入場", "中途要外出，向工作人員拿外出證，回來時出示", "座位旁很窄，官方請大家用投幣置物櫃（大 200 円、小 100 円）", "4 樓離舞台最遠，可能看不到部分舞台與花道", "滿 4 歲起每人要 1 張票", "上演中禁止拍照、錄音、錄影"],
+  "src": "https://www.shochiku.co.jp/play/theater/kabukiza/makumi/",
+  "news_src": "https://www.kabuki-bito.jp/news/10274/",
+  "upgrade": {"text": "英文官網另有「2 樓升級單幕席」：2 樓右側 23 席，4,000～15,000 円，前一天 12:00 起網路賣，每人 6 張，從正門進場，不是每天都有。日文官網沒有提到這個席種。", "src": "https://www.kabukiweb.net/about/ticket/single-act-tickets/2ndupgrade/"}
+ },
+ "full": {
+  "multi": {"name": "松竹多語言線上售票", "site": "https://www.e-tix.jp/shochiku/", "text": "英文與簡體中文介面，不用註冊、不收手續費，用 QR code 入場。只能買分配給這個網站的票；歌舞伎座的票從前一天起就停售，1 樓桟敷席網路不賣。可以直接選含字幕機的票（加 1,500 円）。", "src": "https://www.kabukiweb.net/about/ticket/"},
+  "web": {"name": "チケットWeb松竹（日文）", "text": "要先註冊會員，只收信用卡，24 小時可買，開賣日 10:00 起。", "src": "https://www1.ticket-web-shochiku.com/t/info/entry_guide.html"},
+  "phone": {"name": "英語電話訂票", "text": "+81-3-6745-0888，日本時間 10:00～17:00，有英語人員；當天的票不能用電話訂。", "src": "https://www.kabukiweb.net/about/ticket/"},
+  "door": {"name": "地下 2 樓售票處與當日票", "text": "售票處在地下 2 樓木挽町廣場。還有空位的話，開演前、甚至開演後都能在窗口買。", "src": "https://www.kabukiweb.net/about/ticket/"},
+  "u30": {"text": "30 歲以下的人，當天還有空位時，所有等級都半價。", "src": "https://www.kabuki-bito.jp/theaters/kabukiza/play/987"}
+ },
+ "aids": [
+  {"name": "字幕機（英文、簡體中文）", "text": "平板字幕跟著舞台進行。一般席 1,500 円、一幕見席 1,000 円（在 4 樓借），只收現金。中文只有簡體，官方註明簡中翻譯是用 AI 工具產生的；演出很短的幕可能沒有字幕。", "src": "https://www.eg-gm.jp/news/gekijyo.html"},
+  {"name": "語音導覽（イヤホンガイド）", "text": "只有日語解說。一般席預約 700 円（另加 2% 手續費）、當天 800 円；一幕見席 500 円。", "src": "https://www.eg-gm.jp/news/gekijyo.html"},
+  {"name": "節目單的英文大綱", "text": "販售的節目單（筋書）最後面有英文詳細大綱。", "src": "https://www.kabukiweb.net/"}
+ ],
+ "free": {"name": "歌舞伎座ギャラリー（5 樓）", "text": "不用買票就能逛的展示空間，官方寫是給沒看過歌舞伎的人與海外旅客的。免費，10:30～18:00，不定休，2026/12/26～2027/1/1 休館。要搭專用電梯上去，旁邊有屋上庭園，走五右衛門階段下去是四階回廊（歷代歌舞伎座模型）。屋上庭園收不收費、開放時間官網沒寫。", "until_closed": ["2026-12-26", "2027-01-01"], "src": "https://www.shochiku.co.jp/play/theater/kabukiza/ginza-kabukiza/gallery/"},
+ "venues": [
+  {"name": "京都南座 吉例顔見世興行", "city": "京都", "from": "2026-12-01", "until": "2026-12-24", "time": "晝之部 10:30、夜之部 16:00；休演 12/9、12/17", "price": "4 等席 6,000 円～特別席 28,000 円", "note": "一年一度東西演員同台的顔見世。英文字幕只有夜之部；晝 12/12、12/19、12/20 與夜 12/18 已包場售完。", "src": "https://www.kabuki-bito.jp/theaters/kyoto/play/994"},
+  {"name": "新橋演舞場 初春大歌舞伎", "city": "東京", "from": "2027-01-03", "until": "2027-01-27", "time": "晝之部 11:00、夜之部 16:00；休演 1/7、1/14、1/21", "price": "3 階 B 席 3,000 円～1 等席 16,000 円", "note": "11/25 開賣。多語言售票網站寫這一檔沒有英文輔助。", "src": "https://www.kabuki-bito.jp/theaters/shinbashi/play/1010"},
+  {"name": "淺草公會堂 新春淺草歌舞伎", "city": "東京", "from": "2027-01-02", "until": "2027-01-26", "time": "第 1 部 11:00、第 2 部 15:00", "price": "3 等席 3,500 円～1 等席 10,000 円（多語言售票網站）", "note": "已開賣。", "src": "https://www.kabuki-bito.jp/theaters/other/"},
+  {"name": "國立劇場 初春歌舞伎（在新國立劇場中劇場）", "city": "東京", "from": "2027-01-08", "until": "2027-01-26", "time": "12:00 開演，約 16:30 結束；休演 1/15", "price": "3 等席 4,000 円～花道正面席 20,000 円", "note": "國立劇場本身閉館改建中，主辦公演改在其他劇場。演通し狂言《鬼一法眼三略巻》，12/13 10:00 開賣，節目單日英併記。", "src": "https://www.ntj.jac.go.jp/schedule/kokuritsu_l/2026/0901/"},
+  {"name": "大阪新歌舞伎座 壽 初春歌舞伎特別公演", "city": "大阪", "from": "2027-01-09", "until": "2027-01-24", "time": "晝之部 11:00、夜之部 16:30；休演 1/15", "price": "官網還沒寫", "note": "11/30 開賣。這是上本町的新歌舞伎座，不是道頓堀的大阪松竹座（2026/5/27 起閉館）。", "src": "https://www.kabuki-bito.jp/theaters/other/"}
+ ],
+ "kkday": [
+  {"id": "930135", "name": "歌舞伎演員互動體驗工作坊（松竹主辦，在歌舞伎座）", "area": "東京銀座", "note": "90 分鐘講座與示範，不是正式演出；英語進行。12 月場次 12/7、12/11、12/21，2027 年還沒公布。", "until": "2026-12-21"},
+  {"id": "161962", "name": "歌舞伎座傳統服飾變身體驗（松竹公認）", "area": "東京銀座", "note": "只在 1～3 月提供，不是看戲的票。"}
+ ]
+}

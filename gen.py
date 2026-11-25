@@ -1881,6 +1881,7 @@ def topnav(cur=''):
             + link('/japan-park-ticket/', '🎢 樂園門票哪天便宜')
             + link('/japan-bogo/', '🎁 行程與網卡買一送一')
             + link('/japan-sumo/', '🤼 大相撲門票怎麼買')
+            + link('/japan-kabuki/', '🎭 歌舞伎座一幕見席怎麼買')
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
             + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
@@ -3273,7 +3274,7 @@ _STK_PREFIX = sorted({
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
-    '/japan-sumo/': 'st/sumo', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
     '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
     '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
@@ -33984,6 +33985,178 @@ if os.path.exists('nightlife.json'):
         pages.append((f'/{_k}/nightlife/', 0.6))
     print(f'   夜生活頁：{len(_nl_all)} 個城市')
 
+# ---------- 歌舞伎座怎麼看（一幕見席、門票、字幕） ----------
+# 資料在 kabuki.json，全部引松竹官方（歌舞伎美人、e-tix 一幕見與多語言售票、松竹告知單、イヤホンガイド官網）。
+# programs／venues 有 from／until，過了自動不出現；每月初補下一個月的演目、票價與幕見票價。
+# 答案框與 FAQ 的「現在／下一檔」「開賣倒數」都是當場算的，不寫死。
+if os.path.exists('kabuki.json'):
+    KB = json.load(open('kabuki.json', encoding='utf-8'))
+    if _KK1 is None:
+        _KK1 = {str(x) for x in json.load(open('kkday-1pct.json', encoding='utf-8'))['ids']}
+    _kb_today = datetime.date.fromisoformat(TODAY)
+    _kb_wd = '一二三四五六日'
+    _kb_md = lambda s: f'{int(s[5:7])}/{int(s[8:10])}'
+    _kb_mdw = lambda s: f'{_kb_md(s)}（{_kb_wd[datetime.date.fromisoformat(s).weekday()]}）'
+    _kb_lk = lambda u, t='出處': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+    _kb_ok = lambda x: (not x.get('from') or x['from'] <= TODAY) and (not x.get('until') or TODAY <= x['until'])
+    _kb_live = lambda x: not x.get('until') or TODAY <= x['until']
+    _kb_yen = lambda p: f'{p:,} 円'
+
+    _kb_progs = sorted([p for p in KB['programs'] if _kb_live(p)], key=lambda p: p['from'])
+    _kb_now = next((p for p in _kb_progs if p['from'] <= TODAY), None)
+    _kb_next_sale = next((p for p in sorted(_kb_progs, key=lambda p: p['sale']) if p['sale'] >= TODAY), None)
+
+    # 答案框
+    _kb_ans = []
+    if _kb_now:
+        _kb_ans.append(f'現在上演：<b>{html.escape(_kb_now["name"])}</b>（到 {_kb_md(_kb_now["until"])}）')
+    elif _kb_progs:
+        _p = _kb_progs[0]
+        _kb_ans.append(f'下一檔：<b>{html.escape(_p["name"])}</b>，{_kb_md(_p["from"])} 開始')
+    if _kb_next_sale:
+        _left = (datetime.date.fromisoformat(_kb_next_sale['sale']) - _kb_today).days
+        _kb_ans.append(f'{html.escape(_kb_next_sale["name"])} {_kb_mdw(_kb_next_sale["sale"])} 10:00 開賣'
+                       + ('，就是今天' if _left == 0 else f'，還有 {_left} 天'))
+    _mk = KB['makumi']
+    _kb_tsub = (f'只想看一幕：一幕見席{_mk["web"]["open"]}在網路賣，當天 10:00 起 1 樓窗口也有約 20 席。')
+
+    # 演目表
+    # 每個月一張表：手機版表格會拆成卡片，rowspan 的公演名稱只會出現在第一張
+    _kb_rows = ''
+    for p in _kb_progs:
+        _kb_rows += (f'<h3>{html.escape(p["name"])}：{_kb_md(p["from"])}～{_kb_md(p["until"])}</h3>'
+                     f'<p class="lede">休演 {"、".join(_kb_mdw(d) for d in p["off"])}。'
+                     + (html.escape(p['note']) if p.get('note') else '') + f'{_kb_lk(p["src"], "官網")}</p>'
+                     '<div class="tw"><table><tr><th>部</th><th>開演</th><th>演目</th></tr>'
+                     + ''.join(f'<tr><td class="nm"><b>{html.escape(pt["part"])}</b></td>'
+                               f'<td class="nm">{pt["start"]}'
+                               + (f'<br><small style="color:var(--dim)">{html.escape(pt["end"])} 結束</small>' if pt['end'] != '官網還沒寫' else '')
+                               + f'</td><td class="nm">{"<br>".join(html.escape(a) for a in pt["acts"])}</td></tr>'
+                               for pt in p['parts'])
+                     + '</table></div>')
+    _kb_ptab = ''
+    if _kb_progs:
+        _cls = [c for c, _ in _kb_progs[0]['price']]
+        _kb_ptab = ('<div class="tw"><table><tr><th>席種</th>'
+                    + ''.join(f'<th>{html.escape(p["name"])}</th>' for p in _kb_progs) + '</tr>'
+                    + ''.join('<tr><td class="nm"><b>' + html.escape(c) + '</b></td>'
+                              + ''.join(f'<td class="nm">{_kb_yen(dict(p["price"]).get(c, 0))}'
+                                        f'<br><small style="color:var(--dim)">約 {money(round(dict(p["price"]).get(c, 0) * JPY))}</small></td>'
+                                        for p in _kb_progs) + '</tr>' for c in _cls)
+                    + '<tr><td class="nm"><b>開賣</b></td>'
+                    + ''.join(f'<td class="nm">{"已開賣" if p["sale"] < TODAY else _kb_mdw(p["sale"]) + " 10:00"}</td>' for p in _kb_progs)
+                    + '</tr></table></div>')
+
+    def _kb_li(name, text, src, badge=''):
+        return (f'<li><div class="xh"><span class="xn">{html.escape(name)}</span>{badge}</div>'
+                f'<div class="xt">{html.escape(text)}</div><div class="xw">{_kb_lk(src)}</div></li>')
+
+    _vs = [v for v in KB['venues'] if _kb_live(v)]
+    _kb_venues = ''.join(
+        f'<li><div class="xh"><span class="xn">{html.escape(v["name"])}</span>'
+        f'<span class="xbadge">{html.escape(v["city"])}・{_kb_md(v["from"])}～{_kb_md(v["until"])}</span></div>'
+        f'<div class="xt">{html.escape(v["note"])}</div>'
+        f'<div class="xw"><b>時間</b> {html.escape(v["time"])}　·　<b>票價</b> {html.escape(v["price"])}</div>'
+        f'<div class="xw">{_kb_lk(v["src"])}</div></li>' for v in _vs)
+
+    _kb_kk = []
+    for it in KB.get('kkday') or []:
+        if not _kb_live(it):
+            continue
+        if str(it['id']) in _KK1:
+            raise SystemExit(f'歌舞伎頁：KKday 商品 {it["id"]} 在 1% 清單裡')
+        _kb_kk.append({'provider': 'kkday', 'id': it['id'], 'url': f'https://www.kkday.com/zh-tw/product/{it["id"]}',
+                       'name': it['name'], 'area': it['area'], 'note': it['note']})
+
+    _fu = KB['full']
+    _kb_faq = [
+        ('外國人可以自己買歌舞伎座的票嗎？',
+         '可以。松竹有給外國旅客用的多語言售票網站（英文、簡體中文），不用註冊、不收手續費，用 QR code 入場；'
+         '但只賣分配給這個網站的票，歌舞伎座的票從前一天起停售。也可以打英語電話 +81-3-6745-0888（日本時間 10:00～17:00）。'),
+        ('一幕見席是什麼？怎麼買？',
+         f'只看其中一幕的便宜座位，在 4 樓。網路票{_mk["web"]["seats"]}，{_mk["web"]["open"]}，'
+         f'只在一幕見席專用網站賣，{_mk["web"]["pay"]}，每張另收 {_mk["web"]["fee"]} 円；'
+         f'當天 1 樓專用窗口另有{_mk["door"]["seats"]}，{_mk["door"]["pay"]}。'),
+        ('一幕見席多少錢？', _mk['price_range'] + '。每個月的票價在當月第一天前公布。'),
+        ('歌舞伎座有中文字幕嗎？',
+         '有，但只有簡體中文，官方註明是用 AI 工具翻譯；另有英文字幕。一般席 1,500 円、一幕見席 1,000 円，只收現金。語音導覽只有日語。'),
+    ]
+    if _kb_now or _kb_progs:
+        _p = _kb_now or _kb_progs[0]
+        _ends = [pt for pt in _p['parts'] if pt['end'] != '官網還沒寫']
+        _kb_faq.append(('看一場歌舞伎要多久？',
+                        f'{_p["name"]}分成 {len(_p["parts"])} 部，每部各自買票。'
+                        + ('；'.join(f'{pt["part"]} {pt["start"]} 開演、{pt["end"]}結束' for pt in _ends) + '。' if _ends
+                           else '各部開演時間：' + '、'.join(f'{pt["part"]} {pt["start"]}' for pt in _p['parts']) + '，結束時間官網還沒寫。')
+                        + '只看一幕的話用一幕見席。'))
+    _kb_faq.append(('不買票可以進歌舞伎座看看嗎？',
+                    '可以去 5 樓的歌舞伎座ギャラリー，免費，10:30～18:00，官方寫是給沒看過歌舞伎的人與海外旅客的。'
+                    '2026/12/26～2027/1/1 休館。'))
+    _kb_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _kb_faq]},
+                        ensure_ascii=False)
+    _ks = KB['kabukiza']
+    _fr = KB['free']
+    write('japan-kabuki/index.html',
+      head('歌舞伎座怎麼看：一幕見席怎麼買、門票價格、中文字幕與本月演目',
+           '東京銀座歌舞伎座：只看一幕的一幕見席怎麼買（前一天 12:00 網路、當天窗口）、整部門票價格與開賣日、'
+           '外國人用的多語言售票網站、英文與中文字幕機，本月與下個月演目，以及京都南座顔見世等其他劇場。全部引松竹官方。',
+           'japan-kabuki/',
+           '<script type="application/ld+json">' + _kb_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('歌舞伎座怎麼看', None)])
+      + '<h1>歌舞伎座怎麼看：一幕見席、門票與中文字幕</h1>'
+      + '<p class="lede">歌舞伎是台灣看不到的日本傳統戲劇。東京銀座的歌舞伎座每天的演出分成兩到三部，每部各自買票，'
+        + (f'現在公布的票價從 {min(x for p in _kb_progs for _, x in p["price"]):,} 到 {max(x for p in _kb_progs for _, x in p["price"]):,} 日圓；' if _kb_progs else '')
+        + '只想體驗一下的話，可以買只看一幕的「一幕見席」。'
+        f'下面的日期、價格與規定都引松竹官方，查證於 {KB["checked"]}；台幣以中間匯率 {JPY} 換算。</p>'
+      + '<div class="today"><div class="tday">歌舞伎座，松竹官網原文</div>'
+        f'<div class="tans">{"；".join(_kb_ans) or "官網還沒公布下一檔"}</div>'
+        f'<div class="tsub">{html.escape(_kb_tsub)}</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>只看一幕最便宜</b>：一幕見席在 4 樓，前一天中午 12:00 起在專用網站賣，當天窗口另有少量座位。</li>'
+        f'<li><b>外國人買整部的票</b>：用{html.escape(_fu["multi"]["name"])}，不用註冊、不收手續費，但歌舞伎座的票前一天就停售。</li>'
+        '<li><b>字幕</b>：有英文與簡體中文字幕機，只收現金；沒有繁體中文。</li>'
+        '</ul></div>'
+      + ('<h2>本月與下個月的演目</h2>' + _kb_rows
+         + '<p class="disc">每一部各自買票，演目與時間以松竹官網為準。</p>' if _kb_progs else '')
+      + '<h2>一幕見席怎麼買</h2>'
+      + f'<p class="lede">{html.escape(_mk["where"])}。票價：{html.escape(_mk["price_range"])}（{_kb_lk(_mk["price_src"], "官方英文頁")}）。</p>'
+      + '<div class="tw"><table><tr><th></th><th>網路票</th><th>當天窗口</th></tr>'
+        f'<tr><td class="nm"><b>座位數</b></td><td class="nm">{_mk["web"]["seats"]}</td><td class="nm">{_mk["door"]["seats"]}</td></tr>'
+        f'<tr><td class="nm"><b>什麼時候賣</b></td><td class="nm">{html.escape(_mk["web"]["open"])}</td><td class="nm">{html.escape(_mk["door"]["open"])}</td></tr>'
+        f'<tr><td class="nm"><b>在哪買</b></td><td class="nm"><a href="{_mk["web"]["site_en"]}" target="_blank" rel="nofollow noopener">一幕見席專用網站</a>（有英文版）</td><td class="nm">{html.escape(_mk["door"]["where"])}</td></tr>'
+        f'<tr><td class="nm"><b>付款</b></td><td class="nm">{html.escape(_mk["web"]["pay"])}；每張另收 {_mk["web"]["fee"]} 円</td><td class="nm">{html.escape(_mk["door"]["pay"])}</td></tr>'
+        f'<tr><td class="nm"><b>張數與座位</b></td><td class="nm">每人最多 {_mk["web"]["max"]} 張</td><td class="nm">{html.escape(_mk["door"]["max"])}，{html.escape(_mk["door"]["pick"])}</td></tr>'
+        f'<tr><td class="nm"><b>入場</b></td><td class="nm">{html.escape(_mk["web"]["ticket"])}</td><td class="nm">拿窗口給的票</td></tr>'
+        '</table></div>'
+      + f'<p class="disc">{html.escape(_mk["web"]["not"])}。{html.escape(_mk["web"]["refund"])}。'
+        f'規定見{_kb_lk(_mk["src"], "松竹一幕見席說明")}、{_kb_lk(_mk["news_src"], "2026 年 10 月改制公告")}。</p>'
+      + '<ul class="lede">' + ''.join(f'<li>{html.escape(r)}。</li>' for r in _mk['rules']) + '</ul>'
+      + f'<p class="lede">{html.escape(_mk["upgrade"]["text"])}（{_kb_lk(_mk["upgrade"]["src"], "英文官網")}）</p>'
+      + '<h2>整部的票怎麼買</h2>'
+      + '<ul class="xl">'
+        + _kb_li(_fu['multi']['name'], _fu['multi']['text'], _fu['multi']['src'])
+        + _kb_li(_fu['phone']['name'], _fu['phone']['text'], _fu['phone']['src'])
+        + _kb_li(_fu['web']['name'], _fu['web']['text'], _fu['web']['src'])
+        + _kb_li(_fu['door']['name'], _fu['door']['text'], _fu['door']['src'])
+        + _kb_li('30 歲以下當天半價', _fu['u30']['text'], _fu['u30']['src'])
+      + '</ul>'
+      + (('<h2>票價</h2>' + _kb_ptab
+          + '<p class="disc">含稅；1 樓桟敷席網路的多語言網站不賣。滿 4 歲起每人要 1 張票。</p>') if _kb_ptab else '')
+      + '<h2>中文字幕與語音導覽</h2>'
+      + '<ul class="xl">' + ''.join(_kb_li(a['name'], a['text'], a['src']) for a in KB['aids']) + '</ul>'
+      + '<h2>不買票也能逛</h2>'
+      + '<ul class="xl">' + _kb_li(_fr['name'], _fr['text'], _fr['src']) + '</ul>'
+      + f'<p class="lede">怎麼去：{html.escape(_ks["station"])}（{_kb_lk(_ks["station_src"])}）。地址：{html.escape(_ks["addr"])}。</p>'
+      + (('<h2>其他劇場的歌舞伎</h2><ul class="xl">' + _kb_venues + '</ul>') if _kb_venues else '')
+      + adbox_tickets(_kb_kk, 'kabuki', '和歌舞伎有關、可以先訂的體驗', '不是看戲的票，是講座與變身體驗',
+                      '售價與場次以 KKday 頁面為準，本站不另外標價。')
+      + faq_visible(_kb_faq)
+      + f'<p class="disc">演目、票價與購票規定以松竹官網為準，查證於 {KB["checked"]}；體驗商品的內容以 KKday 頁面為準。</p>'
+      + foot())
+    pages.append(('/japan-kabuki/', 0.6))
+    print('   歌舞伎頁：', len(_kb_progs), '檔演目、', len(_vs), '個其他劇場')
+
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
 # 12/1 前後會變的在這裡算：票價（2,800 → 2,900）、9:50 那班 12/1 起才有、班次數。
@@ -35424,6 +35597,7 @@ SEARCH_SYN = [
     ['nagoya de show', 'nagoyadeshow', 'ナゴヤデショー', 'ナゴヤ・デ・ショー', 'バーレスクts', 'burlesque ts', 'burlesquets', 'バーレスクTS'],
     ['barlesque', 'barlesque nagoya', 'burlesque nagoya', 'burlesque名古屋', 'バーレスク名古屋', '名古屋バーレスク', '名古屋burlesque', '名古屋 burlesque'],
     ['名古屋夜生活', '名古屋 夜生活', '名古屋夜店', '名古屋秀場', '名古屋 秀'],
+    ['歌舞伎', 'kabuki', 'かぶき', '歌舞伎座', 'kabukiza', '一幕見', '一幕見席', '幕見席', '幕見', '南座', '顔見世', '顏見世', '新橋演舞場'],
     ['夜生活', '夜遊', '夜店', '夜晚', '晚上去哪', '晚上去哪裡', '晚上去哪玩', '晚上做什麼', '晚上可以做什麼', '晚上能做什麼', '晚上好玩', 'nightlife', 'night life', 'ナイトライフ', '夜の街', '夜遊び'],
     ['宵夜', '消夜', '續攤', '续摊', '居酒屋街', 'はしご酒', '飲み屋街'],
     ['屋台', 'yatai', '路邊攤', '福岡屋台', '中洲屋台', '長濱屋台', '長浜屋台'],
