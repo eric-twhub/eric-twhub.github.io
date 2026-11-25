@@ -1889,6 +1889,7 @@ def topnav(cur=''):
             + link('/japan-maid-cafe/', '🎀 女僕咖啡廳怎麼玩')
             + link('/tokyo/yakatabune/', '🏮 東京屋形船怎麼訂')
             + link('/japan-pachinko/', '🎰 柏青哥的規定與規矩')
+            + link('/japan-game-center/', '🧸 日本夾娃娃與遊戲中心')
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
             + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
@@ -3282,7 +3283,7 @@ _STK_PREFIX = sorted({
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
-    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-maid-cafe/': 'st/omurice', '/tokyo/yakatabune/': 'st/yakata', '/japan-pachinko/': 'st/pachinko', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-maid-cafe/': 'st/omurice', '/tokyo/yakatabune/': 'st/yakata', '/japan-pachinko/': 'st/pachinko', '/japan-game-center/': 'st/claw', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
     '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
     '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
@@ -34899,6 +34900,112 @@ if os.path.exists('pachinko.json'):
     pages.append(('/japan-pachinko/', 0.6))
     print('   柏青哥頁：法規', len(PK['law']), '則、答辯書', len(PK['exchange']), '則')
 
+# ---------- 遊戲中心與夾娃娃 ----------
+# 資料在 game-center.json，只收風營法原文、警察廳解釋運用基準、JAIA 指引、各縣條例與連鎖店官網。
+# 只寫規則、集點與付款，不教怎麼夾；「保夾」只寫官方原文，法規沒寫機率就寫沒規定。
+# 集點活動有 until，過期自動下架；全部過期時頂部框改顯示年齡規定。KKday、Klook 都沒有遊戲中心商品，本頁不放商品。
+if os.path.exists('game-center.json'):
+    GC = json.load(open('game-center.json', encoding='utf-8'))
+    _gc_today = NOW.astimezone(datetime.timezone(datetime.timedelta(hours=9))).date()
+    _gc_lk = lambda u, t='官網': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+    _gc_d = lambda s: datetime.date.fromisoformat(s)
+    _gc_md = lambda s: f'{int(s[5:7])}/{int(s[8:10])}'
+
+    def _gc_list(xs):
+        return '<ul class="xl">' + ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+            f'<div class="xt">{html.escape(x["text"])}</div>'
+            + (f'<div class="xw">{_gc_lk(x["src"], x.get("src_t", "出處"))}'
+               + (f'・{_gc_lk(x["src2"], x.get("src2_t", "出處 2"))}' if x.get('src2') else '') + '</div>' if x.get('src') else '')
+            + '</li>' for x in xs) + '</ul>'
+
+    _gc_soon = lambda c: bool(c.get('from')) and _gc_d(c['from']) > _gc_today
+    _gc_camp = sorted([c for c in GC['campaigns'] if _gc_d(c['until']) >= _gc_today],
+                      key=lambda c: (_gc_soon(c), c['until']))
+    _gc_cap = f'{GC["prize_cap"]:,}'
+    if _gc_camp:
+        _c0 = _gc_camp[0]
+        _gc_tday = '集點活動'
+        if _gc_soon(_c0):
+            _gc_tans = f'{_c0["name"]}，{_gc_md(_c0["from"])} 開始（還有 {(_gc_d(_c0["from"]) - _gc_today).days} 天）'
+        else:
+            _n = (_gc_d(_c0['until']) - _gc_today).days
+            _gc_tans = f'{_c0["name"]}' + ('，今天最後一天' if _n == 0 else f'，到 {_gc_md(_c0["until"])}（還有 {_n} 天）')
+        _gc_tsub = f'現在有 {len(_gc_camp)} 個活動，日期和內容在下面「集點活動」。點數和券都要先下載各家 App 註冊。'
+    else:
+        _gc_tday = '先看這一條'
+        _gc_tans = '未滿 18 歲晚上 10 點後不能進'
+        _gc_tsub = '風營法第 22 條，有家長陪同也一樣。未滿 16 歲在東京、大阪、京都、北海道傍晚以後還有更嚴的限制。'
+    _gc_age_tbl = ('<div class="tw"><table><thead><tr><th>地區</th><th>規定</th><th>出處</th></tr></thead><tbody>'
+                   + ''.join(f'<tr><td>{html.escape(a["area"])}</td><td>{html.escape(a["rule"])}</td><td>{_gc_lk(a["src"], html.escape(a["src_t"]))}</td></tr>'
+                             for a in GC['age'])
+                   + '</tbody></table></div>')
+    _gc_ch_tbl = ('<div class="tw"><table><thead><tr><th>連鎖店</th><th>App</th><th>點數怎麼來</th><th>能換什麼</th><th>效期</th><th>台灣能不能下載</th></tr></thead><tbody>'
+                  + ''.join(f'<tr><td>{_gc_lk(c["src"], html.escape(c["name"]))}</td><td>{html.escape(c["app"])}</td><td>{html.escape(c["earn"])}</td>'
+                            f'<td>{html.escape(c["use"])}</td><td>{html.escape(c["expiry"])}</td><td>{html.escape(c["tw"])}</td></tr>' for c in GC['chains'])
+                  + '</tbody></table></div>')
+    _gc_faq = [
+        ('日本夾娃娃有保夾嗎？',
+         '警察廳的解釋運用基準和業界團體 JAIA 的指引都沒有規定夾娃娃機的機率或保證夾到，所以不是法律規定。'
+         'GiGO 有「スペシャルアシスト」：用 App 連著玩、量表集滿後店員會幫到差一步就能拿到，只限有 GiGOリンク 的店；'
+         'Taito 寫景品卡住可以請店員調位置；Round1 可以請店員給建議、換顏色。'),
+        ('日本夾娃娃的景品值多少錢？',
+         f'警察廳把「小売価格がおおむね{_gc_cap}円以下」的物品排除在「依遊戲結果給獎品」之外，夾娃娃才能給景品；'
+         '2022 年 3 月起從大約 800 円改成大約 1,000 円。原文是「大約」，沒寫含不含稅。'),
+        ('幾歲可以進日本的遊戲中心？',
+         '白天沒有全國的年齡限制，但未滿 18 歲晚上 10 點到早上 6 點不能進，有家長陪同也一樣。'
+         '未滿 16 歲在東京 18 點後要家長陪同，大阪 19 點後、京都和北海道 18 點後沒有家長陪同不能進。'),
+        ('觀光客可以用遊戲中心的集點 App 嗎？',
+         'GiGO、namco、Taito、Round1 的官方說明都沒寫能不能用台灣手機號碼註冊；namco 註冊要 SMS 認證。'
+         '本站 2026-11-25 實測，namco 和 Round1 的 App 在台灣區 App Store 有上架，GiGO 和 Taito 的商品頁打不開。'
+         'GiGO 明寫不能用家人或朋友名義的電話註冊。'),
+        ('可以刷西瓜卡玩夾娃娃嗎？',
+         'Taito 寫機台可以刷 Suica、PASMO 等交通卡（部分店除外）；GiGO、namco 依店不同，GiGO 秋葉原3号館、namco TOKYO 都列了交通系 IC。'),
+        ('線上夾娃娃可以寄到台灣嗎？',
+         'namco 的ナムクレ 寫住國外的人不能用；Taito 的タイクレ 只寄日本國內；GiGO ONLINE CRANE 的 FAQ 有寄國外的運費，'
+         '但規約寫只限日本國內，兩邊不一致。'),
+    ]
+    _gc_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _gc_faq]},
+                        ensure_ascii=False)
+    write('japan-game-center/index.html',
+      head(f'日本夾娃娃機與遊戲中心：有沒有保夾、景品約 {_gc_cap} 円、集點 App、18 歲限制（官方整理）',
+           f'日本遊戲中心（ゲームセンター）與夾娃娃機觀光客須知：保夾不是法律規定、GiGO 店員協助與 Taito 調位置，景品大約 {_gc_cap} 円以下，'
+           'GiGO、namco、Taito、Round1 集點 App 比較與台灣能不能下載，刷 Suica 付款、代幣不能帶出店、未滿 18 歲 22 點後不能進。不教怎麼夾。',
+           'japan-game-center/',
+           '<script type="application/ld+json">' + _gc_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('遊戲中心與夾娃娃', None)])
+      + '<h1>日本遊戲中心：夾娃娃、集點與規定</h1>'
+      + '<p class="lede">日本的遊戲中心（ゲームセンター，簡稱ゲーセン）有夾娃娃機、音樂遊戲、代幣遊戲和大頭貼，'
+        '常見的連鎖店有 GiGO、namco、Taito、Round1。它在法律上和柏青哥歸同一部風營法管，'
+        '所以景品金額、未成年進場時間、代幣能不能帶走都有規定，各家也有自己的集點 App。'
+        f'下面整理法規原文和各家官網寫的規則，查證於 {GC["checked"]}；本頁不教怎麼夾。</p>'
+      + f'<div class="today"><div class="tday">{_gc_tday}</div><div class="tans">{html.escape(_gc_tans)}</div><div class="tsub">{_gc_tsub}</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>保夾不是法律規定</b>：GiGO、Taito、Round1 各有店員協助，條件各不相同。</li>'
+        f'<li><b>景品大約 {_gc_cap} 円以下</b>：夾到後不能換別的，想換顏色要夾之前說。</li>'
+        '<li><b>代幣不能帶出店</b>：觀光客玩完用掉或還給店員。</li>'
+        '</ul></div>'
+      + '<h2>夾娃娃有沒有保夾</h2><p>' + html.escape(GC['assist_rule']) + '</p>' + _gc_list(GC['assist'])
+      + '<h2>景品的規矩</h2>' + _gc_list(GC['crane'])
+      + '<h2>集點 App 比一比</h2>' + _gc_ch_tbl
+      + f'<p class="disc">{html.escape(GC["chains_note"])}點連鎖店名稱看官網。</p>'
+      + '<h3>觀光客註冊要注意</h3>' + _gc_list(GC['join'])
+      + ('<h2>集點活動</h2>' + _gc_list(_gc_camp) if _gc_camp else '')
+      + '<h2>怎麼付錢</h2>' + _gc_list(GC['pay'])
+      + '<p>交通卡在台灣怎麼儲值比較划算，看<a href="/japan-transit-card/">交通卡儲值比較</a>。</p>'
+      + '<h2>幾點以後不能進</h2>' + _gc_age_tbl
+      + f'<p>{html.escape(GC["age_note"])}（{_gc_lk(GC["age_note_src"], "Taito 玩法頁")}）</p>'
+      + '<h2>代幣能不能存</h2>' + _gc_list(GC['medal']) + f'<p>{html.escape(GC["medal_note"])}</p>'
+      + '<h2>線上夾娃娃能不能寄台灣</h2>' + _gc_list(GC['online'])
+      + '<h2>法律怎麼規定</h2>' + _gc_list(GC['law'])
+      + '<h2>官方沒寫的事</h2><ul class="pick">' + ''.join(f'<li>{html.escape(x)}</li>' for x in GC['unknown']) + '</ul>'
+      + faq_visible(_gc_faq)
+      + f'<p class="disc">規定以法規原文、各連鎖店官網與店內公告為準，查證於 {GC["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-game-center/', 0.6))
+    print('   遊戲中心頁：集點活動', len(_gc_camp), '個、連鎖店', len(GC['chains']), '家')
+
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
 # 12/1 前後會變的在這裡算：票價（2,800 → 2,900）、9:50 那班 12/1 起才有、班次數。
@@ -36343,6 +36450,7 @@ SEARCH_SYN = [
     ['刺青', '紋身', '纹身', 'タトゥー', 'tattoo', '入れ墨', '刺青泡湯', '刺青溫泉', '紋身泡溫泉', '刺青貼紙', '錢湯', '銭湯', 'sento', '公共澡堂', '大眾澡堂'],
     ['女僕', '女僕咖啡', '女僕咖啡廳', '女仆咖啡', '女仆咖啡厅', '女僕餐廳', 'メイドカフェ', 'メイド喫茶', 'maid cafe', 'maidcafe', 'maidreamin', 'めいどりーみん', 'at-home cafe', 'あっとほぉーむカフェ', '萌え萌えキュン', '萌萌揪', '秋葉原女僕'],
     ['柏青哥', '小鋼珠', '小钢珠', 'パチンコ', 'ぱちんこ', 'pachinko', '柏青嫂', '柏青哥店', '日本柏青哥', 'パチスロ', '柏青斯洛', '彈珠機', '弹珠机', '三店方式'],
+    ['夾娃娃', '夹娃娃', '娃娃機', '娃娃机', '夾娃娃機', '夹娃娃机', '抓娃娃', '夾公仔', '夹公仔', '保夾', '保夹', 'クレーンゲーム', 'UFOキャッチャー', 'ufoキャッチャー', 'プライズ', '景品', 'ゲームセンター', 'ゲーセン', 'game center', 'gamecenter', '遊戲中心', '游戏中心', '遊樂場', '電玩中心', '电玩中心', '電子遊樂場', '大型電玩', 'arcade', 'GiGO', 'gigo', 'ギーゴ', 'ラウンドワン', 'Round1', 'round1', 'round 1', 'ナムコ', 'namco', 'タイトー', 'taito', 'taito station', 'タイトーステーション', '代幣', 'メダルゲーム', '線上夾娃娃', 'オンクレ'],
     ['屋形船', 'やかたぶね', 'yakatabune', '屋型船', '東京灣遊船', '東京灣晚餐', '隅田川遊船', '隅田川屋形船', '晚餐遊船', '東京遊船晚餐'],
     ['賽馬', '赛马', '競馬', '竞马', '賭馬', '馬券', '马券', '買馬券', '有馬記念', '有馬紀念', '有马记念', '日本盃', '日本杯', 'ジャパンカップ', 'japan cup', 'JRA', 'keiba', '大井競馬', '中山競馬場', '東京競馬場', '夜間賽馬', '看賽馬'],
     ['日本職棒', '日本职棒', '職棒', '日職', 'NPB', 'npb', 'プロ野球', '看棒球', '棒球門票', '棒球票', '野球', '甲子園', '東京巨蛋', '東京ドーム', '讀賣巨人', '巨人隊', '阪神虎', '軟銀鷹', '火腿鬥士', '日本火腿', '樂天金鷲', '西武獅', '歐力士', '養樂多', '中日龍', '廣島鯉魚', '鯉魚隊', '羅德海洋', '海灣之星', '應援席', '外野席'],

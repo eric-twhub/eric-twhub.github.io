@@ -1,0 +1,253 @@
+{
+  "checked": "2026-11-25",
+  "egov": "https://laws.e-gov.go.jp/law/323AC0000000122",
+  "npa": "https://www.npa.go.jp/laws/notification/seian/hoan/hoantsutatu2/R080701kaisiyaku.pdf",
+  "jaia": "https://jaia.jp/wp-content/uploads/2022/06/%E7%B5%B1%E4%B8%80%E6%99%AF%E5%93%81%E6%8F%90%E4%BE%9B%E3%82%AC%E3%82%A4%E3%83%89%E3%83%A9%E3%82%A4%E3%83%B3%E6%99%AF%E5%93%81%E4%BE%A1%E6%A0%BC1000%E5%86%8620220301%E6%94%B9%E6%AD%A3.pdf",
+  "prize_cap": 1000,
+  "law": [
+    {
+      "name": "和柏青哥同一部法管",
+      "text": "風營法第 2 條第 1 項第 5 號：擺放遊戲機台讓客人玩、可能被拿來「射倖」用途的店，屬於風俗營業，要向公安委員會申請許可。施行令另外把飯店、500㎡ 以上的大型賣場、收費遊樂園裡從外面看得清楚的遊戲區排除在外，這類開放式遊戲區不一定受同樣的限制。",
+      "src": "https://laws.e-gov.go.jp/law/323AC0000000122",
+      "src_t": "風營法",
+      "src2": "https://laws.e-gov.go.jp/law/359CO0000000319",
+      "src2_t": "風營法施行令第 1 條"
+    },
+    {
+      "name": "半夜 0 點到 6 點原則上不能營業",
+      "text": "風營法第 13 條：風俗營業在 0 點到 6 點不能營業；只有各都道府縣用條例另外指定的地區和日子（例如年末年始）可以延長。",
+      "src": "https://laws.e-gov.go.jp/law/323AC0000000122",
+      "src_t": "風營法第 13 條"
+    },
+    {
+      "name": "代幣不能帶出店",
+      "text": "風營法第 23 條第 3 項：遊戲中心不能讓客人把代幣（メダル）帶出店外，也不能發「代為保管」的書面。namco 說明存起來的代幣不能到別家分店領，理由就是這一條。",
+      "src": "https://laws.e-gov.go.jp/law/323AC0000000122",
+      "src_t": "風營法第 23 條",
+      "src2": "https://bnam-customer.my.site.com/AmusementSpot/s/article/%E9%A0%90%E3%81%91%E3%81%A6%E3%81%84%E3%82%8B%E3%83%A1%E3%83%80%E3%83%AB%E3%81%AF-%E3%83%8A%E3%83%A0%E3%82%B3%E3%81%AE%E4%BB%96%E3%81%AE%E5%BA%97%E8%88%97%E3%81%A7%E3%82%82%E6%89%95%E3%81%84%E5%87%BA%E3%81%97%E3%81%8C%E5%87%BA%E6%9D%A5%E3%81%BE%E3%81%99%E3%81%8B",
+      "src2_t": "namco FAQ"
+    },
+    {
+      "name": "分數不能存在卡上帶走",
+      "text": "警察廳解釋運用基準：遊戲中心把遊戲結果拿到的分數或數量記錄在卡片等媒體上發給客人，違反風營法。店內電腦管理、卡片本身不記錄數量的會員存幣不算。",
+      "src": "https://www.npa.go.jp/laws/notification/seian/hoan/hoantsutatu2/R080701kaisiyaku.pdf",
+      "src_t": "警察廳解釋運用基準（2026-07-01）"
+    }
+  ],
+  "age": [
+    {"area": "全國", "rule": "未滿 18 歲 22:00～隔天 6:00 不能以客人身分進場，有家長陪同也一樣", "src": "https://laws.e-gov.go.jp/law/323AC0000000122", "src_t": "風營法第 22 條"},
+    {"area": "東京都", "rule": "未滿 16 歲 18:00～22:00 要家長陪同", "src": "https://www.keishicho.metro.tokyo.lg.jp/about_mpd/keiyaku_horei_kohyo/horei_jorei/fuei_jorei.files/jorei.pdf", "src_t": "東京都條例第 8 條"},
+    {"area": "大阪府", "rule": "未滿 16 歲沒有家長陪同，19:00～22:00 不能進", "src": "https://www.pref.osaka.lg.jp/houbun/reiki/reiki_honbun/k201RG00001068.html", "src_t": "大阪府條例第 9 條"},
+    {"area": "京都府", "rule": "未滿 16 歲沒有家長陪同，18:00～22:00 不能進", "src": "https://www.pref.kyoto.jp/reiki/reiki_honbun/a300RG00000897.html", "src_t": "京都府條例第 9 條"},
+    {"area": "北海道", "rule": "未滿 16 歲沒有家長陪同，18:00～22:00 不能進", "src": "https://www.police.pref.hokkaido.lg.jp/koukai/jyourei/j-seian/j-hoan/hoan_s30-02.pdf", "src_t": "北海道條例第 9 條"}
+  ],
+  "age_note": "其他縣市看各地條例，法律規定店門口要標示幾點以後未滿 18 歲不能進。Taito 官網寫可能會請出示學生證、駕照或護照確認年齡。",
+  "age_note_src": "https://www.taito.co.jp/ja/how-to/",
+  "crane": [
+    {
+      "name": "景品大約 1,000 円以下",
+      "text": "法律禁止遊戲中心依遊戲結果給獎品；夾娃娃能拿景品，是因為警察廳把「小売価格がおおむね1,000円以下」的物品排除在外。原文是「おおむね」（大約），沒寫含不含稅。2022 年 3 月 1 日起從大約 800 円改成大約 1,000 円。",
+      "src": "https://www.npa.go.jp/laws/notification/seian/hoan/hoantsutatu2/R080701kaisiyaku.pdf",
+      "src_t": "警察廳解釋運用基準（2026-07-01）",
+      "src2": "https://www.npa.go.jp/laws/notification/seian/hoan/hoan20220301-1.pdf",
+      "src2_t": "2022-03-01 修訂通達"
+    },
+    {
+      "name": "夾到的要和展示的一樣",
+      "text": "業界團體 JAIA 的指引：景品要和事先展示的一樣，不能擺比景品更貴的東西當樣品，夾到的景品也不能拿去換別的景品。",
+      "src": "https://jaia.jp/wp-content/uploads/2022/06/%E7%B5%B1%E4%B8%80%E6%99%AF%E5%93%81%E6%8F%90%E4%BE%9B%E3%82%AC%E3%82%A4%E3%83%89%E3%83%A9%E3%82%A4%E3%83%B3%E6%99%AF%E5%93%81%E4%BE%A1%E6%A0%BC1000%E5%86%8620220301%E6%94%B9%E6%AD%A3.pdf",
+      "src_t": "JAIA 景品指引"
+    },
+    {
+      "name": "想換顏色要夾之前說",
+      "text": "Taito：夾到後不能換，想換款式要在夾之前跟店員說；夾到後剩下的次數可以移到別台；景品是非賣品，不能用買的。",
+      "src": "https://www.taito.co.jp/ja/how-to/",
+      "src_t": "Taito 玩法頁"
+    },
+    {
+      "name": "代幣遊戲不給景品",
+      "text": "JAIA 指引：代幣遊戲（メダルゲーム）、電視遊戲不能給景品。Taito 也寫代幣不能換錢、不能換景品，也不能轉讓買賣。",
+      "src": "https://jaia.jp/wp-content/uploads/2022/06/%E7%B5%B1%E4%B8%80%E6%99%AF%E5%93%81%E6%8F%90%E4%BE%9B%E3%82%AC%E3%82%A4%E3%83%89%E3%83%A9%E3%82%A4%E3%83%B3%E6%99%AF%E5%93%81%E4%BE%A1%E6%A0%BC1000%E5%86%8620220301%E6%94%B9%E6%AD%A3.pdf",
+      "src_t": "JAIA 景品指引",
+      "src2": "https://www.taito.co.jp/ja/how-to/",
+      "src2_t": "Taito 玩法頁"
+    }
+  ],
+  "assist_rule": "警察廳解釋運用基準、業界團體 JAIA 的景品指引和機台基準，都沒有規定夾娃娃機的機率或保證夾到。所以「保夾」不是法律規定，是各家自己的服務：",
+  "assist": [
+    {
+      "name": "GiGO：スペシャルアシスト",
+      "text": "用 App 的 GiGOリンク 連著玩夾娃娃，沒夾到會累積量表，量表滿了拿到引換券，店員會幫到「差一步就能拿到」。只限有 GiGOリンク 的店；要玩多少才會滿，官方沒寫。",
+      "src": "https://contents.gendagigo.jp/gigoapp",
+      "src_t": "GiGO App"
+    },
+    {
+      "name": "Taito：卡住可以請店員調",
+      "text": "繁中玩法頁寫，爪子碰不到或景品卡住時，可以找店員調一下位置；日文頁寫「卡關的話會幫忙」。沒寫次數或金額條件。",
+      "src": "https://www.taito.co.jp/zh-CHT/how-to/",
+      "src_t": "Taito 繁中玩法頁",
+      "src2": "https://www.taito.co.jp/ja/how-to/",
+      "src2_t": "日文頁"
+    },
+    {
+      "name": "Round1：店員給建議、換顏色",
+      "text": "店員會看你玩的情況給一點建議，也可以請店員換成別的顏色；部分景品不適用。沒寫會移動景品位置。",
+      "src": "https://www.round1.co.jp/service/amuse/advice.html",
+      "src_t": "Round1 アドバイス"
+    },
+    {
+      "name": "namco：官方沒寫",
+      "text": "namco 官網和 FAQ 沒有寫店員協助夾娃娃的服務。",
+      "src": "https://bandainamco-am.co.jp/app_dl/",
+      "src_t": "namco App"
+    }
+  ],
+  "chains": [
+    {
+      "name": "GiGO",
+      "app": "GiGOアプリ（要綁 GENDA ID）",
+      "earn": "玩 100 円拿 100 經驗值（用來升等級）；打卡、任務拿サービス券",
+      "use": "サービス券在 App 裡用，可玩部分機台；等級越高每月特典越多",
+      "expiry": "サービス券 12 個月內，每張不同；等級每 6 個月一季",
+      "tw": "台灣區 App Store 商品頁打不開",
+      "src": "https://contents.gendagigo.jp/gigoapp/rank",
+      "src2": "https://contents.gendagigo.jp/gigoapp/terms"
+    },
+    {
+      "name": "namco",
+      "app": "ナムコポイントアプリ",
+      "earn": "每天開 App、來店打卡、任務；用 LINK 連機台玩依金額回饋（比例官方沒寫）",
+      "use": "免費玩夾娃娃、代幣遊戲等，參加抽獎",
+      "expiry": "點數 6 個月",
+      "tw": "台灣區 App Store 有上架；註冊要 SMS 認證",
+      "src": "https://bandainamco-am.co.jp/app_dl/",
+      "src2": "https://bnam-customer.my.site.com/AmusementSpot/s/article/%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88%E3%81%AE%E6%9C%89%E5%8A%B9%E6%9C%9F%E9%99%90%E3%81%AF%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%81%8B"
+    },
+    {
+      "name": "Taito",
+      "app": "タイステアプリ",
+      "earn": "打卡（GPS 或店內感應）、任務、集章活動",
+      "use": "換優惠券、參加抽獎",
+      "expiry": "官方沒寫",
+      "tw": "台灣區 App Store 商品頁打不開",
+      "src": "https://www.taito.co.jp/taitoapp"
+    },
+    {
+      "name": "Round1",
+      "app": "ラウンドワン App 的メダル会員（入會、更新免費）",
+      "earn": "用會員專用代幣機，每 100 円 1 點",
+      "use": "30 點換 100 円的遊戲玩 1 次、145 點換代幣 250 枚，也能換保齡球等",
+      "expiry": "給點那個月起算 1 年後的同月底",
+      "tw": "台灣區 App Store 有上架",
+      "src": "https://www.round1.co.jp/member/"
+    }
+  ],
+  "chains_note": "「台灣區 App Store」是本站 2026-11-25 實際打開的結果，不是官方說明；Google Play 沒有確認。",
+  "join": [
+    {
+      "name": "能不能用台灣手機號碼：官方都沒寫",
+      "text": "namco 的 App 註冊要 SMS 認證，FAQ 提醒日本電信用戶不要擋海外發來的簡訊；這是在講日本號碼，沒有寫台灣號碼能不能用。GiGO、Taito、Round1 也都沒寫。",
+      "src": "https://bnam-customer.my.site.com/AmusementSpot/s/article/%E3%83%8A%E3%83%A0%E3%82%B3%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-SMS%E8%AA%8D%E8%A8%BC%E3%81%A7%E9%9B%BB%E8%A9%B1%E7%95%AA%E5%8F%B7%E3%82%92%E9%80%81%E4%BF%A1%E3%81%97%E3%81%A6%E3%82%82%E8%AA%8D%E8%A8%BC%E3%82%B3%E3%83%BC%E3%83%89%E3%81%8C%E5%B1%8A%E3%81%8D%E3%81%BE%E3%81%9B%E3%82%93",
+      "src_t": "namco FAQ"
+    },
+    {
+      "name": "不要借朋友的號碼註冊",
+      "text": "GiGO 明寫：用本人以外（包括家人）名義的電話號碼、Email、信用卡註冊或登入，都是禁止行為。",
+      "src": "https://www.gendagigo.jp/information/SgWKVTSy",
+      "src_t": "GiGO 公告"
+    }
+  ],
+  "campaigns": [
+    {
+      "name": "Taito × Final Fantasy 集章",
+      "text": "11/7～11/29，在 Taito 店內用手機感應集章，每章 200 點、最多 600 點，集滿 3 章送夾娃娃免費券 1 張；要先下載タイステアプリ註冊。",
+      "src": "https://prtimes.jp/main/html/rd/p/000000848.000041970.html",
+      "src_t": "Taito 新聞稿",
+      "until": "2026-11-29"
+    },
+    {
+      "name": "GiGO 打卡抽 1,000 円券",
+      "text": "12/4～12/6，用 GiGO App 在 GiGO 集團的店打卡，抽 1,000 名送 1,000 円サービス券（只能玩夾娃娃這類景品機）。",
+      "src": "https://www.gigo.co.jp/news/thanks3days",
+      "src_t": "GiGO 公告",
+      "from": "2026-12-04",
+      "until": "2026-12-06"
+    },
+    {
+      "name": "Taito × Sanrio Velvety Night 集章",
+      "text": "11/14～12/6，在タイステアプリ集滿 3 章可以參加抽獎；每章給幾點官方活動頁沒寫。",
+      "src": "https://www.taito.co.jp/event/001631",
+      "src_t": "Taito 活動頁",
+      "until": "2026-12-06"
+    }
+  ],
+  "pay": [
+    {
+      "name": "Taito：機台直接刷 Suica",
+      "text": "Taito 的機台有讀卡機，可以刷 Suica、PASMO 等交通卡玩（部分店除外）；租代幣可以在櫃台刷信用卡。",
+      "src": "https://www.taito.co.jp/ja/how-to/",
+      "src_t": "Taito 玩法頁"
+    },
+    {
+      "name": "GiGO：看各店頁的「電子決済」欄",
+      "text": "每家店不一樣。例如 GiGO 秋葉原3号館 列了交通系IC、PayPay、Alipay、WeChat Pay 等，店裡也有外幣兌換機。",
+      "src": "https://www.gigo.co.jp/shops/akihabara3",
+      "src_t": "GiGO 秋葉原3号館"
+    },
+    {
+      "name": "namco TOKYO（新宿）建議不用現金",
+      "text": "官網繁中頁寫建議無現金付款、部分區域不收現金，可用交通 IC、PayPay、Alipay 等，館內有電子錢包儲值機。",
+      "src": "https://bandainamco-am.co.jp/namco_tokyo/guide/zh-CHT/",
+      "src_t": "namco TOKYO 繁中頁"
+    }
+  ],
+  "medal": [
+    {
+      "name": "Round1：メダルバンク",
+      "text": "第一次到代幣櫃台登記，存起來的代幣從最後使用日起保留 30 天（依店和時期不同），只能在存入的店領。",
+      "src": "https://www.round1.co.jp/aboutweb/faq.html",
+      "src_t": "Round1 FAQ"
+    },
+    {
+      "name": "namco：メダルキーパー",
+      "text": "第一次帶代幣到櫃台登記，之後用機器存取；保管期限依店不同，有的店沒有，不能到別家分店領。",
+      "src": "https://bnam-customer.my.site.com/AmusementSpot/s/article/%E3%83%A1%E3%83%80%E3%83%AB%E3%82%92%E9%A0%90%E3%81%91%E3%82%8B%E3%81%AB%E3%81%AF%E3%81%A9%E3%81%86%E3%81%97%E3%81%9F%E3%82%89%E3%81%84%E3%81%84%E3%81%A7%E3%81%99%E3%81%8B",
+      "src_t": "namco FAQ"
+    },
+    {
+      "name": "Taito：用不完就存或還",
+      "text": "代幣只能在店內用，用不完要存起來、用完，或還給店員。",
+      "src": "https://www.taito.co.jp/ja/how-to/",
+      "src_t": "Taito 玩法頁"
+    }
+  ],
+  "medal_note": "觀光客短期停留，存起來的代幣大多領不回來，玩完用掉或還給店員比較實際。",
+  "online": [
+    {
+      "name": "namco 線上夾娃娃：住國外不能用",
+      "text": "ナムクレ FAQ 引用規約第 26 條：住在日本國外的人不能使用這個服務。",
+      "src": "https://bnam-customer.my.site.com/NetCrane/s/global-search/%E6%B5%B7%E5%A4%96",
+      "src_t": "ナムクレ FAQ"
+    },
+    {
+      "name": "Taito 線上夾娃娃：只寄日本國內",
+      "text": "タイクレ規約第 10 條：配送地區只限日本國內，也不能轉寄到別的地址。",
+      "src": "https://www.taito-olcg.com/pc/",
+      "src_t": "タイクレ"
+    },
+    {
+      "name": "GiGO 線上夾娃娃：官方兩邊寫的不一樣",
+      "text": "FAQ 寫寄日本國外要 4,000SP、選國外居住地不送免費配送券；但規約寫服務只限日本國內、配送只寄日本國內地址。以規約為準的話，台灣不能寄。",
+      "src": "https://gigo-cranegame.com/ja/support/terms-jp",
+      "src_t": "GiGO ONLINE CRANE 規約",
+      "src2": "https://gigo-cranegame.com/ja/faq/how-much-shipping-cost",
+      "src2_t": "FAQ"
+    }
+  ],
+  "unknown": [
+    "四家 App 能不能用台灣手機號碼註冊",
+    "景品「大約 1,000 円」含不含消費稅",
+    "店家有沒有提供裝景品的袋子、要不要錢",
+    "GiGO スペシャルアシスト 要玩多少錢才會集滿"
+  ]
+}
