@@ -7,20 +7,20 @@
     "none": "沒有查到官方公告。沒查到不等於不收，也不等於收"
   },
   "_待複查": {
-    "edion": "免稅說明頁 edion.com/ito/contents/special/lp/edion_inbound/taxfree/ 從 11/7 22 時起整站維護（503），11/13 仍打不開，無法確認是否還是舊制，先從舊制名單拿掉，恢復後重查。",
-    "muji": "muji.com 11/11 起因安全強化停站，免稅說明頁 /jp/feature/welcome/ 也導到維護頁，11/13 無法確認是否還是舊制，先從舊制名單拿掉，恢復後重查。",
-    "abc-mart": "11/13 查官網：只有店舖頁標「免税対応店」，FAQ 與指南都沒有免稅手續說明，找不到舊制內容的頁面，所以從舊制名單拿掉。"
+    "edion": "EDION 11/7 停站是電商網站遭不正存取（edion.co.jp 11/6、11/9 公告）。11/26 官網已恢復，免稅頁 tw.html 仍是舊制（50 萬上限、消耗品不能拆封、券期限 10/31），放回舊制名單；なんば本店英文頁只有一句 airport Refund，沒提手續費。",
+    "muji": "muji.com 11/11 起因安全強化停站，11/26 仍導到維護頁；官方 FAQ「日本での免税について」還是舊制（5,000～500,000 日圓），列入舊制名單。muji.com 恢復後重查新制與費率。",
+    "abc-mart": "11/26 更正：免稅段落在 abc-mart.net/shop/pages/guide_order_pay.aspx#Nav7（稅前滿 5,000、最多 10 件），沒寫退稅方式與手續費；舊制「購入記録票貼護照」兩行已用 HTML 註解拿掉，所以不算舊制頁。頁面是 Shift_JIS。Alpen 企業站 11/26 整站顯示 404，下次重查。"
   },
   "_線索未採用": {
     "bic-camera": "今周刊引述 Bic 官方粉專 10/13 貼文寫「退稅手續費0元」；LIVE JAPAN（Bic 是其聯盟成員）10/26 的文章與 11/5 的發券頁也寫手續費由 Bic 負擔、依據 Bic 公告。日文媒體 Fun-Japan 10/28 也寫 Bic「發表」退稅申請手續費免費，沒附原文。但 Bic 官網的新制說明、FAQ、企業新聞與 IR 新聞到 11/13 都沒有這句。",
     "tsuruha": "鏡週刊 10/15 寫鶴羽用 J&J、由店家吸收手續費，出處是部落客與記者確認，官方頁面沒有。",
-    "takeya": "民報引述多慶屋台灣粉專寫手續費 0 日圓；LIVE JAPAN 發券頁 11/12 更新也寫 0 日圓。多慶屋官網到 11/13 連免稅說明頁都沒有（外國客頁、服務指南、FAQ、公告列表都沒有免稅字樣）。",
+    "takeya": "11/26 已升級成 free：官網公告頁 /shop/event/takeya/taxrefund/（dateModified 2026-11-02）寫自社負擔 0 元。這頁不在外國客頁與 FAQ，要用站內搜尋 /shop/?s=免税 才找得到。",
     "edion": "HK01 寫每筆定額 210 日圓，沒附出處。LIVE JAPAN 發券頁 11/6 更新只寫退稅要另付手續費，沒寫金額。",
     "yamada": "Ocean 的業者頁有「1.55% 系統利用料」字樣，看起來是舊制時期寫的，不是山田公告的費率。",
     "3coins": "Threads 上有旅客說被收 5.7%，找不到原文。",
-    "odakyu": "小田急百貨的日文服務頁（2026-09-22 更新）寫免稅手續費是免稅對象金額的 1.5%，但同一段寫當場退現金，是 11/1 新制前的說明，不算新制公告。"
+    "odakyu": "日文服務頁 /shinjuku/services/ 到 11/26 仍寫當場退現金、收免稅對象金額的 1.5%（舊制）。新制說明在外國客頁連的 actibookone 冊子，沒寫費率。"
   },
-  "checked": "2026-11-05",
+  "checked": "2026-11-26",
   "reported": {
     "_說明": "未經店家證實的回報，獨立於上面的官方對照。來源是林氏璧的整理與粉專留言，原作者要求引用附作者與出處，所以頁面一定要留連結。",
     "checked": "2026-11-05",
@@ -28,7 +28,6 @@
     "fb": "https://www.facebook.com/japantravel/posts/pfbid0D3H8VyXKkhW32mhTSUgLQ3devZmw6eh9XqcBgZbwBDeCAgegtzjkhk4FCrt95nNMl",
     "tvb": "https://news.tvb.com/tc/1204124-%E6%97%A5%E6%9C%AC%E9%80%80%E7%A8%85%E6%96%B0%E5%88%B6%E6%AE%BA%E5%88%B0%E6%89%8B%E7%BA%8C%E8%B2%BB%E5%B7%AE%E7%95%B0%E5%8F%97%E9%97%9C%E6%B3%A8%E5%BB%B6%E4%BC%B8%E9%96%B1%E8%AE%80%E9%99%84%E4%B8%BB%E8%A6%81%E5%95%86%E5%AE%B6%E9%80%80%E7%A8%85%E6%89%8B%E7%BA%8C%E8%B2%BB%E6%94%B6%E8%B2%BB%E8%A1%A8",
     "rows": [
-      {"name": "多慶屋", "slug": "takeya", "rate": "0%", "per10k": "約 ¥1,000", "basis": "「多慶屋 繁體中文」粉專 10/17 貼文寫免稅手續費 0 日圓，官網沒寫。", "src": "https://www.facebook.com/takeya.tw/posts/pfbid0266WU58xqJ9VkXGGSk39wUhmEFMNnaPnYyE8AmKBtJ77W5hfMdGFREqFCbmA657U3l", "src_name": "粉專貼文"},
       {"name": "Bic Camera", "slug": "bic-camera", "rate": "0%", "per10k": "約 ¥1,000", "basis": "媒體引述 Bic 粉專 10/13 貼文，官網沒寫這句。機場領現金的手續費要自付。", "src": "https://www.businesstoday.com.tw/article/category/183031/post/202610150026/", "src_name": "今周刊報導"},
       {"name": "鶴羽藥妝", "slug": "tsuruha", "rate": "0%", "per10k": "約 ¥1,000", "basis": "部落客列為已宣布吸收，官網的免稅說明沒寫。"},
       {"name": "YAMADA 山田電機", "slug": "yamada", "rate": "0%", "per10k": "約 ¥1,000", "basis": "部落客說收到正式通知，沒附文件。清單列的退稅業者是 J-TaxRefund，山田新聞稿寫的是 Ocean Tax Refund，兩邊對不上。"},
@@ -114,16 +113,16 @@
     {"name": "LAWSON", "slug": null, "status": "fee", "rate": "16.5%", "base": "消費稅額", "per10k": "約 ¥835",
      "note": "只有約 70 家門市能辦免稅，其他 LAWSON 不辦。稅前滿 ¥5,000 才能辦，退稅要用店裡給的說明單在 180 天內自己申請。",
      "quote": "退稅時將從消費稅額中扣除16.5%的手續費。", "src": "https://www.lawson.co.jp/service/others/in/lang/tw.html", "src_name": "LAWSON 官方繁中免稅說明"},
-    {"name": "SUNDRUG", "slug": "sundrug", "status": "none", "old": true, "old_src": "https://sundrug-online.com/pages/tax-free_cnt", "old_checked": "2026-11-13"},
+    {"name": "SUNDRUG", "slug": "sundrug", "status": "none", "old": true, "old_src": "https://sundrug-online.com/pages/tax-free_cnt", "old_checked": "2026-11-26"},
     {"name": "大國藥妝", "slug": "daikoku", "status": "none"},
-    {"name": "鶴羽藥妝", "slug": "tsuruha", "status": "none", "old": true, "old_src": "https://www.tsuruha.co.jp/tw/", "old_checked": "2026-11-13"},
+    {"name": "鶴羽藥妝", "slug": "tsuruha", "status": "none", "old": true, "old_src": "https://www.tsuruha.co.jp/tw/", "old_src2": "https://www.tsuruha.co.jp/service/tax-free/", "old_checked": "2026-11-26"},
     {"name": "COSMOS 藥品", "slug": "cosmos", "status": "none"},
-    {"name": "高島屋", "slug": "takashimaya", "status": "none"},
-    {"name": "小田急百貨", "slug": "odakyu", "status": "none"},
-    {"name": "EDION", "slug": "edion", "status": "none"},
-    {"name": "多慶屋", "slug": "takeya", "status": "none"},
-    {"name": "AEON", "slug": null, "status": "none"},
-    {"name": "無印良品", "slug": "muji", "status": "none"},
+    {"name": "高島屋", "slug": "takashimaya", "status": "fee", "rate": "23%", "base": "消費稅額", "per10k": "約 ¥770", "note": "退款時從消費稅額扣 23% 當系統利用料，稅前合計滿 ¥1,000,000 改扣 21%。換算等於稅前購買金額的 2.3%，和大丸公告的上限一樣。日本橋、京都店頁與官方繁中、英文說明都是同一個寫法；日本橋店頁另一段還留著舊制的「1.55%」，那是 11/1 以前的說明。", "quote": "返金時にシステム利用料として消費税相当額の23％を差し引きいたします。", "src": "https://www.takashimaya.co.jp/nihombashi/departmentstore/service/", "src_name": "高島屋日本橋店服務頁"},
+    {"name": "小田急百貨", "slug": "odakyu", "status": "no_rate", "rate": "沒寫", "base": "", "note": "新宿店外國客頁連到的官方退稅說明冊（2026 年 11 月發行）寫會收手續費、扣完再退，沒寫費率；退稅走 J-TaxRefund。日文服務頁還是舊制寫法（當場退現金、收 1.5%），不要照著做。", "quote": "免税手続き手数料を頂戴いたします。", "src": "https://saas.actibookone.com/content/detail?param=eyJjb250ZW50TnVtIjo0NTk5NjN9&detailFlg=1&pNo=1", "src_name": "小田急百貨官方退稅說明冊"},
+    {"name": "EDION", "slug": "edion", "status": "none", "old": true, "old_src": "https://www.edion.com/ito/contents/special/lp/edion_inbound/taxfree/tw.html", "old_checked": "2026-11-26"},
+    {"name": "多慶屋", "slug": "takeya", "status": "free", "rate": "不收", "base": "", "per10k": "¥1,000", "note": "手續費由多慶屋自己負擔，消費稅額全額退回，退稅走 J-TaxRefund。選在機場領現金的話，退款業者另收手續費。官方註明這項做法可能不經預告變更或結束。", "quote": "自社負担により免税手続き手数料を『0円（無料）』といたします。", "src": "https://www.takeya.co.jp/shop/event/takeya/taxrefund/", "src_name": "多慶屋官方新制說明"},
+    {"name": "AEON", "slug": null, "status": "no_rate", "rate": "沒寫", "base": "", "note": "官方說明寫門市只負責傳送退稅資料、不直接退稅，退稅要自己到 JPrefund 網站申請，全文沒有提到手續費。AEON 夢樂城（不同公司）的官網則寫可能從退款扣服務費、依各店而定。", "quote": "門市僅辦理『退稅所需資料的傳送手續』。", "src": "https://www.welcome-aeon.com/tax_free/cht.html", "src_name": "AEON 官方免稅說明（繁中）"},
+    {"name": "無印良品", "slug": "muji", "status": "none", "old": true, "old_src": "https://faq.muji.com/%E6%97%A5%E6%9C%AC%E3%81%A7%E3%81%AE%E5%85%8D%E7%A8%8E%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-65cc5db59e802e00267baac6", "old_checked": "2026-11-26"},
     {"name": "3COINS", "slug": "3coins", "status": "none"},
     {"name": "ABC-MART", "slug": "abc-mart", "status": "none"},
     {"name": "Alpen", "slug": "alpen", "status": "none"},
