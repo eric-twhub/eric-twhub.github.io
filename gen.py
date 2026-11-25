@@ -1882,6 +1882,7 @@ def topnav(cur=''):
             + link('/japan-bogo/', '🎁 行程與網卡買一送一')
             + link('/japan-sumo/', '🤼 大相撲門票怎麼買')
             + link('/japan-kabuki/', '🎭 歌舞伎座一幕見席怎麼買')
+            + link('/japan-concert-ticket/', '🎤 去日本看演唱會門票怎麼買')
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
             + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
@@ -3274,7 +3275,7 @@ _STK_PREFIX = sorted({
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
-    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
     '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
     '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
@@ -34157,6 +34158,95 @@ if os.path.exists('kabuki.json'):
     pages.append(('/japan-kabuki/', 0.6))
     print('   歌舞伎頁：', len(_kb_progs), '檔演目、', len(_vs), '個其他劇場')
 
+# ---------- 去日本看演唱會：門票怎麼買 ----------
+# 資料在 concert.json，全部引售票商官方說明、e-Gov 法條、文化庁、政府広報、國民生活センター。
+# 三家售票網都沒寫海外門號能不能完成電話認證：表格照實寫「官方沒寫」，不推論能或不能。
+if os.path.exists('concert.json'):
+    CT = json.load(open('concert.json', encoding='utf-8'))
+    if _KK1 is None:
+        _KK1 = {str(x) for x in json.load(open('kkday-1pct.json', encoding='utf-8'))['ids']}
+    _ct_lk = lambda u, t='出處': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{t}</a>'
+
+    def _ct_list(xs):
+        return '<ul class="xl">' + ''.join(
+            f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+            f'<div class="xt">{html.escape(x["text"])}</div>'
+            f'<div class="xw">{_ct_lk(x["src"])}' + (f'・{_ct_lk(x["src2"], "出處 2")}' if x.get('src2') else '')
+            + '</div></li>' for x in xs) + '</ul>'
+
+    _v = CT['vendors']
+    # 「官方沒寫」用淡色，讀者一眼分得出哪些是查到的、哪些是沒寫
+    _ct_cell = lambda s: (f'<small style="color:var(--dim)">{html.escape(s)}</small>' if s == '官方沒寫' else html.escape(s))
+    _ct_tab = ('<div class="tw"><table><tr><th></th>' + ''.join(f'<th>{html.escape(c)}</th>' for c in _v['cols']) + '</tr>'
+               + ''.join(f'<tr><td class="nm"><b>{html.escape(r)}</b></td>'
+                         + ''.join(f'<td class="nm">{_ct_cell(c)}</td>' for c in cs) + '</tr>' for r, cs in _v['rows'])
+               + '</table></div>')
+    _ct_nosay = sum(1 for r, cs in _v['rows'] for c in cs if c == '官方沒寫')
+
+    _ct_kk = []
+    for it in CT.get('kkday') or []:
+        if str(it['id']) in _KK1:
+            raise SystemExit(f'演唱會頁：KKday 商品 {it["id"]} 在 1% 清單裡')
+        _ct_kk.append({'provider': 'kkday', 'id': it['id'], 'url': f'https://www.kkday.com/zh-tw/product/{it["id"]}',
+                       'name': it['name'], 'area': it['area'], 'note': it['note']})
+
+    _ct_faq = [
+        ('台灣人可以自己在日本售票網買演唱會門票嗎？',
+         'チケットぴあ、ローチケ、イープラス三家都要註冊會員並完成電話認證，官方都沒寫台灣或其他海外門號能不能完成認證。'
+         'ぴあ寫明沒有通話合約的手機打不出認證電話，所以只有上網功能的旅遊 eSIM 不能用。'
+         '有些演出會另外開「海外居住者受付」，只收信用卡、到日本 7-11 取票，要看主辦方或藝人官網的公告。'),
+        ('抽選中了什麼時候扣款？',
+         'ぴあ與ローチケ都寫：信用卡付款的話，在受付結束到結果公布之間扣款。ぴあ寫中選後不能取消。e+ 的扣款時點官方沒寫。'),
+        ('入場會檢查護照嗎？',
+         '看主辦方。法律只要求主辦方努力確認入場者就是購票者，方法由主辦方決定。有要查的場次會在受付頁列出可用的證件，'
+         '有些包含護照，要帶正本；證件不符不能入場，票錢也不退。'),
+        ('找代購或在轉售網站買票違法嗎？',
+         '日本的チケット不正転売禁止法禁止未經主辦方同意、以營業方式用高於售價轉賣，為了轉賣而買進也禁止，個人反覆轉賣也算；'
+         '違反可處 1 年以下拘禁刑或 100 萬日圓以下罰金。主辦方禁止轉售的話，轉賣來的票可能不能入場。'
+         '透過官方轉售（例如ぴあ リセール）用原價買是可以的。'),
+        ('到日本換了旅遊 eSIM，電子票會不會不見？',
+         'ローチケ官方寫，票顯示過之後再換 SIM 卡或 eSIM，票就不會再顯示。e+ 的スマチケ要用申請時登錄的號碼那支手機認證，'
+         '號碼變了就不能下載票。換卡之前先看清楚那個 App 的規定。'),
+    ]
+    _ct_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage',
+                         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _ct_faq]},
+                        ensure_ascii=False)
+    write('japan-concert-ticket/index.html',
+      head('去日本看演唱會：門票怎麼買、要不要日本門號、抽選、實名入場與代購風險',
+           'チケットぴあ、ローチケ、イープラス的會員與電話認證規定、海外信用卡、海外居住者受付、抽選何時扣款、'
+           '電子票 App 換 eSIM 會不會不見、入場查不查護照，以及日本的チケット不正転売禁止法。全部引售票商官方與日本法條。',
+           'japan-concert-ticket/',
+           '<script type="application/ld+json">' + _ct_ld + '</script>')
+      + topnav() + crumbs([('首頁', '/'), ('去日本看演唱會', None)])
+      + '<h1>去日本看演唱會：門票怎麼買、要不要日本門號</h1>'
+      + '<p class="lede">日本的演唱會門票大多在チケットぴあ、ローチケ、イープラス三家售票網，'
+        '或粉絲俱樂部、藝人官網賣，熱門場次先抽籤再開放搶票。對住在台灣的人，卡關的通常是電話認證、信用卡與電子票 App。'
+        f'下面全部引售票商官方說明與日本法條，查證於 {CT["checked"]}；官方沒寫的就寫「官方沒寫」。</p>'
+      + '<div class="today"><div class="tday">先看這一條</div>'
+        '<div class="tans">先查那一場有沒有開「海外居住者受付」</div>'
+        f'<div class="tsub">三家售票網都要電話認證，表格裡有 {_ct_nosay} 格是官方沒寫，包括海外門號能不能認證。'
+        '海外受付只收信用卡、到日本 7-11 取票，不用日本門號，有沒有開看主辦方或藝人官網的購票公告。</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>電話認證</b>：三家都要，ぴあ寫沒有通話合約的手機打不出認證電話，只有上網的旅遊 eSIM 不行。</li>'
+        '<li><b>電子票</b>：ローチケ App 要能發日本國內 SMS，票顯示後換 SIM 或 eSIM 就不會再顯示。</li>'
+        '<li><b>不要買轉售票</b>：日本法律禁止高價轉售，轉賣來的票可能不能入場；官方轉售用原價買才安全。</li>'
+        '</ul></div>'
+      + '<h2>三家售票網比一比</h2>' + _ct_tab
+      + '<p class="disc">' + '、'.join(_ct_lk(u, n) for n, u in _v['srcs']) + '。</p>'
+      + '<h2>不用日本門號的管道：海外居住者受付</h2>' + _ct_list(CT['overseas'])
+      + '<h2>抽選是什麼、什麼時候扣款</h2>' + _ct_list(CT['lottery'])
+      + '<h2>電子票 App：電話與 SIM 卡的限制</h2>' + _ct_list(CT['apps'])
+      + '<h2>入場會不會查證件</h2>' + _ct_list(CT['idcheck'])
+      + '<h2>代購與轉售票：日本法律怎麼寫</h2>' + _ct_list(CT['law'])
+      + '<h2>買不到想轉讓：官方轉售</h2>' + _ct_list(CT['resale'])
+      + adbox_tickets(_ct_kk, 'concert', '場館接送可以先訂', '散場人多、末班車趕不上時可以用',
+                      '售價與可到的場館以 KKday 頁面為準，本站不另外標價。')
+      + faq_visible(_ct_faq)
+      + f'<p class="disc">售票規定以各售票網與那一場演出的公告為準，查證於 {CT["checked"]}。本站不是售票網，也不提供代購。</p>'
+      + foot())
+    pages.append(('/japan-concert-ticket/', 0.6))
+    print('   演唱會頁：官方沒寫', _ct_nosay, '格')
+
 # ---------- 高山⇄白川鄉巴士 ----------
 # 資料在 skg-bus.json。時刻表是濃飛巴士白川郷線頁 12/1 起的表格逐欄解析出來的，哪班要預約照表上的「予約制」。
 # 12/1 前後會變的在這裡算：票價（2,800 → 2,900）、9:50 那班 12/1 起才有、班次數。
@@ -35598,6 +35688,7 @@ SEARCH_SYN = [
     ['barlesque', 'barlesque nagoya', 'burlesque nagoya', 'burlesque名古屋', 'バーレスク名古屋', '名古屋バーレスク', '名古屋burlesque', '名古屋 burlesque'],
     ['名古屋夜生活', '名古屋 夜生活', '名古屋夜店', '名古屋秀場', '名古屋 秀'],
     ['歌舞伎', 'kabuki', 'かぶき', '歌舞伎座', 'kabukiza', '一幕見', '一幕見席', '幕見席', '幕見', '南座', '顔見世', '顏見世', '新橋演舞場'],
+    ['演唱會', '演唱会', 'concert', 'コンサート', 'ライブ', '巡演', '日巡', '日本巡演', '當落', '当落', '門票代購', '代購門票', '實名制', '實名入場', 'ぴあ', 'チケットぴあ', 'ローチケ', 'イープラス', 'eplus', 'e+', 'lawson ticket', 'ticket pia'],
     ['夜生活', '夜遊', '夜店', '夜晚', '晚上去哪', '晚上去哪裡', '晚上去哪玩', '晚上做什麼', '晚上可以做什麼', '晚上能做什麼', '晚上好玩', 'nightlife', 'night life', 'ナイトライフ', '夜の街', '夜遊び'],
     ['宵夜', '消夜', '續攤', '续摊', '居酒屋街', 'はしご酒', '飲み屋街'],
     ['屋台', 'yatai', '路邊攤', '福岡屋台', '中洲屋台', '長濱屋台', '長浜屋台'],

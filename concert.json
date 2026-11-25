@@ -1,0 +1,207 @@
+{
+ "checked": "2026-11-25",
+ "_說明": "去日本看演唱會：售票網規定、海外受付、抽選、電子票 App、入場證件、轉售法律。全部引售票商官方說明、e-Gov 法條、文化庁、政府広報、國民生活センター。三家售票網都沒寫海外門號能不能認證，頁面照實寫「官方沒寫」，不要補推論。每季回查一次（售票商規定改得很頻繁，ローチケ 2024 年就改過兩次認證方式）。",
+ "vendors": {
+  "cols": [
+   "チケットぴあ",
+   "ローチケ",
+   "イープラス（e+）"
+  ],
+  "rows": [
+   [
+    "要不要會員",
+    [
+     "購買與申請都要註冊會員並登錄地址",
+     "抽選一定要會員；一般發售多數不用會員",
+     "要註冊（另有不用會員的購買規約，看各受付）"
+    ]
+   ],
+   [
+    "電話認證",
+    [
+     "用登錄的手機撥打 050 開頭的認證號碼；沒有通話合約的手機打不出去",
+     "2024/8/27 起改成接 03 開頭的來電，聽語音報認證碼",
+     "註冊時輸入手機號碼，再撥打認證號碼"
+    ]
+   ],
+   [
+    "海外門號能不能認證",
+    [
+     "官方沒寫",
+     "官方沒寫",
+     "官方沒寫"
+    ]
+   ],
+   [
+    "海外發行的信用卡",
+    [
+     "官方沒寫（只列卡別）",
+     "官方寫「可能無法使用」",
+     "官方沒寫（寫部分卡片可能不能用）"
+    ]
+   ],
+   [
+    "3D 驗證",
+    [
+     "要（3D Secure 2.0）",
+     "要（3D Secure 2.0）",
+     "官方沒寫"
+    ]
+   ],
+   [
+    "取票方式",
+    [
+     "7-11、全家紙本票，或電子票（MOALA、tixeebox、チケプラ）",
+     "電子票、LAWSON／MINISTOP 的 Loppi 機台、日本郵便寄送",
+     "超商取票、寄送、スマチケ（e+ App）、QR 票"
+    ]
+   ]
+  ],
+  "srcs": [
+   [
+    "チケットぴあ 電話認證",
+    "https://t.pia.jp/guide/tel-auth.jsp"
+   ],
+   [
+    "チケットぴあ 信用卡",
+    "https://t.pia.jp/guide/credit.jsp"
+   ],
+   [
+    "ローチケ 認證方式變更公告",
+    "https://l-tike.com/news/mevent/?mid=730648"
+   ],
+   [
+    "ローチケ 付款方式",
+    "https://l-tike.com/guide/pay.html"
+   ],
+   [
+    "イープラス 使用說明",
+    "https://eplus.jp/sf/guide/service"
+   ]
+  ]
+ },
+ "overseas": [
+  {
+   "name": "看那場演出有沒有開「海外居住者受付」",
+   "text": "三家的官方說明都沒有寫常設的海外購票站。但有些演出會另外開海外受付：ぴあ會逐場開英文販售頁，寫明只收信用卡、到日本 7-11 取票、會場不能取票；e+ 的海外受付寫明只給「不能註冊 e+ 會員的海外居住者」，先搶不抽，用 13 碼取票號碼到日本任何一家 7-11 取票。有沒有開，要看主辦方或藝人官網的購票公告。",
+   "src": "https://anisama.tv/2026/en/tickets/overseastickets.html",
+   "src2": "https://ticket.pia.jp/piasp/inbound/imase25eng.jsp"
+  },
+  {
+   "name": "粉絲俱樂部與經紀公司的公告",
+   "text": "例如 HYBE 系藝人在 Weverse 的海外購票公告，寫明票只能在指定的日本便利商店取。各家規定不同，以那一場的公告為準。",
+   "src": "https://weverse.io/txt/notice/23333"
+  }
+ ],
+ "lottery": [
+  {
+   "name": "抽選（先行抽選、プレオーダー）",
+   "text": "一般發售之前，在受付期間內申請，人多就抽籤決定，不是先搶先贏。結果在各網站的「抽選履歴」「申込み履歴」看。",
+   "src": "https://t.pia.jp/guide/prereserve.jsp"
+  },
+  {
+   "name": "什麼時候扣款",
+   "text": "ぴあ與ローチケ都寫：信用卡付款的話，中選後在「受付結束到結果公布之間」扣款，所以公布前要留意額度。ぴあ寫中選後不能更改或取消；e+ 的扣款時點官方沒寫。",
+   "src": "https://t.pia.jp/guide/prereserve.jsp",
+   "src2": "https://l-tike.com/guide/pay.html"
+  },
+  {
+   "name": "一般發售",
+   "text": "抽選之後剩下的票，先搶先贏。",
+   "src": "https://t.pia.jp/guide/prereserve.jsp"
+  },
+  {
+   "name": "票面印會員姓名",
+   "text": "ぴあ寫中選的票，票面會印登錄的姓名。同一場抽選不能用同一個 email、電話或信用卡重複申請。",
+   "src": "https://t.pia.jp/guide/prereserve.jsp"
+  }
+ ],
+ "apps": [
+  {
+   "name": "ローチケ電子票 App",
+   "text": "要用 SMS 認證，而且要能發「日本國內 SMS」（2024/10 從國際 SMS 改成國內 SMS），SMS 不行可以改用撥號認證。官方另外寫，票顯示過之後再換手機、重裝 App 或換 SIM 卡、eSIM，票就不會再顯示；到日本換旅遊 eSIM 的人要特別注意。",
+   "src": "https://l-tike.com/e-tike/navi/guide/0104/",
+   "src2": "https://l-tike.com/e-tike/navi/guide/entry_method.html"
+  },
+  {
+   "name": "e+ スマチケ",
+   "text": "下載票時要用申請時登錄的電話號碼那支手機撥號認證；登錄的號碼變了就不能下載。官方寫海外的手機依機型可能不能用 スマチケ，截圖也不能入場。",
+   "src": "https://eplus.jp/sf/guide/spticket"
+  },
+  {
+   "name": "チケプラ",
+   "text": "要先有 Plus member ID，再用 SMS 認證手機號碼。",
+   "src": "https://tixplus.jp/feature/eticketapp/guide.html"
+  },
+  {
+   "name": "ぴあ App 與分票給同行者",
+   "text": "App 登入要用登錄的電話認證；同行者要收分配的票，也要是ぴあ會員並完成電話認證。tixeebox 取票要有 SMS 合約的手機。",
+   "src": "https://t.pia.jp/guide/share.jsp",
+   "src2": "https://t.pia.jp/guide/tixeebox.jsp"
+  },
+  {
+   "name": "AnyPASS（avex 系）",
+   "text": "要有 SMS 服務與語音通話合約的手機，票綁申請時登錄的手機號碼。",
+   "src": "https://eplus.jp/sf/s/page/anypass-info"
+  }
+ ],
+ "idcheck": [
+  {
+   "name": "入場會不會查證件",
+   "text": "法律只要求主辦方「努力」確認入場的人就是購票者，具體怎麼查由主辦方決定，所以每一場都不一樣。",
+   "src": "https://www.bunka.go.jp/seisaku/bunka_gyosei/ticket_resale_ban/1420604.html"
+  },
+  {
+   "name": "實例：要帶有照片的證件正本",
+   "text": "以 e+ 上山下達郎 2026 年公演的受付頁為例，列出的有效證件包含護照，要帶有效期內的正本，影本、照片不行；證件不符不能入場，票錢與手續費都不退。",
+   "src": "https://eplus.jp/tatsuro2026/"
+  },
+  {
+   "name": "臉部辨識入場",
+   "text": "e+ 有事前登錄臉部照片、入場時比對的服務，但不是每個受付都有；チケプラ也有手機完成的臉部辨識入場，2026 年有巡演採用。",
+   "src": "https://eplus.jp/sf/web/guide/face_about3"
+  }
+ ],
+ "law": [
+  {
+   "name": "不正轉售是犯罪",
+   "text": "日本的《チケット不正転売禁止法》2019/6/14 施行：未經主辦方同意、以營業方式用高於售價的價格轉賣，就是不正轉售；為了轉賣而買進也禁止。違反可處 1 年以下拘禁刑或 100 萬日圓以下罰金，或兩者併科。只適用在日本國內辦的演出。",
+   "src": "https://laws.e-gov.go.jp/law/430AC1000000103"
+  },
+  {
+   "name": "個人也算",
+   "text": "政府広報寫明：不只業者，個人只要有反覆轉賣的意思、價格高於售價，就屬於不正轉售。",
+   "src": "https://www.gov-online.go.jp/article/201904/entry-8236.html"
+  },
+  {
+   "name": "轉賣來的票可能進不去",
+   "text": "主辦方禁止轉售的話，轉賣來的票可能被判無效、不能入場。政府広報說，透過官方轉售網站用原價轉讓是可以的。",
+   "src": "https://www.gov-online.go.jp/article/201904/entry-8236.html"
+  },
+  {
+   "name": "國民生活センター的提醒",
+   "text": "2026/10/6 的提醒：票要從主辦方、正式授權的售票網、粉絲俱樂部、藝人官網買；搜尋購票網站時，先確認搜尋結果是不是轉售仲介網站，看清楚使用條款、營運公司地址與聯絡方式。",
+   "src": "https://www.kokusen.go.jp/news/data/n-20261006_1.html"
+  }
+ ],
+ "resale": [
+  {
+   "name": "ぴあ リセール",
+   "text": "官方轉售，用當初的售價買，先搶先贏，只收信用卡；買的時候也要完成電話認證。",
+   "src": "https://t.pia.jp/guide/resale-b.jsp"
+  },
+  {
+   "name": "ローチケ リセール",
+   "text": "只有指定的部分公演才有，從電子票 App 出品。",
+   "src": "https://l-tike.com/e-tike/navi/guide/resaletickets.html"
+  }
+ ],
+ "kkday": [
+  {
+   "id": "581944",
+   "name": "日本演唱會與體育賽事場館包車接送",
+   "area": "東京、大阪、名古屋、福岡、札幌等",
+   "note": "單程點對點，東京巨蛋、K Arena 橫濱、京瓷巨蛋大阪、福岡 PayPay 巨蛋、札幌巨蛋等場館；22:00 後另收夜間費。"
+  }
+ ]
+}
