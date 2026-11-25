@@ -24033,7 +24033,6 @@ if os.path.exists('park-ticket.json'):
         _px_items = ''.join(
             f'<tr><td><b>{html.escape(x["name"])}</b>'
             f'{_PT_SM}{html.escape(x["note"])}</small></td>'
-            f'<td>NT${x["from"]:,} – NT${x["to"]:,}</td>'
             f'<td>★ {html.escape(x["star"])}{_PT_SM}{html.escape(x["booked"])} 個已訂購</small></td>'
             f'<td><a href="{html.escape(kkday(x["url"], "park_express"))}" target="_blank" '
             f'rel="nofollow noopener sponsored">到 {html.escape(x["brand"])} 看</a></td></tr>'
@@ -24042,7 +24041,7 @@ if os.path.exists('park-ticket.json'):
           '<h2>快速通關要多少錢</h2>'
           '<p class="lede">迪士尼尊享卡官網有逐項價格，整理在'
           '<a href="/japan-disney-dpa/">迪士尼尊享卡（DPA）</a>；USJ 官網沒有公開價目表，'
-          '這一段先講查得到的規則，價格只能給通路的標價。</p>'
+          '這一段先講查得到的規則，USJ 的價格要到通路上看。</p>'
           '<div class="tw"><table><thead><tr><th>　</th>'
           '<th>東京迪士尼</th><th>USJ</th></tr></thead><tbody>'
           f'<tr><td><b>名稱</b></td><td class="nm">{html.escape(_pxt["name"])}</td>'
@@ -24067,11 +24066,11 @@ if os.path.exists('park-ticket.json'):
           + '等，實際可買的依入場日期而定。</p>'
           + '<h3>通路上買得到的</h3>'
           + f'<p class="lede">{html.escape(_pxc["_說明"])}</p>'
-          + '<div class="tw"><table><thead><tr><th>商品</th><th>價格帶</th>'
+          + '<div class="tw"><table><thead><tr><th>商品</th>'
             '<th>評價</th><th>　</th></tr></thead><tbody>' + _px_items
           + '</tbody></table></div>'
-          + f'<p class="disc">價格帶是 {_pxc["checked"]} 查到的方案區間，'
-            f'依設施數量與日期而不同，實際金額以該平台為準。'
+          + f'<p class="disc">商品名稱與評價查證於 {_pxc["checked"]}，'
+            f'價格依設施數量與日期而不同，以該平台顯示為準。'
             f'這一列是分潤連結，點了本站可獲得分潤，不影響你的價格。'
             f'本站沒有查證過這些商品與樂園官方的價差。</p>')
 
