@@ -2438,7 +2438,7 @@ def adbox(kind, path, slot='foot', page=False):
                   f'<span class="agi">{icon}</span>'
                   f'<span class="agt">'
                 + (f'到 {html.escape(brand)} 看{html.escape(_g.get("go") or "這張票")}'
-                   if len(_g.get('items') or []) == 1 else
+                   if len(_g.get('items') or []) == 1 or _g.get('go') else
                    f'看 {html.escape(brand)} 上全部的{html.escape(title)}'
                    if prods else f'到 {html.escape(brand)} 看')
                 + f'<s>價格與供應狀況以該平台為準</s></span>'
