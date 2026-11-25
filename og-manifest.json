@@ -456,18 +456,6 @@
    "title": "台北飛福岡 NT$4,555 來回含稅｜台灣虎航 12/29 出發"
   },
   {
-   "slug": "deals-2026-11-25-taipei-miyazaki",
-   "url": "/deals/2026-11-25-taipei-miyazaki/",
-   "h1": "台北飛宮崎 NT$4,862 來回含稅｜台灣虎航 12/14 出發",
-   "title": "台北飛宮崎 NT$4,862 來回含稅｜台灣虎航 12/14 出發"
-  },
-  {
-   "slug": "deals-2026-11-25-kaohsiung-fukuoka",
-   "url": "/deals/2026-11-25-kaohsiung-fukuoka/",
-   "h1": "高雄飛福岡 NT$4,943 來回含稅｜台灣虎航 12/29 出發",
-   "title": "高雄飛福岡 NT$4,943 來回含稅｜台灣虎航 12/29 出發"
-  },
-  {
    "slug": "deals-2026-11-25-kaohsiung-okinawa",
    "url": "/deals/2026-11-25-kaohsiung-okinawa/",
    "h1": "高雄飛沖繩 NT$4,993 來回含稅｜台灣虎航 12/29 出發",
@@ -480,6 +468,12 @@
    "title": "台北飛佐賀 NT$5,055 來回含稅｜台灣虎航 12/03 出發"
   },
   {
+   "slug": "deals-2026-11-25-taipei-miyazaki",
+   "url": "/deals/2026-11-25-taipei-miyazaki/",
+   "h1": "台北飛宮崎 NT$5,062 來回含稅｜台灣虎航 12/14 出發",
+   "title": "台北飛宮崎 NT$5,062 來回含稅｜台灣虎航 12/14 出發"
+  },
+  {
    "slug": "deals-2026-11-25-kaohsiung-ishigaki",
    "url": "/deals/2026-11-25-kaohsiung-ishigaki/",
    "h1": "高雄飛石垣島 NT$5,133 來回含稅｜台灣虎航 11/29 出發",
@@ -490,6 +484,12 @@
    "url": "/deals/2026-11-25-taichung-nagoya/",
    "h1": "台中飛名古屋 NT$5,202 來回含稅｜台灣虎航 12/28 出發",
    "title": "台中飛名古屋 NT$5,202 來回含稅｜台灣虎航 12/28 出發"
+  },
+  {
+   "slug": "deals-2026-11-25-kaohsiung-fukuoka",
+   "url": "/deals/2026-11-25-kaohsiung-fukuoka/",
+   "h1": "高雄飛福岡 NT$5,343 來回含稅｜台灣虎航 12/29 出發",
+   "title": "高雄飛福岡 NT$5,343 來回含稅｜台灣虎航 12/29 出發"
   },
   {
    "slug": "deals-2026-11-25-taipei-oita",
@@ -1546,6 +1546,12 @@
    "url": "/tokyo/yakatabune/",
    "h1": "東京屋形船：2 個人也能坐的晚餐遊船",
    "title": "東京屋形船怎麼訂：2 人就能坐的併船 5 家比較、每人 13,000 円起、12 月台場花火"
+  },
+  {
+   "slug": "japan-pachinko",
+   "url": "/japan-pachinko/",
+   "h1": "日本柏青哥：規定、換錢與店內規矩",
+   "title": "日本柏青哥是什麼：18 歲限制、為什麼不能直接換現金、店內規矩（法規原文整理）"
   },
   {
    "slug": "japan-takayama-shirakawago-bus",
