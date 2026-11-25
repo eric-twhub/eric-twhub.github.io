@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-25-taipei-fukuoka",
- "generated": "2026-11-25 00:04",
+ "generated": "2026-11-25 08:01",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 4481,
+  "price": 4181,
   "dep": "2026-12-01",
   "ret": "2026-12-22",
   "dept": "06:45",
@@ -26,10 +26,10 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$7,051（10 天有紀錄），這張低 36%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,121（10 天有紀錄），這張低 41%"
  ],
  "med": 14175,
- "n_rt": 32,
+ "n_rt": 30,
  "others": [
   {
    "o": "TPE",
@@ -38,25 +38,6 @@
    "airname": "台灣虎航",
    "cls": "lcc",
    "price": 5340,
-   "dep": "2026-12-03",
-   "ret": "2026-12-07",
-   "dept": "06:45",
-   "rett": "10:55",
-   "rt": true,
-   "tr": 0,
-   "dur": 300,
-   "dur_to": 135,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-03&inbound=FUK-TPE&returnDate=2026-12-07&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
-  {
-   "o": "TPE",
-   "d": "FUK",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 5398,
    "dep": "2026-12-27",
    "ret": "2027-01-18",
    "dept": "06:45",
@@ -75,9 +56,28 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5857,
-   "dep": "2026-12-29",
-   "ret": "2027-01-05",
+   "price": 5740,
+   "dep": "2026-12-03",
+   "ret": "2026-12-07",
+   "dept": "06:45",
+   "rett": "10:55",
+   "rt": true,
+   "tr": 0,
+   "dur": 300,
+   "dur_to": 135,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-03&inbound=FUK-TPE&returnDate=2026-12-07&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "FUK",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 6104,
+   "dep": "2026-12-01",
+   "ret": "2026-12-05",
    "dept": "13:40",
    "rett": "10:55",
    "rt": true,
@@ -85,7 +85,7 @@
    "dur": 300,
    "dur_to": 135,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-29&inbound=FUK-TPE&returnDate=2027-01-05&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-05&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
