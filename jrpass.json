@@ -34,7 +34,7 @@
       "name": "JR Pass 官方線上預約站",
       "text": "只限在官網線上買 JR Pass 的人，抵達日本前就能先訂新幹線和特急的座位。上車前一定要先到售票機或窗口把劃位票領出來。在海外代理店買兌換券的人用不了，要兌換成 JR Pass 以後才能劃位。",
       "src": "https://japanrailpass.net/purchase/online/",
-      "src_t": "JR Pass 官網・Web で購入",
+      "src_t": "JR Pass 官網・線上購買",
       "src2": "https://japanrailpass.net/purchase/overseas/",
       "src2_t": "海外代理店購入"
     }
@@ -92,18 +92,18 @@
     },
     {
       "name": "沒搭到劃好的那班",
-      "text": "官網沒有寫 JR Pass 錯過劃位車次要怎麼處理。官網寫得到的是：JR Pass 本來就能坐自由席（のぞみ、みずほ除外），上車以後不能改坐指定席。要重新劃位，直接問窗口。",
+      "text": "官網沒有寫 JR Pass 錯過劃位車次要怎麼處理。官網寫得到的是：JR Pass 本來就能坐自由席（希望號、瑞穗號除外），上車以後不能改坐指定席。要重新劃位，直接問窗口。",
       "src": "https://japanrailpass.net/en/use/conditions-for-use/",
       "src_t": "Conditions for use"
     },
     {
       "name": "沒先出劃位票就進站",
-      "text": "JR 東海寫：上車前要先把劃位票出好；沒出就進站的話，請站在普通車的車廂連接處，或改坐ひかり、こだま、さくら、つばめ的自由席。",
+      "text": "JR 東海寫：上車前要先把劃位票出好；沒出就進站的話，請站在普通車的車廂連接處，或改坐光號、回聲號、櫻花號、燕號的自由席。",
       "src": "https://global.jr-central.co.jp/en/nozomi/",
       "src_t": "JR 東海"
     }
   ],
-  "nozomi_rule": "JR Pass 本身不能搭のぞみ和みずほ，連自由席也不行。要搭的話，每搭一次在乘車前另外買一張「【ジャパン・レール・パス専用】のぞみ・みずほ利用券」，綠色車、普通車指定席、普通車自由席同價（含稅）。",
+  "nozomi_rule": "JR Pass 本身不能搭希望號（のぞみ）和瑞穗號（みずほ），連自由席也不行。要搭的話，每搭一次在乘車前另外買一張「【ジャパン・レール・パス専用】のぞみ・みずほ利用券」，綠色車、普通車指定席、普通車自由席同價（含稅）。",
   "nozomi_prices": [
     [
       "東京～名古屋",
@@ -189,7 +189,7 @@
       "src": "https://japanrailpass.net/en/exchange/",
       "src_t": "Exchange / Pick up",
       "src2": "https://japanrailpass.net/purchase/online/",
-      "src2_t": "Web で購入"
+      "src2_t": "官網線上購買"
     }
   ],
   "price_from": "2026-10-01",

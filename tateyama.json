@@ -1,0 +1,184 @@
+{
+  "_說明": "立山黑部阿爾卑斯路線頁 /japan-tateyama-kurobe/。只收 alpen-route.com、touristpass.jp（JR 東海・JR 西日本）原文。2026-11-25 查證。2027 年開通日、雪之大谷、WEB 票開賣、外國人周遊券都還沒公布：2026 年開通日是 2025-12-02 新聞稿首次公布，12 月上旬起回查 alpen-route.com 的 _wp/information 與 news release，公布後填 next 欄位。kurobe-dam.com 回 403。",
+  "checked": "2026-11-25",
+  "season": {
+    "from": "2026-04-15",
+    "to": "2026-11-30"
+  },
+  "next": null,
+  "last_announced": "2025-12-02",
+  "src": {
+    "pr": "https://www.alpen-route.com/_wp/wp-content/uploads/2026/11/1120.pdf",
+    "pr_open": "https://www.alpen-route.com/_wp/wp-content/uploads/2026/04/0415.pdf",
+    "pr_prev": "https://www.alpen-route.com/_wp/wp-content/uploads/2025/12/1202.pdf",
+    "faq": "https://www.alpen-route.com/information/faq.html",
+    "fare": "https://www.alpen-route.com/access_new/fare/person/",
+    "pass": "https://touristpass.jp/en/alpine/",
+    "pass_pdf": "https://touristpass.jp/assets/pdf/points/online/alpine_en.pdf",
+    "parking": "https://www.alpen-route.com/access_new/access/parking.html",
+    "fwd": "https://www.alpen-route.com/information/forwarding.html",
+    "web": "https://www.alpen-route.com/_wp/information/108917",
+    "cal": "https://www.alpen-route.com/information/calendar/",
+    "nov": "https://www.alpen-route.com/_wp/information/153643",
+    "dam": "https://www.alpen-route.com/_wp/information/136779",
+    "enfaq": "https://www.alpen-route.com/en/faq/"
+  },
+  "otani": {
+    "from": "2026-04-15",
+    "to": "2026-06-25",
+    "time": "9:30～15:00",
+    "height": "12 公尺"
+  },
+  "season_list": [
+    {
+      "name": "2026 年營業期間",
+      "text": "4/15 全線開通，11/30 結束。冬天整條路線都不營業。",
+      "src": "https://www.alpen-route.com/_wp/wp-content/uploads/2026/11/1120.pdf",
+      "src_t": "2026/11/20 新聞稿"
+    },
+    {
+      "name": "2027 年什麼時候開",
+      "text": "還沒公布。2026 年的開通日是在 2025/12/2 的新聞稿第一次公布。",
+      "src": "https://www.alpen-route.com/_wp/wp-content/uploads/2025/12/1202.pdf",
+      "src_t": "2025/12/2 新聞稿"
+    },
+    {
+      "name": "雪之大谷（雪牆）",
+      "text": "2026 年步行開放 4/15～6/25，每天 9:30～15:00；開通那天雪牆最高 12 公尺。官網 FAQ 寫活動時間以外走雪之大谷很危險，請不要走。",
+      "src": "https://www.alpen-route.com/_wp/wp-content/uploads/2026/04/0415.pdf",
+      "src_t": "2026/4/15 新聞稿",
+      "src2": "https://www.alpen-route.com/information/faq.html",
+      "src2_t": "FAQ"
+    },
+    {
+      "name": "11 月要注意",
+      "text": "官網寫 11 月富山側的立山高原巴士可能因為下雪停駛，11 月中旬以後可能性非常高，建議從長野側的扇沢進去。2026 年 11/25～11/30 室堂沒有住宿，只能當天來回。",
+      "src": "https://www.alpen-route.com/_wp/information/153643",
+      "src_t": "官網公告"
+    }
+  ],
+  "fares": [
+    [
+      "立山駅 → 扇沢（全線）",
+      10940,
+      5480,
+      19680,
+      9840
+    ],
+    [
+      "立山駅 → 黒部湖",
+      9140,
+      4580,
+      16480,
+      8240
+    ],
+    [
+      "扇沢 → 室堂",
+      6850,
+      3430,
+      12300,
+      6150
+    ]
+  ],
+  "fare_note": "官網寫票價是 2026/2/27 的資料，立山駅～扇沢之間沒有改價計畫。兒童票給小學生，學齡前免費。",
+  "pass": {
+    "name": "Alpine-Takayama-Matsumoto Area Tourist Pass",
+    "adult": 24500,
+    "child": 12250,
+    "days": "連續 5 天",
+    "use_to": "2026-11-10"
+  },
+  "pass_list": [
+    {
+      "name": "誰能買",
+      "text": "只限日本以外發行護照的外國旅客，取票時護照上要有入境時拿到的「短期滞在」章或貼紙。走自動化通關的人要另外請人員蓋章。",
+      "src": "https://touristpass.jp/assets/pdf/points/online/alpine_en.pdf",
+      "src_t": "使用資格"
+    },
+    {
+      "name": "價格與範圍",
+      "text": "大人 24,500 円、兒童 12,250 円（6～11 歲），連續 5 天。含名古屋～富山、信濃大町～名古屋的 JR，和整條立山黑部路線。",
+      "src": "https://touristpass.jp/en/alpine/",
+      "src_t": "touristpass.jp"
+    },
+    {
+      "name": "怎麼買",
+      "text": "在 JR-WEST ONLINE TRAIN RESERVATION 線上預約，乘車前一個月同一天 10:00（日本時間）開放；也可以找海外旅行社。走立山黑部路線前，要拿票到立山駅或扇沢駅窗口換乘車證。",
+      "src": "https://touristpass.jp/en/alpine/",
+      "src_t": "touristpass.jp"
+    },
+    {
+      "name": "2026 年版期間",
+      "text": "使用期間 4/15～11/10，已經結束。2027 年版還沒公布。",
+      "src": "https://touristpass.jp/en/alpine/",
+      "src_t": "touristpass.jp"
+    }
+  ],
+  "ticket": [
+    {
+      "name": "只有兩段要指定乘車時間",
+      "text": "立山駅出發的立山纜車、扇沢出發的關電隧道電氣巴士要指定時間。買 WEB 票可以先選時間；其他預售票和當天票，要當天在車站窗口指定。",
+      "src": "https://www.alpen-route.com/en/faq/",
+      "src_t": "官網英文 FAQ"
+    },
+    {
+      "name": "WEB 票什麼時候開賣",
+      "text": "大約在乘車日前一個月，以 10 天為一批，下午 3 點開賣；例如 2026 年 5/1～5/10 的票是 4/1 下午 3 點開賣。最晚買到乘車前一天下午 3 點。",
+      "src": "https://www.alpen-route.com/_wp/information/108917",
+      "src_t": "WEB 票公告"
+    },
+    {
+      "name": "擁擠的日子",
+      "text": "全線開通到黃金週（4/15～5 月上旬）、盂蘭盆節（8 月中旬）、紅葉季連假（9 月中旬～10 月中旬）特別擠，官網寫可能限制當天來回旅客的當天票。",
+      "src": "https://www.alpen-route.com/information/calendar/",
+      "src_t": "擁擠預測"
+    }
+  ],
+  "car": [
+    {
+      "name": "私家車和租車開不進去",
+      "text": "車子只能開到富山側的立山駅、長野側的扇沢駅，立山駅到扇沢之間不能開車。",
+      "src": "https://www.alpen-route.com/information/faq.html",
+      "src_t": "FAQ"
+    },
+    {
+      "name": "立山駅停車場",
+      "text": "免費約 900 台，擁擠時另開臨時停車場約 600 台（免費）。",
+      "src": "https://www.alpen-route.com/access_new/access/parking.html",
+      "src_t": "停車場（2026 年 4 月資料）"
+    },
+    {
+      "name": "扇沢停車場",
+      "text": "免費 230 台、收費 350 台，收費的 12 小時 1,000 円，自動繳費機只收千圓鈔。擁擠時要停在扇沢前 8 公里的臨時停車場，付 1,000 円協力金，有免費接駁車。",
+      "src": "https://www.alpen-route.com/access_new/access/parking.html",
+      "src_t": "停車場（2026 年 4 月資料）"
+    },
+    {
+      "name": "把車送到另一頭（マイカー回送）",
+      "text": "官網列了 5 家業者，期間 4 月底～11 月，只有立山駅～扇沢，送車大約 5 小時，要付訂金，油錢和收費道路費另計。價格官網沒寫，要打電話問。",
+      "src": "https://www.alpen-route.com/information/forwarding.html",
+      "src_t": "マイカー回送"
+    },
+    {
+      "name": "甲地租乙地還（ワンウェイ・レンタル）",
+      "text": "除了租車費，還要另付甲地租乙地還的費用；立山駅只在營業期間辦。",
+      "src": "https://www.alpen-route.com/information/forwarding.html",
+      "src_t": "官網"
+    }
+  ],
+  "dam": {
+    "from": "06-26",
+    "to": "10-15"
+  },
+  "dam_text": "2026 年黑部水壩觀光放水是 6/26～10/15。時間是 8/1～9/10 6:30～17:00、9/11～10/15 7:00～16:30；6/26～7/31 的開始時間，官網 FAQ 寫 6:00、2026/4/16 的公告寫 6:30，結束都是 17:30。天候不好會停止放水。",
+  "unknown": [
+    "2027 年的全線開通日、雪之大谷步行期間、WEB 票開賣日、外國人周遊券都還沒公布。",
+    "黑部水壩官網本站讀不到，6/26～7/31 放水從 6:00 還是 6:30 開始，官網兩處寫法不同。",
+    "マイカー回送的價格。",
+    "冬天休業期間有沒有任何一段能去：官網只寫營業期間 4/15～11/30。"
+  ],
+  "late": {
+    "from": "2026-11-11",
+    "text": "官網寫 11 月中旬以後富山側的高原巴士很可能因下雪停駛，建議從長野側的扇沢進去；11/25 起室堂沒有住宿，只能當天來回。"
+  }
+}

@@ -30,14 +30,14 @@
     {"name": "網路", "text": "エクスプレス予約、スマートEX、LINEからEX、e5489、JR九州インターネット列車予約都能訂。", "src": "https://railway.jr-central.co.jp/oversized-baggage/", "src_t": "JR 東海"},
     {"name": "車站售票機", "text": "選好列車後，選「特大荷物スペースつき座席」，再從座位圖挑位子。", "src": "https://railway.jr-central.co.jp/oversized-baggage/", "src_t": "JR 東海"},
     {"name": "窗口", "text": "買票時跟站員說要帶特大荷物。", "src": "https://railway.jr-central.co.jp/oversized-baggage/", "src_t": "JR 東海"},
-    {"name": "拿 JR Pass", "text": "JR 東海寫可以在窗口跟站員說，或在 JR Pass 官方線上預約站訂（2020/6/1 起），一樣不用加錢。JR Pass 不能搭のぞみ和みずほ。", "src": "https://global.jr-central.co.jp/en/info/oversized-baggage/", "src_t": "JR 東海（英文）"},
+    {"name": "拿 JR Pass", "text": "JR 東海寫可以在窗口跟站員說，或在 JR Pass 官方線上預約站訂（2020/6/1 起），一樣不用加錢。JR Pass 不能搭希望號和瑞穗號。", "src": "https://global.jr-central.co.jp/en/info/oversized-baggage/", "src_t": "JR 東海（英文）"},
     {"name": "只能坐自由席的周遊券", "text": "JR 西日本另外賣山陽新幹線（新大阪～博多）用的大型行李空間預約券，單程大人 1,000 円、兒童 500 円，要出示周遊券才能買。", "src": "https://www.westjr.co.jp/global/en/ticket/baggage_option/", "src_t": "JR 西日本（英文）"}
   ],
   "seats": [
-    ["のぞみ（16 節）", "57 席", "普通車 45 席：3～6、12～16 號車（每節 5 席）；綠色車 12 席：8～10 號車"],
-    ["ひかり（16 節）", "42 席", "綠色車 12 席、普通車 30 席"],
-    ["こだま（16 節）", "17 席", "綠色車 12 席、普通車 5 席"],
-    ["みずほ・さくら（8 節）", "20 席", "普通車 16 席：4、5、6、8 號車（每節 4 席）；綠色車 4 席：6 號車"]
+    ["希望號（のぞみ）16 節", "57 席", "普通車 45 席：3～6、12～16 號車（每節 5 席）；綠色車 12 席：8～10 號車"],
+    ["光號（ひかり）16 節", "42 席", "綠色車 12 席、普通車 30 席"],
+    ["回聲號（こだま）16 節", "17 席", "綠色車 12 席、普通車 5 席"],
+    ["瑞穗號、櫻花號（みずほ・さくら）8 節", "20 席", "普通車 16 席：4、5、6、8 號車（每節 4 席）；綠色車 4 席：6 號車"]
   ],
   "seats_note": "JR 西日本列的主要列車，九州新幹線、西九州新幹線各列車要看 JR 九州官網。",
   "noresv": [

@@ -1,0 +1,54 @@
+{
+  "_說明": "上高地頁 /japan-kamikochi/。只收長野縣、環境省、上高地公式（kamikochi.or.jp）、Alpico 交通、國土交通省原文。2026-11-25 查證。2027 年開山祭日期、巴士時刻與票價還沒公布，3 月起回查 kamikochi.or.jp/enjoy/events 與 Alpico。沢渡接駁巴士票價上高地官網（3,000/1,600）與 Alpico（2,800/1,500）不同，以營運的 Alpico 為主、兩種並列。濃飛巴士上高地線頁 404（淡季下架），4 月回查。",
+  "checked": "2026-11-25",
+  "season": {"from": "2026-04-17", "to": "2026-11-15"},
+  "closed_to": "2027-04-16",
+  "src": {
+    "pref": "https://www.pref.nagano.lg.jp/shizenhogo/infra/doro/joho/kamikouti.html",
+    "env": "https://chubu.env.go.jp/shinetsu/content/000386720.pdf",
+    "winter": "https://www.kamikochi.or.jp/news/9307/",
+    "events": "https://www.kamikochi.or.jp/enjoy/events/9112/",
+    "sawando": "https://www.kamikochi.or.jp/access/sawando",
+    "akandana": "https://www.kamikochi.or.jp/access/akandana",
+    "taxi": "https://www.kamikochi.or.jp/access/taxi",
+    "faq": "https://www.kamikochi.or.jp/learn/faq",
+    "train": "https://www.kamikochi.or.jp/access/train",
+    "alp_saw": "https://www.alpico.co.jp/traffic/local/kamikochi/sawando/",
+    "alp_nat": "https://www.alpico.co.jp/traffic/local/kamikochi/national/",
+    "alp_end": "https://www.alpico.co.jp/traffic/news/1765/",
+    "mlit": "https://www.ktr.mlit.go.jp/ktr_content/content/000962278.pdf"
+  },
+  "season_list": [
+    {"name": "2026 年開放期間", "text": "4/17～11/15。開山祭 4/27、閉山式 11/15。", "src": "https://chubu.env.go.jp/shinetsu/content/000386720.pdf", "src_t": "環境省 交通規制 2026", "src2": "https://www.kamikochi.or.jp/enjoy/events/9112/", "src2_t": "2026 年活動日程"},
+    {"name": "冬季封閉", "text": "2026/11/16～2027/4/16。這段期間沒有交通、住宿、餐飲服務，巴士全部停駛。", "src": "https://www.kamikochi.or.jp/news/9307/", "src_t": "上高地公式", "src2": "https://www.alpico.co.jp/traffic/news/1765/", "src2_t": "Alpico 停駛公告"},
+    {"name": "冬天能不能走進去", "text": "官網寫冬天入山是自己負責的冬季登山，請避免以觀光為目的進去；要在入口中ノ湯ゲート交登山屆，裝備要和冬山一樣。", "src": "https://www.kamikochi.or.jp/news/9307/", "src_t": "冬期入山ルール"},
+    {"name": "2027 年", "text": "冬季封閉到 2027/4/16。開山祭日期、巴士時刻和票價還沒公布。", "src": "https://www.kamikochi.or.jp/news/9307/", "src_t": "上高地公式"}
+  ],
+  "rule": [
+    {"name": "一般車輛全年不能開進去", "text": "縣道上高地公園線從釜トンネル入口開始，全年禁止一般車輛（包括租車和機車）。開放期間只有巴士、計程車、腳踏車等可以通行。", "src": "https://www.pref.nagano.lg.jp/shizenhogo/infra/doro/joho/kamikouti.html", "src_t": "長野縣（2026/5/22 更新）"},
+    {"name": "可以通行的時間", "text": "4～6 月與 9～11 月 5:00～19:00，7～8 月 5:00～20:00，夜間封閉。坐計程車要算好回程車子通過閘門的時間。", "src": "https://www.pref.nagano.lg.jp/shizenhogo/infra/doro/joho/kamikouti.html", "src_t": "長野縣", "src2": "https://www.kamikochi.or.jp/learn/faq", "src2_t": "上高地 FAQ"}
+  ],
+  "park": [
+    ["沢渡（松本那一側）", "約 2,000 台", "普通車 1 天 800 円", "4/17～11/15，冬天部分封閉；市營停車場 24 小時", "https://www.kamikochi.or.jp/access/sawando"],
+    ["あかんだな（高山、平湯那一側）", "約 850 台", "普通車 24 小時 600 円", "4/17～11/15，冬天封閉；可以刷卡和電子錢包，不收 QR 碼支付；下午 5 點後可能沒有計程車", "https://www.kamikochi.or.jp/access/akandana"]
+  ],
+  "bus": [
+    {"name": "沢渡 ⇔ 上高地接駁巴士（Alpico）", "text": "單程大人 1,500 円、兒童 750 円；來回 2,800 円、1,400 円，回程 7 天內有效。大人 4 人以上同行來回每人 2,500 円。上高地官網寫的是來回 3,000 円、單程 1,600 円，和營運的 Alpico 不一樣。", "src": "https://www.alpico.co.jp/traffic/local/kamikochi/sawando/", "src_t": "Alpico", "src2": "https://www.kamikochi.or.jp/access/sawando", "src2_t": "上高地官網"},
+    {"name": "兒童和幼兒", "text": "Alpico 的巴士 6～12 歲未滿（小學生）半價；1～6 歲未滿的幼兒也要付半價、坐座位；1 歲未滿免費。", "src": "https://www.alpico.co.jp/traffic/local/kamikochi/sawando/", "src_t": "Alpico"},
+    {"name": "松本直達（ナショナルパークライナー）", "text": "松本巴士總站直達，預約優先，乘車日一個月前同一天 0 點開放預約；沒有來回票，要買兩張單程。", "src": "https://www.alpico.co.jp/traffic/local/kamikochi/national/", "src_t": "Alpico"},
+    {"name": "從高山去", "text": "高山駅、高山濃飛巴士中心搭路線巴士到平湯約 1 小時，平湯換接駁巴士到上高地約 25 分。", "src": "https://www.kamikochi.or.jp/access/train", "src_t": "上高地官網"}
+  ],
+  "taxi": [
+    ["沢渡上區 → 上高地巴士總站", "5,400 円"],
+    ["沢渡下區 → 上高地巴士總站", "6,000 円"],
+    ["平湯溫泉區 → 上高地巴士總站", "最多 6,000 円，另加安房隧道 1,580 円"]
+  ],
+  "taxi_note": "普通車（含司機 6 人以下）單程定額，最晚 18:00 上車。",
+  "road": {"name": "松本開車往沢渡：國道 158 號施工", "text": "新入山隧道封閉，入山隧道全天單線輪流通行，期間 2026/11/4～2027 年 4 月下旬（週末假日也一樣）。", "src": "https://www.ktr.mlit.go.jp/ktr_content/content/000962278.pdf", "src_t": "國土交通省 長野國道事務所", "to": "2027-04-30"},
+  "unknown": [
+    "2027 年開山祭日期、巴士時刻和票價。",
+    "沢渡接駁巴士票價：上高地官網和 Alpico 寫的不一樣。",
+    "あかんだな接駁巴士與高山～平湯路線巴士的票價：濃飛巴士的路線頁目前打不開。",
+    "從沢渡、平湯以外的地方搭計程車進去要多少錢。"
+  ]
+}

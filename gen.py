@@ -1890,6 +1890,8 @@ def topnav(cur=''):
             + link('/tokyo/yakatabune/', '🏮 東京屋形船怎麼訂')
             + link('/japan-pachinko/', '🎰 柏青哥的規定與規矩')
             + link('/japan-game-center/', '🧸 日本夾娃娃與遊戲中心')
+            + link('/japan-tateyama-kurobe/', '🏔️ 立山黑部開放時間與交通')
+            + link('/japan-kamikochi/', '🌲 上高地開放時間與怎麼去')
             + link('/japan-ghibli-park/', '🌳 吉卜力公園門票怎麼買')
             + link('/japan-ghibli-museum/', '🏛️ 吉卜力美術館門票怎麼買')
             + link('/japan-chiikawa-park/', '🐹 吉伊卡哇樂園門票怎麼買')
@@ -1961,7 +1963,7 @@ def topnav(cur=''):
             + '<hr><b>訂房與交通</b>'
             + link('/hotel-price-check/', '🏨 訂房比價')
             + link('/japan-airport-last-train/', '🚉 機場末班車')
-            + link('/japan-jr-pass/', '🚄 JR Pass 劃位與のぞみ')
+            + link('/japan-jr-pass/', '🚄 JR Pass 劃位與希望號')
             + link('/japan-shinkansen-luggage/', '🧳 新幹線帶大行李箱')
             + '<hr><b>上網與門號</b>'
             + link('/japan-esim/', '📱 日本 eSIM 比較')
@@ -2194,6 +2196,7 @@ _AD_MAP = [
     ('japan-payment', 'esim'),
     ('japan-transit-card', 'transport'),
     ('japan-jr-pass', 'transport'), ('japan-shinkansen-luggage', 'transport'),
+    ('japan-tateyama-kurobe', 'activity'), ('japan-kamikochi', 'activity'),
     ('taiwan-airport-parking', 'transfer'),
     ('japan-flight-fuji', 'activity2'),
     ('hotel-price-check', 'transfer'), ('threads-japan', 'activity2'),
@@ -3286,7 +3289,7 @@ _STK_PREFIX = sorted({
     '/tokyo/63angel/': 'st/girl', '/okinawa/churasun6/': 'st/girl', '/tokyo/superspark/': 'st/girl',
     '/sapporo/jolijo/': 'st/girl', '/osaka/splash/': 'st/girl', '/osaka/burlesque/': 'st/girl', '/nagoya/burlesque/': 'st/girl', '/tokyo/rockza/': 'st/girl', '/tokyo/samurai-restaurant/': 'st/samurai',
     '/japan-burton-rental/': 'st/skier', '/japan-ski-': 'st/skier',
-    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-maid-cafe/': 'st/omurice', '/tokyo/yakatabune/': 'st/yakata', '/japan-pachinko/': 'st/pachinko', '/japan-game-center/': 'st/claw', '/japan-jr-pass/': 'st/shinkansen', '/japan-shinkansen-luggage/': 'st/shinkansen', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
+    '/japan-sumo/': 'st/sumo', '/japan-kabuki/': 'st/samurai', '/japan-concert-ticket/': 'st/lights', '/japan-npb-ticket/': 'st/baseball', '/japan-tattoo-onsen/': 'st/rotenburo', '/japan-keiba/': 'st/horse', '/japan-maid-cafe/': 'st/omurice', '/tokyo/yakatabune/': 'st/yakata', '/japan-pachinko/': 'st/pachinko', '/japan-game-center/': 'st/claw', '/japan-jr-pass/': 'st/shinkansen', '/japan-shinkansen-luggage/': 'st/shinkansen', '/japan-tateyama-kurobe/': 'st/alps', '/japan-kamikochi/': 'st/alps', '/japan-ghibli-': 'st/forest', '/japan-pokemon-cafe/': 'st/cafe',
     '/japan-pokepark-kanto/': 'st/ferris', '/japan-park-ticket/': 'st/ferris',
     '/japan-nintendo-museum/': 'st/gamepad', '/japan-fujiko-museum/': 'st/museum',
     '/japan-harry-potter-tokyo/': 'st/owl', '/japan-shibuya-sky/': 'st/rooftop',
@@ -34962,10 +34965,10 @@ if os.path.exists('jrpass.json'):
          '可以。在指定席售票機掃 JR Pass 上的 QR 碼或輸入識別號碼，再輸入護照號碼就能劃位出票；有些車站沒有這種售票機，也可以去みどりの窓口。'),
         ('JR Pass 最早什麼時候可以劃位？',
          f'{JRP["open_hint"]}（日本時間）。官網線上買 JR Pass 的人，抵達日本前就能在官方線上預約站先劃位，上車前再到車站領票。'),
-        ('JR Pass 可以搭のぞみ嗎？',
-         f'JR Pass 本身不能搭のぞみ和みずほ，連自由席也不行。要搭的話每次另買「のぞみ・みずほ利用券」，例如東京到新大阪 {_jp_y(_jp_tokyo_osaka)}，只能在日本的售票機或窗口買。'),
+        ('JR Pass 可以搭希望號嗎？',
+         f'JR Pass 本身不能搭希望號（のぞみ）和瑞穗號（みずほ），連自由席也不行。要搭的話每次另買「のぞみ・みずほ利用券」，例如東京到新大阪 {_jp_y(_jp_tokyo_osaka)}，只能在日本的售票機或窗口買。'),
         ('JR Pass 劃位後沒搭到怎麼辦？',
-         'JR Pass 官網沒有寫錯過劃位車次的專門規定。JR Pass 本來就能坐自由席（のぞみ、みずほ除外），上車以後不能改坐指定席；要重新劃位，直接問窗口。改班次或取消要在發車前辦，已經出票的要去窗口。'),
+         'JR Pass 官網沒有寫錯過劃位車次的專門規定。JR Pass 本來就能坐自由席（希望號、瑞穗號除外），上車以後不能改坐指定席；要重新劃位，直接問窗口。改班次或取消要在發車前辦，已經出票的要去窗口。'),
         ('走自動化通關沒蓋章，還能換 JR Pass 嗎？',
          'JR Pass 只給護照有「短期滞在」章或貼紙的人換。官網寫走自動化閘門時要走有人員的那一道，或向人員申請蓋章或貼紙；拿日本「特定登録者カード」的人出示卡片就可以。'),
     ]
@@ -34973,19 +34976,19 @@ if os.path.exists('jrpass.json'):
                          'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in _jp_faq]},
                         ensure_ascii=False)
     write('japan-jr-pass/index.html',
-      head('JR Pass 劃位教學：售票機、窗口、線上怎麼劃，取消、沒搭到與のぞみ怎麼辦（官網整理）',
+      head('JR Pass 劃位教學：售票機、窗口、線上怎麼劃，取消、沒搭到與希望號怎麼辦（官網整理）',
            f'JR Pass（全國版）劃位不用加錢、一張最多 {JRP["seat_cap"]} 班；售票機掃 QR 加護照號碼、みどりの窓口、官網線上預約站三種方法，'
-           f'乘車日前一個月 10:00 開放。のぞみ・みずほ要另買利用券（東京到新大阪 {_jp_y(_jp_tokyo_osaka)}），自動化通關要補「短期滞在」章，'
+           f'乘車日前一個月 10:00 開放。希望號、瑞穗號要另買利用券（東京到新大阪 {_jp_y(_jp_tokyo_osaka)}），自動化通關要補「短期滞在」章，'
            f'2026/10/1 起海外代理店比官網貴 {_jp_gap7:,} 円。',
            'japan-jr-pass/',
            '<script type="application/ld+json">' + _jp_ld + '</script>' + _jp_css)
       + topnav() + crumbs([('首頁', '/'), ('JR Pass 劃位', None)])
-      + '<h1>JR Pass 劃位教學：怎麼劃、取消與のぞみ</h1>'
+      + '<h1>JR Pass 劃位教學：怎麼劃、取消與搭希望號</h1>'
       + '<p class="lede">JR Pass（ジャパン・レール・パス，全國版）可以免費劃新幹線和特急的指定席，'
         '劃位有售票機、窗口、官方線上預約站三種方法，各有限制。下面整理 JR Pass 官網和 JR 東海寫的規則，'
         f'查證於 {JRP["checked"]}。</p>'
       + f'<div class="today"><div class="tday">劃位要多少錢</div><div class="tans">不用加錢，一張最多 {JRP["seat_cap"]} 班</div>'
-        f'<div class="tsub">のぞみ和みずほ例外：每次要另買利用券，東京到新大阪 {_jp_y(_jp_tokyo_osaka)}。</div></div>'
+        f'<div class="tsub">希望號和瑞穗號例外：每次要另買利用券，東京到新大阪 {_jp_y(_jp_tokyo_osaka)}。</div></div>'
       + '<div class="tldr"><ul>'
         '<li><b>售票機最快</b>：掃 JR Pass 的 QR 碼，再輸入護照號碼。</li>'
         '<li><b>官網線上買的才能先在網路劃位</b>：在海外代理店買兌換券的，要換成 JR Pass 才能劃。</li>'
@@ -34996,7 +34999,7 @@ if os.path.exists('jrpass.json'):
       + f'<p>{html.escape(JRP["hours"])}{html.escape(JRP["hours_note"])}（{_jp_lk(JRP["src"]["seat"], "JR Pass 官網・指定席予約")}）</p>'
       + '<h2>次數上限與劃不到的情況</h2>' + _jp_list(JRP['limits'])
       + '<h2>改班次、取消、沒搭到</h2>' + _jp_list(JRP['change'])
-      + '<h2>のぞみ・みずほ要另買利用券</h2><p>' + html.escape(JRP['nozomi_rule']) + '</p>' + _jp_noz_tbl
+      + '<h2>希望號、瑞穗號要另買利用券</h2><p>' + html.escape(JRP['nozomi_rule']) + '</p>' + _jp_noz_tbl
       + f'<p class="disc">只列官網的主要區間，全部區間看 {_jp_lk(JRP["src"]["nozomi"], "JR Pass 官網")}。</p>'
       + _jp_list(JRP['nozomi'])
       + '<h2>帶大行李箱要劃特別的座位</h2>'
@@ -35012,7 +35015,7 @@ if os.path.exists('jrpass.json'):
       + f'<p class="disc">規定以 JR Pass 官網與車站公告為準，查證於 {JRP["checked"]}。</p>'
       + foot())
     pages.append(('/japan-jr-pass/', 0.6))
-    print('   JR Pass 劃位頁：のぞみ區間', len(JRP['nozomi_prices']), '個')
+    print('   JR Pass 劃位頁：希望號區間', len(JRP['nozomi_prices']), '個')
 
 # ---------- 新幹線大型行李 ----------
 # 資料在 shinkansen-luggage.json，只收 JR 東海、JR 西日本官網與新聞稿。
@@ -35067,7 +35070,7 @@ if os.path.exists('shinkansen-luggage.json'):
         ('新幹線沒預約大型行李會怎樣？',
          f'JR 東海寫會收 {_sl_fee}（含稅）手續費；JR 西日本的問答寫，沒預約的列車不能帶特大荷物上車。自由席不能放特大荷物。'),
         ('JR Pass 可以訂新幹線大型行李座位嗎？',
-         'JR 東海寫可以，在窗口跟站員說，或在 JR Pass 官方線上預約站訂，不用加錢。JR Pass 不能搭のぞみ和みずほ。'),
+         'JR 東海寫可以，在窗口跟站員說，或在 JR Pass 官方線上預約站訂，不用加錢。JR Pass 不能搭希望號和瑞穗號。'),
         ('東北新幹線、北陸新幹線帶大行李要預約嗎？',
          'JR 西日本寫只有東海道、山陽、九州、西九州新幹線要預約。JR 東日本自己的說明本站讀不到。'),
         ('新幹線預約大型行李座位後沒搭到怎麼辦？',
@@ -35112,6 +35115,168 @@ if os.path.exists('shinkansen-luggage.json'):
       + foot())
     pages.append(('/japan-shinkansen-luggage/', 0.6))
     print('   新幹線大型行李頁：列車', len(SKL['seats']), '種')
+
+# ---------- 立山黑部、上高地（季節開放的山岳路線） ----------
+# 資料在 tateyama.json、kamikochi.json。兩處冬天都關，頂部框依今天落在哪一段自動切：
+# 營業中／已結束且下一季未公布／下一季已公布倒數。下一季公布後只要填 next（立山）或改 season、closed_to（上高地）。
+_alp_tw = datetime.timezone(datetime.timedelta(hours=9))
+_alp_today = NOW.astimezone(_alp_tw).date()
+_alp_d = lambda s: datetime.date.fromisoformat(s)
+_alp_md = lambda d: f'{d.month}/{d.day}'
+_alp_ymd = lambda d: f'{d.year}/{d.month}/{d.day}'
+_alp_lk = lambda u, t='官網': f'<a href="{html.escape(u)}" target="_blank" rel="nofollow noopener">{html.escape(t)}</a>'
+
+
+def _alp_list(xs):
+    return '<ul class="xl">' + ''.join(
+        f'<li><div class="xh"><span class="xn">{html.escape(x["name"])}</span></div>'
+        f'<div class="xt">{html.escape(x["text"])}</div>'
+        + (f'<div class="xw">{_alp_lk(x["src"], x.get("src_t", "出處"))}'
+           + (f'・{_alp_lk(x["src2"], x.get("src2_t", "出處 2"))}' if x.get('src2') else '') + '</div>' if x.get('src') else '')
+        + '</li>' for x in xs) + '</ul>'
+
+
+def _alp_ld(faq):
+    return '<script type="application/ld+json">' + json.dumps(
+        {'@context': 'https://schema.org', '@type': 'FAQPage',
+         'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in faq]},
+        ensure_ascii=False) + '</script>'
+
+
+if os.path.exists('tateyama.json'):
+    TY = json.load(open('tateyama.json', encoding='utf-8'))
+    _ty_f, _ty_t = _alp_d(TY['season']['from']), _alp_d(TY['season']['to'])
+    _ty_next = _alp_d(TY['next']) if TY.get('next') else None
+    _ty_yr = _ty_f.year + 1
+    if _ty_f <= _alp_today <= _ty_t:
+        _n = (_ty_t - _alp_today).days
+        _ty_tday, _ty_tans = f'{_ty_f.year} 年營業中', f'到 {_alp_md(_ty_t)}' + ('，今天最後一天' if _n == 0 else f'（還有 {_n} 天）')
+        _ty_tsub = '立山駅到扇沢之間不能開車，車子停在兩端的停車場。'
+        if TY.get('late') and _alp_d(TY['late']['from']) <= _alp_today:
+            _ty_tsub = TY['late']['text']
+    elif _ty_next and _alp_today < _ty_next:
+        _ty_tday, _ty_tans = f'{_ty_next.year} 年全線開通', f'{_alp_ymd(_ty_next)}（還有 {(_ty_next - _alp_today).days} 天）'
+        _ty_tsub = '冬天整條路線不營業，開通前每一段都去不了。'
+    elif not _ty_next and _alp_today >= datetime.date(_ty_yr, 4, 1):
+        _ty_tday, _ty_tans = '新一季的營業期間', '看立山黑部官網'
+        _ty_tsub = '本頁的開通日期還沒更新到新的一季。'
+    else:
+        _ty_tday = '現在冬季休業'
+        _ty_tans = f'{_ty_f.year} 年已在 {_alp_md(_ty_t)} 結束，{_ty_yr} 年開通日還沒公布'
+        _ty_tsub = f'{_ty_f.year} 年是 {_alp_md(_ty_f)} 全線開通，這個日期在 {_alp_ymd(_alp_d(TY["last_announced"]))} 公布。'
+    _ty_y = lambda n: f'{n:,} 円'
+    _ty_fare_tbl = ('<div class="tw"><table><thead><tr><th>區間</th><th>單程</th><th>來回</th></tr></thead><tbody>'
+                    + ''.join(f'<tr><td>{html.escape(r[0])}</td><td>大人 {_ty_y(r[1])}<br><small>兒童 {_ty_y(r[2])}</small></td>'
+                              f'<td>大人 {_ty_y(r[3])}<br><small>兒童 {_ty_y(r[4])}</small></td></tr>' for r in TY['fares'])
+                    + '</tbody></table></div>')
+    _ty_full = TY['fares'][0]
+    _ty_ot = TY['otani']
+    _ty_faq = [
+        ('立山黑部什麼時候開放？',
+         f'{_ty_f.year} 年是 {_alp_md(_ty_f)} 全線開通、{_alp_md(_ty_t)} 結束，冬天整條路線不營業。'
+         + (f'{_ty_next.year} 年是 {_alp_ymd(_ty_next)} 開通。' if _ty_next else f'{_ty_yr} 年的開通日還沒公布。')),
+        ('立山黑部雪牆什麼時候可以走？',
+         f'{_ty_f.year} 年雪之大谷步行開放 {_alp_md(_alp_d(_ty_ot["from"]))}～{_alp_md(_alp_d(_ty_ot["to"]))}，每天 {_ty_ot["time"]}，'
+         f'開通那天雪牆最高 {_ty_ot["height"]}。活動時間以外官網請大家不要走。'),
+        ('立山黑部全程票價多少？',
+         f'立山駅到扇沢單程大人 {_ty_y(_ty_full[1])}、兒童 {_ty_y(_ty_full[2])}；來回大人 {_ty_y(_ty_full[3])}。兒童票給小學生，學齡前免費。'),
+        ('立山黑部可以開車或租車嗎？',
+         '車子只能開到富山側的立山駅、長野側的扇沢駅，中間不能開車。要把車送到另一頭，可以找官網列的マイカー回送業者，大約 5 小時，價格要打電話問。'),
+        ('外國人有立山黑部的周遊券嗎？',
+         f'JR 東海與 JR 西日本有「{TY["pass"]["name"]}」，大人 {_ty_y(TY["pass"]["adult"])}、{TY["pass"]["days"]}，含名古屋出發的 JR 和整條立山黑部路線，'
+         '只限日本以外發行護照、入境拿到「短期滞在」章的旅客。'),
+    ]
+    write('japan-tateyama-kurobe/index.html',
+      head(f'立山黑部開放時間 {_ty_yr}：雪牆、票價、能不能開車與外國人周遊券（官網整理）',
+           f'立山黑部阿爾卑斯路線 {_ty_f.year} 年 {_alp_md(_ty_f)}～{_alp_md(_ty_t)} 營業，{_ty_yr} 年開通日公布後自動更新；雪之大谷步行期間、'
+           f'立山駅到扇沢單程 {_ty_y(_ty_full[1])}、只有兩段要指定時間、私家車開不進去與停車場、マイカー回送、外國人專用周遊券 {_ty_y(TY["pass"]["adult"])}。',
+           'japan-tateyama-kurobe/', _alp_ld(_ty_faq))
+      + topnav() + crumbs([('首頁', '/'), ('立山黑部', None)])
+      + '<h1>立山黑部：開放時間、雪牆與交通</h1>'
+      + '<p class="lede">立山黑部阿爾卑斯路線（立山黒部アルペンルート）從富山的立山駅到長野的扇沢，'
+        '要換纜車、巴士、空中纜車等交通工具，私家車開不進去，冬天整條路線休業。'
+        f'下面整理官網和 JR 寫的規則，查證於 {TY["checked"]}。</p>'
+      + f'<div class="today"><div class="tday">{_ty_tday}</div><div class="tans">{html.escape(_ty_tans)}</div><div class="tsub">{html.escape(_ty_tsub)}</div></div>'
+      + '<div class="tldr"><ul>'
+        f'<li><b>雪牆只在春天</b>：{_ty_f.year} 年是 {_alp_md(_alp_d(_ty_ot["from"]))}～{_alp_md(_alp_d(_ty_ot["to"]))}。</li>'
+        '<li><b>車子停在兩端</b>：立山駅、扇沢之間不能開車。</li>'
+        '<li><b>只有兩段要指定時間</b>：立山駅出發的纜車、扇沢出發的電氣巴士。</li>'
+        '</ul></div>'
+      + '<h2>什麼時候開</h2>' + _alp_list(TY['season_list'])
+      + '<h2>票價</h2>' + _ty_fare_tbl
+      + f'<p>{html.escape(TY["fare_note"])}（{_alp_lk(TY["src"]["fare"], "官網票價")}）</p>'
+      + '<h2>外國人專用周遊券</h2>' + _alp_list(TY['pass_list'])
+      + '<h2>買票與指定時間</h2>' + _alp_list(TY['ticket'])
+      + '<h2>開車、租車怎麼辦</h2>' + _alp_list(TY['car'])
+      + f'<h2>黑部水壩觀光放水</h2><p>{html.escape(TY["dam_text"])}（{_alp_lk(TY["src"]["faq"], "FAQ")}・{_alp_lk(TY["src"]["dam"], "官網公告")}）</p>'
+      + '<h2>官方還沒寫或寫法不同的事</h2><ul class="pick">' + ''.join(f'<li>{html.escape(x)}</li>' for x in TY['unknown']) + '</ul>'
+      + '<p>同一趟常順便去的：<a href="/japan-kamikochi/">上高地</a>、<a href="/japan-takayama-shirakawago-bus/">高山到白川鄉巴士</a>。</p>'
+      + faq_visible(_ty_faq)
+      + f'<p class="disc">以立山黑部阿爾卑斯路線官網與 JR 公告為準，查證於 {TY["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-tateyama-kurobe/', 0.6))
+    print('   立山黑部頁：', _ty_tday, _ty_tans)
+
+if os.path.exists('kamikochi.json'):
+    KK = json.load(open('kamikochi.json', encoding='utf-8'))
+    _kk_f, _kk_t, _kk_c = _alp_d(KK['season']['from']), _alp_d(KK['season']['to']), _alp_d(KK['closed_to'])
+    if _kk_f <= _alp_today <= _kk_t:
+        _n = (_kk_t - _alp_today).days
+        _kk_tday, _kk_tans = f'{_kk_f.year} 年開放中', f'到 {_alp_md(_kk_t)}' + ('，今天最後一天' if _n == 0 else f'（還有 {_n} 天）')
+        _kk_tsub = '私家車和租車開不進去，從沢渡或あかんだな停車場換巴士或計程車。'
+    elif _kk_t < _alp_today <= _kk_c:
+        _kk_tday, _kk_tans = '現在冬季封閉', f'到 {_alp_ymd(_kk_c)}（還有 {(_kk_c - _alp_today).days} 天）'
+        _kk_tsub = '封閉期間沒有巴士、住宿和餐飲，只有自己負責的冬季登山。'
+    else:
+        _kk_tday, _kk_tans = '新一季的開放期間', '看上高地官網'
+        _kk_tsub = '本頁的開放日期還沒更新到新的一季。'
+    _kk_park_tbl = ('<div class="tw"><table><thead><tr><th>停車場</th><th>台數</th><th>停車費</th><th>備註</th></tr></thead><tbody>'
+                    + ''.join(f'<tr><td>{_alp_lk(p[4], p[0])}</td><td>{html.escape(p[1])}</td><td>{html.escape(p[2])}</td><td>{html.escape(p[3])}</td></tr>' for p in KK['park'])
+                    + '</tbody></table></div>')
+    _kk_taxi_tbl = ('<div class="tw"><table><thead><tr><th>區間</th><th>普通車單程</th></tr></thead><tbody>'
+                    + ''.join(f'<tr><td>{html.escape(a)}</td><td>{html.escape(b)}</td></tr>' for a, b in KK['taxi'])
+                    + '</tbody></table></div>')
+    _kk_road = KK['road'] if _alp_today <= _alp_d(KK['road']['to']) else None
+    _kk_faq = [
+        ('上高地什麼時候開放？',
+         f'{_kk_f.year} 年是 {_alp_md(_kk_f)}～{_alp_md(_kk_t)}，冬季封閉到 {_alp_ymd(_kk_c)}。封閉期間沒有巴士、住宿和餐飲。'),
+        ('上高地可以開車進去嗎？',
+         '不行。縣道上高地公園線從釜トンネル開始全年禁止一般車輛，租車和機車也一樣。松本那一側停沢渡、高山那一側停あかんだな，再換巴士或計程車。'),
+        ('上高地冬天可以去嗎？',
+         '官網寫冬天入山是自己負責的冬季登山，請避免以觀光為目的進去，要在中ノ湯ゲート交登山屆。'),
+        ('沢渡到上高地巴士多少錢？',
+         '營運的 Alpico 寫單程大人 1,500 円、來回 2,800 円；上高地官網寫來回 3,000 円、單程 1,600 円，兩邊不一樣。'),
+        ('上高地可以坐計程車進去嗎？',
+         '可以，開放期間計程車能通行。沢渡、平湯出發有定額價格，例如沢渡上區到上高地巴士總站 5,400 円，最晚 18:00 上車。'),
+    ]
+    write('japan-kamikochi/index.html',
+      head(f'上高地開放時間與交通：{_kk_f.year} 年 {_alp_md(_kk_f)}～{_alp_md(_kk_t)}、冬季封閉、不能開車怎麼去（官網整理）',
+           f'上高地 {_kk_f.year} 年開放 {_alp_md(_kk_f)}～{_alp_md(_kk_t)}，冬季封閉到 {_alp_ymd(_kk_c)}；私家車和租車全年不能開進去，'
+           '沢渡、あかんだな停車場與接駁巴士票價、計程車定額、松本與高山怎麼搭、冬天能不能進去。',
+           'japan-kamikochi/', _alp_ld(_kk_faq))
+      + topnav() + crumbs([('首頁', '/'), ('上高地', None)])
+      + '<h1>上高地：開放時間與怎麼去</h1>'
+      + '<p class="lede">上高地在長野縣松本市，春天到秋天開放，冬天封閉。一般車輛全年不能開進去，'
+        f'要停在外面的停車場換巴士或計程車。下面整理長野縣、上高地官網和巴士公司寫的規則，查證於 {KK["checked"]}。</p>'
+      + f'<div class="today"><div class="tday">{_kk_tday}</div><div class="tans">{html.escape(_kk_tans)}</div><div class="tsub">{html.escape(_kk_tsub)}</div></div>'
+      + '<div class="tldr"><ul>'
+        '<li><b>開不進去</b>：租車也一樣，停沢渡或あかんだな。</li>'
+        '<li><b>冬天封閉</b>：沒有巴士、住宿和餐飲。</li>'
+        '<li><b>巴士票價兩種寫法</b>：營運的 Alpico 和上高地官網不一樣。</li>'
+        '</ul></div>'
+      + '<h2>什麼時候開</h2>' + _alp_list(KK['season_list'])
+      + '<h2>不能開車進去</h2>' + _alp_list(KK['rule'])
+      + ('<h3>現在要注意的施工</h3>' + _alp_list([_kk_road]) if _kk_road else '')
+      + '<h2>停哪裡</h2>' + _kk_park_tbl
+      + '<h2>巴士</h2>' + _alp_list(KK['bus'])
+      + '<h2>計程車</h2>' + _kk_taxi_tbl + f'<p>{html.escape(KK["taxi_note"])}（{_alp_lk(KK["src"]["taxi"], "上高地官網")}）</p>'
+      + '<h2>官方還沒寫或寫法不同的事</h2><ul class="pick">' + ''.join(f'<li>{html.escape(x)}</li>' for x in KK['unknown']) + '</ul>'
+      + '<p>同一趟常順便去的：<a href="/japan-tateyama-kurobe/">立山黑部</a>、<a href="/japan-takayama-shirakawago-bus/">高山到白川鄉巴士</a>。</p>'
+      + faq_visible(_kk_faq)
+      + f'<p class="disc">以長野縣、上高地官網與巴士公司公告為準，查證於 {KK["checked"]}。</p>'
+      + foot())
+    pages.append(('/japan-kamikochi/', 0.6))
+    print('   上高地頁：', _kk_tday, _kk_tans)
 
 # ---------- 遊戲中心與夾娃娃 ----------
 # 資料在 game-center.json，只收風營法原文、警察廳解釋運用基準、JAIA 指引、各縣條例與連鎖店官網。
@@ -36664,6 +36829,8 @@ SEARCH_SYN = [
     ['女僕', '女僕咖啡', '女僕咖啡廳', '女仆咖啡', '女仆咖啡厅', '女僕餐廳', 'メイドカフェ', 'メイド喫茶', 'maid cafe', 'maidcafe', 'maidreamin', 'めいどりーみん', 'at-home cafe', 'あっとほぉーむカフェ', '萌え萌えキュン', '萌萌揪', '秋葉原女僕'],
     ['柏青哥', '小鋼珠', '小钢珠', 'パチンコ', 'ぱちんこ', 'pachinko', '柏青嫂', '柏青哥店', '日本柏青哥', 'パチスロ', '柏青斯洛', '彈珠機', '弹珠机', '三店方式'],
     ['夾娃娃', '夹娃娃', '娃娃機', '娃娃机', '夾娃娃機', '夹娃娃机', '抓娃娃', '夾公仔', '夹公仔', '保夾', '保夹', 'クレーンゲーム', 'UFOキャッチャー', 'ufoキャッチャー', 'プライズ', '景品', 'ゲームセンター', 'ゲーセン', 'game center', 'gamecenter', '遊戲中心', '游戏中心', '遊樂場', '電玩中心', '电玩中心', '電子遊樂場', '大型電玩', 'arcade', 'GiGO', 'gigo', 'ギーゴ', 'ラウンドワン', 'Round1', 'round1', 'round 1', 'ナムコ', 'namco', 'タイトー', 'taito', 'taito station', 'タイトーステーション', '代幣', 'メダルゲーム', '線上夾娃娃', 'オンクレ'],
+    ['立山黑部', '立山黒部', '立山黑部阿爾卑斯路線', '立山黒部アルペンルート', 'アルペンルート', 'alpine route', 'tateyama', 'tateyama kurobe', '黑部立山', '黑部水壩', '黒部ダム', '黑部峽谷', '雪之大谷', '雪の大谷', '雪牆', '雪墙', '雪壁', '室堂', '扇沢', '扇澤', '立山駅', '立山站', '立山黑部開山'],
+    ['上高地', 'かみこうち', 'kamikochi', '河童橋', '大正池', '沢渡', '澤渡', 'さわんど', 'あかんだな', '平湯', '釜トンネル', '明神池'],
     ['屋形船', 'やかたぶね', 'yakatabune', '屋型船', '東京灣遊船', '東京灣晚餐', '隅田川遊船', '隅田川屋形船', '晚餐遊船', '東京遊船晚餐'],
     ['賽馬', '赛马', '競馬', '竞马', '賭馬', '馬券', '马券', '買馬券', '有馬記念', '有馬紀念', '有马记念', '日本盃', '日本杯', 'ジャパンカップ', 'japan cup', 'JRA', 'keiba', '大井競馬', '中山競馬場', '東京競馬場', '夜間賽馬', '看賽馬'],
     ['日本職棒', '日本职棒', '職棒', '日職', 'NPB', 'npb', 'プロ野球', '看棒球', '棒球門票', '棒球票', '野球', '甲子園', '東京巨蛋', '東京ドーム', '讀賣巨人', '巨人隊', '阪神虎', '軟銀鷹', '火腿鬥士', '日本火腿', '樂天金鷲', '西武獅', '歐力士', '養樂多', '中日龍', '廣島鯉魚', '鯉魚隊', '羅德海洋', '海灣之星', '應援席', '外野席'],
