@@ -450,16 +450,16 @@
    "title": "台中飛沖繩 NT$4,396 來回含稅｜台灣虎航 11/30 出發"
   },
   {
+   "slug": "deals-2026-11-25-taipei-fukuoka",
+   "url": "/deals/2026-11-25-taipei-fukuoka/",
+   "h1": "台北飛福岡 NT$4,555 來回含稅｜台灣虎航 12/29 出發",
+   "title": "台北飛福岡 NT$4,555 來回含稅｜台灣虎航 12/29 出發"
+  },
+  {
    "slug": "deals-2026-11-25-taipei-miyazaki",
    "url": "/deals/2026-11-25-taipei-miyazaki/",
    "h1": "台北飛宮崎 NT$4,862 來回含稅｜台灣虎航 12/14 出發",
    "title": "台北飛宮崎 NT$4,862 來回含稅｜台灣虎航 12/14 出發"
-  },
-  {
-   "slug": "deals-2026-11-25-taipei-fukuoka",
-   "url": "/deals/2026-11-25-taipei-fukuoka/",
-   "h1": "台北飛福岡 NT$4,883 來回含稅｜台灣虎航 12/01 出發",
-   "title": "台北飛福岡 NT$4,883 來回含稅｜台灣虎航 12/01 出發"
   },
   {
    "slug": "deals-2026-11-25-kaohsiung-fukuoka",
@@ -484,6 +484,12 @@
    "url": "/deals/2026-11-25-taipei-saga/",
    "h1": "台北飛佐賀 NT$5,515 來回含稅｜台灣虎航 12/03 出發",
    "title": "台北飛佐賀 NT$5,515 來回含稅｜台灣虎航 12/03 出發"
+  },
+  {
+   "slug": "deals-2026-11-25-taipei-oita",
+   "url": "/deals/2026-11-25-taipei-oita/",
+   "h1": "台北飛大分・別府 NT$5,812 來回含稅｜台灣虎航 12/19 出發",
+   "title": "台北飛大分・別府 NT$5,812 來回含稅｜台灣虎航 12/19 出發"
   },
   {
    "slug": "deals-2026-11-25-taipei-osaka",
@@ -518,20 +524,20 @@
   {
    "slug": "deals-2026-11-25-transfer-fukuoka-kumamoto",
    "url": "/deals/2026-11-25-transfer-fukuoka-kumamoto/",
-   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,615",
-   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,615"
+   "h1": "飛福岡轉乘去熊本，比直飛省 NT$3,943",
+   "title": "飛福岡轉乘去熊本，比直飛省 NT$3,943"
   },
   {
    "slug": "deals-2026-11-25-transfer-fukuoka-nagasaki",
    "url": "/deals/2026-11-25-transfer-fukuoka-nagasaki/",
-   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,296",
-   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,296"
+   "h1": "飛福岡轉乘去長崎，比直飛省 NT$4,624",
+   "title": "飛福岡轉乘去長崎，比直飛省 NT$4,624"
   },
   {
    "slug": "deals-2026-11-25-transfer-tokyo-fukushima",
    "url": "/deals/2026-11-25-transfer-tokyo-fukushima/",
-   "h1": "飛東京轉乘去福島，比直飛省 NT$2,565",
-   "title": "飛東京轉乘去福島，比直飛省 NT$2,565"
+   "h1": "飛東京轉乘去福島，比直飛省 NT$1,776",
+   "title": "飛東京轉乘去福島，比直飛省 NT$1,776"
   },
   {
    "slug": "apple-japan-price",
@@ -675,7 +681,7 @@
    "slug": "japan-flight-good-times",
    "url": "/japan-flight-good-times/",
    "h1": "不浪費假期的日本機票",
-   "title": "早去晚回的日本機票｜不浪費假期的班次，目前 13 組"
+   "title": "早去晚回的日本機票｜不浪費假期的班次，目前 12 組"
   },
   {
    "slug": "japan-card-register",
@@ -1510,6 +1516,12 @@
    "url": "/japan-npb-ticket/",
    "h1": "去日本看職棒：12 球團門票怎麼買",
    "title": "去日本看職棒：12 球團門票怎麼買、外國人購票入口、外野票價、2027 開幕與台灣球員"
+  },
+  {
+   "slug": "japan-tattoo-onsen",
+   "url": "/japan-tattoo-onsen/",
+   "h1": "有刺青能泡日本溫泉、錢湯嗎",
+   "title": "有刺青能泡日本溫泉、錢湯嗎：官網寫明可以的 20 處、不行的 12 處與貼紙規定"
   },
   {
    "slug": "japan-takayama-shirakawago-bus",
