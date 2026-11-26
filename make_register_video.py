@@ -26,12 +26,36 @@ import make_transit_video_v2 as V  # noqa: E402
 
 URL = 'https://jptripcard.com/japan-card-register/'
 W, H, FPS = V.W, V.H, V.FPS
-BPM = 84                      # Lo-fi 的慢速
-BEAT = 60 / BPM
-NB = 26                       # 全片 26 拍
-DUR = NB * BEAT               # 約 18.6 秒
-V.DUR = DUR                   # 讓 V.Mix 用同一個長度
-T2, T3, T4 = 4 * BEAT, 18 * BEAT, 23 * BEAT   # 換場（月曆、登錄一次就好嗎、收尾）
+MUSIC = os.environ.get('MUSIC', 'game')   # game＝交通卡那支的破關風（預設）；lofi＝84 BPM
+BPM = BEAT = DUR = T2 = T3 = T4 = None
+RB = []                       # 每一天圈起來的時間點
+
+
+def set_timeline(nd):
+    """換場與每一天出現的時間都落在拍點上。
+    破關風（150 BPM）：開場 8 拍、月曆每天 4 拍、「登錄一次就好嗎」8 拍、收尾 7 拍；
+    配樂沿用 make_transit_video_v2.make_music_game，它的換場點（T_RANK／T_CAP／T_END）改成這支的。"""
+    global BPM, BEAT, DUR, T2, T3, T4, RB
+    if MUSIC == 'game':
+        BPM = V.BPM
+        BEAT = 60 / BPM
+        T2 = 8 * BEAT
+        RB = [T2 + BEAT * (2 + 4 * i) for i in range(nd)]
+        T3 = T2 + BEAT * (2 + 4 * nd)
+        T4 = T3 + 8 * BEAT
+        DUR = T4 + 7 * BEAT
+        V.T_RANK, V.T_CAP, V.T_END, V.T_LAND = T2, T3, T4, 4 * BEAT
+    else:
+        BPM = 84
+        BEAT = 60 / BPM
+        T2 = 4 * BEAT
+        RB = [T2 + BEAT * (1 + 2.5 * i) for i in range(nd)]
+        T3 = T2 + BEAT * (1.5 + 2.5 * nd)
+        T4 = T3 + 5 * BEAT
+        DUR = T4 + 3 * BEAT
+    V.DUR = DUR               # 讓 V.Mix 用同一個長度
+
+
 WK = '一二三四五六日'
 
 
@@ -247,8 +271,8 @@ def build_html(d):
     e = htm.escape
     m = d['month']
     nd = len(d['days'])
-    R = [T2 + BEAT * (1 + 2.5 * i) for i in range(nd)]
-    land = 1.6
+    R = RB
+    land = 4 * BEAT if MUSIC == 'game' else 1.6
     # 月曆格子（週一開始，和頁上一樣）
     cells, wd = [], d['first_wd']
     lead = [''] * wd
@@ -395,14 +419,18 @@ def main():
     d = fetch()
     os.makedirs(OUT, exist_ok=True)
     json.dump(d, open(os.path.join(OUT, 'data.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    set_timeline(len(d['days']))
     src, R, land = build_html(d)
     keep = os.environ.get('KEEP_FRAMES')
-    mp4 = os.path.join(OUT, f'register-{d["year"]}-{d["month"]:02d}-lofi.mp4')
+    mp4 = os.path.join(OUT, f'register-{d["year"]}-{d["month"]:02d}-{MUSIC}.mp4')
     with tempfile.TemporaryDirectory() as tmp:
         hf = os.path.join(tmp, 'v.html')
         open(hf, 'w', encoding='utf-8').write(src)
         wav = os.path.join(tmp, 'm.wav')
-        make_music_lofi(wav, R, land)
+        if MUSIC == 'game':
+            V.make_music_game(wav, R, 2)
+        else:
+            make_music_lofi(wav, R, land)
         ff = subprocess.Popen(
             ['ffmpeg', '-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', str(FPS),
              '-c:v', 'png', '-i', '-', '-i', wav, '-map', '0:v', '-map', '1:a',
