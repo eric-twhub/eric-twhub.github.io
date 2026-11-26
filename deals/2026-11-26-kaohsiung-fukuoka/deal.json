@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-26-kaohsiung-fukuoka",
- "generated": "2026-11-26 23:30",
+ "generated": "2026-11-26 23:51",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "fukuoka",
@@ -25,10 +25,10 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$7,844（7 天有紀錄），這張低 15%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,855（7 天有紀錄），這張低 15%"
  ],
- "med": 7877,
- "n_rt": 13,
+ "med": 7932,
+ "n_rt": 12,
  "others": [
   {
    "o": "KHH",
@@ -74,17 +74,17 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7578,
-   "dep": "2026-12-16",
-   "ret": "2026-12-23",
-   "dept": "14:25",
-   "rett": "18:45",
+   "price": 7806,
+   "dep": "2026-12-29",
+   "ret": "2027-01-06",
+   "dept": "15:25",
+   "rett": "08:00",
    "rt": true,
-   "tr": 0,
-   "dur": 330,
+   "tr": 1,
+   "dur": 545,
    "dur_to": 150,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-16&inbound=FUK-KHH&returnDate=2026-12-23&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=KHH-FUK&departureDate=2026-12-29&inbound=FUK-KHH&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
