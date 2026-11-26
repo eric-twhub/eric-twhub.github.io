@@ -1,7 +1,7 @@
 {
  "page": "/japan-asahiyama-zoo/",
  "dir": "japan-asahiyama-zoo",
- "_說明": "插圖參考官網施設紹介（city.asahikawa.hokkaido.jp/asahiyamazoo/facilityinformation/）各館介紹畫的可愛版；提醒卡依據利用案内・おやくそく（generalinformation/d053773.html），2026-11-13 查",
+ "_說明": "插圖參考官網施設紹介（city.asahikawa.hokkaido.jp/asahiyamazoo/facilityinformation/）各館介紹畫的可愛版；提醒卡依據利用案内・おやくそく（generalinformation/d053773.html），2026-11-13 查。2026-11-26 封面與插圖牆六張改用 Gemini API（gemini-nano-banana-2.1）畫的點陣圖，附既有插圖當畫風參考，逐張依說明文字核對：企鵝走在兩條紅線中間、觀眾在線外；企鵝館 360 度水中隧道；海豹館圓柱形水槽；北極熊大泳池跳水與水中窗；海豹之眼膠囊窗沒有籠子；雪豹在伸到半空的網籠裡、從正下方看",
  "blocks": [
   {
    "before": "門票",
