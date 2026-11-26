@@ -1,7 +1,7 @@
 {
  "page": "/japan-tokyo-tower/",
  "dir": "japan-tokyo-tower",
- "_說明": "插圖參考官網施設案內（tokyotower.co.jp/guidance/、/maindeck/、/plan/open_air_stair/）與 Top Deck Tour 頁（tdt.tokyotower.co.jp/topdecktour/）畫的可愛版，不畫官方吉祥物；點燈說明取自 tokyo-tower 頁面資料；2026-11-13 查。2026-11-26 封面與插圖牆四張（Main Deck、玻璃地板、Top Deck、外階梯）改用 Gemini 網頁版畫的點陣圖，逐張依說明文字核對；點燈那張連續被拒三次，暫時維持 SVG",
+ "_說明": "插圖參考官網施設案內（tokyotower.co.jp/guidance/、/maindeck/、/plan/open_air_stair/）與 Top Deck Tour 頁（tdt.tokyotower.co.jp/topdecktour/）畫的可愛版，不畫官方吉祥物；點燈說明取自 tokyo-tower 頁面資料；2026-11-13 查。2026-11-26 封面與插圖牆四張（Main Deck、玻璃地板、Top Deck、外階梯）改用 Gemini 網頁版畫的點陣圖，逐張依說明文字核對；點燈那張網頁版連續被拒三次，同日改用 Antigravity 畫（冬季版橘色 Landmark Light）",
  "blocks": [
   {
    "before": "票價",
