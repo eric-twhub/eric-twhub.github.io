@@ -1,7 +1,7 @@
 {
  "page": "/japan-ginzan-onsen/",
  "dir": "japan-ginzan-onsen",
- "_說明": "插圖參考銀山温泉官網散策頁（ginzanonsen.jp/ginzan/walk.html）與 2026–2027 冬季交通案内（winter/2026/zh/）畫的可愛版；說明與提醒卡依據這兩頁與 ginzan.json，2026-11-13 查",
+ "_說明": "插圖參考銀山温泉官網散策頁（ginzanonsen.jp/ginzan/walk.html）與 2026–2027 冬季交通案内（winter/2026/zh/）畫的可愛版；說明與提醒卡依據這兩頁與 ginzan.json，2026-11-13 查。2026-11-26 封面與插圖牆五張改用 Gemini 畫的點陣圖（依各張說明文字的官網內容逐張核對：白銀橋頭有屋頂的休息處、和樂足湯在河邊、大湯是傳統木造而白銀湯外觀現代、白銀之瀑前有延命地藏）",
  "blocks": [
   {
    "before": "誰要預約",
