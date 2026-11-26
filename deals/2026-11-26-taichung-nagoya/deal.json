@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-26-taichung-nagoya",
- "generated": "2026-11-26 14:09",
+ "generated": "2026-11-26 17:26",
  "kind": "fare",
  "origin": "taichung",
  "city": "nagoya",
@@ -55,7 +55,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7234,
+   "price": 6834,
    "dep": "2026-12-16",
    "ret": "2026-12-21",
    "dept": "16:45",
