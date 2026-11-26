@@ -1,7 +1,7 @@
 {
  "page": "/japan-burton-rental/",
  "dir": "japan-burton-rental",
- "_說明": "依 Burton 日本官網租借頁與 Kauriru 規約、常見問題（burton-rental.json）畫成可愛版；不畫 Burton 商標，雪板、板袋、卡車都是一般樣子。說明文字都來自 burton-rental.json，2026-11-13 製作",
+ "_說明": "依 Burton 日本官網租借頁與 Kauriru 規約、常見問題（burton-rental.json）畫成可愛版；不畫 Burton 商標，雪板、板袋、卡車都是一般樣子。說明文字都來自 burton-rental.json，2026-11-13 製作。2026-11-26 封面與插圖牆五張改用 Gemini 網頁版畫的點陣圖，逐張依說明文字核對：雪板、板袋、宅配車都不畫商標與文字，7 天方案那張月曆不畫數字",
  "blocks": [
   {
    "before": "價錢",
