@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-27-kaohsiung-osaka",
- "generated": "2026-11-27 00:17",
+ "generated": "2026-11-27 01:45",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "osaka",
@@ -24,9 +24,9 @@
   "url": "https://www.aviasales.com/search/KHH1612KIX14011?t=IT17974308001797444300000165KHHKIX17999262001799935200000210KIXKHH_714e4c00c8d99136f0cf61fd183f6483_18470&search_date=19112026&expected_price_uuid=01a1f5bd-da68-8040-24a0-fa71f06fa3ee&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Vs4DVZj-s0QmIWOkx35L_Q&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7420&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$8,884（12 天有紀錄），這張低 16%"
+  "12 月出發的票，每天最便宜的平均要 NT$8,779（11 天有紀錄），這張低 15%"
  ],
- "med": 16088,
+ "med": 15487,
  "n_rt": 59,
  "others": [
   {
@@ -35,7 +35,7 @@
    "air": "AK",
    "airname": "馬來西亞亞航",
    "cls": "lcc",
-   "price": 7095,
+   "price": 7097,
    "dep": "2026-12-29",
    "ret": "2027-01-05",
    "dept": "09:00",
@@ -45,7 +45,25 @@
    "dur": 415,
    "dur_to": 190,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH2912KIX05011?t=MM17985348001798549800000190KHHKIX17991453001799155200000225KIXKHH_151395486c4e9aab121d06a99c3063cf_17681&search_date=26112026&expected_price_uuid=01a21880-816a-8040-21a9-684e9a3bcaea&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GFjiwxrtY4spxZhTuO9S5g&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7095&marker=775639"
+   "url": "https://www.aviasales.com/search/KHH2912KIX05011?t=MM17985348001798549800000190KHHKIX17991453001799155200000225KIXKHH_151395486c4e9aab121d06a99c3063cf_17681&search_date=26112026&expected_price_uuid=01a21880-816a-8040-21a9-684e9a3bcaea&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GFjiwxrtY4spxZhTuO9S5g&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7097&marker=775639"
+  },
+  {
+   "o": "KHH",
+   "d": "OSA",
+   "air": "AK",
+   "airname": "馬來西亞亞航",
+   "cls": "lcc",
+   "price": 7130,
+   "dep": "2026-12-22",
+   "ret": "2027-01-05",
+   "dept": "09:00",
+   "rett": "10:35",
+   "rt": true,
+   "tr": 0,
+   "dur": 415,
+   "dur_to": 190,
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/KHH2212KIX05011?t=MM17979300001797945000000190KHHKIX17991453001799155200000225KIXKHH_cf6109c5fbfd3fac839ba971612c1d60_17767&search_date=26112026&expected_price_uuid=01a218b7-e2f9-8040-6d46-e1d26d6cc584&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6U1fTUA8nC6cKi-gFLiStQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7130&marker=775639"
   },
   {
    "o": "KHH",
@@ -64,24 +82,6 @@
    "dur_to": 165,
    "gate": "Farera",
    "url": "https://www.aviasales.com/search/KHH2012KIX13011?t=MM17977764001797789900000165KHHKIX17998365001799846400000225KIXKHH_5df1fe5683f8851355f0e13602dba0fb_18161&search_date=25112026&expected_price_uuid=01a210c6-b880-8040-20b6-c612efd8cfc3&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=f48qUGYQFyb3XGiluDUbKQ&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7350&marker=775639"
-  },
-  {
-   "o": "KHH",
-   "d": "OSA",
-   "air": "AK",
-   "airname": "馬來西亞亞航",
-   "cls": "lcc",
-   "price": 8119,
-   "dep": "2026-12-01",
-   "ret": "2026-12-09",
-   "dept": "09:00",
-   "rett": "14:10",
-   "rt": true,
-   "tr": 0,
-   "dur": 390,
-   "dur_to": 190,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH0112KIX09121?t=AK17961156001796130600000190KHHKIX17968254001796833800000200KIXKHH_fdd6c951ef5eaf8af1dc960c7ed3406b_20129&search_date=20112026&expected_price_uuid=01a1f9b9-6d50-8040-22e4-2e25e09fd4e0&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LToUf37MT2-_QW4b__qoiw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=8119&marker=775639"
   }
  ]
 }
