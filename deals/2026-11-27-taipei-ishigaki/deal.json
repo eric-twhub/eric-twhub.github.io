@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-27-taipei-ishigaki",
- "generated": "2026-11-27 01:58",
+ "generated": "2026-11-27 07:59",
  "kind": "fare",
  "origin": "taipei",
  "city": "ishigaki",
@@ -27,8 +27,8 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 12975,
- "n_rt": 16,
+ "med": 17237,
+ "n_rt": 15,
  "others": [
   {
    "o": "TPE",

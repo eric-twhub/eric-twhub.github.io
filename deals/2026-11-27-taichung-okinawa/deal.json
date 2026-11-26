@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-27-taichung-okinawa",
- "generated": "2026-11-27 01:58",
+ "generated": "2026-11-27 07:59",
  "kind": "fare",
  "origin": "taichung",
  "city": "okinawa",
@@ -26,9 +26,9 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "這條航線平常最低落在 NT$4,367–NT$10,804，這張是近期 80 筆紀錄中第 1 低"
+  "這條航線平常最低落在 NT$4,405–NT$10,798，這張是近期 80 筆紀錄中第 1 低"
  ],
- "med": 9727,
+ "med": 9502,
  "n_rt": 80,
  "others": [
   {

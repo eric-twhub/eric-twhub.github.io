@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-27-taipei-osaka",
- "generated": "2026-11-27 01:58",
+ "generated": "2026-11-27 07:59",
  "kind": "fare",
  "origin": "taipei",
  "city": "osaka",
@@ -24,7 +24,7 @@
   "url": "https://www.aviasales.com/search/TPE2312KIX20011?t=MM17980518001798064400000150TPEKIX18004293001800438300000210KIXTPE_5a799303b43c11eec13c3edd1106711e_15763&search_date=21112026&expected_price_uuid=01a1ff04-30ea-8040-2e40-22d51b0f5a28&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=DzsKREnQOjDAAzM6TeK8jA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6332&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$7,757（11 天有紀錄），這張低 18%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,756（11 天有紀錄），這張低 18%"
  ],
  "med": 17385,
  "n_rt": 64,
@@ -71,7 +71,7 @@
    "air": "GK",
    "airname": "捷星日本",
    "cls": "lcc",
-   "price": 6895,
+   "price": 6891,
    "dep": "2026-12-26",
    "ret": "2027-01-07",
    "dept": "18:15",
@@ -81,7 +81,7 @@
    "dur": 350,
    "dur_to": 150,
    "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE2612KIX07011?t=GK17983089001798321500000150TPEKIX17993634001799371800000200KIXTPE_15dee5dba81e0405357a60a40d2746a0_17180&search_date=26112026&expected_price_uuid=01a218c7-de22-8040-a9d2-df164f93feea&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=bHBx79bxlJbIaCru82Httw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6895&marker=775639"
+   "url": "https://www.aviasales.com/search/TPE2612KIX07011?t=GK17983089001798321500000150TPEKIX17993634001799371800000200KIXTPE_15dee5dba81e0405357a60a40d2746a0_17180&search_date=26112026&expected_price_uuid=01a218c7-de22-8040-a9d2-df164f93feea&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=bHBx79bxlJbIaCru82Httw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6891&marker=775639"
   }
  ]
 }
