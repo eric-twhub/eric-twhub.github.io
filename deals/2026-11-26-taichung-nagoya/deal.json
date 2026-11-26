@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-26-taichung-nagoya",
- "generated": "2026-11-26 20:39",
+ "generated": "2026-11-26 21:54",
  "kind": "fare",
  "origin": "taichung",
  "city": "nagoya",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5684,
-  "dep": "2026-12-28",
-  "ret": "2027-01-06",
+  "price": 5984,
+  "dep": "2026-12-30",
+  "ret": "2027-01-04",
   "dept": "16:45",
   "rett": "13:15",
   "rt": true,
@@ -21,7 +21,7 @@
   "dur": 350,
   "dur_to": 160,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-28&inbound=NGO-RMQ&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-30&inbound=NGO-RMQ&returnDate=2027-01-04&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
@@ -37,8 +37,8 @@
    "airname": "台灣虎航",
    "cls": "lcc",
    "price": 5984,
-   "dep": "2026-12-30",
-   "ret": "2027-01-04",
+   "dep": "2026-12-28",
+   "ret": "2027-01-06",
    "dept": "16:45",
    "rett": "13:15",
    "rt": true,
@@ -46,7 +46,7 @@
    "dur": 350,
    "dur_to": 160,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-30&inbound=NGO-RMQ&returnDate=2027-01-04&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-28&inbound=NGO-RMQ&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
