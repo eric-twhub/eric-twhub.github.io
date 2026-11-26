@@ -320,7 +320,7 @@ def build_html(d):
 def make_music_lofi(path, R, land):
     """Lo-fi：84 BPM、搖擺的 8 分音符、C 大調 Fmaj9｜Em7｜Dm9｜G13 的下行進行（IV–iii–ii–V）。
     電鋼琴長和弦（兩支略為走音的疊在一起，像錄音帶）、圓滑的正弦貝斯、悶悶的大鼓和帶殘響的小鼓、
-    很輕的唱片雜音；開場只有電鋼琴，月曆出來時鼓組進場，每圈一天就響一顆鐘琴；收尾鼓停、留和弦。"""
+    （唱片雜音預設關掉）；開場只有電鋼琴，月曆出來時鼓組進場，每圈一天就響一顆鐘琴；收尾鼓停、留和弦。"""
     SR = V.SR
     rng = np.random.default_rng(11)
     M = V.Mix()
@@ -336,7 +336,7 @@ def make_music_lofi(path, R, land):
     for b in range(nbar):
         root, ch = prog[b % 4]
         for j, mm in enumerate(ch):
-            for det, pan in ((0, -.3), (-.12, .3)):
+            for det, pan in ((0, -.3), (-.04, .3)):
                 sig = V._ep(mm + det, bar * .95)
                 M.st(sig, b * bar + .018 * j, .07, pan=pan, rv=.35)
         if b * bar + 2.5 * BEAT < T4 + BEAT:
@@ -374,15 +374,16 @@ def make_music_lofi(path, R, land):
     for tt, notes in ((land, (72, 76, 79)), (T3, (77, 81, 84)), (T4, (72, 76, 79, 84))):
         for j, mm in enumerate(notes):
             M.st(V._glock(mm, 1.6), tt + .03 * j, .09, rv=.7)
-    # 唱片雜音：稀疏的爆音加很輕的嘶聲
-    N = M.N
-    crk = np.zeros(N)
-    idx = rng.integers(0, N, int(DUR * 9))
-    crk[idx] = rng.uniform(-1, 1, len(idx))
-    crk = V._fft_filter(crk, lo=1200, hi=7000) * 2.5
-    hiss = V._fft_filter(rng.uniform(-1, 1, N), lo=3000, hi=8000) * .006
-    M.L += crk * .5 + hiss
-    M.R += crk * .5 + hiss
+    # 唱片雜音：預設關掉（使用者聽起來像電磁波干擾）；LOFI_VINYL=1 才加
+    if os.environ.get('LOFI_VINYL') == '1':
+        N = M.N
+        crk = np.zeros(N)
+        idx = rng.integers(0, N, int(DUR * 9))
+        crk[idx] = rng.uniform(-1, 1, len(idx))
+        crk = V._fft_filter(crk, lo=1200, hi=7000) * 2.5
+        hiss = V._fft_filter(rng.uniform(-1, 1, N), lo=3000, hi=8000) * .006
+        M.L += crk * .5 + hiss
+        M.R += crk * .5 + hiss
     # Lo-fi 的悶：整體再往下壓一點高頻
     M.L = V._fft_filter(M.L, hi=5200)
     M.R = V._fft_filter(M.R, hi=5200)
