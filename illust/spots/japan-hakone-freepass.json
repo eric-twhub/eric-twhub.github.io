@@ -1,7 +1,7 @@
 {
  "page": "/japan-hakone-freepass/",
  "dir": "japan-hakone-freepass",
- "_說明": "畫周遊券包含的交通工具與沿線景點，參考小田急官方（odakyu-global.com/tc/passes/）與箱根ナビ（hakonenavi.jp/hakone-tozan/）的介紹畫成可愛版；規定來自 hakone.json，2026-11-13 查",
+ "_說明": "畫周遊券包含的交通工具與沿線景點，參考小田急官方（odakyu-global.com/tc/passes/）與箱根ナビ（hakonenavi.jp/hakone-tozan/）的介紹畫成可愛版；規定來自 hakone.json，2026-11-13 查。2026-11-27 封面與插圖牆六張改用點陣圖（登山電車用 Antigravity，其餘用 Gemini 網頁版），逐張依說明文字與空間核對：登山纜車畫成側面看的階梯狀車廂、沒有架空電線，車頭不畫臉；觀光船不畫骷髏旗與字；旅客都在車廂、甲板或岸上",
  "blocks": [
   {
    "before": "價格",
