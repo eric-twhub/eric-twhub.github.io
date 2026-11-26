@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-26-kaohsiung-fukuoka",
- "generated": "2026-11-26 13:41",
+ "generated": "2026-11-26 14:09",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "fukuoka",
@@ -25,9 +25,9 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$7,842（7 天有紀錄），這張低 21%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,576（7 天有紀錄），這張低 18%"
  ],
- "med": 7978,
+ "med": 7850,
  "n_rt": 13,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7234,
+   "price": 6684,
    "dep": "2026-12-29",
    "ret": "2027-01-05",
    "dept": "15:25",
@@ -55,7 +55,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7634,
+   "price": 7084,
    "dep": "2026-12-30",
    "ret": "2027-01-05",
    "dept": "14:25",
