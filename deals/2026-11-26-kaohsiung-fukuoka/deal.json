@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-26-kaohsiung-fukuoka",
- "generated": "2026-11-26 23:04",
+ "generated": "2026-11-26 23:30",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "fukuoka",
@@ -25,7 +25,7 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$7,773（7 天有紀錄），這張低 14%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,844（7 天有紀錄），這張低 15%"
  ],
  "med": 7877,
  "n_rt": 13,
