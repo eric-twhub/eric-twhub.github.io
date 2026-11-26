@@ -1,7 +1,7 @@
 {
  "page": "/japan-skytree/",
  "dir": "japan-skytree",
- "_說明": "插圖參考官網フロアガイド（tokyo-skytree.jp/floor/tembodeck_350/、tembodeck_345/、tembodeck_340/、tembogalleria/）畫的可愛版，不畫官方吉祥物；提醒卡依據 tokyo-skytree.jp/access/ticket-counter/、floor/ground/1f/、floor/tembodeck_340/；2026-11-13 查。2026-11-27 封面與插圖牆四張（天望甲板、天望回廊、玻璃地板、咖啡）改用 Antigravity 畫的點陣圖，逐張依說明文字核對；郵筒那張第一版有人站在窗外，重畫中",
+ "_說明": "插圖參考官網フロアガイド（tokyo-skytree.jp/floor/tembodeck_350/、tembodeck_345/、tembodeck_340/、tembogalleria/）畫的可愛版，不畫官方吉祥物；提醒卡依據 tokyo-skytree.jp/access/ticket-counter/、floor/ground/1f/、floor/tembodeck_340/；2026-11-13 查。2026-11-27 封面與插圖牆三張（天望甲板、天望回廊、玻璃地板）改用 Antigravity 畫的點陣圖，逐張依說明文字核對；郵筒、咖啡兩張第一版空間不合理（人站在窗外），重畫中",
  "blocks": [
   {
    "before": "票種",
