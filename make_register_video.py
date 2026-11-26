@@ -86,11 +86,12 @@ def fetch():
     # 各檔的資格（「逐張怎麼登錄」那段：<b>加碼名。</b>…資格：當月／當季／活動期間…）
     k = s.find('逐張怎麼登錄</h2>')
     det = s[k:s.find('常見問題</h2>', k)]
-    qual = {}
+    qual, qtxt = {}, {}
     for h3, body in re.findall(r'<h3>(.*?)</h3>(.*?)(?=<h3>|$)', det, re.S):
         for it, rest in re.findall(r'<li><b>(.*?)。</b>(.*?)</li>', body, re.S):
             q = re.search(r'資格：([^，。]+)', _txt(rest))
             qual[(_txt(h3), _txt(it))] = q.group(1) if q else None
+            qtxt[(_txt(h3), _txt(it))] = _txt(rest)
     days, skipped = {}, []
     for r in rows:
         nx = re.match(r'(\d+)/(\d+)（(.)）\s*(\d\d:\d\d)?', r['next'])
@@ -114,9 +115,11 @@ def fetch():
             note = f'每週{wk.group(1)}都放新名額'
         elif '額滿提前關閉' in r['rule']:
             note = '額滿提前關閉'
+        # 沒有時間的：逐張說明寫「官方沒寫…幾點開放」才在便利貼上這樣講
+        notime = not nx.group(4) and bool(re.search(r'官方沒寫[^。]*幾點開放', qtxt.get((r['card'], r['item']), '')))
         quota = re.sub(r'（每月（每季 [\d,]+））$', '（每月）', r['quota'])
         days.setdefault(d, []).append({'card': r['card'], 'item': r['item'], 'time': nx.group(4) or '',
-                                       'quota': quota, 'note': note, 'kind': kind})
+                                       'quota': quota, 'note': note, 'kind': kind, 'notime': notime})
     if len(days) < 3:
         sys.exit(f'{m} 月只找到 {len(days)} 天有開放登錄，頁面可能還沒更新到這個月')
     items = [x for d in days.values() for x in d]
@@ -183,11 +186,12 @@ body{font-family:"PingFang TC","Noto Sans TC",sans-serif;color:#5a3d2b;-webkit-f
 .note .dd small{font-size:42px;margin-left:8px;color:#8a6a55}
 .note .it{margin-top:14px;padding-top:14px;border-top:4px dashed rgba(90,61,43,.25)}
 .note .it:first-of-type{border-top:0;padding-top:0}
-.note .c{font-size:40px;font-weight:800}
+.note .c{font-size:40px;font-weight:800;white-space:nowrap}
 .note .c i{font-style:normal;display:inline-block;background:#5a3d2b;color:#fff;border-radius:12px;padding:2px 14px;
  font-size:36px;margin-right:14px;vertical-align:4px}
 .note .n{font-size:42px;margin-top:4px;color:#e8553e;font-weight:800;white-space:nowrap}
-.note .q{font-size:30px;margin-top:4px;color:#8a6a55;font-weight:700}
+.note .q{font-size:30px;margin-top:4px;color:#8a6a55;font-weight:700;line-height:1.35}
+.note .it.lst .q{padding-right:170px}
 .note .stk{position:absolute;right:20px;bottom:-30px;width:170px}
 /* 登錄一次就好嗎 */
 #stamp{left:0;width:1080px;top:240px;text-align:center}
@@ -219,7 +223,7 @@ function tf(el,x,y,s,r,o){el.style.transform=`translate(${x}px,${y}px) scale(${s
 function scene(id,a,b,t){const el=$(id);const i=eo((t-a)/.3),o=b<99?1-eo((t-b+.05)/.28):1;
  const v=t<a-.01||t>b+.3?0:Math.min(i,o);el.style.opacity=v;
  el.style.transform=`translateY(${(1-i)*50}px) scale(${1-(1-o)*.06})`;}
-function fit(){document.querySelectorAll('.note .n').forEach(n=>{let f=42;while(n.scrollWidth>n.clientWidth&&f>28){f-=1;n.style.fontSize=f+'px'}})}
+function fit(){document.querySelectorAll('.note .n,.note .c').forEach(n=>{let f=parseFloat(getComputedStyle(n).fontSize);while(n.scrollWidth>n.clientWidth&&f>24){f-=1;n.style.fontSize=f+'px'}})}
 let _fit=0;
 function render(t){if(!_fit){fit();_fit=1}
  $('bg').style.transform=`translate(${-(t*6)%60}px,${-(t*4)%60}px)`;
@@ -296,13 +300,13 @@ def build_html(d):
     notes = ''
     for i, dd in enumerate(d['days']):
         its = ''
-        for x in dd['items']:
-            tm = f'<i>{e(x["time"])}</i>' if x['time'] else ''
-            extra = f'名額 {e(x["quota"])}' + (f'・{e(x["note"])}' if x['note'] else '')
-            its += (f'<div class="it"><div class="c">{tm}{e(x["card"])}</div><div class="n">{e(x["item"])}</div>'
+        for j, x in enumerate(dd['items']):
+            # 和主文同一個格式：12/1（二）00:00 卡名
+            tm = f'<i>{m}/{dd["day"]}（{dd["wk"]}）' + (f'{e(x["time"])}' if x['time'] else '') + '</i>'
+            extra = ('官方沒寫幾點開・' if x.get('notime') else '') + f'名額 {e(x["quota"])}' + (f'・{e(x["note"])}' if x['note'] else '')
+            its += (f'<div class="it{" lst" if j == len(dd["items"]) - 1 else ""}"><div class="c">{tm}{e(x["card"])}</div><div class="n">{e(x["item"])}</div>'
                     f'<div class="q">{extra}</div></div>')
-        notes += (f'<div id="n{i}" class="ab note" style="background:{COLORS[i % len(COLORS)]}"><div class="tape"></div>'
-                  f'<div class="dd hn">{m}/{dd["day"]}<small>（{dd["wk"]}）</small></div>{its}'
+        notes += (f'<div id="n{i}" class="ab note" style="background:{COLORS[i % len(COLORS)]}"><div class="tape"></div>{its}'
                   f'<div class="stk sh">{V._svg(stk_for(dd["items"]))}</div></div>')
     s1 = (f'<div id="s1" class="sc"><div id="k1" class="ab"><span class="pill hn">{m} 月信用卡加碼登錄</span></div>'
           f'<div id="st1" class="ab stk sh">{V._svg("calendar")}</div>'
