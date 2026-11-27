@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-27-taipei-fukuoka",
- "generated": "2026-11-27 14:57",
+ "generated": "2026-11-27 17:41",
  "kind": "fare",
  "origin": "taipei",
  "city": "fukuoka",
@@ -11,22 +11,22 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5339,
-  "dep": "2026-12-29",
-  "ret": "2027-01-05",
-  "dept": "13:40",
+  "price": 5739,
+  "dep": "2026-12-01",
+  "ret": "2026-12-22",
+  "dept": "06:45",
   "rett": "10:55",
   "rt": true,
   "tr": 0,
   "dur": 300,
   "dur_to": 135,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-29&inbound=FUK-TPE&returnDate=2027-01-05&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$7,731（11 天有紀錄），這張低 31%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,724（11 天有紀錄），這張低 26%"
  ],
  "med": 13797,
  "n_rt": 30,
@@ -37,28 +37,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5680,
-   "dep": "2026-12-01",
-   "ret": "2026-12-22",
-   "dept": "06:45",
-   "rett": "10:55",
-   "rt": true,
-   "tr": 0,
-   "dur": 300,
-   "dur_to": 135,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-22&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
-  {
-   "o": "TPE",
-   "d": "FUK",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 6139,
-   "dep": "2026-12-01",
-   "ret": "2026-12-05",
+   "price": 5739,
+   "dep": "2026-12-29",
+   "ret": "2027-01-05",
    "dept": "13:40",
    "rett": "10:55",
    "rt": true,
@@ -66,7 +47,7 @@
    "dur": 300,
    "dur_to": 135,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-01&inbound=FUK-TPE&returnDate=2026-12-05&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-FUK&departureDate=2026-12-29&inbound=FUK-TPE&returnDate=2027-01-05&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
@@ -86,6 +67,24 @@
    "dur_to": 145,
    "gate": "Farera",
    "url": "https://www.aviasales.com/search/TPE2212FUK05011?t=AK17979399001797952200000145TPEFUK17991654001799171700000165FUKTPE_358540e90332bde309575ad19b54168f_15465&search_date=20112026&expected_price_uuid=01a1f9c4-1f40-8040-6b26-5b6613363065&static_fare_key=TY%7CP1_JW%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Ej5XehxO_T2sGF-5EZxV6w&expected_price_source=share&expected_price_currency=twd&expected_price=6238&marker=775639"
+  },
+  {
+   "o": "TPE",
+   "d": "FUK",
+   "air": "AK",
+   "airname": "馬來西亞亞航",
+   "cls": "lcc",
+   "price": 6791,
+   "dep": "2026-12-27",
+   "ret": "2027-01-05",
+   "dept": "12:00",
+   "rett": "16:10",
+   "rt": true,
+   "tr": 0,
+   "dur": 305,
+   "dur_to": 140,
+   "gate": "Farera",
+   "url": "https://www.aviasales.com/search/TPE2712FUK05011?t=AK17983728001798384800000140TPEFUK17991654001799171700000165FUKTPE_d46702b9e638686b72cd2773134ea440_16929&search_date=26112026&expected_price_uuid=01a218c9-d64c-8040-2552-5c52bdfeb030&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=bQ_4z0-9hGrgNL6n2NKWCg&expected_price_source=share&expected_price_currency=twd&expected_price=6791&marker=775639"
   }
  ]
 }
