@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-28-taipei-tokyo",
- "generated": "2026-11-28 01:48",
+ "generated": "2026-11-28 02:02",
  "kind": "fare",
  "origin": "taipei",
  "city": "tokyo",
@@ -26,8 +26,8 @@
  "reasons": [
   "12 月出發的票，每天最便宜的平均要 NT$9,076（7 天有紀錄），這張低 13%"
  ],
- "med": 13042,
- "n_rt": 34,
+ "med": 13198,
+ "n_rt": 33,
  "others": [
   {
    "o": "TPE",

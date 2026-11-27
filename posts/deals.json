@@ -167,7 +167,7 @@
   "reasons": [
    "廉航低於 NT$6,000"
   ],
-  "med": 5930,
+  "med": 5657,
   "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-07&inbound=NGO-RMQ&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
   "hotelcity": "名古屋",
   "cslug": "nagoya",
@@ -225,13 +225,13 @@
   "reasons": [
    "12 月出發的票，每天最便宜的平均要 NT$9,076（7 天有紀錄），這張低 13%"
   ],
-  "med": 13042,
+  "med": 13198,
   "url": "https://www.aviasales.com/search/TPE2812NRT11011?t=GK17984682001798482600000180TPENRT17996562001799668200000260NRTTPE_3bc17244e81355db713647f4b9e8d7ca_19733&search_date=23112026&expected_price_uuid=01a208b1-d898-8031-2990-36ac07feaa32&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=7Idkzqb8yS8OOWFGtpoeFA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=7920&marker=775639",
   "hotelcity": "東京",
   "cslug": "tokyo",
   "usual": {
    "lo": 7781,
-   "hi": 11195,
+   "hi": 12887,
    "days": 9
   },
   "mbase": {
@@ -240,7 +240,7 @@
    "month": 12
   },
   "rank": 3,
-  "n": 34
+  "n": 33
  },
  {
   "slug": "2026-11-28-transfer-fukuoka-kumamoto",
