@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-27 09:38",
+ "generated": "2026-11-27 13:43",
  "origin": "TPE",
  "dests": [
   "TYO",
@@ -24,32 +24,32 @@
    "enough": true
   },
   "2026-12": {
-   "n": 65,
-   "median": 7926,
+   "n": 61,
+   "median": 7920,
    "low": 4841,
    "enough": true
   },
   "2027-01": {
-   "n": 56,
-   "median": 9006,
-   "low": 4781,
+   "n": 50,
+   "median": 8737,
+   "low": 4775,
    "enough": true
   },
   "2027-02": {
-   "n": 27,
-   "median": 9901,
+   "n": 21,
+   "median": 9759,
    "low": 5248,
    "enough": true
   },
   "2027-03": {
-   "n": 21,
+   "n": 19,
    "median": 8713,
    "low": 5314,
    "enough": true
   },
   "2027-04": {
-   "n": 16,
-   "median": 8740,
+   "n": 12,
+   "median": 8515,
    "low": 5842,
    "enough": true
   },
@@ -66,21 +66,15 @@
    "enough": false
   },
   "2027-07": {
-   "n": 8,
-   "median": 10980,
-   "low": 7529,
-   "enough": true
-  },
-  "2027-08": {
-   "n": 2,
-   "median": 9179,
-   "low": 7995,
+   "n": 6,
+   "median": 11078,
+   "low": 9716,
    "enough": false
   },
   "2027-10": {
-   "n": 4,
-   "median": 8713,
-   "low": 7072,
+   "n": 3,
+   "median": 8714,
+   "low": 8680,
    "enough": false
   }
  }
