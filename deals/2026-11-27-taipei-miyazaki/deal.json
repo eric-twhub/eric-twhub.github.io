@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-27-taipei-miyazaki",
- "generated": "2026-11-27 09:14",
+ "generated": "2026-11-27 10:27",
  "kind": "fare",
  "origin": "taipei",
  "city": "miyazaki",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 11409,
+ "med": 11259,
  "n_rt": 6,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5710,
+   "price": 5407,
    "dep": "2026-12-14",
    "ret": "2026-12-21",
    "dept": "06:20",
@@ -45,8 +45,9 @@
    "tr": 0,
    "dur": 270,
    "dur_to": 120,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/TPE1412KMI21121?t=IT17972292001797240000000120TPEKMI17978490001797854400000150KMITPE_bbf74a45876c85f5d82f6e5f96c97bf8_14204&search_date=20112026&expected_price_uuid=01a1f908-49f4-8040-677a-a53d7f8a2a34&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=2Ls-x9Pku_W60pVyDHdKgw&expected_price_source=share&expected_price_currency=twd&expected_price=5710&marker=775639"
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-14&inbound=KMI-TPE&returnDate=2026-12-21&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
   },
   {
    "o": "TPE",
@@ -54,7 +55,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 6407,
+   "price": 6107,
    "dep": "2026-12-28",
    "ret": "2027-01-01",
    "dept": "06:20",
