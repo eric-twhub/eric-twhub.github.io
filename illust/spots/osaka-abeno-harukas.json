@@ -1,7 +1,7 @@
 {
  "page": "/osaka/abeno-harukas/",
  "dir": "osaka-abeno-harukas",
- "_說明": "插圖參考展望台官網施設案內（abenoharukas-300.jp/observatory/guide.html）、首頁的暖桌活動公告與頁面資料 harukas.json（EDGE、直升機坪）畫的可愛版，不畫合作活動角色；提醒卡依據官網 FAQ（observatory/faq.html：接駁電梯在 B1／2 樓、限定商品只在 59 樓、一般票不能再入場）；2026-11-13 查",
+ "_說明": "插圖參考展望台官網施設案內（abenoharukas-300.jp/observatory/guide.html）、首頁的暖桌活動公告與頁面資料 harukas.json（EDGE、直升機坪）畫的可愛版，不畫合作活動角色；提醒卡依據官網 FAQ（observatory/faq.html：接駁電梯在 B1／2 樓、限定商品只在 59 樓、一般票不能再入場）；2026-11-13 查。2026-11-28 封面與六張插圖改用 Gemini API 畫的點陣圖（每張一次就出），逐張核對：玻璃迴廊與遠眺的旅客都在玻璃內側室內、EDGE 的人都踩在步道上並繫著頭頂軌道的安全繩、停機坪圓圈裡沒有字母也沒有直升機；封面第一版旅客手上的手機螢幕有像字的記號，重畫成手上不拿東西",
  "blocks": [
   {
    "before": "票價",
