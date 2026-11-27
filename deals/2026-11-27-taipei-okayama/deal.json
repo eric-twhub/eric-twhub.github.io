@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-27-taipei-okayama",
- "generated": "2026-11-27 10:27",
+ "generated": "2026-11-27 12:32",
  "kind": "fare",
  "origin": "taipei",
  "city": "okayama",
@@ -25,30 +25,11 @@
   "ta_rt_sum": true
  },
  "reasons": [
-  "這條航線平常最低落在 NT$6,657–NT$8,103，這張是近期 12 筆紀錄中第 1 低"
+  "12 月出發的票，每天最便宜的平均要 NT$7,365（6 天有紀錄），這張低 10%"
  ],
  "med": 12482,
  "n_rt": 12,
  "others": [
-  {
-   "o": "TPE",
-   "d": "OKJ",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 6657,
-   "dep": "2026-12-14",
-   "ret": "2026-12-18",
-   "dept": "11:10",
-   "rett": "15:25",
-   "rt": true,
-   "tr": 0,
-   "dur": 330,
-   "dur_to": 145,
-   "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKJ&departureDate=2026-12-14&inbound=OKJ-TPE&returnDate=2026-12-18&type=return&adult=1&language=zh-TW",
-   "ta_rt_sum": true
-  },
   {
    "o": "TPE",
    "d": "OKJ",
@@ -74,7 +55,26 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 7203,
+   "price": 7057,
+   "dep": "2026-12-14",
+   "ret": "2026-12-18",
+   "dept": "11:10",
+   "rett": "15:25",
+   "rt": true,
+   "tr": 0,
+   "dur": 330,
+   "dur_to": 145,
+   "gate": "Tigerair Taiwan",
+   "url": "https://booking.tigerairtw.com/?outbound=TPE-OKJ&departureDate=2026-12-14&inbound=OKJ-TPE&returnDate=2026-12-18&type=return&adult=1&language=zh-TW",
+   "ta_rt_sum": true
+  },
+  {
+   "o": "TPE",
+   "d": "OKJ",
+   "air": "IT",
+   "airname": "台灣虎航",
+   "cls": "lcc",
+   "price": 7603,
    "dep": "2026-12-08",
    "ret": "2026-12-12",
    "dept": "11:10",
