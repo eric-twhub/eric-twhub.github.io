@@ -28619,7 +28619,7 @@ if HS:
         f'手機版和桌機版也不一樣。本站實測過 6 個通路與 5 間飯店，'
         f'整理成<a href="{U("/hotel-price-check/")}">訂房比價</a>：'
         f'哪個平台要在哪搜、官網是不是真的最便宜、'
-        f'返利網要多少回饋才划得來。</p>'
+        f'回饋網要給多少回饋才划得來。</p>'
       + '<h2>清晨起飛：那一晚你買不到能睡的房間</h2>'
       + f'<p class="lede">廉航的回程常常落在清晨五點多。看起來是多賺一晚，'
         f'實際上是<b>少了一晚</b>。以 {html.escape(_hs_r["example_flight"])} 為例：</p>'
@@ -29160,7 +29160,7 @@ if os.path.exists('cashback.json') and os.path.exists('cashback-rules.json'):
         ('加碼多久換一次？',
          f'很頻繁，常常只有幾個小時，例如 {_cb_t(_cb_top[3]["end"]) if _cb_top and _cb_top[3].get("end") else "晚上 18:00 到 23:59"} 就結束。'
          '回饋比例看的是下單當下，所以看到加碼要在結束前付款。這頁每天自動更新一次，過了結束時間的加碼會自動拿掉。'),
-        ('從返利平台點進去會不會比較貴？',
+        ('從回饋平台點進去會不會比較貴？',
          '本站之前在 Booking.com 實測過：帶聯盟參數的連結會讓手機版失去 Genius 的 9.09% 價差，回饋要有 11% 以上才補得回來。'
          '下單前先在同一台手機直接開一次商家 App 或網站，比一下價格再決定。'),
         ('回饋多久拿得到？',
@@ -29264,7 +29264,7 @@ var tp=document.getElementById("cbtop");if(tp)tp.innerHTML=top?"現在最高："
       + '<h2>回饋會被取消的情況</h2>'
       + '<div class="xv">' + _cb_plat + '</div>'
       + '<h2>多久拿得到、拿到的是什麼</h2>' + _cb_pay
-      + '<h2>從返利平台繞過去，一定比較划算嗎？</h2>'
+      + '<h2>從回饋平台繞過去，一定比較划算嗎？</h2>'
       + '<p class="lede">不一定。回饋只算房價或商品價，稅金、服務費不算；而且本站實測過，Booking.com 帶聯盟參數的連結'
         '會讓手機版失去 Genius 那 9.09% 的價差，那一次回饋要 11% 以上才補得回來。'
         f'下單前用同一台手機直接開商家看一次價格，比完再決定（實測過程在<a href="{U("/hotel-price-check/")}">訂房比價那一頁</a>）。</p>'
@@ -29275,7 +29275,7 @@ var tp=document.getElementById("cbtop");if(tp)tp.innerHTML=top?"現在最高："
       + faq_visible(_cb_faq)
       + '<h2>延伸閱讀</h2><div class="cities">'
       + f'<a class="ct" href="{U("/deals/")}"><b>✈️ 要搶的便宜機票</b><s>各家航空與旅行社的限時活動</s></a>'
-      + f'<a class="ct" href="{U("/hotel-price-check/")}"><b>🏨 訂房比價</b><s>手機、桌機、返利連結的價差實測</s></a>'
+      + f'<a class="ct" href="{U("/hotel-price-check/")}"><b>🏨 訂房比價</b><s>手機、桌機、回饋連結的價差實測</s></a>'
       + f'<a class="ct" href="{U("/japan-coupon/")}"><b>🎟️ 日本購物折扣</b><s>藥妝、電器、百貨的優惠券</s></a></div>'
       + '<p class="disc">回饋比例取自 ShopBack 台灣與 LINE 旅遊（buy.line.me）的公開商家頁，每天自動抓取一次；'
         f'取消條件、領取方式與折扣碼查證於 {CBR["checked"]}。各平台隨時調整，請以點進去當下的頁面為準。'
@@ -29366,7 +29366,7 @@ if PC:
       'Klook 實測同價。Agoda 的手機版沒有顯示出房價，'
       'Trip.com 的手機版未登入會被導向登入頁，這兩家沒有測到結果。'
       '沒有測到不等於沒有差異，如果你在用這兩家，值得自己開 App 比一次。'),
-     ('從返利網點進去訂，會比較划算嗎？',
+     ('從回饋網點進去訂，會比較划算嗎？',
       f'要先算門檻，而且比較基準是手機直訂而不是桌機直訂。'
       f'公式是：{_pc_r["formula"]}。以本站的案例，手機直訂 {money(_pc_ex["mobile_direct"])}、'
       f'手機加導購 {money(_pc_ex["mobile_referral"])}，價差 {money(_pc_ex["gap"])}，'
@@ -29437,7 +29437,7 @@ if PC:
       head(f'Booking 訂房比價｜同一間房，手機版比桌機版便宜 {_pc_avg:.1f}%',
            f'同一間飯店、同一組日期、同一個瀏覽器，只改變視窗尺寸，Booking 的價格就少 '
            f'{_pc_avg:.2f}%。{_pc_n} 間東京飯店實測，附判斷規則、六個訂房通路的價差對照，'
-           f'以及返利網要多少回饋才划得來的計算公式。',
+           f'以及回饋網要給多少回饋才划得來的計算公式。',
            'hotel-price-check/',
            '<script type="application/ld+json">' + _pc_ld + '</script>')
       + topnav() + crumbs([('首頁', '/'), ('訂房比價', None)])
@@ -29492,7 +29492,7 @@ if PC:
         '<th>4 晚總價</th><th>備註</th></tr></thead><tbody>' + _pc_ch
       + '</tbody></table></div>'
       + f'<p class="disc">{html.escape(_CH["official_rule"])}</p>'
-      + '<h2>從返利網點進去，划得來嗎</h2>'
+      + '<h2>從回饋網點進去，划得來嗎</h2>'
       + f'<div class="today"><div class="tday">{html.escape(_pc_r["state"])}</div>'
         f'<div class="tsub">{html.escape(_pc_r["why"])}</div></div>'
       + '<h3>導購連結會改價，這件事測出來了</h3>'
@@ -29520,7 +29520,7 @@ if PC:
         f'手機加導購 {money(_pc_ex["mobile_referral"])}，價差 {money(_pc_ex["gap"])}，'
         f'門檻是 <b>{_pc_ex["threshold_pct"]}%</b>。</li>'
         f'<li>{html.escape(_pc_r["threshold_note"])}</li></ul></div>'
-      + '<div class="tw"><table><thead><tr><th>返利方案</th><th>回饋率</th>'
+      + '<div class="tw"><table><thead><tr><th>回饋方案</th><th>回饋率</th>'
         '<th>判定</th></tr></thead><tbody>' + _pc_rate + '</tbody></table></div>'
       + '<p class="lede">還要扣掉三個隱性成本：</p>'
       + '<div class="tldr"><ul>' + _pc_hid + '</ul></div>'
