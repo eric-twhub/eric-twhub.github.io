@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-28-taichung-nagoya",
- "generated": "2026-11-28 00:52",
+ "generated": "2026-11-28 01:48",
  "kind": "fare",
  "origin": "taichung",
  "city": "nagoya",
@@ -11,9 +11,9 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5657,
-  "dep": "2026-12-28",
-  "ret": "2027-01-06",
+  "price": 5411,
+  "dep": "2026-12-07",
+  "ret": "2026-12-09",
   "dept": "16:45",
   "rett": "13:15",
   "rt": true,
@@ -21,13 +21,13 @@
   "dur": 350,
   "dur_to": 160,
   "gate": "Tigerair Taiwan",
-  "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-28&inbound=NGO-RMQ&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
+  "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-07&inbound=NGO-RMQ&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
   "ta_rt_sum": true
  },
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 5971,
+ "med": 5930,
  "n_rt": 4,
  "others": [
   {
@@ -36,9 +36,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5739,
-   "dep": "2026-12-07",
-   "ret": "2026-12-09",
+   "price": 5657,
+   "dep": "2026-12-28",
+   "ret": "2027-01-06",
    "dept": "16:45",
    "rett": "13:15",
    "rt": true,
@@ -46,7 +46,7 @@
    "dur": 350,
    "dur_to": 160,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-07&inbound=NGO-RMQ&returnDate=2026-12-09&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-28&inbound=NGO-RMQ&returnDate=2027-01-06&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
@@ -74,7 +74,7 @@
    "air": "UO",
    "airname": "香港快運",
    "cls": "lcc",
-   "price": 12680,
+   "price": 12695,
    "dep": "2026-12-05",
    "ret": "2026-12-08",
    "dept": "20:35",
@@ -84,7 +84,7 @@
    "dur": 1755,
    "dur_to": 320,
    "gate": "Vayama",
-   "url": "https://www.aviasales.com/search/RMQ0512NGO08121?t=UO17965029001796586300001330RMQHKGNGO17967438001796765700000425NGOOKARMQ_f391e3df5a96352fee642a7f850f7f59_31602&search_date=27112026&expected_price_uuid=01a21bc8-9694-8040-22ea-8a5ea4572339&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=XH8d4AipVrmDQQzOtXJdLA&expected_price_source=share&expected_price_currency=twd&expected_price=12680&marker=775639"
+   "url": "https://www.aviasales.com/search/RMQ0512NGO08121?t=UO17965029001796586300001330RMQHKGNGO17967438001796765700000425NGOOKARMQ_f391e3df5a96352fee642a7f850f7f59_31602&search_date=27112026&expected_price_uuid=01a21bc8-9694-8040-22ea-8a5ea4572339&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=XH8d4AipVrmDQQzOtXJdLA&expected_price_source=share&expected_price_currency=twd&expected_price=12695&marker=775639"
   }
  ]
 }
