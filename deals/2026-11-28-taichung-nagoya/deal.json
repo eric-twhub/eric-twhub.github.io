@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-28-taichung-nagoya",
- "generated": "2026-11-28 00:26",
+ "generated": "2026-11-28 00:52",
  "kind": "fare",
  "origin": "taichung",
  "city": "nagoya",
@@ -11,7 +11,7 @@
   "air": "IT",
   "airname": "台灣虎航",
   "cls": "lcc",
-  "price": 5198,
+  "price": 5657,
   "dep": "2026-12-28",
   "ret": "2027-01-06",
   "dept": "16:45",
@@ -27,7 +27,7 @@
  "reasons": [
   "廉航低於 NT$6,000"
  ],
- "med": 5534,
+ "med": 5971,
  "n_rt": 4,
  "others": [
   {
@@ -36,7 +36,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5411,
+   "price": 5739,
    "dep": "2026-12-07",
    "ret": "2026-12-09",
    "dept": "16:45",
@@ -55,7 +55,7 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 5657,
+   "price": 6203,
    "dep": "2026-12-30",
    "ret": "2027-01-04",
    "dept": "16:45",
