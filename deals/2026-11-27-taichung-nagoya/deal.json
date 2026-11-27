@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-27-taichung-nagoya",
- "generated": "2026-11-27 21:46",
+ "generated": "2026-11-27 22:33",
  "kind": "fare",
  "origin": "taichung",
  "city": "nagoya",
@@ -26,7 +26,7 @@
  },
  "reasons": [
   "廉航低於 NT$6,000",
-  "12 月出發的票，每天最便宜的平均要 NT$7,118（5 天有紀錄），這張低 24%"
+  "12 月出發的票，每天最便宜的平均要 NT$7,182（5 天有紀錄），這張低 25%"
  ],
  "med": 5657,
  "n_rt": 5,
@@ -38,8 +38,8 @@
    "airname": "台灣虎航",
    "cls": "lcc",
    "price": 5657,
-   "dep": "2026-12-16",
-   "ret": "2026-12-21",
+   "dep": "2026-12-30",
+   "ret": "2027-01-04",
    "dept": "16:45",
    "rett": "13:15",
    "rt": true,
@@ -47,7 +47,7 @@
    "dur": 350,
    "dur_to": 160,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-16&inbound=NGO-RMQ&returnDate=2026-12-21&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-30&inbound=NGO-RMQ&returnDate=2027-01-04&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   },
   {
@@ -75,9 +75,9 @@
    "air": "IT",
    "airname": "台灣虎航",
    "cls": "lcc",
-   "price": 6203,
-   "dep": "2026-12-30",
-   "ret": "2027-01-04",
+   "price": 6503,
+   "dep": "2026-12-16",
+   "ret": "2026-12-21",
    "dept": "16:45",
    "rett": "13:15",
    "rt": true,
@@ -85,7 +85,7 @@
    "dur": 350,
    "dur_to": 160,
    "gate": "Tigerair Taiwan",
-   "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-30&inbound=NGO-RMQ&returnDate=2027-01-04&type=return&adult=1&language=zh-TW",
+   "url": "https://booking.tigerairtw.com/?outbound=RMQ-NGO&departureDate=2026-12-16&inbound=NGO-RMQ&returnDate=2026-12-21&type=return&adult=1&language=zh-TW",
    "ta_rt_sum": true
   }
  ]
