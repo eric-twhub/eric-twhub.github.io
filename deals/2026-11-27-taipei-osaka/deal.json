@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-27-taipei-osaka",
- "generated": "2026-11-27 13:57",
+ "generated": "2026-11-27 14:57",
  "kind": "fare",
  "origin": "taipei",
  "city": "osaka",
@@ -26,8 +26,8 @@
  "reasons": [
   "12 月出發的票，每天最便宜的平均要 NT$7,756（11 天有紀錄），這張低 18%"
  ],
- "med": 17385,
- "n_rt": 64,
+ "med": 17463,
+ "n_rt": 62,
  "others": [
   {
    "o": "TPE",
