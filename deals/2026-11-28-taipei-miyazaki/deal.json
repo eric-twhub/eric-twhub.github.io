@@ -1,0 +1,52 @@
+{
+ "schema": 1,
+ "slug": "2026-11-28-taipei-miyazaki",
+ "generated": "2026-11-28 00:26",
+ "kind": "fare",
+ "origin": "taipei",
+ "city": "miyazaki",
+ "fare": {
+  "o": "TPE",
+  "d": "KMI",
+  "air": "IT",
+  "airname": "台灣虎航",
+  "cls": "lcc",
+  "price": 5807,
+  "dep": "2026-12-28",
+  "ret": "2027-01-01",
+  "dept": "06:20",
+  "rett": "10:30",
+  "rt": true,
+  "tr": 0,
+  "dur": 270,
+  "dur_to": 120,
+  "gate": "Tigerair Taiwan",
+  "url": "https://booking.tigerairtw.com/?outbound=TPE-KMI&departureDate=2026-12-28&inbound=KMI-TPE&returnDate=2027-01-01&type=return&adult=1&language=zh-TW",
+  "ta_rt_sum": true
+ },
+ "reasons": [
+  "廉航低於 NT$6,000"
+ ],
+ "med": 19108,
+ "n_rt": 2,
+ "others": [
+  {
+   "o": "TPE",
+   "d": "KMI",
+   "air": "NH",
+   "airname": "全日空",
+   "cls": "fsc",
+   "price": 32409,
+   "dep": "2026-12-28",
+   "ret": "2027-01-01",
+   "dept": "13:30",
+   "rett": "08:15",
+   "rt": true,
+   "tr": 2,
+   "dur": 890,
+   "dur_to": 285,
+   "gate": "Kiwi.com",
+   "url": "https://www.aviasales.com/search/TSA2812KMI01011?t=NH17984646001798490700000375TSAHNDKMI17987913001798818600000515KMIHNDTSA_9ac1947cce3eaff857fbd863692fc726_80598&search_date=20112026&expected_price_uuid=01a1fa09-e309-8040-21fa-04a643bdd84a&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tX6q04NiYnEbuzq8_pFvmg&origin_airports=0&destination_airports=1&expected_price_source=share&expected_price_currency=twd&expected_price=32409&marker=775639"
+  }
+ ]
+}
