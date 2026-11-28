@@ -1,7 +1,7 @@
 {
  "page": "/japan-autumn-leaves/",
  "dir": "japan-autumn-leaves",
- "_說明": "各地景色參考嵐山、高尾山、香嵐渓、富士河口湖紅葉祭（fujisan.ne.jp/news/6065/）、黑部峽谷鐵道（kurotetu.co.jp）官網畫成可愛版；說明文字來自 autumn.json 與上述官網，2026-11-13 查",
+ "_說明": "各地景色參考嵐山、高尾山、香嵐渓、富士河口湖紅葉祭（fujisan.ne.jp/news/6065/）、黑部峽谷鐵道（kurotetu.co.jp）官網畫成可愛版；說明文字來自 autumn.json 與上述官網，2026-11-13 查；2026-11-28 封面與 arashiyama、takao（改畫吊椅）、korankei、leaves、kurobe 改用 Gemini API 畫的點陣圖（網頁版連三次失敗），kawaguchiko 11/29 到期維持 SVG",
  "blocks": [
   {
    "before": "見頃日期有兩套，而且不是同一個意思",
