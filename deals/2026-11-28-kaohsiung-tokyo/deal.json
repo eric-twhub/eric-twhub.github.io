@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "slug": "2026-11-28-kaohsiung-tokyo",
- "generated": "2026-11-28 13:56",
+ "generated": "2026-11-28 16:54",
  "kind": "fare",
  "origin": "kaohsiung",
  "city": "tokyo",
@@ -24,29 +24,11 @@
   "url": "https://www.aviasales.com/search/KHH1512NRT18121?t=IT17973432001797359400000210KHHNRT17975931001797606300000280NRTKHH_2cf43a2568f2c6be247bbff51a904244_24040&search_date=22112026&expected_price_uuid=01a2010e-4135-8040-a469-019207dcbcb8&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=gIBfInvdsqYuu0kEfirQTw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9657&marker=775639"
  },
  "reasons": [
-  "12 月出發的票，每天最便宜的平均要 NT$10,752（29 天有紀錄），這張低 10%"
+  "12 月出發的票，每天最便宜的平均要 NT$10,820（27 天有紀錄），這張低 11%"
  ],
- "med": 14124,
- "n_rt": 175,
+ "med": 14262,
+ "n_rt": 162,
  "others": [
-  {
-   "o": "KHH",
-   "d": "TYO",
-   "air": "IT",
-   "airname": "台灣虎航",
-   "cls": "lcc",
-   "price": 6827,
-   "dep": "2026-12-28",
-   "ret": "2027-01-07",
-   "dept": "08:00",
-   "rett": "09:25",
-   "rt": true,
-   "tr": 0,
-   "dur": 465,
-   "dur_to": 190,
-   "gate": "Farera",
-   "url": "https://www.aviasales.com/search/KHH2812NRT07011?t=GK17984448001798459800000190KHHNRT17993139001799326800000275NRTKHH_ef3a0619cdcb8839554242096b676254_16995&search_date=21112026&expected_price_uuid=01a1fd21-141a-8040-ad00-3345be306710&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Vke-nrWhrA_bOOH0D4O8sw&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=6827&marker=775639"
-  },
   {
    "o": "KHH",
    "d": "TYO",
@@ -82,6 +64,24 @@
    "dur_to": 210,
    "gate": "Aviakassa",
    "url": "https://www.aviasales.com/search/KHH0312NRT10121?t=GK17963064001796322600000210KHHNRT17968947001796907600000275NRTKHH_f9a2190d7517a50474043878a3bfe40f_23756&search_date=26112026&expected_price_uuid=01a215f0-8864-8030-a497-d1fe33c13eca&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=PtjMkGitjDYX2DDS5OR8Ng&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9488&marker=775639"
+  },
+  {
+   "o": "KHH",
+   "d": "TYO",
+   "air": "GK",
+   "airname": "捷星日本",
+   "cls": "lcc",
+   "price": 9549,
+   "dep": "2026-12-16",
+   "ret": "2026-12-21",
+   "dept": "14:00",
+   "rett": "09:25",
+   "rt": true,
+   "tr": 0,
+   "dur": 485,
+   "dur_to": 210,
+   "gate": "City.Travel",
+   "url": "https://www.aviasales.com/search/KHH1612NRT21121?t=GK17974296001797445800000210KHHNRT17978451001797858000000275NRTKHH_695af29ad8eeead6c829c5ff7d21f109_23850&search_date=23112026&expected_price_uuid=01a20751-59f0-8030-ad9d-b3e825ddd93a&static_fare_key=TY%7CP1_JW%7CH1%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=yJSy11REnMvZQ3-UXfVyoA&origin_airports=1&destination_airports=0&expected_price_source=share&expected_price_currency=twd&expected_price=9549&marker=775639"
   }
  ]
 }
