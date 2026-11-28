@@ -1,7 +1,7 @@
 {
  "page": "/miyazaki/takachiho-gorge/",
  "dir": "miyazaki-takachiho-gorge",
- "_說明": "插圖參考高千穗町觀光協會的介紹（takachiho-kanko.info /boat/detail.php、/sightseeing/18/、/kagura/information/）畫成可愛版，神樂舞者不畫面具；說明與提醒卡依據這幾頁、預約網站 eipro.jp/takachiho1 與 takachiho.json，2026-11-17 查",
+ "_說明": "插圖參考高千穗町觀光協會的介紹（takachiho-kanko.info /boat/detail.php、/sightseeing/18/、/kagura/information/）畫成可愛版，神樂舞者不畫面具；說明與提醒卡依據這幾頁、預約網站 eipro.jp/takachiho1 與 takachiho.json，2026-11-17 查；2026-11-28 封面與六張插圖改用 Gemini API 畫的點陣圖（網頁版連三次失敗），划船那張寫明大人坐中間划、封面每艘船兩到三人",
  "blocks": [
   {
    "before": "預約要準備什麼",
